@@ -1,0 +1,8 @@
+!**
+**/FXServer
+**/cache
+**/.idea
+/resources/nbproject/private/
+/resources/nbproject/
+CitizenFX.log
+CitizenFXdev.log
