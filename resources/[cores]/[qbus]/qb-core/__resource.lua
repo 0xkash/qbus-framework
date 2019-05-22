@@ -6,6 +6,9 @@ server_scripts {
 	"config.lua",
 	"shared.lua",
 	"server/main.lua",
+	"server/functions.lua",
+	"server/player.lua",
+	"server/loops.lua",
 	"server/events.lua",
 	"server/debug.lua",
 }
@@ -14,6 +17,7 @@ client_scripts {
 	"config.lua",
 	"shared.lua",
 	"client/main.lua",
+	"client/loops.lua",
 	"client/events.lua",
 	"client/debug.lua",
 }

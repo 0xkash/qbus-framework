@@ -6,7 +6,13 @@ AddEventHandler('QBCore:DebugSomething', function(resource, obj, depth)
     elseif type(obj) == "table" then
         local str = "{"
         for k, v in pairs(obj) do
-            str = str.."\n["..k.."] -> "..v
+            if type(v) == "table" then
+                for ik, iv in pairs(v) do
+                    str = str.."\n["..k.."] -> ["..ik.."] -> "..tostring(iv)
+                end
+            else
+                str = str.."\n["..k.."] -> "..tostring(v)
+            end
         end
         
         print(str.."\n}")

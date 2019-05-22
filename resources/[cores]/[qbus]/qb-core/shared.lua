@@ -1,23 +1,26 @@
 QBShared = {}
 
-QBShared.Debug = function(obj, depth)
+local StringCharset = {}
+local NumberCharset = {}
 
-		if type(obj) == "string" then
-			-- Dump the string so that escape sequences are printed.
-			return string.format("%q", obj)
-		elseif type(obj) == "table" and depth < max_depth and not coerceable(obj) then
-			local str = "{"
-			
-			for k, v in pairs(obj) do
-				local pair = pretty(k, 0).." = "..recurse(v, depth + 1)
-				str = str..(str == "{" and pair or ", "..pair)
-			end
-			
-			return str.."}"
-		else
-			-- tostring() can fail if there is an error in a __tostring metamethod.
-			local success, value = pcall(function() return tostring(obj) end)
-			return (success and value or "<!!error in __tostring metamethod!!>")
-		end
+for i = 48,  57 do table.insert(NumberCharset, string.char(i)) end
+for i = 65,  90 do table.insert(StringCharset, string.char(i)) end
+for i = 97, 122 do table.insert(StringCharset, string.char(i)) end
 
+QBShared.RandomStr = function(length)
+	math.randomseed(GetGameTimer())
+	if length > 0 then
+		return QBShared.RandomStr(length-1) .. StringCharset[math.random(1, #StringCharset)]
+	else
+		return ''
 	end
+end
+
+QBShared.RandomInt = function(length)
+	math.randomseed(GetGameTimer())
+	if length > 0 then
+		return QBShared.RandomInt(length-1) .. NumberCharset[math.random(1, #NumberCharset)]
+	else
+		return ''
+	end
+end

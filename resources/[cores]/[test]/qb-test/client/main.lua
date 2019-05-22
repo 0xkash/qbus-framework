@@ -6,12 +6,3 @@ Citizen.CreateThread(function()
         Citizen.Wait(200)
     end
 end)
-
-Citizen.CreateThread(function()
-	while true do
-		Citizen.Wait(7)
-		if ten < 9 then
-			print("yest")
-		end
-	end
-end)
