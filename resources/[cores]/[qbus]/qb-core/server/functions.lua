@@ -26,3 +26,23 @@ QBCore.Functions.GetIdentifier = function(source, idtype)
 	end
 	return nil
 end
+
+QBCore.Functions.GetSource = function(identifier)
+	for src, player in pairs(QBCore.Players) do
+		local idens = GetPlayerIdentifiers(src)
+		for _, id in pairs(idens) do
+			if identifier == id then
+				return src
+			end
+		end
+	end
+	return 0
+end
+
+QBCore.Functions.GetPlayer = function(source)
+	if type(source) == "number" then
+		return QBCore.Players[source]
+	else
+		return QBCore.Players[QBCore.Functions.GetSource(source)]
+	end
+end

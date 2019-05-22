@@ -40,11 +40,17 @@ QBCore.Player.CreatePlayer = function(PlayerData)
 	self.Functions = {}
 	self.PlayerData = PlayerData
 
+	self.Functions.HasAcePermission = function(permission)
+		if IsPlayerAceAllowed(self.PlayerData.source, tostring(permission):lower()) then
+			return true
+		else
+			return false
+		end
+	end
+
 	self.Functions.UpdatePlayerData = function()
 		--TriggerClientEvent('QBCore:OnPlayerDataUpdate', -1, self.PlayerData)
 	end
-
-	QBCore.Debug(GetCurrentResourceName(), self.PlayerData.money["cash"])
 
 	QBCore.Players[self.PlayerData.source] = self
 	QBCore.Player.Save(self.PlayerData.source)

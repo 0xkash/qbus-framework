@@ -10,6 +10,7 @@ server_scripts {
 	"server/player.lua",
 	"server/loops.lua",
 	"server/events.lua",
+	"server/commands.lua",
 	"server/debug.lua",
 }
 
