@@ -12,6 +12,17 @@ QBCore.Commands.Add = function(name, help, arguments, argsrequired, callback, pe
 	}
 end
 
+QBCore.Commands.Refresh = function(source)
+	local Player = QBCore.Functions.GetPlayer(tonumber(source))
+	if Player ~= nil then
+		for command, info in pairs(QBCore.Commands.List) do
+			if (Player.Functions.HasAcePermission("qbcommands."..command)) then
+				TriggerClientEvent('chat:addSuggestion', source, "/"..command, info.help, info.arguments)
+			end
+		end
+	end
+end
+
 QBCore.Commands.Add("tp", "Tp to a location or a player", {{name="id/x", help="ID of a player or X position"}, {name="y", help="Y position"}, {name="z", help="Z position"}}, false, function(source, args)
 	if (args[1] ~= nil and (args[2] == nil or args[3] == nil)) then
 		-- tp to player
@@ -33,4 +44,12 @@ end)
 
 QBCore.Commands.Add("testbro", "test", {{name="some", help="..body that i used to know?"}, {name="thing", help="..oh nvm"}}, true, function(source, args)
 	QBCore.ShowSuccess(GetCurrentResourceName(), "/testbro triggered")
+end)
+
+QBCore.Commands.Add("cash", "Show your cash balance", {}, false, function(source, args)
+	TriggerClientEvent('QBCore:Command:ShowMoneyType', source, "cash")
+end)
+
+QBCore.Commands.Add("bank", "Show your bank balance", {}, false, function(source, args)
+	TriggerClientEvent('QBCore:Command:ShowMoneyType', source, "bank")
 end)

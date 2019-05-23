@@ -18,7 +18,18 @@ client_scripts {
 	"config.lua",
 	"shared.lua",
 	"client/main.lua",
+	"client/functions.lua",
 	"client/loops.lua",
 	"client/events.lua",
 	"client/debug.lua",
+}
+
+ui_page {
+	'html/ui.html'
+}
+
+files {
+	'html/ui.html',
+	'html/css/main.css',
+	'html/js/app.js',
 }

@@ -28,10 +28,10 @@ QBCore.Player.CheckPlayerData = function(source, PlayerData)
 	PlayerData.name = GetPlayerName(source)
 
 	PlayerData.money = PlayerData.money ~= nil and PlayerData.money or {}
-	for moneytype, startamount in pairs(QBCore.Config.MoneyTypes) do
+	for moneytype, startamount in pairs(QBCore.Config.Money.MoneyTypes) do
 		PlayerData.money[moneytype] = PlayerData.money[moneytype] ~= nil and PlayerData.money[moneytype] or startamount
 	end
-
+	
 	QBCore.Player.CreatePlayer(PlayerData)
 end
 
@@ -49,9 +49,10 @@ QBCore.Player.CreatePlayer = function(PlayerData)
 	end
 
 	self.Functions.UpdatePlayerData = function()
-		--TriggerClientEvent('QBCore:OnPlayerDataUpdate', -1, self.PlayerData)
+		TriggerClientEvent("QBCore:Player:SetPlayerData", self.PlayerData.source, self.PlayerData)
 	end
 
+	self.Functions.UpdatePlayerData()
 	QBCore.Players[self.PlayerData.source] = self
 	QBCore.Player.Save(self.PlayerData.source)
 end
