@@ -9,7 +9,7 @@
 .color-9{color: #cc0068;}
 
 * {
-  font-family: 'Lato', sans-serif;
+  font-family: 'Source Sans Pro', sans-serif;
   margin: 0;
   padding: 0;
 }
@@ -23,7 +23,7 @@ em {
 }
 
 #app {
-  font-family: 'Lato', Helvetica, Arial, sans-serif;
+  font-family: 'Source Sans Pro', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: white;
@@ -36,7 +36,6 @@ em {
   width: 38%;
   height: 22%;
   max-width: 1000px;
-  background-color: rgba(52, 73, 94, 0.7);
   -webkit-animation-duration: 2s;
 }
 
@@ -44,7 +43,7 @@ em {
 .chat-messages {
   position: relative;
   height: 95%;
-  font-size: 1.8vh;
+  font-size: 1.55vh;
   margin: 1%;
 
   overflow-x: hidden;
@@ -55,10 +54,9 @@ em {
 .chat-input {
   font-size: 1.65vh;
   position: absolute;
-
-  top: 23.8%;
-  left: 0.8%;
-  width: 38%;
+  top: 29.4vh;
+  left: 0.8vw;
+  width: 32vw;
   max-width: 1000px;
   box-sizing: border-box;
 }
@@ -77,7 +75,7 @@ textarea {
   padding: 1%;
   padding-left: 3.5%;
   color: white;
-  background-color: rgba(44, 62, 80, 1.0);
+  background-color: rgba(0, 0, 0, 0.65);
   width: 100%;
   border-width: 0;
   height: 3.15%;
@@ -90,7 +88,17 @@ textarea:focus, input:focus {
 }
 
 .msg {
-  margin-bottom: 0.28%;
+  margin-top: 0.5vh;
+}
+
+.msg > span {
+  background: rgba(38, 126, 214, 1.0);
+  max-width: 100%;
+  padding: 0.7vw 0.5vh;
+  border-radius: 5px;
+  display: table;
+  line-height: 1.35vh;
+  overflow-wrap: anywhere;
 }
 
 .multiline {
@@ -106,7 +114,7 @@ textarea:focus, input:focus {
   font-size: 1.65vh;
   box-sizing: border-box;
   color: white;
-  background-color: rgba(44, 62, 80, 1.0);
+  background-color: rgba(0, 0, 0, 0.8);
   width: 100%;
 }
 

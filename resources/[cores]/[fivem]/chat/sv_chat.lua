@@ -1,3 +1,11 @@
+QBCore = nil
+Citizen.CreateThread(function()
+    while QBCore == nil do
+        TriggerEvent('QBCore:GetObject', function(core) QBCore = core end)
+        Citizen.Wait(200)
+    end
+end)
+
 RegisterServerEvent('chat:init')
 RegisterServerEvent('chat:addTemplate')
 RegisterServerEvent('chat:addMessage')
@@ -17,8 +25,6 @@ AddEventHandler('_chat:messageEntered', function(author, color, message)
     if not WasEventCanceled() then
         TriggerClientEvent('chatMessage', -1, author,  { 255, 255, 255 }, message)
     end
-
-    print(author .. '^7: ' .. message .. '^7')
 end)
 
 AddEventHandler('__cfx_internal:commandFallback', function(command)
@@ -35,15 +41,11 @@ end)
 
 -- player join messages
 AddEventHandler('chat:init', function()
-    TriggerClientEvent('chatMessage', -1, '', { 255, 255, 255 }, '^2* ' .. GetPlayerName(source) .. ' joined.')
+    --TriggerClientEvent('chatMessage', -1, '', { 255, 255, 255 }, '^2* ' .. GetPlayerName(source) .. ' joined.')
 end)
 
 AddEventHandler('playerDropped', function(reason)
-    TriggerClientEvent('chatMessage', -1, '', { 255, 255, 255 }, '^2* ' .. GetPlayerName(source) ..' left (' .. reason .. ')')
-end)
-
-RegisterCommand('say', function(source, args, rawCommand)
-    TriggerClientEvent('chatMessage', -1, (source == 0) and 'console' or GetPlayerName(source), { 255, 255, 255 }, rawCommand:sub(5))
+    --TriggerClientEvent('chatMessage', -1, '', { 255, 255, 255 }, '^2* ' .. GetPlayerName(source) ..' left (' .. reason .. ')')
 end)
 
 -- command suggestions for clients
@@ -67,7 +69,11 @@ local function refreshCommands(player)
 end
 
 AddEventHandler('chat:init', function()
-    refreshCommands(source)
+    local src = source
+    if src ~= nil then
+        refreshCommands(source)
+        QBCore.Commands.Refresh(player)
+    end
 end)
 
 AddEventHandler('onServerResourceStart', function(resName)
@@ -75,5 +81,6 @@ AddEventHandler('onServerResourceStart', function(resName)
 
     for _, player in ipairs(GetPlayers()) do
         refreshCommands(player)
+        QBCore.Commands.Refresh(player)
     end
 end)
