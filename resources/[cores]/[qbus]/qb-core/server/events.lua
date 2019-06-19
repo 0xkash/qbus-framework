@@ -17,9 +17,9 @@ AddEventHandler('chatMessage', function(source, n, message)
 			local Player = QBCore.Functions.GetPlayer(tonumber(source))
 			if Player ~= nil then
 				table.remove(args, 1)
-				if Player.Functions.HasAcePermission("qbcommands."..command) then
+				if QBCore.Commands.List[command].permission and Player.Functions.HasAcePermission("qbcommands."..command) then
 					if (QBCore.Commands.List[command].argsrequired and #QBCore.Commands.List[command].arguments ~= 0 and args[#QBCore.Commands.List[command].arguments] == nil) then
-					    TriggerClientEvent('chatMessage', source, "SYSTEM", {255, 0, 0}, "All arguments are required! Fill in all arguments.")
+					    TriggerClientEvent('chatMessage', source, "SYSTEM", {255, 0, 0}, "Alle argumenten moeten ingevuld worden!")
 					    local agus = ""
 					    for name, help in pairs(QBCore.Commands.List[command].arguments) do
 					    	agus = agus .. " ["..help.name.."]"
@@ -29,7 +29,7 @@ AddEventHandler('chatMessage', function(source, n, message)
 						QBCore.Commands.List[command].callback(source, args)
 					end
 				else
-					TriggerClientEvent('chatMessage', source, "SYSTEM", {255, 0, 0}, "No permission for this command!")
+					TriggerClientEvent('chatMessage', source, "SYSTEM", {255, 0, 0}, "Geen toegant tot dit command!")
 				end
 			end
 		end

@@ -20,10 +20,10 @@ Vue.component('message', {
 
       s = s.replace(/{(\d+)}/g, (match, number) => {
         const argEscaped = this.args[number] != undefined ? this.escape(this.args[number]) : match
-        if (number == 0 && this.color) {
+        /*if (number == 0 && this.color) {
           //color is deprecated, use templates or ^1 etc.
           return this.colorizeOld(argEscaped);
-        }
+        }*/
         return argEscaped;
       });
       return s;

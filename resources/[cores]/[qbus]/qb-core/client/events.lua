@@ -17,13 +17,6 @@ AddEventHandler('QBCore:Command:TeleportToCoords', function(x, y, z)
 	end
 	SetEntityCoords(entity, x, y, z)
 end)
-RegisterNetEvent('QBCore:Command:ShowMoneyType')
-AddEventHandler('QBCore:Command:ShowMoneyType', function(moneytype)
-	if QBCore.Config.Money.DrawLocations[moneytype].show then
-		QBCore.Config.Money.HUDOn = true
-		QBCore.Config.Money.DrawLocations[moneytype].alpha = 250
-	end
-end)
 -- Other stuff
 RegisterNetEvent('QBCore:Player:SetPlayerData')
 AddEventHandler('QBCore:Player:SetPlayerData', function(val)
