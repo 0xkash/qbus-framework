@@ -4,10 +4,20 @@ description 'Qbus:Hud'
 
 server_scripts {
 	"config.lua",
-	"server/main.lua",
+	"server/money.lua",
 }
 
 client_scripts {
 	"config.lua",
-	"client/main.lua",
+	"client/money.lua",
+}
+
+ui_page {
+	'html/ui.html'
+}
+
+files {
+	'html/ui.html',
+	'html/css/main.css',
+	'html/js/app.js',
 }

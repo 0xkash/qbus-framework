@@ -71,8 +71,8 @@ end
 AddEventHandler('chat:init', function()
     local src = source
     if src ~= nil then
-        refreshCommands(source)
-        QBCore.Commands.Refresh(player)
+        refreshCommands(src)
+        QBCore.Commands.Refresh(src)
     end
 end)
 

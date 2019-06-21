@@ -7,6 +7,8 @@ QBCore.Player.Login = function(source)
 			local PlayerData = result[1]
 			if PlayerData ~= nil then
 				PlayerData.money = json.decode(PlayerData.money)
+				PlayerData.job = json.decode(PlayerData.job)
+				PlayerData.gang = json.decode(PlayerData.gang)
 			end
 			QBCore.Player.CheckPlayerData(source, PlayerData)
 			--TriggerClientEvent('QBCore:OnPlayerLoaded', source)
@@ -39,6 +41,8 @@ QBCore.Player.CheckPlayerData = function(source, PlayerData)
 	PlayerData.job.label = PlayerData.job.label ~= nil and PlayerData.job.label or "Werkloos"
 	PlayerData.job.grade = PlayerData.job.grade ~= nil and PlayerData.job.grade or 1
 	PlayerData.job.gradelabel = PlayerData.job.gradelabel ~= nil and PlayerData.job.gradelabel or "Uitkering"
+	PlayerData.job.payment = PlayerData.job.payment ~= nil and PlayerData.job.payment or 10
+	PlayerData.job.onduty = PlayerData.job.onduty ~= nil and PlayerData.job.onduty or false
 	
 	PlayerData.gang = PlayerData.gang ~= nil and PlayerData.gang or {}
 	PlayerData.gang.name = PlayerData.gang.name ~= nil and PlayerData.gang.name or "nogang"
@@ -64,6 +68,86 @@ QBCore.Player.CreatePlayer = function(PlayerData)
 
 	self.Functions.UpdatePlayerData = function()
 		TriggerClientEvent("QBCore:Player:SetPlayerData", self.PlayerData.source, self.PlayerData)
+	end
+
+	self.Functions.SetPermission = function(permission)
+		local permission = permission:lower()
+		self.PlayerData.permission = permission
+		self.UpdatePlayerData()
+	end
+
+	self.Functions.SetJob = function(job, grade)
+		local job = job:lower()
+		local grade = tonumber(grade)
+		local JobInfo = QBCore.Player.GetJobInfo(job, grade)
+		if JobInfo ~= nil then
+			self.PlayerData.job.name = JobInfo.name
+			self.PlayerData.job.label = JobInfo.label
+			self.PlayerData.job.grade = JobInfo.grade
+			self.PlayerData.job.gradelabel = JobInfo.gradelabel
+			self.Functions.UpdatePlayerData()
+		else
+			-- Job does not exist
+		end
+	end
+
+	self.Functions.SetGang = function(gang, grade)
+		local gang = gang:lower()
+		local grade = tonumber(grade)
+		local GangInfo = QBCore.Player.GetGangInfo(gang, grade)
+		if GangInfo ~= nil then
+			self.PlayerData.gang.name = JobInfo.name
+			self.PlayerData.gang.label = JobInfo.label
+			self.PlayerData.gang.grade = JobInfo.grade
+			self.PlayerData.gang.gradelabel = JobInfo.gradelabel
+			self.Functions.UpdatePlayerData()
+		else
+			-- gang does not exist
+		end
+	end
+
+	self.Functions.AddMoney = function(moneytype, amount)
+		local moneytype = moneytype:lower()
+		local amount = tonumber(amount)
+		if self.PlayerData.money[moneytype] ~= nil then
+			self.PlayerData.money[moneytype] = self.PlayerData.money[moneytype]+amount
+			self.Functions.UpdatePlayerData()
+			TriggerClientEvent("QBCore:OnMoneyChange", self.PlayerData.source, moneytype, amount, true)
+			return true
+		end
+		return false
+	end
+
+	self.Functions.RemoveMoney = function(moneytype, amount)
+		local moneytype = moneytype:lower()
+		local amount = tonumber(amount)
+		if self.PlayerData.money[moneytype] ~= nil then
+			for _, mtype in pairs(QBCore.Config.Money.DontAllowMinus) do
+				if mtype == moneytype then
+					if self.PlayerData.money[moneytype] - amount < 0 then return false end
+				end
+			end
+			self.PlayerData.money[moneytype] = self.PlayerData.money[moneytype] - amount
+			self.Functions.UpdatePlayerData()
+			TriggerClientEvent("QBCore:OnMoneyChange", self.PlayerData.source, moneytype, amount, false)
+			return true
+		end
+		return false
+	end
+
+	self.Functions.SetMoney = function(moneytype, amount)
+		local moneytype = moneytype:lower()
+		local amount = tonumber(amount)
+		if self.PlayerData.money[moneytype] ~= nil then
+			self.PlayerData.money[moneytype] = amount
+			self.Functions.UpdatePlayerData()
+			return true
+		end
+		return false
+	end
+
+	self.Functions.Save = function()
+		QBCore.Player.Save(self.PlayerData.source)
 	end
 
 	self.Functions.UpdatePlayerData()
@@ -100,4 +184,44 @@ QBCore.Player.CreateCitizenId = function()
 		end)
 	end
 	return CitizenId
+end
+
+QBCore.Player.GetJobInfo = function(job, grade)
+	local job = job:lower()
+	local grade = tonumber(grade)
+	local JobInfo = {}
+	QBCore.Functions.ExecuteSql("SELECT * FROM `jobs`", function(result)
+		for _, info in pairs(result) do
+			if tostring(info.name) == tostring(job) then
+				for _, gradeinfo in pairs(info.grades) do
+					JobInfo.name = info.name
+					JobInfo.label = info.label
+					JobInfo.grade = gradeinfo.grade
+					JobInfo.gradelabel = gradeinfo.gradelabel
+					JobInfo.payment = info.payment
+					JobInfo.onduty = false
+				end
+			end
+		end
+	end)
+	return JobInfo
+end
+
+QBCore.Player.GetGangInfo = function(gang, grade)
+	local gang = gang:lower()
+	local grade = tonumber(grade)
+	local GangInfo = {}
+	QBCore.Functions.ExecuteSql("SELECT * FROM `gangs`", function(result)
+		for _, info in pairs(result) do
+			if tostring(info.name) == tostring(gang) then
+				for _, gradeinfo in pairs(info.grades) do
+					GangInfo.name = info.name
+					GangInfo.label = info.label
+					GangInfo.grade = gradeinfo.grade
+					GangInfo.gradelabel = gradeinfo.gradelabel
+				end
+			end
+		end
+	end)
+	return GangInfo
 end

@@ -47,11 +47,58 @@ Citizen.CreateThread(function()
 		end
 	end
 end)
+local MinusTimeOut = 2
+local MinusTriggered = nil
+local MinusAmount = 0
+local MinusAlpha = 250
+local MinusPrefix = "-"
+Citizen.CreateThread(function()
+	while true do
+		Citizen.Wait(0)
+		if MinusTriggered ~= nil then
+			if MinusTimeOut ~= 0 then
+				Citizen.Wait(1000)
+				MinusTimeOut = MinusTimeOut - 1
+			end
+			if MinusTimeOut == 0 then
+				if MinusAlpha ~= 0 then
+					MinusAlpha = MinusAlpha - 1
+				end
+				if MinusAlpha == 0 then
+					MinusTriggered = nil
+				end
+			end
+		end
+	end
+end)
+Citizen.CreateThread(function()
+	while true do
+		Citizen.Wait(0)
+		if MinusTriggered ~= nil then
+			QBCore.Functions.DrawText(Config.Money.DrawLocations[MinusTriggered].x + 0.002, Config.Money.DrawLocations[MinusTriggered].y + 0.025, 1.0, 1.0, 0.5, 255, 255, 255, MinusAlpha, MinusPrefix.." ~w~"..tostring(MinusAmount))
+		end
+	end
+end)
 
 RegisterNetEvent('QBCore:Command:ShowMoneyType')
 AddEventHandler('QBCore:Command:ShowMoneyType', function(moneytype)
 	if Config.Money.DrawLocations[moneytype].show then
 		Config.Money.HUDOn = true
 		Config.Money.DrawLocations[moneytype].alpha = 250
+	end
+end)
+
+RegisterNetEvent('QBCore:OnMoneyChange')
+AddEventHandler('QBCore:OnMoneyChange', function(moneytype, amount, isplus)
+	if Config.Money.DrawLocations[moneytype].show then
+		local moneytype = moneytype:lower()
+		local amount = tonumber(amount)
+		Config.Money.HUDOn = true
+		Config.Money.DrawLocations[moneytype].alpha = 250
+		MinusTriggered = moneytype
+		MinusAmount = amount
+		MinusTimeOut = 3
+		MinusAlpha = 250
+		if not isplus then MinusPrefix = "~r~-" else MinusPrefix = "~g~+" end
 	end
 end)

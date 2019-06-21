@@ -46,3 +46,7 @@ QBCore.Functions.GetPlayer = function(source)
 		return QBCore.Players[QBCore.Functions.GetSource(source)]
 	end
 end
+
+QBCore.Functions.GetPlayers = function()
+	return QBCore.Players
+end

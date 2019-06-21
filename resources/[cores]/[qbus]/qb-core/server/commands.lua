@@ -16,7 +16,7 @@ QBCore.Commands.Refresh = function(source)
 	local Player = QBCore.Functions.GetPlayer(tonumber(source))
 	if Player ~= nil then
 		for command, info in pairs(QBCore.Commands.List) do
-			if (Player.Functions.HasAcePermission("qbcommands."..command)) then
+			if (Player.PlayerData.permission == "god") or (QBCore.Commands.List[command].permission == "moderator" and Player.PlayerData.permission == "admin") or (QBCore.Commands.List[command].permission == Player.PlayerData.permission or Player.Functions.HasAcePermission("qbcommands."..command)) or (QBCore.Commands.List[command].permission == Player.PlayerData.job.name) then
 				TriggerClientEvent('chat:addSuggestion', source, "/"..command, info.help, info.arguments)
 			end
 		end
@@ -40,12 +40,74 @@ QBCore.Commands.Add("tp", "Teleport naar een speler of location", {{name="id/x",
 			TriggerClientEvent('chatMessage', source, "SYSTEM", {255, 0, 0}, "Niet elk argument is ingevuld (x, y, z)")
 		end
 	end
-end)
+end, "moderator")
 
 QBCore.Commands.Add("cash", "Kijk hoeveel geld je bij je hebt", {}, false, function(source, args)
 	TriggerClientEvent('QBCore:Command:ShowMoneyType', source, "cash")
 end)
 
-QBCore.Commands.Add("car", "Spawn een waggie", {}, false, function(source, args)
-	TriggerClientEvent('QBCore:Command:ShowMoneyType', source, "cash")
-end)
+QBCore.Commands.Add("veh", "Spawn een voertuig", {{name="model", help="Model naam van het voertuig"}}, true, function(source, args)
+	TriggerClientEvent('QBCore:Command:SpawnVehicle', source, args[1])
+end, "admin")
+
+QBCore.Commands.Add("dv", "Spawn een voertuig", {}, false, function(source, args)
+	TriggerClientEvent('QBCore:Command:DeleteVehicle', source)
+end, "moderator")
+
+QBCore.Commands.Add("revive", "Revive een speler of jezelf", {{name="id", help="Speler ID (mag leeg zijn)"}}, false, function(source, args)
+	if args[1] ~= nil then
+		local Player = QBCore.Functions.GetPlayer(tonumber(args[1]))
+		if Player ~= nil then
+			TriggerClientEvent('QBCore:Command:Revive', Player.source)
+		else
+			TriggerClientEvent('chatMessage', source, "SYSTEM", {255, 0, 0}, "Speler is niet online!")
+		end
+	else
+		TriggerClientEvent('QBCore:Command:Revive', source)
+	end
+end, "moderator")
+
+QBCore.Commands.Add("givemoney", "Geef geld aan een speler", {{name="id", help="Speler ID"},{name="moneytype", help="Type geld (cash, bank, crypto)"}, {name="amount", help="Aantal munnies"}}, true, function(source, args)
+	local Player = QBCore.Functions.GetPlayer(tonumber(args[1]))
+	if Player ~= nil then
+		Player.Functions.AddMoney(tostring(args[2]), tonumber(args[3]))
+	else
+		TriggerClientEvent('chatMessage', source, "SYSTEM", {255, 0, 0}, "Speler is niet online!")
+	end
+end, "admin")
+
+QBCore.Commands.Add("setmoney", "Zet het geld voor een speler", {{name="id", help="Speler ID"},{name="moneytype", help="Type geld (cash, bank, crypto)"}, {name="amount", help="Aantal munnies"}}, true, function(source, args)
+	local Player = QBCore.Functions.GetPlayer(tonumber(args[1]))
+	if Player ~= nil then
+		Player.Functions.SetMoney(tostring(args[2]), tonumber(args[3]))
+	else
+		TriggerClientEvent('chatMessage', source, "SYSTEM", {255, 0, 0}, "Speler is niet online!")
+	end
+end, "admin")
+
+QBCore.Commands.Add("setjob", "Geef een baan aan een speler", {{name="id", help="Speler ID"}, {name="job", help="Naam van een baan"}, {name="grade", help="Baan grade (start vanaf 1)"}}, true, function(source, args)
+	local Player = QBCore.Functions.GetPlayer(tonumber(args[1]))
+	if Player ~= nil then
+		Player.Functions.SetJob(tostring(args[2]), tonumber(args[3]))
+	else
+		TriggerClientEvent('chatMessage', source, "SYSTEM", {255, 0, 0}, "Speler is niet online!")
+	end
+end, "admin")
+
+QBCore.Commands.Add("setgang", "Geef een gang (groep) aan een speler", {{name="id", help="Speler ID"}, {name="gang", help="Naam van een gang"}, {name="grade", help="Gang grade (start vanaf 1)"}}, true, function(source, args)
+	local Player = QBCore.Functions.GetPlayer(tonumber(args[1]))
+	if Player ~= nil then
+		Player.Functions.SetGang(tostring(args[2]), tonumber(args[3]))
+	else
+		TriggerClientEvent('chatMessage', source, "SYSTEM", {255, 0, 0}, "Speler is niet online!")
+	end
+end, "admin")
+
+QBCore.Commands.Add("setpermission", "Geef een permissie aan een speler", {{name="id", help="Speler ID"}, {name="permission", help="Permissie naam"}}, true, function(source, args)
+	local Player = QBCore.Functions.GetPlayer(tonumber(args[1]))
+	if Player ~= nil then
+		Player.Functions.SetPermission(tostring(args[2]))
+	else
+		TriggerClientEvent('chatMessage', source, "SYSTEM", {255, 0, 0}, "Speler is niet online!")
+	end
+end, "god")
