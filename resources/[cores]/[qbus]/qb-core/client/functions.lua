@@ -71,3 +71,14 @@ QBCore.Functions.GetClosestVehicle = function(coords, radius)
     end
     return 0
 end
+
+QBCore.Functions.Notify = function(text, textype, length) -- [text] = message, [type] = primary | error | success, [length] = time till fadeout.
+    local ttype = textype ~= nil and textype or "primary"
+    local length = length ~= nil and length or 2500
+    SendNUIMessage({
+        action = "show",
+        type = ttype,
+        length = length,
+        text = text,
+    })
+end

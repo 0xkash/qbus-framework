@@ -48,3 +48,10 @@ RegisterNetEvent('QBCore:Player:SetPlayerData')
 AddEventHandler('QBCore:Player:SetPlayerData', function(val)
 	QBCore.PlayerData = val
 end)
+
+RegisterNetEvent('QBCore:Notify')
+AddEventHandler('QBCore:Notify', function(text, type, length)
+	print(text)
+	print(type)
+	QBCore.Functions.Notify(text, type, length)
+end)

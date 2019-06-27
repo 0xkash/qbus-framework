@@ -4,7 +4,7 @@ QBCore.Commands.List = {}
 QBCore.Commands.Add = function(name, help, arguments, argsrequired, callback, persmission) -- [name] = command name (ex. /givemoney), [help] = help text, [arguments] = arguments that need to be passed (ex. {{name="id", help="ID of a player"}, {name="amount", help="amount of money"}}), [argsrequired] = set arguments required (true or false), [callback] = function(source, args) callback, [permission] = rank or job of a player
 	QBCore.Commands.List[name:lower()] = {
 		['name'] = name:lower(),
-		['persmission'] = permission ~= nil and permission:lower() or nil,
+		['persmission'] = permission ~= nil and permission:lower() or "user",
 		['help'] = help,
 		['arguments'] = arguments,
 		['argsrequired'] = argsrequired,
@@ -110,4 +110,8 @@ QBCore.Commands.Add("setpermission", "Geef een permissie aan een speler", {{name
 	else
 		TriggerClientEvent('chatMessage', source, "SYSTEM", {255, 0, 0}, "Speler is niet online!")
 	end
+end, "god")
+
+QBCore.Commands.Add("testnotify", "test notify", {{name="text", help="Speler ID"}}, true, function(source, args)
+	TriggerClientEvent('QBCore:Notify', source, table.concat(args, " "), "success")
 end, "god")
