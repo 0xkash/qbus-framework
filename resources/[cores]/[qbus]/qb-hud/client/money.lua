@@ -5,7 +5,7 @@ Citizen.CreateThread(function()
         Citizen.Wait(200)
     end
 end)
-
+local ShowMoneyHud = false
 Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(0)
@@ -83,6 +83,7 @@ end)
 RegisterNetEvent('QBCore:Command:ShowMoneyType')
 AddEventHandler('QBCore:Command:ShowMoneyType', function(moneytype)
 	if Config.Money.DrawLocations[moneytype].show then
+		ShowMoneyHud = true
 		Config.Money.HUDOn = true
 		Config.Money.DrawLocations[moneytype].alpha = 250
 	end

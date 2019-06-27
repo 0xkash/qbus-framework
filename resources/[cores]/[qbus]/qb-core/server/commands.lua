@@ -112,8 +112,6 @@ QBCore.Commands.Add("setpermission", "Geef een permissie aan een speler", {{name
 	end
 end, "god")
 
-QBCore.Commands.Add("testnotify", "test notify", {{name="text", help="Speler ID"}}, true, function(source, args)
+QBCore.Commands.Add("testnotify", "test notify", {{name="text", help="Tekst enzo"}}, true, function(source, args)
 	TriggerClientEvent('QBCore:Notify', source, table.concat(args, " "), "success")
-	TriggerClientEvent('QBCore:Notify', source, table.concat(args, " "), "error")
-	TriggerClientEvent('QBCore:Notify', source, table.concat(args, " "), "primary")
 end, "god")

@@ -72,7 +72,6 @@ AddEventHandler('chat:init', function()
     local src = source
     if src ~= nil then
         refreshCommands(src)
-        QBCore.Commands.Refresh(src)
     end
 end)
 
@@ -81,6 +80,5 @@ AddEventHandler('onServerResourceStart', function(resName)
 
     for _, player in ipairs(GetPlayers()) do
         refreshCommands(player)
-        QBCore.Commands.Refresh(player)
     end
 end)

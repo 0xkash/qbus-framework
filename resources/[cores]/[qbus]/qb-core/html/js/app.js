@@ -10,7 +10,6 @@ window.addEventListener('message', function (event) {
 });
 
 function ShowNotif(data) {
-    console.log(data);
     var $notification = $('.notification.template').clone();
     $notification.removeClass('template');
     $notification.addClass(data.type);

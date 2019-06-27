@@ -24,6 +24,7 @@ body {
     font: caption;
     font-size: 12px;
     font-weight: bold;
+    float: right;
 }
 
 .success {

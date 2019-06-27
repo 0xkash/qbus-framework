@@ -69,6 +69,7 @@ QBCore.Player.CreatePlayer = function(PlayerData)
 
 	self.Functions.UpdatePlayerData = function()
 		TriggerClientEvent("QBCore:Player:SetPlayerData", self.PlayerData.source, self.PlayerData)
+		QBCore.Commands.Refresh(self.PlayerData.source)
 	end
 
 	self.Functions.SetPermission = function(permission)
@@ -226,10 +227,9 @@ QBCore.Player.CreatePlayer = function(PlayerData)
 	self.Functions.Save = function()
 		QBCore.Player.Save(self.PlayerData.source)
 	end
-
-	self.Functions.UpdatePlayerData()
 	QBCore.Players[self.PlayerData.source] = self
 	QBCore.Player.Save(self.PlayerData.source)
+	self.Functions.UpdatePlayerData()
 end
 
 QBCore.Player.Save = function(source)
