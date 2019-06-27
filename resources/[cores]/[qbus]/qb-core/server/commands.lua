@@ -114,4 +114,6 @@ end, "god")
 
 QBCore.Commands.Add("testnotify", "test notify", {{name="text", help="Speler ID"}}, true, function(source, args)
 	TriggerClientEvent('QBCore:Notify', source, table.concat(args, " "), "success")
+	TriggerClientEvent('QBCore:Notify', source, table.concat(args, " "), "error")
+	TriggerClientEvent('QBCore:Notify', source, table.concat(args, " "), "primary")
 end, "god")

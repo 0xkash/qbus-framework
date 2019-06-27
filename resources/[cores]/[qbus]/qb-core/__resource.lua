@@ -30,6 +30,6 @@ ui_page {
 
 files {
 	'html/ui.html',
-	'html/css/style.css',
+	'html/css/main.css',
 	'html/js/app.js',
 }
