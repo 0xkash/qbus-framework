@@ -50,6 +50,8 @@ QBCore.Player.CheckPlayerData = function(source, PlayerData)
 	PlayerData.gang.grade = PlayerData.gang.grade ~= nil and PlayerData.gang.grade or 1
 	PlayerData.gang.gradelabel = PlayerData.gang.gradelabel ~= nil and PlayerData.gang.gradelabel or "gang"
 
+	PlayerData.position = PlayerData.position ~= nil and PlayerData.position or {x = 197.089, y = -938.380, z = 30.701}
+
 	PlayerData.items = QBCore.Player.LoadInventory(PlayerData)
 	QBCore.Player.CreatePlayer(PlayerData)
 end
@@ -227,6 +229,7 @@ QBCore.Player.CreatePlayer = function(PlayerData)
 	self.Functions.Save = function()
 		QBCore.Player.Save(self.PlayerData.source)
 	end
+	
 	QBCore.Players[self.PlayerData.source] = self
 	QBCore.Player.Save(self.PlayerData.source)
 	self.Functions.UpdatePlayerData()

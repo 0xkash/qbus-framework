@@ -46,8 +46,12 @@ QBCore.Commands.Add("cash", "Kijk hoeveel geld je bij je hebt", {}, false, funct
 	TriggerClientEvent('QBCore:Command:ShowMoneyType', source, "cash")
 end)
 
-QBCore.Commands.Add("veh", "Spawn een voertuig", {{name="model", help="Model naam van het voertuig"}}, true, function(source, args)
+QBCore.Commands.Add("sv", "Spawn een voertuig", {{name="model", help="Model naam van het voertuig"}}, true, function(source, args)
 	TriggerClientEvent('QBCore:Command:SpawnVehicle', source, args[1])
+end, "admin")
+
+QBCore.Commands.Add("debug", "Zet debug mode aan/uit", {}, false, function(source, args)
+	TriggerClientEvent('koil-debug:toggle', source)
 end, "admin")
 
 QBCore.Commands.Add("dv", "Spawn een voertuig", {}, false, function(source, args)
@@ -65,6 +69,10 @@ QBCore.Commands.Add("revive", "Revive een speler of jezelf", {{name="id", help="
 	else
 		TriggerClientEvent('QBCore:Command:Revive', source)
 	end
+end, "moderator")
+
+QBCore.Commands.Add("tpm", "Teleport naar een marker", {}, false, function(source, args)
+	TriggerClientEvent('QBCore:Command:GoToMarker', source)
 end, "moderator")
 
 QBCore.Commands.Add("givemoney", "Geef geld aan een speler", {{name="id", help="Speler ID"},{name="moneytype", help="Type geld (cash, bank, crypto)"}, {name="amount", help="Aantal munnies"}}, true, function(source, args)

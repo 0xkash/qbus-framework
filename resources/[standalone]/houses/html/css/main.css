@@ -1,0 +1,40 @@
+html {
+    overflow: hidden;
+}
+
+p {
+    margin: 0 !important;
+}
+
+#container {
+	width: 80vw;
+}
+
+.decorate-main {
+	position: relative;
+	top: 5vh;
+	display: none;
+}
+
+.decorate-select {
+	float: right;
+}
+
+.object-select-label {
+	font-weight: bold;
+	color: #FFFFFF;
+}
+
+.select-object {
+	border-radius: 0px!important;
+}
+
+.select-object:focus {
+	border: none!important;
+}
+
+.btn-spawnobj {
+	border-radius: 0px!important;
+	color: #FFFFFF;
+	background: #9e1818;
+}

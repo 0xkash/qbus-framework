@@ -10,4 +10,5 @@ client_scripts {
 	"config.lua",
 	"client/ignore.lua",
 	"client/density.lua",
+	"client/weapdraw.lua",
 }

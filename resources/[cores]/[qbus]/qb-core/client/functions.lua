@@ -1,4 +1,5 @@
 QBCore.Functions = {}
+QBCore.RequestId = 0
 
 QBCore.Functions.GetPlayerData = function()
 	return QBCore.PlayerData
@@ -81,4 +82,15 @@ QBCore.Functions.Notify = function(text, textype, length) -- [text] = message, [
         length = length,
         text = text,
     })
+end
+
+QBCore.Functions.TriggerCallback = function(name, cb, ...)
+    QBCore.ServerCallbacks[QBCore.RequestId] = cb()
+    TriggerServerEvent("QBCore:Server:TriggerCallback", name, QBCore.RequestId, ...)
+
+    if QBCore.RequestId < 65545 then
+        QBCore.RequestId = QBCore.RequestId + 1
+    else
+        QBCore.RequestId = 0
+    end
 end

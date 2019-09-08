@@ -6,7 +6,30 @@ AddEventHandler('QBCore:PlayerJoined', function()
 		QBCore.ShowSuccess(GetCurrentResourceName(), GetPlayerName(source).." LOADED!")
 		QBCore.Commands.Refresh(src)
 	end
-	--TriggerClientEvent('QBCore:OnPlayerJoined')
+	TriggerEvent('QBCore:OnPlayerSpawn')
+end)
+
+AddEventHandler('playerDropped', function(reason) 
+	local src = source
+	TriggerClientEvent('QBCore:Player:UpdatePlayerData', src)
+	print("Dropped: "..src.. " - ".. GetPlayerName(src))
+	if reason ~= "Reconnecting" and src > 60000 then return false end
+end)
+
+RegisterServerEvent("QBCore:UpdatePlayer")
+AddEventHandler('QBCore:UpdatePlayer', function(data)
+	local src = source
+	local Player = QBCore.Functions.GetPlayer(src)
+	Player.PlayerData.position = data.position
+	QBCore.Player.Save(src)
+end)
+
+RegisterServerEvent("QBCore:Server:TriggerCallback")
+AddEventHandler('QBCore:Server:TriggerCallback', function(name, requestid, ...)
+	local src = source
+	QBCore.Functions.TriggerCallback(name, requestid, src, function(...)
+		TriggerClientEvent("QBCore:Client:TriggerCallback", src, requestid, ...)
+	end, ...)
 end)
 
 AddEventHandler('chatMessage', function(source, n, message)
@@ -35,4 +58,9 @@ AddEventHandler('chatMessage', function(source, n, message)
 			end
 		end
 	end
+end)
+
+RegisterServerEvent("QBCore:AddCommand")
+AddEventHandler('QBCore:AddCommand', function(name, help, arguments, argsrequired, callback, persmission)
+	QBCore.Commands.Add(name, help, arguments, argsrequired, callback, persmission)
 end)

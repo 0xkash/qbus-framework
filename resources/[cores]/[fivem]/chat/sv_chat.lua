@@ -1,11 +1,3 @@
-QBCore = nil
-Citizen.CreateThread(function()
-    while QBCore == nil do
-        TriggerEvent('QBCore:GetObject', function(core) QBCore = core end)
-        Citizen.Wait(200)
-    end
-end)
-
 RegisterServerEvent('chat:init')
 RegisterServerEvent('chat:addTemplate')
 RegisterServerEvent('chat:addMessage')
@@ -25,6 +17,8 @@ AddEventHandler('_chat:messageEntered', function(author, color, message)
     if not WasEventCanceled() then
         TriggerClientEvent('chatMessage', -1, author,  { 255, 255, 255 }, message)
     end
+
+    print(author .. '^7: ' .. message .. '^7')
 end)
 
 AddEventHandler('__cfx_internal:commandFallback', function(command)
@@ -47,7 +41,6 @@ end)
 AddEventHandler('playerDropped', function(reason)
     --TriggerClientEvent('chatMessage', -1, '', { 255, 255, 255 }, '^2* ' .. GetPlayerName(source) ..' left (' .. reason .. ')')
 end)
-
 -- command suggestions for clients
 local function refreshCommands(player)
     if GetRegisteredCommands then
@@ -69,10 +62,7 @@ local function refreshCommands(player)
 end
 
 AddEventHandler('chat:init', function()
-    local src = source
-    if src ~= nil then
-        refreshCommands(src)
-    end
+    refreshCommands(source)
 end)
 
 AddEventHandler('onServerResourceStart', function(resName)
