@@ -1,59 +1,159 @@
 <html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" type="text/css" href="css/main.css" />
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-</head>
-<body style="background-color: rgba(0,0,0,0); font-family: 'Roboto', sans-serif !important;">
-
-<div id="container">
-    <div id="main-container">
-        <div class="inv-container">
-            <input type="text" id="inv-item-search" name="search" placeholder="Zoeken.." style="margin-left: 0.25vw;margin-bottom:5px;"/>
-            <div class="ply-inventory">
-
-            </div>
-            <div class="inv-inputs">
-                <span class="amount-label">Aantal:</span> <input id="item-amount" type="number" name="amount" placeholder="*" min="1" style="width: 80px;"/>
-                <button class="btn-inv btn-drop">DROP</button>
-                <button class="btn-inv btn-give">GEEF</button>
-                <button class="btn-inv btn-use">GEBRUIK</button>
-                <br />
-                <small class="inv-info"></small>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- Custom CSS -->
+        <link rel="stylesheet" type="text/css" href="css/main.css" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    </head>
+    <body style="background-color: rgba(0,0,0,0); font-family: 'Roboto', sans-serif !important;">
+        <div id="qbus-inventory">
+            <div class="inv-background"></div>
+            <div class="inv-container">
+                <div class="ply-inv-container">
+                    <div class="player-inventory">
+                        <div class="item-slot" data-slot="1">
+                            <div class="item-slot-img"></div>
+                            <div class="item-slot-label">
+                                <span>Item Label 1</span>
+                            </div>
+                        </div>
+                        <div class="item-slot" data-slot="2">
+                            <div class="item-slot-img"></div>
+                            <div class="item-slot-label">
+                                <span>Item Label 2</span>
+                            </div>
+                        </div>
+                        <div class="item-slot" data-slot="3">
+                            <div class="item-slot-img"></div>
+                            <div class="item-slot-label">
+                                <span>Item Label 3</span>
+                            </div>
+                        </div>
+                        <div class="item-slot" data-slot="4">
+                            <div class="item-slot-img"></div>
+                            <div class="item-slot-label">
+                                <span>Item Label 4</span>
+                            </div>
+                        </div>
+                        <div class="item-slot" data-slot="5">
+                            <div class="item-slot-img"></div>
+                            <div class="item-slot-label">
+                                <span>Item Label 5</span>
+                            </div>
+                        </div>
+                        <div class="item-slot" data-slot="6">
+                            <div class="item-slot-img"></div>
+                            <div class="item-slot-label">
+                                <span>Item Label 6</span>
+                            </div>
+                        </div>
+                        <div class="item-slot" data-slot="7">
+                            <div class="item-slot-img"></div>
+                            <div class="item-slot-label">
+                                <span>Item Label 7</span>
+                            </div>
+                        </div>
+                        <div class="item-slot" data-slot="8">
+                            <div class="item-slot-img"></div>
+                            <div class="item-slot-label">
+                                <span>Item Label 8</span>
+                            </div>
+                        </div>
+                        <div class="item-slot" data-slot="9">
+                            <div class="item-slot-img"></div>
+                            <div class="item-slot-label">
+                                <span>Item Label 9</span>
+                            </div>
+                        </div>
+                        <div class="item-slot" data-slot="10">
+                            <div class="item-slot-img"></div>
+                            <div class="item-slot-label">
+                                <span>Item Label 10</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="inv-options">
+                    <ul class="inv-options-list">
+                        <li class="inv-option-item"><input type="text" id="item-amount" class="btn" value="0"></input></li>
+                        <li class="inv-option-item"><button class="btn" id="item-use">GEBRUIK</button></li>
+                        <li class="inv-option-item"><button class="btn" id="item-drop">LEG NEER</button></li>
+                    </ul>
+                </div>
+                <div class="oth-inv-container">
+                    <div class="other-inventory">
+                        <div class="item-slot" data-slot="1">
+                            <div class="item-slot-img"></div>
+                            <div class="item-slot-label">
+                                <span>Item Label 1</span>
+                            </div>
+                        </div>
+                        <div class="item-slot" data-slot="2">
+                            <div class="item-slot-img"></div>
+                            <div class="item-slot-label">
+                                <span>Item Label 2</span>
+                            </div>
+                        </div>
+                        <div class="item-slot" data-slot="3">
+                            <div class="item-slot-img"></div>
+                            <div class="item-slot-label">
+                                <span>Item Label 3</span>
+                            </div>
+                        </div>
+                        <div class="item-slot" data-slot="4">
+                            <div class="item-slot-img"></div>
+                            <div class="item-slot-label">
+                                <span>Item Label 4</span>
+                            </div>
+                        </div>
+                        <div class="item-slot" data-slot="5">
+                            <div class="item-slot-img"></div>
+                            <div class="item-slot-label">
+                                <span>Item Label 5</span>
+                            </div>
+                        </div>
+                        <div class="item-slot" data-slot="6">
+                            <div class="item-slot-img"></div>
+                            <div class="item-slot-label">
+                                <span>Item Label 6</span>
+                            </div>
+                        </div>
+                        <div class="item-slot" data-slot="7">
+                            <div class="item-slot-img"></div>
+                            <div class="item-slot-label">
+                                <span>Item Label 7</span>
+                            </div>
+                        </div>
+                        <div class="item-slot" data-slot="8">
+                            <div class="item-slot-img"></div>
+                            <div class="item-slot-label">
+                                <span>Item Label 8</span>
+                            </div>
+                        </div>
+                        <div class="item-slot" data-slot="9">
+                            <div class="item-slot-img"></div>
+                            <div class="item-slot-label">
+                                <span>Item Label 9</span>
+                            </div>
+                        </div>
+                        <div class="item-slot" data-slot="10">
+                            <div class="item-slot-img"></div>
+                            <div class="item-slot-label">
+                                <span>Item Label 10</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-
-        <div class="switch-button-container">
-            <button class="btn-inv btn-to-ply-inv"><i class="fas fa-arrow-left"></i></button>
-            <button class="btn-inv btn-to-other-inv"><i class="fas fa-arrow-right"></i></button>
-        </div>
-
-        <div class="other-inv-container">
-            <input type="text" id="other-inv-item-search" name="search" placeholder="Zoeken.." style="margin-left: 0.25vw;margin-bottom:5px;"/>
-            <div class="other-inventory">
-
-            </div>
-            <div class="inv-inputs">
-                <span class="amount-label">Aantal:</span> <input id="other-item-amount" type="number" name="amount" placeholder="*" min="1" style="width: 80px;"/>
-                <small class="other-inv-info"></small>
-            </div>
-        </div>
-
-        <div class="iteminfo-box">
-            <div class="iteminfo-item">
-            </div>
-        </div>
-    </div>
-</div>
-<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-<script src="js/app.js" type="text/javascript"></script>
-</body>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <script src="js/app.js" type="text/javascript"></script>
+    </body>
 </html>

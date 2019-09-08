@@ -9,3 +9,4 @@ QBConfig.Money.DontAllowMinus = {'cash', 'crypto'} -- Money that is not allowed 
 
 QBConfig.Player = {}
 QBConfig.Player.MaxWeight = 120000 -- Max weight a player can carry (currently 120kg, written in grams)
+QBConfig.Player.MaxInvSlots = 40 -- Max inventory slots for a player

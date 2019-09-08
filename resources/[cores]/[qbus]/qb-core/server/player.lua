@@ -116,7 +116,7 @@ QBCore.Player.CreatePlayer = function(PlayerData)
 		if self.PlayerData.money[moneytype] ~= nil then
 			self.PlayerData.money[moneytype] = self.PlayerData.money[moneytype]+amount
 			self.Functions.UpdatePlayerData()
-			TriggerClientEvent("QBCore:OnMoneyChange", self.PlayerData.source, moneytype, amount, true)
+			--TriggerClientEvent("QBCore:OnMoneyChange", self.PlayerData.source, moneytype, amount, true)
 			return true
 		end
 		return false
@@ -133,7 +133,7 @@ QBCore.Player.CreatePlayer = function(PlayerData)
 			end
 			self.PlayerData.money[moneytype] = self.PlayerData.money[moneytype] - amount
 			self.Functions.UpdatePlayerData()
-			TriggerClientEvent("QBCore:OnMoneyChange", self.PlayerData.source, moneytype, amount, false)
+			--TriggerClientEvent("QBCore:OnMoneyChange", self.PlayerData.source, moneytype, amount, false)
 			return true
 		end
 		return false
@@ -152,30 +152,25 @@ QBCore.Player.CreatePlayer = function(PlayerData)
 
 	self.Functions.AddItem = function(item, amount, slot)
 		local totalWeight = QBCore.Player.GetTotalWeight(self.PlayerData.items)
-		local itemInfo = {}
-		if item.type == "weapon" then
-			itemInfo = QBCore.Shared.Weapons[item.name:lower()]
-		else
-			itemInfo = QBCore.Shared.Items[item.name:lower()]
-		end
+		local itemInfo = QBCore.Shared.Items[item.name:lower()]
 		local amount = tonumber(amount)
-		if (totalWeight + (itemInfo.weight * amount)) < QBCore.Config.Player.MaxWeight then
-			if slot ~= nil and self.PlayerData.items[slot] ~= nil and self.PlayerData.items[slot].name:lower() == item.name:lower() then
+		if (totalWeight + (itemInfo["weight"] * amount)) < QBCore.Config.Player.MaxWeight then
+			if (slot ~= nil and self.PlayerData.items[slot] ~= nil) and (self.PlayerData.items[slot].name:lower() == item.name:lower()) and (itemInfo["type"] == "item") then
 				self.PlayerData.items[slot].amount = self.PlayerData.items[slot].amount + amount
 				self.Functions.UpdatePlayerData()
-				TriggerClientEvent('QBCore:Notify', self.PlayerData.source, itemInfo.label.. " toegevoegd!", "success")
+				TriggerClientEvent('QBCore:Notify', self.PlayerData.source, itemInfo["label"].. " toegevoegd!", "success")
 				return true
-			elseif slot ~= nil and self.PlayerData.items[slot] == nil then
-				self.PlayerData.items[slot] = {name = itemInfo.name, amount = amount, info = item.info ~= nil and item.info or "", label = itemInfo.label, description = itemInfo.description ~= nil and itemInfo.description or "", weight = itemInfo.weight}
+			elseif (slot ~= nil and self.PlayerData.items[slot] == nil) and (itemInfo["type"] == "item") then
+				self.PlayerData.items[slot] = {name = itemInfo["name"], amount = amount, info = item.info ~= nil and item.info or "", label = itemInfo["label"], description = itemInfo["description"] ~= nil and itemInfo["description"] or "", weight = itemInfo["weight"]}
 				self.Functions.UpdatePlayerData()
-				TriggerClientEvent('QBCore:Notify', self.PlayerData.source, itemInfo.label.. " toegevoegd!", "success")
+				TriggerClientEvent('QBCore:Notify', self.PlayerData.source, itemInfo["label"].. " toegevoegd!", "success")
 				return true
-			elseif slot == nil then
+			elseif (slot == nil) or (itemInfo["type"] == "weapon") then
 				for i = 1, QBConfig.Player.MaxInvSlots, 1 do
 					if self.PlayerData.items[i] == nil then
-						self.PlayerData.items[i] = {name = itemInfo.name, amount = amount, info = item.info ~= nil and item.info or "", label = itemInfo.label, description = itemInfo.description ~= nil and itemInfo.description or "", weight = itemInfo.weight}
+						self.PlayerData.items[i] = {name = itemInfo["name"], amount = amount, info = item.info ~= nil and item.info or "", label = itemInfo["label"], description = itemInfo["description"] ~= nil and itemInfo["description"] or "", weight = itemInfo["weight"]}
 						self.Functions.UpdatePlayerData()
-						TriggerClientEvent('QBCore:Notify', self.PlayerData.source, itemInfo.label.. " toegevoegd!", "success")
+						TriggerClientEvent('QBCore:Notify', self.PlayerData.source, itemInfo["label"].. " toegevoegd!", "success")
 						return true
 					end
 				end
@@ -185,39 +180,34 @@ QBCore.Player.CreatePlayer = function(PlayerData)
 	end
 
 	self.Functions.RemoveItem = function(item, amount, slot)
-		local itemInfo = {}
-		if item.type == "weapon" then
-			itemInfo = QBCore.Shared.Weapons[item.name:lower()]
-		else
-			itemInfo = QBCore.Shared.Items[item.name:lower()]
-		end
+		local itemInfo = QBCore.Shared.Items[item.name:lower()]
 		local amount = tonumber(amount)
 		if slot ~= nil then
 			if self.PlayerData.items[slot].amount > amount then
 				self.PlayerData.items[slot].amount = self.PlayerData.items[slot].amount - amount
 				self.Functions.UpdatePlayerData()
-				TriggerClientEvent('QBCore:Notify', self.PlayerData.source, itemInfo.label.. " verwijderd!", "error")
+				TriggerClientEvent('QBCore:Notify', self.PlayerData.source, itemInfo["label"].. " verwijderd!", "error")
 				return true
 			else
 				self.PlayerData.items[slot] = nil
 				self.Functions.UpdatePlayerData()
-				TriggerClientEvent('QBCore:Notify', self.PlayerData.source, itemInfo.label.. " verwijderd!", "error")
+				TriggerClientEvent('QBCore:Notify', self.PlayerData.source, itemInfo["label"].. " verwijderd!", "error")
 				return true
 			end
 		else
-			local slots = QBCore.Player.GetSlotByItem(item.name)
+			local slots = QBCore.Player.GetSlotsByItem(item.name)
 			local amountToRemove = amount
 			if slots ~= nil then
 				for _, slot in pairs(slots) do
 					if self.PlayerData.items[slot].amount > amountToRemove then
 						self.PlayerData.items[slot].amount = self.PlayerData.items[slot].amount - amountToRemove
 						self.Functions.UpdatePlayerData()
-						TriggerClientEvent('QBCore:Notify', self.PlayerData.source, itemInfo.label.. " verwijderd!", "error")
+						TriggerClientEvent('QBCore:Notify', self.PlayerData.source, itemInfo["label"].. " verwijderd!", "error")
 						return true
 					elseif self.PlayerData.items[slot].amount == amountToRemove then
 						self.PlayerData.items[slot] = nil
 						self.Functions.UpdatePlayerData()
-						TriggerClientEvent('QBCore:Notify', self.PlayerData.source, itemInfo.label.. " verwijderd!", "error")
+						TriggerClientEvent('QBCore:Notify', self.PlayerData.source, itemInfo["label"].. " verwijderd!", "error")
 						return true
 					end
 				end
@@ -257,13 +247,8 @@ QBCore.Player.LoadInventory = function(PlayerData)
 	QBCore.Functions.ExecuteSql("SELECT * FROM `playeritems` WHERE `citizenid` = '"..PlayerData.citizenid.."'", function(result)
 		if result ~= nil then
 			for _, item in pairs(result) do
-				local itemInfo = {}
-				if item.type == "weapon" then
-					itemInfo = QBCore.Shared.Weapons[item.name:lower()]
-				else
-					itemInfo = QBCore.Shared.Items[item.name:lower()]
-				end
-				inventory[item.slot] = {name = item.name, amount = item.amount, info = item.info ~= nil and item.info or "", label = itemInfo.label, description = itemInfo.description ~= nil and itemInfo.description or "", weight = itemInfo.weight, type = item.type}
+				local itemInfo = QBCore.Shared.Items[item.name:lower()]
+				inventory[item.slot] = {name = itemInfo["name"], amount = item.amount, info = item.info ~= nil and item.info or "", label = itemInfo["label"], description = itemInfo["description"] ~= nil and itemInfo["description"] or "", weight = itemInfo["weight"], type = itemInfo["type"], unique = itemInfo["unique"], useable = itemInfo["useable"]}
 			end
 		end
 	end)
@@ -291,7 +276,7 @@ QBCore.Player.GetTotalWeight = function(items)
 	end
 end
 
-QBCore.Player.GetSlotByItem = function(items, itemName)
+QBCore.Player.GetSlotsByItem = function(items, itemName)
 	local slotsFound = {}
 	if items ~= nil then
 		for slot, item in pairs(items) do
