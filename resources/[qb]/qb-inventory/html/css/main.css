@@ -13,10 +13,8 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 ::-webkit-scrollbar {
-    width: 0.1vw;
+    width: 0.3vw;
     border-radius: 5px;
-    
-    margin-left:0;
 }
 
 /* Track */
@@ -54,6 +52,8 @@ input[type=number]::-webkit-outer-spin-button {
     margin-left: -40vw;
     width: 80vw;
     height: 60vh;
+    max-width: 80vw;
+    max-height: 60vh;
     overflow: hidden;
 }
 
@@ -65,7 +65,8 @@ input[type=number]::-webkit-outer-spin-button {
     background: rgba(25,25,25,0.7);
     float: left;
     margin-right: 2%;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .oth-inv-container {
@@ -76,7 +77,8 @@ input[type=number]::-webkit-outer-spin-button {
     background: rgba(25,25,25,0.7);
     float: left;
     margin-left: 2%;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;;
 }
 
 .inv-options {
@@ -88,8 +90,8 @@ input[type=number]::-webkit-outer-spin-button {
 
 .item-slot {
     position: relative;
-    width: 20%;
-    height: 22%;
+    width: 131px;
+    height: 142px;
     background: rgba(20,20,20,0.5);
     border: 1px solid rgba(255, 255, 255, 0.05);
     display: inline-block;
@@ -142,3 +144,7 @@ input[type=number]::-webkit-outer-spin-button {
     max-width: 100%;
     max-height: 100%;
 }
+
+.ui-draggable-dragging {
+    background: rgba(20,20,20,0.7);
+  }

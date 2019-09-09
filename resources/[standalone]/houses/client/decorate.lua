@@ -138,6 +138,7 @@ function DisableEditMode()
 	SaveDecorations()
 	SetEntityVisible(GetPlayerPed(-1), true)
 	SetDefaultCamera()
+	EnableAllControlActions(0)
 	ObjectList = nil
 	SelectedObj = nil
 	peanut = false
