@@ -20,4 +20,6 @@ files {
 	'html/ui.html',
 	'html/css/main.css',
 	'html/js/app.js',
+	'html/images/placeholder.png',
+	'html/images/tosti.png',
 }

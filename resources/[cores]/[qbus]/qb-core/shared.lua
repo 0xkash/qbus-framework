@@ -121,9 +121,9 @@ QBShared.Items = {
 	-- // ITEMS //
 	[79] 	= {["name"] = "id_card", 			 	  	  ["label"] = "Identiteitskaart", 		["weight"] = 1000, 		["type"] = "item", 		["image"] = "placeholder.png", 		["unique"] = true, 		["useable"] = true, 	["description"] = "This is a placeholder description"},
 	[80] 	= {["name"] = "driver_license", 			  ["label"] = "Rijbewijs", 				["weight"] = 1000, 		["type"] = "item", 		["image"] = "placeholder.png", 		["unique"] = true, 		["useable"] = true, 	["description"] = "This is a placeholder description"},
-	[81] 	= {["name"] = "tosti", 			 	  	  	  ["label"] = "Tosti", 					["weight"] = 1000, 		["type"] = "item", 		["image"] = "placeholder.png", 		["unique"] = false, 	["useable"] = true, 	["description"] = "This is a placeholder description"},
+	[81] 	= {["name"] = "tosti", 			 	  	  	  ["label"] = "Tosti", 					["weight"] = 1000, 		["type"] = "item", 		["image"] = "tosti.png", 			["unique"] = false, 	["useable"] = true, 	["description"] = "This is a placeholder description"},
 	[82] 	= {["name"] = "water_bottle", 			  	  ["label"] = "Flesje water 500ml", 	["weight"] = 500, 		["type"] = "item", 		["image"] = "placeholder.png", 		["unique"] = false, 	["useable"] = true, 	["description"] = "This is a placeholder description"},
-	[83] 	= {["name"] = "weed_joint", 			  	  ["label"] = "Joint", 					["weight"] = 1000, 		["type"] = "item", 		["image"] = "placeholder.png", 		["unique"] = false, 	["useable"] = true, 	["description"] = "This is a placeholder description"},
+	[83] 	= {["name"] = "joint", 			  	  		  ["label"] = "Joint", 					["weight"] = 1000, 		["type"] = "item", 		["image"] = "placeholder.png", 		["unique"] = false, 	["useable"] = true, 	["description"] = "This is a placeholder description"},
 	[84] 	= {["name"] = "plastic", 			  	  	  ["label"] = "Plastic", 				["weight"] = 1000, 		["type"] = "item", 		["image"] = "placeholder.png", 		["unique"] = false, 	["useable"] = false, 	["description"] = "This is a placeholder description"},
 	[85] 	= {["name"] = "metalscrap", 			  	  ["label"] = "Metaalschoot", 			["weight"] = 1000, 		["type"] = "item", 		["image"] = "placeholder.png", 		["unique"] = false, 	["useable"] = false, 	["description"] = "This is a placeholder description"},
 }

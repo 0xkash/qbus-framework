@@ -11,4 +11,5 @@ client_scripts {
 	"client/ignore.lua",
 	"client/density.lua",
 	"client/weapdraw.lua",
+	"client/hudcomponents.lua",
 }

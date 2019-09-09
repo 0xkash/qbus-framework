@@ -161,14 +161,14 @@ QBCore.Player.CreatePlayer = function(PlayerData)
 				TriggerClientEvent('QBCore:Notify', self.PlayerData.source, itemInfo["label"].. " toegevoegd!", "success")
 				return true
 			elseif (slot ~= nil and self.PlayerData.items[slot] == nil) and (itemInfo["type"] == "item") then
-				self.PlayerData.items[slot] = {name = itemInfo["name"], amount = amount, info = item.info ~= nil and item.info or "", label = itemInfo["label"], description = itemInfo["description"] ~= nil and itemInfo["description"] or "", weight = itemInfo["weight"]}
+				self.PlayerData.items[slot] = {name = itemInfo["name"], amount = amount, info = item.info ~= nil and item.info or "", label = itemInfo["label"], description = itemInfo["description"] ~= nil and itemInfo["description"] or "", weight = itemInfo["weight"], image = itemInfo["image"]}
 				self.Functions.UpdatePlayerData()
 				TriggerClientEvent('QBCore:Notify', self.PlayerData.source, itemInfo["label"].. " toegevoegd!", "success")
 				return true
 			elseif (slot == nil) or (itemInfo["type"] == "weapon") then
 				for i = 1, QBConfig.Player.MaxInvSlots, 1 do
 					if self.PlayerData.items[i] == nil then
-						self.PlayerData.items[i] = {name = itemInfo["name"], amount = amount, info = item.info ~= nil and item.info or "", label = itemInfo["label"], description = itemInfo["description"] ~= nil and itemInfo["description"] or "", weight = itemInfo["weight"]}
+						self.PlayerData.items[i] = {name = itemInfo["name"], amount = amount, info = item.info ~= nil and item.info or "", label = itemInfo["label"], description = itemInfo["description"] ~= nil and itemInfo["description"] or "", weight = itemInfo["weight"], image = itemInfo["image"]}
 						self.Functions.UpdatePlayerData()
 						TriggerClientEvent('QBCore:Notify', self.PlayerData.source, itemInfo["label"].. " toegevoegd!", "success")
 						return true
@@ -248,7 +248,7 @@ QBCore.Player.LoadInventory = function(PlayerData)
 		if result ~= nil then
 			for _, item in pairs(result) do
 				local itemInfo = QBCore.Shared.Items[item.name:lower()]
-				inventory[item.slot] = {name = itemInfo["name"], amount = item.amount, info = item.info ~= nil and item.info or "", label = itemInfo["label"], description = itemInfo["description"] ~= nil and itemInfo["description"] or "", weight = itemInfo["weight"], type = itemInfo["type"], unique = itemInfo["unique"], useable = itemInfo["useable"]}
+				inventory[item.slot] = {name = itemInfo["name"], amount = item.amount, info = item.info ~= nil and item.info or "", label = itemInfo["label"], description = itemInfo["description"] ~= nil and itemInfo["description"] or "", weight = itemInfo["weight"], type = itemInfo["type"], unique = itemInfo["unique"], useable = itemInfo["useable"], image = itemInfo["image"]}
 			end
 		end
 	end)
