@@ -4,6 +4,7 @@ Citizen.CreateThread(function()
 		if NetworkIsSessionStarted() then
 			Citizen.Wait(10)
 			TriggerServerEvent('QBCore:PlayerJoined')
+			SetManualShutdownLoadingScreenNui(true)
 			exports.spawnmanager:setAutoSpawn(false)
 			return
 		end

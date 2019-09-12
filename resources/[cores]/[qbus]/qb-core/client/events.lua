@@ -66,7 +66,6 @@ AddEventHandler('QBCore:Command:GoToMarker', function()
 		end
 
 		if blipFound then
-			--ShowLoadingPromt("Loading")
 			DoScreenFadeOut(250)
 			while IsScreenFadedOut() do
 				Citizen.Wait(250)
@@ -119,7 +118,7 @@ end)
 RegisterNetEvent('QBCore:Player:UpdatePlayerData')
 AddEventHandler('QBCore:Player:UpdatePlayerData', function()
 	local data = {}
-	data.position = GetEntityCoords(GetPlayerPed(-1))
+	data.position = QBCore.Functions.GetCoords(GetPlayerPed(-1))
 	TriggerServerEvent('QBCore:UpdatePlayer', data)
 end)
 
@@ -132,4 +131,14 @@ RegisterNetEvent('QBCore:Client:TriggerCallback')
 AddEventHandler('QBCore:Client:TriggerCallback', function(requestid, ...)
 	QBCore.ServerCallbacks[requestid](...)
 	QBCore.ServerCallbacks[requestid] = nil
+end)
+
+RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
+AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+	ShutdownLoadingScreenNui()
+	QBCore.Functions.GetPlayerData(function(PlayerData)
+		SetEntityCoords(GetPlayerPed(-1), PlayerData.position.x, PlayerData.position.y, PlayerData.position.z)
+		SetEntityHeading(GetPlayerPed(-1), PlayerData.position.a)
+		FreezeEntityPosition(GetPlayerPed(-1), false)
+	end)
 end)

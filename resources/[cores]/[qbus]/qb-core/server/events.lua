@@ -6,22 +6,27 @@ AddEventHandler('QBCore:PlayerJoined', function()
 		QBCore.ShowSuccess(GetCurrentResourceName(), GetPlayerName(source).." LOADED!")
 		QBCore.Commands.Refresh(src)
 	end
-	TriggerEvent('QBCore:OnPlayerSpawn')
+	TriggerEvent('QBCore:Server:OnPlayerLoaded')
+	TriggerClientEvent('QBCore:Client:OnPlayerLoaded', src)
 end)
 
 AddEventHandler('playerDropped', function(reason) 
 	local src = source
-	TriggerClientEvent('QBCore:Player:UpdatePlayerData', src)
-	print("Dropped: "..src.. " - ".. GetPlayerName(src))
+	print("Dropped: "..GetPlayerName(src))
 	if reason ~= "Reconnecting" and src > 60000 then return false end
+	if(src==nil or (QBCore.Players[src] == nil)) then return false end
+	QBCore.Players[src].Functions.Save()
+	QBCore.Players[src] = nil
 end)
 
 RegisterServerEvent("QBCore:UpdatePlayer")
 AddEventHandler('QBCore:UpdatePlayer', function(data)
 	local src = source
 	local Player = QBCore.Functions.GetPlayer(src)
-	Player.PlayerData.position = data.position
-	QBCore.Player.Save(src)
+	if Player ~= nil then
+		Player.PlayerData.position = data.position
+		QBCore.Player.Save(src)
+	end
 end)
 
 RegisterServerEvent("QBCore:Server:TriggerCallback")

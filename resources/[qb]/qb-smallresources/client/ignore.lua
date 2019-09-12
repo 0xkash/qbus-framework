@@ -9,7 +9,7 @@ Citizen.CreateThread(function()
         --Display vehicle Rewards
         DisablePlayerVehicleRewards(PlayerPed)
         -- Disable Wanted level
-		for i = 1, 12 do
+		for i = 1, 20 do
 			EnableDispatchService(i, false)
 		end
     end

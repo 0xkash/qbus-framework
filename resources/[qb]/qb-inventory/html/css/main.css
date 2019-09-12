@@ -1,5 +1,6 @@
 html {
     overflow: hidden;
+    
 }
 
 p {
@@ -57,28 +58,36 @@ input[type=number]::-webkit-outer-spin-button {
     overflow: hidden;
 }
 
-.ply-inv-container {
+.player-inventory {
+    background: rgba(25,25,25,0.7);
+    overflow-y: auto;
+    overflow-x: hidden;
     width: 43%;
     max-width: 43%;
     height: 100%;
     max-height: 100%;
-    background: rgba(25,25,25,0.7);
     float: left;
     margin-right: 2%;
+}
+
+.other-inventory {
+    background: rgba(25,25,25,0.7);
     overflow-y: auto;
     overflow-x: hidden;
+    width: 43%;
+    max-width: 43%;
+    height: 100%;
+    max-height: 100%;
+    float: left;
+    margin-left: 2%;
+}
+
+.ply-inv-container {
+    
 }
 
 .oth-inv-container {
-    width: 43%;
-    max-width: 43%;
-    height: 100%;
-    max-height: 100%;
-    background: rgba(25,25,25,0.7);
-    float: left;
-    margin-left: 2%;
-    overflow-y: auto;
-    overflow-x: hidden;;
+    
 }
 
 .inv-options {
@@ -115,6 +124,18 @@ input[type=number]::-webkit-outer-spin-button {
     color: #ffffff;
 }
 
+.item-slot-amount {
+    position: absolute;
+    top:0.3vh;
+    right: 0.3vw;
+}
+
+.item-slot-amount p {
+    color: #ffffff;
+    text-align: right;
+    font-size: 10px;
+}
+
 .item-slot-label {
     position: absolute;
     bottom:0;
@@ -147,4 +168,29 @@ input[type=number]::-webkit-outer-spin-button {
 
 .ui-draggable-dragging {
     background: rgba(20,20,20,0.7);
-  }
+}
+
+.player-inv-info {
+    position: absolute;
+    left: 10%;
+    top: 17.5%;
+}
+
+.player-inv-info p {
+    color: #ffffff;
+    margin:0;
+    font-size: 14px;
+}
+
+.other-inv-info {
+    position: absolute;
+    right: 10%;
+    top: 17.5%;
+}
+
+.other-inv-info p {
+    color: #ffffff;
+    margin: 0;
+    font-size: 14px;
+}
+

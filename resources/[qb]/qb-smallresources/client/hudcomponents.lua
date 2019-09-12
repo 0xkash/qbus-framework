@@ -41,6 +41,5 @@ Citizen.CreateThread(function()
         HideHudComponentThisFrame(20)
         HideHudComponentThisFrame(21)
         HideHudComponentThisFrame(22)
-        DisableControlAction(0, 37, false) -- Tab
 	end
 end) 

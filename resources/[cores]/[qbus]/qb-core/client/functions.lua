@@ -1,8 +1,12 @@
 QBCore.Functions = {}
 QBCore.RequestId = 0
 
-QBCore.Functions.GetPlayerData = function()
-	return QBCore.PlayerData
+QBCore.Functions.GetPlayerData = function(cb)
+    if cb ~= nil then
+        cb(QBCore.PlayerData)
+    else
+        return QBCore.PlayerData
+    end
 end
 
 QBCore.Functions.DrawText = function(x, y, width, height, scale, r, g, b, a, text)
