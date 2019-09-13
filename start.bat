@@ -1,1 +1,0 @@
-D:\Development\Qbus\SERVER\FXServer\run.cmd +exec server.cfg
