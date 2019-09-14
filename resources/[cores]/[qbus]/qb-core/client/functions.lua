@@ -89,7 +89,7 @@ QBCore.Functions.Notify = function(text, textype, length) -- [text] = message, [
 end
 
 QBCore.Functions.TriggerCallback = function(name, cb, ...)
-    QBCore.ServerCallbacks[QBCore.RequestId] = cb()
+    QBCore.ServerCallbacks[QBCore.RequestId] = cb
     TriggerServerEvent("QBCore:Server:TriggerCallback", name, QBCore.RequestId, ...)
 
     if QBCore.RequestId < 65545 then

@@ -133,6 +133,11 @@ AddEventHandler('QBCore:Client:TriggerCallback', function(requestid, ...)
 	QBCore.ServerCallbacks[requestid] = nil
 end)
 
+RegisterNetEvent("QBCore:Client:UseItem")
+AddEventHandler('QBCore:Client:UseItem', function(item)
+	TriggerServerEvent("QBCore:Server:UseItem", item)
+end)
+
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
 	ShutdownLoadingScreenNui()

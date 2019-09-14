@@ -2,6 +2,7 @@ QBCore = {}
 QBCore.Config = QBConfig
 QBCore.Shared = QBShared
 QBCore.ServerCallbacks = {}
+QBCore.UseableItems = {}
 
 function GetCoreObject()
 	return QBCore

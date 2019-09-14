@@ -37,6 +37,18 @@ AddEventHandler('QBCore:Server:TriggerCallback', function(name, requestid, ...)
 	end, ...)
 end)
 
+RegisterServerEvent("QBCore:Server:UseItem")
+AddEventHandler('QBCore:Server:UseItem', function(item)
+	local src = source
+	local Player = QBCore.Functions.GetPlayer(src)
+	local itemData = Player.Functions.GetItemByName(item)
+	if itemData ~= nil and itemData.amount > 0 then
+		if QBCore.Functions.CanUseItem(itemData.name) then
+			QBCore.Functions.UseItem(src, itemData.name)
+		end
+	end
+end)
+
 AddEventHandler('chatMessage', function(source, n, message)
 	if string.sub(message, 1, 1) == "/" then
 		local args = QBCore.Shared.SplitStr(message, " ")

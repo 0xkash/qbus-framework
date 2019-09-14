@@ -52,7 +52,7 @@ QBCore.Functions.GetPlayers = function()
 end
 
 QBCore.Functions.CreateCallback = function(name, cb)
-	QBCore.ServerCallbacks[name] = cb()
+	QBCore.ServerCallbacks[name] = cb
 end
 
 QBCore.Functions.TriggerCallback = function(name, requestid, source, cb, ...)
@@ -60,3 +60,16 @@ QBCore.Functions.TriggerCallback = function(name, requestid, source, cb, ...)
 		QBCore.ServerCallbacks[name](source, cb, ...)
 	end
 end
+
+QBCore.Functions.CreateUseableItem = function(item, cb)
+	QBCore.UseableItems[item] = cb
+end
+
+QBCore.Functions.CanUseItem = function(item)
+	return QBCore.UseableItems[item] ~= nil
+end
+
+QBCore.Functions.UseItem = function(source, item)
+	QBCore.UseableItems[item](source)
+end
+

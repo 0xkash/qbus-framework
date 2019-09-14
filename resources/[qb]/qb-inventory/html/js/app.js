@@ -9,27 +9,51 @@ $(document).on('keydown', function() {
 function handleDragDrop() {
     $(".item-drag").draggable({
         helper: "clone",
+        scroll: false,
         appendTo: "body",
         revertDuration: 0,
         zIndex: 99999,
         revert: "invalid",
         cancel: ".item-nodrag",
         start: function(event, ui) {
-            $(this).css("background", "rgba(20,20,20,1.0)");
+           // $(this).css("background", "rgba(20,20,20,1.0)");
             $(this).find("img").css("filter", "brightness(50%)");
             var itemData = $(this).data("item");
-            var dragAmount = $("#item-amount").val()
+            var dragAmount = $("#item-amount").val();
+            if (!itemData.useable) {
+                $("#item-use").css("background", "rgba(35,35,35, 0.5");
+            }
+
             if ( dragAmount == 0) {
                 $(this).find(".item-slot-amount p").html('0 (0.0)');
                 $(".ui-draggable-dragging").find(".item-slot-amount p").html(itemData.amount + ' (' + ((itemData.weight * itemData.amount) / 1000).toFixed(1) + ')');
-            } else {
+                if ($(this).parent().attr("data-inventory") == "hotbar") {
+                    $(".ui-draggable-dragging").find(".item-slot-key").remove();
+                }
+            } else if(dragAmount > itemData.amount) {
+                $(this).find(".item-slot-amount p").html(itemData.amount + ' (' + ((itemData.weight * itemData.amount) / 1000).toFixed(1) + ')');
+                if ($(this).parent().attr("data-inventory") == "hotbar") {
+                    $(".ui-draggable-dragging").find(".item-slot-key").remove();
+                }
+                InventoryError($(this).parent(), $(this).attr("data-slot"));
+            } else if(dragAmount > 0) {
                 $(this).find(".item-slot-amount p").html((itemData.amount - dragAmount) + ' (' + ((itemData.weight * (itemData.amount - dragAmount)) / 1000).toFixed(1) + ')');
                 $(".ui-draggable-dragging").find(".item-slot-amount p").html(dragAmount + ' (' + ((itemData.weight * dragAmount) / 1000).toFixed(1) + ')');
+                if ($(this).parent().attr("data-inventory") == "hotbar") {
+                    $(".ui-draggable-dragging").find(".item-slot-key").remove();
+                }
+            } else {
+                if ($(this).parent().attr("data-inventory") == "hotbar") {
+                    $(".ui-draggable-dragging").find(".item-slot-key").remove();
+                }
+                $(this).find(".item-slot-amount p").html(itemData.amount + ' (' + ((itemData.weight * itemData.amount) / 1000).toFixed(1) + ')');
+                InventoryError($(this).parent(), $(this).attr("data-slot"));
             }
         },
         stop: function() {
-            $(this).css("background", "rgba(20,20,20,0.5)");
+            //$(this).css("background", "rgba(20,20,20,0.5)");
             $(this).find("img").css("filter", "brightness(100%)");
+            $("#item-use").css("background", "rgba(20,20,20, 0.5");
         },
     });
 
@@ -44,18 +68,33 @@ function handleDragDrop() {
             if (fromSlot == toSlot && fromInventory == toInventory) {
                 return;
             }
-
-            swap(fromSlot, toSlot, fromInventory, toInventory, toAmount);
+            if (toAmount >= 0) {
+                swap(fromSlot, toSlot, fromInventory, toInventory, toAmount);
+            }
         },
     });
+
+    $("#item-use").droppable({
+        drop: function(event, ui) {
+            fromData = ui.draggable.data("item");
+            fromInventory = ui.draggable.parent().attr("data-inventory");
+            $(this).css("background", "rgba(35,35,35, 0.7");
+            if(fromData.useable) {
+                $.post("http://qb-inventory/UseItem", JSON.stringify({
+                    inventory: fromInventory,
+                    item: fromData,
+                }));
+            }
+        }
+    })
 }
 
 function swap($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
     fromData = $fromInv.find("[data-slot=" + $fromSlot + "]").data("item");
     toData = $toInv.find("[data-slot=" + $toSlot + "]").data("item");
-    if ($toAmount == 0) {$toAmount=fromData.amount}
     if (fromData !== undefined && fromData.amount >= $toAmount) {
-        if((toData != undefined || toData != null) && toData.name == fromData.name) {
+        if ($toAmount == 0) {$toAmount=fromData.amount}
+        if((toData != undefined || toData != null) && toData.name == fromData.name && !fromData.unique) {
             var newData = [];
             newData.name = toData.name;
             newData.label = toData.label;
@@ -74,9 +113,13 @@ function swap($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
     
                 $toInv.find("[data-slot=" + $toSlot + "]").addClass("item-drag");
                 $toInv.find("[data-slot=" + $toSlot + "]").removeClass("item-nodrag");
-    
-                $toInv.find("[data-slot=" + $toSlot + "]").html('<div class="item-slot-img"><img src="images/' + newData.image + '" alt="' + newData.name + '" /></div><div class="item-slot-amount"><p>' + newData.amount + ' (' + ((newData.weight * newData.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + newData.label + '</p></div>');
-            
+
+                if ($toInv.attr("data-inventory") == "hotbar") {
+                    $toInv.find("[data-slot=" + $toSlot + "]").html('<div class="item-slot-key"><p>[' + $toSlot + ']</p></div><div class="item-slot-img"><img src="images/' + newData.image + '" alt="' + newData.name + '" /></div><div class="item-slot-amount"><p>' + newData.amount + ' (' + ((newData.weight * newData.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + newData.label + '</p></div>');
+                } else {
+                    $toInv.find("[data-slot=" + $toSlot + "]").html('<div class="item-slot-img"><img src="images/' + newData.image + '" alt="' + newData.name + '" /></div><div class="item-slot-amount"><p>' + newData.amount + ' (' + ((newData.weight * newData.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + newData.label + '</p></div>');
+                }
+
                 $fromInv.find("[data-slot=" + $fromSlot + "]").removeClass("item-drag");
                 $fromInv.find("[data-slot=" + $fromSlot + "]").addClass("item-nodrag");
 
@@ -100,17 +143,33 @@ function swap($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
     
                 $toInv.find("[data-slot=" + $toSlot + "]").addClass("item-drag");
                 $toInv.find("[data-slot=" + $toSlot + "]").removeClass("item-nodrag");
-    
-                $toInv.find("[data-slot=" + $toSlot + "]").html('<div class="item-slot-img"><img src="images/' + newData.image + '" alt="' + newData.name + '" /></div><div class="item-slot-amount"><p>' + newData.amount + ' (' + ((newData.weight * newData.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + newData.label + '</p></div>');
+                
+                if ($toInv.attr("data-inventory") == "hotbar") {
+                    $toInv.find("[data-slot=" + $toSlot + "]").html('<div class="item-slot-key"><p>[' + $toSlot + ']</p></div><div class="item-slot-img"><img src="images/' + newData.image + '" alt="' + newData.name + '" /></div><div class="item-slot-amount"><p>' + newData.amount + ' (' + ((newData.weight * newData.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + newData.label + '</p></div>');
+                } else {
+                    $toInv.find("[data-slot=" + $toSlot + "]").html('<div class="item-slot-img"><img src="images/' + newData.image + '" alt="' + newData.name + '" /></div><div class="item-slot-amount"><p>' + newData.amount + ' (' + ((newData.weight * newData.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + newData.label + '</p></div>');
+                }
+                
                 // From Data zooi
                 $fromInv.find("[data-slot=" + $fromSlot + "]").data("item", newDataFrom);
     
                 $fromInv.find("[data-slot=" + $fromSlot + "]").addClass("item-drag");
                 $fromInv.find("[data-slot=" + $fromSlot + "]").removeClass("item-nodrag");
-    
-                $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-img"><img src="images/' + newDataFrom.image + '" alt="' + newDataFrom.name + '" /></div><div class="item-slot-amount"><p>' + newDataFrom.amount + ' (' + ((newDataFrom.weight * newDataFrom.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + newDataFrom.label + '</p></div>');
-            
+
+                if ($fromInv.attr("data-inventory") == "hotbar") {
+                    $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-key"><p>[' + $fromSlot + ']</p></div><div class="item-slot-img"><img src="images/' + newDataFrom.image + '" alt="' + newDataFrom.name + '" /></div><div class="item-slot-amount"><p>' + newDataFrom.amount + ' (' + ((newDataFrom.weight * newDataFrom.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + newDataFrom.label + '</p></div>');
+                } else {
+                    $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-img"><img src="images/' + newDataFrom.image + '" alt="' + newDataFrom.name + '" /></div><div class="item-slot-amount"><p>' + newDataFrom.amount + ' (' + ((newDataFrom.weight * newDataFrom.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + newDataFrom.label + '</p></div>');
+                }    
             }
+            $.post("http://qb-inventory/PlayDropSound", JSON.stringify({}));
+            $.post("http://qb-inventory/SetInventoryData", JSON.stringify({
+                fromInventory: $fromInv.attr("data-inventory"),
+                toInventory: $toInv.attr("data-inventory"),
+                fromSlot: $fromSlot,
+                toSlot: $toSlot,
+                fromAmount: $toAmount,
+            }));
         } else {
             if (fromData.amount == $toAmount) {
                 fromData.slot = parseInt($toSlot);
@@ -119,8 +178,14 @@ function swap($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
     
                 $toInv.find("[data-slot=" + $toSlot + "]").addClass("item-drag");
                 $toInv.find("[data-slot=" + $toSlot + "]").removeClass("item-nodrag");
+
+                
+                if ($toInv.attr("data-inventory") == "hotbar") {
+                    $toInv.find("[data-slot=" + $toSlot + "]").html('<div class="item-slot-key"><p>[' + $toSlot + ']</p></div><div class="item-slot-img"><img src="images/' + fromData.image + '" alt="' + fromData.name + '" /></div><div class="item-slot-amount"><p>' + fromData.amount + ' (' + ((fromData.weight * fromData.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + fromData.label + '</p></div>');
+                } else {
+                    $toInv.find("[data-slot=" + $toSlot + "]").html('<div class="item-slot-img"><img src="images/' + fromData.image + '" alt="' + fromData.name + '" /></div><div class="item-slot-amount"><p>' + fromData.amount + ' (' + ((fromData.weight * fromData.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + fromData.label + '</p></div>');
+                }
     
-                $toInv.find("[data-slot=" + $toSlot + "]").html('<div class="item-slot-img"><img src="images/' + fromData.image + '" alt="' + fromData.name + '" /></div><div class="item-slot-amount"><p>' + fromData.amount + ' (' + ((fromData.weight * fromData.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + fromData.label + '</p></div>');
                 if (toData != undefined) {
                     toData.slot = parseInt($fromSlot);
     
@@ -128,15 +193,35 @@ function swap($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
                     $fromInv.find("[data-slot=" + $fromSlot + "]").removeClass("item-nodrag");
                     
                     $fromInv.find("[data-slot=" + $fromSlot + "]").data("item", toData);
-                    $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-img"><img src="images/' + toData.image + '" alt="' + toData.name + '" /></div><div class="item-slot-amount"><p>' + toData.amount + ' (' + ((toData.weight * toData.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + toData.label + '</p></div>');
+                    if ($fromInv.attr("data-inventory") == "hotbar") {
+                        $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-key"><p>[' + $fromSlot + ']</p></div><div class="item-slot-img"><img src="images/' + toData.image + '" alt="' + toData.name + '" /></div><div class="item-slot-amount"><p>' + toData.amount + ' (' + ((toData.weight * toData.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + toData.label + '</p></div>');
+                    } else {
+                        $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-img"><img src="images/' + toData.image + '" alt="' + toData.name + '" /></div><div class="item-slot-amount"><p>' + toData.amount + ' (' + ((toData.weight * toData.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + toData.label + '</p></div>');
+                    }
+                    $.post("http://qb-inventory/SetInventoryData", JSON.stringify({
+                        fromInventory: $fromInv.attr("data-inventory"),
+                        toInventory: $toInv.attr("data-inventory"),
+                        fromSlot: $fromSlot,
+                        toSlot: $toSlot,
+                        fromAmount: $toAmount,
+                        toAmount: toData.amount,
+                    }));
                 } else {
                     $fromInv.find("[data-slot=" + $fromSlot + "]").removeClass("item-drag");
                     $fromInv.find("[data-slot=" + $fromSlot + "]").addClass("item-nodrag");
     
                     $fromInv.find("[data-slot=" + $fromSlot + "]").removeData("item");
                     $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div>');
+
+                    $.post("http://qb-inventory/SetInventoryData", JSON.stringify({
+                        fromInventory: $fromInv.attr("data-inventory"),
+                        toInventory: $toInv.attr("data-inventory"),
+                        fromSlot: $fromSlot,
+                        toSlot: $toSlot,
+                        fromAmount: $toAmount,
+                    }));
                 }
-    
+                $.post("http://qb-inventory/PlayDropSound", JSON.stringify({}));
             } else if(fromData.amount > $toAmount && (toData == undefined || toData == null)) {
                 var newDataTo = [];
                 newDataTo.name = fromData.name;
@@ -155,9 +240,12 @@ function swap($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
     
                 $toInv.find("[data-slot=" + $toSlot + "]").addClass("item-drag");
                 $toInv.find("[data-slot=" + $toSlot + "]").removeClass("item-nodrag");
-                
-                $toInv.find("[data-slot=" + $toSlot + "]").html('<div class="item-slot-img"><img src="images/' + newDataTo.image + '" alt="' + newDataTo.name + '" /></div><div class="item-slot-amount"><p>' + newDataTo.amount + ' (' + ((newDataTo.weight * newDataTo.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + newDataTo.label + '</p></div>');
-    
+                if ($toInv.attr("data-inventory") == "hotbar") {
+                    $toInv.find("[data-slot=" + $toSlot + "]").html('<div class="item-slot-key"><p>[' + $toSlot + ']</p></div><div class="item-slot-img"><img src="images/' + newDataTo.image + '" alt="' + newDataTo.name + '" /></div><div class="item-slot-amount"><p>' + newDataTo.amount + ' (' + ((newDataTo.weight * newDataTo.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + newDataTo.label + '</p></div>');
+                } else {
+                    $toInv.find("[data-slot=" + $toSlot + "]").html('<div class="item-slot-img"><img src="images/' + newDataTo.image + '" alt="' + newDataTo.name + '" /></div><div class="item-slot-amount"><p>' + newDataTo.amount + ' (' + ((newDataTo.weight * newDataTo.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + newDataTo.label + '</p></div>');
+                }
+
                 var newDataFrom = [];
                 newDataFrom.name = fromData.name;
                 newDataFrom.label = fromData.label;
@@ -176,13 +264,35 @@ function swap($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
                 $fromInv.find("[data-slot=" + $fromSlot + "]").addClass("item-drag");
                 $fromInv.find("[data-slot=" + $fromSlot + "]").removeClass("item-nodrag");
     
-                $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-img"><img src="images/' + newDataFrom.image + '" alt="' + newDataFrom.name + '" /></div><div class="item-slot-amount"><p>' + newDataFrom.amount + ' (' + ((newDataFrom.weight * newDataFrom.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + newDataFrom.label + '</p></div>');
+                if ($fromInv.attr("data-inventory") == "hotbar") {
+                    $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-key"><p>[' + $fromSlot + ']</p></div><div class="item-slot-img"><img src="images/' + newDataFrom.image + '" alt="' + newDataFrom.name + '" /></div><div class="item-slot-amount"><p>' + newDataFrom.amount + ' (' + ((newDataFrom.weight * newDataFrom.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + newDataFrom.label + '</p></div>');
+                } else {
+                    $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-img"><img src="images/' + newDataFrom.image + '" alt="' + newDataFrom.name + '" /></div><div class="item-slot-amount"><p>' + newDataFrom.amount + ' (' + ((newDataFrom.weight * newDataFrom.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + newDataFrom.label + '</p></div>');
+                }
+                $.post("http://qb-inventory/PlayDropSound", JSON.stringify({}));
+                $.post("http://qb-inventory/SetInventoryData", JSON.stringify({
+                    fromInventory: $fromInv.attr("data-inventory"),
+                    toInventory: $toInv.attr("data-inventory"),
+                    fromSlot: $fromSlot,
+                    toSlot: $toSlot,
+                    fromAmount: $toAmount,
+                }));
+            } else {
+                InventoryError($fromInv, $fromSlot);
             }
         }
-
-        handleDragDrop();
+    } else {
+        //InventoryError($fromInv, $fromSlot);
     }
-    
+    handleDragDrop();
+}
+
+function InventoryError($elinv, $elslot) {
+    $elinv.find("[data-slot=" + $elslot + "]").css("background", "rgba(156, 20, 20, 0.5)").css("transition", "background 500ms");
+    setTimeout(function() {
+        $elinv.find("[data-slot=" + $elslot + "]").css("background", "rgba(20, 20, 20, 0.5)");
+    }, 500)
+    $.post("http://qb-inventory/PlayDropFail", JSON.stringify({}));
 }
 
 (() => {
@@ -193,16 +303,28 @@ function swap($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
     Inventory.Open = function(data) {
         var totalWeight = 0;
         $("#qbus-inventory").css("display", "block");
-        for(i = 1; i < (Inventory.slots + 1); i++) {
+        // Hotbar
+        for(i = 1; i < 6; i++) {
+            $(".ply-hotbar-inventory").append('<div class="item-slot" data-slot="' + i + '"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div>');
+        }
+        // Inventory
+        for(i = 6; i < (Inventory.slots + 1); i++) {
             $(".player-inventory").append('<div class="item-slot" data-slot="' + i + '"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div>');
             $(".other-inventory").append('<div class="item-slot" data-slot="' + i + '"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div>');
         }
         if (data.inventory !== null) {
             $.each(data.inventory, function (i, item) {
-                totalWeight += (item.weight * item.amount);
-                $(".player-inventory").find("[data-slot=" + item.slot + "]").addClass("item-drag");
-                $(".player-inventory").find("[data-slot=" + item.slot + "]").html('<div class="item-slot-img"><img src="images/' + item.image + '" alt="' + item.name + '" /></div><div class="item-slot-amount"><p>' + item.amount + ' (' + ((item.weight * item.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + item.label + '</p></div>');
-                $(".player-inventory").find("[data-slot=" + item.slot + "]").data("item", item);
+                if (item != null) {
+                    totalWeight += (item.weight * item.amount);
+                    $(".player-inventory").find("[data-slot=" + item.slot + "]").addClass("item-drag");
+                    $(".player-inventory").find("[data-slot=" + item.slot + "]").html('<div class="item-slot-img"><img src="images/' + item.image + '" alt="' + item.name + '" /></div><div class="item-slot-amount"><p>' + item.amount + ' (' + ((item.weight * item.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + item.label + '</p></div>');
+                    $(".player-inventory").find("[data-slot=" + item.slot + "]").data("item", item);
+
+                    $(".ply-hotbar-inventory").find("[data-slot=" + item.slot + "]").addClass("item-drag");
+                    $(".ply-hotbar-inventory").find("[data-slot=" + item.slot + "]").html('<div class="item-slot-key"><p>[' + item.slot + ']</p></div><div class="item-slot-img"><img src="images/' + item.image + '" alt="' + item.name + '" /></div><div class="item-slot-amount"><p>' + item.amount + ' (' + ((item.weight * item.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + item.label + '</p></div>');
+                    $(".ply-hotbar-inventory").find("[data-slot=" + item.slot + "]").data("item", item);
+                }
+                
             });
         }
 

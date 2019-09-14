@@ -155,24 +155,24 @@ QBCore.Player.CreatePlayer = function(PlayerData)
 		local totalWeight = QBCore.Player.GetTotalWeight(self.PlayerData.items)
 		local itemInfo = QBCore.Shared.Items[item:lower()]
 		local amount = tonumber(amount)
-		local slot = slot ~= nil and slot or QBCore.Player.GetFirstSlotByItem(self.PlayerData.items, item)
+		local slot = tonumber(slot) ~= nil and tonumber(slot) or QBCore.Player.GetFirstSlotByItem(self.PlayerData.items, item)
 		if (totalWeight + (itemInfo["weight"] * amount)) < QBCore.Config.Player.MaxWeight then
 			if (slot ~= nil and self.PlayerData.items[slot] ~= nil) and (self.PlayerData.items[slot].name:lower() == item:lower()) and (itemInfo["type"] == "item") then
 				self.PlayerData.items[slot].amount = self.PlayerData.items[slot].amount + amount
 				self.Functions.UpdatePlayerData()
-				TriggerClientEvent('QBCore:Notify', self.PlayerData.source, itemInfo["label"].. " toegevoegd!", "success")
+				--TriggerClientEvent('QBCore:Notify', self.PlayerData.source, itemInfo["label"].. " toegevoegd!", "success")
 				return true
-			elseif (slot ~= nil and self.PlayerData.items[slot] == nil) and (itemInfo["type"] == "item") then
+			elseif (slot ~= nil and self.PlayerData.items[slot] == nil) then
 				self.PlayerData.items[slot] = {name = itemInfo["name"], amount = amount, info = info ~= nil and info or "", label = itemInfo["label"], description = itemInfo["description"] ~= nil and itemInfo["description"] or "", weight = itemInfo["weight"], type = itemInfo["type"], unique = itemInfo["unique"], useable = itemInfo["useable"], image = itemInfo["image"], slot = slot}
 				self.Functions.UpdatePlayerData()
-				TriggerClientEvent('QBCore:Notify', self.PlayerData.source, itemInfo["label"].. " toegevoegd!", "success")
+				--TriggerClientEvent('QBCore:Notify', self.PlayerData.source, itemInfo["label"].. " toegevoegd!", "success")
 				return true
 			elseif (slot == nil) or (itemInfo["type"] == "weapon") then
 				for i = 1, QBConfig.Player.MaxInvSlots, 1 do
 					if self.PlayerData.items[i] == nil then
 						self.PlayerData.items[i] = {name = itemInfo["name"], amount = amount, info = info ~= nil and info or "", label = itemInfo["label"], description = itemInfo["description"] ~= nil and itemInfo["description"] or "", weight = itemInfo["weight"], type = itemInfo["type"], unique = itemInfo["unique"], useable = itemInfo["useable"], image = itemInfo["image"], slot = i}
 						self.Functions.UpdatePlayerData()
-						TriggerClientEvent('QBCore:Notify', self.PlayerData.source, itemInfo["label"].. " toegevoegd!", "success")
+						--TriggerClientEvent('QBCore:Notify', self.PlayerData.source, itemInfo["label"].. " toegevoegd!", "success")
 						return true
 					end
 				end
@@ -184,38 +184,56 @@ QBCore.Player.CreatePlayer = function(PlayerData)
 	self.Functions.RemoveItem = function(item, amount, slot)
 		local itemInfo = QBCore.Shared.Items[item:lower()]
 		local amount = tonumber(amount)
+		local slot = tonumber(slot)
 		if slot ~= nil then
 			if self.PlayerData.items[slot].amount > amount then
 				self.PlayerData.items[slot].amount = self.PlayerData.items[slot].amount - amount
 				self.Functions.UpdatePlayerData()
-				TriggerClientEvent('QBCore:Notify', self.PlayerData.source, itemInfo["label"].. " verwijderd!", "error")
+				--TriggerClientEvent('QBCore:Notify', self.PlayerData.source, itemInfo["label"].. " verwijderd!", "error")
 				return true
 			else
 				self.PlayerData.items[slot] = nil
 				self.Functions.UpdatePlayerData()
-				TriggerClientEvent('QBCore:Notify', self.PlayerData.source, itemInfo["label"].. " verwijderd!", "error")
+				--TriggerClientEvent('QBCore:Notify', self.PlayerData.source, itemInfo["label"].. " verwijderd!", "error")
 				return true
 			end
 		else
-			local slots = QBCore.Player.GetSlotsByItem(item)
+			local slots = QBCore.Player.GetSlotsByItem(self.PlayerData.items, item)
 			local amountToRemove = amount
 			if slots ~= nil then
 				for _, slot in pairs(slots) do
 					if self.PlayerData.items[slot].amount > amountToRemove then
 						self.PlayerData.items[slot].amount = self.PlayerData.items[slot].amount - amountToRemove
 						self.Functions.UpdatePlayerData()
-						TriggerClientEvent('QBCore:Notify', self.PlayerData.source, itemInfo["label"].. " verwijderd!", "error")
+						--TriggerClientEvent('QBCore:Notify', self.PlayerData.source, itemInfo["label"].. " verwijderd!", "error")
 						return true
 					elseif self.PlayerData.items[slot].amount == amountToRemove then
 						self.PlayerData.items[slot] = nil
 						self.Functions.UpdatePlayerData()
-						TriggerClientEvent('QBCore:Notify', self.PlayerData.source, itemInfo["label"].. " verwijderd!", "error")
+						--TriggerClientEvent('QBCore:Notify', self.PlayerData.source, itemInfo["label"].. " verwijderd!", "error")
 						return true
 					end
 				end
 			end
 		end
 		return false
+	end
+
+	self.Functions.GetItemByName = function(item)
+		local item = tostring(item):lower()
+		local slot = QBCore.Player.GetFirstSlotByItem(self.PlayerData.items, item)
+		if slot ~= nil then
+			return self.PlayerData.items[slot]
+		end
+		return nil
+	end
+
+	self.Functions.GetItemBySlot = function(slot)
+		local slot = tonumber(slot)
+		if self.PlayerData.items[slot] ~= nil then
+			return self.PlayerData.items[slot]
+		end
+		return nil
 	end
 
 	self.Functions.Save = function()
@@ -262,7 +280,7 @@ QBCore.Player.SaveInventory = function(PlayerData)
 	if PlayerData.items ~= nil then
 		for slot, item in pairs(PlayerData.items) do
 			if PlayerData.items[slot] ~= nil then
-				QBCore.Functions.ExecuteSql("INSERT INTO `playeritems` (`citizenid`, `name`, `amount`, `info`, `type`, `slot`) VALUES ('"..PlayerData.citizenid.."', '"..PlayerData.items[slot].name.."', '"..PlayerData.items[slot].amount.."', '"..PlayerData.items[slot].name.."', '"..PlayerData.items[slot].type.."', '"..slot.."')")
+				QBCore.Functions.ExecuteSql("INSERT INTO `playeritems` (`citizenid`, `name`, `amount`, `info`, `type`, `slot`) VALUES ('"..PlayerData.citizenid.."', '"..PlayerData.items[slot].name.."', '"..PlayerData.items[slot].amount.."', '"..PlayerData.items[slot].info.."', '"..PlayerData.items[slot].type.."', '"..slot.."')")
 			end
 		end
 	end

@@ -22,4 +22,9 @@ files {
 	'html/js/app.js',
 	'html/images/placeholder.png',
 	'html/images/tosti.png',
+	'html/images/joint.png',
+	'html/images/metalscrap.png',
+	'html/images/copper.png',
+	'html/images/pistol_ammo.png',
+	'html/images/combatpistol.png',
 }

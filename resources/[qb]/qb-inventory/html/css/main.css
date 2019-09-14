@@ -47,14 +47,14 @@ input[type=number]::-webkit-outer-spin-button {
 
 .inv-container {
     position: absolute;
-    top: 50%;
+    top: 40%;
     left: 50%;
     margin-top: -30vh;
     margin-left: -40vw;
     width: 80vw;
-    height: 60vh;
+    height: 90vh;
     max-width: 80vw;
-    max-height: 60vh;
+    max-height: 90vh;
     overflow: hidden;
 }
 
@@ -64,8 +64,8 @@ input[type=number]::-webkit-outer-spin-button {
     overflow-x: hidden;
     width: 43%;
     max-width: 43%;
-    height: 100%;
-    max-height: 100%;
+    height: 60%;
+    max-height: 60%;
     float: left;
     margin-right: 2%;
 }
@@ -76,10 +76,44 @@ input[type=number]::-webkit-outer-spin-button {
     overflow-x: hidden;
     width: 43%;
     max-width: 43%;
-    height: 100%;
-    max-height: 100%;
+    height: 60%;
+    max-height: 60%;
     float: left;
     margin-left: 2%;
+}
+
+.ply-hotbar-container {
+    position: absolute;
+    bottom: 15%;
+    left: 50%;
+    margin-left: -17.5vw;
+    overflow: hidden;
+}
+
+.ply-hotbar-inventory {
+    background: rgba(25,25,25,0.7);
+    width: 100%;
+    max-width: 100%;
+}
+
+.ply-hotbar-inventory > .item-slot {
+    position: relative;
+    width: 131px;
+    height: 142px;
+    background: rgba(20,20,20,0.5);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    display: block!important;
+    float:left!important;
+}
+
+.ply-hotbar-inventory > .item-slot > .item-slot-key p {
+    position: absolute;
+    background: #ffffff;
+    color: #000000;
+    padding: 0.1vw;
+    text-align: left;
+    font-size: 10px;
+    font-weight: bold;
 }
 
 .ply-inv-container {
@@ -120,7 +154,7 @@ input[type=number]::-webkit-outer-spin-button {
     border: 1px solid rgba(255, 255, 255, 0.05)!important;
     border-radius: 2px!important;
     padding: 10%!important;
-    background: rgba(25,25,25,0.5);
+    background: rgba(20,20,20,0.5);
     color: #ffffff;
 }
 
@@ -173,7 +207,7 @@ input[type=number]::-webkit-outer-spin-button {
 .player-inv-info {
     position: absolute;
     left: 10%;
-    top: 17.5%;
+    top: 8%;
 }
 
 .player-inv-info p {
@@ -185,7 +219,7 @@ input[type=number]::-webkit-outer-spin-button {
 .other-inv-info {
     position: absolute;
     right: 10%;
-    top: 17.5%;
+    top: 8%;
 }
 
 .other-inv-info p {
