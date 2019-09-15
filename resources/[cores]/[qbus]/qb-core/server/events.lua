@@ -30,10 +30,10 @@ AddEventHandler('QBCore:UpdatePlayer', function(data)
 end)
 
 RegisterServerEvent("QBCore:Server:TriggerCallback")
-AddEventHandler('QBCore:Server:TriggerCallback', function(name, requestid, ...)
+AddEventHandler('QBCore:Server:TriggerCallback', function(name, ...)
 	local src = source
-	QBCore.Functions.TriggerCallback(name, requestid, src, function(...)
-		TriggerClientEvent("QBCore:Client:TriggerCallback", src, requestid, ...)
+	QBCore.Functions.TriggerCallback(name, src, function(...)
+		TriggerClientEvent("QBCore:Client:TriggerCallback", src, name, ...)
 	end, ...)
 end)
 

@@ -55,7 +55,7 @@ QBCore.Functions.CreateCallback = function(name, cb)
 	QBCore.ServerCallbacks[name] = cb
 end
 
-QBCore.Functions.TriggerCallback = function(name, requestid, source, cb, ...)
+QBCore.Functions.TriggerCallback = function(name, source, cb, ...)
 	if QBCore.ServerCallbacks[name] ~= nil then
 		QBCore.ServerCallbacks[name](source, cb, ...)
 	end

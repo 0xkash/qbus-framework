@@ -128,9 +128,11 @@ AddEventHandler('QBCore:Notify', function(text, type, length)
 end)
 
 RegisterNetEvent('QBCore:Client:TriggerCallback')
-AddEventHandler('QBCore:Client:TriggerCallback', function(requestid, ...)
-	QBCore.ServerCallbacks[requestid](...)
-	QBCore.ServerCallbacks[requestid] = nil
+AddEventHandler('QBCore:Client:TriggerCallback', function(name, ...)
+	if QBCore.ServerCallbacks[name] ~= nil then
+		QBCore.ServerCallbacks[name](...)
+		QBCore.ServerCallbacks[name] = nil
+	end
 end)
 
 RegisterNetEvent("QBCore:Client:UseItem")
