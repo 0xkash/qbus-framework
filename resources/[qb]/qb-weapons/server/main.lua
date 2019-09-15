@@ -16,9 +16,9 @@ AddEventHandler('weapons:server:LoadWeaponAmmo', function()
                     table.insert(ammoData, {type = ammotype, amount = amount})
                 end
             end
-            WeaponAmmo[Player.PlayerData.steam] = {}
-            WeaponAmmo[Player.PlayerData.steam].ammo = {}
-            table.insert(WeaponAmmo[Player.PlayerData.steam].ammo, {type = type, amount = amount})
+            WeaponAmmo[Player.PlayerData.citizenid] = {}
+            WeaponAmmo[Player.PlayerData.citizenid].ammo = {}
+            table.insert(WeaponAmmo[Player.PlayerData.citizenid].ammo, {type = type, amount = amount})
         end
 	end)
 end)
@@ -29,22 +29,24 @@ AddEventHandler('weapons:server:AddWeaponAmmo', function(type, amount)
     local Player = QBCore.Functions.GetPlayer(src)
     local type = tostring(type):upper()
     local amount = tonumber(amount)
-    if WeaponAmmo[Player.PlayerData.steam] ~= nil and WeaponAmmo[Player.PlayerData.steam].ammo ~= nil then
-        for _, ammoData in pairs(WeaponAmmo[Player.PlayerData.steam].ammo) do
+    if WeaponAmmo[Player.PlayerData.citizenid] ~= nil and WeaponAmmo[Player.PlayerData.citizenid].ammo ~= nil then
+        for _, ammoData in pairs(WeaponAmmo[Player.PlayerData.citizenid].ammo) do
             if type == ammoData.type then
                 ammoData.amount = ammoData.amount + amount
                 return
             end
         end
     end
-    if WeaponAmmo[Player.PlayerData.steam] == nil then
-        WeaponAmmo[Player.PlayerData.steam] = {}
-        WeaponAmmo[Player.PlayerData.steam].ammo = {}
-        table.insert(WeaponAmmo[Player.PlayerData.steam].ammo, {type = type, amount = amount})
+    if WeaponAmmo[Player.PlayerData.citizenid] == nil then
+        WeaponAmmo[Player.PlayerData.citizenid] = {}
+        WeaponAmmo[Player.PlayerData.citizenid].ammo = {}
+        table.insert(WeaponAmmo[Player.PlayerData.citizenid].ammo, {type = type, amount = amount})
+        return
     else
-        table.insert(WeaponAmmo[Player.PlayerData.steam].ammo, {type = type, amount = amount})
+        table.insert(WeaponAmmo[Player.PlayerData.citizenid].ammo, {type = type, amount = amount})
+        return
     end
-    table.insert(WeaponAmmo[Player.PlayerData.steam].ammo, {type = type, amount = amount})
+    table.insert(WeaponAmmo[Player.PlayerData.citizenid].ammo, {type = type, amount = amount})
 end)
 
 RegisterServerEvent("weapons:server:UpdateWeaponAmmo")
@@ -53,8 +55,8 @@ AddEventHandler('weapons:server:UpdateWeaponAmmo', function(type, amount)
     local Player = QBCore.Functions.GetPlayer(src)
     local type = tostring(type):upper()
     local amount = tonumber(amount)
-    if WeaponAmmo[Player.PlayerData.steam] ~= nil and WeaponAmmo[Player.PlayerData.steam].ammo ~= nil then
-        for _, ammoData in pairs(WeaponAmmo[Player.PlayerData.steam].ammo) do
+    if WeaponAmmo[Player.PlayerData.citizenid] ~= nil and WeaponAmmo[Player.PlayerData.citizenid].ammo ~= nil then
+        for _, ammoData in pairs(WeaponAmmo[Player.PlayerData.citizenid].ammo) do
             if type == ammoData.type then
                 ammoData.amount = amount
                 return
@@ -70,20 +72,21 @@ AddEventHandler('weapons:server:SaveWeaponAmmo', function()
     if Player ~= nil then
         QBCore.Functions.ExecuteSql("SELECT * FROM `playerammo` WHERE `citizenid` = '".. Player.PlayerData.citizenid.."'", function(result)
             if result[1] == nil then
-                QBCore.Functions.ExecuteSql("INSERT INTO `playerammo` (`citizenid`, `ammo`) VALUES ('"..Player.PlayerData.citizenid.."', NULL)")
+                QBCore.Functions.ExecuteSql("INSERT INTO `playerammo` (`citizenid`, `ammo`) VALUES ('"..Player.PlayerData.citizenid.."', '"..json.encode(WeaponAmmo[Player.PlayerData.citizenid].ammo).."')")
             else
-                if WeaponAmmo[Player.PlayerData.steam] ~= nil and WeaponAmmo[Player.PlayerData.steam].ammo ~= nil then
-                    QBCore.Functions.ExecuteSql("UPDATE `playerammo` SET ammo='"..json.encode(WeaponAmmo[Player.PlayerData.steam].ammo).."' WHERE `citizenid` = '"..Player.PlayerData.citizenid.."'")
+                if WeaponAmmo[Player.PlayerData.citizenid] ~= nil and WeaponAmmo[Player.PlayerData.citizenid].ammo ~= nil then
+                    QBCore.Functions.ExecuteSql("UPDATE `playerammo` SET ammo='"..json.encode(WeaponAmmo[Player.PlayerData.citizenid].ammo).."' WHERE `citizenid` = '"..Player.PlayerData.citizenid.."'")
                 end
             end
         end)
+        QBCore.ShowSuccess(GetCurrentResourceName(), Player.PlayerData.name .." WEAPON AMMO SAVED!")
     end
 end)
 
 QBCore.Functions.CreateCallback("weapon:server:GetWeaponAmmo", function(source, cb, ammotype)
     local Player = QBCore.Functions.GetPlayer(source)
-    if WeaponAmmo[Player.PlayerData.steam] ~= nil and WeaponAmmo[Player.PlayerData.steam].ammo ~= nil then
-        for _, ammoData in pairs(WeaponAmmo[Player.PlayerData.steam].ammo) do
+    if WeaponAmmo[Player.PlayerData.citizenid] ~= nil and WeaponAmmo[Player.PlayerData.citizenid].ammo ~= nil then
+        for _, ammoData in pairs(WeaponAmmo[Player.PlayerData.citizenid].ammo) do
             if ammoData ~= nil and ammotype == ammoData.type then
                 cb(ammoData.amount)
             end
