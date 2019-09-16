@@ -46,7 +46,6 @@ AddEventHandler('weapons:server:AddWeaponAmmo', function(type, amount)
         table.insert(WeaponAmmo[Player.PlayerData.citizenid].ammo, {type = type, amount = amount})
         return
     end
-    table.insert(WeaponAmmo[Player.PlayerData.citizenid].ammo, {type = type, amount = amount})
 end)
 
 RegisterServerEvent("weapons:server:UpdateWeaponAmmo")
