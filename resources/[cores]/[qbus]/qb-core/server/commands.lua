@@ -30,14 +30,14 @@ QBCore.Commands.Add("tp", "Teleport naar een speler of location", {{name="id/x",
 		if Player ~= nil then
 			TriggerClientEvent('QBCore:Command:TeleportToPlayer', source, Player.PlayerData.source)
 		else
-			TriggerClientEvent('chatMessage', source, "SYSTEM", {255, 0, 0}, "Speler is niet online!")
+			TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Speler is niet online!")
 		end
 	else
 		-- tp to location
 		if args[1] ~= nil and args[2] ~= nil and args[3] ~= nil then
 			TriggerClientEvent('QBCore:Command:TeleportToCoords', source, args[1], args[2], args[3])
 		else
-			TriggerClientEvent('chatMessage', source, "SYSTEM", {255, 0, 0}, "Niet elk argument is ingevuld (x, y, z)")
+			TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Niet elk argument is ingevuld (x, y, z)")
 		end
 	end
 end, "moderator")
@@ -64,7 +64,7 @@ QBCore.Commands.Add("revive", "Revive een speler of jezelf", {{name="id", help="
 		if Player ~= nil then
 			TriggerClientEvent('QBCore:Command:Revive', Player.source)
 		else
-			TriggerClientEvent('chatMessage', source, "SYSTEM", {255, 0, 0}, "Speler is niet online!")
+			TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Speler is niet online!")
 		end
 	else
 		TriggerClientEvent('QBCore:Command:Revive', source)
@@ -80,7 +80,7 @@ QBCore.Commands.Add("givemoney", "Geef geld aan een speler", {{name="id", help="
 	if Player ~= nil then
 		Player.Functions.AddMoney(tostring(args[2]), tonumber(args[3]))
 	else
-		TriggerClientEvent('chatMessage', source, "SYSTEM", {255, 0, 0}, "Speler is niet online!")
+		TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Speler is niet online!")
 	end
 end, "admin")
 
@@ -89,7 +89,7 @@ QBCore.Commands.Add("setmoney", "Zet het geld voor een speler", {{name="id", hel
 	if Player ~= nil then
 		Player.Functions.SetMoney(tostring(args[2]), tonumber(args[3]))
 	else
-		TriggerClientEvent('chatMessage', source, "SYSTEM", {255, 0, 0}, "Speler is niet online!")
+		TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Speler is niet online!")
 	end
 end, "admin")
 
@@ -98,7 +98,7 @@ QBCore.Commands.Add("setjob", "Geef een baan aan een speler", {{name="id", help=
 	if Player ~= nil then
 		Player.Functions.SetJob(tostring(args[2]), tonumber(args[3]))
 	else
-		TriggerClientEvent('chatMessage', source, "SYSTEM", {255, 0, 0}, "Speler is niet online!")
+		TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Speler is niet online!")
 	end
 end, "admin")
 
@@ -107,7 +107,7 @@ QBCore.Commands.Add("setgang", "Geef een gang (groep) aan een speler", {{name="i
 	if Player ~= nil then
 		Player.Functions.SetGang(tostring(args[2]), tonumber(args[3]))
 	else
-		TriggerClientEvent('chatMessage', source, "SYSTEM", {255, 0, 0}, "Speler is niet online!")
+		TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Speler is niet online!")
 	end
 end, "admin")
 
@@ -116,7 +116,7 @@ QBCore.Commands.Add("setpermission", "Geef een permissie aan een speler", {{name
 	if Player ~= nil then
 		Player.Functions.SetPermission(tostring(args[2]))
 	else
-		TriggerClientEvent('chatMessage', source, "SYSTEM", {255, 0, 0}, "Speler is niet online!")
+		TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Speler is niet online!")
 	end
 end, "god")
 

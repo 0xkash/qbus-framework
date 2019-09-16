@@ -88,7 +88,7 @@ function spectatePlayer(targetId)
         DoScreenFadeIn(1000)
       end
 
-      TriggerEvent("chatMessage", "SKAdmin", {255, 0, 0}, "In spectate mode. To exit press BACKSPACE")
+      TriggerEvent("chatMessage", "SKAdmin", "error", "In spectate mode. To exit press BACKSPACE")
 
       while true do
         Citizen.Wait(0)
@@ -102,7 +102,7 @@ function spectatePlayer(targetId)
       end
     end
   else
-    TriggerEvent("chatMessage", "SKAdmin", {255, 0, 0}, "You can't spectate this player.")
+    TriggerEvent("chatMessage", "SKAdmin", "error", "You can't spectate this player.")
   end
 end
 

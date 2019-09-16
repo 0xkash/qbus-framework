@@ -132,8 +132,16 @@ textarea:focus, input:focus {
   background-color: rgba(47, 92, 115, 0.8);
 }
 
-.chat-message.server {
+.warning {
   background-color: rgba(240, 200, 80, 0.8);
+}
+
+.normal {
+  background-color: rgba(47, 114, 181, 0.9);
+}
+
+.error {
+  background-color: rgba(191, 36, 36, 0.9);
 }
 
 .chat-message.system {

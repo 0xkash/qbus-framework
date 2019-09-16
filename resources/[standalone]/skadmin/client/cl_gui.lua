@@ -194,7 +194,7 @@ Citizen.CreateThread(function()
           for i, player in ipairs(players) do
             TriggerServerEvent("skadmin:getRank", players[i]['serverID'])
             if WarMenu.MenuButton("["..players[i]['serverID'].."]"..players[i]['name'], 'kick') then
-              TriggerEvent("chatMessage", "SKAdmin", {0, 0, 255}, "Insert the reason to kick.")
+              TriggerEvent("chatMessage", "SKAdmin", nil, "Insert the reason to kick.")
               DisplayOnscreenKeyboard(1, 'FMMC_KEY_TIP8', '', '', '', '', '', 128+1)
               while UpdateOnscreenKeyboard() ~= 1 and UpdateOnscreenKeyboard() ~= 2 do
                 Citizen.Wait(0)
@@ -215,7 +215,7 @@ Citizen.CreateThread(function()
 
           for i, player in ipairs(players) do
             if WarMenu.MenuButton("["..players[i]['serverID'].."]"..players[i]['name'], 'ban') then
-              TriggerEvent("chatMessage", "SKAdmin", {0, 0, 255}, "Insert the reason to ban.")
+              TriggerEvent("chatMessage", "SKAdmin", nil, "Insert the reason to ban.")
               DisplayOnscreenKeyboard(1, 'FMMC_KEY_TIP8', '', '', '', '', '', 128+1)
               while UpdateOnscreenKeyboard() ~= 1 and UpdateOnscreenKeyboard() ~= 2 do
                 Citizen.Wait(0)
@@ -281,7 +281,7 @@ Citizen.CreateThread(function()
         -- RESTART RESOURCE
         -- ---------------------------------------------------------------------
         elseif WarMenu.IsMenuOpened('restart') then
-          TriggerEvent("chatMessage", "SKAdmin", {0, 0, 255}, "Insert the name of resource.")
+          TriggerEvent("chatMessage", "SKAdmin", nil, "Insert the name of resource.")
           DisplayOnscreenKeyboard(1, 'FMMC_KEY_TIP8', '', '', '', '', '', 128+1)
           while UpdateOnscreenKeyboard() ~= 1 and UpdateOnscreenKeyboard() ~= 2 do
             Citizen.Wait(0)
@@ -296,7 +296,7 @@ Citizen.CreateThread(function()
         -- START RESOURCE
         -- ---------------------------------------------------------------------
         elseif WarMenu.IsMenuOpened('start') then
-          TriggerEvent("chatMessage", "SKAdmin", {0, 0, 255}, "Insert the name of resource.")
+          TriggerEvent("chatMessage", "SKAdmin", nil, "Insert the name of resource.")
           DisplayOnscreenKeyboard(1, 'FMMC_KEY_TIP8', '', '', '', '', '', 128+1)
           while UpdateOnscreenKeyboard() ~= 1 and UpdateOnscreenKeyboard() ~= 2 do
             Citizen.Wait(0)
@@ -311,7 +311,7 @@ Citizen.CreateThread(function()
         -- STOP RESOURCE
         -- ---------------------------------------------------------------------
         elseif WarMenu.IsMenuOpened('stop') then
-          TriggerEvent("chatMessage", "SKAdmin", {0, 0, 255}, "Insert the name of resource.")
+          TriggerEvent("chatMessage", "SKAdmin", nil, "Insert the name of resource.")
           DisplayOnscreenKeyboard(1, 'FMMC_KEY_TIP8', '', '', '', '', '', 128+1)
           while UpdateOnscreenKeyboard() ~= 1 and UpdateOnscreenKeyboard() ~= 2 do
             Citizen.Wait(0)
@@ -326,7 +326,7 @@ Citizen.CreateThread(function()
         -- SET GAME TYPE
         -- ---------------------------------------------------------------------
         elseif WarMenu.IsMenuOpened('game_type') then
-          TriggerEvent("chatMessage", "SKAdmin", {0, 0, 255}, "Insert game type.")
+          TriggerEvent("chatMessage", "SKAdmin", nil, "Insert game type.")
           DisplayOnscreenKeyboard(1, 'FMMC_KEY_TIP8', '', '', '', '', '', 128+1)
           while UpdateOnscreenKeyboard() ~= 1 and UpdateOnscreenKeyboard() ~= 2 do
             Citizen.Wait(0)
@@ -341,7 +341,7 @@ Citizen.CreateThread(function()
         -- SET MAP NAME
         -- ---------------------------------------------------------------------
         elseif WarMenu.IsMenuOpened('map_name') then
-          TriggerEvent("chatMessage", "SKAdmin", {0, 0, 255}, "Insert map name.")
+          TriggerEvent("chatMessage", "SKAdmin", nil, "Insert map name.")
           DisplayOnscreenKeyboard(1, 'FMMC_KEY_TIP8', '', '', '', '', '', 128+1)
           while UpdateOnscreenKeyboard() ~= 1 and UpdateOnscreenKeyboard() ~= 2 do
             Citizen.Wait(0)

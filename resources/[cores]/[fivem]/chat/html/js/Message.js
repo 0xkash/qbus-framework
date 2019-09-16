@@ -12,6 +12,7 @@ Vue.component('message', {
         this.templateId = -1;
       }
 
+      //this.$el.style.background = `rgba(${this.color[0]}, ${this.color[1]}, ${this.color[2]}, 0.9)`;
       //This hack is required to preserve backwards compatability
       if (this.templateId == CONFIG.defaultTemplateId
           && this.args.length == 1) {
@@ -22,7 +23,7 @@ Vue.component('message', {
         const argEscaped = this.args[number] != undefined ? this.escape(this.args[number]) : match
         if (number == 0 && this.color) {
           //color is deprecated, use templates or ^1 etc.
-          return this.colorizeOld(argEscaped);
+          return argEscaped;
         }
         return argEscaped;
       });

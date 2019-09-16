@@ -154,6 +154,7 @@ QBCore.Player.CreatePlayer = function(PlayerData)
 	self.Functions.AddItem = function(item, amount, slot, info)
 		local totalWeight = QBCore.Player.GetTotalWeight(self.PlayerData.items)
 		local itemInfo = QBCore.Shared.Items[item:lower()]
+		if itemInfo == nil then TriggerClientEvent('chatMessage', -1, "SYSTEM",  "warning", "No item found??") return end
 		local amount = tonumber(amount)
 		local slot = tonumber(slot) ~= nil and tonumber(slot) or QBCore.Player.GetFirstSlotByItem(self.PlayerData.items, item)
 		if (totalWeight + (itemInfo["weight"] * amount)) < QBCore.Config.Player.MaxWeight then
@@ -223,6 +224,14 @@ QBCore.Player.CreatePlayer = function(PlayerData)
 		local item = tostring(item):lower()
 		local slot = QBCore.Player.GetFirstSlotByItem(self.PlayerData.items, item)
 		if slot ~= nil then
+			return self.PlayerData.items[slot]
+		end
+		return nil
+	end
+
+	self.Functions.GetItemBySlot = function(slot)
+		local slot = tonumber(slot)
+		if self.PlayerData.items[slot] ~= nil then
 			return self.PlayerData.items[slot]
 		end
 		return nil
