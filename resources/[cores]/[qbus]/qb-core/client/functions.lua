@@ -23,6 +23,23 @@ QBCore.Functions.DrawText = function(x, y, width, height, scale, r, g, b, a, tex
     DrawText(x - width/2, y - height/2 + 0.005)
 end
 
+QBCore.Functions.DrawText3D = function(x, y, z, text)
+	SetTextScale(0.35, 0.35)
+    SetTextFont(4)
+    SetTextProportional(1)
+    SetTextColour(255, 255, 255, 215)
+    SetTextEntry("STRING")
+    SetTextCentre(true)
+    AddTextComponentString(text)
+    --DrawText(_x,_y)
+    SetDrawOrigin(x,y,z, 0)
+    DrawText(0.0, 0.0)
+    local factor = (string.len(text)) / 370
+    --DrawRect(_x,_y+0.0125, 0.017+ factor, 0.03, 0, 0, 0, 68)
+    DrawRect(0.0, 0.0+0.0125, 0.017+ factor, 0.03, 0, 0, 0, 68)
+    ClearDrawOrigin()
+end
+
 QBCore.Functions.GetCoords = function(entity)
     local coords = GetEntityCoords(entity, false)
     local heading = GetEntityHeading(entity)
