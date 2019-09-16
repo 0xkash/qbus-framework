@@ -86,6 +86,21 @@ function handleDragDrop() {
                 }));
             }
         }
+    });
+
+    $("#item-drop").droppable({
+        drop: function(event, ui) {
+            fromData = ui.draggable.data("item");
+            fromInventory = ui.draggable.parent().attr("data-inventory");
+            amount = $("#item-amount").val();
+            if (amount == 0) {amount=fromData.amount}
+            $(this).css("background", "rgba(35,35,35, 0.7");
+            $.post("http://qb-inventory/DropItem", JSON.stringify({
+                inventory: fromInventory,
+                item: fromData,
+                amount: parseInt(amount),
+            }));
+        }
     })
 }
 
@@ -302,16 +317,26 @@ function InventoryError($elinv, $elslot) {
 
     Inventory.Open = function(data) {
         var totalWeight = 0;
+        var totalWeightOther = 0;
         $("#qbus-inventory").css("display", "block");
+        if(data.other != null) {
+            $(".other-inventory").attr("data-inventory", data.other.name);
+        }
         // Hotbar
         for(i = 1; i < 6; i++) {
             $(".ply-hotbar-inventory").append('<div class="item-slot" data-slot="' + i + '"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div>');
         }
         // Inventory
-        for(i = 6; i < (Inventory.slots + 1); i++) {
+        for(i = 6; i < (data.slots + 1); i++) {
             $(".player-inventory").append('<div class="item-slot" data-slot="' + i + '"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div>');
-            $(".other-inventory").append('<div class="item-slot" data-slot="' + i + '"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div>');
         }
+
+        if (data.other != null ) {
+            for(i = 1; i < (data.other.slots + 1); i++) {
+                $(".other-inventory").append('<div class="item-slot" data-slot="' + i + '"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div>');
+            }
+        }
+
         if (data.inventory !== null) {
             $.each(data.inventory, function (i, item) {
                 if (item != null) {
@@ -328,7 +353,21 @@ function InventoryError($elinv, $elslot) {
             });
         }
 
+        if (data.other != null && data.other.inventory) {
+            $.each(data.other.inventory, function (i, item) {
+                if (item != null) {
+                    totalWeightOther += (item.weight * item.amount);
+                    $(".other-inventory").find("[data-slot=" + item.slot + "]").addClass("item-drag");
+                    $(".other-inventory").find("[data-slot=" + item.slot + "]").html('<div class="item-slot-img"><img src="images/' + item.image + '" alt="' + item.name + '" /></div><div class="item-slot-amount"><p>' + item.amount + ' (' + ((item.weight * item.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + item.label + '</p></div>');
+                    $(".other-inventory").find("[data-slot=" + item.slot + "]").data("item", item);
+                }
+            });
+        }
+
         $(".player-inv-info p").html("Eigen Inventaris - Gewicht: " + (totalWeight / 1000).toFixed(1) + " / " + (data.maxweight / 1000).toFixed(1) + "kg");
+        if (data.other != null) {
+            $(".other-inv-info p").html(data.other.label + " - Gewicht: " + (totalWeightOther / 1000).toFixed(1) + " / " + (data.other.maxweight / 1000).toFixed(1) + "kg");
+        }
 
         handleDragDrop();
     };
