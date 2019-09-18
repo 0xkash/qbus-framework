@@ -54,10 +54,13 @@ Citizen.CreateThread(function()
         Citizen.Wait(7)
         if Drops ~= nil and ClosestDrop ~= nil then
             local pos = GetEntityCoords(GetPlayerPed(-1), true)
-            if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Drops[ClosestDrop].coords.x, Drops[ClosestDrop].coords.y, Drops[ClosestDrop].coords.z, true) < 2.0 then
-                QBCore.Functions.DrawText3D(Drops[ClosestDrop].coords.x, Drops[ClosestDrop].coords.y, Drops[ClosestDrop].coords.z, "[~g~H~w~] Drop")
-                if (IsControlJustReleased(0, Keys["H"])) then
-                    TriggerServerEvent("inventory:server:OpenInventory", ClosestDrop)
+            if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Drops[ClosestDrop].coords.x, Drops[ClosestDrop].coords.y, Drops[ClosestDrop].coords.z, true) < 7.0 then
+                DrawMarker(20, Drops[ClosestDrop].coords.x, Drops[ClosestDrop].coords.y, Drops[ClosestDrop].coords.z - 0.1, 0.0, 0.0, 0.0, 180.0, 0.0, 0.0, 0.5, 0.5, 0.5, 209, 165, 33, 100, false, true, 2, false, false, false, false)
+                if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Drops[ClosestDrop].coords.x, Drops[ClosestDrop].coords.y, Drops[ClosestDrop].coords.z, true) < 2.0 then
+                    QBCore.Functions.DrawText3D(Drops[ClosestDrop].coords.x, Drops[ClosestDrop].coords.y, Drops[ClosestDrop].coords.z, "[~g~H~w~] Drop")
+                    if (IsControlJustReleased(0, Keys["H"])) then
+                        TriggerServerEvent("inventory:server:OpenInventory", ClosestDrop)
+                    end
                 end
             end
         end

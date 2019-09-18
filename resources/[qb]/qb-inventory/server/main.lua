@@ -119,6 +119,7 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 				--Player.PlayerData.items[toSlot] = fromItemData
 				if toItemData ~= nil then
 					--Player.PlayerData.items[fromSlot] = toItemData
+					local itemInfo = QBCore.Shared.Items[toItemData.name:lower()]
 					local toAmount = tonumber(toAmount) ~= nil and tonumber(toAmount) or toItemData.amount
 					if toItemData.name ~= fromItemData.name then
 						RemoveFromDrop(toInventory, toSlot, itemInfo["name"], toAmount)
@@ -154,10 +155,10 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 				Player.Functions.AddItem(fromItemData.name, fromAmount, toSlot, fromItemData.info)
 			else
 				local toItemData = Drops[toInventory].items[toSlot]
-				local itemInfo = QBCore.Shared.Items[toItemData.name:lower()]
 				RemoveFromDrop(fromInventory, fromSlot, itemInfo["name"], fromAmount)
 				--Player.PlayerData.items[toSlot] = fromItemData
 				if toItemData ~= nil then
+					local itemInfo = QBCore.Shared.Items[toItemData.name:lower()]
 					--Player.PlayerData.items[fromSlot] = toItemData
 					local toAmount = tonumber(toAmount) ~= nil and tonumber(toAmount) or toItemData.amount
 					if toItemData.name ~= fromItemData.name then
