@@ -4,8 +4,10 @@ local bankAmount = 0
 RegisterNetEvent("hud:client:SetMoney")
 AddEventHandler("hud:client:SetMoney", function()
     QBCore.Functions.GetPlayerData(function(PlayerData)
-        cashAmount = PlayerData.money["cash"]
-        bankAmount = PlayerData.money["bank"]
+        if PlayerData ~= nil and PlayerData.money ~= nil then
+            cashAmount = PlayerData.money["cash"]
+            bankAmount = PlayerData.money["bank"]
+        end
     end)
     if QBHud.Money.ShowConstant then
         SendNUIMessage({
