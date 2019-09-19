@@ -36,6 +36,22 @@ $(document).on('keydown', function() {
         }
     };
 
+    QBHud.ToggleSeatbelt = function(data) {
+        if (data.seatbelt) {
+            $(".seatbelt-text").css("color", "#5feb46");
+        } else {
+            $(".seatbelt-text").css("color", "#c92222");
+        }
+    };
+
+    QBHud.ToggleCruise = function(data) {
+        if (data.cruise) {
+            $(".cruise-text").css("color", "#5feb46");
+        } else {
+            $(".cruise-text").css("color", "#c92222");
+        }
+    };
+
     QBHud.CarHud = function(data) {
         if (data.show) {
             $(".ui-car-container").fadeIn();
@@ -53,10 +69,10 @@ $(document).on('keydown', function() {
 
         $(".speed-text").html(data.speed);
 
-        if (data.street2 != "" || data.street2 != undefined) {
-            $(".ui-car-street").html(data.direction + ' <span class="sep">|</span> ' + data.street1 + ' <span class="sep">-</span> ' + data.street2 + ' <span class="sep">|</span> ' + data.area);
+        if (data.street2 != "" && data.street2 != undefined) {
+            $(".ui-car-street").html(data.direction + ' <span class="sep">|</span> ' + data.street1 + ' <span class="sep">|</span> ' + data.street2);
         } else {
-            $(".ui-car-street").html(data.direction + ' <span class="sep">|</span> ' + data.street1 + ' <span class="sep">|</span> ' + data.area);
+            $(".ui-car-street").html(data.direction + ' <span class="sep">|</span> ' + data.street1);
         }
     };
 
@@ -128,6 +144,12 @@ $(document).on('keydown', function() {
                     break;
                 case "car":
                     QBHud.CarHud(event.data);
+                    break;
+                case "seatbelt":
+                    QBHud.ToggleSeatbelt(event.data);
+                    break;
+                case "cruise":
+                    QBHud.ToggleCruise(event.data);
                     break;
             }
         })

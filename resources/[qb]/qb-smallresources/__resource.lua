@@ -8,8 +8,11 @@ server_scripts {
 
 client_scripts {
 	"config.lua",
+	"client/main.lua",
 	"client/ignore.lua",
 	"client/density.lua",
 	"client/weapdraw.lua",
 	"client/hudcomponents.lua",
+	"client/seatbelt.lua",
+	"client/cruise.lua",
 }

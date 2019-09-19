@@ -1,11 +1,13 @@
 local speed = 0.0
+local seatbeltOn = false
+local cruiseOn = false
+
 Citizen.CreateThread(function()
     while true do 
         if showUI then
             speed = GetEntitySpeed(GetVehiclePedIsIn(GetPlayerPed(-1), false)) * 3.6
             local pos = GetEntityCoords(player)
             local street1, street2 = GetStreetNameAtCoord(pos.x, pos.y, pos.z, Citizen.ResultAsInteger(), Citizen.ResultAsInteger())
-            local current_zone = GetLabelText(GetNameOfZone(pos.x, pos.y, pos.z))
 
             SendNUIMessage({
                 action = "hudtick",
@@ -16,7 +18,6 @@ Citizen.CreateThread(function()
                 direction = GetDirectionText(GetEntityHeading(GetPlayerPed(-1))),
                 street1 = GetStreetNameFromHashKey(street1),
                 street2 = GetStreetNameFromHashKey(street2),
-                area = current_zone,
                 speed = math.ceil(speed),
             })
             Citizen.Wait(500)
@@ -41,8 +42,38 @@ Citizen.CreateThread(function()
                 action = "car",
                 show = false,
             })
+            seatbeltOn = false
+            cruiseOn = false
+
+            SendNUIMessage({
+                action = "seatbelt",
+                seatbelt = seatbeltOn,
+            })
+
+            SendNUIMessage({
+                action = "cruise",
+                cruise = cruiseOn,
+            })
         end
     end
+end)
+
+RegisterNetEvent("seatbelt:client:ToggleSeatbelt")
+AddEventHandler("seatbelt:client:ToggleSeatbelt", function()
+    seatbeltOn = not seatbeltOn
+    SendNUIMessage({
+        action = "seatbelt",
+        seatbelt = seatbeltOn,
+    })
+end)
+
+RegisterNetEvent("seatbelt:client:ToggleCruise")
+AddEventHandler("seatbelt:client:ToggleCruise", function()
+    cruiseOn = not cruiseOn
+    SendNUIMessage({
+        action = "cruise",
+        cruise = cruiseOn,
+    })
 end)
 
 function GetDirectionText(heading)
