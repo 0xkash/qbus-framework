@@ -1,0 +1,222 @@
+@font-face {
+    font-family: 'pricedownblack';
+    src: url('pricedown_bl-webfont.woff2') format('woff2'),
+         url('pricedown_bl-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'gta-ui';
+    src: url('gta-ui.ttf');
+}
+
+
+@font-face {
+    font-family: 'pricedownblack';
+    src: url('pricedown_bl-webfont.woff2') format('woff2'),
+         url('pricedown_bl-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+html {
+    overflow: hidden;
+    
+}
+
+p {
+    margin: 0 !important;
+}
+
+.money-container {
+    position: absolute;
+    right: 5vw;
+    top: 7vh;
+}
+
+.money-content {
+    padding: 3%;
+}
+
+.money-cash,.money-bank {
+    position: relative;
+    color: #ffffff;
+    font-size: 36px;
+    font-family: 'pricedownblack';
+    display: none;
+}
+
+.money-cash {
+    color: #7ee477;
+    text-shadow: 1px 1px #000000;
+    text-align: right;
+}
+
+.money-bank {
+    color: #36a8d1;
+    text-shadow: 1px 1px #000000;
+    text-align: right;
+}
+
+.minus {
+    display: none;
+    position: relative;
+    top: -2.5vh;
+    color: #cc3f32;
+}
+
+.plus {
+    display: none;
+    position: relative;
+    top: -2.5vh;
+    color: #509a54;
+}
+
+.ui-container {
+    display: none;
+    font-family: "gta-ui", Verdana, Tahoma;
+    font-size: 40px;
+    overflow:hidden;
+}
+
+.health, .armor {
+    border: 3px solid rgba(77, 77, 77, 1.0);
+    background: rgba(155, 155, 155, 1.0);
+    height: 1.5vh;
+    bottom: 1.7vh;
+    width: 7.2vw;
+}
+
+.health {
+    position:absolute;
+    left: 1.45vw;
+    padding: 0;
+    float: left;
+}
+
+.armor {
+    position:absolute;
+    left: 8.38vw;
+    padding: 0;
+    float: left;
+}
+
+.healthBar, .armorBar {
+    width: 100%;
+    height: 100%;
+    transition: 0.2s ease-in-out;
+}
+
+.healthBar {
+    background: #4e9f5a;
+}
+
+.armorBar {
+    background: #70badf;
+}
+
+.hunger, .thirst, .stamina, .oxygen, .voice {
+    background: rgba(155, 155, 155, 1.0);
+    position: absolute;
+    border: 2px solid rgba(77, 77, 77, 1.0);
+    bottom: 0.35vh;
+    width: 3.55vw;
+    height: 1.3vh;
+    padding: 0;
+    float:left;
+}
+
+.hunger {
+    left: 1.45vw;
+}
+
+.thirst {
+    left: 5vw;
+}
+
+.stamina {
+    left: 8.5vw;
+}
+
+.voice {
+    left: 12vw;
+}
+
+.oxygen {
+    left: 11.09vw;
+}
+
+
+.hungerBar, .thirstBar, .staminaBar, .oxygenBar, .voiceBar {
+    width: 100%;
+    height: 100%;
+    transition: 0.2s ease-in-out;
+}
+
+.hungerBar {
+    background: rgba(240, 200, 80, 1.0);
+} 
+
+.thirstBar {
+    background:rgba(71, 99, 173, 1.0)
+}
+
+.staminaBar {
+    background: rgba(199, 88, 74, 1.0);
+}
+
+.oxygenBar {
+    background: rgba(169, 216, 235, 1.0);
+}
+
+.voiceBar {
+    background: rgba(240, 240, 240, 1.0);
+}
+
+.ui-car-container {
+    display: none;
+}
+
+.ui-car-speed, .ui-car-fuel {
+    font-size: 32px;
+    position: absolute;
+    text-shadow: -1px 1px 2px #000, 1px 1px 2px #000, 1px -1px 0 #000, -1px -1px 0 #000;
+    color: #ffffff;
+    bottom:  3.58vh;
+}
+
+.ui-car-speed {
+    left: 17vw;
+}
+
+.speed-type {
+    position: absolute;
+    left: 1.75vw;
+    bottom: 0vh;
+}
+
+.ui-car-fuel {
+    left: 22vw;
+}
+
+.speed-text, .fuel-text {
+    color: rgba(255, 255, 255, 1.0);
+    text-shadow: -1px 1px 2px #000, 1px 1px 2px #000, 1px -1px 0 #000, -1px -1px 0 #000;
+}
+
+.ui-car-street {
+    font-size: 24px;
+    position: absolute;
+    bottom: 1.05vh;
+    left: 17vw;
+    text-shadow: -1px 1px 2px #000, 1px 1px 2px #000, 1px -1px 0 #000, -1px -1px 0 #000;
+    color: #ffffff;
+}
+
+.sep {
+    color: rgba(232, 185, 14, 1.0);
+}
+

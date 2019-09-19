@@ -42,10 +42,6 @@ QBCore.Commands.Add("tp", "Teleport naar een speler of location", {{name="id/x",
 	end
 end, "moderator")
 
-QBCore.Commands.Add("cash", "Kijk hoeveel geld je bij je hebt", {}, false, function(source, args)
-	TriggerClientEvent('QBCore:Command:ShowMoneyType', source, "cash")
-end)
-
 QBCore.Commands.Add("sv", "Spawn een voertuig", {{name="model", help="Model naam van het voertuig"}}, true, function(source, args)
 	TriggerClientEvent('QBCore:Command:SpawnVehicle', source, args[1])
 end, "admin")

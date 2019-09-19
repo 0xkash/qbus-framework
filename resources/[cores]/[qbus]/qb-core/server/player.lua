@@ -117,7 +117,7 @@ QBCore.Player.CreatePlayer = function(PlayerData)
 		if self.PlayerData.money[moneytype] ~= nil then
 			self.PlayerData.money[moneytype] = self.PlayerData.money[moneytype]+amount
 			self.Functions.UpdatePlayerData()
-			--TriggerClientEvent("QBCore:OnMoneyChange", self.PlayerData.source, moneytype, amount, true)
+			TriggerClientEvent("hud:client:OnMoneyChange", self.PlayerData.source, moneytype, amount, false)
 			return true
 		end
 		return false
@@ -134,7 +134,7 @@ QBCore.Player.CreatePlayer = function(PlayerData)
 			end
 			self.PlayerData.money[moneytype] = self.PlayerData.money[moneytype] - amount
 			self.Functions.UpdatePlayerData()
-			--TriggerClientEvent("QBCore:OnMoneyChange", self.PlayerData.source, moneytype, amount, false)
+			TriggerClientEvent("hud:client:OnMoneyChange", self.PlayerData.source, moneytype, amount, false)
 			return true
 		end
 		return false
