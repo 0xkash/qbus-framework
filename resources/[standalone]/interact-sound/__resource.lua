@@ -18,4 +18,6 @@ files {
     'client/html/sounds/houses_door_open.ogg',
     'client/html/sounds/houses_door_lock.ogg',
     'client/html/sounds/houses_door_unlock.ogg',
+    'client/html/sounds/carbuckle.ogg',
+    'client/html/sounds/carunbuckle.ogg',
 }
