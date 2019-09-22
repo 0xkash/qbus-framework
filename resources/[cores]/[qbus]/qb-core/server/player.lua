@@ -10,6 +10,7 @@ QBCore.Player.Login = function(source)
 				PlayerData.job = json.decode(PlayerData.job)
 				PlayerData.gang = json.decode(PlayerData.gang)
 				PlayerData.position = json.decode(PlayerData.position)
+				PlayerData.charinfo = json.decode(PlayerData.charinfo)
 			end
 			QBCore.Player.CheckPlayerData(source, PlayerData)
 			--TriggerClientEvent('QBCore:OnPlayerLoaded', source)

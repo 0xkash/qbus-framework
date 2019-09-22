@@ -6,6 +6,25 @@ $(document).on('keydown', function() {
     }
 });
 
+$(document).on("contextmenu", ".item-slot", function(e){
+    $(".item-slot").css("border", "1px solid rgba(255, 255, 255, 0.05)")
+    $(this).css("border", "1px solid rgba(0, 118, 214, 1)")
+    $(".ply-hotbar-inventory").css("display", "none");
+    $(".ply-iteminfo-container").css("display", "block");
+
+    FormatItemInfo($(this).data("item"));
+ });
+
+ function FormatItemInfo(itemData) {
+    if (itemData.info != "") {
+        if (itemData.name == "id_card") {
+            $(".iteminfo-content").html('<p><strong>BSN: </strong><span>' + itemData.info.citizenid + '</span></p><p><strong>Voornaam: </strong><span>' + itemData.info.firstname + '</span></p><p><strong>Achternaam: </strong><span>' + itemData.info.lastname + '</span></p><p><strong>Geboortedatum: </strong><span>' + itemData.info.birthdate + '</span></p><p><strong>Lengte: </strong><span>' + itemData.info.length + '</span></p>')
+        }
+    } else {
+        $(".iteminfo-content").html('<p><strong>Omschrijving:</strong> ' + itemData.description + '</p>')
+    }
+ }
+
 function handleDragDrop() {
     $(".item-drag").draggable({
         helper: "clone",
@@ -18,6 +37,11 @@ function handleDragDrop() {
         start: function(event, ui) {
            // $(this).css("background", "rgba(20,20,20,1.0)");
             $(this).find("img").css("filter", "brightness(50%)");
+
+            $(".item-slot").css("border", "1px solid rgba(255, 255, 255, 0.05)")
+            $(".ply-hotbar-inventory").css("display", "block");
+            $(".ply-iteminfo-container").css("display", "none");
+
             var itemData = $(this).data("item");
             var dragAmount = $("#item-amount").val();
             if (!itemData.useable) {
@@ -373,6 +397,9 @@ function InventoryError($elinv, $elslot) {
     };
 
     Inventory.Close = function() {
+        $(".item-slot").css("border", "1px solid rgba(255, 255, 255, 0.05)")
+        $(".ply-hotbar-inventory").css("display", "block");
+        $(".ply-iteminfo-container").css("display", "none");
         $("#qbus-inventory").css("display", "none");
         $(".item-slot").remove();
         $.post("http://qb-inventory/CloseInventory", JSON.stringify({}));

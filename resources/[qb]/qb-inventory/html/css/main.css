@@ -228,3 +228,31 @@ input[type=number]::-webkit-outer-spin-button {
     font-size: 14px;
 }
 
+.ply-iteminfo-container {
+    display: none;
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    margin-left: -12.5vw;
+    overflow: hidden;
+    width: 25vw;
+}
+
+.ply-iteminfo {
+    width: 100%;
+    max-width: 100%;
+}   
+
+.iteminfo-content {
+    position: relative;
+    background: rgba(20,20,20,0.5);
+    border: 2px solid rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+    padding: 3%;
+}
+
+.iteminfo-content > p > span {
+    text-align: right;
+    float: right;
+}
+

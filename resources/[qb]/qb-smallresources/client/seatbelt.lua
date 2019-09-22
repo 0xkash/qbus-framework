@@ -1,15 +1,12 @@
 local seatbeltOn = false
-local prevSpeed = 0.0
-local Speed = 0.0
+local SpeedBuffer = {}
 local vehVelocity = {x = 0.0, y = 0.0, z = 0.0}
 local vehHealth = 0.0
 Citizen.CreateThread(function()
     while true do
-        Citizen.Wait(7)
+        Citizen.Wait(1)
         if IsPedInAnyVehicle(GetPlayerPed(-1)) then
-            prevSpeed = Speed
-            Speed = GetEntitySpeed(GetVehiclePedIsIn(GetPlayerPed(-1)))
-            vehHealth = GetEntityHealth(GetVehiclePedIsIn(GetPlayerPed(-1), false))
+            --
         else
             seatbeltOn = false
         end
@@ -27,16 +24,27 @@ Citizen.CreateThread(function()
     end
 end)
 
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(0)
+        if IsPedInAnyVehicle(GetPlayerPed(-1)) then
+            SpeedBuffer[2] = SpeedBuffer[1]
+            SpeedBuffer[1] = GetEntitySpeed(GetVehiclePedIsIn(GetPlayerPed(-1), false))
+        end
+    end
+end)
+
 local thresholdSpeed = 45
 Citizen.CreateThread(function()
     while true do
-        Citizen.Wait(7)
+        Citizen.Wait(10)
         if IsPedInAnyVehicle(GetPlayerPed(-1)) then
             if not seatbeltOn or (math.floor(GetEntitySpeed(GetVehiclePedIsIn(GetPlayerPed(-1))) * 3.6)) > 180 then
                 local ForwardSpeed = GetEntitySpeedVector(GetVehiclePedIsIn(GetPlayerPed(-1), false), true).y > 1.0
-                local vehAcc = (prevSpeed - Speed) / GetFrameTime()
+                vehHealth = GetEntityHealth(GetVehiclePedIsIn(GetPlayerPed(-1), false))
+                Citizen.Wait(20)
                 if (vehHealth ~= GetEntityHealth(GetVehiclePedIsIn(GetPlayerPed(-1), false))) then
-                    if (ForwardSpeed and (prevSpeed > (thresholdSpeed / 3.6)) and (vehAcc > (thresholdSpeed * 4.81))) then
+                    if (ForwardSpeed and SpeedBuffer[2] ~= nil and (SpeedBuffer[2] > (thresholdSpeed / 3.6)) and (SpeedBuffer[2] - SpeedBuffer[1]) > (SpeedBuffer[1] * 0.178)) then
                         local pos = GetEntityCoords(GetPlayerPed(-1))
                         local fwd = GetFwd(GetPlayerPed(-1))
                         SetEntityCoords(GetPlayerPed(-1), pos.x + fwd.x, pos.y + fwd.y, pos.z - 0.47, true, true, true)
