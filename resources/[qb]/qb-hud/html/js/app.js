@@ -70,9 +70,9 @@ $(document).on('keydown', function() {
         $(".speed-text").html(data.speed);
 
         if (data.street2 != "" && data.street2 != undefined) {
-            $(".ui-car-street").html(data.direction + ' <span class="sep">|</span> ' + data.street1 + ' <span class="sep">|</span> ' + data.street2);
+            $(".ui-car-street").html(data.direction + ' | ' + data.street1 + ' | ' + data.street2);
         } else {
-            $(".ui-car-street").html(data.direction + ' <span class="sep">|</span> ' + data.street1);
+            $(".ui-car-street").html(data.direction + ' |' + data.street1);
         }
     };
 
