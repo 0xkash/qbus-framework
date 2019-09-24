@@ -22921,7 +22921,7 @@
       <handlingName>SULTANRS</handlingName>
       <fMass value="1400.000000" />
       <fInitialDragCoeff value="1.450000" />
-    <fDownforceModifier value="1.350000" />
+      <fDownforceModifier value="1.350000" />
       <fPercentSubmerged value="76.000000" />
       <vecCentreOfMassOffset x="0.000000" y="-0.071000" z="0.010000" />
       <vecInertiaMultiplier x="1.120000" y="1.000000" z="1.550000" />
