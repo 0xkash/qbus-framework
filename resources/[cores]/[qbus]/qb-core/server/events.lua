@@ -19,6 +19,59 @@ AddEventHandler('playerDropped', function(reason)
 	QBCore.Players[src] = nil
 end)
 
+-- Checking everything before joining
+AddEventHandler('playerConnecting', function(playerName, setKickReason, deferrals)
+	deferrals.defer()
+	local src = source
+	deferrals.update("\nChecking name...")
+	local name = GetPlayerName(src)
+	if(string.match(name, "[*%%'=`\"]")) then
+        QBCore.Functions.Kick(src, 'Je hebt in je naam een teken('..string.match(name, "[*%%'=`\"]")..') zitten wat niet is toegestaan.\nGelieven deze uit je steam-naam te halen.', setKickReason, deferrals)
+        CancelEvent()
+        return false
+	end
+	if(string.match(name, "drop") or string.match(name, "table") or string.match(name, "database") then
+        QBCore.Functions.Kick(src, 'Je hebt in je naam een woord (drop/table/database) zitten wat niet is toegestaan.\nGelieven je steam naam te veranderen.', setKickReason, deferrals)
+        CancelEvent()
+        return false
+	end
+	deferrals.update("\nChecking identifiers...")
+    local identifiers = GetPlayerIdentifiers(src)
+	local steamid = identifiers[1]
+	local license = identifiers[2]
+    if (QBConfig.IdentifierType == "steam" and (steamid:sub(1,6) == "steam:") == false) then
+        QBCore.Functions.Kick(src, 'Je moet steam aan hebben staan om te spelen.', setKickReason, deferrals)
+        CancelEvent()
+		return false
+	elseif (QBConfig.IdentifierType == "license" and (steamid:sub(1,6) == "license:") == false) then
+		QBCore.Functions.Kick(src, 'Geen socialclub license gevonden.', setKickReason, deferrals)
+        CancelEvent()
+		return false
+    end
+	deferrals.update("\nChecking ban status...")
+    local isBanned, Reason = false, ""
+    if(isBanned) then
+        QBCore.Functions.Kick(src, 'Ban reden:\n'..Reason, setKickReason, deferrals)
+        CancelEvent()
+        return false
+    end
+	deferrals.update("\nChecking VPN status...")
+    -- hier motte vpn zooi
+	deferrals.update("\nChecking whitelist status...")
+    if(QBCore.Functions.IsWhitelisted(src) ~= true) then
+        QBCore.Functions.Kick(src, 'Je bent helaas niet gewhitelist.', setKickReason, deferrals)
+        CancelEvent()
+        return false
+    end
+	deferrals.update("\nChecking server status...")
+    if(QBcore.Config.Server.closed) then
+		QBCore.Functions.Kick(_source, 'De server is gesloten:\n'..QBConfig.Server.reason, setKickReason, deferrals)
+        CancelEvent()
+        return false
+    end
+	-- deferrals.done()
+end)
+
 RegisterServerEvent("QBCore:UpdatePlayer")
 AddEventHandler('QBCore:UpdatePlayer', function(data)
 	local src = source
