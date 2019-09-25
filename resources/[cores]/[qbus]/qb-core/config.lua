@@ -17,4 +17,4 @@ QBConfig.Server.closed = true -- Set server closed (no one can join except peopl
 QBConfig.Server.reason = "Test reden dat de server op slot zit." -- Reason message to display when people can't join the server
 QBConfig.Server.uptime = 0 -- Time the server has been up.
 QBConfig.Server.whitelist = true -- Enable or disable whitelist on the server
-QBConfig.Server.discord = "https://discord.gg/Ttr6fY6"
+QBConfig.Server.discord = "https://discord.gg/Ttr6fY6" -- Discord invite link
