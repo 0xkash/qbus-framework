@@ -10,6 +10,7 @@ Keys = {
     ["LEFT"] = 174, ["RIGHT"] = 175, ["TOP"] = 27, ["DOWN"] = 173,
 }
 local permissionlvl = "user"
+local serverClosed = false
 
 Citizen.CreateThread(function()
 	while QBCore == nil do
@@ -34,15 +35,79 @@ end)
 
 _menuPool = NativeUI.CreatePool()
 
-mainMenu = NativeUI.CreateMenu("Qbus Admin Menu", "Qbus Admin", 1400, 100)
+mainMenu = NativeUI.CreateMenu("Admin Menu", "Qbus Admin", 1400, 100)
 _menuPool:Add(mainMenu)
 
 function ServerOptions(menu)
-    local submenu = _menuPool:AddSubMenu(menu, "Server Options", "Edit server settings such as time, weather etc.")
-    submenu:AddItem(NativeUI.CreateItem("PageFiller", "Sample description that takes more than one line. Moreso, it takes way more than two lines since it's so long. Wow, check out this length!"))
+    local submenu = _menuPool:AddSubMenu(menu, "Server Options", "Edit server settings such as time, weather etc.", true)
+    -- Setup Weathers
+    local weathers = {"CLEAR","EXTRASUNNY","CLOUDS","OVERCAST","RAIN","CLEARING","THUNDER","SMOG","FOGGY","XMAS","SNOWLIGHT","BLIZZARD"}
+    local weatherList = NativeUI.CreateListItem("Weather", weathers, 1, "Change current weather state")
+    submenu:AddItem(weatherList)
+    -- Setup Times
+    local times = {}
+    for i = 0, 23 do
+        if i < 10 then
+            table.insert(times, "0"..i..":00")
+            table.insert(times, "0"..i..":15")
+            table.insert(times, "0"..i..":30")
+            table.insert(times, "0"..i..":45")
+        else
+            table.insert(times, i..":00")
+            table.insert(times, i..":15")
+            table.insert(times, i..":30")
+            table.insert(times, i..":45")
+        end
+    end
+    local timeList = NativeUI.CreateListItem("Time", times, 1, "Change current clock time")
+    submenu:AddItem(timeList)
+
+    -- Server join enable/disable
+    local joinItem = NativeUI.CreateCheckboxItem("Server Closed", serverClosed, "Disable server joining (only admins can join)")
+    submenu:AddItem(joinItem)
+
+    submenu.OnListSelect = function(sender, item, index)
+        if item == weatherList then
+            local weather = item:IndexToItem(index)
+            SetWeatherTypeOverTime(weather, 15.0)
+        end
+        if item == timeList then
+            local time = item:IndexToItem(index)
+            local hour, minute = timeStringToInts(time)
+            NetworkOverrideClockTime(hour, minute, 0)
+        end
+    end
+
+    submenu.OnCheckboxChange = function(sender, item, checked_)
+        if item == joinItem then
+            local isClosed = checked_
+            if isClosed then
+                DisplayOnscreenKeyboard(1, "FMMC_KEY_TIP8", "", "", "", "", "", 128 + 1)
+				while UpdateOnscreenKeyboard() ~= 1 and UpdateOnscreenKeyboard() ~= 2 do
+					Citizen.Wait(7)
+				end
+                local reason = GetOnscreenKeyboardResult()
+                TriggerServerEvent("qbadmin:server:CloseServer", reason)
+            else
+                TriggerServerEvent("qbadmin:server:OpenServer")
+            end
+        end
+    end
+end
+
+function PlayerOptions(menu)
+    local submenu = _menuPool:AddSubMenu(menu, "Player Options", "Edit player settings/data such as money, items etc.", true)
+    submenu:AddItem(NativeUI.CreateItem("PageFiller", "Filler desc"))
+end
+
+function VehicleOptions(menu)
+    local submenu = _menuPool:AddSubMenu(menu, "Vehicle Options", "Spawn vehicle, set vehicle modifications, upgrade vehicle etc.", true)
+    submenu:AddItem(NativeUI.CreateItem("PageFiller", "Filler desc"))
 end
 
 ServerOptions(mainMenu)
+PlayerOptions(mainMenu)
+VehicleOptions(mainMenu)
 
 _menuPool:MouseControlsEnabled(false)
 _menuPool:MouseEdgeEnabled(false)
@@ -59,3 +124,18 @@ Citizen.CreateThread(function()
         end
     end
 end)
+
+RegisterNetEvent("qbadmin:client:SetServerStatus")
+AddEventHandler("qbadmin:client:SetServerStatus", function(isClosed)
+    serverClosed = isClosed
+end)
+
+function timeStringToInts(time)
+    if time ~= nil then
+        local timeSplit = time:split(":", time)
+        local hour = tonumber(timeSplit[1])
+        local minute = tonumber(timeSplit[2])
+        return hour, minute
+    end
+    return nil
+end
