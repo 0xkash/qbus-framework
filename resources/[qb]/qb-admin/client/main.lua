@@ -87,9 +87,9 @@ function ServerOptions(menu)
 					Citizen.Wait(7)
 				end
                 local reason = GetOnscreenKeyboardResult()
-                TriggerServerEvent("qbadmin:server:CloseServer", reason)
+                TriggerServerEvent("QBCore:server:CloseServer", reason)
             else
-                TriggerServerEvent("qbadmin:server:OpenServer")
+                TriggerServerEvent("QBCore:server:OpenServer")
             end
         end
     end

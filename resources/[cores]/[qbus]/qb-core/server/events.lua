@@ -30,7 +30,7 @@ AddEventHandler('playerConnecting', function(playerName, setKickReason, deferral
         CancelEvent()
         return false
 	end
-	if(string.match(name, "drop") or string.match(name, "table") or string.match(name, "database") then
+	if (string.match(name, "drop") or string.match(name, "table") or string.match(name, "database")) then
         QBCore.Functions.Kick(src, 'Je hebt in je naam een woord (drop/table/database) zitten wat niet is toegestaan.\nGelieven je steam naam te veranderen.', setKickReason, deferrals)
         CancelEvent()
         return false
@@ -55,21 +55,46 @@ AddEventHandler('playerConnecting', function(playerName, setKickReason, deferral
         CancelEvent()
         return false
     end
-	deferrals.update("\nChecking VPN status...")
-    -- hier motte vpn zooi
 	deferrals.update("\nChecking whitelist status...")
-    if(QBCore.Functions.IsWhitelisted(src) ~= true) then
+    if(not QBCore.Functions.IsWhitelisted(src)) then
         QBCore.Functions.Kick(src, 'Je bent helaas niet gewhitelist.', setKickReason, deferrals)
         CancelEvent()
         return false
     end
 	deferrals.update("\nChecking server status...")
-    if(QBcore.Config.Server.closed) then
-		QBCore.Functions.Kick(_source, 'De server is gesloten:\n'..QBConfig.Server.reason, setKickReason, deferrals)
+    if(QBCore.Config.Server.closed and not IsPlayerAceAllowed(src, "qbadmin.join")) then
+		QBCore.Functions.Kick(_source, 'De server is gesloten:\n'..QBCore.Config.Server.closedReason, setKickReason, deferrals)
         CancelEvent()
         return false
     end
-	-- deferrals.done()
+	deferrals.done()
+	return true
+end)
+
+RegisterServerEvent("QBCore:server:CloseServer")
+AddEventHandler('QBCore:server:CloseServer', function(reason)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    if Player.PlayerData.permission == "admin" or Player.PlayerData.permission == "god" then 
+        local reason = reason ~= nil and reason or "Geen reden opgegeven..."
+        QBCore.Config.Server.closed = true
+        QBCore.Config.Server.closedReason = reason
+        TriggerClientEvent("qbadmin:client:SetServerStatus", -1, true)
+	else
+		QBCore.Functions.Kick(src, "Je hebt hier geen permissie voor loser..", nil, nil)
+    end
+end)
+
+RegisterServerEvent("QBCore:server:OpenServer")
+AddEventHandler('QBCore:server:OpenServer', function()
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    if Player.PlayerData.permission == "admin" or Player.PlayerData.permission == "god" then
+        QBCore.Config.Server.closed = false
+        TriggerClientEvent("qbadmin:client:SetServerStatus", -1, false)
+    else
+        QBCore.Functions.Kick(src, "Je hebt hier geen permissie voor loser..", nil, nil)
+    end
 end)
 
 RegisterServerEvent("QBCore:UpdatePlayer")

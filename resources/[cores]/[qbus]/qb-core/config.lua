@@ -13,8 +13,8 @@ QBConfig.Player.MaxWeight = 120000 -- Max weight a player can carry (currently 1
 QBConfig.Player.MaxInvSlots = 40 -- Max inventory slots for a player
 
 QBConfig.Server = {} -- General server config
-QBConfig.Server.closed = true -- Set server closed (no one can join except people with ace permission 'qbadmin.join')
-QBConfig.Server.reason = "Test reden dat de server op slot zit." -- Reason message to display when people can't join the server
+QBConfig.Server.closed = false -- Set server closed (no one can join except people with ace permission 'qbadmin.join')
+QBConfig.Server.closedReason = nil -- Reason message to display when people can't join the server
 QBConfig.Server.uptime = 0 -- Time the server has been up.
-QBConfig.Server.whitelist = true -- Enable or disable whitelist on the server
+QBConfig.Server.whitelist = false -- Enable or disable whitelist on the server
 QBConfig.Server.discord = "https://discord.gg/Ttr6fY6" -- Discord invite link
