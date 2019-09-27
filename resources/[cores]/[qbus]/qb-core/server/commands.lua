@@ -24,7 +24,7 @@ QBCore.Commands.Refresh = function(source)
 end
 
 QBCore.Commands.Add("tp", "Teleport naar een speler of location", {{name="id/x", help="ID van een speler of X positie"}, {name="y", help="Y positie"}, {name="z", help="Z positie"}}, false, function(source, args)
-	if (args[1] ~= nil and (args[2] == nil or args[3] == nil)) then
+	if (args[1] ~= nil and (args[2] == nil and args[3] == nil)) then
 		-- tp to player
 		local Player = QBCore.Functions.GetPlayer(tonumber(args[1]))
 		if Player ~= nil then
@@ -35,7 +35,10 @@ QBCore.Commands.Add("tp", "Teleport naar een speler of location", {{name="id/x",
 	else
 		-- tp to location
 		if args[1] ~= nil and args[2] ~= nil and args[3] ~= nil then
-			TriggerClientEvent('QBCore:Command:TeleportToCoords', source, args[1], args[2], args[3])
+			local x = tonumber(args[1])
+			local y = tonumber(args[2])
+			local z = tonumber(args[3])
+			TriggerClientEvent('QBCore:Command:TeleportToCoords', source, x, y, z)
 		else
 			TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Niet elk argument is ingevuld (x, y, z)")
 		end

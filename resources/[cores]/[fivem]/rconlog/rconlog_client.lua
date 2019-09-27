@@ -1,10 +1,9 @@
-local MaxPlayers = GetConvarInt('sv_maxclients', 32)
-
 RegisterNetEvent('rlUpdateNames')
+
 AddEventHandler('rlUpdateNames', function()
     local names = {}
 
-    for i = 1, MaxPlayers do
+    for i = 0, 31 do
         if NetworkIsPlayerActive(i) then
             names[GetPlayerServerId(i)] = { id = i, name = GetPlayerName(i) }
         end
