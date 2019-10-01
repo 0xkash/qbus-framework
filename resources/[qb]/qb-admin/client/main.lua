@@ -100,14 +100,28 @@ function PlayerOptions(menu)
     submenu:AddItem(NativeUI.CreateItem("PageFiller", "Filler desc"))
 end
 
-function VehicleOptions(menu)
-    local submenu = _menuPool:AddSubMenu(menu, "Vehicle Options", "Spawn vehicle, set vehicle modifications, upgrade vehicle etc.", true)
-    submenu:AddItem(NativeUI.CreateItem("PageFiller", "Filler desc"))
+function VehicleMenu(menu)
+    local submenu = _menuPool:AddSubMenu(menu, "Vehicle Menu", "Spawn vehicle, set vehicle modifications, upgrade vehicle etc.", true)
+
+    local spawnItem = NativeUI.CreateItem("Spawn Vehicle", "Spawn a vehicle by vehicle model name")
+    submenu:AddItem(spawnItem)
+    submenu.OnItemSelect = function(sender, item, index)
+        if item == spawnItem then
+            DisplayOnscreenKeyboard(1, "FMMC_KEY_TIP8", "", "", "", "", "", 20)
+				while UpdateOnscreenKeyboard() ~= 1 and UpdateOnscreenKeyboard() ~= 2 do
+					Citizen.Wait(7)
+				end
+            local model = GetOnscreenKeyboardResult()
+            QBCore.Functions.SpawnVehicle(model, function(vehicle)
+                TaskWarpPedIntoVehicle(GetPlayerPed(-1), vehicle, -1)
+            end)
+        end
+    end
 end
 
 ServerOptions(mainMenu)
 PlayerOptions(mainMenu)
-VehicleOptions(mainMenu)
+VehicleMenu(mainMenu)
 
 _menuPool:MouseControlsEnabled(false)
 _menuPool:MouseEdgeEnabled(false)
