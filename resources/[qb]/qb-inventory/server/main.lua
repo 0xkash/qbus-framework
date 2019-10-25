@@ -205,10 +205,18 @@ function RemoveFromDrop(dropId, slot, itemName, amount)
 		if Drops[dropId].items[slot].amount > amount then
 			Drops[dropId].items[slot].amount = Drops[dropId].items[slot].amount - amount
 		else
-			Drops[dropId].items[slot] = nil
+			table.remove(Drops[dropId].items, slot)
+			if next(Drops[dropId].items) == nil then
+				Drops[dropId] = nil
+				TriggerClientEvent("inventory:client:RemoveDropItem", -1, dropId)
+			end
 		end
 	else
-		Drops[dropId].items[slot] = nil
+		table.remove(Drops[dropId].items, slot)
+		if Drops[dropId].items == nil then
+			table.remove(Drops, dropId)
+			TriggerClientEvent("inventory:client:RemoveDropItem", -1, dropId)
+		end
 	end
 end
 

@@ -130,6 +130,12 @@ AddEventHandler("inventory:client:AddDropItem", function(dropId, player)
     }
 end)
 
+RegisterNetEvent("inventory:client:RemoveDropItem")
+AddEventHandler("inventory:client:RemoveDropItem", function(dropId)
+    print("DASDADAD")
+    Drops[dropId] = nil
+end)
+
 RegisterNetEvent("inventory:client:DropItemAnim")
 AddEventHandler("inventory:client:DropItemAnim", function()
     RequestAnimDict("pickup_object")
