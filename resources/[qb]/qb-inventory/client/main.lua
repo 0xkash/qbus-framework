@@ -2,7 +2,8 @@ QBCore = nil
 local inventoryTest = {}
 local currentWeapon = nil
 local Drops = {}
-local ClosestDrop = {}
+local CurrentDrop = 0
+local DropsNear = {}
 
 Citizen.CreateThread(function() 
     while true do
@@ -24,7 +25,11 @@ Citizen.CreateThread(function()
         DisableControlAction(0, Keys["4"], true)
         DisableControlAction(0, Keys["5"], true)
         if IsDisabledControlJustReleased(0, Keys["TAB"]) then
-            TriggerServerEvent("inventory:server:OpenInventory")
+            if CurrentDrop ~= 0 then
+                TriggerServerEvent("inventory:server:OpenInventory", CurrentDrop)
+            else
+                TriggerServerEvent("inventory:server:OpenInventory")
+            end
         end
 
         if IsDisabledControlJustReleased(0, Keys["1"]) then
@@ -51,17 +56,10 @@ end)
 
 Citizen.CreateThread(function()
     while true do
-        Citizen.Wait(7)
-        if Drops ~= nil and ClosestDrop ~= nil then
-            local pos = GetEntityCoords(GetPlayerPed(-1), true)
-            if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Drops[ClosestDrop].coords.x, Drops[ClosestDrop].coords.y, Drops[ClosestDrop].coords.z, true) < 7.0 then
-                DrawMarker(20, Drops[ClosestDrop].coords.x, Drops[ClosestDrop].coords.y, Drops[ClosestDrop].coords.z - 0.1, 0.0, 0.0, 0.0, 180.0, 0.0, 0.0, 0.5, 0.5, 0.5, 209, 165, 33, 100, false, true, 2, false, false, false, false)
-                if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Drops[ClosestDrop].coords.x, Drops[ClosestDrop].coords.y, Drops[ClosestDrop].coords.z, true) < 2.0 then
-                    QBCore.Functions.DrawText3D(Drops[ClosestDrop].coords.x, Drops[ClosestDrop].coords.y, Drops[ClosestDrop].coords.z, "[~g~H~w~] Drop")
-                    if (IsControlJustReleased(0, Keys["H"])) then
-                        TriggerServerEvent("inventory:server:OpenInventory", ClosestDrop)
-                    end
-                end
+        Citizen.Wait(1)
+        if DropsNear ~= nil then
+            for k, v in pairs(DropsNear) do
+                DrawMarker(20, v.coords.x, v.coords.y, v.coords.z - 0.1, 0.0, 0.0, 0.0, 180.0, 0.0, 0.0, 0.5, 0.5, 0.5, 209, 165, 33, 100, false, true, 2, false, false, false, false)
             end
         end
     end
@@ -69,8 +67,24 @@ end)
 
 Citizen.CreateThread(function()
     while true do
-        SetClosestDrop()
-        Citizen.Wait(5000)
+        if next(Drops) ~= nil then
+            local pos = GetEntityCoords(GetPlayerPed(-1), true)
+            for k, v in pairs(Drops) do
+                if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, v.coords.x, v.coords.y, v.coords.z, true) < 20.0 then
+                    DropsNear[k] = v
+                    if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, v.coords.x, v.coords.y, v.coords.z, true) < 2.0 then
+                        CurrentDrop = k
+                    else
+                        CurrentDrop = nil
+                    end
+                else
+                    table.remove(DropsNear, k)
+                end
+            end
+        else
+            DropsNear = {}
+        end
+        Citizen.Wait(1000)
     end
 end)
 
@@ -132,12 +146,15 @@ end)
 
 RegisterNetEvent("inventory:client:RemoveDropItem")
 AddEventHandler("inventory:client:RemoveDropItem", function(dropId)
-    print("DASDADAD")
     Drops[dropId] = nil
+    CurrentDrop = 0
 end)
 
 RegisterNetEvent("inventory:client:DropItemAnim")
 AddEventHandler("inventory:client:DropItemAnim", function()
+    SendNUIMessage({
+        action = "close",
+    })
     RequestAnimDict("pickup_object")
     while not HasAnimDictLoaded("pickup_object") do
         Citizen.Wait(7)
@@ -170,22 +187,3 @@ end)
 RegisterNUICallback("PlayDropFail", function(data, cb)
     PlaySound(-1, "Place_Prop_Fail", "DLC_Dmod_Prop_Editor_Sounds", 0, 0, 1)
 end)
-
-function SetClosestDrop()
-	local pos = GetEntityCoords(GetPlayerPed(-1))
-	local current = nil
-	local lastdist = 0
-	if Drops ~= nil then
-		for id, drop in pairs(Drops) do
-			if current ~= nil then 
-				if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Drops[drop].coords.x, Drops[drop].coords.y, Drops[drop].coords.z, true) < lastdist then 
-					current = id
-					lastdist = GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Drops[drop].coords.x, Drops[drop].coords.y, Drops[drop].coords.z, true)
-				end
-			else
-				current = id
-			end
-		end
-		ClosestDrop = current
-	end
-end

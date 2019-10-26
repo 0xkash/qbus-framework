@@ -53,7 +53,7 @@ AddEventHandler('inventory:server:UseItem', function(inventory, item)
 end)
 
 RegisterServerEvent("inventory:server:CreateDropItem")
-AddEventHandler('inventory:server:CreateDropItem', function(inventory, item, amount, coords)
+AddEventHandler('inventory:server:CreateDropItem', function(inventory, item, amount)
 	local src = source
 	local Player = QBCore.Functions.GetPlayer(src)
 	if inventory == "player" or inventory == "hotbar" then
@@ -114,34 +114,41 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 				Player.Functions.AddItem(fromItemData.name, fromAmount, toSlot, fromItemData.info)
 			else
 				-- drop
-				local toItemData = Drops[toInventory].items[toSlot]
-				Player.Functions.RemoveItem(fromItemData.name, fromAmount, fromSlot)
-				--Player.PlayerData.items[toSlot] = fromItemData
-				if toItemData ~= nil then
-					--Player.PlayerData.items[fromSlot] = toItemData
-					local itemInfo = QBCore.Shared.Items[toItemData.name:lower()]
-					local toAmount = tonumber(toAmount) ~= nil and tonumber(toAmount) or toItemData.amount
-					if toItemData.name ~= fromItemData.name then
-						RemoveFromDrop(toInventory, toSlot, itemInfo["name"], toAmount)
-						Player.Functions.AddItem(toItemData.name, toAmount, fromSlot, toItemData.info)
-					end
+				toInventory = tonumber(toInventory)
+				if toInventory == nil or toInventory == 0 then
+					CreateNewDrop(src, fromSlot, toSlot, fromAmount)
 				else
-					--Player.PlayerData.items[fromSlot] = nil
+					local toItemData = Drops[toInventory].items[toSlot]
+					Player.Functions.RemoveItem(fromItemData.name, fromAmount, fromSlot)
+					--Player.PlayerData.items[toSlot] = fromItemData
+					if toItemData ~= nil then
+						--Player.PlayerData.items[fromSlot] = toItemData
+						local itemInfo = QBCore.Shared.Items[toItemData.name:lower()]
+						local toAmount = tonumber(toAmount) ~= nil and tonumber(toAmount) or toItemData.amount
+						if toItemData.name ~= fromItemData.name then
+							RemoveFromDrop(toInventory, toSlot, itemInfo["name"], toAmount)
+							Player.Functions.AddItem(toItemData.name, toAmount, fromSlot, toItemData.info)
+						end
+					else
+						--Player.PlayerData.items[fromSlot] = nil
+					end
+					local itemInfo = QBCore.Shared.Items[fromItemData.name:lower()]
+					AddToDrop(toInventory, toSlot, itemInfo["name"], fromAmount, fromItemData.info)
 				end
-				local itemInfo = QBCore.Shared.Items[fromItemData.name:lower()]
-				AddToDrop(toInventory, toSlot, itemInfo["name"], fromAmount, fromItemData.info)
+				
 			end
 		else
 			TriggerClientEvent("QBCore:Notify", src, "Je hebt dit item niet!", "error")
 		end
 	else
 		-- drop
+		fromInventory = tonumber(fromInventory)
 		local fromItemData = Drops[fromInventory].items[fromSlot]
 		local fromAmount = tonumber(fromAmount) ~= nil and tonumber(fromAmount) or fromItemData.amount
 		if fromItemData ~= nil and fromItemData.amount >= fromAmount then
+			local itemInfo = QBCore.Shared.Items[fromItemData.name:lower()]
 			if toInventory == "player" or toInventory == "hotbar" then
 				local toItemData = Player.Functions.GetItemBySlot(toSlot)
-				local itemInfo = QBCore.Shared.Items[fromItemData.name:lower()]
 				RemoveFromDrop(fromInventory, fromSlot, itemInfo["name"], fromAmount)
 				if toItemData ~= nil then
 					local toAmount = tonumber(toAmount) ~= nil and tonumber(toAmount) or toItemData.amount
@@ -154,6 +161,7 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 				end
 				Player.Functions.AddItem(fromItemData.name, fromAmount, toSlot, fromItemData.info)
 			else
+				toInventory = tonumber(toInventory)
 				local toItemData = Drops[toInventory].items[toSlot]
 				RemoveFromDrop(fromInventory, fromSlot, itemInfo["name"], fromAmount)
 				--Player.PlayerData.items[toSlot] = fromItemData
@@ -170,7 +178,7 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 					--Player.PlayerData.items[fromSlot] = nil
 				end
 				local itemInfo = QBCore.Shared.Items[fromItemData.name:lower()]
-				AddToDrop(toInventory, fromSlot, itemInfo["name"], fromAmount, fromItemData.info)
+				AddToDrop(toInventory, toSlot, itemInfo["name"], fromAmount, fromItemData.info)
 			end
 		else
 			TriggerClientEvent("QBCore:Notify", src, "Item bestaat niet??", "error")
@@ -179,6 +187,7 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 end)
 
 function AddToDrop(dropId, slot, itemName, amount, info)
+	local amount = tonumber(amount)
 	if Drops[dropId].items[slot] ~= nil and Drops[dropId].items[slot].name == itemName then
 		Drops[dropId].items[slot].amount = Drops[dropId].items[slot].amount + amount
 	else
@@ -205,7 +214,7 @@ function RemoveFromDrop(dropId, slot, itemName, amount)
 		if Drops[dropId].items[slot].amount > amount then
 			Drops[dropId].items[slot].amount = Drops[dropId].items[slot].amount - amount
 		else
-			table.remove(Drops[dropId].items, slot)
+			Drops[dropId].items[slot] = nil
 			if next(Drops[dropId].items) == nil then
 				Drops[dropId] = nil
 				TriggerClientEvent("inventory:client:RemoveDropItem", -1, dropId)
@@ -214,7 +223,7 @@ function RemoveFromDrop(dropId, slot, itemName, amount)
 	else
 		table.remove(Drops[dropId].items, slot)
 		if Drops[dropId].items == nil then
-			table.remove(Drops, dropId)
+			Drops[dropId].items[slot] = nil
 			TriggerClientEvent("inventory:client:RemoveDropItem", -1, dropId)
 		end
 	end
@@ -223,16 +232,47 @@ end
 function CreateDropId()
 	if Drops ~= nil then
 		local id = math.random(10000, 99999)
-		local dropid = "Drop-"..tostring(id)
+		local dropid = id
 		while Drops[dropid] ~= nil do
 			id = math.random(10000, 99999)
-			dropid = "Drop-"..tostring(id)
+			dropid = id
 		end
 		return dropid
 	else
 		local id = math.random(10000, 99999)
-		local dropid = "Drop-"..tostring(id)
+		local dropid = id
 		return dropid
+	end
+end
+
+function CreateNewDrop(source, fromSlot, toSlot, itemAmount)
+	local Player = QBCore.Functions.GetPlayer(source)
+	local itemData = Player.Functions.GetItemBySlot(fromSlot)
+	if Player.Functions.RemoveItem(itemData.name, itemAmount, itemData.slot) then
+		local itemInfo = QBCore.Shared.Items[itemData.name:lower()]
+		local dropId = CreateDropId()
+		Drops[dropId] = {}
+		Drops[dropId].items = {}
+
+		Drops[dropId].items[toSlot] = {
+			name = itemInfo["name"],
+			amount = itemAmount,
+			info = itemData.info ~= nil and itemData.info or "",
+			label = itemInfo["label"],
+			description = itemInfo["description"] ~= nil and itemInfo["description"] or "",
+			weight = itemInfo["weight"], 
+			type = itemInfo["type"], 
+			unique = itemInfo["unique"], 
+			useable = itemInfo["useable"], 
+			image = itemInfo["image"],
+			slot = toSlot,
+			id = dropId,
+		}
+		TriggerClientEvent("inventory:client:DropItemAnim", source)
+		TriggerClientEvent("inventory:client:AddDropItem", -1, dropId, source)
+	else
+		TriggerClientEvent("QBCore:Notify", src, "Je hebt dit item niet!", "error")
+		return
 	end
 end
 

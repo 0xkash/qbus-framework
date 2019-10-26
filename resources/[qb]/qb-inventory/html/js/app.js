@@ -339,12 +339,18 @@ function InventoryError($elinv, $elslot) {
 
     Inventory.slots = 40;
 
+    Inventory.dropslots = 100;
+    Inventory.droplabel = "Drop :)";
+    Inventory.dropmaxweight = 900000
+
     Inventory.Open = function(data) {
         var totalWeight = 0;
         var totalWeightOther = 0;
         $("#qbus-inventory").css("display", "block");
-        if(data.other != null) {
+        if(data.other != null && data.other != "") {
             $(".other-inventory").attr("data-inventory", data.other.name);
+        } else {
+            $(".other-inventory").attr("data-inventory", 0);
         }
         // Hotbar
         for(i = 1; i < 6; i++) {
@@ -355,8 +361,12 @@ function InventoryError($elinv, $elslot) {
             $(".player-inventory").append('<div class="item-slot" data-slot="' + i + '"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div>');
         }
 
-        if (data.other != null ) {
+        if (data.other != null && data.other != "") {
             for(i = 1; i < (data.other.slots + 1); i++) {
+                $(".other-inventory").append('<div class="item-slot" data-slot="' + i + '"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div>');
+            }
+        } else {
+            for(i = 1; i < (Inventory.dropslots + 1); i++) {
                 $(".other-inventory").append('<div class="item-slot" data-slot="' + i + '"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div>');
             }
         }
@@ -377,7 +387,7 @@ function InventoryError($elinv, $elslot) {
             });
         }
 
-        if (data.other != null && data.other.inventory) {
+        if ((data.other != null && data.other != "") && data.other.inventory != null) {
             $.each(data.other.inventory, function (i, item) {
                 if (item != null) {
                     totalWeightOther += (item.weight * item.amount);
@@ -391,6 +401,8 @@ function InventoryError($elinv, $elslot) {
         $(".player-inv-info p").html("Eigen Inventaris - Gewicht: " + (totalWeight / 1000).toFixed(1) + " / " + (data.maxweight / 1000).toFixed(1) + "kg");
         if (data.other != null) {
             $(".other-inv-info p").html(data.other.label + " - Gewicht: " + (totalWeightOther / 1000).toFixed(1) + " / " + (data.other.maxweight / 1000).toFixed(1) + "kg");
+        } else {
+            $(".other-inv-info p").html(Inventory.droplabel + " - Gewicht: " + (totalWeightOther / 1000).toFixed(1) + " / " + (Inventory.dropmaxweight / 1000).toFixed(1) + "kg");
         }
 
         handleDragDrop();
