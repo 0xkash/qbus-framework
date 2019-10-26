@@ -1,9 +1,10 @@
 QBCore.Players = {}
 QBCore.Player = {}
 
-QBCore.Player.Login = function(source, newData, citizenid)
+QBCore.Player.Login = function(source, citizenid, newData)
 	if source ~= nil then
-		if citizenid ~= nil then
+		print(citizenid)
+		if citizenid then
 			QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `citizenid` = '"..citizenid.."'", function(result)
 				local PlayerData = result[1]
 				if PlayerData ~= nil then
@@ -296,7 +297,7 @@ QBCore.Player.LoadInventory = function(PlayerData)
 		if result ~= nil then
 			for _, item in pairs(result) do
 				local itemInfo = QBCore.Shared.Items[item.name:lower()]
-				inventory[item.slot] = {name = itemInfo["name"], amount = item.amount, info = item.info ~= nil and item.info or "", label = itemInfo["label"], description = itemInfo["description"] ~= nil and itemInfo["description"] or "", weight = itemInfo["weight"], type = itemInfo["type"], unique = itemInfo["unique"], useable = itemInfo["useable"], image = itemInfo["image"], slot = item.slot}
+				inventory[item.slot] = {name = itemInfo["name"], amount = item.amount, info = json.decode(item.info) ~= nil and json.decode(item.info) or "", label = itemInfo["label"], description = itemInfo["description"] ~= nil and itemInfo["description"] or "", weight = itemInfo["weight"], type = itemInfo["type"], unique = itemInfo["unique"], useable = itemInfo["useable"], image = itemInfo["image"], slot = item.slot}
 			end
 		end
 	end)
@@ -308,7 +309,7 @@ QBCore.Player.SaveInventory = function(PlayerData)
 	if PlayerData.items ~= nil then
 		for slot, item in pairs(PlayerData.items) do
 			if PlayerData.items[slot] ~= nil then
-				QBCore.Functions.ExecuteSql("INSERT INTO `playeritems` (`citizenid`, `name`, `amount`, `info`, `type`, `slot`) VALUES ('"..PlayerData.citizenid.."', '"..PlayerData.items[slot].name.."', '"..PlayerData.items[slot].amount.."', '"..PlayerData.items[slot].info.."', '"..PlayerData.items[slot].type.."', '"..slot.."')")
+				QBCore.Functions.ExecuteSql("INSERT INTO `playeritems` (`citizenid`, `name`, `amount`, `info`, `type`, `slot`) VALUES ('"..PlayerData.citizenid.."', '"..PlayerData.items[slot].name.."', '"..PlayerData.items[slot].amount.."', '"..json.encode(PlayerData.items[slot].info).."', '"..PlayerData.items[slot].type.."', '"..slot.."')")
 			end
 		end
 	end
