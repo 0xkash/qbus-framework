@@ -40,7 +40,6 @@ end)
 RegisterServerEvent('qb-multicharacter:server:deleteCharacter')
 AddEventHandler('qb-multicharacter:server:deleteCharacter', function(citizenid)
     local src = source
-    local citizenid = tonumber(citizenid)
     QBCore.Player.DeleteCharacter(src, citizenid)
 end)
 

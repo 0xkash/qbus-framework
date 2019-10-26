@@ -72,11 +72,6 @@ QBCore.Player.CheckPlayerData = function(source, PlayerData)
 	QBCore.Player.CreatePlayer(PlayerData)
 end
 
-QBCore.Player.DeleteCharacter = function(source, citizenid)
-	local citizenid = tonumber(citizenid)
-	QBCore.Functions.ExecuteSql("DELETE FROM `players` WHERE `citizenid` = '"..citizenid.."'")
-end
-
 QBCore.Player.CreatePlayer = function(PlayerData)
 	local self = {}
 	self.Functions = {}
@@ -281,7 +276,7 @@ QBCore.Player.Save = function(source)
 			if result[1] == nil then
 				QBCore.Functions.ExecuteSql("INSERT INTO `players` (`citizenid`, `cid`, `steam`, `license`, `name`, `money`, `permission`, `charinfo`, `job`, `gang`, `position`) VALUES ('"..PlayerData.citizenid.."', '"..tonumber(PlayerData.cid).."', '"..PlayerData.steam.."', '"..PlayerData.license.."', '"..PlayerData.name.."', '"..json.encode(PlayerData.money).."', '"..PlayerData.permission.."', '"..json.encode(PlayerData.charinfo).."', '"..json.encode(PlayerData.job).."', '"..json.encode(PlayerData.gang).."', '"..json.encode(PlayerData.position).."')")
 			else
-				QBCore.Functions.ExecuteSql("UPDATE `players` SET citizenid='"..PlayerData.citizenid.."',steam='"..PlayerData.steam.."',license='"..PlayerData.license.."',name='"..PlayerData.name.."',money='"..json.encode(PlayerData.money).."',permission='"..PlayerData.permission.."',charinfo='"..json.encode(PlayerData.charinfo).."',job='"..json.encode(PlayerData.job).."',gang='"..json.encode(PlayerData.gang).."',position='"..json.encode(PlayerData.position).."' WHERE `"..QBCore.Config.IdentifierType.."` = '"..PlayerData.steam.."'")
+				QBCore.Functions.ExecuteSql("UPDATE `players` SET steam='"..PlayerData.steam.."',license='"..PlayerData.license.."',name='"..PlayerData.name.."',money='"..json.encode(PlayerData.money).."',permission='"..PlayerData.permission.."',charinfo='"..json.encode(PlayerData.charinfo).."',job='"..json.encode(PlayerData.job).."',gang='"..json.encode(PlayerData.gang).."',position='"..json.encode(PlayerData.position).."' WHERE `citizenid` = '"..PlayerData.citizenid.."'")
 			end			
 			QBCore.Player.SaveInventory(PlayerData)
 	    end)
@@ -289,6 +284,10 @@ QBCore.Player.Save = function(source)
 	else
 		QBCore.ShowError(GetCurrentResourceName(), "ERROR QBCORE.PLAYER.SAVE - PLAYERDATA IS EMPTY!")
 	end
+end
+
+QBCore.Player.DeleteCharacter = function(source, citizenid)
+	QBCore.Functions.ExecuteSql("DELETE FROM `players` WHERE `citizenid` = '"..citizenid.."'")
 end
 
 QBCore.Player.LoadInventory = function(PlayerData)
