@@ -61,6 +61,12 @@ end)
 RegisterNetEvent('qb-multicharacter:client:chooseChar')
 AddEventHandler('qb-multicharacter:client:chooseChar', function()
     openCharMenu(true)
+    QBCore.Functions.TriggerCallback("test:yeet", function(result)
+        SendNUIMessage({
+            action = "setupCharacters",
+            characters = result
+        })
+    end)
 end)
 
 function selectChar()
