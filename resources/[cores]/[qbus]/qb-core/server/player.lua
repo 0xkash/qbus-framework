@@ -1,73 +1,29 @@
 QBCore.Players = {}
 QBCore.Player = {}
 
-QBCore.Player.Login = function(source, citizenid)
+QBCore.Player.Login = function(source, citizenid, newData)
 	if source ~= nil then
-		QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `citizenid` = '"..citizenid.."'", function(result)
-			local PlayerData = result[1]
-			if PlayerData ~= nil then
-				PlayerData.money = json.decode(PlayerData.money)
-				PlayerData.job = json.decode(PlayerData.job)
-				PlayerData.gang = json.decode(PlayerData.gang)
-				PlayerData.position = json.decode(PlayerData.position)
-				PlayerData.charinfo = json.decode(PlayerData.charinfo)
-			end
-			QBCore.Player.CheckPlayerData(source, PlayerData)
-		end)
+		print(citizenid)
+		if citizenid then
+			QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `citizenid` = '"..citizenid.."'", function(result)
+				local PlayerData = result[1]
+				if PlayerData ~= nil then
+					PlayerData.money = json.decode(PlayerData.money)
+					PlayerData.job = json.decode(PlayerData.job)
+					PlayerData.gang = json.decode(PlayerData.gang)
+					PlayerData.position = json.decode(PlayerData.position)
+					PlayerData.charinfo = json.decode(PlayerData.charinfo)
+				end
+				QBCore.Player.CheckPlayerData(source, PlayerData)
+			end)
+		else
+			QBCore.Player.CheckPlayerData(source, newData)
+		end
 		return true
 	else
 		QBCore.ShowError(GetCurrentResourceName(), "ERROR QBCORE.PLAYER.LOGIN - NO SOURCE GIVEN!")
 		return false
 	end
-end
-
-QBCore.Player.CreateCharacter = function(source, cData)
-	PlayerData = PlayerData ~= nil and PlayerData or {}
-
-	PlayerData.source = source
-	PlayerData.citizenid = PlayerData.citizenid ~= nil and PlayerData.citizenid or QBCore.Player.CreateCitizenId()
-	PlayerData.steam = PlayerData.steam ~= nil and PlayerData.steam or QBCore.Functions.GetIdentifier(source, "steam")
-	PlayerData.license = PlayerData.license ~= nil and PlayerData.license or QBCore.Functions.GetIdentifier(source, "license")
-	PlayerData.name = GetPlayerName(source)
-
-	PlayerData.money = PlayerData.money ~= nil and PlayerData.money or {}
-	for moneytype, startamount in pairs(QBCore.Config.Money.MoneyTypes) do
-		PlayerData.money[moneytype] = PlayerData.money[moneytype] ~= nil and PlayerData.money[moneytype] or startamount
-	end
-
-	PlayerData.permission = PlayerData.permission ~= nil and PlayerData.permission or "user"
-
-	PlayerData.charinfo = PlayerData.charinfo ~= nil and PlayerData.charinfo or {}
-	PlayerData.charinfo.firstname = cData.firstname
-	PlayerData.charinfo.lastname = cData.lastname
-	PlayerData.charinfo.birthdate = cData.birthdate
-	PlayerData.charinfo.gender = cData.sex
-	PlayerData.charinfo.backstory = PlayerData.charinfo.backstory ~= nil and PlayerData.charinfo.backstory or "placeholder backstory"
-	PlayerData.charinfo.nationality = cData.nationality
-	PlayerData.charinfo.phone = "06"..math.random(11111111, 99999999)
-	PlayerData.charinfo.account = "NL0"..math.random(1,9).."QBBA"..math.random(1111,9999)..math.random(1111,9999)..math.random(11,99)
-	
-	PlayerData.job = PlayerData.job ~= nil and PlayerData.job or {}
-	PlayerData.job.name = PlayerData.job.name ~= nil and PlayerData.job.name or "unemployed"
-	PlayerData.job.label = PlayerData.job.label ~= nil and PlayerData.job.label or "Werkloos"
-	PlayerData.job.grade = PlayerData.job.grade ~= nil and PlayerData.job.grade or 1
-	PlayerData.job.gradelabel = PlayerData.job.gradelabel ~= nil and PlayerData.job.gradelabel or "Uitkering"
-	PlayerData.job.payment = PlayerData.job.payment ~= nil and PlayerData.job.payment or 10
-	PlayerData.job.onduty = PlayerData.job.onduty ~= nil and PlayerData.job.onduty or false
-	
-	PlayerData.gang = PlayerData.gang ~= nil and PlayerData.gang or {}
-	PlayerData.gang.name = PlayerData.gang.name ~= nil and PlayerData.gang.name or "nogang"
-	PlayerData.gang.label = PlayerData.gang.label ~= nil and PlayerData.gang.label or "Geen gang"
-	PlayerData.gang.grade = PlayerData.gang.grade ~= nil and PlayerData.gang.grade or 1
-	PlayerData.gang.gradelabel = PlayerData.gang.gradelabel ~= nil and PlayerData.gang.gradelabel or "gang"
-
-	PlayerData.position = PlayerData.position ~= nil and PlayerData.position or QBConfig.DefaultSpawn
-
-	QBCore.Functions.ExecuteSql("INSERT INTO `players` (`citizenid`, `cid`, `steam`, `license`, `name`, `money`, `permission`, `charinfo`, `job`, `gang`, `position`) VALUES ('"..PlayerData.citizenid.."', '"..tonumber(cData.cid).."', '"..PlayerData.steam.."', '"..PlayerData.license.."', '"..PlayerData.name.."', '"..json.encode(PlayerData.money).."', '"..PlayerData.permission.."', '"..json.encode(PlayerData.charinfo).."', '"..json.encode(PlayerData.job).."', '"..json.encode(PlayerData.gang).."', '"..json.encode(PlayerData.position).."')")
-end
-
-QBCore.Player.DeleteCharacter = function(source, cid)
-	QBCore.Functions.ExecuteSql("DELETE FROM `players` WHERE `cid` = '"..cid.."'")
 end
 
 QBCore.Player.CheckPlayerData = function(source, PlayerData)
@@ -78,6 +34,7 @@ QBCore.Player.CheckPlayerData = function(source, PlayerData)
 	PlayerData.steam = PlayerData.steam ~= nil and PlayerData.steam or QBCore.Functions.GetIdentifier(source, "steam")
 	PlayerData.license = PlayerData.license ~= nil and PlayerData.license or QBCore.Functions.GetIdentifier(source, "license")
 	PlayerData.name = GetPlayerName(source)
+	PlayerData.cid = PlayerData.cid ~= nil and PlayerData.cid or 1
 
 	PlayerData.money = PlayerData.money ~= nil and PlayerData.money or {}
 	for moneytype, startamount in pairs(QBCore.Config.Money.MoneyTypes) do
@@ -87,14 +44,14 @@ QBCore.Player.CheckPlayerData = function(source, PlayerData)
 	PlayerData.permission = PlayerData.permission ~= nil and PlayerData.permission or "user"
 
 	PlayerData.charinfo = PlayerData.charinfo ~= nil and PlayerData.charinfo or {}
-	PlayerData.charinfo.firstname = PlayerData.charinfo.firstname ~= nil and PlayerData.charinfo.firstname or "Kees"
-	PlayerData.charinfo.lastname = PlayerData.charinfo.lastname ~= nil and PlayerData.charinfo.lastname or "Lama"
-	PlayerData.charinfo.birthdate = PlayerData.charinfo.birthdate ~= nil and PlayerData.charinfo.birthdate or "1970-01-01"
-	PlayerData.charinfo.gender = PlayerData.charinfo.gender ~= nil and PlayerData.charinfo.gender or 0
+	PlayerData.charinfo.firstname = PlayerData.charinfo.firstname ~= nil and PlayerData.charinfo.firstname or "Firstname"
+	PlayerData.charinfo.lastname = PlayerData.charinfo.lastname ~= nil and PlayerData.charinfo.lastname or "Lastname"
+	PlayerData.charinfo.birthdate = PlayerData.charinfo.birthdate ~= nil and PlayerData.charinfo.birthdate or "00-00-0000"
+	PlayerData.charinfo.gender = PlayerData.charinfo.gender ~= nil and PlayerData.charinfo.gender or 1
 	PlayerData.charinfo.backstory = PlayerData.charinfo.backstory ~= nil and PlayerData.charinfo.backstory or "placeholder backstory"
 	PlayerData.charinfo.nationality = PlayerData.charinfo.nationality ~= nil and PlayerData.charinfo.nationality or "Nederlands"
-	PlayerData.charinfo.phone = PlayerData.charinfo.phone ~= nil and PlayerData.charinfo.phone or "0612345678"
-	PlayerData.charinfo.account = PlayerData.charinfo.account ~= nil and PlayerData.charinfo.account or "NL01QB012312312"
+	PlayerData.charinfo.phone = PlayerData.charinfo.phone ~= nil and PlayerData.charinfo.phone or "06"..math.random(11111111, 99999999)
+	PlayerData.charinfo.account = PlayerData.charinfo.account ~= nil and PlayerData.charinfo.account or "NL0"..math.random(1,9).."QBBA"..math.random(1111,9999)..math.random(1111,9999)..math.random(11,99)
 	
 	PlayerData.job = PlayerData.job ~= nil and PlayerData.job or {}
 	PlayerData.job.name = PlayerData.job.name ~= nil and PlayerData.job.name or "unemployed"
@@ -318,9 +275,9 @@ QBCore.Player.Save = function(source)
 	if PlayerData ~= nil then
 		QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `citizenid` = '"..PlayerData.citizenid.."'", function(result)
 			if result[1] == nil then
-				QBCore.Functions.ExecuteSql("INSERT INTO `players` (`citizenid`, `steam`, `license`, `name`, `money`, `permission`, `charinfo`, `job`, `gang`, `position`) VALUES ('"..PlayerData.citizenid.."', '"..PlayerData.steam.."', '"..PlayerData.license.."', '"..PlayerData.name.."', '"..json.encode(PlayerData.money).."', '"..PlayerData.permission.."', '"..json.encode(PlayerData.charinfo).."', '"..json.encode(PlayerData.job).."', '"..json.encode(PlayerData.gang).."', '"..json.encode(PlayerData.position).."')")
+				QBCore.Functions.ExecuteSql("INSERT INTO `players` (`citizenid`, `cid`, `steam`, `license`, `name`, `money`, `permission`, `charinfo`, `job`, `gang`, `position`) VALUES ('"..PlayerData.citizenid.."', '"..tonumber(PlayerData.cid).."', '"..PlayerData.steam.."', '"..PlayerData.license.."', '"..PlayerData.name.."', '"..json.encode(PlayerData.money).."', '"..PlayerData.permission.."', '"..json.encode(PlayerData.charinfo).."', '"..json.encode(PlayerData.job).."', '"..json.encode(PlayerData.gang).."', '"..json.encode(PlayerData.position).."')")
 			else
-				QBCore.Functions.ExecuteSql("UPDATE `players` SET citizenid='"..PlayerData.citizenid.."',steam='"..PlayerData.steam.."',license='"..PlayerData.license.."',name='"..PlayerData.name.."',money='"..json.encode(PlayerData.money).."',permission='"..PlayerData.permission.."',charinfo='"..json.encode(PlayerData.charinfo).."',job='"..json.encode(PlayerData.job).."',gang='"..json.encode(PlayerData.gang).."',position='"..json.encode(PlayerData.position).."' WHERE `"..QBCore.Config.IdentifierType.."` = '"..PlayerData.steam.."'")
+				QBCore.Functions.ExecuteSql("UPDATE `players` SET steam='"..PlayerData.steam.."',license='"..PlayerData.license.."',name='"..PlayerData.name.."',money='"..json.encode(PlayerData.money).."',permission='"..PlayerData.permission.."',charinfo='"..json.encode(PlayerData.charinfo).."',job='"..json.encode(PlayerData.job).."',gang='"..json.encode(PlayerData.gang).."',position='"..json.encode(PlayerData.position).."' WHERE `citizenid` = '"..PlayerData.citizenid.."'")
 			end			
 			QBCore.Player.SaveInventory(PlayerData)
 	    end)
@@ -330,13 +287,17 @@ QBCore.Player.Save = function(source)
 	end
 end
 
+QBCore.Player.DeleteCharacter = function(source, citizenid)
+	QBCore.Functions.ExecuteSql("DELETE FROM `players` WHERE `citizenid` = '"..citizenid.."'")
+end
+
 QBCore.Player.LoadInventory = function(PlayerData)
 	local inventory = {}
 	QBCore.Functions.ExecuteSql("SELECT * FROM `playeritems` WHERE `citizenid` = '"..PlayerData.citizenid.."'", function(result)
 		if result ~= nil then
 			for _, item in pairs(result) do
 				local itemInfo = QBCore.Shared.Items[item.name:lower()]
-				inventory[item.slot] = {name = itemInfo["name"], amount = item.amount, info = item.info ~= nil and item.info or "", label = itemInfo["label"], description = itemInfo["description"] ~= nil and itemInfo["description"] or "", weight = itemInfo["weight"], type = itemInfo["type"], unique = itemInfo["unique"], useable = itemInfo["useable"], image = itemInfo["image"], slot = item.slot}
+				inventory[item.slot] = {name = itemInfo["name"], amount = item.amount, info = json.decode(item.info) ~= nil and json.decode(item.info) or "", label = itemInfo["label"], description = itemInfo["description"] ~= nil and itemInfo["description"] or "", weight = itemInfo["weight"], type = itemInfo["type"], unique = itemInfo["unique"], useable = itemInfo["useable"], image = itemInfo["image"], slot = item.slot}
 			end
 		end
 	end)
@@ -348,7 +309,7 @@ QBCore.Player.SaveInventory = function(PlayerData)
 	if PlayerData.items ~= nil then
 		for slot, item in pairs(PlayerData.items) do
 			if PlayerData.items[slot] ~= nil then
-				QBCore.Functions.ExecuteSql("INSERT INTO `playeritems` (`citizenid`, `name`, `amount`, `info`, `type`, `slot`) VALUES ('"..PlayerData.citizenid.."', '"..PlayerData.items[slot].name.."', '"..PlayerData.items[slot].amount.."', '"..PlayerData.items[slot].info.."', '"..PlayerData.items[slot].type.."', '"..slot.."')")
+				QBCore.Functions.ExecuteSql("INSERT INTO `playeritems` (`citizenid`, `name`, `amount`, `info`, `type`, `slot`) VALUES ('"..PlayerData.citizenid.."', '"..PlayerData.items[slot].name.."', '"..PlayerData.items[slot].amount.."', '"..json.encode(PlayerData.items[slot].info).."', '"..PlayerData.items[slot].type.."', '"..slot.."')")
 			end
 		end
 	end

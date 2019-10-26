@@ -231,7 +231,7 @@ input[type=number]::-webkit-outer-spin-button {
 .ply-iteminfo-container {
     display: none;
     position: absolute;
-    bottom: 20%;
+    top: 70%;
     left: 50%;
     margin-left: -12.5vw;
     overflow: hidden;

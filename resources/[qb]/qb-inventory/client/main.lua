@@ -59,7 +59,9 @@ Citizen.CreateThread(function()
         Citizen.Wait(1)
         if DropsNear ~= nil then
             for k, v in pairs(DropsNear) do
-                DrawMarker(20, v.coords.x, v.coords.y, v.coords.z - 0.1, 0.0, 0.0, 0.0, 180.0, 0.0, 0.0, 0.5, 0.5, 0.5, 209, 165, 33, 100, false, true, 2, false, false, false, false)
+                if v ~= nil then
+                    DrawMarker(20, v.coords.x, v.coords.y, v.coords.z - 0.1, 0.0, 0.0, 0.0, 180.0, 0.0, 0.0, 0.5, 0.5, 0.5, 209, 165, 33, 100, false, true, 2, false, false, false, false)
+                end
             end
         end
     end
@@ -70,7 +72,7 @@ Citizen.CreateThread(function()
         if next(Drops) ~= nil then
             local pos = GetEntityCoords(GetPlayerPed(-1), true)
             for k, v in pairs(Drops) do
-                if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, v.coords.x, v.coords.y, v.coords.z, true) < 20.0 then
+                if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, v.coords.x, v.coords.y, v.coords.z, true) < 10.0 then
                     DropsNear[k] = v
                     if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, v.coords.x, v.coords.y, v.coords.z, true) < 2.0 then
                         CurrentDrop = k
@@ -78,7 +80,7 @@ Citizen.CreateThread(function()
                         CurrentDrop = nil
                     end
                 else
-                    table.remove(DropsNear, k)
+                    DropsNear[k] = nil
                 end
             end
         else

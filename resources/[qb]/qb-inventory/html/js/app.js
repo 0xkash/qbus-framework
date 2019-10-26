@@ -16,9 +16,13 @@ $(document).on("contextmenu", ".item-slot", function(e){
  });
 
  function FormatItemInfo(itemData) {
-    if (itemData.info != "") {
+    if (itemData != null && itemData.info != "") {
         if (itemData.name == "id_card") {
-            $(".iteminfo-content").html('<p><strong>BSN: </strong><span>' + itemData.info.citizenid + '</span></p><p><strong>Voornaam: </strong><span>' + itemData.info.firstname + '</span></p><p><strong>Achternaam: </strong><span>' + itemData.info.lastname + '</span></p><p><strong>Geboortedatum: </strong><span>' + itemData.info.birthdate + '</span></p><p><strong>Lengte: </strong><span>' + itemData.info.length + '</span></p>')
+            var gender = "Man";
+            if (itemData.info.gender == 1) {
+                gender = "Vrouw";
+            }
+            $(".iteminfo-content").html('<p><strong>BSN: </strong><span>' + itemData.info.citizenid + '</span></p><p><strong>Voornaam: </strong><span>' + itemData.info.firstname + '</span></p><p><strong>Achternaam: </strong><span>' + itemData.info.lastname + '</span></p><p><strong>Geboortedatum: </strong><span>' + itemData.info.birthdate + '</span></p><p><strong>Geslacht: </strong><span>' + gender + '</span></p><p><strong>Nationaliteit: </strong><span>' + itemData.info.nationality + '</span></p>')
         }
     } else {
         $(".iteminfo-content").html('<p><strong>Omschrijving:</strong> ' + itemData.description + '</p>')

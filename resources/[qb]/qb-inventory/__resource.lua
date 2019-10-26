@@ -27,4 +27,5 @@ files {
 	'html/images/copper.png',
 	'html/images/pistol_ammo.png',
 	'html/images/combatpistol.png',
+	'html/images/id_card.png',
 }

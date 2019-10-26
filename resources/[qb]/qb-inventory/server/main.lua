@@ -304,6 +304,7 @@ QBCore.Commands.Add("giveitem", "Geef een item aan een speler", {{name="id", hel
 					info.lastname = Player.PlayerData.charinfo.lastname
 					info.birthdate = Player.PlayerData.charinfo.birthdate
 					info.gender = Player.PlayerData.charinfo.gender
+					info.nationality = Player.PlayerData.charinfo.nationality
 				end
 
 				if Player.Functions.AddItem(itemData["name"], amount, nil, info) then
