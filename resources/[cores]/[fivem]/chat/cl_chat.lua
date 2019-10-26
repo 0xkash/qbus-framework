@@ -27,9 +27,11 @@ AddEventHandler('chatMessage', function(author, ctype, text)
     type = 'ON_MESSAGE',
     message = {
       template = '<div class="chat-message '..ctype..'"><div class="chat-message-body"><strong>{0}:</strong> {1}</div></div>',
-      args = args,
+      args = args
     }
   })
+
+  print(json.encode(args))
 end)
 
 AddEventHandler('__cfx_internal:serverPrint', function(msg)

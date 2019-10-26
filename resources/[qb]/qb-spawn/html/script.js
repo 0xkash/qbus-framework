@@ -52,11 +52,15 @@ $(document).on('click', '#submit-spawn', function(evt){
 
 function setupLocations(locations) {
     var parent = $('.spawn-locations')
-    $(parent).append('<div class="location" id="location" data-location="current" data-label="Last Locations"><p><span id="current-location">Last Location</span></p></div>');
-
-    $.each(locations, function(index, location){
-        $(parent).append('<div class="location" id="location" data-location="'+location.location+'" data-label="'+location.label+'"><p><span id="'+location.location+'">'+location.label+'</span></p></div>')
-    });
-    $(parent).append('<div class="submit-spawn" id="submit-spawn"><p><span id="spawn-label"></span></p></div>');
-    $('.submit-spawn').hide();
+    $(parent).html("");
+    
+    setTimeout(function(){
+        $(parent).append('<div class="location" id="location" data-location="current" data-label="Last Locations"><p><span id="current-location">Last Location</span></p></div>');
+    
+        $.each(locations, function(index, location){
+            $(parent).append('<div class="location" id="location" data-location="'+location.location+'" data-label="'+location.label+'"><p><span id="'+location.location+'">'+location.label+'</span></p></div>')
+        });
+        $(parent).append('<div class="submit-spawn" id="submit-spawn"><p><span id="spawn-label"></span></p></div>');
+        $('.submit-spawn').hide();
+    }, 100)
 }

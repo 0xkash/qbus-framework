@@ -15,7 +15,7 @@ AddEventHandler('_chat:messageEntered', function(author, color, message)
     TriggerEvent('chatMessage', source, author, message)
 
     if not WasEventCanceled() then
-        TriggerClientEvent('chatMessage', -1, author,  nil, message)
+        TriggerClientEvent('chatMessage', -1, author,  false, message)
     end
 
     print(author .. '^7: ' .. message .. '^7')
