@@ -78,20 +78,14 @@ end)
 
 RegisterNUICallback('createNewCharacter', function(data)
     local cData = data
-
-    if cData.sex == "1" then
-        cData.sex = 0
-    else
-        cData.sex = 1
-    end
+    cData.gender = tonumber (cData.gender)
 
     TriggerServerEvent('qb-multicharacter:server:createCharacter', cData)
     Citizen.Wait(500)
 end)
 
 RegisterNUICallback('removeCharacter', function(data)
-    local cid = tonumber(data.cid)
-
+    local citizenid = tonumber(data.citizenid)
     TriggerServerEvent('qb-multicharacter:server:deleteCharacter', cid)
 end)
 

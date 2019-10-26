@@ -64,6 +64,7 @@ function setupCharInfo(cData) {
 function setupCharacters(characters) {
     $.each(characters, function(index, char){
         $('#char-'+char.cid).html("");
+        $('#char-'+char.cid).data("citizenid", char.citizenid);
         setTimeout(function(){
             $('#char-'+char.cid).html('<span id="slot-name">'+char.charinfo.firstname+' '+char.charinfo.lastname+'<span id="cid">' + char.citizenid + '</span></span>');
             $('#char-'+char.cid).data('cData', char)
@@ -122,7 +123,7 @@ $(document).on('click', '#create', function(e){
         lastname: $('#last_name').val(),
         nationality: $('#nationality').val(),
         birthdate: $('#datepicker').val(),
-        sex: $('#sex').val(),
+        gender: $('#sex').val(),
         cid: $(selectedChar).attr('id').replace('char-', ''),
     }))
     $('.character-register').fadeOut(150);
@@ -132,7 +133,7 @@ $(document).on('click', '#create', function(e){
 
 $(document).on('click', '#accept-delete', function(e){
     $.post('http://qb-multicharacter/removeCharacter', JSON.stringify({
-        cid: $(selectedChar).attr('id').replace('char-', ''),
+        citizenid: $(selectedChar).data("citizenid"),
     }));
     $('.character-delete').fadeOut(150);
     $('.characters-block').css("filter", "none");

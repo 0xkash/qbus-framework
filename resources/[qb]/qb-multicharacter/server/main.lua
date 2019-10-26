@@ -1,37 +1,47 @@
 QBCore = nil
 TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 
---- CODE
-
 RegisterServerEvent('qb-multicharacter:server:disconnect')
 AddEventHandler('qb-multicharacter:server:disconnect', function()
     local src = source
 
-    DropPlayer(src, "You have disconnected from QBase Roleplay")
+    DropPlayer(src, "You have disconnected from Qbus Roleplay")
 end)
 
 RegisterServerEvent('qb-multicharacter:server:loadUserData')
 AddEventHandler('qb-multicharacter:server:loadUserData', function(cData)
     local src = source
-    if QBCore.Player.Login(src, cData.citizenid) then
+    if QBCore.Player.Login(src, nil, cData.citizenid) then
         print('^2[qb-core]^7 '..GetPlayerName(src)..' (Citizen ID: '..cData.citizenid..') has succesfully loaded!')
 		QBCore.Commands.Refresh(src)
 		TriggerEvent('QBCore:Server:OnPlayerLoaded')
         TriggerClientEvent('QBCore:Client:OnPlayerLoaded', src)
-        print('yeet')
 	end
 end)
 
 RegisterServerEvent('qb-multicharacter:server:createCharacter')
 AddEventHandler('qb-multicharacter:server:createCharacter', function(data)
     local src = source
-    QBCore.Player.CreateCharacter(src, data)
+    local newData = {}
+    newData.cid = data.cid
+    newData.charinfo = data
+    --QBCore.Player.CreateCharacter(src, data)
+    if QBCore.Player.Login(src, newData) then
+        print('^2[qb-core]^7 '..GetPlayerName(src)..' has succesfully loaded!')
+		QBCore.Commands.Refresh(src)
+		TriggerEvent('QBCore:Server:OnPlayerLoaded')
+        TriggerClientEvent('QBCore:Client:OnPlayerLoaded', src)
+
+        TriggerClientEvent("qb-multicharacter:client:closeNUI", src)
+        TriggerClientEvent("qb-spawn:client:openUI", src, true)
+	end
 end)
 
 RegisterServerEvent('qb-multicharacter:server:deleteCharacter')
-AddEventHandler('qb-multicharacter:server:deleteCharacter', function(cid)
+AddEventHandler('qb-multicharacter:server:deleteCharacter', function(citizenid)
     local src = source
-    QBCore.Player.DeleteCharacter(src, cid)
+    local citizenid = tonumber(citizenid)
+    QBCore.Player.DeleteCharacter(src, citizenid)
 end)
 
 QBCore.Functions.CreateCallback("qb-multicharacter:server:GetUserCharacters", function(source, cb)
