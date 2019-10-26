@@ -1,9 +1,13 @@
 QBCore = nil
 local inventoryTest = {}
 local currentWeapon = nil
+
 local Drops = {}
 local CurrentDrop = 0
 local DropsNear = {}
+
+local CurrentVehicle = nil
+local showTrunkPos = false
 
 Citizen.CreateThread(function() 
     while true do
@@ -18,6 +22,55 @@ end)
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(7)
+        if showTrunkPos then
+            local vehicle = QBCore.Functions.GetClosestVehicle()
+            if vehicle ~= 0 and vehicle ~= nil then
+                local pos = GetEntityCoords(GetPlayerPed(-1))
+                local vehpos = GetEntityCoords(vehicle)
+                if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, vehpos.x, vehpos.y, vehpos.z, true) < 5.0) and not IsPedInAnyVehicle(GetPlayerPed(-1)) then
+                    local drawpos = GetOffsetFromEntityInWorldCoords(vehicle, 0, -2.5, 0)
+                    if (IsBackEngine(GetEntityModel(vehicle))) then
+                        drawpos = GetOffsetFromEntityInWorldCoords(vehicle, 0, 2.5, 0)
+                    end
+                    QBCore.Functions.DrawText3D(drawpos.x, drawpos.y, drawpos.z, "Kofferbak")
+                    if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, drawpos) < 2.0) and not IsPedInAnyVehicle(GetPlayerPed(-1)) then
+                        CurrentVehicle = GetVehicleNumberPlateText(vehicle)
+                        showTrunkPos = false
+                    else
+                        CurrentVehicle = nil
+                    end
+                else
+                    showTrunkPos = false
+                end
+            end
+        end
+    end
+end)
+
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(7)
+        if QBCore ~= nil then
+            local vehicle = QBCore.Functions.GetClosestVehicle()
+            if vehicle ~= 0 and vehicle ~= nil then
+                local pos = GetEntityCoords(GetPlayerPed(-1))
+                local vehpos = GetEntityCoords(vehicle)
+                if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, vehpos.x, vehpos.y, vehpos.z, true) < 5.0) and not IsPedInAnyVehicle(GetPlayerPed(-1)) then
+                    local trunkpos = GetOffsetFromEntityInWorldCoords(vehicle, 0, -2.5, 0)
+                    if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, trunkpos) < 2.0) and not IsPedInAnyVehicle(GetPlayerPed(-1)) then
+                        CurrentVehicle = GetVehicleNumberPlateText(vehicle)
+                    else
+                        CurrentVehicle = nil
+                    end
+                end
+            end
+        end
+    end
+end)
+
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(7)
         DisableControlAction(0, Keys["TAB"], true)
         DisableControlAction(0, Keys["1"], true)
         DisableControlAction(0, Keys["2"], true)
@@ -25,7 +78,9 @@ Citizen.CreateThread(function()
         DisableControlAction(0, Keys["4"], true)
         DisableControlAction(0, Keys["5"], true)
         if IsDisabledControlJustReleased(0, Keys["TAB"]) then
-            if CurrentDrop ~= 0 then
+            if CurrentVehicle ~= nil then
+                TriggerServerEvent("inventory:server:OpenInventory", CurrentVehicle)
+            elseif CurrentDrop ~= 0 then
                 TriggerServerEvent("inventory:server:OpenInventory", CurrentDrop)
             else
                 TriggerServerEvent("inventory:server:OpenInventory")
@@ -102,6 +157,11 @@ AddEventHandler("inventory:client:OpenInventory", function(inventory, other)
             maxweight = QBCore.Config.Player.MaxWeight,
         })
     end
+end)
+
+RegisterNetEvent("inventory:client:ShowTrunkPos")
+AddEventHandler("inventory:client:ShowTrunkPos", function()
+    showTrunkPos = true
 end)
 
 RegisterNetEvent("inventory:client:UpdatePlayerInventory")
@@ -189,3 +249,12 @@ end)
 RegisterNUICallback("PlayDropFail", function(data, cb)
     PlaySound(-1, "Place_Prop_Fail", "DLC_Dmod_Prop_Editor_Sounds", 0, 0, 1)
 end)
+
+function IsBackEngine(vehModel)
+    for _, model in pairs(BackEngineVehicles) do
+        if GetHashKey(model) == vehModel then
+            return true
+        end
+    end
+    return false
+end

@@ -109,3 +109,92 @@ QBCore.Functions.TriggerCallback = function(name, cb, ...)
     QBCore.ServerCallbacks[name] = cb
     TriggerServerEvent("QBCore:Server:TriggerCallback", name, ...)
 end
+
+QBCore.Functions.EnumerateEntities = function(initFunc, moveFunc, disposeFunc)
+	return coroutine.wrap(function()
+		local iter, id = initFunc()
+		if not id or id == 0 then
+			disposeFunc(iter)
+			return
+		end
+
+		local enum = {handle = iter, destructor = disposeFunc}
+		setmetatable(enum, entityEnumerator)
+
+		local next = true
+		repeat
+		coroutine.yield(id)
+		next, id = moveFunc(iter)
+		until not next
+
+		enum.destructor, enum.handle = nil, nil
+		disposeFunc(iter)
+	end)
+end
+
+QBCore.Functions.GetVehicles = function()
+    local vehicles = {}
+	for vehicle in QBCore.Functions.EnumerateEntities(FindFirstVehicle, FindNextVehicle, EndFindVehicle) do
+		table.insert(vehicles, vehicle)
+	end
+	return vehicles
+end
+
+QBCore.Functions.GetPeds = function(ignore)
+    local ignore = ignore ~= nil and ignore or {}
+	local peds = {}
+	for ped in QBCore.Functions.EnumerateEntities(FindFirstPed, FindNextPed, EndFindPed) do
+		local found = false
+		for j=1, #ignore, 1 do
+			if ignore[j] == ped then
+				found = true
+			end
+		end
+		if not found then
+			table.insert(peds, ped)
+		end
+	end
+	return peds
+end
+
+QBCore.Functions.GetClosestVehicle = function(coords)
+	local vehicles = QBCore.Functions.GetVehicles()
+	local closestDistance = -1
+	local closestVehicle  = -1
+	local pos = coords
+
+	if pos == nil then
+		pos = GetEntityCoords(GetPlayerPed(-1))
+	end
+
+	for i=1, #vehicles, 1 do
+		local vehpos = GetEntityCoords(vehicles[i])
+		local distance = GetDistanceBetweenCoords(vehpos.x, vehpos.y, vehpos.z, pos.x, pos.y, pos.z, true)
+
+		if closestDistance == -1 or closestDistance > distance then
+			closestVehicle  = vehicles[i]
+			closestDistance = distance
+		end
+	end
+
+	return closestVehicle, closestDistance
+end
+
+QBCore.Functions.GetClosestPed = function(coords, ignoreList)
+	local ignoreList = ignoreList or {}
+	local peds = QBCore.Functions.GetPeds(ignoreList)
+	local closestDistance = -1
+	local closestPed = -1
+
+	for i=1, #peds, 1 do
+		local pos = GetEntityCoords(peds[i])
+		local distance = GetDistanceBetweenCoords(pos.x, pos.y, pos.z, coords.x, coords.y, coords.z, true)
+
+		if closestDistance == -1 or closestDistance > distance then
+			closestPed = peds[i]
+			closestDistance = distance
+		end
+	end
+
+	return closestPed, closestDistance
+end
