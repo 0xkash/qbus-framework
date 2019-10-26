@@ -291,11 +291,31 @@ end)
 
 QBCore.Commands.Add("giveitem", "Geef een item aan een speler", {{name="id", help="Speler ID"},{name="item", help="Naam van het item (geen label)"}, {name="amount", help="Aantal items"}}, true, function(source, args)
 	local Player = QBCore.Functions.GetPlayer(tonumber(args[1]))
+	local amount = tonumber(args[3])
+	local itemData = QBCore.Shared.Items[tostring(args[2]):lower()]
 	if Player ~= nil then
-		if Player.Functions.AddItem(tostring(args[2]), tonumber(args[3])) then
-			TriggerClientEvent('QBCore:Notify', source, "Je hebt " ..GetPlayerName(tonumber(args[1])).." " .. tostring(args[2]) .. " ("..tonumber(args[3]).. ") gegeven", "success")
+		if amount > 0 then
+			if itemData ~= nil then
+				-- check iteminfo
+				local info = {}
+				if itemData["name"] == "id_card" then
+					info.citizenid = Player.PlayerData.citizenid
+					info.firstname = Player.PlayerData.charinfo.firstname
+					info.lastname = Player.PlayerData.charinfo.lastname
+					info.birthdate = Player.PlayerData.charinfo.birthdate
+					info.gender = Player.PlayerData.charinfo.gender
+				end
+
+				if Player.Functions.AddItem(itemData["name"], amount, nil, info) then
+					TriggerClientEvent('QBCore:Notify', source, "Je hebt " ..GetPlayerName(tonumber(args[1])).." " .. itemData["name"] .. " ("..amount.. ") gegeven", "success")
+				else
+					TriggerClientEvent('QBCore:Notify', source,  "Kan item niet geven!", "error")
+				end
+			else
+				TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Item bestaat niet!")
+			end
 		else
-			TriggerClientEvent('QBCore:Notify', source,  "Kan item niet geven!", "error")
+			TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Aantal moet hoger zijn dan 0!")
 		end
 	else
 		TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Speler is niet online!")
