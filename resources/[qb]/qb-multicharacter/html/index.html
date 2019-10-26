@@ -16,11 +16,25 @@
 </head>
     <body>
         <div class="container">
+            <div class="bars">
+                <div class="topbar">
+                </div>
+
+                <div class="bottombar">
+                </div>
+            </div>   
+                                     
             <div class="main-screen">
+                <div class="welcomescreen">
+                    <p><span id="welcome-titel">Welcome on QBUS Roleplay</span></p>
+
+                    <div class="continue-btn"><p>Choose Character</p></div>
+                    <div class="disconnect-btn"><p>Disconnect</p></div>
+                </div>
+
                 <div class="characters-block">
                     <div class="characters-block-header">
                         <p>Character Selection</p>
-                        <div class="disconnect-server-btn" id="dcn-btn"><p>Disconnect</p></div>
                     </div>
 
                     <div class="characters-list">
@@ -77,7 +91,7 @@
                                     <label for="datepicker">Date of Birth</label>
                                 </div>
                                 <div class="input-field col s12">
-                                    <select>
+                                    <select id="sex">
                                         <option value="" disabled selected>Selecteer je geslacht</option>
                                         <option value="1">Man</option>
                                         <option value="2">Vrouw</option>

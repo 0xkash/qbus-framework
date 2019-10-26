@@ -15,15 +15,6 @@ end)
 local choosingCharacter = false
 local cam = nil
 
-function setupCharacters()
-    QBCore.Functions.TriggerCallback("test:yeet", function(result)
-        SendNUIMessage({
-            action = "setupCharacters",
-            characters = result
-        })
-    end)
-end
-
 function openCharMenu(bool)
     SetNuiFocus(bool, bool)
     SendNUIMessage({
@@ -36,8 +27,9 @@ end
 
 Citizen.CreateThread(function()
 	while true do
-		Citizen.Wait(100)
+		Citizen.Wait(7)
         if NetworkIsSessionStarted() then
+            Citizen.Wait(100)
             selectChar()
 			return
 		end
@@ -57,6 +49,7 @@ RegisterNUICallback('selectCharacter', function(data)
     local cData = data.cData
     
     TriggerServerEvent('qb-multicharacter:server:loadUserData', cData)
+    TriggerEvent('qb-spawn:client:openUI', true)
     openCharMenu(false)
 end)
 
@@ -67,14 +60,40 @@ end)
 
 RegisterNetEvent('qb-multicharacter:client:chooseChar')
 AddEventHandler('qb-multicharacter:client:chooseChar', function()
-    setupCharacters()
     openCharMenu(true)
 end)
 
 function selectChar()
-    setupCharacters()
     openCharMenu(true)
 end
+
+RegisterNUICallback('setupCharacters', function()
+    QBCore.Functions.TriggerCallback("test:yeet", function(result)
+        SendNUIMessage({
+            action = "setupCharacters",
+            characters = result
+        })
+    end)
+end)
+
+RegisterNUICallback('createNewCharacter', function(data)
+    local cData = data
+
+    if cData.sex == "1" then
+        cData.sex = 0
+    else
+        cData.sex = 1
+    end
+
+    TriggerServerEvent('qb-multicharacter:server:createCharacter', cData)
+    Citizen.Wait(500)
+end)
+
+RegisterNUICallback('removeCharacter', function(data)
+    local cid = tonumber(data.cid)
+
+    TriggerServerEvent('qb-multicharacter:server:deleteCharacter', cid)
+end)
 
 function skyCam(bool)
     if bool then

@@ -1,10 +1,18 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap');
+
 .main-screen {
+    position: absolute;
     height: 100vh;
+    width: 100vw;
+    background-color: #2f3640;
+    left: 0;
+    z-index: 100;
 }
 
 .characters-block {
+    display: none;
     position: relative;
     width: 800px;
     height: 550px;
@@ -21,8 +29,9 @@
     top: 0;
     width: 100%;
     height: 40px;
-    background-color: rgba(26, 34, 66, 0.883);
+    background-color: #b12424;
     border-bottom: 2px solid #fff;
+    font-family: 'Roboto Mono' monospace;
 }
 
 .disconnect-server-btn {
@@ -71,6 +80,7 @@
     text-align: center;
     color: white;
     padding-top: 10px;
+    font-family: 'Roboto Mono', monospace;
 }
 
 .characters-list {
@@ -362,4 +372,93 @@
 /* icon prefix focus color */
 .input-field .prefix.active {
     color: #fff;
+}
+
+.bars div{
+    animation-name: an-height;
+    animation-duration: .6s;
+    z-index: 101;
+}
+@keyframes an-height {
+    from{ height: 0px; }
+}
+.topbar {
+    position: absolute;
+    background-color: #dfdfdf;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    border-bottom: 3px solid #b12424;
+}
+
+.bottombar {
+    position: absolute;
+    background-color: #dfdfdf;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    border-top: 3px solid #b12424;
+}
+
+
+.welcomescreen {
+    position: relative;
+    display: block;
+    top: 30%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgba(238, 238, 238, 0.8);
+    height: 250px;
+    width: 500px;
+    border-bottom: 4px solid #b12424;
+    box-shadow: 0px 0px 25px 1px rgba(0,0,0,0.35);
+}
+
+.welcomescreen > p {
+    position: relative;
+    color: #1b1b1b;
+    text-align: center;
+}
+
+#welcome-titel {
+    position: relative;
+    top: 50px;
+    font-size: 30px;
+    font-family: 'Roboto Mono', monospace;
+}
+
+.continue-btn {
+    position: absolute;
+    width: 35%;
+    height: 36px;
+    background-color: #4cb124;
+    bottom: 60px;
+    left: 60px;
+    border-radius: 2px;
+}
+
+.continue-btn > p {
+    text-align: center;
+    line-height: 34px;
+    color: white;
+    font-family: 'Roboto Mono', monospace;
+}
+
+.disconnect-btn {
+    position: absolute;
+    width: 35%;
+    height: 36px;
+    background-color: #b12424;
+    bottom: 60px;
+    right: 60px;
+    border-radius: 2px;
+}
+
+.disconnect-btn > p {
+    text-align: center;
+    line-height: 34px;
+    color: white;
+    font-family: 'Roboto Mono', monospace;
 }

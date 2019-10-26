@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway&display=swap');
+
+.container {
+    font-family: 'Raleway', monospace;
+}
+
+.spawn-locations {
+    position: absolute;
+    top: 200px;
+    left: 100px;
+}
+.hideContainer :nth-child(n){
+    animation-name: an-hideContainer;
+    animation-duration: .9s
+}
+@keyframes an-hideContainer {
+    to{ top: -100px; height: 0px; margin-bottom: 0px; font-size: 0px; }
+}
+.location {
+    background-color: rgba(0, 0, 0, 0.75);
+    width: 280px;
+    height: 40px;
+    margin-bottom: 16px;
+    border-radius: 7px;
+    transition: 0.2s;
+}
+
+.location > p {
+    position: relative;
+    color: white;
+    text-align: center;
+    top: 12.5px;
+    font-size: 13px;
+}
+
+.location:hover {
+    background-color: #c34b4bc2;
+    border-radius: 9px;
+    transition: 0.2s;
+}
+
+.selected {
+    background-color: #b12424a6;
+}
+
+.submit-spawn {
+    background-color: rgba(32, 158, 16, 0.75);
+    width: 280px;
+    height: 40px;
+    margin-bottom: 16px;
+    border-radius: 7px;
+    transition: 0.2s;
+}
+
+.submit-spawn > p {
+    position: relative;
+    color: white;
+    text-align: center;
+    top: 12.5px;
+    font-size: 13px;
+}
+
+.submit-spawn:hover {
+    background-color: rgba(32, 158, 16, 0.85);
+    border-radius: 9px;
+    transition: 0.2s;
+}
+
+#spawn-label {
+    font-weight: bold;
+}

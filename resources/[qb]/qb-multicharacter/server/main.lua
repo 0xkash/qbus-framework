@@ -7,7 +7,7 @@ RegisterServerEvent('qb-multicharacter:server:disconnect')
 AddEventHandler('qb-multicharacter:server:disconnect', function()
     local src = source
 
-    DropPlayer(src, "You disconnected thru the Character Selection")
+    DropPlayer(src, "You have disconnected from QBase Roleplay")
 end)
 
 RegisterServerEvent('qb-multicharacter:server:loadUserData')
@@ -20,6 +20,18 @@ AddEventHandler('qb-multicharacter:server:loadUserData', function(cData)
         TriggerClientEvent('QBCore:Client:OnPlayerLoaded', src)
         print('yeet')
 	end
+end)
+
+RegisterServerEvent('qb-multicharacter:server:createCharacter')
+AddEventHandler('qb-multicharacter:server:createCharacter', function(data)
+    local src = source
+    QBCore.Player.CreateCharacter(src, data)
+end)
+
+RegisterServerEvent('qb-multicharacter:server:deleteCharacter')
+AddEventHandler('qb-multicharacter:server:deleteCharacter', function(cid)
+    local src = source
+    QBCore.Player.DeleteCharacter(src, cid)
 end)
 
 QBCore.Functions.CreateCallback("qb-multicharacter:server:GetUserCharacters", function(source, cb)

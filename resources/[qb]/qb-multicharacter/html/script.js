@@ -21,13 +21,24 @@ $(document).ready(function (){
         if (item.action == "setupCharInfo") {
             setupCharInfo(event.data.chardata)
         }
-
-        document.onkeyup = function (data) {
-            if (data.which == 27 ) {
-                $.post('http://qb-multicharacter/closeUI');
-            }
-        };
     });
+
+    $('.continue-btn').click(function(e){
+        e.preventDefault();
+
+        $('.welcomescreen').fadeOut(150);
+        setTimeout(function(){
+            $('.characters-block').fadeIn(100);
+            $('.main-screen').css("background-color", "transparent");
+            $.post('http://qb-multicharacter/setupCharacters');
+        }, 250)
+    });
+
+    $('.disconnect-btn').click(function(e){
+        e.preventDefault();
+        $.post('http://qb-multicharacter/closeUI');
+        $.post('http://qb-multicharacter/disconnectButton');
+    })
 
     $('.datepicker').datepicker();
     $('select').formSelect();
@@ -69,12 +80,17 @@ $(document).on('click', '.character', function(e) {
             $(selectedChar).addClass("char-selected");
             setupCharInfo('empty')
             $("#play-text").html("create your character");
-            $("#delete-text").html("disabled");
+            if ($("#delete").css("display") != "none") {
+                $("#delete").hide();
+            }
         } else {
             $(selectedChar).addClass("char-selected");
             setupCharInfo($(this).data('cData'))
             $("#play-text").html("Play selected character");
             $("#delete-text").html("delete selected character");
+            if ($("#delete").css("display") != "block") {
+                $("#delete").show();
+            }
         }
     } else {
         $(selectedChar).removeClass("char-selected");
@@ -83,21 +99,56 @@ $(document).on('click', '.character', function(e) {
             $(selectedChar).addClass("char-selected");
             setupCharInfo('empty')
             $("#play-text").html("create your character");
-            $("#delete-text").html("disabled");
+            if ($("#delete").css("display") != "none") {
+                $("#delete").hide();
+            }
         } else {
             $(selectedChar).addClass("char-selected");
             setupCharInfo($(this).data('cData'))
             $("#play-text").html("Play selected character");
             $("#delete-text").html("delete selected character");
+            if ($("#delete").css("display") != "block") {
+                $("#delete").show();
+            }
         }
     }
 });
 
-$("#dcn-btn").click(function (e) {
+$(document).on('click', '#create', function(e){
     e.preventDefault();
-    $.post('http://qb-multicharacter/closeUI');
-    $.post('http://qb-multicharacter/disconnectButton');
-})
+
+    $.post('http://qb-multicharacter/createNewCharacter', JSON.stringify({
+        firstname: $('#first_name').val(),
+        lastname: $('#last_name').val(),
+        nationality: $('#nationality').val(),
+        birthdate: $('#datepicker').val(),
+        sex: $('#sex').val(),
+        cid: $(selectedChar).attr('id').replace('char-', ''),
+    }))
+    $('.character-register').fadeOut(150);
+    $('.characters-block').css("filter", "none");
+    refreshCharacters()
+});
+
+$(document).on('click', '#accept-delete', function(e){
+    $.post('http://qb-multicharacter/removeCharacter', JSON.stringify({
+        cid: $(selectedChar).attr('id').replace('char-', ''),
+    }));
+    $('.character-delete').fadeOut(150);
+    $('.characters-block').css("filter", "none");
+    refreshCharacters()
+});
+
+function refreshCharacters() {
+    $('.characters-list').html('<div class="character" id="char-1" data-cid=""><span id="slot-name">Empty Slot<span id="cid"></span></span></div><div class="character" id="char-2" data-cid=""><span id="slot-name">Empty Slot<span id="cid"></span></span></div><div class="character" id="char-3" data-cid=""><span id="slot-name">Empty Slot<span id="cid"></span></span></div><div class="character" id="char-4" data-cid=""><span id="slot-name">Empty Slot<span id="cid"></span></span></div><div class="character" id="char-5" data-cid=""><span id="slot-name">Empty Slot<span id="cid"></span></span></div>')
+    setTimeout(function(){
+        $(selectedChar).removeClass("char-selected");
+        selectedChar = null;
+        $.post('http://qb-multicharacter/setupCharacters');
+        $("#play-text").html("Select a character");
+        $("#delete-text").html("Select a character");
+    }, 100)
+}
 
 $("#close-reg").click(function (e) {
     e.preventDefault();
