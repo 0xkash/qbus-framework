@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="reset.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+    <script src="nui://game/ui/jquery.js" type="text/javascript"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="includes/jquery-1.4.2.min.js"></script>
+    <title>Shayite Multicharacter</title>
+</head>
+    <body>
+        <div class="container">
+            <div class="main-screen">
+                <div class="characters-block">
+                    <div class="characters-block-header">
+                        <p>Character Selection</p>
+                        <div class="disconnect-server-btn" id="dcn-btn"><p>Disconnect</p></div>
+                    </div>
+
+                    <div class="characters-list">
+                        <div class="character" id="char-1" data-cid="">
+                            <span id="slot-name">Empty Slot<span id="cid"></span></span>
+                        </div>
+                        <div class="character" id="char-2" data-cid="">
+                            <span id="slot-name">Empty Slot<span id="cid"></span></span>
+                        </div>
+                        <div class="character" id="char-3" data-cid="">
+                            <span id="slot-name">Empty Slot<span id="cid"></span></span>
+                        </div>
+                        <div class="character" id="char-4" data-cid="">
+                            <span id="slot-name">Empty Slot<span id="cid"></span></span>
+                        </div>
+                        <div class="character" id="char-5" data-cid="">
+                            <span id="slot-name">Empty Slot<span id="cid"></span></span>
+                        </div>
+                    </div>
+
+                    <div class="character-info">
+                        <div class="char-info-titel"><i class="material-icons" id="char-info-icon">info</i><span id="char-info-titel">Character Info</span></div>
+                        <div class="character-info-valid">
+                            <span id="no-char">Select a character to see their information.</span>
+                        </div>
+                    </div>
+
+                    <div class="character-btn" id="play"><p id="play-text">Select a character</p></div>
+                    <div class="character-btn" id="delete"><p id="delete-text">Select a character</p></div>
+                </div>
+                <div class="character-register">
+                    <div class="characters-block-header">
+                        <p>Character Registration</p>
+                        <i class="material-icons" id="close-reg">close</i>
+                    </div>
+                    
+                    <div class="row">
+                        <form class="col s12">
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <input id="first_name" type="text" class="validate">
+                                    <label for="first_name">First Name</label>
+                                </div>
+                                <div class="input-field col s6">
+                                    <input id="last_name" type="text" class="validate">
+                                    <label for="last_name">Last Name</label>
+                                </div>
+                                <div class="input-field col s6">
+                                    <input id="nationality" type="text" class="validate">
+                                    <label for="nationality">Nationality</label>
+                                </div>
+                                <div class="input-field col s6">
+                                    <input type="text" id="datepicker" class="datepicker">
+                                    <label for="datepicker">Date of Birth</label>
+                                </div>
+                                <div class="input-field col s12">
+                                    <select>
+                                        <option value="" disabled selected>Selecteer je geslacht</option>
+                                        <option value="1">Man</option>
+                                        <option value="2">Vrouw</option>
+                                    </select>
+                                    <label>Geslacht</label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="character-reg-btn" id="create"><p id="create-text">Create character</p></div>
+                </div>
+                <div class="character-delete">
+                    <div class="characters-block-header">
+                        <p>Delete Character</p>
+                        <i class="material-icons" id="close-del">close</i>
+                    </div>
+
+                    <p>Are you sure that you want to delete your character?</p>
+                    <br>
+                    <p id="yeet">All your character data will be removed, you wont be able to revert your data.</p>
+
+                    <div class="character-acceptdel-btn" id="accept-delete"><p id="accept-text">Delete Character</p></div>
+                    <div class="character-canceldel-btn" id="cancel-delete"><p id="cancel-text">Cancel</p></div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript" src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</html>

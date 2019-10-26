@@ -2,13 +2,6 @@
 RegisterServerEvent("QBCore:PlayerJoined")
 AddEventHandler('QBCore:PlayerJoined', function()
 	local src = source
-	--QBCore.ShowSuccess(GetCurrentResourceName(), GetPlayerName(source).." JOINED")
-	if QBCore.Player.Login(src) then
-		QBCore.ShowSuccess(GetCurrentResourceName(), GetPlayerName(source).." LOADED!")
-		QBCore.Commands.Refresh(src)
-		TriggerEvent('QBCore:Server:OnPlayerLoaded')
-		TriggerClientEvent('QBCore:Client:OnPlayerLoaded', src)
-	end
 end)
 
 AddEventHandler('playerDropped', function(reason) 
