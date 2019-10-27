@@ -26,4 +26,5 @@ files {
 	'html/css/pricedown_bl-webfont.woff2',
 	'html/css/gta-ui.ttf',
 	'html/js/app.js',
+	'html/css/pdown.ttf',
 }
