@@ -18,4 +18,5 @@ files {
     'html/reset.css',
     'html/script.js',
     'html/img/*.png',
+    'html/img/site-bg.jpg'
 }

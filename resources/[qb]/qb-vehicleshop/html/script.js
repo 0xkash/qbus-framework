@@ -1,4 +1,7 @@
-var selectedCategory = null;
+var selectedCategory = $('#home');
+
+var currentVehicleData = null;
+var inWorldMap = false;
 
 $(document).ready(function(){
     $('.container').hide();
@@ -20,33 +23,79 @@ $(document).ready(function(){
 
     $('.vehicle-category').click(function(e){
         e.preventDefault();
+        var vehicleCategory = $(this).attr('id');
 
         $(this).addClass('selected');
         if (selectedCategory !== null && selectedCategory !== this) {
             $(selectedCategory).removeClass('selected');
         }
-        $.post('http://qb-vehicleshop/GetCategoryVehicles', JSON.stringify({
-            selectedCategory: $(this).attr('id')
-        }))
+        if (vehicleCategory == "home") {
+            resetVehicles()
+            $('.vehicle-shop-home').show();
+        } else {
+            if ($('.vehicle-shop-home').css("display") !== "none") {
+                $.post('http://qb-vehicleshop/GetCategoryVehicles', JSON.stringify({
+                    selectedCategory: vehicleCategory
+                }))
+                $('.vehicle-shop-home').fadeOut(100);
+            } else {
+                $.post('http://qb-vehicleshop/GetCategoryVehicles', JSON.stringify({
+                    selectedCategory: vehicleCategory
+                }))
+            }
+        }
         selectedCategory = this;
+    });
+
+    $('.map-pin').click(function(e){
+        e.preventDefault();
+        var garageId = $(this).attr('id');
+        $.post('http://qb-vehicleshop/buyVehicle', JSON.stringify({
+            vehicleData: currentVehicleData,
+            garage: garageId
+        }))
+        currentVehicleData = null;
+        inWorldMap = false;
+        $('.vehicle-shop').css("filter", "none")
+        $('.buy-vehicle-map').fadeOut(100);
+    });
+
+    $("#close-map").click(function(e){
+        e.preventDefault();
+        $('.vehicle-shop').css("filter", "none")
+        $('.buy-vehicle-map').fadeOut(100);
+        currentVehicleData = null;
+        inWorldMap = false;
     });
 });
 
 function setupVehicles(vehicles) {
     $('.vehicles').html("");
     $.each(vehicles, function(index, vehicle){
-        $('.vehicles').append('<div class="vehicle" id='+index+'><span id="vehicle-name">'+vehicle.name+' - '+vehicle.class+'</span><span id="vehicle-price">$ '+vehicle.price+'</span><div class="vehicle-buy-btn" data-vehicle="'+vehicle+'"><p>Koop Voertuig</p></div></div>');
+        $('.vehicles').append('<div class="vehicle" id='+index+'><span id="vehicle-name">'+vehicle.name+' - '+vehicle.classlabel+'</span><span id="vehicle-price">$ '+vehicle.price+'</span><div class="vehicle-buy-btn" data-vehicle="'+vehicle+'"><p>Koop Voertuig</p></div></div>');
         $('#'+index).data('vehicleData', "");
         $('#'+index).data('vehicleData', vehicle);
     })
 }
 
+function resetVehicles() {
+    $('.vehicles').html("");
+}
+
 $(document).on('click', '.vehicle-buy-btn', function(e){
-    e.preventDefault();
+    if (!inWorldMap) {
+        e.preventDefault();
+        currentVehicleData = null;
+    
+        var vehicleId = $(this).parent().attr('id');
+        var vehicleData = $('#'+vehicleId).data('vehicleData');
+        currentVehicleData = vehicleData
+        inWorldMap = true;
 
-    var vehicleId = $(this).parent().attr('id');
-    var vehicleData = $('#'+vehicleId).data('vehicleData');
-
+        $('.vehicle-shop').css("filter", "blur(2px)")
+    
+        $('.buy-vehicle-map').fadeIn(100);
+    }
 })
 
 $(document).on('keydown', function() {

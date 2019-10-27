@@ -68,7 +68,7 @@ $(document).on('keydown', function() {
         $(".staminaBar").css("width", data.stamina + "%");
 
         $('.time-text').html(data.time.hour + ':' + data.time.minute);
-
+        $(".fuel-text").html((data.fuel).toFixed(0));
         $(".speed-text").html(data.speed);
 
         if (data.street2 != "" && data.street2 != undefined) {

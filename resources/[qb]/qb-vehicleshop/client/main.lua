@@ -47,3 +47,19 @@ end)
 RegisterNUICallback('exit', function()
     openVehicleShop(false)
 end)
+
+RegisterNUICallback('buyVehicle', function(data)
+    local vehicleData = data.vehicleData
+    local garage = data.garage
+
+    TriggerServerEvent('qb-vehicleshop:server:buyVehicle', vehicleData, garage)
+    openVehicleShop(false)
+end)
+
+RegisterNetEvent('qb-vehicleshop:client:spawnBoughtVehicle')
+AddEventHandler('qb-vehicleshop:client:spawnBoughtVehicle', function(vehicle)
+    QBCore.Functions.SpawnVehicle(vehicle, function(veh)
+        SetEntityHeading(veh, QB.SpawnPoint.h)
+        TaskWarpPedIntoVehicle(GetPlayerPed(-1), veh, -1)
+    end, QB.SpawnPoint, true)
+end)
