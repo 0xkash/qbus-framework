@@ -1,3 +1,11 @@
+var totalWeight = 0;
+var totalWeightOther = 0;
+
+var playerMaxWeight = 0;
+var otherMaxWeight = 0;
+
+var otherLabel = "";
+
 $(document).on('keydown', function() {
     switch(event.keyCode) {
         case 27: // ESC
@@ -97,6 +105,7 @@ function handleDragDrop() {
                 return;
             }
             if (toAmount >= 0) {
+                updateweights(fromSlot, toSlot, fromInventory, toInventory, toAmount);
                 swap(fromSlot, toSlot, fromInventory, toInventory, toAmount);
             }
         },
@@ -130,6 +139,44 @@ function handleDragDrop() {
             }));
         }
     })
+}
+
+function updateweights($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
+    if (($fromInv.attr("data-inventory") == "hotbar" && $toInv.attr("data-inventory") == "player") || ($fromInv.attr("data-inventory") == "player" && $toInv.attr("data-inventory") == "hotbar")) {
+        return;
+    }
+
+    if ($fromInv != $toInv) {
+        fromData = $fromInv.find("[data-slot=" + $fromSlot + "]").data("item");
+        toData = $toInv.find("[data-slot=" + $toSlot + "]").data("item");
+        if ($toAmount == 0) {$toAmount=fromData.amount}
+        if (toData == null || fromData.name == toData.name) {
+            if ($fromInv.attr("data-inventory") == "player") {
+                totalWeight = totalWeight - (fromData.weight * $toAmount);
+                totalWeightOther = totalWeightOther + (fromData.weight * $toAmount);
+            } else {
+                totalWeight = totalWeight + (fromData.weight * $toAmount);
+                totalWeightOther = totalWeightOther - (fromData.weight * $toAmount);
+            }
+        } else {
+            if ($fromInv.attr("data-inventory") == "player") {
+                totalWeight = totalWeight - (fromData.weight * $toAmount);
+                totalWeight = totalWeight + (toData.weight * toData.amount)
+
+                totalWeightOther = totalWeightOther + (fromData.weight * $toAmount);
+                totalWeightOther = totalWeightOther - (toData.weight * toData.amount);
+            } else {
+                totalWeight = totalWeight + (fromData.weight * $toAmount);
+                totalWeight = totalWeight - (toData.weight * toData.amount)
+
+                totalWeightOther = totalWeightOther - (fromData.weight * $toAmount);
+                totalWeightOther = totalWeightOther + (toData.weight * toData.amount);
+            }
+        }
+    }
+
+    $(".player-inv-info p").html("Eigen Inventaris - Gewicht: " + (parseInt(totalWeight) / 1000).toFixed(1) + " / " + (playerMaxWeight / 1000).toFixed(1) + "kg");
+    $(".other-inv-info p").html(otherLabel + " - Gewicht: " + (parseInt(totalWeightOther) / 1000).toFixed(1) + " / " + (otherMaxWeight / 1000).toFixed(1) + "kg");
 }
 
 function swap($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
@@ -348,8 +395,9 @@ function InventoryError($elinv, $elslot) {
     Inventory.dropmaxweight = 900000
 
     Inventory.Open = function(data) {
-        var totalWeight = 0;
-        var totalWeightOther = 0;
+        totalWeight = 0;
+        totalWeightOther = 0;
+
         $("#qbus-inventory").css("display", "block");
         if(data.other != null && data.other != "") {
             $(".other-inventory").attr("data-inventory", data.other.name);
@@ -403,10 +451,15 @@ function InventoryError($elinv, $elslot) {
         }
 
         $(".player-inv-info p").html("Eigen Inventaris - Gewicht: " + (totalWeight / 1000).toFixed(1) + " / " + (data.maxweight / 1000).toFixed(1) + "kg");
+        playerMaxWeight = data.maxweight;
         if (data.other != null) {
             $(".other-inv-info p").html(data.other.label + " - Gewicht: " + (totalWeightOther / 1000).toFixed(1) + " / " + (data.other.maxweight / 1000).toFixed(1) + "kg");
+            otherMaxWeight = data.other.maxweight;
+            otherLabel = data.other.label;
         } else {
             $(".other-inv-info p").html(Inventory.droplabel + " - Gewicht: " + (totalWeightOther / 1000).toFixed(1) + " / " + (Inventory.dropmaxweight / 1000).toFixed(1) + "kg");
+            otherMaxWeight = Inventory.dropmaxweight;
+            otherLabel = Inventory.droplabel;
         }
 
         handleDragDrop();

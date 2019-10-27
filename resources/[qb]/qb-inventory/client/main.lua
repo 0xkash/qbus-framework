@@ -79,9 +79,9 @@ Citizen.CreateThread(function()
         DisableControlAction(0, Keys["5"], true)
         if IsDisabledControlJustReleased(0, Keys["TAB"]) then
             if CurrentVehicle ~= nil then
-                TriggerServerEvent("inventory:server:OpenInventory", CurrentVehicle)
+                TriggerServerEvent("inventory:server:OpenInventory", "trunk", CurrentVehicle)
             elseif CurrentDrop ~= 0 then
-                TriggerServerEvent("inventory:server:OpenInventory", CurrentDrop)
+                TriggerServerEvent("inventory:server:OpenInventory", "drop", CurrentDrop)
             else
                 TriggerServerEvent("inventory:server:OpenInventory")
             end
