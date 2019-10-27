@@ -55,8 +55,6 @@ QBCore.Functions.CreateCallback('qb-houses:server:hasKey', function(source, cb, 
 	local identifier = pData.PlayerData.steam
 	local CharId = pData.PlayerData.citizenid
 	cb(hasKey(identifier, CharId, house))
-
-	print(hasKey(identifier, CharId, house))
 end)
 
 QBCore.Functions.CreateCallback('qb-houses:server:isOwned', function(source, cb, house)
