@@ -12,6 +12,8 @@ local lsc = {
 		[2] = { locked = false, outside = { x = -1140.191, y = -1985.478, z = 12.72923, heading = 315.290466}, inside = {x = -1155.536,y = -2007.183,z = 12.744, heading = 315.290466}},
 		[3] = { locked = false, outside = { x = 716.4645, y = -1088.869, z = 21.92979, heading = 88.768}, inside = {x = 731.8163,y = -1088.822,z = 21.733, heading = 88.768}},
 		[4] = { locked = false, outside = { x = 1174.811, y = 2649.954, z = 37.37151, heading = 0.450}, inside = {x = 1175.04,y = 2640.216,z = 37.32177, heading = 0.450}},
+		[5] = { locked = false, outside = { x = -211.0,  y = -1325.0, z = 31.0, heading = 322.97}, inside = {x = -211.0,  y = -1325.0, z = 31.0, heading = 322.97}},
+		[6] = { locked = false, outside = { x = 110.22,  y = 6626.86, z = 31.78, heading = 226.34}, inside = {x = 110.22,  y = 6626.86, z = 31.78, heading = 226.34}},
 	},
 	menu = {
 		x = 0.8,
@@ -1674,7 +1676,7 @@ function DriveOutOfGarage(pos)
 	SetVehicleDoorsLocked(veh,0)
 	SetPlayerInvincible(GetPlayerIndex(),false)
 	SetEntityInvincible(veh,false)
-	TriggerServerEvent('lockGarage',false,lsc.currentgarage)
+	--TriggerServerEvent('lockGarage',false,lsc.currentgarage)
 	lsc.currentgarage = 0
 end
 
@@ -1779,9 +1781,10 @@ Citizen.CreateThread(function()
 							if pos.locked == false then
 								drawTxt("Druk ~b~ENTER~w~ om voertuig te ~b~BEWERKEN ",4,1,0.5,0.8,1.0,255,255,255,255)
 								if IsControlJustPressed(1,201) then
-										lsc.currentpos = pos
-										lsc.currentgarage = i
-										DriveInGarage()
+									PlaySound(-1, "NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0, 0, 1)
+									lsc.currentpos = pos
+									lsc.currentgarage = i
+									DriveInGarage()
 								end
 							else
 								drawTxt("~r~Locked, please wait",4,1,0.5,0.8,1.0,255,255,255,255)
@@ -2047,6 +2050,7 @@ Citizen.CreateThread(function()
 								end
 							end
 							if selected and IsControlJustPressed(1,201) then
+								PlaySound(-1, "NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0, 0, 1)
 								ButtonSelected(button)
 							end
 						end
@@ -2055,12 +2059,14 @@ Citizen.CreateThread(function()
 		end
 		if lsc ~= nil and lsc.inside then
 			if IsControlJustPressed(1,202) then
+				PlaySound(-1, "NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0, 0, 1)
 				Back()
 			end
 			if IsControlJustReleased(1,202) then
 				backlock = false
 			end
 			if IsControlJustPressed(1,188) then
+				PlaySound(-1, "NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0, 0, 1)
 				if lsc.selectedbutton > 1 then
 					lsc.selectedbutton = lsc.selectedbutton -1
 					if buttoncount > 10 and lsc.selectedbutton < lsc.menu.from then
@@ -2070,6 +2076,7 @@ Citizen.CreateThread(function()
 				end
 			end
 			if IsControlJustPressed(1,187)then
+				PlaySound(-1, "NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0, 0, 1)
 				if lsc.selectedbutton < buttoncount then
 					lsc.selectedbutton = lsc.selectedbutton +1
 					if buttoncount > 10 and lsc.selectedbutton > lsc.menu.to then
@@ -2500,6 +2507,18 @@ function Back()
 	end
 end
 
+Citizen.CreateThread(function() 
+	for _, item in pairs(lsc.locations) do
+		item.blip = AddBlipForCoord(item.inside.x,item.inside.y,item.inside.z)
+		SetBlipSprite(item.blip, 72)
+		SetBlipScale(item.blip, 0.8)
+		SetBlipAsShortRange(item.blip, true)
+		BeginTextCommandSetBlipName("STRING")
+		AddTextComponentString("Voertuigservice")
+		EndTextCommandSetBlipName(item.blip)
+	end
+end)
+
 function stringstarts(String,Start)
    return string.sub(String,1,string.len(Start))==Start
 end
@@ -2514,15 +2533,9 @@ end
 local firstspawn = 0
 AddEventHandler('playerSpawned', function(spawn)
 if firstspawn == 0 then
-	AddBlips()
+	--AddBlips()
 	TriggerServerEvent('getGarageInfo')
 	firstspawn = 1
 end
-end)
-RegisterNetEvent('lockGarage')
-AddEventHandler('lockGarage', function(tbl)
-	for i,garage in ipairs(tbl) do
-		lsc.locations[i].locked = garage.locked
-	end
 end)
 
