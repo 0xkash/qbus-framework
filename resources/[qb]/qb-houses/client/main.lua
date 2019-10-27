@@ -18,7 +18,7 @@ local isOwned = false
 local stashLoc = {}
 local closetLoc = {}
 
-local isLoggedIn = true
+local isLoggedIn = false
 local contractOpen = false
 
 local cam = nil
