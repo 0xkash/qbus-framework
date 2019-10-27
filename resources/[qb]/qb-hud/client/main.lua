@@ -11,8 +11,6 @@ Keys = {
     ["LEFT"] = 174, ["RIGHT"] = 175, ["TOP"] = 27, ["DOWN"] = 173,
 }
 
-showUI = true
-
 Citizen.CreateThread(function() 
     while true do
         Citizen.Wait(10)
@@ -25,4 +23,9 @@ Citizen.CreateThread(function()
             return
         end
     end
+end)
+
+RegisterNetEvent("QBCore:Client:OnPlayerLoaded")
+AddEventHandler("QBCore:Client:OnPlayerLoaded", function()
+    QBHud.Show = true
 end)
