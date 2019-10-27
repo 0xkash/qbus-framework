@@ -26,7 +26,7 @@ Citizen.CreateThread(function()
     while true do
         Citizen.Wait(3)
 
-        if IsControlJustPressed(0, 19) then
+        if IsControlJustPressed(0, Keys["F1"]) then
             openRadial(true)
             SetCursorLocation(0.5, 0.5)
         end

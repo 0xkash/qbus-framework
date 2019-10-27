@@ -68,13 +68,14 @@ RegisterServerEvent("weapons:server:SaveWeaponAmmo")
 AddEventHandler('weapons:server:SaveWeaponAmmo', function()
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
+    local cid = Player.PlayerData.citizenid
     if Player ~= nil then
         QBCore.Functions.ExecuteSql("SELECT * FROM `playerammo` WHERE `citizenid` = '".. Player.PlayerData.citizenid.."'", function(result)
             if result[1] == nil then
                 QBCore.Functions.ExecuteSql("INSERT INTO `playerammo` (`citizenid`, `ammo`) VALUES ('"..Player.PlayerData.citizenid.."', '"..json.encode(WeaponAmmo[Player.PlayerData.citizenid].ammo).."')")
             else
                 if WeaponAmmo[Player.PlayerData.citizenid] ~= nil and WeaponAmmo[Player.PlayerData.citizenid].ammo ~= nil then
-                    QBCore.Functions.ExecuteSql("UPDATE `playerammo` SET ammo='"..json.encode(WeaponAmmo[Player.PlayerData.citizenid].ammo).."' WHERE `citizenid` = '"..Player.PlayerData.citizenid.."'")
+                    QBCore.Functions.ExecuteSql("UPDATE `playerammo` SET ammo='"..json.encode(WeaponAmmo[cid].ammo).."' WHERE `citizenid` = '"..Player.PlayerData.citizenid.."'")
                 end
             end
         end)

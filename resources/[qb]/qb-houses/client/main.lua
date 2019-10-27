@@ -18,7 +18,7 @@ local isOwned = false
 local stashLoc = {}
 local closetLoc = {}
 
-local isLoggedIn = false
+local isLoggedIn = true
 local contractOpen = false
 
 local cam = nil
@@ -46,10 +46,14 @@ end)
 --------------------------------------------------------------
 Citizen.CreateThread(function()
     Citizen.Wait(1000)
-    while isLoggedIn do
-        SetClosestHouse()
-        TriggerEvent('qb-houses:client:setupHouseBlips')
-        Citizen.Wait(10000)
+    while true do
+        if isLoggedIn then
+            SetClosestHouse()
+            TriggerEvent('qb-houses:client:setupHouseBlips')
+            Citizen.Wait(500)
+            TriggerEvent('qb-garages:client:setHouseGarage', closesthouse, hasKey)
+        end
+        Citizen.Wait(2000)
     end
 end)
 

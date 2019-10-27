@@ -30,6 +30,19 @@ QBCore.Functions.CreateCallback("qb-garage:server:GetDepotVehicles", function(so
     end)
 end)
 
+QBCore.Functions.CreateCallback("qb-garage:server:GetHouseVehicles", function(source, cb, house)
+    local src = source
+    local pData = QBCore.Functions.GetPlayer(src)
+
+    exports['ghmattimysql']:execute('SELECT * FROM player_vehicles WHERE citizenid = @citizenid AND garage = @garage', {['@citizenid'] = pData.PlayerData.citizenid, ['@garage'] = house}, function(result)
+        if result[1] ~= nil then
+            cb(result)
+        else
+            cb(nil)
+        end
+    end)
+end)
+
 QBCore.Functions.CreateCallback("qb-garage:server:checkVehicleOwner", function(source, cb, plate)
     local src = source
     local pData = QBCore.Functions.GetPlayer(src)
@@ -55,8 +68,6 @@ RegisterServerEvent('qb-garage:server:updateVehicleStatus')
 AddEventHandler('qb-garage:server:updateVehicleStatus', function(fuel, engine, body, plate, garage)
     local src = source
     local pData = QBCore.Functions.GetPlayer(src)
-
-    print(engine)
 
     if engine > 1000 then
         engine = engine / 1000

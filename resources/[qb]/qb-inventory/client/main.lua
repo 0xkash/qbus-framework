@@ -156,6 +156,8 @@ AddEventHandler("inventory:client:OpenInventory", function(inventory, other)
             other = other,
             maxweight = QBCore.Config.Player.MaxWeight,
         })
+
+        SetTimecycleModifier('hud_def_blur')
     end
 end)
 
@@ -228,6 +230,7 @@ end)
 
 RegisterNUICallback("CloseInventory", function(data, cb)
     SetNuiFocus(false, false)
+    SetTimecycleModifier('default')
 end)
 
 RegisterNUICallback("UseItem", function(data, cb)
