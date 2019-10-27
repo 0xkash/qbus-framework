@@ -103,6 +103,9 @@ RegisterNUICallback('spawnplayer', function(data)
         Citizen.Wait(500)
         DoScreenFadeIn(250)
     end
+
+    TriggerServerEvent('QBCore:Server:OnPlayerLoaded')
+    TriggerEvent('QBCore:Client:OnPlayerLoaded')
 end)
 
 function SetDisplay(bool)
