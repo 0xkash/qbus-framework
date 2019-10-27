@@ -18,7 +18,7 @@ local isOwned = false
 local stashLoc = {}
 local closetLoc = {}
 
-local isLoggedIn = true
+local isLoggedIn = false
 local contractOpen = false
 
 local cam = nil
@@ -46,7 +46,7 @@ end)
 --------------------------------------------------------------
 Citizen.CreateThread(function()
     Citizen.Wait(1000)
-    while true do
+    while isLoggedIn do
         SetClosestHouse()
         TriggerEvent('qb-houses:client:setupHouseBlips')
         Citizen.Wait(10000)
@@ -72,6 +72,11 @@ local houseObj = {}
 local POIOffsets = nil
 local entering = false
 local data = nil
+
+RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
+AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+    isLoggedIn = true
+end)
 
 RegisterNetEvent('qb-houses:client:lockHouse')
 AddEventHandler('qb-houses:client:lockHouse', function(bool, house)
