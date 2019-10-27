@@ -19,6 +19,10 @@ QB.Vehicles = {
     }
 }
 
+QB.GarageLabel = {
+    ["motelgarage"] = "Motel Garage"
+}
+
 QB.SpawnPoint = {x = -59.18, y = -1109.71, z = 25.45, h = 68.5}
 
 QB.DefaultGarage = "centralgarage"

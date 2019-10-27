@@ -15,8 +15,8 @@ end)
 local currentGarage = nil
 
 Citizen.CreateThread(function()
-    for k, v in pairs(QB.Garages) do
-        Garage = AddBlipForCoord(QB.Garages[k].takeVehicle.x, QB.Garages[k].takeVehicle.y, QB.Garages[k].takeVehicle.z)
+    for k, v in pairs(Garages) do
+        Garage = AddBlipForCoord(Garages[k].takeVehicle.x, Garages[k].takeVehicle.y, Garages[k].takeVehicle.z)
 
         SetBlipSprite (Garage, 357)
         SetBlipDisplay(Garage, 4)
@@ -25,7 +25,7 @@ Citizen.CreateThread(function()
         SetBlipColour(Garage, 3)
 
         BeginTextCommandSetBlipName("STRING")
-        AddTextComponentSubstringPlayerName(QB.Garages[k].label)
+        AddTextComponentSubstringPlayerName(Garages[k].label)
         EndTextCommandSetBlipName(Garage)
     end
 end)
@@ -54,13 +54,13 @@ function ListeVehicule()
         MenuTitle = "My Vehicles :"
         ClearMenu()
         local gar = result[1]
-        Menu.addButton(QB.Garages[gar.garage].label, "yeet", QB.Garages[gar.garage].label)
+        Menu.addButton(Garages[gar.garage].label, "yeet", Garages[gar.garage].label)
 
         for k, v in pairs(result) do
             enginePercent = round(v.engine / 10, 2)
             bodyPercent = round(v.body / 10, 2)
             currentFuel = v.fuel
-            curGarage = QB.Garages[v.garage].label
+            curGarage = Garages[v.garage].label
 
 
             if v.state == 0 then
@@ -81,7 +81,7 @@ end
 function TakeOutVehicle(vehicle)
     if vehicle.state == "In" then
         QBCore.Functions.SpawnVehicle(vehicle.vehicle, function(veh)
-            SetEntityHeading(veh, QB.Garages[currentGarage].spawnPoint.h)
+            SetEntityHeading(veh, Garages[currentGarage].spawnPoint.h)
             TaskWarpPedIntoVehicle(GetPlayerPed(-1), veh, -1)
             SetVehicleNumberPlateText(veh, vehicle.plate)
             closeMenuFull()
@@ -90,7 +90,7 @@ function TakeOutVehicle(vehicle)
             doCarDamage(veh, vehicle)
             
             TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, vehicle.garage)
-        end, QB.Garages[currentGarage].spawnPoint, true)
+        end, Garages[currentGarage].spawnPoint, true)
     end
 end
 
@@ -170,13 +170,13 @@ Citizen.CreateThread(function()
         local ped = GetPlayerPed(-1)
         local pos = GetEntityCoords(ped)
 
-        for k, v in pairs(QB.Garages) do
-            local takeDist = GetDistanceBetweenCoords(pos, QB.Garages[k].takeVehicle.x, QB.Garages[k].takeVehicle.y, QB.Garages[k].takeVehicle.z)
+        for k, v in pairs(Garages) do
+            local takeDist = GetDistanceBetweenCoords(pos, Garages[k].takeVehicle.x, Garages[k].takeVehicle.y, Garages[k].takeVehicle.z)
             if takeDist <= 15 then
-                DrawMarker(2, QB.Garages[k].takeVehicle.x, QB.Garages[k].takeVehicle.y, QB.Garages[k].takeVehicle.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
+                DrawMarker(2, Garages[k].takeVehicle.x, Garages[k].takeVehicle.y, Garages[k].takeVehicle.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
                 if takeDist <= 1.5 then
                     if not IsPedInAnyVehicle(ped) then
-                        QBCore.Functions.DrawText3D(QB.Garages[k].takeVehicle.x, QB.Garages[k].takeVehicle.y, QB.Garages[k].takeVehicle.z + 0.5, '~g~E~w~ - Garage')
+                        QBCore.Functions.DrawText3D(Garages[k].takeVehicle.x, Garages[k].takeVehicle.y, Garages[k].takeVehicle.z + 0.5, '~g~E~w~ - Garage')
                         if IsControlJustPressed(1, 177) and not Menu.hidden then
                             close()
                             PlaySound(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0, 0, 1)
@@ -188,7 +188,7 @@ Citizen.CreateThread(function()
                         end
                         Menu.renderGUI()
                     else
-                        QBCore.Functions.DrawText3D(QB.Garages[k].takeVehicle.x, QB.Garages[k].takeVehicle.y, QB.Garages[k].takeVehicle.z, QB.Garages[k].label)
+                        QBCore.Functions.DrawText3D(Garages[k].takeVehicle.x, Garages[k].takeVehicle.y, Garages[k].takeVehicle.z, Garages[k].label)
                     end
                 end
 
@@ -197,12 +197,12 @@ Citizen.CreateThread(function()
                 end
             end
 
-            local putDist = GetDistanceBetweenCoords(pos, QB.Garages[k].putVehicle.x, QB.Garages[k].putVehicle.y, QB.Garages[k].putVehicle.z)
+            local putDist = GetDistanceBetweenCoords(pos, Garages[k].putVehicle.x, Garages[k].putVehicle.y, Garages[k].putVehicle.z)
 
             if putDist <= 15 then
-                DrawMarker(2, QB.Garages[k].putVehicle.x, QB.Garages[k].putVehicle.y, QB.Garages[k].putVehicle.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 255, 255, 255, 255, false, false, false, true, false, false, false)
+                DrawMarker(2, Garages[k].putVehicle.x, Garages[k].putVehicle.y, Garages[k].putVehicle.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 255, 255, 255, 255, false, false, false, true, false, false, false)
                 if putDist <= 1.5 then
-                    QBCore.Functions.DrawText3D(QB.Garages[k].putVehicle.x, QB.Garages[k].putVehicle.y, QB.Garages[k].putVehicle.z + 0.5, '~g~E~w~ - Parkeer Voertuig')
+                    QBCore.Functions.DrawText3D(Garages[k].putVehicle.x, Garages[k].putVehicle.y, Garages[k].putVehicle.z + 0.5, '~g~E~w~ - Parkeer Voertuig')
                     if IsControlJustPressed(0, 38) then
                         local curVeh = GetVehiclePedIsIn(ped)
                         local bodyDamage = round(GetVehicleBodyHealth(curVeh), 1)

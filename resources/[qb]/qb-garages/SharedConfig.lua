@@ -1,6 +1,4 @@
-QB = {}
-
-QB.Garages = {
+Garages = {
     ["motelgarage"] = {
         label = "Motel Garage",
         takeVehicle = {x = 273.43, y = -343.99, z = 44.91},
