@@ -14,14 +14,9 @@
     src: url('gta-ui.ttf');
 }
 
-
 @font-face {
-    font-family: 'pricedownblack';
-    src: url('pricedown_bl-webfont.woff2') format('woff2'),
-         url('pricedown_bl-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-
+    font-family: 'pdown';
+    src: url('pdown.ttf');
 }
 
 html {
@@ -43,37 +38,53 @@ p {
 }
 
 .money-cash,.money-bank {
-    position: relative;
+    position: absolute;
     color: #ffffff;
-    font-size: 36px;
-    font-family: 'pricedownblack';
+    font-size: 32px;
+    font-family: 'pdown';
     display: none;
+    right: 10px;
+}
+
+#cash-symbol {
+    color: #1a530f;
+    margin-right: 10px;
+}
+
+#bank-symbol {
+    color: #217ebd;
+    margin-right: 10px;
 }
 
 .money-cash {
-    color: #7ee477;
-    text-shadow: 1px 1px #000000;
+    text-shadow: 1px 1px #00000083;
     text-align: right;
 }
 
 .money-bank {
-    color: #36a8d1;
-    text-shadow: 1px 1px #000000;
+    text-shadow: 1px 1px #00000083;
     text-align: right;
+    top: 55px;
+}
+
+#changeamount {
+    text-shadow: 1px 1px #00000083;
+    text-align: right;
+    color: white;
 }
 
 .minus {
-    display: none;
-    position: relative;
-    top: -2.5vh;
-    color: #cc3f32;
+    text-shadow: 1px 1px #00000083;
+    text-align: right;
+    margin-top: 10px;
+    color: #530f0f;
 }
 
 .plus {
-    display: none;
-    position: relative;
-    top: -2.5vh;
-    color: #509a54;
+    text-shadow: 1px 1px #00000083;
+    text-align: right;
+    margin-top: 10px;
+    color: #1a530f;
 }
 
 .ui-container {

@@ -398,7 +398,7 @@ function InventoryError($elinv, $elslot) {
         totalWeight = 0;
         totalWeightOther = 0;
 
-        $("#qbus-inventory").css("display", "block");
+        $("#qbus-inventory").fadeIn(250);
         if(data.other != null && data.other != "") {
             $(".other-inventory").attr("data-inventory", data.other.name);
         } else {
@@ -469,7 +469,7 @@ function InventoryError($elinv, $elslot) {
         $(".item-slot").css("border", "1px solid rgba(255, 255, 255, 0.05)")
         $(".ply-hotbar-inventory").css("display", "block");
         $(".ply-iteminfo-container").css("display", "none");
-        $("#qbus-inventory").css("display", "none");
+        $("#qbus-inventory").fadeOut(300);
         $(".item-slot").remove();
         $.post("http://qb-inventory/CloseInventory", JSON.stringify({}));
     };

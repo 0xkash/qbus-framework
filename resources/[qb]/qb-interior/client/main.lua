@@ -1,7 +1,6 @@
 function DespawnInterior(objects, cb)
     Citizen.CreateThread(function()
         for k, v in pairs(objects) do
-            print(v)
             if DoesEntityExist(v) then
                 DeleteEntity(v)
             end

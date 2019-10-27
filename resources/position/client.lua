@@ -95,7 +95,6 @@ Citizen.CreateThread(function ()
 
         if (IsControlJustReleased(1, 176)) then -- ENTER
             local text = "{x = "..POSITIONS.marker.x..", y = "..POSITIONS.marker.y..", z = "..POSITIONS.marker.z..", h = "..POSITIONS.marker.h..", r = "..POSITIONS.marker.r.."},"
-            subTitle(text)
 
             TriggerServerEvent("position:s:insert", text)
             
@@ -104,8 +103,7 @@ Citizen.CreateThread(function ()
             POSITIONS.marker.z = 0.0
             POSITIONS.marker.h = 0.0
             POSITIONS.marker.active = false
-
-            subTitle("Position saved !")
+            subTitle("")
         end
 
         if (IsControlJustReleased(1, 177)) then
@@ -114,6 +112,7 @@ Citizen.CreateThread(function ()
             POSITIONS.marker.z = 0.0
             POSITIONS.marker.h = 0.0
             POSITIONS.marker.active = false
+            subTitle("")
         end
     end 
 end)
