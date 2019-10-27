@@ -86,6 +86,8 @@ RegisterNUICallback('spawnplayer', function(data)
         SetEntityVisible(GetPlayerPed(-1), true)
         Citizen.Wait(500)
         DoScreenFadeIn(250)
+        TriggerServerEvent('QBCore:Server:OnPlayerLoaded')
+        TriggerEvent('QBCore:Client:OnPlayerLoaded')
     else
         local pos = QB.Spawns[location].coords
         SetDisplay(false)
@@ -102,6 +104,8 @@ RegisterNUICallback('spawnplayer', function(data)
         SetEntityVisible(GetPlayerPed(-1), true)
         Citizen.Wait(500)
         DoScreenFadeIn(250)
+        TriggerServerEvent('QBCore:Server:OnPlayerLoaded')
+        TriggerEvent('QBCore:Client:OnPlayerLoaded')
     end
 end)
 

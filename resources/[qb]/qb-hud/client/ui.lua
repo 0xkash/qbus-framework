@@ -20,7 +20,7 @@ end
 
 Citizen.CreateThread(function()
     while true do 
-        if showUI then
+        if QBHud.Show then
             speed = GetEntitySpeed(GetVehiclePedIsIn(GetPlayerPed(-1), false)) * 3.6
             local pos = GetEntityCoords(player)
             local time = CalculateTimeToDisplay()
@@ -50,7 +50,7 @@ end)
 Citizen.CreateThread(function() 
     while true do
         Citizen.Wait(1000)
-        if IsPedInAnyVehicle(PlayerPedId()) and showUI then
+        if IsPedInAnyVehicle(PlayerPedId()) and QBHud.Show then
             DisplayRadar(true)
             SendNUIMessage({
                 action = "car",
