@@ -1,0 +1,127 @@
+@import url('https://fonts.googleapis.com/css?family=Quicksand:700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed|Staatliches&display=swap');
+
+
+.vehicle-shop {
+    position: relative;
+    width: 1000px;
+    height: 700px;
+    background-color: rgb(255, 255, 255);
+    margin-left: auto;
+    margin-right: auto;
+    top: 100px;
+}
+
+.vehicle-shop-header {
+    position: absolute;
+    width: 100%;
+    height: 16%;
+    background-color: rgb(31, 31, 31);
+    border-bottom: 3px solid #d14848;
+}
+
+#vehicle-shop-header-logo {
+    position: absolute;
+    width: 400px;
+    left: -40px;
+    top: -20px;
+}
+
+.vehicle-category {
+    position: relative;
+    margin: auto 0;
+    top: 25%;
+    right: 5%;
+    color: white;
+    text-align: center;
+    line-height: 40px;
+    font-size: 18px;
+    float: right;
+    margin-left: 40px;
+    transition: all 0.1s ease-in-out;
+}
+
+.selected {
+    border-bottom: 3px solid white;
+}
+
+.vehicle-category:hover {
+    color: rgb(170, 170, 170);
+}
+
+
+.vehicle-category > p {
+    font-family: 'Staatliches', cursive;
+    text-transform: uppercase;
+}
+
+.vehicles {
+    position: relative;
+    width: 85%;
+    height: 450px;
+    margin: 0 auto;
+    top: 25%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.vehicle {
+    position: relative;
+    width: 30%;
+    height: 43.5%;
+    background-color: rgb(116, 116, 116);
+    float: left;
+    margin-left: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0px 0px 6px 4px rgba(0,0,0,0.1);
+}
+
+.vehicle-buy-btn {
+    position: absolute;
+    left: 5%;
+    width: 48%; 
+    bottom: 5%;
+    text-align: center;
+    height: 30px;
+    background-color: rgb(42, 42, 42);
+    color: white;
+    line-height: 30px;
+    font-size: 14px;
+}
+
+.vehicle-buy-btn > p {
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+#vehicle-name {
+    position: absolute;
+    font-family: 'Roboto Condensed', sans-serif;
+    color: white;
+    top: 10px;
+    left: 10px;
+}
+
+#vehicle-price {
+    position: absolute;
+    font-family: 'Roboto Condensed', sans-serif;
+    color: white;
+    top: 10px;
+    right: 10px;
+}
+
+::-webkit-scrollbar-track
+{
+	background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar
+{
+	width: 3px;
+	background-color: #b12424e5;
+}
+
+::-webkit-scrollbar-thumb
+{
+	background-color: #b12424e5;
+}
