@@ -190,17 +190,6 @@ AddEventHandler('iens:repair', function()
 		local ped = GetPlayerPed(-1)
 		vehicle = GetVehiclePedIsIn(ped, false)
 		if IsNearMechanic() then
-			FreezeEntityPosition(GetVehiclePedIsUsing(GetPlayerPed(-1)), true)
-			notification("~g~De monteur repareert je voertuig!")
-			procent(200)
-			FreezeEntityPosition(GetVehiclePedIsUsing(GetPlayerPed(-1)), false)
-			SetVehicleFixed(vehicle)
-			healthBodyLast=1000.0
-			healthEngineLast=1000.0
-			healthPetrolTankLast=1000.0
-			SetVehicleEngineOn(vehicle, true, false )
-			notification("~g~De monteur heeft je voertuig gerepareerd!")
-			TriggerServerEvent("iens:PayMechanic")
 			return
 		end
 		if GetVehicleEngineHealth(vehicle) < cfg.cascadingFailureThreshold + 5 then
