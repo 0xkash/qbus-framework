@@ -9,7 +9,37 @@ QBCore.Functions.CreateCallback("qb-garage:server:GetUserVehicles", function(sou
     local pData = QBCore.Functions.GetPlayer(src)
 
     exports['ghmattimysql']:execute('SELECT * FROM player_vehicles WHERE citizenid = @citizenid AND garage = @garage', {['@citizenid'] = pData.PlayerData.citizenid, ['@garage'] = garage}, function(result)
-        cb(result)
+        if result[1] ~= nil then
+            cb(result)
+        else
+            cb(nil)
+        end
+    end)
+end)
+
+QBCore.Functions.CreateCallback("qb-garage:server:GetDepotVehicles", function(source, cb)
+    local src = source
+    local pData = QBCore.Functions.GetPlayer(src)
+
+    exports['ghmattimysql']:execute('SELECT * FROM player_vehicles WHERE citizenid = @citizenid AND state = @state', {['@citizenid'] = pData.PlayerData.citizenid, ['@state'] = 0}, function(result)
+        if result[1] ~= nil then
+            cb(result)
+        else
+            cb(nil)
+        end
+    end)
+end)
+
+QBCore.Functions.CreateCallback("qb-garage:server:checkVehicleOwner", function(source, cb, plate)
+    local src = source
+    local pData = QBCore.Functions.GetPlayer(src)
+
+    exports['ghmattimysql']:execute('SELECT * FROM player_vehicles WHERE plate = @plate', {['@plate'] = plate}, function(result)
+        if result[1] ~= nil then
+            cb(true)
+        else
+            cb(false)
+        end
     end)
 end)
 
@@ -18,7 +48,7 @@ AddEventHandler('qb-garage:server:updateVehicleState', function(state, plate, ga
     local src = source
     local pData = QBCore.Functions.GetPlayer(src)
 
-    exports['ghmattimysql']:execute('UPDATE player_vehicles SET state = @state WHERE plate = @plate AND citizenid = @citizenid AND garage = @garage', {['@state'] = state, ['@plate'] = plate, ['@citizenid'] = pData.PlayerData.citizenid, ['@garage'] = garage})
+    exports['ghmattimysql']:execute('UPDATE player_vehicles SET state = @state, garage = @garage WHERE plate = @plate', {['@state'] = state, ['@plate'] = plate, ['@citizenid'] = pData.PlayerData.citizenid, ['@garage'] = garage})
 end)
 
 RegisterServerEvent('qb-garage:server:updateVehicleStatus')

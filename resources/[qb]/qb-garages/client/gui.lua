@@ -108,18 +108,16 @@ function Menu.renderButtons()
 		local screen_h = 0
 		screen_w, screen_h =  GetScreenResolution(0, 0)
 		
-		boxColor = {13,11,10,233}
+		boxColor = {38,38,38,199}
 		local movetext = 0.0
-		if(settings["extra"] == "In") then
-			boxColor = {44,88,44,230}
-		elseif (settings["extra"] ~= "Out") then
-			movetext = -0.025
+		if(settings["extra"] == "Garage") then
+			boxColor = {44,100,44,200}
+		elseif (settings["extra"] == "In Beslag") then
+			boxColor = {77, 8, 8,155}
 		end
 
-
-
 		if(settings["active"]) then
-			boxColor = {45,45,45,230}
+			boxColor = {31, 116, 207,155}
 		end
 
 
@@ -153,14 +151,14 @@ function Menu.renderButtons()
 			SetTextColour(11, 11, 11, 255)
 			SetTextEntry("STRING") 
 			AddTextComponentString(settings["bodydamages"])
-			DrawText(0.817, (settings["ymin"] - 0.012 ))  
+			DrawText(0.815, (settings["ymin"] - 0.012 ))  
 
 			SetTextFont(4)
 			SetTextScale(0.28, 0.28)
 			SetTextColour(11, 11, 11, 255)
 			SetTextEntry("STRING") 
 			AddTextComponentString(settings["fuel"])
-			DrawText(0.852, (settings["ymin"] - 0.012 )) 
+			DrawText(0.854, (settings["ymin"] - 0.012 )) 
 
 			
 

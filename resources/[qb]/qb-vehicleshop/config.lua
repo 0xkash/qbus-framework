@@ -1,5 +1,9 @@
 QB = {}
 
+QB.VehicleShops = {
+    {x = -56.71, y = -1096.65, z = 26.42}
+}
+
 QB.Vehicles = {
     ["sedan"] = {
         ["shafter2"] = {vehicle = "shafter2", name = "Schafter", class = "sedan", classlabel = "Sedan", price = 110000},
@@ -20,7 +24,8 @@ QB.Vehicles = {
 }
 
 QB.GarageLabel = {
-    ["motelgarage"] = "Motel Garage"
+    ["motelgarage"] = "Motel Garage",
+    ["sapcounsel"]  = "San Andreas Parking Counsel",
 }
 
 QB.SpawnPoint = {x = -59.18, y = -1109.71, z = 25.45, h = 68.5}

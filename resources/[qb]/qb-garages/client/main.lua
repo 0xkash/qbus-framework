@@ -34,8 +34,16 @@ function MenuGarage()
     ped = GetPlayerPed(-1);
     MenuTitle = "Garage"
     ClearMenu()
-    Menu.addButton("Vehicle List", "ListeVehicule", nil)
-    Menu.addButton("Close Menu", "close", nil) 
+    Menu.addButton("Mijn Voertuigen", "VoertuigLijst", nil)
+    Menu.addButton("Sluit Menu", "close", nil) 
+end
+
+function MenuDepot()
+    ped = GetPlayerPed(-1);
+    MenuTitle = "Depot"
+    ClearMenu()
+    Menu.addButton("Depot Voertuigen", "DepotLijst", nil)
+    Menu.addButton("Sluit Menu", "close", nil) 
 end
 
 function yeet(gar)
@@ -48,49 +56,103 @@ function getPlayerVehicles(garage)
     return vehicles
 end
 
-function ListeVehicule()
+function DepotLijst()
+    QBCore.Functions.TriggerCallback("qb-garage:server:GetDepotVehicles", function(result)
+        ped = GetPlayerPed(-1);
+        MenuTitle = "Depot Voertuigen :"
+        ClearMenu()
+
+        if result == nil then
+            QBCore.Functions.Notify("Er staan geen voertuigen in het depot", "error", 5000)
+            closeMenuFull()
+        else
+            Menu.addButton(Depots[currentGarage].label, "yeet", Depots[currentGarage].label)
+
+            for k, v in pairs(result) do
+                enginePercent = round(v.engine / 10, 0)
+                bodyPercent = round(v.body / 10, 0)
+                currentFuel = v.fuel
+                curGarage = Garages[v.garage].label
+
+
+                if v.state == 0 then
+                    v.state = "In"
+                end
+
+                Menu.addButton(GetDisplayNameFromVehicleModel(GetHashKey(v.vehicle)), "TakeOutDepotVehicle", v, v.state, " Motor %:" .. enginePercent, " Body %:" .. bodyPercent, " Fuel %: "..currentFuel)
+            end
+        end
+            
+        Menu.addButton("Terug", "MenuDepot",nil)
+    end)
+end
+
+function VoertuigLijst()
     QBCore.Functions.TriggerCallback("qb-garage:server:GetUserVehicles", function(result)
         ped = GetPlayerPed(-1);
         MenuTitle = "My Vehicles :"
         ClearMenu()
-        local gar = result[1]
-        Menu.addButton(Garages[gar.garage].label, "yeet", Garages[gar.garage].label)
 
-        for k, v in pairs(result) do
-            enginePercent = round(v.engine / 10, 2)
-            bodyPercent = round(v.body / 10, 2)
-            currentFuel = v.fuel
-            curGarage = Garages[v.garage].label
+        if result == nil then
+            QBCore.Functions.Notify("Je hebt geen voertuigen in deze garage", "error", 5000)
+            closeMenuFull()
+        else
+            Menu.addButton(Garages[currentGarage].label, "yeet", Garages[currentGarage].label)
+
+            for k, v in pairs(result) do
+                enginePercent = round(v.engine / 10, 0)
+                bodyPercent = round(v.body / 10, 0)
+                currentFuel = v.fuel
+                curGarage = Garages[v.garage].label
 
 
-            if v.state == 0 then
-                v.state = "Out"
-            elseif v.state == 1 then
-                v.state = "In"
-            elseif v.state == 2 then
-                v.state = "Impounded"
+                if v.state == 0 then
+                    v.state = "Uit"
+                elseif v.state == 1 then
+                    v.state = "Garage"
+                elseif v.state == 2 then
+                    v.state = "In Beslag"
+                end
+
+                Menu.addButton(GetDisplayNameFromVehicleModel(GetHashKey(v.vehicle)), "TakeOutVehicle", v, v.state, " Motor: " .. enginePercent .. "%", " Body: " .. bodyPercent.. "%", " Fuel: "..currentFuel.. "%")
             end
-
-            Menu.addButton(GetDisplayNameFromVehicleModel(GetHashKey(v.vehicle)), "TakeOutVehicle", v, v.state, " Engine %:" .. enginePercent, " Body %:" .. bodyPercent, " Fuel %: "..currentFuel)
         end
             
-        Menu.addButton("Return", "MenuGarage",nil)
+        Menu.addButton("Terug", "MenuGarage",nil)
     end, currentGarage)
 end
 
 function TakeOutVehicle(vehicle)
+    if vehicle.state == "Garage" then
+        QBCore.Functions.SpawnVehicle(vehicle.vehicle, function(veh)
+            SetVehicleNumberPlateText(veh, vehicle.plate)
+            SetEntityHeading(veh, Garages[currentGarage].spawnPoint.h)
+            print(Garages[currentGarage].spawnPoint.h)
+            TaskWarpPedIntoVehicle(GetPlayerPed(-1), veh, -1)
+            exports['LegacyFuel']:SetFuel(veh, vehicle.fuel)
+            doCarDamage(veh, vehicle)
+            TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, vehicle.garage)
+            closeMenuFull()
+        end, Garages[currentGarage].spawnPoint, true)
+    elseif vehicle.state == "Uit" then
+        QBCore.Functions.Notify("Staat je voertuig in het depot??", "error", 2500)
+    elseif vehicle.state == "In Beslag" then
+        QBCore.Functions.Notify("Dit voertuig is in beslag genomen door de Politie", "error", 4000)
+    end
+end
+
+function TakeOutDepotVehicle(vehicle)
     if vehicle.state == "In" then
         QBCore.Functions.SpawnVehicle(vehicle.vehicle, function(veh)
-            SetEntityHeading(veh, Garages[currentGarage].spawnPoint.h)
-            TaskWarpPedIntoVehicle(GetPlayerPed(-1), veh, -1)
             SetVehicleNumberPlateText(veh, vehicle.plate)
-            closeMenuFull()
+            SetEntityHeading(veh, Depots[currentGarage].takeVehicle.h)
+            print(Depots[currentGarage].takeVehicle.h)
+            TaskWarpPedIntoVehicle(GetPlayerPed(-1), veh, -1)
             exports['LegacyFuel']:SetFuel(veh, vehicle.fuel)
-
             doCarDamage(veh, vehicle)
-            
             TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, vehicle.garage)
-        end, Garages[currentGarage].spawnPoint, true)
+            closeMenuFull()
+        end, Depots[currentGarage].spawnPoint, true)
     end
 end
 
@@ -155,6 +217,7 @@ end
 function closeMenuFull()
     Menu.hidden = true
     currentGarage = nil
+    ClearMenu()
 end
 
 function ClearMenu()
@@ -186,38 +249,81 @@ Citizen.CreateThread(function()
                             Menu.hidden = not Menu.hidden
                             currentGarage = k
                         end
-                        Menu.renderGUI()
                     else
                         QBCore.Functions.DrawText3D(Garages[k].takeVehicle.x, Garages[k].takeVehicle.y, Garages[k].takeVehicle.z, Garages[k].label)
                     end
                 end
 
-                if takeDist >= 10 and not Menu.hidden then
+                Menu.renderGUI()
+
+                if takeDist >= 4 and not Menu.hidden then
                     closeMenuFull()
                 end
             end
 
             local putDist = GetDistanceBetweenCoords(pos, Garages[k].putVehicle.x, Garages[k].putVehicle.y, Garages[k].putVehicle.z)
 
-            if putDist <= 15 then
+            if putDist <= 15 and IsPedInAnyVehicle(ped) then
                 DrawMarker(2, Garages[k].putVehicle.x, Garages[k].putVehicle.y, Garages[k].putVehicle.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 255, 255, 255, 255, false, false, false, true, false, false, false)
                 if putDist <= 1.5 then
                     QBCore.Functions.DrawText3D(Garages[k].putVehicle.x, Garages[k].putVehicle.y, Garages[k].putVehicle.z + 0.5, '~g~E~w~ - Parkeer Voertuig')
                     if IsControlJustPressed(0, 38) then
                         local curVeh = GetVehiclePedIsIn(ped)
-                        local bodyDamage = round(GetVehicleBodyHealth(curVeh), 1)
-                        local engineDamage = round(GetVehicleEngineHealth(curVeh), 1)
-                        local totalFuel = exports['LegacyFuel']:GetFuel(curVeh)
                         local plate = GetVehicleNumberPlateText(curVeh)
-
-                        TriggerServerEvent('qb-garage:server:updateVehicleStatus', totalFuel, engineDamage, bodyDamage, plate, k)
-                        TriggerServerEvent('qb-garage:server:updateVehicleState', 1, plate, k)
-                        QBCore.Functions.DeleteVehicle(curVeh)
+                        QBCore.Functions.TriggerCallback('qb-garage:server:checkVehicleOwner', function(owned)
+                            if owned then
+                                local bodyDamage = round(GetVehicleBodyHealth(curVeh), 1)
+                                local engineDamage = round(GetVehicleEngineHealth(curVeh), 1)
+                                local totalFuel = exports['LegacyFuel']:GetFuel(curVeh)
+        
+                                TriggerServerEvent('qb-garage:server:updateVehicleStatus', totalFuel, engineDamage, bodyDamage, plate, k)
+                                TriggerServerEvent('qb-garage:server:updateVehicleState', 1, plate, k)
+                                QBCore.Functions.DeleteVehicle(curVeh)
+                            else
+                                QBCore.Functions.Notify("Niemand is in bezit van dit voertuig...", "error", 3500)
+                            end
+                        end, plate)
                     end
                 end
             end
         end
         Citizen.Wait(0)
+    end
+end)
+
+Citizen.CreateThread(function()
+    Citizen.Wait(1000)
+    while true do
+        local ped = GetPlayerPed(-1)
+        local pos = GetEntityCoords(ped)
+
+        for k, v in pairs(Depots) do
+            local takeDist = GetDistanceBetweenCoords(pos, Depots[k].takeVehicle.x, Depots[k].takeVehicle.y, Depots[k].takeVehicle.z)
+            if takeDist <= 15 then
+                DrawMarker(2, Depots[k].takeVehicle.x, Depots[k].takeVehicle.y, Depots[k].takeVehicle.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
+                if takeDist <= 1.5 then
+                    if not IsPedInAnyVehicle(ped) then
+                        QBCore.Functions.DrawText3D(Depots[k].takeVehicle.x, Depots[k].takeVehicle.y, Depots[k].takeVehicle.z + 0.5, '~g~E~w~ - Garage')
+                        if IsControlJustPressed(1, 177) and not Menu.hidden then
+                            close()
+                            PlaySound(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0, 0, 1)
+                        end
+                        if IsControlJustPressed(0, 38) then
+                            MenuDepot()
+                            Menu.hidden = not Menu.hidden
+                            currentGarage = k
+                        end
+                    end
+                end
+
+                Menu.renderGUI()
+
+                if takeDist >= 4 and not Menu.hidden then
+                    closeMenuFull()
+                end
+            end
+        end
+        Citizen.Wait(2)
     end
 end)
 
