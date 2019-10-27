@@ -24,8 +24,12 @@ end)
 firstChar = false
 cmenu = {show = 0, row = 0, field = 1}
 text_in = 0
+headblend = 0
+haircolor_1 = 0
+haircolor_2 = 0
 draw = {0,0,0}
 prop = {0,0,1}
+overlay = {0,0,0}
 model_id = 1
 bar = {x=0.628, y=0.142, x1=0.037,y1=0.014}
 pedType = ""
@@ -139,10 +143,12 @@ function ClothShop()
 		if cmenu.row == 2 then custDrawRect(0.12,0.172,0.22,0.035,76,88,102,220) else custDrawRect(0.12,0.172,0.22,0.035,33,33,33,200) end
 		if cmenu.row == 3 then custDrawRect(0.12,0.209,0.22,0.035,76,88,102,220) else custDrawRect(0.12,0.209,0.22,0.035,33,33,33,200) end
 		if cmenu.row == 4 then custDrawRect(0.12,0.246,0.22,0.035,76,88,102,220) else custDrawRect(0.12,0.246,0.22,0.035,33,33,33,200) end
+		if cmenu.row == 5 then custDrawRect(0.12,0.283,0.22,0.035,76,88,102,220) else custDrawRect(0.12,0.283,0.22,0.035,33,33,33,200) end
 		drawTxt(0.177, 0.128, 0.25, 0.03, 0.40,"General",255,255,255,255)
 		drawTxt(0.177, 0.165, 0.25, 0.03, 0.40,"Accessoires",255,255,255,255) -- row_2 (+0.037)
 		drawTxt(0.177, 0.202, 0.25, 0.03, 0.40,"Model",255,255,255,255) -- row_2 (+0.037)
-		drawTxt(0.177, 0.239, 0.25, 0.03, 0.40,"Opslaan",255,255,255,255) -- row_2 (+0.037)
+		drawTxt(0.177, 0.239, 0.25, 0.03, 0.40,"Overlay",255,255,255,255) -- row_2 (+0.037)
+		drawTxt(0.177, 0.276, 0.25, 0.03, 0.40,"Opslaan",255,255,255,255) -- row_2 (+0.037)
 
 		
 
@@ -151,7 +157,6 @@ function ClothShop()
 		local drawstr = string.format("Type: %d | Kleur: %d | Kleur 2: %d",draw[1],draw[2],draw[3])
 
 		drawTxt(0.242, 0.225, 0, 0, 0.40,drawstr,255,255,255,255)
-
 		custDrawRect(0.328,0.244,0.18,0.035,33,33,33,200)
 
 		-- debug_end
@@ -159,13 +164,13 @@ function ClothShop()
 		custDrawRect(0.12,0.172,0.22,0.035,33,33,33,200)
 		custDrawRect(0.12,0.209,0.22,0.035,33,33,33,200)
 		custDrawRect(0.12,0.246,0.22,0.035,33,33,33,200)
-
-		
+		custDrawRect(0.12,0.283,0.22,0.035,33,33,33,200)
 
 		drawTxt(0.177, 0.128, 0.25, 0.03, 0.40,"~b~General",255,255,255,255)
 		drawTxt(0.177, 0.165, 0.25, 0.03, 0.40,"Accessoires",255,255,255,255) -- row_2 (+0.037)
 		drawTxt(0.177, 0.202, 0.25, 0.03, 0.40,"Model",255,255,255,255) -- row_2 (+0.037)
-		drawTxt(0.177, 0.239, 0.25, 0.03, 0.40,"Opslaan",255,255,255,255) -- row_2 (+0.037)
+		drawTxt(0.177, 0.239, 0.25, 0.03, 0.40,"Overlay",255,255,255,255) -- row_2 (+0.037)
+		drawTxt(0.177, 0.276, 0.25, 0.03, 0.40,"Opslaan",255,255,255,255) -- row_2 (+0.037)
 		---
 		custDrawRect(0.328,0.051,0.18,0.049,33,33,33,200) -- title
 		drawTxt(0.382,0.048,0.175,0.035, 0.40,"General",255,255,255,255)
@@ -199,6 +204,9 @@ function ClothShop()
 		if GetNumberOfPedDrawableVariations(GetPlayerPed(-1), cmenu.field-1) ~= 0 and GetNumberOfPedDrawableVariations(GetPlayerPed(-1), cmenu.field-1) ~= false then
 			custDrawRect(0.328,0.142,0.175,0.014,222,222,222,220)
 			local link = 0.138/(GetNumberOfPedDrawableVariations(GetPlayerPed(-1), cmenu.field-1)-1)
+			if accessoriesList[cmenu.field] == "Gezicht" then
+				link = 0.138/45
+			end
 
 			local new_x = (bar.x-0.069)+(link*draw[1])
 			new_x = new_x - 0.3
@@ -210,6 +218,9 @@ function ClothShop()
 
 			custDrawRect(0.328,0.179,0.175,0.014,222,222,222,220) -- bar_main
 			local link = 0.138/(GetNumberOfPedTextureVariations(GetPlayerPed(-1), cmenu.field-1, draw[1])-1)
+			if accessoriesList[cmenu.field] == "Haar" then
+				link = 0.138/(GetNumHairColors()-1)
+			end
 			local new_x = (bar.x-0.069)+(link*draw[2])
 			new_x = new_x - 0.3
 			if new_x < 0.259 then new_x = 0.259 end
@@ -218,6 +229,9 @@ function ClothShop()
 			--
 			custDrawRect(0.328,0.216,0.175,0.014,222,222,222,220) 
 			local link = 0.138/2
+			if accessoriesList[cmenu.field] == "Haar" then
+				link = 0.138/(GetNumHairColors()-1)
+			end
 			local new_x = (bar.x-0.069)+(link*draw[3])
 			new_x = new_x - 0.3
 			if new_x < 0.259 then new_x = 0.259 end
@@ -259,12 +273,28 @@ function ClothShop()
 					end
 
 					draw[2] = 0
-					SetPedComponentVariation(GetPlayerPed(-1), cmenu.field-1, draw[1], draw[2], draw[3])
+					if accessoriesList[cmenu.field] == "Gezicht" then
+						headblend = draw[1]
+						SetPedHeadBlendData(GetPlayerPed(-1), draw[1], draw[1], draw[1], draw[1], draw[1], draw[1], 1.0, 1.0, 1.0, true)
+					else
+						SetPedComponentVariation(GetPlayerPed(-1), cmenu.field-1, draw[1], draw[2], draw[3])
+					end
 				elseif cmenu.row == 3 then
 					if draw[2] > 0 then draw[2] = draw[2]-1 else draw[2] = 0 end
-					SetPedComponentVariation(GetPlayerPed(-1), cmenu.field-1, draw[1], draw[2], draw[3])
+					if accessoriesList[cmenu.field] == "Haar" then
+						SetPedHairColor(GetPlayerPed(-1), draw[2], draw[3])
+						haircolor_1 = draw[2]
+						haircolor_2 = draw[3]
+					else
+						SetPedComponentVariation(GetPlayerPed(-1), cmenu.field-1, draw[1], draw[2], draw[3])
+					end
 				elseif cmenu.row == 4 then
 					if draw[3] > 0 then draw[3] = draw[3]-1 end
+					if accessoriesList[cmenu.field] == "Haar" then
+						SetPedHairColor(GetPlayerPed(-1), draw[2], draw[3])
+						haircolor_1 = draw[2]
+						haircolor_2 = draw[3]
+					end
 				end
 			end
 			if IsControlJustPressed(1, 190) or IsDisabledControlJustPressed(1, 190) then -- right
@@ -299,12 +329,31 @@ function ClothShop()
 						end
 					end
 					draw[2] = 0
-					SetPedComponentVariation(GetPlayerPed(-1), cmenu.field-1, draw[1], draw[2], draw[3])
+					if accessoriesList[cmenu.field] == "Gezicht" then
+						headblend = draw[1]
+						SetPedHeadBlendData(GetPlayerPed(-1), draw[1], draw[1], draw[1], draw[1], draw[1], draw[1], 1.0, 1.0, 1.0, true)
+					else
+						SetPedComponentVariation(GetPlayerPed(-1), cmenu.field-1, draw[1], draw[2], draw[3])
+					end
 				elseif cmenu.row == 3 then
-					if draw[2] < GetNumberOfPedTextureVariations(GetPlayerPed(-1), cmenu.field-1, draw[1])-1 then draw[2] = draw[2]+1 else draw[2] = GetNumberOfPedTextureVariations(GetPlayerPed(-1), cmenu.field-1, draw[1])-1 end
-					SetPedComponentVariation(GetPlayerPed(-1), cmenu.field-1, draw[1], draw[2], draw[3])
+					if accessoriesList[cmenu.field] == "Haar" then
+						if draw[2] < GetNumHairColors()-1 then draw[2] = draw[2]+1 else draw[2] = GetNumHairColors()-1 end
+						SetPedHairColor(GetPlayerPed(-1), draw[2], draw[3])
+						haircolor_1 = draw[2]
+						haircolor_2 = draw[3]
+					else
+						if draw[2] < GetNumberOfPedTextureVariations(GetPlayerPed(-1), cmenu.field-1, draw[1])-1 then draw[2] = draw[2]+1 else draw[2] = GetNumberOfPedTextureVariations(GetPlayerPed(-1), cmenu.field-1, draw[1])-1 end
+						SetPedComponentVariation(GetPlayerPed(-1), cmenu.field-1, draw[1], draw[2], draw[3])
+					end
 				elseif cmenu.row == 4 then
-					if draw[3] < 2 then draw[3] = draw[3]+1 end
+					if accessoriesList[cmenu.field] == "Haar" then
+						if draw[3] < GetNumHairColors()-1 then draw[3] = draw[3]+1 end
+						SetPedHairColor(GetPlayerPed(-1), draw[2], draw[3])
+						haircolor_1 = draw[2]
+						haircolor_2 = draw[3]
+					else
+						if draw[3] < 2 then draw[3] = draw[3]+1 end
+					end
 				end
 			end
 		else
@@ -352,10 +401,13 @@ function ClothShop()
 		custDrawRect(0.12,0.172,0.22,0.035,76,88,102,220)
 		custDrawRect(0.12,0.209,0.22,0.035,33,33,33,200)
 		custDrawRect(0.12,0.246,0.22,0.035,33,33,33,200)
+		custDrawRect(0.12,0.283,0.22,0.035,33,33,33,200)
+
 		drawTxt(0.177, 0.128, 0.25, 0.03, 0.40,"General",255,255,255,255)
-		drawTxt(0.177, 0.165, 0.25, 0.03, 0.40,"Accessoires",255,255,255,255) -- row_2 (+0.037)
+		drawTxt(0.177, 0.165, 0.25, 0.03, 0.40,"~b~Accessoires",255,255,255,255) -- row_2 (+0.037)
 		drawTxt(0.177, 0.202, 0.25, 0.03, 0.40,"Model",255,255,255,255) -- row_2 (+0.037)
-		drawTxt(0.177, 0.239, 0.25, 0.03, 0.40,"Opslaan",255,255,255,255) -- row_2 (+0.037)
+		drawTxt(0.177, 0.239, 0.25, 0.03, 0.40,"Overlay",255,255,255,255) -- row_2 (+0.037)
+		drawTxt(0.177, 0.276, 0.25, 0.03, 0.40,"Opslaan",255,255,255,255) -- row_2 (+0.037)
 		---
 		custDrawRect(0.328,0.051,0.18,0.049,33,33,33,200) -- title
 		drawTxt(0.382,0.048,0.175,0.035, 0.40,"Accessoires",255,255,255,255)
@@ -459,7 +511,7 @@ function ClothShop()
 					cmenu.field = cmenu.field+1
 					prop[1] = 0
 					prop[2] = 0
-				else 
+				else
 					cmenu.field = 1
 					prop[1] = 0
 					prop[2] = 0
@@ -467,16 +519,18 @@ function ClothShop()
 			end
 		end
 	elseif cmenu.show == 4 then
-
-
 		custDrawRect(0.12,0.135,0.22,0.035,33,33,33,200)
 		custDrawRect(0.12,0.172,0.22,0.035,33,33,33,200)
 		custDrawRect(0.12,0.209,0.22,0.035,76,88,102,220)
 		custDrawRect(0.12,0.246,0.22,0.035,33,33,33,200)
+		custDrawRect(0.12,0.283,0.22,0.035,33,33,33,200)
+
 		drawTxt(0.177, 0.128, 0.25, 0.03, 0.40,"General",255,255,255,255)
 		drawTxt(0.177, 0.165, 0.25, 0.03, 0.40,"Accessoires",255,255,255,255)
 		drawTxt(0.177, 0.202, 0.25, 0.03, 0.40,"~b~Model",255,255,255,255)
-		drawTxt(0.177, 0.239, 0.25, 0.03, 0.40,"Opslaan",255,255,255,255)
+		drawTxt(0.177, 0.239, 0.25, 0.03, 0.40,"Overlay",255,255,255,255)
+		drawTxt(0.177, 0.276, 0.25, 0.03, 0.40,"Opslaan",255,255,255,255)
+
 		custDrawRect(0.328,0.051,0.18,0.049,33,33,33,200)
 		drawTxt(0.382,0.048,0.175,0.035, 0.40,"Model",255,255,255,255)
 		custDrawRect(0.328,0.024,0.175,0.005,111,1,1,220)
@@ -546,6 +600,137 @@ function ClothShop()
 				end
 			end
 			--camOff()
+		end
+	elseif cmenu.show == 5 then
+		local drawstr = string.format("Type: %d | Kleur: %d",overlay[1], overlay[2])
+
+		drawTxt(0.242, 0.188, 0, 0, 0.40,drawstr,255,255,255,255)
+
+		custDrawRect(0.328,0.207,0.18,0.035,33,33,33,200)
+
+
+
+		-- debug_end
+		custDrawRect(0.12,0.135,0.22,0.035,33,33,33,200)
+		custDrawRect(0.12,0.172,0.22,0.035,33,33,33,220)
+		custDrawRect(0.12,0.209,0.22,0.035,33,33,33,200)
+		custDrawRect(0.12,0.246,0.22,0.035,76,88,102,200)
+		custDrawRect(0.12,0.283,0.22,0.035,33,33,33,200)
+		drawTxt(0.177, 0.128, 0.25, 0.03, 0.40,"General",255,255,255,255)
+		drawTxt(0.177, 0.165, 0.25, 0.03, 0.40,"Accessoires",255,255,255,255) -- row_2 (+0.037)
+		drawTxt(0.177, 0.202, 0.25, 0.03, 0.40,"Model",255,255,255,255) -- row_2 (+0.037)
+		drawTxt(0.177, 0.239, 0.25, 0.03, 0.40,"~b~Overlay",255,255,255,255) -- row_2 (+0.037)
+		drawTxt(0.177, 0.276, 0.25, 0.03, 0.40,"Opslaan",255,255,255,255) -- row_2 (+0.037)
+		---
+		custDrawRect(0.328,0.051,0.18,0.049,33,33,33,200) -- title
+		drawTxt(0.382,0.048,0.175,0.035, 0.40,"Overlay",255,255,255,255)
+		custDrawRect(0.328,0.024,0.175,0.005,111,1,1,220)
+		if cmenu.row == 1 then custDrawRect(0.328,0.096,0.18,0.035,76,88,102,220) else custDrawRect(0.328,0.096,0.18,0.035,33,33,33,200) end
+		if cmenu.row == 2 then custDrawRect(0.328,0.133,0.18,0.035,76,88,102,220) else custDrawRect(0.328,0.133,0.18,0.035,33,33,33,200) end
+		if cmenu.row == 3 then custDrawRect(0.328,0.170,0.18,0.035,76,88,102,220) else custDrawRect(0.328,0.170,0.18,0.035,33,33,33,200) end
+
+		local accessoriesList = {
+			[1] = "Baarden",
+			[2] = "Wenkbrauwen",
+			[3] = "Ouderdom",
+			[4] = "Make-up",
+		}
+
+		local draw_str = "Slot: " .. accessoriesList[cmenu.field] .. " " .. cmenu.field .. "/4"
+
+		drawTxt(0.328,0.093,0.175,0.035, 0.40,draw_str,255,255,255,255)
+		--
+		if GetNumHeadOverlayValues(cmenu.field-1) ~= 0 and GetNumHeadOverlayValues(cmenu.field-1) ~= false then
+			custDrawRect(0.328,0.142,0.175,0.014,222,222,222,220)
+			local link = 0.138/(GetNumHeadOverlayValues(cmenu.field))
+			local new_x = (bar.x-0.069)+(link*overlay[1])
+
+
+			new_x = new_x - 0.3
+			custDrawRect(new_x,bar.y,bar.x1,bar.y1,111,1,1,220)
+			-- row_3
+			custDrawRect(0.328,0.179,0.175,0.014,222,222,222,220) -- bar_main
+			local link = 0.138/(GetNumHairColors()-1)
+			local new_x = (bar.x-0.069)+(link*overlay[2])
+			new_x = new_x - 0.3
+
+
+			custDrawRect(new_x,bar.y+0.037,bar.x1,bar.y1,111,1,1,220)
+			--
+			if IsControlJustPressed(1, 189) or IsDisabledControlJustPressed(1, 189) then -- left
+				PlaySound(-1, "NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0, 0, 1)
+				if cmenu.row == 1 then
+					if cmenu.field > 1 then 
+						cmenu.field = cmenu.field-1 
+						overlay[1] = 0
+						overlay[2] = 0
+					else 
+						cmenu.field = 4
+						overlay[1] = 0
+						overlay[2] = 0
+					end
+				elseif cmenu.row == 2 then
+					if overlay[1] > 0 then overlay[1] = overlay[1]-1 else overlay[1] = 0 end
+					overlay[2] = 0
+					SetPedHeadOverlay(GetPlayerPed(-1), cmenu.field, overlay[1], 1.0)	
+					--SetPedPropIndex(GetPlayerPed(-1), cmenu.field-1, prop[1], prop[2], prop[3])
+				elseif cmenu.row == 3 then
+					if overlay[2] > 0 then overlay[2] = overlay[2]-1 else overlay[2] = 0 end
+					SetPedHeadOverlayColor(GetPlayerPed(-1), cmenu.field, 1, overlay[2], 0)
+					--SetPedPropIndex(GetPlayerPed(-1), cmenu.field-1, prop[1], prop[2], prop[3])
+				end
+			end
+			if IsControlJustPressed(1, 190) or IsDisabledControlJustPressed(1, 190) then -- right
+				PlaySound(-1, "NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0, 0, 1)
+				if cmenu.row == 1 then
+					if cmenu.field < 4 then 
+						cmenu.field = cmenu.field+1 
+						overlay[1] = 0
+						overlay[2] = 0
+					else 
+						cmenu.field = 1
+						overlay[1] = 0
+						overlay[2] = 0
+					end
+				elseif cmenu.row == 2 then
+					if overlay[1] < GetNumHeadOverlayValues(cmenu.field)-1 then overlay[1] = overlay[1]+1 else overlay[1] = GetNumHeadOverlayValues(cmenu.field)-1 end
+					overlay[2] = 0
+					--SetPedHeadBlendData(GetPlayerPed(-1), 0, 0, 0, 0, 0, 0, 1.0, 1.0, 1.0, true)
+					SetPedHeadOverlay(GetPlayerPed(-1), cmenu.field, overlay[1], 1.0)
+					--SetPedPropIndex(GetPlayerPed(-1), cmenu.field-1, overlay[1], overlay[2], overlay[3])
+				elseif cmenu.row == 3 then
+					if overlay[2] < GetNumHairColors()-1 then overlay[2] = overlay[2]+1 else overlay[2] = GetNumHairColors()-1 end
+					SetPedHeadOverlayColor(GetPlayerPed(-1), cmenu.field, 1, overlay[2], 0)	
+					--SetPedPropIndex(GetPlayerPed(-1), cmenu.field-1, overlay[1], overlay[2], overlay[3])
+				end
+			end
+		else
+			drawTxt(0.328,0.130,0.175,0.035, 0.40,"Niet beschikbaar",255,255,255,255)
+			drawTxt(0.328,0.167,0.175,0.035, 0.40,"Niet beschikbaar",255,255,255,255)
+			if IsControlJustPressed(1, 189) or IsDisabledControlJustPressed(1, 189) then -- left
+				PlaySound(-1, "NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0, 0, 1)
+				if cmenu.field > 1 then 
+					cmenu.field = cmenu.field-1
+					overlay[1] = 0
+					overlay[2] = 0
+				else 
+					cmenu.field = 8
+					overlay[1] = 0
+					overlay[2] = 0
+				end
+			end
+			if IsControlJustPressed(1, 190) or IsDisabledControlJustPressed(1, 190) then -- right
+				PlaySound(-1, "NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0, 0, 1)
+				if cmenu.field < 8 then 
+					cmenu.field = cmenu.field+1
+					overlay[1] = 0
+					overlay[2] = 0
+				else
+					cmenu.field = 1
+					overlay[1] = 0
+					overlay[2] = 0
+				end
+			end
 		end
 	end
 end
@@ -685,17 +870,26 @@ AddEventHandler("clothes:loadSkin", function(new, model, data)
 
 		for i = 0, 11 do
 			local idx = tostring(i)
-			SetPedComponentVariation(GetPlayerPed(-1), i, 
-			tonumber(data.drawables[idx]),
-			tonumber(data.textures[idx]),
-			tonumber(data.palletetextures[idx]))
+			if (i == 1) then
+				SetPedHeadBlendData(GetPlayerPed(-1), data.drawables[idx], data.drawables[idx], data.drawables[idx], data.drawables[idx], data.drawables[idx], data.drawables[idx], 1.0, 1.0, 1.0, true)
+			elseif (i == 3) then
+				SetPedComponentVariation(GetPlayerPed(-1), i, tonumber(data.drawables[idx]), 0, 0)
+				SetPedHairColor(GetPlayerPed(-1), tonumber(data.textures[idx]), tonumber(data.palletetextures[idx]))
+			else
+				SetPedComponentVariation(GetPlayerPed(-1), i, tonumber(data.drawables[idx]), tonumber(data.textures[idx]), tonumber(data.palletetextures[idx]))
+			end
 		end
 
-		for i = 0, 3 do
+		for i = 0, 8 do
 			local idx = tostring(i)
-			SetPedPropIndex(GetPlayerPed(-1), i,
-			tonumber(data.props[idx]),
-			tonumber(data.proptextures[idx]), true)
+			if (i ~= 4 and i ~= 5 and i ~= 6) then
+				SetPedPropIndex(GetPlayerPed(-1), i, tonumber(data.props[idx]), tonumber(data.proptextures[idx]), true)
+			end
+		end
+		for i = 0, 4 do
+			local idx = tostring(i)
+			SetPedHeadOverlay(GetPlayerPed(-1), i, tonumber(data.overlays[idx]), 1.0)
+			SetPedHeadOverlayColor(GetPlayerPed(-1), i, 1, tonumber(data.overlaycolors[idx]), 0)
 		end
 	end)
 
@@ -741,23 +935,48 @@ function ChangeToSkin(skin)
 	local props = {}
 	local proptextures = {}
 
-	for i = 0, 11 do
-		local drawable = GetPedDrawableVariation(GetPlayerPed(-1), i)
-		drawables[i] = drawable
-		
-		local texture = GetPedTextureVariation(GetPlayerPed(-1), i)
-		textures[i] = texture
+	local overlays = {}
+	local overlaycolors = {}
 
-		local palletetexture = GetPedPaletteVariation(GetPlayerPed(-1), i)
-		palletetextures[i] = palletetexture
+	for i = 0, 11 do
+		if (i == 1) then
+			local drawable = headblend
+			drawables[i] = drawable
+		elseif (i == 3) then
+			local drawable = GetPedDrawableVariation(GetPlayerPed(-1), i)
+			drawables[i] = drawable
+
+			local texture = haircolor_1
+			textures[i] = texture
+
+			local palletetexture = haircolor_2
+			palletetextures[i] = palletetexture
+		else
+			local drawable = GetPedDrawableVariation(GetPlayerPed(-1), i)
+			drawables[i] = drawable
+			
+			local texture = GetPedTextureVariation(GetPlayerPed(-1), i)
+			textures[i] = texture
+
+			local palletetexture = GetPedPaletteVariation(GetPlayerPed(-1), i)
+			palletetextures[i] = palletetexture
+		end
 	end
 
-	for i = 0, 3 do
-		local prop = GetPedPropIndex(GetPlayerPed(-1), i)
-		props[i] = prop
+	for i = 0, 8 do
+		if (i ~= 4 and i ~= 5 and i ~= 6) then
+			local prop = GetPedPropIndex(GetPlayerPed(-1), i)
+			props[i] = prop
 
-		local proptexture = GetPedPropTextureIndex(GetPlayerPed(-1), i)
-		proptextures[i] = proptexture
+			local proptexture = GetPedPropTextureIndex(GetPlayerPed(-1), i)
+			proptextures[i] = proptexture
+		end
+	end
+
+	for i = 0, 4 do
+		local success, overlayValue, colourType, firstColour, secondColour, overlayOpacity = GetPedHeadOverlayData(GetPlayerPed(-1), i)
+		overlays[i] = overlayValue
+		overlaycolors[i] = firstColour
 	end
 
 	local clothing = {
@@ -765,7 +984,9 @@ function ChangeToSkin(skin)
 		textures = textures,
 		palletetextures = palletetextures,
 		props = props,
-		proptextures = proptextures
+		proptextures = proptextures,
+		overlays = overlays,
+		overlaycolors = overlaycolors,
 	}
 
 	clothing = json.encode(clothing)
@@ -822,11 +1043,6 @@ function IsNearClothes()
 		if comparedst < dstchecked then
 			dstchecked = comparedst
 		end
-
-		if comparedst < 5.0 then
-			DrawMarker(27, clothcoords.x, clothcoords.y, clothcoords.z, 0, 0, 0, 0, 0, 0, 1.001, 1.0001, 1.7001, 0, 55, 240, 20, 0, 0, 0, 0)
-		end
-
 	end
 	return dstchecked
 end
@@ -901,10 +1117,10 @@ Citizen.CreateThread(function()
 		if cmenu.show == 1 then
 			ClothShop()
 			if IsControlJustPressed(1, 188) or IsDisabledControlJustPressed(1, 188) then -- up
-				if cmenu.row > 1 then cmenu.row = cmenu.row-1 else cmenu.row = 4 end
+				if cmenu.row > 1 then cmenu.row = cmenu.row-1 else cmenu.row = 5 end
 				PlaySound(-1, "NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0, 0, 1)
 			elseif IsControlJustPressed(1, 187) or IsDisabledControlJustPressed(1, 187) then -- down
-				if cmenu.row < 4 then cmenu.row = cmenu.row+1 else cmenu.row = 1 end
+				if cmenu.row < 5 then cmenu.row = cmenu.row+1 else cmenu.row = 1 end
 				PlaySound(-1, "NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0, 0, 1)
 			elseif IsControlJustPressed(1, 202) or IsDisabledControlJustPressed(1, 202) then -- backspase
 				PlaySound(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0, 0, 1)
@@ -922,6 +1138,9 @@ Citizen.CreateThread(function()
 					cmenu.show = 4
 					cmenu.row = 1
 				elseif cmenu.row == 4 then
+					cmenu.show = 5
+					cmenu.row = 1
+				elseif cmenu.row == 5 then
 					cmenu.show = 0
 					cmenu.row = 0
 					cmenu.field = 0
@@ -977,6 +1196,20 @@ Citizen.CreateThread(function()
 					cmenu.row = 3
 					cmenu.field = 1
 				end
+			end
+		elseif cmenu.show == 5 then
+			ClothShop()
+			if IsControlJustPressed(1, 188) or IsDisabledControlJustPressed(1, 188) then -- up
+				if cmenu.row > 1 then cmenu.row = cmenu.row-1 else cmenu.row = 3 end
+				PlaySound(-1, "NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0, 0, 1)
+			elseif IsControlJustPressed(1, 187) or IsDisabledControlJustPressed(1, 187) then -- down
+				if cmenu.row < 3 then cmenu.row = cmenu.row+1 else cmenu.row = 1 end
+				PlaySound(-1, "NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0, 0, 1)
+			elseif IsControlJustPressed(1, 202) or IsDisabledControlJustPressed(1, 202) then -- backspase
+				PlaySound(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0, 0, 1)
+				cmenu.show = 1
+				cmenu.row = 4
+				cmenu.field = 1
 			end
 		else
 			Citizen.Wait(1000)
