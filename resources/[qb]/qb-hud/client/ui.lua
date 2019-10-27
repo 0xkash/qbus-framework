@@ -2,11 +2,28 @@ local speed = 0.0
 local seatbeltOn = false
 local cruiseOn = false
 
+function CalculateTimeToDisplay()
+	hour = GetClockHours()
+    minute = GetClockMinutes()
+    
+    local obj = {}
+    
+	if minute <= 9 then
+		minute = "0" .. minute
+    end
+    
+    obj.hour = hour
+    obj.minute = minute
+
+    return obj
+end
+
 Citizen.CreateThread(function()
     while true do 
         if showUI then
             speed = GetEntitySpeed(GetVehiclePedIsIn(GetPlayerPed(-1), false)) * 3.6
             local pos = GetEntityCoords(player)
+            local time = CalculateTimeToDisplay()
             local street1, street2 = GetStreetNameAtCoord(pos.x, pos.y, pos.z, Citizen.ResultAsInteger(), Citizen.ResultAsInteger())
 
             SendNUIMessage({
@@ -19,6 +36,7 @@ Citizen.CreateThread(function()
                 street1 = GetStreetNameFromHashKey(street1),
                 street2 = GetStreetNameFromHashKey(street2),
                 speed = math.ceil(speed),
+                time = time
             })
             Citizen.Wait(500)
         else
