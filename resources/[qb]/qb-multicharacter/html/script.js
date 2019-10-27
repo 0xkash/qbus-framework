@@ -25,8 +25,9 @@ $(document).ready(function (){
 
     $('.continue-btn').click(function(e){
         e.preventDefault();
-
+        
         $('.welcomescreen').fadeOut(150);
+        $('.server-log').fadeOut(150);
         setTimeout(function(){
             $('.characters-block').fadeIn(100);
             $('.main-screen').css("background-color", "transparent");
@@ -36,9 +37,10 @@ $(document).ready(function (){
 
     $('.disconnect-btn').click(function(e){
         e.preventDefault();
+
         $.post('http://qb-multicharacter/closeUI');
         $.post('http://qb-multicharacter/disconnectButton');
-    })
+    });
 
     $('.datepicker').datepicker();
     $('select').formSelect();
@@ -72,6 +74,15 @@ function setupCharacters(characters) {
         }, 100)
     })
 }
+
+$(document).on('click', '#close-log', function(e){
+    e.preventDefault();
+    selectedLog = null;
+    $('.welcomescreen').css("filter", "none");
+    $('.server-log').css("filter", "none");
+    $('.server-log-info').fadeOut(250);
+    logOpen = false;
+});
 
 $(document).on('click', '.character', function(e) {
     e.preventDefault();

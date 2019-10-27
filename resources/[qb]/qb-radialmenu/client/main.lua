@@ -26,8 +26,9 @@ Citizen.CreateThread(function()
     while true do
         Citizen.Wait(3)
 
-        if IsControlJustPressed(0, 51) then
+        if IsControlJustPressed(0, 19) then
             openRadial(true)
+            SetCursorLocation(0.5, 0.5)
         end
     end
 end)
@@ -40,13 +41,28 @@ RegisterNUICallback('selectItem', function(data)
     local itemData = data.itemData
 
     if itemData.type == 'client' then
-        TriggerEvent(itemData.event)
+        TriggerEvent(itemData.event, itemData)
     else
-        TriggerServerEvent(itemData.event)
+        TriggerServerEvent(itemData.event, itemData)
     end
 end)
 
 RegisterNetEvent('qb-radialmenu:client:giveidkaart')
-AddEventHandler('qb-radialmenu:client:giveidkaart', function()
+AddEventHandler('qb-radialmenu:client:giveidkaart', function(data)
     print('Ik ben een getriggered event :)')
+end)
+
+RegisterNetEvent('qb-radialmenu:client:openDoor')
+AddEventHandler('qb-radialmenu:client:openDoor', function(data)
+    local string = data.id
+    local replace = string:gsub("door", "")
+    local door = tonumber(replace)
+
+    if GetVehiclePedIsIn(GetPlayerPed(-1), false) ~= 1 then
+        if GetVehicleDoorAngleRatio(GetVehiclePedIsIn(GetPlayerPed(-1), false), door) > 0 then
+            SetVehicleDoorShut(GetVehiclePedIsIn(GetPlayerPed(-1), false), door, false)
+        else
+            SetVehicleDoorOpen(GetVehiclePedIsIn(GetPlayerPed(-1), false), door, false, false)
+        end
+    end
 end)
