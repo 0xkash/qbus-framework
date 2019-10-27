@@ -14,7 +14,7 @@ AddEventHandler('inventory:server:OpenInventory', function(other)
 		else
 			if Drops[other] ~= nil then
 				secondInv.name = other
-				secondInv.label = "Dropped"
+				secondInv.label = "Dropped-"..tostring(other)
 				secondInv.maxweight = 900000
 				secondInv.inventory = Drops[other].items
 				secondInv.slots = 100
@@ -287,6 +287,10 @@ QBCore.Commands.Add("setnui", "Zet nui aan/ui (0/1)", {}, true, function(source,
     else
         TriggerClientEvent("inventory:client:DisableNui", src)
     end
+end)
+
+QBCore.Commands.Add("kofferbak", "Laat kofferbak positie zien", {}, false, function(source, args)
+	TriggerClientEvent("inventory:client:ShowTrunkPos", source)
 end)
 
 QBCore.Commands.Add("giveitem", "Geef een item aan een speler", {{name="id", help="Speler ID"},{name="item", help="Naam van het item (geen label)"}, {name="amount", help="Aantal items"}}, true, function(source, args)
