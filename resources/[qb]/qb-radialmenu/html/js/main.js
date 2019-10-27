@@ -127,10 +127,13 @@ function createMenu(items) {
         closeOnClick: false,
         menuItems   : items,
         onClick     : function(item) {
+            if (item.shouldClose) {
+                $.post('http://qb-radialmenu/closeRadial')
+            }
+
             $.post('http://qb-radialmenu/selectItem', JSON.stringify({
                 itemData: item
             }))
-            $.post('http://qb-radialmenu/closeRadial')
         }
     });
 }

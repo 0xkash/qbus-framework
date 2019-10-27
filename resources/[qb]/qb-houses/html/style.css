@@ -1,0 +1,193 @@
+@import url('https://fonts.googleapis.com/css?family=Quicksand:700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap');
+
+.container {
+    height: 100vh;
+}
+
+.contract-main {
+    position: absolute; 
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    border: 3px solid green;
+    width: 580px;
+    height: 850px;
+    right: 100px; 
+    margin-left: auto; 
+    margin-right: auto; 
+    top: 15%;
+}
+
+.contract-sub {
+    position: absolute;
+    width: 93%;
+    height: 80%;
+    bottom: 14px;
+    left: 18px;
+    background-color: rgb(255, 198, 13);
+    border-radius: 12px;
+    border: 2px solid black;
+}
+
+.contract-header {
+    text-align: center;
+}
+
+.contract-information {
+    position: absolute;
+    width: 70%;
+    height: 85%;
+    left: 0; 
+    right: 0; 
+    margin-left: auto; 
+    margin-right: auto; 
+    top: 10%;
+    background-color: rgb(255, 255, 255);
+    border: 3px solid green;
+}
+
+.contract-information-header {
+    text-align: center;
+}
+
+.property-info {
+    position: relative;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    height: 60px;
+    left: 0; 
+    right: 0; 
+    margin-left: auto; 
+    margin-right: auto;
+    top: 30px;
+    margin-top: 14px;
+}
+
+.property-cancel {
+    position: absolute;
+    background-color: rgb(31, 31, 31);
+    border-radius: 5px 0px 0px 5px;
+    width: 40%;
+    height: 35px;
+    left: 18px;
+    bottom: 15px;
+    margin-top: 20px;
+    transition: 0.3s;
+}
+
+.property-accept {
+    position: absolute;
+    background-color: rgb(3, 105, 3);
+    border-radius: 0px 5px 5px 0px;
+    width: 55%;
+    height: 35px;
+    right: 18px;
+    bottom: 15px;
+    margin-top: 20px;
+    transition: 0.3s;
+}
+
+.property-accept:hover {
+    background-color: rgb(1, 122, 1);
+    transition: 0.3s;
+}
+
+.property-cancel:hover {
+    background-color: rgb(54, 54, 54);
+    transition: 0.3s;
+}
+
+.dynasty8-logo {
+    position: absolute;
+    width: 140px;
+    height: 75px;
+    top: 50px;
+    left: 20px;
+}
+
+.house-picture {
+    position: absolute;
+    width: 200px;
+    height: 110px;
+    right: 170px;
+    top: 25px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+#property-cancel-text {
+    position: relative;
+    top: 9px;
+    left: 35px;
+    font-family: 'Source Sans Pro', sans-serif;
+    color: rgb(255, 255, 255);
+    font-size: 13px;   
+}
+
+#property-accept-text {
+    position: relative;
+    top: 9px;
+    left: 70px;
+    font-family: 'Source Sans Pro', sans-serif;
+    color: rgb(255, 255, 255);
+    font-size: 13px;   
+}
+
+#welcome-text {
+    float: right;
+    font-family: 'Source Sans Pro', sans-serif;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+#welcome-name {
+    color: rgb(2, 88, 2);
+}
+
+#contract-header-text {
+    position: relative;
+    top: 13px;
+    font-family: 'Source Sans Pro', sans-serif;
+    color: white;
+    font-size: 24px;
+}
+
+#contract-information-text {
+    position: relative;
+    top: 20px;
+    font-family: 'Source Sans Pro', sans-serif;
+    color: rgb(0, 0, 0);
+    font-size: 24px;
+}
+
+.property-info-text {
+    position: relative;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 15px;
+    margin-left: 5px;
+    top: 3px;
+}
+
+#propert-info-hr {
+    position: relative;
+    width: 30%;
+    background-color: green;
+    height: 4px;
+    top: 9px;
+    border-radius: 0px 5px 5px 0px;
+}
+
+.property-info-info {
+    position: relative;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 13px;
+    margin-left: 5px;
+    top: 12px;
+}
+
+#property-totalprice {
+    color: green;
+    font-weight: bold;
+}

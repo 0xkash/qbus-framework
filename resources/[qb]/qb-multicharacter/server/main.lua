@@ -51,6 +51,12 @@ QBCore.Functions.CreateCallback("qb-multicharacter:server:GetUserCharacters", fu
     end)
 end)
 
+QBCore.Functions.CreateCallback("qb-multicharacter:server:GetServerLogs", function(source, cb)
+    exports['ghmattimysql']:execute('SELECT * FROM server_logs', function(result)
+        cb(result)
+    end)
+end)
+
 QBCore.Functions.CreateCallback("test:yeet", function(source, cb)
     local steamId = GetPlayerIdentifiers(source)[1]
     local plyChars = {}

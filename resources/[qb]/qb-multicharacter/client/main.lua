@@ -36,7 +36,6 @@ Citizen.CreateThread(function()
 	end
 end)
 
-
 RegisterNUICallback('closeUI', function()
     openCharMenu(false)
 end)

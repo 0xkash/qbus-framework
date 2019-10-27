@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Quicksand:700&display=swap');
+
 @font-face {
     font-family: 'pricedownblack';
     src: url('pricedown_bl-webfont.woff2') format('woff2'),
@@ -24,7 +26,6 @@
 
 html {
     overflow: hidden;
-    
 }
 
 p {
@@ -77,9 +78,9 @@ p {
 
 .ui-container {
     display: none;
-    font-family: "gta-ui", Verdana, Tahoma;
     font-size: 40px;
     overflow:hidden;
+    font-family: 'Quicksand';
 }
 
 .health, .armor {
@@ -180,10 +181,13 @@ p {
     display: none;
 }
 
+/* Carhud Styling */
+
 .ui-car-speed, .ui-car-fuel {
-    font-size: 32px;
+    font-size: 'Quicksand', sans-serif;
+    font-size: 16px;
     position: absolute;
-    text-shadow: -1px 1px 2px #000, 1px 1px 2px #000, 1px -1px 0 #000, -1px -1px 0 #000;
+    text-shadow: -1px 1px 2px rgba(0, 0, 0, 0.548), 1px 1px 2px rgba(0, 0, 0, 0.548), 1px -1px 0 rgba(0, 0, 0, 0.548), -1px -1px 0 rgba(0, 0, 0, 0.548);
     color: #ffffff;
     bottom:  3.58vh;
 }
@@ -193,26 +197,36 @@ p {
 }
 
 .speed-type {
-    position: absolute;
-    left: 1.75vw;
-    bottom: 0vh;
+    position: relative;
+    left: 0.3vw;
+    bottom: 0.6vh;
+    font-size: 10px;
+    text-shadow: -1px 1px 2px rgba(0, 0, 0, 0.548), 1px 1px 2px rgba(0, 0, 0, 0.548), 1px -1px 0 rgba(0, 0, 0, 0.548), -1px -1px 0 rgba(0, 0, 0, 0.548);
 }
 
 .ui-car-fuel {
-    left: 22vw;
+    left: 21.2vw;
+}
+
+.fuel-label {
+    position: relative;
+    left: 0.2vw;
+    bottom: 0.6vh;
+    font-size: 10px;
+    text-shadow: -1px 1px 2px rgba(0, 0, 0, 0.548), 1px 1px 2px rgba(0, 0, 0, 0.548), 1px -1px 0 rgba(0, 0, 0, 0.548), -1px -1px 0 rgba(0, 0, 0, 0.548);
 }
 
 .speed-text, .fuel-text {
     color: rgba(255, 255, 255, 1.0);
-    text-shadow: -1px 1px 2px #000, 1px 1px 2px #000, 1px -1px 0 #000, -1px -1px 0 #000;
+    font-size: 18px;
 }
 
 .ui-car-street {
-    font-size: 24px;
+    font-size: 16px;
     position: absolute;
     bottom: 1.05vh;
     left: 17vw;
-    text-shadow: -1px 1px 2px #000, 1px 1px 2px #000, 1px -1px 0 #000, -1px -1px 0 #000;
+    text-shadow: -1px 1px 2px rgba(0, 0, 0, 0.548), 1px 1px 2px rgba(0, 0, 0, 0.548), 1px -1px 0 rgba(0, 0, 0, 0.548), -1px -1px 0 rgba(0, 0, 0, 0.548);
     color: #ffffff;
 }
 
@@ -221,18 +235,27 @@ p {
 }
 
 .ui-car-seatbelt, .ui-car-cruise {
-    font-size: 24px;
+    font-size: 14px;
     position: absolute;
-    bottom: 7vh;
+    bottom: 4vh;
     color: #c92222;
-    text-shadow: -1px 1px 2px #000, 1px 1px 2px #000, 1px -1px 0 #000, -1px -1px 0 #000;
+    text-shadow: -1px 1px 2px rgba(0, 0, 0, 0.25), 1px 1px 2px rgba(0, 0, 0, 0.25), 1px -1px 0 rgba(0, 0, 0, 0.25), -1px -1px 0 rgba(0, 0, 0, 0.25);
 }
 
 .ui-car-seatbelt {
-    left: 17vw;
+    left: 25.5vw;
 }
 
 .ui-car-cruise {
-    left: 21vw;
+    left: 29vw;
+}
+
+.ui-car-time {
+    font-size: 14px;
+    position: absolute;
+    bottom: 7vh;
+    left: 17vw;
+    color: #ffffff;
+    text-shadow: -1px 1px 2px rgba(0, 0, 0, 0.548), 1px 1px 2px rgba(0, 0, 0, 0.548), 1px -1px 0 rgba(0, 0, 0, 0.548), -1px -1px 0 rgba(0, 0, 0, 0.548);
 }
 
