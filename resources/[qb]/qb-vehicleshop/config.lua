@@ -6,7 +6,7 @@ QB.VehicleShops = {
 
 QB.Vehicles = {
     ["sedan"] = {
-        ["shafter2"] = {vehicle = "shafter2", name = "Schafter", class = "sedan", classlabel = "Sedan", price = 110000},
+        ["schafter2"] = {vehicle = "schafter2", name = "Schafter", class = "sedan", classlabel = "Sedan", price = 110000},
     },
 
     ["coupe"] = {

@@ -2,6 +2,14 @@ QBCore = nil
 
 TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 
+local NumberCharset = {}
+local Charset = {}
+
+for i = 48,  57 do table.insert(NumberCharset, string.char(i)) end
+
+for i = 65,  90 do table.insert(Charset, string.char(i)) end
+for i = 97, 122 do table.insert(Charset, string.char(i)) end
+
 -- code
 
 RegisterNetEvent('qb-vehicleshop:server:buyVehicle')
@@ -29,9 +37,32 @@ function format_thousand(v)
 end
 
 function GeneratePlate()
-    local start = "QB"
-    local numbers = math.random(111111, 999999)
-    local plate = start..numbers
-
+    local plate = tostring(GetRandomNumber(1)) .. GetRandomLetter(2) .. tostring(GetRandomNumber(3)) .. GetRandomLetter(2)
+    QBCore.Functions.ExecuteSql("SELECT * FROM `player_vehicles` WHERE `plate` = '"..plate.."'", function(result)
+        while (result[1] ~= nil) do
+            plate = tostring(GetRandomNumber(1)) .. GetRandomLetter(2) .. tostring(GetRandomNumber(3)) .. GetRandomLetter(2)
+        end
+        return plate
+    end)
     return plate
+end
+
+function GetRandomNumber(length)
+	Citizen.Wait(1)
+	math.randomseed(GetGameTimer())
+	if length > 0 then
+		return GetRandomNumber(length - 1) .. NumberCharset[math.random(1, #NumberCharset)]
+	else
+		return ''
+	end
+end
+
+function GetRandomLetter(length)
+	Citizen.Wait(1)
+	math.randomseed(GetGameTimer())
+	if length > 0 then
+		return GetRandomLetter(length - 1) .. Charset[math.random(1, #Charset)]
+	else
+		return ''
+	end
 end
