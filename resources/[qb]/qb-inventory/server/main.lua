@@ -276,6 +276,12 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 end)
 
 function IsVehicleOwned(plate)
+	QBCore.Functions.ExecuteSql("SELECT * FROM `player_vehicles` WHERE `plate` = '"..plate.."'", function(result)
+		if (result[1] ~= nil) then
+			return true
+		end
+		return false
+	end)
 	return false
 end
 
