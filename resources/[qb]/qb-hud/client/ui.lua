@@ -25,6 +25,7 @@ Citizen.CreateThread(function()
             local pos = GetEntityCoords(player)
             local time = CalculateTimeToDisplay()
             local street1, street2 = GetStreetNameAtCoord(pos.x, pos.y, pos.z, Citizen.ResultAsInteger(), Citizen.ResultAsInteger())
+            local fuel = exports['LegacyFuel']:GetFuel(GetVehiclePedIsIn(GetPlayerPed(-1)))
 
             SendNUIMessage({
                 action = "hudtick",
@@ -36,7 +37,8 @@ Citizen.CreateThread(function()
                 street1 = GetStreetNameFromHashKey(street1),
                 street2 = GetStreetNameFromHashKey(street2),
                 speed = math.ceil(speed),
-                time = time
+                fuel = fuel,
+                time = time,
             })
             Citizen.Wait(500)
         else
