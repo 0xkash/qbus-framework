@@ -2529,13 +2529,4 @@ function AddBlips()
 		SetBlipAsShortRange(blip,true)
 	end
 end
---TODO: Event needed to add blips when player is spawned
-local firstspawn = 0
-AddEventHandler('playerSpawned', function(spawn)
-if firstspawn == 0 then
-	--AddBlips()
-	TriggerServerEvent('getGarageInfo')
-	firstspawn = 1
-end
-end)
 
