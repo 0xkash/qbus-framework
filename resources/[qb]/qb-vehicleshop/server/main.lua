@@ -22,7 +22,8 @@ AddEventHandler('qb-vehicleshop:server:buyVehicle', function(vehicleData, garage
     
     if (balance - vData.price) >= 0 then
         QBCore.Functions.ExecuteSql("INSERT INTO `player_vehicles` (`steam`, `citizenid`, `vehicle`, `hash`, `mods`, `plate`, `garage`) VALUES ('"..pData.PlayerData.steam.."', '"..cid.."', '"..vData.vehicle.."', '"..GetHashKey(vData.vehicle).."', '{}', '"..GeneratePlate().."', '"..garage.."')")
-		TriggerClientEvent("QBCore:Notify", src, "Gelukt! Je voertuig is afgeleverd bij "..QB.GarageLabel[garage], "success", 5000)
+        TriggerClientEvent("QBCore:Notify", src, "Gelukt! Je voertuig is afgeleverd bij "..QB.GarageLabel[garage], "success", 5000)
+        pData.Functions.RemoveMoney('bank', vData.price)
     else
 		TriggerClientEvent("QBCore:Notify", src, "Je hebt niet voldoende geld, je mist €"..format_thousand(vData.price - balance), "error", 5000)
     end

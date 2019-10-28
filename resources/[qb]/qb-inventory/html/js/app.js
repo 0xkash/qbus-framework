@@ -87,9 +87,9 @@ function handleDragDrop() {
             }
         },
         stop: function() {
-            //$(this).css("background", "rgba(20,20,20,0.5)");
+            $(this).css("background", "rgba(20,20,20,0.5)");
             $(this).find("img").css("filter", "brightness(100%)");
-            $("#item-use").css("background", "rgba(20,20,20, 0.5");
+            $("#item-use").css("background", "rgba(235, 235, 235, 0.08)");
         },
     });
 
@@ -112,10 +112,10 @@ function handleDragDrop() {
     });
 
     $("#item-use").droppable({
+        hoverClass: 'button-hover',
         drop: function(event, ui) {
             fromData = ui.draggable.data("item");
             fromInventory = ui.draggable.parent().attr("data-inventory");
-            $(this).css("background", "rgba(35,35,35, 0.7");
             if(fromData.useable) {
                 $.post("http://qb-inventory/UseItem", JSON.stringify({
                     inventory: fromInventory,
@@ -175,8 +175,8 @@ function updateweights($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
         }
     }
 
-    $(".player-inv-info p").html("Eigen Inventaris - Gewicht: " + (parseInt(totalWeight) / 1000).toFixed(1) + " / " + (playerMaxWeight / 1000).toFixed(1) + "kg");
-    $(".other-inv-info p").html(otherLabel + " - Gewicht: " + (parseInt(totalWeightOther) / 1000).toFixed(1) + " / " + (otherMaxWeight / 1000).toFixed(1) + "kg");
+    $(".player-inv-info p").html("Speler Inventaris " + (parseInt(totalWeight) / 1000).toFixed(2) + " / " + (playerMaxWeight / 1000).toFixed(2) + " KG");
+    $(".other-inv-info p").html(otherLabel + " " + (parseInt(totalWeightOther) / 1000).toFixed(2) + " / " + (otherMaxWeight / 1000).toFixed(2) + " KG");
 }
 
 function swap($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
@@ -450,14 +450,14 @@ function InventoryError($elinv, $elslot) {
             });
         }
 
-        $(".player-inv-info p").html("Eigen Inventaris - Gewicht: " + (totalWeight / 1000).toFixed(1) + " / " + (data.maxweight / 1000).toFixed(1) + "kg");
+        $(".player-inv-info p").html("Speler Inventaris " + (totalWeight / 1000).toFixed(2) + " / " + (data.maxweight / 1000).toFixed(2) + " KG");
         playerMaxWeight = data.maxweight;
         if (data.other != null) {
-            $(".other-inv-info p").html(data.other.label + " - Gewicht: " + (totalWeightOther / 1000).toFixed(1) + " / " + (data.other.maxweight / 1000).toFixed(1) + "kg");
+            $(".other-inv-info p").html(data.other.label + " " + (totalWeightOther / 1000).toFixed(2) + " / " + (data.other.maxweight / 1000).toFixed(2) + " KG");
             otherMaxWeight = data.other.maxweight;
             otherLabel = data.other.label;
         } else {
-            $(".other-inv-info p").html(Inventory.droplabel + " - Gewicht: " + (totalWeightOther / 1000).toFixed(1) + " / " + (Inventory.dropmaxweight / 1000).toFixed(1) + "kg");
+            $(".other-inv-info p").html(Inventory.droplabel + " " + (totalWeightOther / 1000).toFixed(2) + " / " + (Inventory.dropmaxweight / 1000).toFixed(2) + " KG");
             otherMaxWeight = Inventory.dropmaxweight;
             otherLabel = Inventory.droplabel;
         }

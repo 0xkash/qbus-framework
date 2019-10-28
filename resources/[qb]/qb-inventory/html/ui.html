@@ -32,8 +32,8 @@
                 </div>
                 <div class="inv-options">
                     <div class="inv-options-list">
-                        <div class="inv-option-item"><input type="number" id="item-amount" class="btn btn-inv" min=0 value="0"></input></div>
-                        <div class="inv-option-item"><button class="btn btn-inv" id="item-use">GEBRUIK</button></div>
+                        <input type="number" id="item-amount" class="inv-option-item" min=0 value="0" oninput="validity.valid||(value='');"></input>
+                        <div class="inv-option-item" id="item-use"><p>GEBRUIK</p></div>
                         <!--<div class="inv-option-item"><button class="btn btn-inv" id="item-drop">LEG NEER</button></div>-->
                     </div>
                 </div>

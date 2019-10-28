@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap');
+
 html {
     overflow: hidden;
     
@@ -47,7 +49,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 .inv-container {
     position: absolute;
-    top: 40%;
+    top: 45%;
     left: 50%;
     margin-top: -30vh;
     margin-left: -40vw;
@@ -59,7 +61,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .player-inventory {
-    background: rgba(25,25,25,0.7);
+    background: rgba(15, 0, 0, 0.2);
     overflow-y: auto;
     overflow-x: hidden;
     width: 43%;
@@ -71,7 +73,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .other-inventory {
-    background: rgba(25,25,25,0.7);
+    background: rgba(15, 0, 0, 0.2);
     overflow-y: auto;
     overflow-x: hidden;
     width: 43%;
@@ -84,7 +86,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 .ply-hotbar-container {
     position: absolute;
-    bottom: 15%;
+    bottom: 6%;
     left: 50%;
     margin-left: -17.5vw;
     overflow: hidden;
@@ -135,9 +137,15 @@ input[type=number]::-webkit-outer-spin-button {
     position: relative;
     width: 131px;
     height: 142px;
-    background: rgba(20,20,20,0.5);
+    background-color: rgba(20,20,20,0.5);
     border: 1px solid rgba(255, 255, 255, 0.05);
     display: inline-block;
+    transition: background-color 0.3s;
+}
+
+.item-slot:hover {
+    background-color: rgba(31, 31, 31, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .inv-options-list {
@@ -151,11 +159,32 @@ input[type=number]::-webkit-outer-spin-button {
 .btn-inv {
     width: 100%!important;
     max-width: 100%!important;
-    border: 1px solid rgba(255, 255, 255, 0.05)!important;
-    border-radius: 2px!important;
     padding: 10%!important;
-    background: rgba(20,20,20,0.5);
-    color: #ffffff;
+    background-color: rgba(235, 235, 235, 0);
+}
+
+#item-amount {
+    color: white;
+    text-align: center;
+    font-size: 12px;
+    font-family: 'Roboto Mono', monospace;
+    outline: none;
+}
+
+.inv-option-item > p {
+    color: white;
+    text-align: center;
+    line-height: 48px;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-family: 'Roboto Mono', monospace;
+}
+
+.inv-option-item {
+    width: 100%;
+    height: 50px;
+    background-color: rgba(235, 235, 235, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.01);
 }
 
 .item-slot-amount {
@@ -207,31 +236,43 @@ input[type=number]::-webkit-outer-spin-button {
 .player-inv-info {
     position: absolute;
     left: 10%;
-    top: 8%;
+    top: 12%;
 }
 
 .player-inv-info p {
-    color: #ffffff;
-    margin:0;
-    font-size: 14px;
+    color: white;
+    font-size: 12px;
+    font-family: 'Roboto Mono', monospace;
+}
+
+.player-inv-weight {
+    position: absolute;
+    left: 38%;
+    top: 12%;
+}
+
+.player-inv-weight p {
+    color: white;
+    font-size: 12px;
+    font-family: 'Roboto Mono', monospace;
 }
 
 .other-inv-info {
     position: absolute;
     right: 10%;
-    top: 8%;
+    top: 12%;
 }
 
 .other-inv-info p {
-    color: #ffffff;
-    margin: 0;
-    font-size: 14px;
+    color: white;
+    font-size: 12px;
+    font-family: 'Roboto Mono', monospace;
 }
 
 .ply-iteminfo-container {
     display: none;
     position: absolute;
-    top: 70%;
+    bottom: 18%;
     left: 50%;
     margin-left: -12.5vw;
     overflow: hidden;

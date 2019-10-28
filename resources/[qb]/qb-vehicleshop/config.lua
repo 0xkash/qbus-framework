@@ -5,21 +5,21 @@ QB.VehicleShops = {
 }
 
 QB.Vehicles = {
-    ["sedan"] = {
-        ["schafter2"] = {vehicle = "schafter2", name = "Schafter", class = "sedan", classlabel = "Sedan", price = 110000},
+    ["sedans"] = {
+        ["schafter2"] = {vehicle = "schafter2", name = "Schafter", class = "sedans", classlabel = "Sedans", image = "schafter", price = 110000},
     },
 
-    ["coupe"] = {
-        ["windsor"] = {vehicle = "windsor", name = "Windsor", class = "coupe", classlabel = "Coupe", price = 210000},
+    ["coupes"] = {
+        ["windsor"] = {vehicle = "windsor", name = "Windsor", class = "coupes", classlabel = "Coupes", image = "windsor", price = 210000},
     },
 
     ["sports"] = {
-        ["buffalo"] = {vehicle = "buffalo", name = "Buffalo", class = "sports", classlabel = "Sports", price = 150000},
+        ["buffalo"] = {vehicle = "buffalo", name = "Buffalo", class = "sports", classlabel = "Sports", image = "buffalo", price = 150000},
     },
 
     ["super"] = {
-        ["adder"] = {vehicle = "adder", name = "Adder", class = "super", classlabel = "Super", price = 750000},
-        ["t20"] = {vehicle = "t20", name = "T20", class = "super", classlabel = "Super", price = 650000},
+        ["adder"] = {vehicle = "adder", name = "Adder", class = "super", classlabel = "Super", image = "adder", price = 750000},
+        ["t20"] = {vehicle = "t20", name = "T20", class = "super", classlabel = "Super", image = "t20", price = 650000},
     }
 }
 

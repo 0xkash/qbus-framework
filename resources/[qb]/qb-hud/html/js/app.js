@@ -84,7 +84,7 @@ $(document).on('keydown', function() {
         if(data.type == "cash") {
             $(".money-cash").css("display", "block");
             $("#cash").html(data.cash);
-            if (data.isminus) {
+            if (data.minus) {
                 $(".money-cash").append('<p class="minus">-<span id="cash-symbol">&euro;</span><span><span id="changeamount">' + data.amount + '</span></span></p>')
                 $(".minus").css("display", "block");
                 setTimeout(function() {
@@ -106,8 +106,8 @@ $(document).on('keydown', function() {
         } else {
             $(".money-bank").css("display", "block");
             $("#bank").html(data.bank);
-            if (data.isminus) {
-                $(".money-bank").append('<p class="plus">+<span id="bank-symbol">&euro;</span><span><span id="changeamount">' + data.amount + '</span></span></p>')
+            if (data.minus) {
+                $(".money-bank").append('<p class="minus">-<span id="bank-symbol">&euro;</span><span><span id="changeamount">' + data.amount + '</span></span></p>')
                 $(".minus").css("display", "block");
                 setTimeout(function() {
                     $(".minus").fadeOut(750, function() {
