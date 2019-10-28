@@ -45,15 +45,15 @@ end)
 
 --------------------------------------------------------------
 Citizen.CreateThread(function()
-    Citizen.Wait(1000)
+    Citizen.Wait(100)
     while true do
         if isLoggedIn then
             SetClosestHouse()
             TriggerEvent('qb-houses:client:setupHouseBlips')
-            Citizen.Wait(500)
+            Citizen.Wait(100)
             TriggerEvent('qb-garages:client:setHouseGarage', closesthouse, hasKey)
         end
-        Citizen.Wait(8000)
+        Citizen.Wait(10000)
     end
 end)
 
@@ -248,6 +248,11 @@ function changeOutfit()
 	Wait(3100)
 	TaskPlayAnim(GetPlayerPed(-1), "clothingshirt", "exit", 8.0, 1.0, -1, 49, 0, 0, 0, 0)
 end
+
+RegisterNetEvent('qb-houses:client:giveHouseKey')
+AddEventHandler('qb-houses:client:giveHouseKey', function(data)
+    print('Player ID:'..data.id)
+end)
 
 function OutfitsLijst()
     QBCore.Functions.TriggerCallback('qb-houses:server:getSavedOutfits', function(outfits)

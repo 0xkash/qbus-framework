@@ -10,9 +10,73 @@ Citizen.CreateThread(function()
     end
 end)
 
+    -- {
+    --     id    = 'givekey',
+    --     title = 'Conny Links',
+    --     icon = '#citizen',
+    --     type = 'client',
+    --     event = 'qb-houses:client:giveHouseKey',
+    --     shouldClose = true,
+    -- },
+
 local inRadialMenu = false
 
-function openRadial(bool)
+function openRadial(bool)    
+    local closestPlayers = QBCore.Functions.GetPlayersFromCoords()
+    local closestHousePlayers = {}
+    local closestVehiclePlayers = {}
+
+    for k, v in pairs(closestPlayers) do
+        if v ~= 0 then
+            table.insert(closestHousePlayers, {
+                id = GetPlayerServerId(v),
+                title = GetPlayerName(PlayerId(v)),
+                icon = '#citizen',
+                type = 'client',
+                event = 'qb-houses:client:giveHouseKey',
+                shouldClose = true,
+            })
+
+            table.insert(closestVehiclePlayers, {
+                id = GetPlayerServerId(v),
+                title = GetPlayerName(PlayerId(v)),
+                icon = '#citizen',
+                type = 'client',
+                event = 'qb-houses:client:giveVehicleKey',
+                shouldClose = true,
+            })
+            print('inserted')
+        end
+    end
+
+    if next(closestVehiclePlayers) ~= nil then
+        Config.MenuItems[3].items[1].items = closestVehiclePlayers
+    else
+        Config.MenuItems[3].items[1] = 
+        {
+            id    = 'givekey',
+            title = 'Geef Voertuig Sleutel',
+            icon = '#vehiclekey',
+            type = 'client',
+            event = 'qb-radialmenu:client:noPlayers',
+            shouldClose = true,
+        }
+    end
+
+    if next(closestHousePlayers) ~= nil then
+        Config.MenuItems[2].items[1].items[1].items = closestHousePlayers
+    else
+        Config.MenuItems[2].items[1].items[1] = 
+        {
+            id    = 'givehousekey',
+            title = 'Geef Huis Sleutel',
+            icon = '#vehiclekey',
+            type = 'client',
+            event = 'qb-radialmenu:client:noPlayers',
+            shouldClose = true,
+        }
+    end
+
     SetNuiFocus(bool, bool)
     SendNUIMessage({
         action = "ui",
@@ -47,19 +111,18 @@ RegisterNUICallback('selectItem', function(data)
     end
 end)
 
+RegisterNetEvent('qb-radialmenu:client:noPlayers')
+AddEventHandler('qb-radialmenu:client:noPlayers', function(data)
+    QBCore.Functions.Notify('Er zijn geen personen in de buurt', 'error', 2500)
+end)
+
 RegisterNetEvent('qb-radialmenu:client:giveidkaart')
-AddEventHandler('qb-radialmenu:client:giveidkaart', function()
+AddEventHandler('qb-radialmenu:client:giveidkaart', function(data)
     print('Ik ben een getriggered event :)')
 end)
 
-RegisterNetEvent('qb-radialmenu:client:getClosestPlayers')
-AddEventHandler('qb-radialmenu:client:getClosestPlayers', function()
-    print(json.encode(Config.MenuItems[2].items[1].items[1]))
-    print('yeet')
-end)
-
 RegisterNetEvent('qb-radialmenu:client:openDoor')
-AddEventHandler('qb-radialmenu:client:openDoor', function()
+AddEventHandler('qb-radialmenu:client:openDoor', function(data)
     local string = data.id
     local replace = string:gsub("door", "")
     local door = tonumber(replace)

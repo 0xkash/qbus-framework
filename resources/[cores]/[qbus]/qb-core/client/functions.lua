@@ -251,7 +251,7 @@ QBCore.Functions.GetPlayersFromCoords = function(coords, distance)
 		local target = GetPlayerPed(player)
 		local targetCoords = GetEntityCoords(target)
 		local targetdistance = GetDistanceBetweenCoords(targetCoords, coords.x, coords.y, coords.z, true)
-		if targetdistance <= area then
+		if targetdistance <= distance then
 			table.insert(closePlayers, player)
 		end
     end

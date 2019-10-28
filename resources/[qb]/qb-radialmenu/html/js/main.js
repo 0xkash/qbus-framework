@@ -17,6 +17,10 @@ $(document).ready(function(){
                 QBRadialMenu.close();
             }
         }
+
+        if (eventData.action == "setPlayers") {
+            createMenu(eventData.items)
+        }
     });
 });
 
@@ -31,9 +35,16 @@ function createMenu(items) {
             }
             
             if (item.event !== null) {
-                $.post('http://qb-radialmenu/selectItem', JSON.stringify({
-                    itemData: item
-                }))
+                if (item.data !== null) {
+                    $.post('http://qb-radialmenu/selectItem', JSON.stringify({
+                        itemData: item,
+                        data: item.data
+                    }))
+                } else {
+                    $.post('http://qb-radialmenu/selectItem', JSON.stringify({
+                        itemData: item
+                    }))
+                }
             }
         }
     });

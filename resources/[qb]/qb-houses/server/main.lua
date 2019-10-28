@@ -53,7 +53,6 @@ end)
 QBCore.Functions.CreateCallback('qb-houses:server:hasKey', function(source, cb, house)
 	local src = source
 	local pData = QBCore.Functions.GetPlayer(src)
-	local inJail = pData.Functions.inJail()
 
 	local identifier = pData.PlayerData.steam
 	local CharId = pData.PlayerData.citizenid
