@@ -36,8 +36,6 @@ Citizen.CreateThread(function()
                     if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, drawpos) < 2.0) and not IsPedInAnyVehicle(GetPlayerPed(-1)) then
                         CurrentVehicle = GetVehicleNumberPlateText(vehicle)
                         showTrunkPos = false
-                    else
-                        CurrentVehicle = nil
                     end
                 else
                     showTrunkPos = false
@@ -57,6 +55,9 @@ Citizen.CreateThread(function()
                 local vehpos = GetEntityCoords(vehicle)
                 if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, vehpos.x, vehpos.y, vehpos.z, true) < 5.0) and not IsPedInAnyVehicle(GetPlayerPed(-1)) then
                     local trunkpos = GetOffsetFromEntityInWorldCoords(vehicle, 0, -2.5, 0)
+                    if (IsBackEngine(GetEntityModel(vehicle))) then
+                        trunkpos = GetOffsetFromEntityInWorldCoords(vehicle, 0, 2.5, 0)
+                    end
                     if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, trunkpos) < 2.0) and not IsPedInAnyVehicle(GetPlayerPed(-1)) then
                         CurrentVehicle = GetVehicleNumberPlateText(vehicle)
                     else
@@ -82,6 +83,7 @@ Citizen.CreateThread(function()
         if IsDisabledControlJustReleased(0, Keys["TAB"]) then
             if CurrentVehicle ~= nil then
                 TriggerServerEvent("inventory:server:OpenInventory", "trunk", CurrentVehicle)
+                OpenTrunk()
             elseif CurrentDrop ~= 0 then
                 TriggerServerEvent("inventory:server:OpenInventory", "drop", CurrentDrop)
             else
@@ -231,6 +233,9 @@ AddEventHandler("inventory:client:DropItemAnim", function()
 end)
 
 RegisterNUICallback("CloseInventory", function(data, cb)
+    if CurrentVehicle ~= nil then
+        CloseTrunk()
+    end
     SetNuiFocus(false, false)
     SetTimecycleModifier('default')
 end)
@@ -250,6 +255,34 @@ end)
 RegisterNUICallback("PlayDropFail", function(data, cb)
     PlaySound(-1, "Place_Prop_Fail", "DLC_Dmod_Prop_Editor_Sounds", 0, 0, 1)
 end)
+
+function OpenTrunk()
+    local vehicle = QBCore.Functions.GetClosestVehicle()
+    while (not HasAnimDictLoaded("amb@prop_human_bum_bin@idle_b")) do
+        RequestAnimDict("amb@prop_human_bum_bin@idle_b")
+        Citizen.Wait(100)
+    end
+    TaskPlayAnim(GetPlayerPed(-1), "amb@prop_human_bum_bin@idle_b", "idle_d", 4.0, 4.0, -1, 50, 0, false, false, false)
+    if (IsBackEngine(GetEntityModel(vehicle))) then
+        SetVehicleDoorOpen(vehicle, 4, false, false)
+    else
+        SetVehicleDoorOpen(vehicle, 5, false, false)
+    end
+end
+
+function CloseTrunk()
+    local vehicle = QBCore.Functions.GetClosestVehicle()
+    while (not HasAnimDictLoaded("amb@prop_human_bum_bin@idle_b")) do
+        RequestAnimDict("amb@prop_human_bum_bin@idle_b")
+        Citizen.Wait(100)
+    end
+    TaskPlayAnim(GetPlayerPed(-1), "amb@prop_human_bum_bin@idle_b", "exit", 4.0, 4.0, -1, 50, 0, false, false, false)
+    if (IsBackEngine(GetEntityModel(vehicle))) then
+        SetVehicleDoorShut(vehicle, 4, false)
+    else
+        SetVehicleDoorShut(vehicle, 5, false)
+    end
+end
 
 function IsBackEngine(vehModel)
     for _, model in pairs(BackEngineVehicles) do
