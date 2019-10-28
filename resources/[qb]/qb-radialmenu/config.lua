@@ -49,6 +49,30 @@ Config.MenuItems = {
                 event = 'qb-radialmenu:client:giveidkaart',
                 shouldClose = true,
             },
+            {
+                id = 'house',
+                title = 'Huis Interactie',
+                icon = '#house',
+                items = {
+                    {
+                        id    = 'givehousekey',
+                        title = 'Geef Huis Sleutel',
+                        icon = '#vehiclekey',
+                        type = 'client',
+                        event = 'qb-radialmenu:client:giveidkaart',
+                        shouldClose = true,
+                    },
+                    {
+                        id    = 'togglelock',
+                        title = 'Toggle Deurslot',
+                        icon = '#vehiclekey',
+                        type = 'client',
+                        event = 'qb-houses:client:toggleDoorlock',
+                        shouldClose = true,
+                    },
+                }
+            }
+
         }
     },
     {
@@ -63,7 +87,7 @@ Config.MenuItems = {
         items = {
             {
                 id    = 'givekey',
-                title = 'Geef Sleutel',
+                title = 'Geef Voertuig Sleutel',
                 icon = '#vehiclekey',
                 type = 'client',
                 event = 'qb-radialmenu:client:giveidkaart',

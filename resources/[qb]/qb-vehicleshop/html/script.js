@@ -72,7 +72,7 @@ $(document).ready(function(){
 function setupVehicles(vehicles) {
     $('.vehicles').html("");
     $.each(vehicles, function(index, vehicle){
-        $('.vehicles').append('<div class="vehicle" id='+index+'><span id="vehicle-name">'+vehicle.name+' - '+vehicle.classlabel+'</span><span id="vehicle-price">$ '+vehicle.price+'</span><div class="vehicle-buy-btn" data-vehicle="'+vehicle+'"><p>Koop Voertuig</p></div></div>');
+        $('.vehicles').append('<div class="vehicle" id='+index+'><div class="car-image" style="background-image: url(https://www.gtabase.com/images/gta-5/vehicles/'+vehicle.class+'/'+vehicle.image+'.jpg)"><span id="vehicle-name">'+vehicle.name+' - '+vehicle.classlabel+'</span><span id="vehicle-price">$ '+vehicle.price+'</span><div class="vehicle-buy-btn" data-vehicle="'+vehicle+'"><p>Koop Voertuig</p></div></div>');
         $('#'+index).data('vehicleData', "");
         $('#'+index).data('vehicleData', vehicle);
     })
@@ -87,7 +87,7 @@ $(document).on('click', '.vehicle-buy-btn', function(e){
         e.preventDefault();
         currentVehicleData = null;
     
-        var vehicleId = $(this).parent().attr('id');
+        var vehicleId = $(this).parent().parent().attr('id');
         var vehicleData = $('#'+vehicleId).data('vehicleData');
         currentVehicleData = vehicleData
         inWorldMap = true;

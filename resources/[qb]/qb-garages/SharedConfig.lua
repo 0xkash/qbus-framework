@@ -7,7 +7,7 @@ Garages = {
         isHouse = false,
     },
     ["sapcounsel"] = {
-        label = "San Andreas Parking Counsel",
+        label = "San Andreas Parking",
         takeVehicle = {x = -330.01, y = -780.33, z = 33.96},
         spawnPoint = {x = -334.44, y = -780.75, z = 33.96, h = 137.5},
         putVehicle = {x = -336.31, y = -774.93, z = 33.96},

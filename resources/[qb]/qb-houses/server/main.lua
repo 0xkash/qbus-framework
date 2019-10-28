@@ -11,6 +11,7 @@ local houseprices = {
 
 local houseowneridentifier = {}
 local houseownercid = {}
+local housekeyholders = {}
 
 RegisterServerEvent('qb-houses:server:viewHouse')
 AddEventHandler('qb-houses:server:viewHouse', function(house)
@@ -35,6 +36,7 @@ AddEventHandler('qb-houses:server:buyHouse', function(house)
 		QBCore.Functions.ExecuteSql("INSERT INTO `player_houses` (`house`, `identifier`, `citizenid`) VALUES ('"..house.."', '"..pData.PlayerData.steam.."', '"..pData.PlayerData.citizenid.."')")
 		houseowneridentifier[house] = pData.PlayerData.steam
 		houseownercid[house] = pData.PlayerData.citizenid
+		housekeyholders[house] = json.encode(pData.PlayerData.steam)
 		TriggerClientEvent('qb-houses:client:SetClosestHouse', src)
 	end
 end)
@@ -51,9 +53,11 @@ end)
 QBCore.Functions.CreateCallback('qb-houses:server:hasKey', function(source, cb, house)
 	local src = source
 	local pData = QBCore.Functions.GetPlayer(src)
+	local inJail = pData.Functions.inJail()
 
 	local identifier = pData.PlayerData.steam
 	local CharId = pData.PlayerData.citizenid
+
 	cb(hasKey(identifier, CharId, house))
 end)
 
@@ -69,6 +73,12 @@ function hasKey(identifier, cid, house)
 	if houseowneridentifier[house] ~= nil and houseownercid[house] ~= nil then
 		if houseowneridentifier[house] == identifier and houseownercid[house] == cid then
 			return true
+		else
+			for i = 1, (#housekeyholders[house]) do
+				if housekeyholders[house][i] == cid then
+					return true
+				end
+			end
 		end
 	end
 	return false
@@ -97,6 +107,7 @@ Citizen.CreateThread(function()
 					for _,house in pairs(houses) do
 						houseowneridentifier[house.house] = house.identifier
 						houseownercid[house.house] = house.citizenid
+						housekeyholders[house.house] = json.decode(house.keyholders)
 					end
 				end
 			end)

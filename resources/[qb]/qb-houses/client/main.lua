@@ -18,7 +18,7 @@ local isOwned = false
 local stashLoc = {}
 local closetLoc = {}
 
-local isLoggedIn = false
+local isLoggedIn = true
 local contractOpen = false
 
 local cam = nil
@@ -53,7 +53,7 @@ Citizen.CreateThread(function()
             Citizen.Wait(500)
             TriggerEvent('qb-garages:client:setHouseGarage', closesthouse, hasKey)
         end
-        Citizen.Wait(2000)
+        Citizen.Wait(8000)
     end
 end)
 
@@ -87,6 +87,24 @@ AddEventHandler('qb-houses:client:lockHouse', function(bool, house)
     Config.Houses[house].locked = bool
 end)
 
+RegisterNetEvent('qb-houses:client:toggleDoorlock')
+AddEventHandler('qb-houses:client:toggleDoorlock', function()
+    local ped = GetPlayerPed(-1)
+    local pos = GetEntityCoords(ped)
+    
+    if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z, true) < 1.5)then
+        if Config.Houses[closesthouse].locked then
+            TriggerServerEvent('qb-houses:server:lockHouse', false, closesthouse)
+            QBCore.Functions.Notify("Huis is ontgrendeld!", "success", 2500)
+        else
+            TriggerServerEvent('qb-houses:server:lockHouse', true, closesthouse)
+            QBCore.Functions.Notify("Huis is vergrendeld!", "error", 2500)
+        end
+    else
+        QBCore.Functions.Notify("Er is geen deur te bekennen??", "error", 3500)
+    end
+end)
+
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(0)
@@ -98,17 +116,7 @@ Citizen.CreateThread(function()
             if not inside then
                 if closesthouse ~= nil then
                     if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z, true) < 1.5)then
-                        if Config.Houses[closesthouse].locked then
-                            doorText(Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z + 1.2, '[~g~E~w~] Om huis te betreden | [~g~L~w~] Huis is ~r~vergrendeld')
-                            if IsControlJustPressed(0, Keys["L"]) then
-                                TriggerServerEvent('qb-houses:server:lockHouse', false, closesthouse)
-                            end
-                        else
-                            doorText(Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z + 1.2, '[~g~E~w~] Om huis te betreden | [~g~L~w~] Huis is ~b~ontgrendeld')
-                            if IsControlJustPressed(0, Keys["L"]) then
-                                TriggerServerEvent('qb-houses:server:lockHouse', true, closesthouse)
-                            end
-                        end
+                        QBCore.Functions.DrawText3D(Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z + 0.98, '~g~E~w~ - Ga naar binnen')
                         if IsControlJustPressed(0, Keys["E"]) then
                             enterOwnedHouse(closesthouse)
                         end
@@ -119,7 +127,6 @@ Citizen.CreateThread(function()
             -- EXIT HOUSE
             if inside then
                 if not entering then
-                --if closesthouse ~= nil then
                     if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.enter.x + POIOffsets.exit.x, Config.Houses[closesthouse].coords.enter.y + POIOffsets.exit.y, Config.Houses[closesthouse].coords.enter.z - 25 + POIOffsets.exit.z, true) < 1.5)then
                         QBCore.Functions.DrawText3D(Config.Houses[closesthouse].coords.enter.x + POIOffsets.exit.x, Config.Houses[closesthouse].coords.enter.y + POIOffsets.exit.y, Config.Houses[closesthouse].coords.enter.z - 25 + POIOffsets.exit.z, '[~g~E~w~] Om huis te verlaten')
                         if IsControlJustPressed(0, Keys["E"]) then
@@ -127,7 +134,6 @@ Citizen.CreateThread(function()
                         end
                     end
                 end
-                --end
             end
 
             local StashObject = nil
