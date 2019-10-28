@@ -157,6 +157,17 @@ QBCore.Functions.GetPeds = function(ignore)
 	return peds
 end
 
+QBCore.Functions.GetPlayers = function()
+    local players = {}
+    for _, player in ipairs(GetActivePlayers()) do
+        local ped = GetPlayerPed(player)
+        if DoesEntityExist(ped) then
+            table.insert(players, player)
+        end
+    end
+    return players
+end
+
 QBCore.Functions.GetClosestVehicle = function(coords)
 	local vehicles = QBCore.Functions.GetVehicles()
 	local closestDistance = -1
@@ -184,7 +195,11 @@ QBCore.Functions.GetClosestPed = function(coords, ignoreList)
 	local ignoreList = ignoreList or {}
 	local peds = QBCore.Functions.GetPeds(ignoreList)
 	local closestDistance = -1
-	local closestPed = -1
+    local closestPed = -1
+
+	if coords == nil then
+		coords = GetEntityCoords(GetPlayerPed(-1))
+	end
 
 	for i=1, #peds, 1 do
 		local pos = GetEntityCoords(peds[i])
@@ -197,4 +212,49 @@ QBCore.Functions.GetClosestPed = function(coords, ignoreList)
 	end
 
 	return closestPed, closestDistance
+end
+
+
+QBCore.Functions.GetClosestPlayer = function(coords)
+	local players = QBCore.Functions.GetPlayers()
+	local closestDistance = -1
+    local closestPlayer = -1
+
+	if coords == nil then
+		coords = GetEntityCoords(GetPlayerPed(-1))
+	end
+
+	for i=1, #players, 1 do
+		local pos = GetEntityCoords(players[i])
+		local distance = GetDistanceBetweenCoords(pos.x, pos.y, pos.z, coords.x, coords.y, coords.z, true)
+
+		if closestDistance == -1 or closestDistance > distance then
+			closestPlayer = players[i]
+			closestDistance = distance
+		end
+	end
+
+	return closestPlayer, closestDistance
+end
+
+QBCore.Functions.GetPlayersFromCoords = function(coords, distance)
+    local players = QBCore.Functions.GetPlayers()
+    local closePlayers = {}
+
+    if coords == nil then
+		coords = GetEntityCoords(GetPlayerPed(-1))
+    end
+    if distance == nil then
+        distance = 5.0
+    end
+    for _, player in pairs(players)
+		local target = GetPlayerPed(player)
+		local targetCoords = GetEntityCoords(target)
+		local targetdistance = GetDistanceBetweenCoords(targetCoords, coords.x, coords.y, coords.z, true)
+		if targetdistance <= area then
+			table.insert(closePlayers, player)
+		end
+    end
+    
+    return closePlayers
 end
