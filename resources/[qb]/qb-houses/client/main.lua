@@ -116,7 +116,11 @@ Citizen.CreateThread(function()
             if not inside then
                 if closesthouse ~= nil then
                     if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z, true) < 1.5)then
-                        QBCore.Functions.DrawText3D(Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z + 0.98, '~g~E~w~ - Ga naar binnen')
+                        if Config.Houses[closesthouse].locked then
+                            QBCore.Functions.DrawText3D(Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z + 0.98, '~r~E~w~ - Ga naar binnen')
+                        elseif not Config.Houses[closesthouse].locked then
+                            QBCore.Functions.DrawText3D(Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z + 0.98, '~g~E~w~ - Ga naar binnen')
+                        end
                         if IsControlJustPressed(0, Keys["E"]) then
                             enterOwnedHouse(closesthouse)
                         end
