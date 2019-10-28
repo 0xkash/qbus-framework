@@ -510,3 +510,10 @@ QBCore.Commands.Add("giveitem", "Geef een item aan een speler", {{name="id", hel
 		TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Speler is niet online!")
 	end
 end, "admin")
+
+QBCore.Functions.CreateUseableItem("id_card", function(source)
+    local Player = QBCore.Functions.GetPlayer(source)
+	if Player.Functions.GetItemByName("id_card") ~= nil then
+        TriggerClientEvent("inventory:client:ShowId", -1, source, Player.PlayerData.citizenid, Player.PlayerData.charinfo)
+    end
+end)

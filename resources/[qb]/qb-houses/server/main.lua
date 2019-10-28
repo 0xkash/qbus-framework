@@ -54,8 +54,8 @@ QBCore.Functions.CreateCallback('qb-houses:server:hasKey', function(source, cb, 
 	local src = source
 	local pData = QBCore.Functions.GetPlayer(src)
 
-	local identifier = pData.PlayerData.steam
-	local CharId = pData.PlayerData.citizenid
+	local identifier = Player.PlayerData.steam
+	local CharId = Player.PlayerData.citizenid
 
 	cb(hasKey(identifier, CharId, house))
 end)

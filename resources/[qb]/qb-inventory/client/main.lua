@@ -232,6 +232,27 @@ AddEventHandler("inventory:client:DropItemAnim", function()
     ClearPedTasks(GetPlayerPed(-1))
 end)
 
+
+RegisterNetEvent("inventory:client:ShowId")
+AddEventHandler("inventory:client:ShowId", function(sourceId, citizenid, character)
+    local sourcePos = GetEntityCoords(GetPlayerPed(GetPlayerFromServerId(sourceId)), false)
+    local pos = GetEntityCoords(GetPlayerPed(-1), false)
+    
+    print(GetDistanceBetweenCoords(pos.x, pos.y, pos.z, sourcePos.x, sourcePos.y, sourcePos.z, true))
+    if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, sourcePos.x, sourcePos.y, sourcePos.z, true) < 2.0) then
+        local gender = "Man"
+        if character.gender == 1 then
+            gender = "Vrouw"
+        end
+        TriggerEvent("chatMessage", "BSN", "advert", citizenid)
+        TriggerEvent("chatMessage", "Voornaam", "advert", character.firstname)
+        TriggerEvent("chatMessage", "Achternaam", "advert", character.lastname)
+        TriggerEvent("chatMessage", "Geboortedatum", "advert", character.birthdate)
+        TriggerEvent("chatMessage", "Geslacht", "advert", gender)
+        TriggerEvent("chatMessage", "Nationaliteit", "advert", character.nationality)
+    end
+end)
+
 RegisterNUICallback("CloseInventory", function(data, cb)
     if CurrentVehicle ~= nil then
         CloseTrunk()

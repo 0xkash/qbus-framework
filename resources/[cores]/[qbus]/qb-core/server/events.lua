@@ -97,6 +97,8 @@ AddEventHandler('QBCore:UpdatePlayer', function(data)
 	local Player = QBCore.Functions.GetPlayer(src)
 	if Player ~= nil then
 		Player.PlayerData.position = data.position
+		Player.Functions.SetMetaData("thirst", Player.PlayerData.metadata["thirst"] - 8.3)
+		Player.Functions.SetMetaData("hunger", Player.PlayerData.metadata["hunger"] - 9.6)
 		QBCore.Player.Save(src)
 	end
 end)
