@@ -97,8 +97,14 @@ AddEventHandler('QBCore:UpdatePlayer', function(data)
 	local Player = QBCore.Functions.GetPlayer(src)
 	if Player ~= nil then
 		Player.PlayerData.position = data.position
-		Player.Functions.SetMetaData("thirst", Player.PlayerData.metadata["thirst"] - 8.3)
-		Player.Functions.SetMetaData("hunger", Player.PlayerData.metadata["hunger"] - 9.6)
+
+		local newHunger = Player.PlayerData.metadata["hunger"] - 9.6
+		local newThirst = Player.PlayerData.metadata["thirst"] - 8.3
+		if newHunger <= 0 then newHunger = 0 end
+		if newThirst <= 0 then newThirst = 0 end
+		Player.Functions.SetMetaData("thirst", newThirst)
+		Player.Functions.SetMetaData("hunger", newHunger)
+
 		QBCore.Player.Save(src)
 	end
 end)
@@ -115,10 +121,9 @@ RegisterServerEvent("QBCore:Server:UseItem")
 AddEventHandler('QBCore:Server:UseItem', function(item)
 	local src = source
 	local Player = QBCore.Functions.GetPlayer(src)
-	local itemData = Player.Functions.GetItemByName(item)
-	if itemData ~= nil and itemData.amount > 0 then
-		if QBCore.Functions.CanUseItem(itemData.name) then
-			QBCore.Functions.UseItem(src, itemData.name)
+	if item ~= nil and item.amount > 0 then
+		if QBCore.Functions.CanUseItem(item.name) then
+			QBCore.Functions.UseItem(src, item)
 		end
 	end
 end)

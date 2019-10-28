@@ -60,9 +60,9 @@ AddEventHandler('inventory:server:UseItem', function(inventory, item)
 	local src = source
 	local Player = QBCore.Functions.GetPlayer(src)
 	if inventory == "player" or inventory == "hotbar" then
-		local itemData = Player.Functions.GetItemByName(item.name)
+		local itemData = Player.Functions.GetItemBySlot(item.slot)
 		if itemData ~= nil then
-			TriggerClientEvent("QBCore:Client:UseItem", src, itemData.name)
+			TriggerClientEvent("QBCore:Client:UseItem", src, itemData)
 		end
 	end
 end)
@@ -511,9 +511,9 @@ QBCore.Commands.Add("giveitem", "Geef een item aan een speler", {{name="id", hel
 	end
 end, "admin")
 
-QBCore.Functions.CreateUseableItem("id_card", function(source)
+QBCore.Functions.CreateUseableItem("id_card", function(source, item)
     local Player = QBCore.Functions.GetPlayer(source)
-	if Player.Functions.GetItemByName("id_card") ~= nil then
-        TriggerClientEvent("inventory:client:ShowId", -1, source, Player.PlayerData.citizenid, Player.PlayerData.charinfo)
+	if Player.Functions.GetItemBySlot(item.slot) ~= nil then
+        TriggerClientEvent("inventory:client:ShowId", -1, source, Player.PlayerData.citizenid, item.info)
     end
 end)
