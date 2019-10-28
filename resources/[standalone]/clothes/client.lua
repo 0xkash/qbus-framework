@@ -997,6 +997,83 @@ function ChangeToSkin(skin)
 	SetEntityInvincible(GetPlayerPed(-1),false)
 end
 
+function SaveOutfit(skin, outfitName)
+	SetEntityInvincible(GetPlayerPed(-1),true)
+	if skin == nil and lastmodel ~= nil then
+		skin = lastmodel
+	end
+	lastmodel = skin
+
+	local model = GetEntityModel(GetPlayerPed(-1))
+
+	local drawables = {}
+	local textures = {}
+	local palletetextures = {}
+
+	local props = {}
+	local proptextures = {}
+
+	local overlays = {}
+	local overlaycolors = {}
+
+	for i = 0, 11 do
+		if (i == 1) then
+			local drawable = headblend
+			drawables[i] = drawable
+		elseif (i == 3) then
+			local drawable = GetPedDrawableVariation(GetPlayerPed(-1), i)
+			drawables[i] = drawable
+
+			local texture = haircolor_1
+			textures[i] = texture
+
+			local palletetexture = haircolor_2
+			palletetextures[i] = palletetexture
+		else
+			local drawable = GetPedDrawableVariation(GetPlayerPed(-1), i)
+			drawables[i] = drawable
+			
+			local texture = GetPedTextureVariation(GetPlayerPed(-1), i)
+			textures[i] = texture
+
+			local palletetexture = GetPedPaletteVariation(GetPlayerPed(-1), i)
+			palletetextures[i] = palletetexture
+		end
+	end
+
+	for i = 0, 8 do
+		if (i ~= 4 and i ~= 5 and i ~= 6) then
+			local prop = GetPedPropIndex(GetPlayerPed(-1), i)
+			props[i] = prop
+
+			local proptexture = GetPedPropTextureIndex(GetPlayerPed(-1), i)
+			proptextures[i] = proptexture
+		end
+	end
+
+	for i = 0, 4 do
+		local success, overlayValue, colourType, firstColour, secondColour, overlayOpacity = GetPedHeadOverlayData(GetPlayerPed(-1), i)
+		overlays[i] = overlayValue
+		overlaycolors[i] = firstColour
+	end
+
+	local clothing = {
+		drawables = drawables,
+		textures = textures,
+		palletetextures = palletetextures,
+		props = props,
+		proptextures = proptextures,
+		overlays = overlays,
+		overlaycolors = overlaycolors,
+	}
+
+	clothing = json.encode(clothing)
+	TriggerServerEvent("clothes:saveOutfit", model, clothing, outfitName)
+
+	clothinggood()
+	
+	SetEntityInvincible(GetPlayerPed(-1),false)
+end
 
 function LocalPed()
 	return GetPlayerPed(-1)
@@ -1070,9 +1147,9 @@ end)
 Citizen.CreateThread(function()
 	for k, item in pairs(clothingspots) do
 		local blip = AddBlipForCoord(item.x, item.y, item.z)
-		SetBlipSprite(blip, 73)
-		SetBlipColour(blip, 5)
-		SetBlipScale(blip, 0.8)
+		SetBlipSprite(blip, 366)
+		SetBlipColour(blip, 47)
+		SetBlipScale  (blip, 0.7)
 		SetBlipAsShortRange(blip, true)
 		BeginTextCommandSetBlipName("STRING")
 		AddTextComponentString("Kledingwinkel")
@@ -1082,11 +1159,9 @@ Citizen.CreateThread(function()
 		Citizen.Wait(1)
 		local nearcloth = IsNearClothes()
 
-		if cmenu.show ~= 0 then
-			
-		elseif nearcloth < 5.0 and cmenu.show == 0 and QBCore ~= nil then
+		if nearcloth < 5.0 and cmenu.show == 0 and QBCore ~= nil then
 			local pos = GetEntityCoords(GetPlayerPed(-1))
-			QBCore.Functions.DrawText3D(pos.x, pos.y, pos.z, "[~g~E~w~] om kleding aan te passen")
+			QBCore.Functions.DrawText3D(pos.x, pos.y, pos.z, "~g~E~w~ - om kleding aan te passen / ~g~H~w~ - Om outfit op te slaan")
 			if IsControlJustPressed(1, Keys["E"]) then
 				clothingbad()
 				QBCore.Functions.GetPlayerData(function(PlayerData)
@@ -1097,6 +1172,13 @@ Citizen.CreateThread(function()
 					end
 					DoScreenFadeIn(50)
 				end)
+			elseif IsControlJustPressed(0, Keys["H"]) then
+				DisplayOnscreenKeyboard(1, "FMMC_KEY_TIP9N", "", "", "", "", "", 20)
+                while UpdateOnscreenKeyboard() ~= 1 and UpdateOnscreenKeyboard() ~= 2 do
+                    Citizen.Wait(7)
+                end
+				local outfitName = GetOnscreenKeyboardResult()
+				SaveOutfit(lastmodel, outfitName)
 			end
 		else
 			if nearcloth > 5 then 

@@ -12,6 +12,15 @@ AddEventHandler('clothes:saveSkin', function(model, skin)
     end
 end)
 
+RegisterServerEvent("clothes:saveOutfit")
+AddEventHandler('clothes:saveOutfit', function(model, skin, outfitname)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    if model ~= nil and skin ~= nil then
+        QBCore.Functions.ExecuteSql("INSERT INTO `player_outfits` (`citizenid`, `outfitname`, `model`, `skin`) VALUES ('"..Player.PlayerData.citizenid.."', '"..outfitname.."', '"..model.."', '"..skin.."')")
+    end
+end)
+
 RegisterServerEvent("clothes:loadPlayerSkin")
 AddEventHandler('clothes:loadPlayerSkin', function()
     local src = source

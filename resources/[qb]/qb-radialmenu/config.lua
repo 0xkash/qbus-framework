@@ -48,7 +48,14 @@ Config.MenuItems = {
                 type = 'client',
                 event = 'qb-radialmenu:client:giveidkaart',
                 shouldClose = true,
-            },
+            }
+        }
+    },
+    {
+        id = 'general',
+        title = 'Algemeen',
+        icon = '#general',
+        items = {
             {
                 id = 'house',
                 title = 'Huis Interactie',
@@ -59,7 +66,7 @@ Config.MenuItems = {
                         title = 'Geef Huis Sleutel',
                         icon = '#vehiclekey',
                         type = 'client',
-                        event = 'qb-radialmenu:client:giveidkaart',
+                        event = 'qb-houses:client:giveHouseKey',
                         shouldClose = true,
                     },
                     {
@@ -72,13 +79,7 @@ Config.MenuItems = {
                     },
                 }
             }
-
         }
-    },
-    {
-        id = 'general',
-        title = 'Algemeen',
-        icon = '#general',
     },
     {
         id = 'vehicle',
