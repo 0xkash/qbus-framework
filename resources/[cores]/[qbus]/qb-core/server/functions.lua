@@ -70,7 +70,7 @@ QBCore.Functions.CanUseItem = function(item)
 end
 
 QBCore.Functions.UseItem = function(source, item)
-	QBCore.UseableItems[item](source)
+	QBCore.UseableItems[item.name](source, item)
 end
 
 QBCore.Functions.Kick = function(source, reason, setKickReason, deferrals)

@@ -1,4 +1,7 @@
 QBCore = nil
+
+inInventory = false
+
 local inventoryTest = {}
 local currentWeapon = nil
 
@@ -22,8 +25,8 @@ end)
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(7)
-        if showTrunkPos then
-            local vehicle = QBCore.Functions.GetClosestVehicle()
+        if showTrunkPos and not inInventory then
+            local vehicle = QBCore.Functions.GetClosestVehucle()
             if vehicle ~= 0 and vehicle ~= nil then
                 local pos = GetEntityCoords(GetPlayerPed(-1))
                 local vehpos = GetEntityCoords(vehicle)
@@ -48,25 +51,8 @@ end)
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(7)
-        if QBCore ~= nil then
-            local vehicle = QBCore.Functions.GetClosestVehicle()
-            if vehicle ~= 0 and vehicle ~= nil then
-                local pos = GetEntityCoords(GetPlayerPed(-1))
-                local vehpos = GetEntityCoords(vehicle)
-                if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, vehpos.x, vehpos.y, vehpos.z, true) < 5.0) and not IsPedInAnyVehicle(GetPlayerPed(-1)) then
-                    local trunkpos = GetOffsetFromEntityInWorldCoords(vehicle, 0, -2.5, 0)
-                    if (IsBackEngine(GetEntityModel(vehicle))) then
-                        trunkpos = GetOffsetFromEntityInWorldCoords(vehicle, 0, 2.5, 0)
-                    end
-                    if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, trunkpos) < 2.0) and not IsPedInAnyVehicle(GetPlayerPed(-1)) then
-                        CurrentVehicle = GetVehicleNumberPlateText(vehicle)
-                    else
-                        CurrentVehicle = nil
-                    end
-                else
-                    CurrentVehicle = nil
-                end
-            end
+        if QBCore ~= nil and not inInventory then
+            
         end
     end
 end)
@@ -81,6 +67,20 @@ Citizen.CreateThread(function()
         DisableControlAction(0, Keys["4"], true)
         DisableControlAction(0, Keys["5"], true)
         if IsDisabledControlJustReleased(0, Keys["TAB"]) then
+            local vehicle = QBCore.Functions.GetClosestVehicle()
+            if vehicle ~= 0 and vehicle ~= nil then
+                local pos = GetEntityCoords(GetPlayerPed(-1))
+                local trunkpos = GetOffsetFromEntityInWorldCoords(vehicle, 0, -2.5, 0)
+                if (IsBackEngine(GetEntityModel(vehicle))) then
+                    trunkpos = GetOffsetFromEntityInWorldCoords(vehicle, 0, 2.5, 0)
+                end
+                if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, trunkpos) < 2.0) and not IsPedInAnyVehicle(GetPlayerPed(-1)) then
+                    CurrentVehicle = GetVehicleNumberPlateText(vehicle)
+                else
+                    CurrentVehicle = nil
+                end
+            end
+
             if CurrentVehicle ~= nil then
                 TriggerServerEvent("inventory:server:OpenInventory", "trunk", CurrentVehicle)
                 OpenTrunk()
@@ -160,7 +160,7 @@ AddEventHandler("inventory:client:OpenInventory", function(inventory, other)
             other = other,
             maxweight = QBCore.Config.Player.MaxWeight,
         })
-
+        inInventory = true
         SetTimecycleModifier('hud_def_blur')
     end
 end)
@@ -258,6 +258,7 @@ RegisterNUICallback("CloseInventory", function(data, cb)
         CloseTrunk()
     end
     SetNuiFocus(false, false)
+    inInventory = false
     SetTimecycleModifier('default')
 end)
 

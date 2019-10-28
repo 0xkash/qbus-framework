@@ -81,19 +81,6 @@ QBCore.Functions.DeleteVehicle = function(vehicle)
     DeleteVehicle(vehicle)
 end
 
-QBCore.Functions.GetClosestVehicle = function(coords, radius)
-    local coords = coords ~= nil and coords or QBCore.Functions.GetCoords(GetPlayerPed(-1))
-    local radius = radius ~= nil and radius or 10.0
-    local entityWorld = GetOffsetFromEntityInWorldCoords(GetPlayerPed(-1), 0.0, radius, 0.0)
-    local rayHandle = CastRayPointToPoint(coords.x, coords.y, coords.z, entityWorld.x, entityWorld.y, entityWorld.z, 10, GetPlayerPed(-1), 0)
-    local a, b, c, d, targetVehicle = GetRaycastResult(rayHandle)
-
-    if targetVehicle ~= nil then
-       return targetVehicle
-    end
-    return 0
-end
-
 QBCore.Functions.Notify = function(text, textype, length) -- [text] = message, [type] = primary | error | success, [length] = time till fadeout.
     local ttype = textype ~= nil and textype or "primary"
     local length = length ~= nil and length or 2500
@@ -168,27 +155,17 @@ QBCore.Functions.GetPlayers = function()
     return players
 end
 
-QBCore.Functions.GetClosestVehicle = function(coords)
-	local vehicles = QBCore.Functions.GetVehicles()
-	local closestDistance = -1
-	local closestVehicle  = -1
-	local pos = coords
+QBCore.Functions.GetClosestVehicle = function(coords, radius)
+    local coords = coords ~= nil and coords or QBCore.Functions.GetCoords(GetPlayerPed(-1))
+    local radius = radius ~= nil and radius or 10.0
+    local entityWorld = GetOffsetFromEntityInWorldCoords(GetPlayerPed(-1), 0.0, radius, 0.0)
+    local rayHandle = CastRayPointToPoint(coords.x, coords.y, coords.z, entityWorld.x, entityWorld.y, entityWorld.z, 10, GetPlayerPed(-1), 0)
+    local a, b, c, d, targetVehicle = GetRaycastResult(rayHandle)
 
-	if pos == nil then
-		pos = GetEntityCoords(GetPlayerPed(-1))
-	end
-
-	for i=1, #vehicles, 1 do
-		local vehpos = GetEntityCoords(vehicles[i])
-		local distance = GetDistanceBetweenCoords(vehpos.x, vehpos.y, vehpos.z, pos.x, pos.y, pos.z, true)
-
-		if closestDistance == -1 or closestDistance > distance then
-			closestVehicle  = vehicles[i]
-			closestDistance = distance
-		end
-	end
-
-	return closestVehicle, closestDistance
+    if targetVehicle ~= nil then
+       return targetVehicle
+    end
+    return 0
 end
 
 QBCore.Functions.GetClosestPed = function(coords, ignoreList)
