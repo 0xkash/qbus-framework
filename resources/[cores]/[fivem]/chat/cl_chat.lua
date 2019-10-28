@@ -22,7 +22,7 @@ AddEventHandler('chatMessage', function(author, ctype, text)
   if author ~= "" then
     table.insert(args, 1, author)
   end
-  local ctype = ctype ~= nil and ctype or "normal"
+  local ctype = ctype ~= false and ctype or "normal"
   SendNUIMessage({
     type = 'ON_MESSAGE',
     message = {

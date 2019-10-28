@@ -3,7 +3,6 @@ QBCore.Player = {}
 
 QBCore.Player.Login = function(source, citizenid, newData)
 	if source ~= nil then
-		print(citizenid)
 		if citizenid then
 			QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `citizenid` = '"..citizenid.."'", function(result)
 				local PlayerData = result[1]
