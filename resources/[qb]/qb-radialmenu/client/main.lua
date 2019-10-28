@@ -48,12 +48,18 @@ RegisterNUICallback('selectItem', function(data)
 end)
 
 RegisterNetEvent('qb-radialmenu:client:giveidkaart')
-AddEventHandler('qb-radialmenu:client:giveidkaart', function(data)
+AddEventHandler('qb-radialmenu:client:giveidkaart', function()
     print('Ik ben een getriggered event :)')
 end)
 
+RegisterNetEvent('qb-radialmenu:client:getClosestPlayers')
+AddEventHandler('qb-radialmenu:client:getClosestPlayers', function()
+    print(json.encode(Config.MenuItems[2].items[1].items[1]))
+    print('yeet')
+end)
+
 RegisterNetEvent('qb-radialmenu:client:openDoor')
-AddEventHandler('qb-radialmenu:client:openDoor', function(data)
+AddEventHandler('qb-radialmenu:client:openDoor', function()
     local string = data.id
     local replace = string:gsub("door", "")
     local door = tonumber(replace)

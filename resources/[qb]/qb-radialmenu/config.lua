@@ -66,8 +66,34 @@ Config.MenuItems = {
                         title = 'Geef Huis Sleutel',
                         icon = '#vehiclekey',
                         type = 'client',
-                        event = 'qb-houses:client:giveHouseKey',
-                        shouldClose = true,
+                        event = 'qb-radialmenu:client:getClosestPlayers',
+                        shouldClose = false,
+                        items = {
+                            {
+                                id    = 'givekey',
+                                title = 'Peter Dirk',
+                                icon = '#citizen',
+                                type = 'client',
+                                event = 'qb-houses:client:giveHouseKey',
+                                shouldClose = true,
+                            },
+                            {
+                                id    = 'givekey',
+                                title = 'Bert Hansen',
+                                icon = '#citizen',
+                                type = 'client',
+                                event = 'qb-houses:client:giveHouseKey',
+                                shouldClose = true,
+                            },
+                            {
+                                id    = 'givekey',
+                                title = 'Conny Links',
+                                icon = '#citizen',
+                                type = 'client',
+                                event = 'qb-houses:client:giveHouseKey',
+                                shouldClose = true,
+                            },
+                        }
                     },
                     {
                         id    = 'togglelock',

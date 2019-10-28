@@ -137,3 +137,18 @@ QBCore.Functions.CreateCallback('qb-houses:server:getOwnedHouses', function(sour
 		end)
 	end
 end)
+
+QBCore.Functions.CreateCallback('qb-houses:server:getSavedOutfits', function(source, cb)
+	local src = source
+	local pData = QBCore.Functions.GetPlayer(src)
+
+	if pData then
+		exports['ghmattimysql']:execute('SELECT * FROM player_outfits WHERE citizenid = @citizenid', {['@citizenid'] = pData.PlayerData.citizenid}, function(result)
+			if result[1] ~= nil then
+				cb(result)
+			else
+				cb(nil)
+			end
+		end)
+	end
+end)
