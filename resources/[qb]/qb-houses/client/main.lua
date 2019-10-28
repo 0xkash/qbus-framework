@@ -18,7 +18,7 @@ local isOwned = false
 local stashLoc = {}
 local closetLoc = {}
 
-local isLoggedIn = false
+local isLoggedIn = true
 local contractOpen = false
 
 local cam = nil
@@ -145,18 +145,28 @@ Citizen.CreateThread(function()
             if inside then
                 if closesthouse ~= nil then
                     if(GetDistanceBetweenCoords(pos, 894.17, -617.66, 34.54, true) < 1.5)then
-                        QBCore.Functions.DrawText3D(894.17, -617.66, 34.54, '[~g~E~w~] Stash')
+                        QBCore.Functions.DrawText3D(894.17, -617.66, 34.54, '~g~E~w~ - Stash')
                         if IsControlJustPressed(0, Keys["E"]) then
                             print('yeet')
                         end
-                    elseif(GetDistanceBetweenCoords(pos, 894.17, -617.66, 34.54, true) < 30)then
-                        if not DoesEntityExist(SafeObject) then
-                            local stashModel = GetHashKey("v_res_tre_bedsidetable")
-                            StashObject = CreateObject(stashModel, 349.4877, -1007.531, -100.1697, false, false, false)
-                            FreezeEntityPosition(StashObject, true)
-                            SetEntityHeading(StashObject, -90.0)
-                        end
+                    elseif(GetDistanceBetweenCoords(pos, 894.17, -617.66, 34.54, true) < 3)then
                         QBCore.Functions.DrawText3D(894.17, -617.66, 34.54, 'Stash')
+                    end
+                end
+            end
+
+            if inside then
+                if closesthouse ~= nil then
+                    if(GetDistanceBetweenCoords(pos, 895.16, -604.04, 34.54, true) < 1.5)then
+                        QBCore.Functions.DrawText3D(895.16, -604.04, 34.54, '~g~E~w~ - Outfits')
+                        if IsControlJustPressed(0, Keys["E"]) then
+                            MenuOutfits()
+                            Menu.hidden = not Menu.hidden
+                        end
+
+                        Menu.renderGUI()
+                    elseif(GetDistanceBetweenCoords(pos, 895.16, -604.04, 34.54, true) < 3)then
+                        QBCore.Functions.DrawText3D(895.16, -604.04, 34.54, 'Outfits')
                     end
                 end
             end
@@ -215,6 +225,84 @@ Citizen.CreateThread(function()
         end          
     end
 end)
+
+function loadAnimDict(dict)
+    while (not HasAnimDictLoaded(dict)) do
+        RequestAnimDict(dict)
+        Citizen.Wait(5)
+    end
+end 
+
+function MenuOutfits()
+    ped = GetPlayerPed(-1);
+    MenuTitle = "Outfits"
+    ClearMenu()
+    Menu.addButton("Mijn Outfits", "OutfitsLijst", nil)
+    Menu.addButton("Sluit Menu", "closeMenuFull", nil) 
+end
+
+function changeOutfit()
+	Wait(200)
+    loadAnimDict("clothingshirt")    	
+	TaskPlayAnim(GetPlayerPed(-1), "clothingshirt", "try_shirt_positive_d", 8.0, 1.0, -1, 49, 0, 0, 0, 0)
+	Wait(3100)
+	TaskPlayAnim(GetPlayerPed(-1), "clothingshirt", "exit", 8.0, 1.0, -1, 49, 0, 0, 0, 0)
+end
+
+function OutfitsLijst()
+    QBCore.Functions.TriggerCallback('qb-houses:server:getSavedOutfits', function(outfits)
+        ped = GetPlayerPed(-1);
+        MenuTitle = "My Outfits :"
+        ClearMenu()
+
+        if outfits == nil then
+            QBCore.Functions.Notify("Je hebt geen outfits opgeslagen...", "error", 3500)
+            closeMenuFull()
+        else
+            for k, v in pairs(outfits) do
+                Menu.addButton(outfits[k].outfitname, "optionMenu", outfits[k]) 
+            end
+        end
+        Menu.addButton("Terug", "MenuOutfits",nil)
+    end)
+    print('yeet')
+end
+
+function optionMenu(outfitData)
+    ped = GetPlayerPed(-1);
+    MenuTitle = "What now?"
+    ClearMenu()
+
+    Menu.addButton("Kies Outfit", "selectOutfit", outfitData) 
+    Menu.addButton("Verwijder Outfit", "removeOutfit", outfitData) 
+    Menu.addButton("Terug", "OutfitsLijst",nil)
+end
+
+function selectOutfit(oData)
+    TriggerServerEvent('clothes:selectOutfit', oData.model, oData.skin)
+    QBCore.Functions.Notify(oData.outfitname.." gekozen", "success", 2500)
+    closeMenuFull()
+    changeOutfit()
+end
+
+function removeOutfit(oData)
+    TriggerServerEvent('clothes:removeOutfit', oData.outfitname)
+    QBCore.Functions.Notify(oData.outfitname.." is verwijderd", "success", 2500)
+    closeMenuFull()
+end
+
+function closeMenuFull()
+    Menu.hidden = true
+    currentGarage = nil
+    ClearMenu()
+end
+
+function ClearMenu()
+	--Menu = {}
+	Menu.GUI = {}
+	Menu.buttonCount = 0
+	Menu.selection = 0
+end
 
 function openContract(bool)
     SetNuiFocus(bool, bool)

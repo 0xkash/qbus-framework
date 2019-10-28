@@ -103,6 +103,8 @@ RadialMenu.prototype.showNestedMenu = function (item) {
         self.getParentMenu().setAttribute('class', 'menu outer');
         self.currentMenu.setAttribute('class', 'menu');
     });
+    
+    self.onClick(item);
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -128,9 +130,6 @@ RadialMenu.prototype.handleClick = function () {
         } else {
             if (self.onClick) {
                 self.onClick(item);
-                if (self.closeOnClick) {
-                    self.close();
-                }
             }
         }
     }

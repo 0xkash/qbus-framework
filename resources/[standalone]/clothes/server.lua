@@ -21,6 +21,22 @@ AddEventHandler('clothes:saveOutfit', function(model, skin, outfitname)
     end
 end)
 
+RegisterServerEvent("clothes:selectOutfit")
+AddEventHandler('clothes:selectOutfit', function(model, skin)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+
+    TriggerClientEvent("clothes:loadSkin", src, false, model, skin)
+end)
+
+RegisterServerEvent("clothes:removeOutfit")
+AddEventHandler('clothes:removeOutfit', function(outfitname)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+
+    QBCore.Functions.ExecuteSql("DELETE FROM `player_outfits` WHERE `citizenid` = '"..Player.PlayerData.citizenid.."' AND `outfitname` = '"..outfitname.."'")
+end)
+
 RegisterServerEvent("clothes:loadPlayerSkin")
 AddEventHandler('clothes:loadPlayerSkin', function()
     local src = source

@@ -24,13 +24,12 @@ function createMenu(items) {
     QBRadialMenu = new RadialMenu({
         parent      : document.body,
         size        : 375,
-        closeOnClick: false,
         menuItems   : items,
         onClick     : function(item) {
             if (item.shouldClose) {
                 $.post('http://qb-radialmenu/closeRadial')
             }
-
+            
             $.post('http://qb-radialmenu/selectItem', JSON.stringify({
                 itemData: item
             }))

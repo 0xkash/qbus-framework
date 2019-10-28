@@ -96,10 +96,10 @@ function clothingbad()
 end
 
 function clothinggood()
-    loadAnimDict( "clothingshirt" )    	
-	TaskPlayAnim( GetPlayerPed(-1), "clothingshirt", "try_shirt_positive_d", 8.0, 1.0, -1, 49, 0, 0, 0, 0 )
+    loadAnimDict("clothingshirt")    	
+	TaskPlayAnim(GetPlayerPed(-1), "clothingshirt", "try_shirt_positive_d", 8.0, 1.0, -1, 49, 0, 0, 0, 0)
 	Wait(3100)
-	ClearPedSecondaryTask(GetPlayerPed(-1))
+	TaskPlayAnim(GetPlayerPed(-1), "clothingshirt", "exit", 8.0, 1.0, -1, 49, 0, 0, 0, 0)
 end
 
 local copListM = {
