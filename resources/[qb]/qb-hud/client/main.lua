@@ -25,6 +25,11 @@ Citizen.CreateThread(function()
     end
 end)
 
+RegisterNetEvent("QBCore:Client:OnPlayerUnload")
+AddEventHandler("QBCore:Client:OnPlayerUnload", function()
+    QBHud.Show = false
+end)
+
 RegisterNetEvent("QBCore:Client:OnPlayerLoaded")
 AddEventHandler("QBCore:Client:OnPlayerLoaded", function()
     QBHud.Show = true

@@ -302,6 +302,13 @@ QBCore.Player.Save = function(source)
 	end
 end
 
+QBCore.Player.Logout = function(source)
+	QBCore.Players[source].Functions.Save()
+	TriggerClientEvent('QBCore:Client:OnPlayerUnload', source)
+	TriggerEvent('QBCore:Server:OnPlayerUnload')
+	QBCore.Players[source] = nil
+end
+
 QBCore.Player.DeleteCharacter = function(source, citizenid)
 	QBCore.Functions.ExecuteSql("DELETE FROM `players` WHERE `citizenid` = '"..citizenid.."'")
 end
