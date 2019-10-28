@@ -135,6 +135,14 @@ QBCore.Player.CreatePlayer = function(PlayerData)
 		end
 	end
 
+	self.Functions.SetMetaData = function(meta, val)
+		local meta = meta:lower()
+		if val ~= nil then
+			self.PlayerData.metadata[meta] = val
+			self.Functions.UpdatePlayerData()
+		end
+	end
+
 	self.Functions.AddMoney = function(moneytype, amount)
 		local moneytype = moneytype:lower()
 		local amount = tonumber(amount)
