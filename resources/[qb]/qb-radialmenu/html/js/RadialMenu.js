@@ -102,9 +102,8 @@ RadialMenu.prototype.showNestedMenu = function (item) {
     RadialMenu.nextTick(function () {
         self.getParentMenu().setAttribute('class', 'menu outer');
         self.currentMenu.setAttribute('class', 'menu');
+        self.onClick(item);
     });
-    
-    self.onClick(item);
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

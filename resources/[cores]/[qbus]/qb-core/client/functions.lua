@@ -247,7 +247,7 @@ QBCore.Functions.GetPlayersFromCoords = function(coords, distance)
     if distance == nil then
         distance = 5.0
     end
-    for _, player in pairs(players)
+    for _, player in pairs(players) do
 		local target = GetPlayerPed(player)
 		local targetCoords = GetEntityCoords(target)
 		local targetdistance = GetDistanceBetweenCoords(targetCoords, coords.x, coords.y, coords.z, true)

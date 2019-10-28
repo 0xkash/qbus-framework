@@ -67,7 +67,7 @@ Config.MenuItems = {
                         icon = '#vehiclekey',
                         type = 'client',
                         event = 'qb-radialmenu:client:getClosestPlayers',
-                        shouldClose = true,
+                        shouldClose = false,
                         items = {
                             {
                                 id    = 'givekey',

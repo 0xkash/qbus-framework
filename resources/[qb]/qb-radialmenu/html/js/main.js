@@ -30,9 +30,11 @@ function createMenu(items) {
                 $.post('http://qb-radialmenu/closeRadial')
             }
             
-            $.post('http://qb-radialmenu/selectItem', JSON.stringify({
-                itemData: item
-            }))
+            if (item.event !== null) {
+                $.post('http://qb-radialmenu/selectItem', JSON.stringify({
+                    itemData: item
+                }))
+            }
         }
     });
 }
