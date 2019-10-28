@@ -20,26 +20,30 @@ end
 
 Citizen.CreateThread(function()
     while true do 
-        if QBHud.Show then
+        if QBHud.Show and QBCore ~= nil then
             speed = GetEntitySpeed(GetVehiclePedIsIn(GetPlayerPed(-1), false)) * 3.6
             local pos = GetEntityCoords(player)
             local time = CalculateTimeToDisplay()
             local street1, street2 = GetStreetNameAtCoord(pos.x, pos.y, pos.z, Citizen.ResultAsInteger(), Citizen.ResultAsInteger())
             local fuel = exports['LegacyFuel']:GetFuel(GetVehiclePedIsIn(GetPlayerPed(-1)))
 
-            SendNUIMessage({
-                action = "hudtick",
-                show = IsPauseMenuActive(),
-                health = (GetEntityHealth(GetPlayerPed(-1)) / 2),
-                armor = GetPedArmour(GetPlayerPed(-1)),
-                stamina = (100 - GetPlayerSprintStaminaRemaining(PlayerId())),
-                direction = GetDirectionText(GetEntityHeading(GetPlayerPed(-1))),
-                street1 = GetStreetNameFromHashKey(street1),
-                street2 = GetStreetNameFromHashKey(street2),
-                speed = math.ceil(speed),
-                fuel = fuel,
-                time = time,
-            })
+            QBCore.Functions.GetPlayerData(function(PlayerData)
+                SendNUIMessage({
+                    action = "hudtick",
+                    show = IsPauseMenuActive(),
+                    health = (GetEntityHealth(GetPlayerPed(-1)) / 2),
+                    armor = GetPedArmour(GetPlayerPed(-1)),
+                    thirst = PlayerData.metadata["thirst"],
+                    hunger = PlayerData.metadata["hunger"],
+                    stamina = (100 - GetPlayerSprintStaminaRemaining(PlayerId())),
+                    direction = GetDirectionText(GetEntityHeading(GetPlayerPed(-1))),
+                    street1 = GetStreetNameFromHashKey(street1),
+                    street2 = GetStreetNameFromHashKey(street2),
+                    speed = math.ceil(speed),
+                    fuel = fuel,
+                    time = time,
+                })
+            end)
             Citizen.Wait(500)
         else
             Citizen.Wait(100)

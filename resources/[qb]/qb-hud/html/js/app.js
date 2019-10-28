@@ -67,6 +67,8 @@ $(document).on('keydown', function() {
 
         $(".healthBar").css("width", data.health + "%");
         $(".armorBar").css("width", data.armor + "%");
+        $(".thirstBar").css("width", data.thirst + "%");
+        $(".hungerBar").css("width", data.hunger + "%");
         $(".staminaBar").css("width", data.stamina + "%");
 
         $('.time-text').html(data.time.hour + ':' + data.time.minute);
