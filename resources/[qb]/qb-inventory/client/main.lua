@@ -129,9 +129,9 @@ Citizen.CreateThread(function()
         if next(Drops) ~= nil then
             local pos = GetEntityCoords(GetPlayerPed(-1), true)
             for k, v in pairs(Drops) do
-                if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, v.coords.x, v.coords.y, v.coords.z, true) < 10.0 then
+                if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, v.coords.x, v.coords.y, v.coords.z, true) < 7.5 then
                     DropsNear[k] = v
-                    if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, v.coords.x, v.coords.y, v.coords.z, true) < 2.0 then
+                    if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, v.coords.x, v.coords.y, v.coords.z, true) < 1.5 then
                         CurrentDrop = k
                     else
                         CurrentDrop = nil
@@ -237,10 +237,6 @@ end)
 
 RegisterNUICallback("UseItem", function(data, cb)
     TriggerServerEvent("inventory:server:UseItem", data.inventory, data.item)
-end)
-
-RegisterNUICallback("DropItem", function(data, cb)
-    TriggerServerEvent("inventory:server:CreateDropItem", data.inventory, data.item, data.amount)
 end)
 
 RegisterNUICallback("SetInventoryData", function(data, cb)

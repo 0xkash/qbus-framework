@@ -29,7 +29,7 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id)
 		else
 			if Drops[id] ~= nil then
 				secondInv.name = id
-				secondInv.label = "Dropped-"..tostring(other)
+				secondInv.label = "Dropped-"..tostring(id)
 				secondInv.maxweight = 900000
 				secondInv.inventory = Drops[id].items
 				secondInv.slots = 100
@@ -63,41 +63,6 @@ AddEventHandler('inventory:server:UseItem', function(inventory, item)
 		local itemData = Player.Functions.GetItemByName(item.name)
 		if itemData ~= nil then
 			TriggerClientEvent("QBCore:Client:UseItem", src, itemData.name)
-		end
-	end
-end)
-
-RegisterServerEvent("inventory:server:CreateDropItem")
-AddEventHandler('inventory:server:CreateDropItem', function(inventory, item, amount)
-	local src = source
-	local Player = QBCore.Functions.GetPlayer(src)
-	if inventory == "player" or inventory == "hotbar" then
-		local itemData = Player.Functions.GetItemBySlot(item.slot)
-		if Player.Functions.RemoveItem(itemData.name, amount, itemData.slot) then
-			local itemInfo = QBCore.Shared.Items[itemData.name:lower()]
-			local dropId = CreateDropId()
-			Drops[dropId] = {}
-			Drops[dropId].items = {}
-
-			Drops[dropId].items[1] = {
-				name = itemInfo["name"],
-				amount = amount,
-				info = itemData.info ~= nil and itemData.info or "",
-				label = itemInfo["label"],
-				description = itemInfo["description"] ~= nil and itemInfo["description"] or "",
-				weight = itemInfo["weight"], 
-				type = itemInfo["type"], 
-				unique = itemInfo["unique"], 
-				useable = itemInfo["useable"], 
-				image = itemInfo["image"],
-				slot = 1,
-				id = dropId,
-			}
-			TriggerClientEvent("inventory:client:DropItemAnim", src)
-			TriggerClientEvent("inventory:client:AddDropItem", -1, dropId, src)
-		else
-			TriggerClientEvent("QBCore:Notify", src, "Je hebt dit item niet!", "error")
-			return
 		end
 	end
 end)
@@ -435,15 +400,15 @@ function RemoveFromDrop(dropId, slot, itemName, amount)
 		else
 			Drops[dropId].items[slot] = nil
 			if next(Drops[dropId].items) == nil then
-				Drops[dropId] = nil
-				TriggerClientEvent("inventory:client:RemoveDropItem", -1, dropId)
+				Drops[dropId].items = {}
+				--TriggerClientEvent("inventory:client:RemoveDropItem", -1, dropId)
 			end
 		end
 	else
-		Drops[dropId].items[slot]= nil
+		Drops[dropId].items[slot] = nil
 		if Drops[dropId].items == nil then
 			Drops[dropId].items[slot] = nil
-			TriggerClientEvent("inventory:client:RemoveDropItem", -1, dropId)
+			--TriggerClientEvent("inventory:client:RemoveDropItem", -1, dropId)
 		end
 	end
 end
