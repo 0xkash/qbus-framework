@@ -21,7 +21,7 @@ end)
 
 local inRadialMenu = false
 
-function openRadial(bool)    
+function setupSubItems()
     local closestPlayers = QBCore.Functions.GetPlayersFromCoords()
     local closestHousePlayers = {}
     local closestVehiclePlayers = {}
@@ -76,6 +76,10 @@ function openRadial(bool)
             shouldClose = true,
         }
     end
+end
+
+function openRadial(bool)    
+    setupSubItems()
 
     SetNuiFocus(bool, bool)
     SendNUIMessage({

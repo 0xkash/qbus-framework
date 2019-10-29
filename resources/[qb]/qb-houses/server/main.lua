@@ -31,12 +31,13 @@ AddEventHandler('qb-houses:server:buyHouse', function(house)
 	local src     	= source
 	local pData 	= QBCore.Functions.GetPlayer(src)
 	local price   	= houseprices[house]
+	local keyyeet 	= {pData.PlayerData.citizenid}
 
 	if pData.Functions.RemoveMoney('bank', price) then
-		QBCore.Functions.ExecuteSql("INSERT INTO `player_houses` (`house`, `identifier`, `citizenid`) VALUES ('"..house.."', '"..pData.PlayerData.steam.."', '"..pData.PlayerData.citizenid.."')")
+		QBCore.Functions.ExecuteSql("INSERT INTO `player_houses` (`house`, `identifier`, `citizenid`, `keyholders`) VALUES ('"..house.."', '"..pData.PlayerData.steam.."', '"..pData.PlayerData.citizenid.."', '"..json.encode(keyyeet).."')")
 		houseowneridentifier[house] = pData.PlayerData.steam
 		houseownercid[house] = pData.PlayerData.citizenid
-		housekeyholders[house] = json.encode(pData.PlayerData.steam)
+		housekeyholders[house] = json.encode(keyyeet)
 		TriggerClientEvent('qb-houses:client:SetClosestHouse', src)
 	end
 end)
@@ -52,7 +53,7 @@ end)
 
 QBCore.Functions.CreateCallback('qb-houses:server:hasKey', function(source, cb, house)
 	local src = source
-	local pData = QBCore.Functions.GetPlayer(src)
+	local Player = QBCore.Functions.GetPlayer(src)
 
 	local identifier = Player.PlayerData.steam
 	local CharId = Player.PlayerData.citizenid
@@ -82,6 +83,15 @@ function hasKey(identifier, cid, house)
 	end
 	return false
 end
+
+RegisterServerEvent('qb-houses:server:giveKey')
+AddEventHandler('qb-houses:server:giveKey', function(house, target)
+	local pData = QBCore.Functions.GetPlayer(target)
+
+	table.insert(housekeyholders[house], pData.PlayerData.citizenid)
+	Wait(100)
+	QBCore.Functions.ExecuteSql("UPDATE `player_houses` SET `keyholders` = '"..json.encode(housekeyholders[house]).."' WHERE `house` = '"..house.."'")
+end)
 
 function typeof(var)
     local _type = type(var);
@@ -115,6 +125,23 @@ Citizen.CreateThread(function()
 		Citizen.Wait(7)
 	end
 end)
+
+QBCore.Functions.CreateCallback('qb-houses:server:getHouseKeys', function(source, cb)
+	local src = source
+	local pData = QBCore.Functions.GetPlayer(src)
+	local cid = pData.PlayerData.citizenid
+end)
+
+function mysplit (inputstr, sep)
+	if sep == nil then
+			sep = "%s"
+	end
+	local t={}
+	for str in string.gmatch(inputstr, "([^"..sep.."]+)") do
+			table.insert(t, str)
+	end
+	return t
+end
 
 QBCore.Functions.CreateCallback('qb-houses:server:getOwnedHouses', function(source, cb)
 	local src = source
@@ -150,4 +177,12 @@ QBCore.Functions.CreateCallback('qb-houses:server:getSavedOutfits', function(sou
 			end
 		end)
 	end
+end)
+
+RegisterServerEvent('qb-houses:server:logOut')
+AddEventHandler('qb-houses:server:logOut', function()
+	local src = source
+	QBCore.Player.Logout(src)
+	Wait(100)
+	TriggerClientEvent('qb-multicharacter:client:chooseChar', src)
 end)

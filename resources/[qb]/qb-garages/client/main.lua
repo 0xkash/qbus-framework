@@ -89,7 +89,7 @@ function HouseGarage(house)
                     v.state = "In Beslag"
                 end
 
-                Menu.addButton(GetDisplayNameFromVehicleModel(GetHashKey(v.vehicle)), "TakeOutGarageVehicle", v, v.state, " Motor %:" .. enginePercent, " Body %:" .. bodyPercent, " Fuel %: "..currentFuel)
+                Menu.addButton(GetDisplayNameFromVehicleModel(GetHashKey(v.vehicle)), "TakeOutGarageVehicle", v, v.state, " Motor: " .. enginePercent.."%", " Body: " .. bodyPercent.."%", " Fuel: "..currentFuel.."%")
             end
         end
             
@@ -130,7 +130,7 @@ function DepotLijst()
                     v.state = "In"
                 end
 
-                Menu.addButton(GetDisplayNameFromVehicleModel(GetHashKey(v.vehicle)), "TakeOutDepotVehicle", v, v.state, " Motor %:" .. enginePercent, " Body %:" .. bodyPercent, " Fuel %: "..currentFuel)
+                Menu.addButton(GetDisplayNameFromVehicleModel(GetHashKey(v.vehicle)), "TakeOutDepotVehicle", v, v.state, " Motor: " .. enginePercent.."%", " Body: " .. bodyPercent.."%", " Fuel: "..currentFuel.."%")
             end
         end
             
@@ -175,6 +175,10 @@ end
 
 function TakeOutVehicle(vehicle)
     if vehicle.state == "Garage" then
+        enginePercent = round(vehicle.engine / 10, 0)
+        bodyPercent = round(vehicle.body / 10, 0)
+        currentFuel = vehicle.fuel
+
         QBCore.Functions.SpawnVehicle(vehicle.vehicle, function(veh)
             SetVehicleNumberPlateText(veh, vehicle.plate)
             SetEntityHeading(veh, Garages[currentGarage].spawnPoint.h)
@@ -183,6 +187,7 @@ function TakeOutVehicle(vehicle)
             exports['LegacyFuel']:SetFuel(veh, vehicle.fuel)
             doCarDamage(veh, vehicle)
             TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, vehicle.garage)
+            QBCore.Functions.Notify("Voertuig Uit: Motor: " .. enginePercent .. "% Body: " .. bodyPercent.. "% Fuel: "..currentFuel.. "%", "primary", 4500)
             closeMenuFull()
         end, Garages[currentGarage].spawnPoint, true)
     elseif vehicle.state == "Uit" then
@@ -195,6 +200,10 @@ end
 function TakeOutDepotVehicle(vehicle)
     if vehicle.state == "Garage" then
         QBCore.Functions.SpawnVehicle(vehicle.vehicle, function(veh)
+            enginePercent = round(vehicle.engine / 10, 0)
+            bodyPercent = round(vehicle.body / 10, 0)
+            currentFuel = vehicle.fuel
+
             SetVehicleNumberPlateText(veh, vehicle.plate)
             SetEntityHeading(veh, Depots[currentGarage].takeVehicle.h)
             print(Depots[currentGarage].takeVehicle.h)
@@ -202,6 +211,7 @@ function TakeOutDepotVehicle(vehicle)
             exports['LegacyFuel']:SetFuel(veh, vehicle.fuel)
             doCarDamage(veh, vehicle)
             TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, vehicle.garage)
+            QBCore.Functions.Notify("Voertuig Uit: Motor: " .. enginePercent .. "% Body: " .. bodyPercent.. "% Fuel: "..currentFuel.. "%", "primary", 4500)
             closeMenuFull()
         end, Depots[currentGarage].spawnPoint, true)
     end
@@ -210,12 +220,17 @@ end
 function TakeOutGarageVehicle(vehicle)
     if vehicle.state == "Garage" then
         QBCore.Functions.SpawnVehicle(vehicle.vehicle, function(veh)
+            enginePercent = round(vehicle.engine / 10, 0)
+            bodyPercent = round(vehicle.body / 10, 0)
+            currentFuel = vehicle.fuel
+
             SetVehicleNumberPlateText(veh, vehicle.plate)
             SetEntityHeading(veh, HouseGarages[currentHouseGarage].takeVehicle.h)
             TaskWarpPedIntoVehicle(GetPlayerPed(-1), veh, -1)
             exports['LegacyFuel']:SetFuel(veh, vehicle.fuel)
             doCarDamage(veh, vehicle)
             TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, vehicle.garage)
+            QBCore.Functions.Notify("Voertuig Uit: Motor: " .. enginePercent .. "% Body: " .. bodyPercent.. "% Fuel: "..currentFuel.. "%", "primary", 4500)
             closeMenuFull()
         end, HouseGarages[currentHouseGarage].takeVehicle, true)
     end
@@ -344,6 +359,7 @@ Citizen.CreateThread(function()
                                 TriggerServerEvent('qb-garage:server:updateVehicleStatus', totalFuel, engineDamage, bodyDamage, plate, k)
                                 TriggerServerEvent('qb-garage:server:updateVehicleState', 1, plate, k)
                                 QBCore.Functions.DeleteVehicle(curVeh)
+                                QBCore.Functions.Notify("Voertuig geparkeerd in, "..Garages[k].label, "primary", 4500)
                             else
                                 QBCore.Functions.Notify("Niemand is in bezit van dit voertuig...", "error", 3500)
                             end
@@ -393,6 +409,7 @@ Citizen.CreateThread(function()
                                             TriggerServerEvent('qb-garage:server:updateVehicleStatus', totalFuel, engineDamage, bodyDamage, plate, k)
                                             TriggerServerEvent('qb-garage:server:updateVehicleState', 1, plate, currentHouseGarage)
                                             QBCore.Functions.DeleteVehicle(curVeh)
+                                            QBCore.Functions.Notify("Voertuig geparkeerd in, "..HouseGarages[currentHouseGarage].label, "primary", 4500)
                                         else
                                             QBCore.Functions.Notify("Niemand is in bezit van dit voertuig...", "error", 3500)
                                         end
