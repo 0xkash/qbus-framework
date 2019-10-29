@@ -36,5 +36,12 @@ files {
 	'html/images/smg.png',
 	'html/images/carbinerifle.png',
 	'html/images/assaultrifle.png',
+	'html/images/pumpshotgun.png',
+	'html/images/sawoffshotgun.png',
+	'html/images/tec9.png',
+	'html/images/knife.png',
+	'html/images/baseballbat.png',
+	'html/images/microsmg.png',
+	'html/images/nightstick.png',
 	'html/images/id_card.png',
 }
