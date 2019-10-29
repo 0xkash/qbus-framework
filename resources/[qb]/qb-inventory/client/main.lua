@@ -189,6 +189,7 @@ AddEventHandler("inventory:client:UseWeapon", function(weaponName)
     else
         QBCore.Functions.TriggerCallback("weapon:server:GetWeaponAmmo", function(result)
             local ammo = tonumber(result)
+            if weaponName == "weapon_petrolcan" or weaponName == "weapon_fireextinguisher" then ammo = 4000 end
             GiveWeaponToPed(GetPlayerPed(-1), GetHashKey(weaponName), ammo, false, false)
             SetPedAmmo(GetPlayerPed(-1), GetHashKey(weaponName), ammo)
             SetCurrentPedWeapon(GetPlayerPed(-1), GetHashKey(weaponName), true)
