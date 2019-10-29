@@ -50,7 +50,7 @@ AddEventHandler('inventory:server:UseItemSlot', function(slot)
 		if itemData.type == "weapon" then
 			TriggerClientEvent("inventory:client:UseWeapon", src, itemData.name)
 		elseif itemData.useable then
-			TriggerClientEvent("QBCore:Client:UseItem", src, itemData.name)
+			TriggerClientEvent("QBCore:Client:UseItem", src, itemData)
 		end
 	end
 end)

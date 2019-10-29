@@ -204,12 +204,12 @@ input[type=number]::-webkit-outer-spin-button {
     bottom:0;
     width: 100%;
     background: rgba(255, 255, 255, 0.05);
-    padding: 1%;
+    padding: 2%;
 }
 
 .item-slot-label p {
     color: #ffffff;
-    font-size: 14px;
+    font-size: 10px;
     text-align: center;
     text-transform: uppercase;
 }

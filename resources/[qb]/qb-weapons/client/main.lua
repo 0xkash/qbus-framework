@@ -1,5 +1,7 @@
 QBCore = nil
 
+local isLoggedIn = false
+
 Citizen.CreateThread(function() 
     while true do
         Citizen.Wait(10)
@@ -12,7 +14,9 @@ end)
 
 Citizen.CreateThread(function() 
     while true do
-        TriggerServerEvent("weapons:server:SaveWeaponAmmo")
+        if isLoggedIn then
+            TriggerServerEvent("weapons:server:SaveWeaponAmmo")
+        end
         Citizen.Wait(((1000 * 60) * 5))
     end
 end)
@@ -40,5 +44,12 @@ end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
-	TriggerServerEvent("weapons:server:LoadWeaponAmmo")
+    TriggerServerEvent("weapons:server:LoadWeaponAmmo")
+    isLoggedIn = true
 end)
+
+RegisterNetEvent('QBCore:Client:OnPlayerUnload')
+AddEventHandler('QBCore:Client:OnPlayerUnload', function()
+    isLoggedIn = false
+end)
+
