@@ -79,6 +79,8 @@ Citizen.CreateThread(function()
                 else
                     CurrentVehicle = nil
                 end
+            else
+                CurrentVehicle = nil
             end
 
             if CurrentVehicle ~= nil then
