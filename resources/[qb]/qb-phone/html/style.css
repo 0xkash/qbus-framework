@@ -1,0 +1,129 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+
+.container {
+    display: none;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.phone-container {
+    position: absolute;
+    width: 270px;
+    height: 585px;
+    left: 80%;
+    top: 33%;
+}
+
+#phone-frame {
+    position: absolute;
+    width: 100%;
+    pointer-events: none;
+    z-index: 999;
+}
+
+.home-btn {
+    position: absolute;
+    width: 50px;
+    height: 5px;
+    bottom: 7%;
+    margin-left: auto;
+    margin-right: auto;
+    left: 1%;
+    right: 0;
+    background-color: #ffffff;
+    border-radius: 5px;
+    z-index: 101;
+    box-shadow: 0px 0px 1px 0px #000;
+    transition: all 0.1s ease-in-out;
+}
+
+.home-btn:hover {
+    background-color: #611d15;
+}
+
+.top-bar {
+    position: absolute;
+    width: 96%;
+    height: 20px;
+    top: 5.5%;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    z-index: 101;
+    background-color: rgba(153, 153, 153, 0.219);
+}
+
+#provider {
+    font-size: 9px;
+    font-family: 'Roboto Mono';
+    margin-left: 20px;
+    margin-top: 6px;
+    float: left;
+    color: #ffffff;
+    text-shadow: 1px 1px 1px #00000050;
+}
+
+#battery {
+    font-size: 9px;
+    font-family: 'Roboto Mono';
+    margin-right: 22px;
+    margin-top: 6px;
+    color: #ffffff;
+    float: right;
+    text-shadow: 1px 1px 1px #00000050;
+}
+
+.phone-home-page {
+    position: absolute;
+    width: 270px;
+    height: 585px;
+    background-image: url('./img/bg-1.png');
+}
+
+.phone-apps {
+    position: relative;
+    width: 85%;
+    height: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    top: 11%;
+}
+
+.app {
+    width: 43px;
+    height: 43px;
+    float: left;
+    margin-left: 12px;
+    margin-top: 12px;
+    margin-bottom: 4px;
+    border-radius: 15px;
+}
+
+.empty-slot {
+    width: 43px;
+    height: 43px;
+    float: left;
+    margin-left: 12px;
+    margin-top: 12px;
+    margin-bottom: 4px;
+    border-radius: 15px;
+    background-color: rgba(0, 0, 0, 0.07);
+    transition: background-color, border-radius 0.2s ease-in-out;
+}
+
+.valid-app-hover {
+    background-color: rgba(9, 59, 3, 0.2);
+    border-radius: 11px;
+}
+
+#app-icon {
+    font-size: 20px;
+    color: white;
+    padding: 11px 9px;
+}
