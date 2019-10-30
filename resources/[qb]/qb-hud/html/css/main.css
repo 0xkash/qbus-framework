@@ -73,6 +73,26 @@ p {
     color: white;
 }
 
+#plus-changeamount {
+    text-shadow: 1px 1px #00000083;
+    text-align: right;
+    color: #1a530f;
+}
+
+#minus-changeamount {
+    text-shadow: 1px 1px #00000083;
+    text-align: right;
+    color: #530f0f;
+}
+
+#minus-symbol {
+    color: #530f0f;
+}
+
+#plus-symbol {
+    color: #1a530f;
+}
+
 .minus {
     text-shadow: 1px 1px #00000083;
     text-align: right;

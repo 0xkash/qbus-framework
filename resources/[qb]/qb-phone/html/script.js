@@ -38,6 +38,10 @@ $(document).ready(function(){
         if (eventData.task == "setPhoneMeta") {
             qbPhone.setPhoneMeta(eventData.pMeta, eventData.pNum)
         }
+
+        if (eventData.task == "updateTime") {
+            qbPhone.updateTime(eventData.time)
+        }
     });
 
     $('.notify-btn').change(function() {
@@ -117,7 +121,7 @@ $(document).on('click', '.background-option', function(e){
     qbPhone.succesSound();
 });
 
-$(document).on('click', '.home-btn', function(e){
+$(document).on('click', '.home-container', function(e){
     e.preventDefault();
 
     if (currentApp != homePage) {
@@ -226,4 +230,8 @@ qbPhone.setPlayersBackground = function(background) {
     } else if (background == "bg-2") {
         $("#current-background").html("Abstract");
     }
+}
+
+qbPhone.updateTime = function(time) {
+    $("#time").html(time.hour+"."+time.minute);
 }

@@ -29,7 +29,7 @@ end)
 
 Citizen.CreateThread(function()
     while true do
-        Citizen.Wait(7)
+        Citizen.Wait(5)
         if IsPedInAnyVehicle(GetPlayerPed(-1), false) and GetPedInVehicleSeat(GetVehiclePedIsIn(GetPlayerPed(-1), true), -1) == GetPlayerPed(-1) and QBCore ~= nil then
             local plate = GetVehicleNumberPlateText(GetVehiclePedIsIn(GetPlayerPed(-1), true))
             if LastVehicle ~= GetVehiclePedIsIn(GetPlayerPed(-1), false) then
@@ -273,7 +273,7 @@ end
 function Hotwire()
     local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1), true)
     IsHotwiring = true
-    QBCore.Functions.Progressbar("hotwire_vehicle", "Hotwire..", math.random(10000, 30000), false, true, {
+    QBCore.Functions.Progressbar("hotwire_vehicle", "Bezig met het contactslot", math.random(10000, 30000), false, true, {
         disableMovement = true,
         disableCarMovement = true,
 		disableMouse = false,
@@ -284,7 +284,7 @@ function Hotwire()
         flags = 16,
     }, {}, {}, function() -- Done
         StopAnimTask(GetPlayerPed(-1), "anim@amb@clubhouse@tutorial@bkr_tut_ig3@", "machinic_loop_mechandplayer", 1.0)
-        if (math.random(0, 100) < 15) then
+        if (math.random(0, 100) < 1) then
             HasKey = true
             QBCore.Functions.Notify("Hotwire gelukt!")
         else

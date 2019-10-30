@@ -1,10 +1,8 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+
 html {
     overflow: hidden;
-    text-shadow:
-        -1.0px -1.0px 0 #000,
-        1.0px -1.0px 0 #000,
-        -1.0px 1.0px 0 #000,
-        1.0px 1.0px 0 #000;
+    font-family: 'Open Sans', sans-serif;
 }
 
 body {
@@ -20,8 +18,8 @@ body {
     display: none;
     z-index: 5;
     color: #fff;
-    font-family: Arial;
-    width: 18.5%;
+    font-family: 'Open Sans', sans-serif;
+    width: 16.5%;
     position: fixed;
     bottom: 12.65%;
     left: 0;
@@ -41,30 +39,29 @@ body {
 }
 
 .progress-labels div {
-    font-size: 15px;
-    line-height: 40px;
+    font-size: 12px;
+    line-height: 35px;
     position: relative;
     color: #ffffff;
+    text-shadow: 1px 1px 7px #000000;
     z-index: 10;
-    font-family: Signika, sans-serif;
-    text-transform: uppercase;
+    font-family: 'Open Sans', sans-serif;
 }
 
 .progress-bar-container {
     width: 100%;
-    height: 40px;
-    box-shadow: 0 1px 5px #000 inset, 0 1px 0 #1e1e1e;
-    background: rgba(50, 50, 50, 0.38);
-    border: 1px solid #666666;
+    height: 35px;
+    background: rgba(0, 0, 0, 0.246);
     text-align: left;
     overflow: hidden;
     position: relative;
     display: block;
     white-space: nowrap;
+    border-radius: 5px;
 }
 
 .progress-bar {
-    background-color: rgba(0, 0, 0, 0.75);
+    background-color: #1787e2a6;
     width: 0%;
     height: 40px;
     transition: width 0.3s;

@@ -21,6 +21,8 @@ $(document).ready(function(){
         }
     })
 
+    $('[data-toggle="tooltip"]').tooltip();
+
     $('.vehicle-category').click(function(e){
         e.preventDefault();
         var vehicleCategory = $(this).attr('id');

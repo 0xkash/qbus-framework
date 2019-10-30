@@ -52,7 +52,7 @@ function setPhoneMeta()
         pMeta = phoneMeta,
         pNum = QBCore.Functions.GetPlayerData().charinfo.phone
     })
-    print('phone set')
+    print(QBCore.Functions.GetPlayerData().charinfo.phone)
 end
 
 --- CODE
@@ -63,12 +63,17 @@ local allowNotifys = true
 function openPhone(bool)
     SetNuiFocus(bool, bool)
     SetCursorLocation(0.87, 0.5)
+    inPhone = bool
     if bool then
         SendNUIMessage({
             action = "phone",
             open = bool,
             apps = Config.PhoneApps
         })
+
+        PhonePlayIn()
+    else
+        PhonePlayOut()
     end
 end
 
@@ -80,6 +85,40 @@ Citizen.CreateThread(function()
         end
 
         Citizen.Wait(0)
+    end
+end)
+
+function CalculateTimeToDisplay()
+	hour = GetClockHours()
+    minute = GetClockMinutes()
+    
+    local obj = {}
+    
+	if minute <= 9 then
+		minute = "0" .. minute
+    end
+
+    if hour <= 9 then
+        hour = "0" .. hour
+    end
+    
+    obj.hour = hour
+    obj.minute = minute
+
+    return obj
+end
+
+Citizen.CreateThread(function()
+    while true do
+        if inPhone then
+            local currentTime = CalculateTimeToDisplay()
+
+            SendNUIMessage({
+                task = "updateTime",
+                time = currentTime,
+            })
+        end
+        Citizen.Wait(1000)
     end
 end)
 

@@ -87,7 +87,7 @@ $(document).on('keydown', function() {
             $(".money-cash").css("display", "block");
             $("#cash").html(data.cash);
             if (data.minus) {
-                $(".money-cash").append('<p class="minus">-<span id="cash-symbol">&euro;</span><span><span id="changeamount">' + data.amount + '</span></span></p>')
+                $(".money-cash").append('<p class="minus">-<span id="cash-symbol">&euro;</span><span><span id="minus-changeamount">' + data.amount + '</span></span></p>')
                 $(".minus").css("display", "block");
                 setTimeout(function() {
                     $(".minus").fadeOut(750, function() {
@@ -96,7 +96,7 @@ $(document).on('keydown', function() {
                     });
                 }, 3500)
             } else {
-                $(".money-cash").append('<p class="plus">+<span id="cash-symbol">&euro;</span><span><span id="changeamount">' + data.amount + '</span></span></p>')
+                $(".money-cash").append('<p class="plus">+<span id="cash-symbol">&euro;</span><span><span id="plus-changeamount">' + data.amount + '</span></span></p>')
                 $(".plus").css("display", "block");
                 setTimeout(function() {
                     $(".plus").fadeOut(750, function() {
@@ -109,7 +109,7 @@ $(document).on('keydown', function() {
             $(".money-bank").css("display", "block");
             $("#bank").html(data.bank);
             if (data.minus) {
-                $(".money-bank").append('<p class="minus">-<span id="bank-symbol">&euro;</span><span><span id="changeamount">' + data.amount + '</span></span></p>')
+                $(".money-bank").append('<p class="minus">-<span id="minus-symbol">&euro;</span><span><span id="minus-changeamount">' + data.amount + '</span></span></p>')
                 $(".minus").css("display", "block");
                 setTimeout(function() {
                     $(".minus").fadeOut(750, function() {
@@ -118,7 +118,7 @@ $(document).on('keydown', function() {
                     });
                 }, 3500)
             } else {
-                $(".money-bank").append('<p class="plus">+<span id="bank-symbol">&euro;</span><span><span id="changeamount">' + data.amount + '</span></span></p>')
+                $(".money-bank").append('<p class="plus">+<span id="plus-symbol">&euro;</span><span><span id="plus-changeamount">' + data.amount + '</span></span></p>')
                 $(".plus").css("display", "block");
                 setTimeout(function() {
                     $(".plus").fadeOut(750, function() {
