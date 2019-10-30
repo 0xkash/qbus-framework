@@ -3,18 +3,16 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
 
 .container {
-    display: none;
-    height: 100vh;
-    width: 100vw;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(248, 115, 115, 0.5);
 }
 
 .phone-container {
+    display: none;
     position: absolute;
     width: 270px;
     height: 585px;
     left: 80%;
-    top: 33%;
+    top: 100%;
 }
 
 #phone-frame {
@@ -105,10 +103,13 @@
     border-radius: 15px;
 }
 
+.app-slot {
+    float: left;
+}
+
 .empty-slot {
     width: 43px;
     height: 43px;
-    float: left;
     margin-left: 12px;
     margin-top: 12px;
     margin-bottom: 4px;

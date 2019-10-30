@@ -33,25 +33,25 @@
 
                 <div class="phone-home-page">
                     <div class="phone-apps">
-                        <div class="slot-1 empty-slot"></div>
-                        <div class="slot-2 empty-slot"></div>   
-                        <div class="slot-3 empty-slot"></div>   
-                        <div class="slot-4 empty-slot"></div>
+                        <div class="app-slot slot-1 empty-slot"></div>
+                        <div class="app-slot slot-2 empty-slot"></div>   
+                        <div class="app-slot slot-3 empty-slot"></div>   
+                        <div class="app-slot slot-4 empty-slot"></div>
                         
-                        <div class="slot-5 empty-slot"></div>
-                        <div class="slot-6 empty-slot"></div>   
-                        <div class="slot-7 empty-slot"></div>   
-                        <div class="slot-8 empty-slot"></div> 
+                        <div class="app-slot slot-5 empty-slot"></div>
+                        <div class="app-slot slot-6 empty-slot"></div>   
+                        <div class="app-slot slot-7 empty-slot"></div>   
+                        <div class="app-slot slot-8 empty-slot"></div> 
                         
-                        <div class="slot-9 empty-slot"></div>
-                        <div class="slot-10 empty-slot"></div>   
-                        <div class="slot-11 empty-slot"></div>   
-                        <div class="slot-12 empty-slot"></div>  
+                        <div class="app-slot slot-9 empty-slot"></div>
+                        <div class="app-slot slot-10 empty-slot"></div>   
+                        <div class="app-slot slot-11 empty-slot"></div>   
+                        <div class="app-slot slot-12 empty-slot"></div>  
                         
-                        <div class="slot-13 empty-slot"></div>
-                        <div class="slot-14 empty-slot"></div>   
-                        <div class="slot-15 empty-slot"></div>   
-                        <div class="slot-16 empty-slot"></div>  
+                        <div class="app-slot slot-13 empty-slot"></div>
+                        <div class="app-slot slot-14 empty-slot"></div>   
+                        <div class="app-slot slot-15 empty-slot"></div>   
+                        <div class="app-slot slot-16 empty-slot"></div>  
                     </div>
                 </div>
 
@@ -59,8 +59,9 @@
                     <div class="settings-header"><p> Instellingen</p></div>
 
                     <div class="customize-options">
-                        <div class="cat-titel"><span id="option-titel">customize</span></div>
+                        <div class="cat-titel"><span id="customize-titel">customize</span></div>
                         <div class="settings-item">
+                            <i class="fa fa-image" id="option-icon"></i>
                             <span id="settings-titel">Achtergrond</span><br>
                             <span id="current-background">Gradient Green</span>
                         </div>
@@ -69,11 +70,17 @@
                     <div class="other-options">
                         <div class="cat-titel"><span id="option-titel">OTHER</span></div>
                         <div class="settings-item">
+                            <i class="fa fa-bell" id="option-icon"></i>
                             <span id="settings-titel">Notificaties</span><br>
                             <span id="current-setting-status">Aan</span></br>
                             <div class="notify-btn">
-                                <input id="notification-toggle" type="checkbox" checked data-toggle="toggle" data-style="ios" data-on="&nbsp;" data-off="&nbsp;" data-size="mini" data-class="fast" data-onstyle="danger">
+                                <input id="notification-toggle" type="checkbox" checked data-toggle="toggle" data-style="ios" data-on="&nbsp;" data-off="&nbsp;" data-size="mini" data-class="fast" data-onstyle="success" data-offstyle="danger">
                             </div>
+                        </div>
+                        <div class="settings-item">
+                            <i class="fa fa-phone" id="option-icon"></i>
+                            <span id="settings-titel">Mijn Nummer</span><br>
+                            <span id="current-setting-status">0612345678</span></br>
                         </div>
                     </div>
                 </div>

@@ -17,7 +17,8 @@ time, mark, audio, video {
 	font-size: 100%;
 	font: inherit;
     vertical-align: baseline;
-    font-family: 'Roboto';
+	font-family: 'Roboto';
+	background-color: transparent !important;
 }
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure, 
