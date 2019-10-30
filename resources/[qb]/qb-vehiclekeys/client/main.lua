@@ -33,24 +33,25 @@ Citizen.CreateThread(function()
         if IsPedInAnyVehicle(GetPlayerPed(-1), false) and GetPedInVehicleSeat(GetVehiclePedIsIn(GetPlayerPed(-1), true), -1) == GetPlayerPed(-1) and QBCore ~= nil then
             local plate = GetVehicleNumberPlateText(GetVehiclePedIsIn(GetPlayerPed(-1), true))
             if LastVehicle ~= GetVehiclePedIsIn(GetPlayerPed(-1), false) then
+                print("SDSDAD")
                 QBCore.Functions.TriggerCallback('vehiclekeys:CheckHasKey', function(result)
                     if result then
                         HasKey = true
                         SetVehicleEngineOn(veh, true, false, true)
                     else
                         HasKey = false
+                        SetVehicleEngineOn(veh, false, false, true)
                     end
+                    LastVehicle = GetVehiclePedIsIn(GetPlayerPed(-1), false)
                 end, plate)
             end
 
         end
 
-        if not HasKey and IsPedInAnyVehicle(GetPlayerPed(-1), false) and GetPedInVehicleSeat(GetVehiclePedIsIn(GetPlayerPed(-1), true), -1) == GetPlayerPed(-1) and QBCore ~= nil and not IsHotwiring then
-            local veh = GetVehiclePedIsIn(GetPlayerPed(-1), true)
+        if not HasKey and IsPedInAnyVehicle(GetPlayerPed(-1), false) and GetPedInVehicleSeat(GetVehiclePedIsIn(GetPlayerPed(-1), false), -1) == GetPlayerPed(-1) and QBCore ~= nil and not IsHotwiring then
+            local veh = GetVehiclePedIsIn(GetPlayerPed(-1), false)
             local vehpos = GetOffsetFromEntityInWorldCoords(veh, 0, 1.0, 0.5)
-            SetVehicleEngineOn(veh, false, false, true)
             QBCore.Functions.DrawText3D(vehpos.x, vehpos.y, vehpos.z, "~g~H~w~ - Hotwire")
-            LastVehicle = veh
 
             if IsControlJustPressed(0, Keys["H"]) then
                 Hotwire()
@@ -263,6 +264,7 @@ function LockpickIgnition()
     end, function() -- Cancel
         StopAnimTask(GetPlayerPed(-1), "anim@amb@clubhouse@tutorial@bkr_tut_ig3@", "machinic_loop_mechandplayer", 1.0)
         HasKey = false
+        SetVehicleEngineOn(veh, false, false, true)
         QBCore.Functions.Notify("Lockpick mislukt!", "error")
         IsHotwiring = false
     end)
@@ -287,12 +289,14 @@ function Hotwire()
             QBCore.Functions.Notify("Hotwire gelukt!")
         else
             HasKey = false
+            SetVehicleEngineOn(veh, false, false, true)
             QBCore.Functions.Notify("Hotwire mislukt!", "error")
         end
         IsHotwiring = false
     end, function() -- Cancel
         StopAnimTask(GetPlayerPed(-1), "anim@amb@clubhouse@tutorial@bkr_tut_ig3@", "machinic_loop_mechandplayer", 1.0)
         HasKey = false
+        SetVehicleEngineOn(veh, false, false, true)
         QBCore.Functions.Notify("Hotwire mislukt!", "error")
         IsHotwiring = false
     end)
