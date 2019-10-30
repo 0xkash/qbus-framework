@@ -14,3 +14,7 @@
 .toggle.ios .toggle-handle { 
     border-radius: 20px; 
 }
+
+.custom-control, .custom-switch, .custom-control-input {
+    color: white
+}

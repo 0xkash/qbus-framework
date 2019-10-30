@@ -3,7 +3,7 @@
     position: relative;
     width: 250px;
     height: 555px;
-    top: 2%;
+    top: 102%;
     left: 3.5%;
     border-radius: 10px;
     background-color: rgb(243, 243, 243);
@@ -21,8 +21,8 @@
     color: rgb(61, 61, 61);
     font-size: 15px;
     font-family: 'Open Sans', sans-serif;
-    line-height: 45px;
-    margin-left: 45px;
+    line-height: 55px;
+    margin-left: 10px;
 }
 
 .settings-item {
@@ -36,7 +36,7 @@
 
 .settings-item > span {
     line-height: 22px;
-    margin-left: 45px;
+    margin-left: 55px;
 }
 
 #settings-titel {
@@ -59,7 +59,7 @@
 .notify-btn {
     position: absolute;
     right: 5%;
-    top: 22%;
+    top: 7%;
 }
 
 .other-options {
@@ -74,17 +74,17 @@
 
 #option-titel {
     position: absolute;
-    left: 45px;
+    left: 55px;
     top: 0;
     font-size: 10px;
     text-transform: uppercase;
     font-family: 'Open Sans', sans-serif;
-    color: #c74d40;
+    color: #4059c7;
 }
 
 .customize-options {
     position: relative;
-    top: 18%;
+    top: 17.5%;
     width: 100%;
     height: 30%;
     font-family: 'Open Sans', sans-serif;
@@ -94,10 +94,26 @@
 
 #customize-titel {
     position: absolute;
-    left: 45px;
+    left: 55px;
     top: 0;
     font-size: 10px;
     text-transform: uppercase;
     font-family: 'Open Sans', sans-serif;
-    color: #c74d40;
+    color: #4059c7;
+}
+
+#option-icon {
+    position: absolute;
+    left: 6px;
+    background-color: rgb(230, 230, 230);
+    padding: 10px;
+    border-radius: 50%;
+    color: #4059c7;
+    font-size: 17px;
+    width: 37px;
+    height: 37px;
+}
+
+#customSwitch1 {
+    color: black;
 }

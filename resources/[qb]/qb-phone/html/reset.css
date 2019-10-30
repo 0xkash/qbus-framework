@@ -19,6 +19,7 @@ time, mark, audio, video {
     vertical-align: baseline;
 	font-family: 'Roboto';
 	background-color: transparent;
+	overflow: hidden;
 }
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure, 

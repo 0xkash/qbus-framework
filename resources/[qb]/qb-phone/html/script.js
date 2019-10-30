@@ -16,7 +16,6 @@ $(document).on('keydown', function() {
 
 $(document).ready(function(){
 
-    $('.container').hide();
     console.log('QB Phone\'s javascript has succesfully loaded, no errors occured..')
 
     window.addEventListener('message', function(event){
@@ -32,12 +31,13 @@ $(document).ready(function(){
         }
     });
 
-    $('#notification-toggle').change(function() {
-        var status = $(this).prop('checked');
+    $('.notify-btn').change(function() {
 
-        if (status) {
+        if (!allowNotifys) {
+            allowNotifys = true;
             qbPhone.toggleNotify(true)
         } else {
+            allowNotifys = false;
             qbPhone.toggleNotify(false)
         }
     })
@@ -50,37 +50,43 @@ $(document).on('click', '.app', function(e){
     var pressedApp = $('#'+appId).data('appData');
 
     if (pressedApp.app == "settings") {
-        $('.phone-home-page').hide();
-        $('.settings-app').show();
+        $(".settings-app").css({'display':'block'}).animate({
+            top: "3%",
+        }, 250);
+        currentApp = ".settings-app";
     }
     qbPhone.succesSound();
-
-    currentApp = ".settings-app";
 });
 
 $(document).on('click', '.home-btn', function(e){
     e.preventDefault();
 
     if (currentApp != homePage) {
-        $(currentApp).hide();
-        $(homePage).show();
+        $(currentApp).animate({top: "100%",}
+        , 250, function() {
+            $(currentApp).css({'display':'none'})
+            currentApp = homePage;
+        });
 
-        currentApp = homePage;
         qbPhone.succesSound();
     } else {
-        qbPhone.Log('You are already on your homepage!')
+        qbPhone.Close();
     }
 });
 
 qbPhone.Open = function() {
     inPhone = true;
-    $('.container').fadeIn(200);
+    $('.phone-container').css({'display':'block'}).animate({
+        top: "32%",
+    }, 300);
     qbPhone.Log('Phone opened');
 }
 
 qbPhone.Close = function() {
     inPhone = false;
-    $('.container').fadeOut(200);
+    $('.phone-container').css({'display':'block'}).animate({
+        top: "100%",
+    }, 300);
     $.post('http://qb-phone/closePhone');
     qbPhone.Log('Phone closed');
 }

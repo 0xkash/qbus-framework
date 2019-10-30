@@ -18,7 +18,7 @@ local isOwned = false
 local stashLoc = {}
 local closetLoc = {}
 
-local isLoggedIn = true
+local isLoggedIn = false
 local contractOpen = false
 
 local cam = nil
@@ -434,23 +434,23 @@ AddEventHandler('qb-houses:client:setupHouseBlips', function()
         Citizen.Wait(2000)
         if isLoggedIn then
             QBCore.Functions.TriggerCallback('qb-houses:server:getOwnedHouses', function(ownedHouses)
-                for i=1, #ownedHouses, 1 do
-                    local house = Config.Houses[ownedHouses[i]]
-                    HouseBlip = AddBlipForCoord(house.coords.enter.x, house.coords.enter.y, house.coords.enter.z)
+                if ownedHouses ~= nil then
+                    for i=1, #ownedHouses, 1 do
+                        local house = Config.Houses[ownedHouses[i]]
+                        HouseBlip = AddBlipForCoord(house.coords.enter.x, house.coords.enter.y, house.coords.enter.z)
 
-                    SetBlipSprite (HouseBlip, 40)
-                    SetBlipDisplay(HouseBlip, 4)
-                    SetBlipScale  (HouseBlip, 0.65)
-                    SetBlipAsShortRange(HouseBlip, true)
-                    SetBlipColour(HouseBlip, 3)
+                        SetBlipSprite (HouseBlip, 40)
+                        SetBlipDisplay(HouseBlip, 4)
+                        SetBlipScale  (HouseBlip, 0.65)
+                        SetBlipAsShortRange(HouseBlip, true)
+                        SetBlipColour(HouseBlip, 3)
 
-                    BeginTextCommandSetBlipName("STRING")
-                    AddTextComponentSubstringPlayerName(house.adress)
-                    EndTextCommandSetBlipName(HouseBlip)
+                        BeginTextCommandSetBlipName("STRING")
+                        AddTextComponentSubstringPlayerName(house.adress)
+                        EndTextCommandSetBlipName(HouseBlip)
+                    end
                 end
             end)
-        else
-            RemoveBlip(HouseBlip)
         end
     end)
 end)
