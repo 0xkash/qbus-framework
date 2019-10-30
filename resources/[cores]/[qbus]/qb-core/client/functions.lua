@@ -31,12 +31,10 @@ QBCore.Functions.DrawText3D = function(x, y, z, text)
     SetTextEntry("STRING")
     SetTextCentre(true)
     AddTextComponentString(text)
-    --DrawText(_x,_y)
     SetDrawOrigin(x,y,z, 0)
     DrawText(0.0, 0.0)
     local factor = (string.len(text)) / 370
-    --DrawRect(_x,_y+0.0125, 0.017+ factor, 0.03, 0, 0, 0, 68)
-    DrawRect(0.0, 0.0+0.0125, 0.017+ factor, 0.03, 0, 0, 0, 68)
+    DrawRect(0.0, 0.0+0.0125, 0.017+ factor, 0.03, 0, 0, 0, 75)
     ClearDrawOrigin()
 end
 
@@ -70,6 +68,8 @@ QBCore.Functions.SpawnVehicle = function(model, cb, coords, isnetworked)
     SetVehRadioStation(veh, "OFF")
 
     SetModelAsNoLongerNeeded(model)
+
+    TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
 
     if cb ~= nil then
         cb(veh)
@@ -234,4 +234,28 @@ QBCore.Functions.GetPlayersFromCoords = function(coords, distance)
     end
     
     return closePlayers
+end
+
+QBCore.Functions.Progressbar = function(name, label, duration, useWhileDead, canCancel, disableControls, animation, prop, propTwo, onFinish, onCancel)
+    exports['progressbar']:Progress({
+        name = name:lower(),
+        duration = duration,
+        label = label,
+        useWhileDead = useWhileDead,
+        canCancel = canCancel,
+        controlDisables = disableControls,
+        animation = animation,
+        prop = prop,
+        propTwo = propTwo,
+    }, function(cancelled)
+        if not cancelled then
+            if onFinish ~= nil then
+                onFinish()
+            end
+        else
+            if onCancel ~= nil then
+                onCancel()
+            end
+        end
+    end)
 end
