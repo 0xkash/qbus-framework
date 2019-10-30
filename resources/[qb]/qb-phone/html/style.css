@@ -3,15 +3,16 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
 
 .container {
-    background-color: rgba(248, 115, 115, 0.5);
+    height: 100vh;
+    width: 100vw;
 }
 
-.phone-container {
+.phone-frame {
     display: none;
     position: absolute;
     width: 270px;
     height: 585px;
-    left: 80%;
+    left: 75%;
     top: 100%;
 }
 
@@ -20,6 +21,17 @@
     width: 100%;
     pointer-events: none;
     z-index: 999;
+}
+
+.phone-container {
+    display: none;
+    position: absolute;
+    width: 252px;
+    height: 560px;
+    left: 75.45%;
+    top: 100%;
+    border-radius: 10px;
+    background-color: black;
 }
 
 .home-btn {
@@ -31,7 +43,7 @@
     margin-right: auto;
     left: 1%;
     right: 0;
-    background-color: #ffffff;
+    background-color: #f1f1f1;
     border-radius: 5px;
     z-index: 101;
     box-shadow: 0px 0px 1px 0px #000;
@@ -39,14 +51,15 @@
 }
 
 .home-btn:hover {
-    background-color: #611d15;
+    height: 7px;
+    background-color: #ffffff;
 }
 
 .top-bar {
     position: absolute;
-    width: 96%;
+    width: 100%;
     height: 20px;
-    top: 5.5%;
+    top: 2.8%;
     margin-left: auto;
     margin-right: auto;
     left: 0;
@@ -77,8 +90,10 @@
 
 .phone-home-page {
     position: absolute;
-    width: 270px;
-    height: 585px;
+    width: 103.5%;
+    height: 103.5%;
+    right: 0;
+    border-radius: 10px;
     background-image: url('./img/bg-1.png');
 }
 

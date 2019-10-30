@@ -2,9 +2,12 @@ qbPhone = {}
 
 var inPhone = false;
 var phoneApps = null;
-var allowNotifys = true;
+var allowNotifys = null;
+var myNotify = false;
 var currentApp = ".phone-home-page";
 var homePage = ".phone-home-page";
+var choosingBg = false;
+var curBg = "bg-1";
 
 $(document).on('keydown', function() {
     switch(event.keyCode) {
@@ -22,23 +25,38 @@ $(document).ready(function(){
         var eventData = event.data;
 
         if (eventData.action = "phone") {
-            if (eventData.open) {
-                qbPhone.Open()
-                qbPhone.setupPhoneApps(eventData.apps)
-            } else {
-                qbPhone.Close()
+            if (!eventData.task) {
+                if (eventData.open == true) {
+                    qbPhone.Open()
+                    qbPhone.setupPhoneApps(eventData.apps)
+                } else if (eventData.open == false) {
+                    qbPhone.Close()
+                }
             }
+        }
+
+        if (eventData.task == "setPhoneMeta") {
+            qbPhone.setPhoneMeta(eventData.pMeta, eventData.pNum)
         }
     });
 
     $('.notify-btn').change(function() {
-
-        if (!allowNotifys) {
-            allowNotifys = true;
-            qbPhone.toggleNotify(true)
+        if (allowNotifys == null) {
+            if (myNotify) {
+                allowNotifys = true;
+                qbPhone.toggleNotify(true)
+            } else {
+                allowNotifys = false;
+                qbPhone.toggleNotify(false)
+            }
         } else {
-            allowNotifys = false;
-            qbPhone.toggleNotify(false)
+            if (!allowNotifys) {
+                allowNotifys = true;
+                qbPhone.toggleNotify(true)
+            } else {
+                allowNotifys = false;
+                qbPhone.toggleNotify(false)
+            }
         }
     })
 });
@@ -54,7 +72,48 @@ $(document).on('click', '.app', function(e){
             top: "3%",
         }, 250);
         currentApp = ".settings-app";
+        $.post('http://qb-phone/getUserData');
     }
+    qbPhone.succesSound();
+});
+
+$(document).on('click', '#background-item', function(e){
+    e.preventDefault();
+
+    $('.background-block').css({"display":"block"}).animate({top: "20%",}, 250);
+    setTimeout(function(){
+        choosingBg = true;
+    }, 100)
+    qbPhone.succesSound();
+});
+
+$(document).on('click', '.settings-app', function(e){
+    if (choosingBg) {
+        $('.background-block').animate({top: "100%",}, 
+        250, function(){
+            $('.background-block').css({'display':'none'});
+            choosingBg = false;
+        });
+    }
+});
+
+$(document).on('click', '.background-option', function(e){
+    e.preventDefault();
+
+    var selectedBackground = $(this).attr('id');
+    $(".phone-home-page").css("background-image", "url(./img/"+selectedBackground+".png)");
+    $("#"+curBg).removeClass("selected-bg");
+    $(this).addClass("selected-bg");
+    curBg = $(this).attr("id");
+
+    if (curBg == "bg-1") {
+        $("#current-background").html("Gradient Green");
+    } else if (curBg == "bg-2") {
+        $("#current-background").html("Abstract");
+    }
+    $.post('http://qb-phone/setPlayersBackground', JSON.stringify({
+        background: selectedBackground
+    }))
     qbPhone.succesSound();
 });
 
@@ -64,7 +123,8 @@ $(document).on('click', '.home-btn', function(e){
     if (currentApp != homePage) {
         $(currentApp).animate({top: "100%",}
         , 250, function() {
-            $(currentApp).css({'display':'none'})
+            $(currentApp).css({'display':'none'});
+            $(homePage).css({'display':'block'});
             currentApp = homePage;
         });
 
@@ -76,8 +136,12 @@ $(document).on('click', '.home-btn', function(e){
 
 qbPhone.Open = function() {
     inPhone = true;
+    $(homePage).css({'display':'block'})
     $('.phone-container').css({'display':'block'}).animate({
-        top: "32%",
+        top: "41.3%",
+    }, 300);
+    $('.phone-frame').css({'display':'block'}).animate({
+        top: "40%",
     }, 300);
     qbPhone.Log('Phone opened');
 }
@@ -85,6 +149,9 @@ qbPhone.Open = function() {
 qbPhone.Close = function() {
     inPhone = false;
     $('.phone-container').css({'display':'block'}).animate({
+        top: "100%",
+    }, 300);
+    $('.phone-frame').css({'display':'block'}).animate({
         top: "100%",
     }, 300);
     $.post('http://qb-phone/closePhone');
@@ -113,12 +180,12 @@ qbPhone.Log = function(log) {
 qbPhone.toggleNotify = function(bool) {
     allowNotifys = bool;
     if (bool) {
-        $("#current-setting-status").html("Aan");
+        $(".notify-state").html("Aan");
     } else {
-        $("#current-setting-status").html("Uit")
+        $(".notify-state").html("Uit");
     }
 
-    $.post('http://qb-phone/setNotifications', JSON.stringify({status: bool}));
+    $.post('http://qb-phone/setNotifications', JSON.stringify({allow: bool}));
     qbPhone.succesSound();
 }
 
@@ -128,4 +195,35 @@ qbPhone.succesSound = function() {
 
 qbPhone.errorSound = function() {
     $.post('http://qb-phone/errorSound');
+}
+
+qbPhone.setPhoneMeta = function(phoneMeta, phoneNumber) {
+    qbPhone.setPlayersNotification(phoneMeta.settings.notification)
+    qbPhone.setPlayersBackground(phoneMeta.settings.background)
+    qbPhone.setPlayersPhoneNumber(phoneNumber)
+}
+
+qbPhone.setPlayersNotification = function(allow) {
+    myNotify = allow;
+    if (allow) {
+        $("#notification-toggle").bootstrapToggle('on')
+    } else {
+        $("#notification-toggle").bootstrapToggle('off')
+    }
+}
+
+qbPhone.setPlayersPhoneNumber = function(num) {
+    $('.phone-num').html(num);
+}
+
+qbPhone.setPlayersBackground = function(background) {
+    $(".phone-home-page").css("background-image", "url(./img/"+background+".png)");
+    $("#"+background).addClass("selected-bg");
+    curBg = background;
+    $("#current-background").html("Gradient Green");
+    if (background == "bg-1") {
+        $("#current-background").html("Gradient Green");
+    } else if (background == "bg-2") {
+        $("#current-background").html("Abstract");
+    }
 }

@@ -76,6 +76,7 @@ end)
 
 QBCore.Commands.Add("char", "Geef een item aan een speler", {{name="id", help="Speler ID"},{name="item", help="Naam van het item (geen label)"}, {name="amount", help="Aantal items"}}, false, function(source, args)
     TriggerClientEvent('qb-multicharacter:client:chooseChar', source)
+    QBCore.Player.Logout(source)
 end)
 
 QBCore.Commands.Add("closeNUI", "Geef een item aan een speler", {{name="id", help="Speler ID"},{name="item", help="Naam van het item (geen label)"}, {name="amount", help="Aantal items"}}, true, function(source, args)

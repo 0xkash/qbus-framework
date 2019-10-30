@@ -1,10 +1,13 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway&display=swap');
+
 .settings-app {
     display: none;
     position: relative;
-    width: 250px;
-    height: 555px;
-    top: 102%;
-    left: 3.5%;
+    width: 103.5%;
+    height: 103.5%;
+    /* top: 102%; */
+    top: 3%;
+    right: 0;
     border-radius: 10px;
     background-color: rgb(243, 243, 243);
 }
@@ -13,7 +16,7 @@
     position: absolute;
     top: 6%;
     width: 100%;
-    height: 50px;
+    height: 40px;
     border-bottom: 3px solid rgba(124, 124, 124, 0.205);
 }
 
@@ -21,7 +24,7 @@
     color: rgb(61, 61, 61);
     font-size: 15px;
     font-family: 'Open Sans', sans-serif;
-    line-height: 55px;
+    line-height: 23px;
     margin-left: 10px;
 }
 
@@ -64,7 +67,7 @@
 
 .other-options {
     position: relative;
-    top: 20%;
+    top: 17%;
     width: 100%;
     height: 30%;
     font-family: 'Open Sans', sans-serif;
@@ -84,9 +87,9 @@
 
 .customize-options {
     position: relative;
-    top: 17.5%;
+    top: 15%;
     width: 100%;
-    height: 30%;
+    height: 20%;
     font-family: 'Open Sans', sans-serif;
     margin-top: 7px;
     border-bottom: 3px solid rgba(124, 124, 124, 0.205);
@@ -117,3 +120,59 @@
 #customSwitch1 {
     color: black;
 }
+
+.background-block {
+    display: none;
+    position: absolute;
+    width: 90%;
+    height: 50%;
+    top: 103.5%;
+    background-color: white;
+    margin: 0 auto;
+    left: 0;
+    right: 2%;
+    border-radius: 5px;
+    box-shadow: 0px 0px 15px -2px rgba(0,0,0,0.75);
+}
+
+#background-titel {
+    position: relative;
+    top: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: sans-serif !important;
+    text-align: center;
+}
+
+#background-subtitel {
+    position: relative;
+    top: 20px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.background-option {
+    position: relative;
+    width: 100%;
+    height: 10%;
+    background-color: white;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    text-align: center;
+    top: 20%;
+    margin-top: 12px;
+    transition: all 0.1s ease-in-out;
+}
+
+.background-option:hover {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.background-option > p {
+    font-size: 12px;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+.selected-bg {
+    border-bottom: 1px solid #4059c7;
+}
+

@@ -18,13 +18,17 @@
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.4/js/bootstrap-switch.js" data-turbolinks-track="true"></script>
     
     <title>QB Phone</title>
 </head>
     <body>
         <div class="container">
-            <div class="phone-container">
+            <div class="phone-frame">
                 <img src="./img/phone-frames/s10.png" id="phone-frame">
+            </div>
+
+            <div class="phone-container">
 
                 <div class="top-bar">
                     <span id="provider"><i class="fa fa-signal"></i> qBus 4G</span>
@@ -60,7 +64,7 @@
 
                     <div class="customize-options">
                         <div class="cat-titel"><span id="customize-titel">customize</span></div>
-                        <div class="settings-item">
+                        <div class="settings-item" id="background-item">
                             <i class="fa fa-image" id="option-icon"></i>
                             <span id="settings-titel">Achtergrond</span><br>
                             <span id="current-background">Gradient Green</span>
@@ -72,7 +76,7 @@
                         <div class="settings-item">
                             <i class="fa fa-bell" id="option-icon"></i>
                             <span id="settings-titel">Notificaties</span><br>
-                            <span id="current-setting-status">Aan</span></br>
+                            <span class="notify-state" id="current-setting-status">Aan</span></br>
                             <div class="notify-btn">
                                 <input id="notification-toggle" type="checkbox" checked data-toggle="toggle" data-style="ios" data-on="&nbsp;" data-off="&nbsp;" data-size="mini" data-class="fast" data-onstyle="success" data-offstyle="danger">
                             </div>
@@ -80,8 +84,16 @@
                         <div class="settings-item">
                             <i class="fa fa-phone" id="option-icon"></i>
                             <span id="settings-titel">Mijn Nummer</span><br>
-                            <span id="current-setting-status">0612345678</span></br>
+                            <span class="phone-num" id="current-setting-status"></span></br>
                         </div>
+                    </div>
+
+                    <div class="background-block">
+                        <span id="background-titel"><p>Wallpaper</p></span>
+                        <span id="background-subtitel"><p>Kies je achtergrond</p></span>
+
+                        <div class="background-option selected-bg" id="bg-1"><p>Gradient Green</p></div>
+                        <div class="background-option" id="bg-2"><p>Abstract</p></div>
                     </div>
                 </div>
 

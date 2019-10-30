@@ -11,6 +11,17 @@ Keys = {
 
 QBCore = nil
 
+
+local phoneMeta = {}
+local isLoggedIn = false
+
+local defaultPhoneMeta = {
+    ["settings"] = {
+        notifications = true,
+        background = "bg-1",
+    }
+}
+
 Citizen.CreateThread(function() 
     while true do
         Citizen.Wait(10)
@@ -20,6 +31,29 @@ Citizen.CreateThread(function()
         end
     end
 end)
+
+RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
+AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+    isLoggedIn = true
+    Wait(1000)
+    setPhoneMeta()
+end)
+
+function setPhoneMeta()
+    phoneMeta = QBCore.Functions.GetPlayerData().metadata["phone"]
+
+    if next(phoneMeta) == nil then
+        phoneMeta = defaultPhoneMeta
+        TriggerServerEvent('qb-phone:server:setPhoneMeta', defaultPhoneMeta)
+    end
+
+    SendNUIMessage({
+        task = "setPhoneMeta",
+        pMeta = phoneMeta,
+        pNum = QBCore.Functions.GetPlayerData().charinfo.phone
+    })
+    print('phone set')
+end
 
 --- CODE
 
@@ -50,19 +84,24 @@ Citizen.CreateThread(function()
 end)
 
 RegisterNUICallback('setNotifications', function(data)
-    local notify = data.status
-    if not notify then
-        QBCore.Functions.Notify('Telefoon notificaties zijn uitgeschakeld...', 'primary', 3500)
-        allowNotifys = not allowNotifys
+    local allow = data.allow
+    if allow then
+        QBCore.Functions.Notify('Telefoon notificaties zijn ingeschakeld...', 'primary', 3500) 
     else
-        QBCore.Functions.Notify('Telefoon notificaties zijn ingeschakeld...', 'primary', 3500)
-        allowNotifys = not allowNotifys
+        QBCore.Functions.Notify('Telefoon notificaties zijn uitgeschakeld...', 'primary', 3500)
     end
+    phoneMeta["settings"].notifications = allow
+    print(allow)
 end)
 
 RegisterNUICallback('closePhone', function()
     openPhone(false)
     inPhone = false
+    TriggerServerEvent('qb-phone:server:setPhoneMeta', phoneMeta)
+end)
+
+RegisterNUICallback('setPlayersBackground', function(data)
+    phoneMeta["settings"].background = data.background
 end)
 
 RegisterNUICallback("succesSound", function(data, cb)
