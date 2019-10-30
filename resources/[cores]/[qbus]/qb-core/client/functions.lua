@@ -71,7 +71,7 @@ QBCore.Functions.SpawnVehicle = function(model, cb, coords, isnetworked)
 
     SetModelAsNoLongerNeeded(model)
 
-    TriggerEvent("vehiclekeys:client:SetOwner")
+    TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
 
     if cb ~= nil then
         cb(veh)
@@ -236,4 +236,28 @@ QBCore.Functions.GetPlayersFromCoords = function(coords, distance)
     end
     
     return closePlayers
+end
+
+QBCore.Functions.Progressbar = function(name, label, duration, useWhileDead, canCancel, disableControls, animation, prop, propTwo, onFinish, onCancel)
+    exports['progressbar']:Progress({
+        name = name:lower(),
+        duration = duration,
+        label = label,
+        useWhileDead = useWhileDead,
+        canCancel = canCancel,
+        controlDisables = disableControls,
+        animation = animation,
+        prop = prop,
+        propTwo = propTwo,
+    }, function(cancelled)
+        if not cancelled then
+            if onFinish ~= nil then
+                onFinish()
+            end
+        else
+            if onCancel ~= nil then
+                onCancel()
+            end
+        end
+    end)
 end

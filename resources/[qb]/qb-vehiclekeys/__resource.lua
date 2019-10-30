@@ -6,4 +6,5 @@ server_script {
 
 client_script {
     'client/main.lua',
+    'config.lua',
 }

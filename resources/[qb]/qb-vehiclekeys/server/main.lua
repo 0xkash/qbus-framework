@@ -5,7 +5,7 @@ local VehicleList = {}
 
 QBCore.Functions.CreateCallback('vehiclekeys:CheckHasKey', function(source, cb, plate)
     local Player = QBCore.Functions.GetPlayer(source)
-    cb(CheckOwner(plate, Player.PlayerData.citizenid)
+    cb(CheckOwner(plate, Player.PlayerData.citizenid))
 end)
 
 RegisterServerEvent('vehiclekeys:server:SetVehicleOwner')
@@ -20,10 +20,21 @@ AddEventHandler('vehiclekeys:server:SetVehicleOwner', function(plate)
                 end
             end
         else
-            VehicleList[#VehicleList+1] = {plate = plate, owners[1] = Player.PlayerData.citizenid}
+            local vehicleId = #VehicleList+1
+            VehicleList[vehicleId] = {
+                plate = plate, 
+                owners = {},
+            }
+            VehicleList[vehicleId].owners[1] = Player.PlayerData.citizenid
         end
     else
-        VehicleList[#VehicleList+1] = {plate = plate, owners[1] = Player.PlayerData.citizenid}
+        local vehicleId = #VehicleList+1
+        VehicleList[vehicleId] = {
+            plate = plate, 
+            owners = {},
+        }
+        VehicleList[vehicleId].owners[1] = Player.PlayerData.citizenid
+        print(json.encode(VehicleList[vehicleId]))
     end
 end)
 
@@ -79,3 +90,8 @@ function CheckOwner(plate, identifier)
     end
     return false
 end
+
+QBCore.Functions.CreateUseableItem("lockpick", function(source, item)
+    local Player = QBCore.Functions.GetPlayer(source)
+    TriggerClientEvent("lockpicks:UseLockpick", source)
+end)
