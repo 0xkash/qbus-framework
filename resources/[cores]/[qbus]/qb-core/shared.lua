@@ -132,6 +132,7 @@ QBShared.Items = {
 	["smg_ammo"] 				 	 = {["name"] = "smg_ammo", 			  	  		["label"] = "SMG munitie (20)", 		["weight"] = 1000, 		["type"] = "item", 		["image"] = "smg_ammo.png", 		["unique"] = false, 	["useable"] = true, 	["description"] = "This is a placeholder description"},
 	["shotgun_ammo"] 				 = {["name"] = "shotgun_ammo", 			  	  	["label"] = "Shotgun munitie (10)", 	["weight"] = 1000, 		["type"] = "item", 		["image"] = "shotgun_ammo.png", 	["unique"] = false, 	["useable"] = true, 	["description"] = "This is a placeholder description"},
 	["mg_ammo"] 				 	 = {["name"] = "mg_ammo", 			  	  		["label"] = "MG munitie (30)", 			["weight"] = 1000, 		["type"] = "item", 		["image"] = "mg_ammo.png", 			["unique"] = false, 	["useable"] = true, 	["description"] = "This is a placeholder description"},
+	["lockpick"] 					 = {["name"] = "lockpick", 			 	  	  	["label"] = "Lockpick", 				["weight"] = 1000, 		["type"] = "item", 		["image"] = "lockpick.png", 		["unique"] = false, 	["useable"] = true, 	["description"] = "This is a placeholder description"},
 }
 
 -- // HASH WEAPON ITEMS, NEED SOMETIMES TO GET INFO FOR CLIENT

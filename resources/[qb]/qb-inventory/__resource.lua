@@ -44,4 +44,5 @@ files {
 	'html/images/microsmg.png',
 	'html/images/nightstick.png',
 	'html/images/id_card.png',
+	'html/images/lockpick.png',
 }
