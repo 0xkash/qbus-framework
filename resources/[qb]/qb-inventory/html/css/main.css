@@ -78,7 +78,7 @@ input[type=number]::-webkit-outer-spin-button {
     overflow-x: hidden;
     width: 43%;
     max-width: 43%;
-    height: 60%;
+    height: auto;
     max-height: 60%;
     float: left;
     margin-left: 2%;

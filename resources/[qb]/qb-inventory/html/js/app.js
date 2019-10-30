@@ -105,8 +105,9 @@ function handleDragDrop() {
                 return;
             }
             if (toAmount >= 0) {
-                updateweights(fromSlot, toSlot, fromInventory, toInventory, toAmount);
-                swap(fromSlot, toSlot, fromInventory, toInventory, toAmount);
+                if (updateweights(fromSlot, toSlot, fromInventory, toInventory, toAmount)) {
+                    swap(fromSlot, toSlot, fromInventory, toInventory, toAmount);
+                }
             }
         },
     });
@@ -143,15 +144,16 @@ function handleDragDrop() {
 
 function updateweights($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
     if (($fromInv.attr("data-inventory") == "hotbar" && $toInv.attr("data-inventory") == "player") || ($fromInv.attr("data-inventory") == "player" && $toInv.attr("data-inventory") == "hotbar") || ($fromInv.attr("data-inventory") == "player" && $toInv.attr("data-inventory") == "player") || ($fromInv.attr("data-inventory") == "hotbar" && $toInv.attr("data-inventory") == "hotbar")) {
-        return;
+        return true;
     }
 
     if ($fromInv != $toInv) {
         fromData = $fromInv.find("[data-slot=" + $fromSlot + "]").data("item");
         toData = $toInv.find("[data-slot=" + $toSlot + "]").data("item");
+        console.log(fromData.amount)
         if ($toAmount == 0) {$toAmount=fromData.amount}
         if (toData == null || fromData.name == toData.name) {
-            if ($fromInv.attr("data-inventory") == "player") {
+            if ($fromInv.attr("data-inventory") == "player" || $fromInv.attr("data-inventory") == "hotbar") {
                 totalWeight = totalWeight - (fromData.weight * $toAmount);
                 totalWeightOther = totalWeightOther + (fromData.weight * $toAmount);
             } else {
@@ -159,7 +161,7 @@ function updateweights($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
                 totalWeightOther = totalWeightOther - (fromData.weight * $toAmount);
             }
         } else {
-            if ($fromInv.attr("data-inventory") == "player") {
+            if ($fromInv.attr("data-inventory") == "player" || $fromInv.attr("data-inventory") == "hotbar") {
                 totalWeight = totalWeight - (fromData.weight * $toAmount);
                 totalWeight = totalWeight + (toData.weight * toData.amount)
 
@@ -175,8 +177,15 @@ function updateweights($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
         }
     }
 
+    if (totalWeightOther > otherMaxWeight || totalWeight > playerMaxWeight) {
+        InventoryError($fromInv, $fromSlot);
+        return false;
+    }
+
     $(".player-inv-info p").html("Speler Inventaris " + (parseInt(totalWeight) / 1000).toFixed(2) + " / " + (playerMaxWeight / 1000).toFixed(2) + " KG");
     $(".other-inv-info p").html(otherLabel + " " + (parseInt(totalWeightOther) / 1000).toFixed(2) + " / " + (otherMaxWeight / 1000).toFixed(2) + " KG");
+
+    return true;
 }
 
 function swap($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {

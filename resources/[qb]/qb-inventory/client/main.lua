@@ -67,25 +67,34 @@ Citizen.CreateThread(function()
         DisableControlAction(0, Keys["4"], true)
         DisableControlAction(0, Keys["5"], true)
         if IsDisabledControlJustReleased(0, Keys["TAB"]) then
-            local vehicle = QBCore.Functions.GetClosestVehicle()
-            if vehicle ~= 0 and vehicle ~= nil then
-                local pos = GetEntityCoords(GetPlayerPed(-1))
-                local trunkpos = GetOffsetFromEntityInWorldCoords(vehicle, 0, -2.5, 0)
-                if (IsBackEngine(GetEntityModel(vehicle))) then
-                    trunkpos = GetOffsetFromEntityInWorldCoords(vehicle, 0, 2.5, 0)
-                end
-                if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, trunkpos) < 2.0) and not IsPedInAnyVehicle(GetPlayerPed(-1)) then
-                    CurrentVehicle = GetVehicleNumberPlateText(vehicle)
+            if IsPedInAnyVehicle(GetPlayerPed(-1)) then
+                local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1), false)
+                CurrentVehicle = GetVehicleNumberPlateText(vehicle)
+            else
+                local vehicle = QBCore.Functions.GetClosestVehicle()
+                if vehicle ~= 0 and vehicle ~= nil then
+                    local pos = GetEntityCoords(GetPlayerPed(-1))
+                    local trunkpos = GetOffsetFromEntityInWorldCoords(vehicle, 0, -2.5, 0)
+                    if (IsBackEngine(GetEntityModel(vehicle))) then
+                        trunkpos = GetOffsetFromEntityInWorldCoords(vehicle, 0, 2.5, 0)
+                    end
+                    if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, trunkpos) < 2.0) and not IsPedInAnyVehicle(GetPlayerPed(-1)) then
+                        CurrentVehicle = GetVehicleNumberPlateText(vehicle)
+                    else
+                        CurrentVehicle = nil
+                    end
                 else
                     CurrentVehicle = nil
                 end
-            else
-                CurrentVehicle = nil
             end
 
             if CurrentVehicle ~= nil then
-                TriggerServerEvent("inventory:server:OpenInventory", "trunk", CurrentVehicle)
-                OpenTrunk()
+                if IsPedInAnyVehicle(GetPlayerPed(-1)) then
+                    TriggerServerEvent("inventory:server:OpenInventory", "glovebox", CurrentVehicle)
+                else
+                    TriggerServerEvent("inventory:server:OpenInventory", "trunk", CurrentVehicle)
+                    OpenTrunk()
+                end
             elseif CurrentDrop ~= 0 then
                 TriggerServerEvent("inventory:server:OpenInventory", "drop", CurrentDrop)
             else
