@@ -169,7 +169,7 @@ Citizen.CreateThread(function()
                     if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.outfit.x, Config.Houses[closesthouse].coords.outfit.y, Config.Houses[closesthouse].coords.outfit.z, true) < 1.5)then
                         QBCore.Functions.DrawText3D(Config.Houses[closesthouse].coords.outfit.x, Config.Houses[closesthouse].coords.outfit.y, Config.Houses[closesthouse].coords.outfit.z, '~g~E~w~ - Outfits')
                         if IsControlJustPressed(0, Keys["E"]) then
-                            Menuoutfit()
+                            MenuOutfits()
                             Menu.hidden = not Menu.hidden
                         end
 
