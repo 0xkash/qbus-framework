@@ -22,6 +22,8 @@ local defaultPhoneMeta = {
     }
 }
 
+local playerContacts = {}
+
 Citizen.CreateThread(function() 
     while true do
         Citizen.Wait(10)
@@ -32,11 +34,35 @@ Citizen.CreateThread(function()
     end
 end)
 
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(60 * 1000 * 3)
+        if isLoggedIn then
+            QBCore.Functions.TriggerCallback('qb-phone:server:getUserContacts', function(result)
+                playerContacts = result
+            end)
+        end
+    end
+end)
+
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     isLoggedIn = true
-    Wait(1000)
+    Wait(500)
     setPhoneMeta()
+    QBCore.Functions.TriggerCallback('qb-phone:server:getUserContacts', function(result)
+        playerContacts = result
+    end)
+end)
+
+Citizen.CreateThread(function()
+    Citizen.Wait(1000)
+    isLoggedIn = true
+    Wait(500)
+    setPhoneMeta()
+    QBCore.Functions.TriggerCallback('qb-phone:server:getUserContacts', function(result)
+        playerContacts = result
+    end)
 end)
 
 function setPhoneMeta()
@@ -50,10 +76,71 @@ function setPhoneMeta()
     SendNUIMessage({
         task = "setPhoneMeta",
         pMeta = phoneMeta,
-        pNum = QBCore.Functions.GetPlayerData().charinfo.phone
+        pData = QBCore.Functions.GetPlayerData(),
     })
-    print(QBCore.Functions.GetPlayerData().charinfo.phone)
+    
+    TriggerServerEvent('qb-phone:server:getContacts')
 end
+
+RegisterNUICallback('setupContacts', function()
+    setupContacts()
+end)
+
+function setupContacts()
+    SendNUIMessage({
+        task = "setUserContacts",
+        pContacts = playerContacts,
+        pData = QBCore.Functions.GetPlayerData(),
+    })
+
+    print(json.encode(playerContacts))
+end
+
+RegisterNUICallback('getBankData', function()
+    SendNUIMessage({
+        task = "setupBankData",
+        pData = QBCore.Functions.GetPlayerData(),
+    })
+end)
+
+RegisterNUICallback('addToContact', function(data)
+    local contactName = data.contactName
+    local contactNum = data.contactNum
+
+    table.insert(playerContacts, {
+        name = contactName,
+        number = contactNum,
+        status = "unknown",
+    })
+    setupContacts()
+
+    TriggerServerEvent('qb-phone:server:addContact', contactName, contactNum)
+    QBCore.Functions.Notify(contactNum..' is toegevoegd aan je contacten!', 'success', 3500)
+end)
+
+RegisterNUICallback('editContact', function(data)
+    local oldContactName = data.oldContactName
+    local oldContactNum = data.oldContactNum
+    local newContactName = data.newContactName
+    local newContactNum = data.newContactNum
+
+    print(json.encode(data))
+
+    for k, v in pairs(playerContacts) do
+        if playerContacts[k].name == oldContactName and playerContacts[k].number == oldContactNum then
+            playerContacts[k].name = newContactName
+            playerContacts[k].number = newContactNum
+        end
+    end
+    setupContacts()
+
+    TriggerServerEvent('qb-phone:server:editContact', oldContactName, oldContactNum, newContactName, newContactNum)
+    QBCore.Functions.Notify(oldContactNum..' is aangepast!', 'success', 3500)
+end)
+
+RegisterNUICallback('transferMoney', function(data)
+    TriggerServerEvent('qb-phone:server:transferBank', data.amount, data.iban)
+end)
 
 --- CODE
 
