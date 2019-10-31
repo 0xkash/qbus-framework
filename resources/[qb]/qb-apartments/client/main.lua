@@ -42,8 +42,8 @@ Citizen.CreateThread(function()
                     QBCore.Functions.DrawText3D(Apartments.Locations[ClosestHouse].coords.exit.x, Apartments.Locations[ClosestHouse].coords.exit.y, Apartments.Locations[ClosestHouse].coords.exit.z, '~g~E~w~ - Ga uit appartement')
                     if IsControlJustPressed(0, Keys["E"]) then
                         loadAnimDict("anim@heists@keycard@") 
-                        TaskPlayAnim( GetPlayerPed(-1), "anim@heists@keycard@", "exit", 3.0, 1.0, -1, 16, 0, 0, 0, 0 )
-                        Citizen.Wait(850)
+                        TaskPlayAnim( GetPlayerPed(-1), "anim@heists@keycard@", "exit", 5.0, 1.0, -1, 16, 0, 0, 0, 0 )
+                        Citizen.Wait(400)
                         ClearPedTasks(GetPlayerPed(-1))
                         LeaveApartment(ClosestHouse)
                     end
@@ -52,7 +52,9 @@ Citizen.CreateThread(function()
                 if(GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Apartments.Locations[ClosestHouse].coords.stash.x, Apartments.Locations[ClosestHouse].coords.stash.y,Apartments.Locations[ClosestHouse].coords.stash.z, true) < 1.2)then
                     QBCore.Functions.DrawText3D(Apartments.Locations[ClosestHouse].coords.stash.x, Apartments.Locations[ClosestHouse].coords.stash.y, Apartments.Locations[ClosestHouse].coords.stash.z, '~g~E~w~ - Stash')
                     if IsControlJustPressed(0, Keys["E"]) then
-                        -- stash
+                        if CurrentApartment ~= nil then
+                            TriggerServerEvent("inventory:server:OpenInventory", "stash", CurrentApartment)
+                        end
                     end
                 elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Apartments.Locations[ClosestHouse].coords.stash.x, Apartments.Locations[ClosestHouse].coords.stash.y, Apartments.Locations[ClosestHouse].coords.stash.z, true) < 3)then
                     QBCore.Functions.DrawText3D(Apartments.Locations[ClosestHouse].coords.stash.x, Apartments.Locations[ClosestHouse].coords.stash.y, Apartments.Locations[ClosestHouse].coords.stash.z, 'Stash')
@@ -61,7 +63,6 @@ Citizen.CreateThread(function()
                 if(GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Apartments.Locations[ClosestHouse].coords.outfits.x, Apartments.Locations[ClosestHouse].coords.outfits.y, Apartments.Locations[ClosestHouse].coords.outfits.z, true) < 1.2)then
                     QBCore.Functions.DrawText3D(Apartments.Locations[ClosestHouse].coords.outfits.x, Apartments.Locations[ClosestHouse].coords.outfits.y, Apartments.Locations[ClosestHouse].coords.outfits.z, '~g~E~w~ - Outfits')
                     if IsControlJustPressed(0, Keys["E"]) then
-                        -- outfits
                         MenuOutfits()
                         Menu.hidden = not Menu.hidden
                     end
@@ -83,11 +84,11 @@ Citizen.CreateThread(function()
                 if(GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Apartments.Locations[ClosestHouse].coords.enter.x, Apartments.Locations[ClosestHouse].coords.enter.y,Apartments.Locations[ClosestHouse].coords.enter.z, true) < 1.2)then
                     QBCore.Functions.DrawText3D(Apartments.Locations[ClosestHouse].coords.enter.x, Apartments.Locations[ClosestHouse].coords.enter.y, Apartments.Locations[ClosestHouse].coords.enter.z, '~g~E~w~ - Ga in appartement')
                     if IsControlJustPressed(0, Keys["E"]) then
-                        loadAnimDict("anim@heists@keycard@") 
-                        TaskPlayAnim( GetPlayerPed(-1), "anim@heists@keycard@", "exit", 3.0, 1.0, -1, 16, 0, 0, 0, 0 )
-                        Citizen.Wait(850)
-                        ClearPedTasks(GetPlayerPed(-1))
                         QBCore.Functions.TriggerCallback('apartments:GetOwnedApartment', function(result)
+                            loadAnimDict("anim@heists@keycard@") 
+                            TaskPlayAnim( GetPlayerPed(-1), "anim@heists@keycard@", "exit", 5.0, 1.0, -1, 16, 0, 0, 0, 0 )
+                            Citizen.Wait(400)
+                            ClearPedTasks(GetPlayerPed(-1))
                             EnterApartment(ClosestHouse, result.name)
                         end)
                     end

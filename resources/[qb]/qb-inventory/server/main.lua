@@ -11,8 +11,12 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id)
 	local Player = QBCore.Functions.GetPlayer(src)
 	if name ~= nil and id ~= nil then
 		local secondInv = {}
-		if other == "aps" then
-
+		if name == "stash" then
+			secondInv.name = "stash-"..id
+			secondInv.label = "Stash-"..id
+			secondInv.maxweight = 1000000
+			secondInv.inventory = GetStashItems(id)
+			secondInv.slots = 100
 		elseif name == "trunk" then
 			secondInv.name = "trunk-"..id
 			secondInv.label = "Trunk-"..id
@@ -153,6 +157,24 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 				end
 				local itemInfo = QBCore.Shared.Items[fromItemData.name:lower()]
 				AddToGlovebox(plate, toSlot, itemInfo["name"], fromAmount, fromItemData.info)
+			elseif QBCore.Shared.SplitStr(toInventory, "-")[1] == "stash" then
+				local stashId = QBCore.Shared.SplitStr(toInventory, "-")[2]
+				local toItemData = GetStashItems(stashId)[toSlot]
+				Player.Functions.RemoveItem(fromItemData.name, fromAmount, fromSlot)
+				--Player.PlayerData.items[toSlot] = fromItemData
+				if toItemData ~= nil then
+					--Player.PlayerData.items[fromSlot] = toItemData
+					local itemInfo = QBCore.Shared.Items[toItemData.name:lower()]
+					local toAmount = tonumber(toAmount) ~= nil and tonumber(toAmount) or toItemData.amount
+					if toItemData.name ~= fromItemData.name then
+						RemoveFromStash(stashId, fromSlot, itemInfo["name"], toAmount)
+						Player.Functions.AddItem(toItemData.name, toAmount, fromSlot, toItemData.info)
+					end
+				else
+					--Player.PlayerData.items[fromSlot] = nil
+				end
+				local itemInfo = QBCore.Shared.Items[fromItemData.name:lower()]
+				AddToStash(stashId, toSlot, itemInfo["name"], fromAmount, fromItemData.info)
 			else
 				-- drop
 				toInventory = tonumber(toInventory)
@@ -282,6 +304,47 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 		else
 			TriggerClientEvent("QBCore:Notify", src, "Item bestaat niet??", "error")
 		end
+	elseif QBCore.Shared.SplitStr(fromInventory, "-")[1] == "stash" then
+		local stashId = QBCore.Shared.SplitStr(fromInventory, "-")[2]
+		local fromItemData = GetStashItems(stashId)[fromSlot]
+		local fromAmount = tonumber(fromAmount) ~= nil and tonumber(fromAmount) or fromItemData.amount
+		if fromItemData ~= nil and fromItemData.amount >= fromAmount then
+			local itemInfo = QBCore.Shared.Items[fromItemData.name:lower()]
+			if toInventory == "player" or toInventory == "hotbar" then
+				local toItemData = Player.Functions.GetItemBySlot(toSlot)
+				RemoveFromStash(stashId, fromSlot, itemInfo["name"], fromAmount)
+				if toItemData ~= nil then
+					local toAmount = tonumber(toAmount) ~= nil and tonumber(toAmount) or toItemData.amount
+					if toItemData.name ~= fromItemData.name then
+						Player.Functions.RemoveItem(toItemData.name, toAmount, toSlot)
+						AddToStash(stashId, fromSlot, itemInfo["name"], toAmount, toItemData.info)
+					end
+				else
+					--Player.PlayerData.items[fromSlot] = nil
+				end
+				Player.Functions.AddItem(fromItemData.name, fromAmount, toSlot, fromItemData.info)
+			else
+				local toItemData = GetStashItems(stashId)[toSlot]
+				RemoveFromStash(stashId, fromSlot, itemInfo["name"], fromAmount)
+				--Player.PlayerData.items[toSlot] = fromItemData
+				if toItemData ~= nil then
+					local itemInfo = QBCore.Shared.Items[toItemData.name:lower()]
+					--Player.PlayerData.items[fromSlot] = toItemData
+					local toAmount = tonumber(toAmount) ~= nil and tonumber(toAmount) or toItemData.amount
+					if toItemData.name ~= fromItemData.name then
+						local itemInfo = QBCore.Shared.Items[toItemData.name:lower()]
+						RemoveFromStash(stashId, toSlot, itemInfo["name"], toAmount)
+						AddToStash(stashId, toSlot, itemInfo["name"], toAmount, toItemData.info)
+					end
+				else
+					--Player.PlayerData.items[fromSlot] = nil
+				end
+				local itemInfo = QBCore.Shared.Items[fromItemData.name:lower()]
+				AddToStash(stashId, toSlot, itemInfo["name"], fromAmount, fromItemData.info)
+			end
+		else
+			TriggerClientEvent("QBCore:Notify", src, "Item bestaat niet??", "error")
+		end
 	else
 		-- drop
 		fromInventory = tonumber(fromInventory)
@@ -338,6 +401,88 @@ function IsVehicleOwned(plate)
 	return false
 end
 
+-- Stash Items
+function GetStashItems(stashId)
+	local items = {}
+	QBCore.Functions.ExecuteSql("SELECT * FROM `stashitems` WHERE `stash` = '"..stashId.."'", function(result)
+		if result[1] ~= nil then
+			for k, item in pairs(result) do
+				local itemInfo = QBCore.Shared.Items[item.name:lower()]
+				items[item.slot] = {
+					name = itemInfo["name"],
+					amount = tonumber(item.amount),
+					info = json.decode(item.info) ~= nil and json.decode(item.info) or "",
+					label = itemInfo["label"],
+					description = itemInfo["description"] ~= nil and itemInfo["description"] or "",
+					weight = itemInfo["weight"], 
+					type = itemInfo["type"], 
+					unique = itemInfo["unique"], 
+					useable = itemInfo["useable"], 
+					image = itemInfo["image"],
+					slot = item.slot,
+				}
+			end
+		end
+	end)
+	return items
+end
+
+function SaveStashItems(stashId, items)
+	QBCore.Functions.ExecuteSql("DELETE FROM `stashitems` WHERE `stash` = '"..stashId.."'")
+	if items ~= nil then
+		for slot, item in pairs(items) do
+			if items[slot] ~= nil then
+				QBCore.Functions.ExecuteSql("INSERT INTO `stashitems` (`stash`, `name`, `amount`, `info`, `type`, `slot`) VALUES ('"..stashId.."', '"..items[slot].name.."', '"..items[slot].amount.."', '"..json.encode(items[slot].info).."', '"..items[slot].type.."', '"..slot.."')")
+			end
+		end
+	end
+end
+
+function AddToStash(stashId, slot, itemName, amount, info)
+	local amount = tonumber(amount)
+	local stashItems = GetStashItems(stashId)
+	if stashItems[slot] ~= nil and stashItems[slot].name == itemName then
+		stashItems[slot].amount = stashItems[slot].amount + amount
+	else
+		local itemInfo = QBCore.Shared.Items[itemName:lower()]
+		stashItems[slot] = {
+			name = itemInfo["name"],
+			amount = amount,
+			info = info ~= nil and info or "",
+			label = itemInfo["label"],
+			description = itemInfo["description"] ~= nil and itemInfo["description"] or "",
+			weight = itemInfo["weight"], 
+			type = itemInfo["type"], 
+			unique = itemInfo["unique"], 
+			useable = itemInfo["useable"], 
+			image = itemInfo["image"],
+			slot = slot,
+		}
+	end
+	SaveStashItems(stashId, stashItems)
+end
+
+function RemoveFromStash(stashId, slot, itemName, amount)
+	local stashItems = GetStashItems(stashId)
+	if stashItems[slot] ~= nil and stashItems[slot].name == itemName then
+		if stashItems[slot].amount > amount then
+			stashItems[slot].amount = stashItems[slot].amount - amount
+		else
+			stashItems[slot] = nil
+			if next(stashItems) == nil then
+				stashItems = nil
+			end
+		end
+	else
+		stashItems[slot ]= nil
+		if stashItems == nil then
+			stashItems[slot] = nil
+		end
+	end
+	SaveStashItems(stashId, stashItems)
+end
+
+-- Trunk items
 function GetOwnedVehicleItems(plate)
 	local items = {}
 	QBCore.Functions.ExecuteSql("SELECT * FROM `trunkitems` WHERE `plate` = '"..plate.."'", function(result)
@@ -359,33 +504,8 @@ function GetOwnedVehicleItems(plate)
 				}
 			end
 		end
-		return items
 	end)
-end
-
-function GetOwnedVehicleGloveboxItems(plate)
-	local items = {}
-	QBCore.Functions.ExecuteSql("SELECT * FROM `gloveboxitems` WHERE `plate` = '"..plate.."'", function(result)
-		if result[1] ~= nil then
-			for k, item in pairs(result) do
-				local itemInfo = QBCore.Shared.Items[item.name:lower()]
-				items[item.slot] = {
-					name = itemInfo["name"],
-					amount = tonumber(item.amount),
-					info = json.decode(item.info) ~= nil and json.decode(item.info) or "",
-					label = itemInfo["label"],
-					description = itemInfo["description"] ~= nil and itemInfo["description"] or "",
-					weight = itemInfo["weight"], 
-					type = itemInfo["type"], 
-					unique = itemInfo["unique"], 
-					useable = itemInfo["useable"], 
-					image = itemInfo["image"],
-					slot = item.slot,
-				}
-			end
-		end
-		return items
-	end)
+	return items
 end
 
 function SaveOwnedVehicleItems(plate, items)
@@ -394,17 +514,6 @@ function SaveOwnedVehicleItems(plate, items)
 		for slot, item in pairs(items) do
 			if items[slot] ~= nil then
 				QBCore.Functions.ExecuteSql("INSERT INTO `trunkitems` (`plate`, `name`, `amount`, `info`, `type`, `slot`) VALUES ('"..plate.."', '"..items[slot].name.."', '"..items[slot].amount.."', '"..json.encode(items[slot].info).."', '"..items[slot].type.."', '"..slot.."')")
-			end
-		end
-	end
-end
-
-function SaveOwnedVehicleGloveboxItems(plate, items)
-	QBCore.Functions.ExecuteSql("DELETE FROM `gloveboxitems` WHERE `plate` = '"..plate.."'")
-	if items ~= nil then
-		for slot, item in pairs(items) do
-			if items[slot] ~= nil then
-				QBCore.Functions.ExecuteSql("INSERT INTO `gloveboxitems` (`plate`, `name`, `amount`, `info`, `type`, `slot`) VALUES ('"..plate.."', '"..items[slot].name.."', '"..items[slot].amount.."', '"..json.encode(items[slot].info).."', '"..items[slot].type.."', '"..slot.."')")
 			end
 		end
 	end
@@ -493,6 +602,43 @@ function RemoveFromTrunk(plate, slot, itemName, amount)
 	end
 end
 
+-- Glovebox items
+function GetOwnedVehicleGloveboxItems(plate)
+	local items = {}
+	QBCore.Functions.ExecuteSql("SELECT * FROM `gloveboxitems` WHERE `plate` = '"..plate.."'", function(result)
+		if result[1] ~= nil then
+			for k, item in pairs(result) do
+				local itemInfo = QBCore.Shared.Items[item.name:lower()]
+				items[item.slot] = {
+					name = itemInfo["name"],
+					amount = tonumber(item.amount),
+					info = json.decode(item.info) ~= nil and json.decode(item.info) or "",
+					label = itemInfo["label"],
+					description = itemInfo["description"] ~= nil and itemInfo["description"] or "",
+					weight = itemInfo["weight"], 
+					type = itemInfo["type"], 
+					unique = itemInfo["unique"], 
+					useable = itemInfo["useable"], 
+					image = itemInfo["image"],
+					slot = item.slot,
+				}
+			end
+		end
+	end)
+	return items
+end
+
+function SaveOwnedVehicleGloveboxItems(plate, items)
+	QBCore.Functions.ExecuteSql("DELETE FROM `gloveboxitems` WHERE `plate` = '"..plate.."'")
+	if items ~= nil then
+		for slot, item in pairs(items) do
+			if items[slot] ~= nil then
+				QBCore.Functions.ExecuteSql("INSERT INTO `gloveboxitems` (`plate`, `name`, `amount`, `info`, `type`, `slot`) VALUES ('"..plate.."', '"..items[slot].name.."', '"..items[slot].amount.."', '"..json.encode(items[slot].info).."', '"..items[slot].type.."', '"..slot.."')")
+			end
+		end
+	end
+end
+
 function AddToGlovebox(plate, slot, itemName, amount, info)
 	local amount = tonumber(amount)
 	if IsVehicleOwned(plate) then
@@ -576,6 +722,7 @@ function RemoveFromGlovebox(plate, slot, itemName, amount)
 	end
 end
 
+-- Drop items
 function AddToDrop(dropId, slot, itemName, amount, info)
 	local amount = tonumber(amount)
 	if Drops[dropId].items[slot] ~= nil and Drops[dropId].items[slot].name == itemName then

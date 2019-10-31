@@ -1,3 +1,16 @@
+QBCore = nil
+
+Citizen.CreateThread(function() 
+    while true do
+        Citizen.Wait(10)
+        if QBCore == nil then
+            TriggerEvent("QBCore:GetObject", function(obj) QBCore = obj end)    
+            Citizen.Wait(200)
+        end
+    end
+end)
+
+
 local lastMenuPos = 1
 local lsc = {
 	inside = false,
@@ -2530,3 +2543,96 @@ function AddBlips()
 	end
 end
 
+local ShowEnginePos = false
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(7)
+        if ShowEnginePos then
+            local vehicle = QBCore.Functions.GetClosestVehicle()
+            if vehicle ~= 0 and vehicle ~= nil then
+                local pos = GetEntityCoords(GetPlayerPed(-1))
+                local vehpos = GetEntityCoords(vehicle)
+                if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, vehpos.x, vehpos.y, vehpos.z, true) < 5.0) and not IsPedInAnyVehicle(GetPlayerPed(-1)) then
+                    local drawpos = GetOffsetFromEntityInWorldCoords(vehicle, 0, 2.5, 0)
+                    if (IsBackEngine(GetEntityModel(vehicle))) then
+                        drawpos = GetOffsetFromEntityInWorldCoords(vehicle, 0, -2.5, 0)
+                    end
+                    QBCore.Functions.DrawText3D(drawpos.x, drawpos.y, drawpos.z, "Sta hier..")
+                    if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, drawpos) < 2.0) and not IsPedInAnyVehicle(GetPlayerPed(-1)) then
+						RepairVehicle(vehicle)
+						ShowEnginePos = false
+                    end
+                end
+            end
+        end
+    end
+end)
+
+RegisterNetEvent('vehicletuning:client:RepairVehicle')
+AddEventHandler('vehicletuning:client:RepairVehicle', function()
+	local vehicle = QBCore.Functions.GetClosestVehicle()
+	if vehicle ~= nil and vehicle ~= 0 then
+		local pos = GetEntityCoords(GetPlayerPed(-1))
+		local vehpos = GetEntityCoords(vehicle)
+		if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, vehpos.x, vehpos.y, vehpos.z, true) < 5.0) and not IsPedInAnyVehicle(GetPlayerPed(-1)) then
+			local drawpos = GetOffsetFromEntityInWorldCoords(vehicle, 0, 2.5, 0)
+			if (IsBackEngine(GetEntityModel(vehicle))) then
+				drawpos = GetOffsetFromEntityInWorldCoords(vehicle, 0, -2.5, 0)
+			end
+			if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, drawpos) < 2.0) and not IsPedInAnyVehicle(GetPlayerPed(-1)) then
+				RepairVehicle(vehicle)
+			else
+				ShowEnginePos = true
+			end
+		end
+	end
+end)
+
+function RepairVehicle(vehicle)
+	if (IsBackEngine(GetEntityModel(vehicle))) then
+        SetVehicleDoorOpen(vehicle, 5, false, false)
+    else
+        SetVehicleDoorOpen(vehicle, 4, false, false)
+    end
+	QBCore.Functions.Progressbar("repair_vehicle", "Bezig met sleutelen..", math.random(10000, 20000), false, true, {
+		disableMovement = true,
+		disableCarMovement = true,
+		disableMouse = false,
+		disableCombat = true,
+	}, {
+		animDict = "mini@repair",
+		anim = "fixing_a_player",
+		flags = 16,
+	}, {}, {}, function() -- Done
+		StopAnimTask(GetPlayerPed(-1), "mini@repair", "fixing_a_player", 1.0)
+		QBCore.Functions.Notify("Voertuig gemaakt!")
+		SetVehicleEngineHealth(vehicle, 500.0)
+		SetVehicleTyreFixed(vehicle, 0)
+		SetVehicleTyreFixed(vehicle, 1)
+		SetVehicleTyreFixed(vehicle, 2)
+		SetVehicleTyreFixed(vehicle, 3)
+		SetVehicleTyreFixed(vehicle, 4)
+		if (IsBackEngine(GetEntityModel(vehicle))) then
+			SetVehicleDoorShut(vehicle, 5, false)
+		else
+			SetVehicleDoorShut(vehicle, 4, false)
+		end
+	end, function() -- Cancel
+		StopAnimTask(GetPlayerPed(-1), "mini@repair", "fixing_a_player", 1.0)
+		QBCore.Functions.Notify("Mislukt!", "error")
+		if (IsBackEngine(GetEntityModel(vehicle))) then
+			SetVehicleDoorShut(vehicle, 5, false)
+		else
+			SetVehicleDoorShut(vehicle, 4, false)
+		end
+	end)
+end
+
+function IsBackEngine(vehModel)
+    for _, model in pairs(BackEngineVehicles) do
+        if GetHashKey(model) == vehModel then
+            return true
+        end
+    end
+    return false
+end

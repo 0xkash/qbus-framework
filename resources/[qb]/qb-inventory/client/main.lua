@@ -26,7 +26,7 @@ Citizen.CreateThread(function()
     while true do
         Citizen.Wait(7)
         if showTrunkPos and not inInventory then
-            local vehicle = QBCore.Functions.GetClosestVehucle()
+            local vehicle = QBCore.Functions.GetClosestVehicle()
             if vehicle ~= 0 and vehicle ~= nil then
                 local pos = GetEntityCoords(GetPlayerPed(-1))
                 local vehpos = GetEntityCoords(vehicle)

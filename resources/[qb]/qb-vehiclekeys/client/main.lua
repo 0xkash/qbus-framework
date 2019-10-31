@@ -50,8 +50,9 @@ Citizen.CreateThread(function()
 
         if not HasKey and IsPedInAnyVehicle(GetPlayerPed(-1), false) and GetPedInVehicleSeat(GetVehiclePedIsIn(GetPlayerPed(-1), false), -1) == GetPlayerPed(-1) and QBCore ~= nil and not IsHotwiring then
             local veh = GetVehiclePedIsIn(GetPlayerPed(-1), false)
-            local vehpos = GetOffsetFromEntityInWorldCoords(veh, 0, 1.0, 0.5)
+            local vehpos = GetOffsetFromEntityInWorldCoords(veh, 0, 1.5, 0.5)
             QBCore.Functions.DrawText3D(vehpos.x, vehpos.y, vehpos.z, "~g~H~w~ - Hotwire")
+            SetVehicleEngineOn(veh, false, false, true)
 
             if IsControlJustPressed(0, Keys["H"]) then
                 Hotwire()

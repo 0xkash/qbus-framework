@@ -47,4 +47,5 @@ BackEngineVehicles = {
     'stingergt',
     'surfer',
     'surfer2',
+    'comet3',
 }
