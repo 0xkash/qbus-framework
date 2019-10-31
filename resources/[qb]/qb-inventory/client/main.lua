@@ -256,12 +256,10 @@ AddEventHandler("inventory:client:ShowId", function(sourceId, citizenid, charact
         if character.gender == 1 then
             gender = "Vrouw"
         end
-        TriggerEvent("chatMessage", "BSN", "advert", citizenid)
-        TriggerEvent("chatMessage", "Voornaam", "advert", character.firstname)
-        TriggerEvent("chatMessage", "Achternaam", "advert", character.lastname)
-        TriggerEvent("chatMessage", "Geboortedatum", "advert", character.birthdate)
-        TriggerEvent("chatMessage", "Geslacht", "advert", gender)
-        TriggerEvent("chatMessage", "Nationaliteit", "advert", character.nationality)
+        TriggerEvent('chat:addMessage', {
+            template = '<div class="chat-message advert"><div class="chat-message-body"><strong>{0}:</strong><br><br> <strong>BSN:</strong> {1} <br><strong>Voornaam:</strong> {2} <br><strong>Achternaam:</strong> {3} <br><strong>Geboortedag:</strong> {4} <br><strong>Geslacht:</strong> {5} <br><strong>Nationaliteit:</strong> {6}</div></div>',
+            args = {'ID-kaart', citizenid, character.firstname, character.lastname, character.birthdate, gender, character.nationality}
+        })
     end
 end)
 

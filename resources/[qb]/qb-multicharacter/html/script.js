@@ -2,7 +2,7 @@ var selectedChar = null;
 
 $(document).ready(function (){
 
-    $('.container').hide();
+    // $('.container').hide();
     window.addEventListener('message', function (event) {
         var item = event.data;
 

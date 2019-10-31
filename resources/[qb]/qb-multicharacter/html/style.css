@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
-
+@import url('https://fonts.googleapis.com/css?family=B612+Mono&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Lato&display=swap');
 
 .main-screen {
     position: absolute;
@@ -392,24 +393,77 @@
 }
 .topbar {
     position: absolute;
-    background-color: #111111;
+    background-color: rgba(0, 0, 0, 0.9);
     top: 0;
     left: 0;
     width: 100%;
-    height: 40px;
+    height: 7%;
     border-bottom: 3px solid #b12424;
+    box-shadow: inset 0px 0px 100px 0px rgba(255, 255, 255, 0.1);
 }
 
 .bottombar {
     position: absolute;
-    background-color: #111111;
+    background-color: rgba(0, 0, 0, 0.9);
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 40px;
+    height: 7%;
     border-top: 3px solid #b12424;
+    box-shadow: inset 0px 0px 100px 0px rgba(255, 255, 255, 0.1);
 }
 
+.server-log {
+    position: relative;
+    width: 30%;
+    height: 28%;
+    top: 25%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgba(0, 0, 0, 0.7);
+    box-shadow: 0px 0px 19px 1px rgba(0,0,0,0.54);
+    font-family: 'Lato', monospace;
+    border-bottom: 4px solid #b12424;
+    border-radius: 0px 0px 10px 10px;
+}
+
+.server-log-header {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.7);
+    width: 100%;
+    height: 10%;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    font-size: 11px;
+    line-height: 30px;
+    font-family: 'Lato', monospace;
+    border-bottom: 2px solid #b12424;
+}
+
+.log {
+    position: relative;
+    top: 30px;
+    color: rgb(255, 255, 255);
+    font-family: 'Lato', monospace;
+    margin-top: 20px;
+}
+
+#log-date {
+    color: #ff4646;
+    font-size: 12px;
+    padding-left: 10px;
+    text-shadow: 0px 0px 4px rgba(0,0,0,0.35);
+    font-family: 'Lato', monospace;
+}
+
+#log-changes {
+    position: relative;
+    top: 10px;
+    left: 30px;
+    font-size: 10px;
+    text-shadow: 0px 0px 4px rgba(0,0,0,0.35);
+    font-family: 'Lato', monospace;
+}
 
 .welcomescreen {
     position: relative;
@@ -417,106 +471,75 @@
     top: 15%;
     margin-left: auto;
     margin-right: auto;
-    background-color: rgba(238, 238, 238, 0.8);
-    height: 250px;
-    width: 500px;
-    border-bottom: 4px solid #b12424;
-    box-shadow: 0px 0px 19px 1px rgba(0,0,0,0.54);
+    background-color: rgba(0, 0, 0, 0.9);
+    height: 28%;
+    width: 100%;
+    border-top: 2px solid #b12424;
+    border-bottom: 2px solid #b12424;
+    box-shadow: 0px 0px 6px 1px rgba(0,0,0,0.25);
+    box-shadow: inset 0px 0px 100px 0px rgba(255, 255, 255, 0.1);
 }
 
 .welcomescreen > p {
     position: relative;
-    color: #1b1b1b;
+    color: #ffffff;
     text-align: center;
 }
 
 #welcome-titel {
     position: relative;
-    top: 50px;
+    top: 45px;
+    left: 20px;
     font-size: 30px;
-    font-family: 'Roboto Mono', monospace;
+    font-family: 'Lato', monospace;
+    font-weight: bolder;
+}
+
+#qbus-logo {
+    position: absolute;
+    width: 70px;
+    top: 10%;
+    left: 40%;
 }
 
 .continue-btn {
     position: absolute;
-    width: 35%;
+    width: 8%;
     height: 36px;
-    background-color: #4cb124;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    background-color: #ca382c;
     bottom: 60px;
-    left: 60px;
-    border-radius: 2px;
+    border-radius: 4px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.342);
 }
 
 .continue-btn > p {
     text-align: center;
     line-height: 34px;
     color: white;
-    font-family: 'Roboto Mono', monospace;
+    font-family: 'B612 Mono', monospace;
 }
 
 .disconnect-btn {
     position: absolute;
-    width: 35%;
-    height: 36px;
-    background-color: #b12424;
-    bottom: 60px;
-    right: 60px;
+    width: 4%;
+    height: 25px;
+    background-color: #ca382c;
+    top: 30%;
+    left: 0.5%;
     border-radius: 2px;
 }
 
 .disconnect-btn > p {
     text-align: center;
-    line-height: 34px;
-    color: white;
-    font-family: 'Roboto Mono', monospace;
-}
-
-.server-log {
-    position: relative;
-    width: 30%;
-    height: 28%;
-    top: 270px;
-    margin-left: auto;
-    margin-right: auto;
-    background-color: rgba(255, 255, 255, 0.45);
-    box-shadow: 0px 0px 19px 1px rgba(0,0,0,0.54);
-    overflow-y: scroll;
-    overflow-x: hidden;
-}
-
-.server-log-header {
-    position: fixed;
-    background-color: rgba(255, 255, 255, 0.85);
-    width: 30%;
-    height: 2.5%;
-    color: rgb(0, 0, 0);
-    text-align: center;
-    font-size: 11px;
-    line-height: 22px;
-    border-bottom: 1px solid #b12424e5;
-}
-
-.log {
-    margin-top: 30px;
-    width: 100%;
-    height: auto;
-    color: rgb(255, 255, 255);
-    text-shadow: 0px 0px 4px rgba(0,0,0,0.35);
-}
-
-#log-date {
-    color: #2a2a2a;
-    font-size: 14px;
-    padding-left: 10px;
-    text-shadow: 0px 0px 4px rgba(0,0,0,0.35);
-}
-
-#log-changes {
-    position: relative;
-    top: 10px;
-    left: 30px;
-    font-size: 12px;
-    text-shadow: 0px 0px 4px rgba(0,0,0,0.35);
+    line-height: 25px;
+    color: #ffffff;
+    font-family: 'Lato', monospace;
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 1px;
 }
 
 ::-webkit-scrollbar-track

@@ -9,7 +9,7 @@ window.CONFIG = {
     'print': '<pre>{0}</pre>',
     'example:important': '<h1>^2{0}</h1>'
   },
-  fadeTimeout: 7000,
+  fadeTimeout: 4000,
   suggestionLimit: 5,
   style: {
     background: 'transparent',

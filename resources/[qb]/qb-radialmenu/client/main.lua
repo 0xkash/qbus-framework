@@ -110,7 +110,7 @@ RegisterNUICallback('selectItem', function(data)
 
     if itemData.type == 'client' then
         TriggerEvent(itemData.event, itemData)
-    else
+    elseif itemData.type == 'server' then
         TriggerServerEvent(itemData.event, itemData)
     end
 end)
@@ -130,12 +130,16 @@ AddEventHandler('qb-radialmenu:client:openDoor', function(data)
     local string = data.id
     local replace = string:gsub("door", "")
     local door = tonumber(replace)
+    local ped = GetPlayerPed(-1)
+    local closestVehicle = QBCore.Functions.GetClosestVehicle(GetEntityCoords(ped), 3.0)
 
-    if GetVehiclePedIsIn(GetPlayerPed(-1), false) ~= 1 then
-        if GetVehicleDoorAngleRatio(GetVehiclePedIsIn(GetPlayerPed(-1), false), door) > 0 then
-            SetVehicleDoorShut(GetVehiclePedIsIn(GetPlayerPed(-1), false), door, false)
+    if closestVehicle ~= 0 then
+        if GetVehicleDoorAngleRatio(closestVehicle, door) > 0 then
+            SetVehicleDoorShut(closestVehicle, door, false)
         else
-            SetVehicleDoorOpen(GetVehiclePedIsIn(GetPlayerPed(-1), false), door, false, false)
+            SetVehicleDoorOpen(closestVehicle, door, false, false)
         end
+    else
+        QBCore.Functions.Notify('Er is geen voertuig te bekennen...', 'error', 2500)
     end
 end)

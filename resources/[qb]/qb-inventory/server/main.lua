@@ -723,3 +723,11 @@ QBCore.Functions.CreateUseableItem("id_card", function(source, item)
         TriggerClientEvent("inventory:client:ShowId", -1, source, Player.PlayerData.citizenid, item.info)
     end
 end)
+
+RegisterServerEvent('inventory:server:ShowIdRadial')
+AddEventHandler('inventory:server:ShowIdRadial', function(data)
+	local src = source
+	local Player = QBCore.Functions.GetPlayer(src)
+
+    TriggerClientEvent("inventory:client:ShowId", -1, src, Player.PlayerData.citizenid, Player.PlayerData.charinfo)
+end)

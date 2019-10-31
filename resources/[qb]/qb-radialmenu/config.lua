@@ -21,8 +21,8 @@ Config.MenuItems = {
                 id    = 'givelc',
                 title = 'Geef ID-kaart',
                 icon = '#idkaart',
-                type = 'client',
-                event = 'qb-radialmenu:client:giveidkaart',
+                type = 'server',
+                event = 'inventory:server:ShowIdRadial',
                 shouldClose = true,
             },
             {
