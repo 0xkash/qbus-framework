@@ -47,6 +47,16 @@ QBCore.Functions.GetPlayer = function(source)
 	end
 end
 
+QBCore.Functions.GetPlayerByCitizenId = function(citizenid)
+	for src, player in pairs(QBCore.Players) do
+		local cid = citizenid
+		if QBCore.Players[src].PlayerData.citizenid == cid then
+			return QBCore.Players[src]
+		end
+	end
+	return nil
+end
+
 QBCore.Functions.GetPlayers = function()
 	return QBCore.Players
 end

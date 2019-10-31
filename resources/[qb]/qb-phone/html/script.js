@@ -8,6 +8,7 @@ var currentApp = ".phone-home-page";
 var homePage = ".phone-home-page";
 var choosingBg = false;
 var curBg = "bg-1";
+var selectedContact = null;
 
 $(document).on('keydown', function() {
     switch(event.keyCode) {
@@ -18,6 +19,7 @@ $(document).on('keydown', function() {
 });
 
 $(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
 
     console.log('QB Phone\'s javascript has succesfully loaded, no errors occured..')
 
@@ -36,7 +38,16 @@ $(document).ready(function(){
         }
 
         if (eventData.task == "setPhoneMeta") {
-            qbPhone.setPhoneMeta(eventData.pMeta, eventData.pNum)
+            qbPhone.setPhoneMeta(eventData.pMeta, eventData.pData.charinfo.phone);
+        }
+
+        if (eventData.task == "setUserContacts") {
+            qbPhone.setupPlayerContactInfo(eventData.pData.charinfo.firstname, eventData.pData.charinfo.lastname, eventData.pData.charinfo.phone);
+            qbPhone.setupPlayerContacts(eventData.pContacts);
+        }
+
+        if (eventData.task == "setupBankData") {
+            qbPhone.setBankData(eventData.pData)
         }
 
         if (eventData.task == "updateTime") {
@@ -76,9 +87,41 @@ $(document).on('click', '.app', function(e){
             top: "3%",
         }, 250);
         currentApp = ".settings-app";
-        $.post('http://qb-phone/getUserData');
+    } else if (pressedApp.app == "contacts") {
+        $(".contacts-app").css({'display':'block'}).animate({
+            top: "3%",
+        }, 250);
+        $.post('http://qb-phone/setupContacts');
+        currentApp = ".contacts-app";
+    } else if (pressedApp.app == "bank") {
+        $(".bank-app").css({'display':'block'}).animate({
+            top: "3%",
+        }, 250);
+        $.post('http://qb-phone/getBankData')
+        currentApp = ".bank-app";
+    } else if (pressedApp.app == "messages") {
+        $(".messages-app").css({'display':'block'}).animate({
+            top: "3%",
+        }, 250);
+        // $.post('http://qb-phone/getBankData')
+        currentApp = ".messages-app";
     }
     qbPhone.succesSound();
+});
+
+$(document).on('click', '#chat-window-arrow-left', function(e){
+    e.preventDefault();
+
+    $('.chat-window').css({"display":"block"}).animate({top: "103.5%",}, 250, function(){
+        $(".chat-window").css({"display":"none"});
+    });
+})
+
+$(document).on('click', '.chat', function(e){
+    e.preventDefault();
+
+    $('.chat-window').css({"display":"block"}).animate({top: "3%",}, 250);
+    qbPhone.loadUserMessages();
 });
 
 $(document).on('click', '#background-item', function(e){
@@ -89,6 +132,82 @@ $(document).on('click', '#background-item', function(e){
         choosingBg = true;
     }, 100)
     qbPhone.succesSound();
+});
+
+$(document).on('click', '.add-contact-btn', function(e){
+    e.preventDefault();
+
+    $('.add-contact-container').css({"display":"block"}).animate({top: "20%",}, 250);
+    setTimeout(function(){
+        $(".contactname-input").val("");
+        $(".number-input").val("");
+        addingContact = true;
+    }, 100)
+    qbPhone.succesSound();
+});
+
+$(document).on('click', '.submit-contact-btn', function(e){
+    var contactName = $(".contactname-input").val();
+    var contactNum = $(".number-input").val();
+
+    if(contactName != "" || contactNum != "") {
+        if (!isNaN(contactNum)) {
+            $('.add-contact-container').css({"display":"block"}).animate({top: "103%",}, 250);
+            qbPhone.Notify('Contacten', 'success', contactName+" ("+contactNum+") is toegevoegd aan je contacten.")
+            $.post('http://qb-phone/addToContact', JSON.stringify({
+                contactName: contactName,
+                contactNum: contactNum
+            }))
+        } else {
+            qbPhone.Notify('Contacten', 'error', 'Het telefoon nummer moet bestaan uit cijfers.')
+        }
+    } else {
+        qbPhone.Notify('Contacten', 'error', 'Je hebt niet alle contactgegevens ingevuld.')
+    }
+});
+
+$(document).on('click', '.back-contact-btn', function(e){
+    $('.add-contact-container').css({"display":"block"}).animate({top: "103%",}, 250, function(){
+        $(".add-contact-container").css({"display":"none"});
+    });
+});
+
+$(document).on('click', '.back-transfer-btn', function(e){
+    $('.transfer-money-container').css({"display":"block"}).animate({top: "103%",}, 250, function(){
+        $('.transfer-money-container').css({'display':'none'});
+    });
+});
+
+$(document).on('click', '.bank-transfer-btn', function(e){
+    $('.transfer-money-container').css({"display":"block"}).animate({top: "25.5%",}, 250);
+});
+
+$(document).on('click', '.submit-transfer-btn', function(e){
+    var ibanVal = $(".iban-input").val();
+    var amountVal = $(".euro-amount-input").val();
+    var balance = $("#balance").val();
+
+    if (ibanVal != "" && amountVal != "") {
+        if (!isNaN(amountVal)) {
+            if (balance - amountVal < 0) {
+                qbPhone.Notify('Maze Bank', 'error', 'Je hebt niet genoeg saldo', 3500)
+            } else {
+                $('.transfer-money-container').css({"display":"block"}).animate({top: "103%",}, 250, function(){
+                    $('.transfer-money-container').css({'display':'none'});
+                    qbPhone.Notify('Maze Bank', 'success', 'Je hebt € '+amountVal+' overgemaakt naar '+ibanVal+'!', 3500)
+
+                    $.post('http://qb-phone/transferMoney', JSON.stringify({
+                        amount: amountVal,
+                        iban: ibanVal
+                    }))
+                });
+            }
+        } else {
+            qbPhone.Notify('Maze Bank', 'error', 'De hoeveelheid moet bestaan uit cijfers.', 3500)
+        }
+    } else {
+        qbPhone.Notify('Maze Bank', 'error', 'Je hebt niet alle gegevens ingevuld.', 3500)
+    }
 });
 
 $(document).on('click', '.settings-app', function(e){
@@ -234,4 +353,153 @@ qbPhone.setPlayersBackground = function(background) {
 
 qbPhone.updateTime = function(time) {
     $("#time").html(time.hour+"."+time.minute);
+}
+
+qbPhone.setupPlayerContactInfo = function(firstName, lastName, phoneNumber) {
+    $("#firstletters").html((firstName).charAt(0).toUpperCase()+""+(lastName).charAt(0).toUpperCase());
+    $("#myi-number").html(phoneNumber);
+}
+
+var editContactData = null;
+
+$(document).on('click', '.edit-contact', function(e){
+    e.preventDefault();
+
+    var cId = $(this).attr('id');
+    var contactData = $("#"+cId).data('cData');
+
+    $('.edit-contact-container').css({"display":"block"}).animate({top: "20%",}, 250);
+    editContactData = contactData;
+    setTimeout(function(){
+        $(".edit-contactname-input").val(contactData.name);
+        $(".edit-number-input").val(contactData.number);
+    }, 100)
+    qbPhone.succesSound();
+})
+
+$(document).on('click', '.back-edit-contact-btn', function(e){
+    $('.edit-contact-container').css({"display":"block"}).animate({top: "103%",}, 250, function(){
+        $(".edit-contact-container").css({"display":"none"});
+    });
+
+    editContactData = null;
+});
+
+$(document).on('click', '.change-contact-btn', function(e){
+    var oldContactName = editContactData.name;
+    var oldContactNum =  editContactData.number;
+
+    if($(".edit-number-input").val() != "" || $(".edit-contactname-input").val() != "") {
+        if (!isNaN($(".edit-number-input").val())) {
+            $.post('http://qb-phone/editContact', JSON.stringify({
+                oldContactName: oldContactName,
+                oldContactNum: oldContactNum,
+                newContactName: $(".edit-contactname-input").val(),
+                newContactNum: $(".edit-number-input").val(),
+            }))
+            qbPhone.Notify('Contacten', 'success', 'Contact opgeslagen');
+            $('.edit-contact-container').css({"display":"block"}).animate({top: "103%",}, 250, function(){
+                $(".edit-contact-container").css({"display":"none"});
+            });
+        } else {
+            qbPhone.Notify('Contacten', 'error', 'Het telefoon nummer moet bestaan uit cijfers.')
+        }
+    } else {
+        qbPhone.Notify('Contacten', 'error', 'Je hebt niet alle contactgegevens ingevuld.')
+    }
+
+    editContactData = null;
+});
+
+function changecName() {
+    var currentVal = $(".contactname-input").val();
+
+    $(".contactname-input").val(currentVal);
+}
+
+$(document).on('click', '.delete-contact-btn', function(e){
+    $('.edit-contact-container').css({"display":"block"}).animate({top: "103%",}, 250, function(){
+        $(".edit-contact-container").css({"display":"none"});
+    });
+
+    editContactData = null;
+});
+
+qbPhone.setupPlayerContacts = function(contacts) {
+    $(".contact-list").html("");
+    $.each(contacts, function(index, contact){
+        var contactHTML = '<div class="contact"><div class="contact-status" id="contact-'+index+'"></div><div class="contact-options">' +
+        '<div class="contact-option call-contact" id="cData-'+index+'"><i class="fa fa-phone" id="call-contact-icon"></i></div>' +
+        '<div class="contact-option sms-contact" id="cData-'+index+'"><i class="fa fa-sms" id="sms-contact-icon"></i></div>' +
+        '<div class="contact-option edit-contact" id="cData-'+index+'"><i class="fa fa-edit" id="edit-contact-icon"></i></div></div>' +
+        '<span id="contact-name">'+contact.name+'</span></div>'
+        $(".contact-list").append(contactHTML);
+        if (contact.status === "unknown") {
+            $("#contact-"+index).addClass("unknown");
+        } else if (contact.status === true) {
+            $("#contact-"+index).addClass("online");
+        } else if (contact.status === false) {
+            $("#contact-"+index).addClass("offline");
+        }
+
+        console.log(contact.status)
+        $("#contact-"+index).data("contactData", contact);
+        $("#cData-"+index).data("cData", contact);
+    });
+}
+
+var timeout = null;
+
+qbPhone.Notify = function(title, type, message, wait) {
+    if (timeout != undefined) {
+        clearTimeout(timeout);
+    }
+    $('.phone-notify').css({'display':'block', 'top':'-10%'})
+    if (type == 'error') {
+        $("#notify-titel").css("color", "rgb(126, 9, 9);");
+    } else if (type == 'success') {
+        $("#notify-titel").css("color", "rgb(9, 126, 9);");
+    }
+    $("#notify-titel").html(title);
+    $("#notify-message").html(message);
+    $('.phone-notify').css({'display':'block'}).animate({
+        top: "5%",
+    }, 300);
+    if (wait == null) {
+        timeout = setTimeout(function(){
+            $('.phone-notify').css({'display':'block'}).animate({
+                top: "-10%",
+            }, 300, function(){
+                $('.phone-notify').css({'display':'none'})
+            });
+        }, 3500)
+    } else {
+        timeout = setTimeout(function(){
+            $('.phone-notify').css({'display':'block'}).animate({
+                top: "-10%",
+            }, 300, function(){
+                $('.phone-notify').css({'display':'none'})
+            });
+        }, wait)
+    }
+}
+
+qbPhone.setBankData = function(playerData) {
+    $(".welcome-title").html("<p>Hallo, "+playerData.charinfo.firstname+" "+playerData.charinfo.lastname+"!</p>");
+    $("#balance").html(playerData.money.bank);
+    $("#balance").val(playerData.money.bank);
+    $("#iban").html(playerData.charinfo.account);
+}
+
+qbPhone.loadUserMessages = function() {
+    var messageScreen = $('.messages');
+    var height = messageScreen[0].scrollHeight;
+    messageScreen.scrollTop(height);
+}
+
+updateNewBalance = function() {
+    var balance = $("#balance").val();
+    var minAmount = $(".euro-amount-input").val();
+    $("#new-balance").html(balance - minAmount);
+    console.log(balance)
 }

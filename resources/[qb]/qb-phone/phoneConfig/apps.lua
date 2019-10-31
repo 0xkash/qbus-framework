@@ -9,13 +9,13 @@ Config.PhoneApps = {
         tooltipText = "Instellingen",
         slot = 1,
     },
-    ['notes'] = {
-        app = "notes",
-        color = "#858edd",
-        icon = "fa fa-sticky-note",
-        style = "padding-left: 12px !important;",
-        tooltipText = "Notitie's",
-        slot = 4,
+    ['messages'] = {
+        app = "messages",
+        color = "#00cd77",
+        icon = "fas fa-comment-dots",
+        style = "padding-left: 11px !important;",
+        tooltipText = "Berichten",
+        slot = 2,
     },
     ['contacts'] = {
         app = "contacts",
@@ -25,12 +25,20 @@ Config.PhoneApps = {
         tooltipText = "Contacten",
         slot = 3,
     },
-    ['messages'] = {
-        app = "messages",
-        color = "#00cd77",
-        icon = "fas fa-comment-dots",
+    ['notes'] = {
+        app = "notes",
+        color = "#858edd",
+        icon = "fa fa-sticky-note",
+        style = "padding-left: 12px !important;",
+        tooltipText = "Notitie's",
+        slot = 4,
+    },
+    ['bank'] = {
+        app = "bank",
+        color = "#4f00cd",
+        icon = "fas fa-university",
         style = "padding-left: 11px !important;",
-        tooltipText = "Berichten",
-        slot = 2,
+        tooltipText = "Maze Bank",
+        slot = 5,
     },
 }

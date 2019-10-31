@@ -11,7 +11,11 @@
 
     <!-- Apps CSS -->
     <link rel="stylesheet" href="./apps/settings.css"> <!-- Settings CSS -->
+    <link rel="stylesheet" href="./apps/contacts.css"> <!-- Contacts CSS -->
+    <link rel="stylesheet" href="./apps/bank.css">     <!-- Bank     CSS -->
+    <link rel="stylesheet" href="./apps/messages.css"> <!-- Messages CSS -->
 
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>  
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" ></script>
     <script src='https://kit.fontawesome.com/a076d05399.js'></script>
@@ -94,6 +98,129 @@
                         <div class="background-option selected-bg" id="bg-1"><p>Gradient Green</p></div>
                         <div class="background-option" id="bg-2"><p>Abstract</p></div>
                     </div>
+                </div>
+
+                <div class="contacts-app">
+                    <div class="contacts-header">
+                        <p> Contacten</p>
+                    </div>
+                    <div class="add-contact-btn" data-toggle="tooltip" data-placement="left" title="Add Contact"><i class="fas fa-user-plus"></i></div>
+                    <div class="my-contact-information">
+                        <span id="firstletters"></span>
+                        <span id="myi-label">Mijn Contact Gegevens</span>
+                        <span id="myi-number"></span>
+                    </div>
+
+                    <div class="contact-list">
+                        <!-- auto generated contacts -->
+                    </div>
+
+                    <div class="add-contact-container">
+                        <span id="add-contact-titel"><p>Contact Toevoegen</p></span>
+                        <span id="add-contact-subtitel"><p>Vul contact gegevens in.</p></span>
+
+                        <div class="add-contact-inputs">
+                            <i class="fas fa-user-circle" id="person-add-icon"></i><input class="contactname-input" type="text" placeholder="Contactnaam">
+                            <i class="fas fa-phone" id="number-add-icon"></i><input class="number-input" type="text" placeholder="Nummer">
+                        </div>
+
+                        <div class="submit-contact-btn">
+                            <p>Bevestigen</p>
+                        </div>
+                        <div class="back-contact-btn">
+                            <p>Terug</p>
+                        </div>
+                    </div>
+
+                    <div class="edit-contact-container">
+                        <span id="edit-contact-titel"><p>Contact Bewerken</p></span>
+                        <span id="edit-contact-subtitel"><p>Hier kan je contact gegevens wijzigen.</p></span>
+
+                        <div class="edit-contact-inputs">
+                            <i class="fas fa-user-circle" id="person-add-icon"></i><input class="edit-contactname-input" type="text" placeholder="Contactnaam">
+                            <i class="fas fa-phone" id="number-add-icon"></i><input class="edit-number-input" type="text" placeholder="Nummer">
+                        </div>
+
+                        <div class="change-contact-btn">
+                            <p>Bevestigen</p>
+                        </div>
+                        <div class="delete-contact-btn">
+                            <p>Verwijder</p>
+                        </div>
+                        <div class="back-edit-contact-btn">
+                            <p>Terug</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bank-app">
+                    <img src="./img/maze-bank.png" id="maze-bank-logo">
+
+                    <div class="welcome-title"><p>Welkom Jay Yeet!</p></div>
+                    <div class="bank-information"><p><span id="balance-prefix">Saldo: <br><span id="euro-symbol">&euro; </span></span><span id="balance"></span><br> <span id="iban-prefix">IBAN: </span><span id="iban"></span></p></div>
+                
+                    <div class="bank-transfer-btn"><p>Geld Overmaken</p></div>
+
+                    <div class="transfer-money-container">
+                        <span id="transfer-money-titel"><p>Geld Overmaken</p></span>
+                        <span id="transfer-money-subtitel"><p>Vul gegevens in.</p></span>
+
+                        <div class="transfer-money-inputs">
+                            <input class="iban-input" type="text" placeholder="IBAN ontvanger">
+                            <input class="euro-amount-input" type="text" placeholder="Hoeveelheid in &euro;" oninput="updateNewBalance()">
+                        </div>
+
+                        <div class="new-balance">Nieuwe Saldo: &euro;<span id="new-balance"></span></div>
+
+                        <div class="submit-transfer-btn">
+                            <p>Geld Overmaken</p>
+                        </div>
+                        <div class="back-transfer-btn">
+                            <p>Terug</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="messages-app">
+                    <div class="messages-header">
+                        <p> Berichten</p>
+                    </div>
+
+                    <div class="chats-container">
+                        <div class="chat">
+                            <span id="chat-name"><div class="chat-name-status"></div>Jay Yeet</span>
+                            <span id="chat-last-message">Ya yeet?</span>
+                            <span id="chat-last-message-date"><span id="chat-last-message-state">Nieuw &#8226;</span> Vandaag</span>
+                        </div>
+                    </div>
+
+                    <div class="chat-window">
+                        <div class="chat-window-header">
+                            <p><i class="fas fa-arrow-left" id="chat-window-arrow-left"></i> Jay Yeet</p>
+                        </div>
+
+                        <div class="text-input">
+                            <input type="text" class="message-input" placeholder="Type je bericht hier...">
+                            <div class="send-message"><i class="fas fa-paper-plane" id="send-message"></i></div>
+                        </div>
+
+                        <div class="messages">
+                            <div class="msg-container msg-other">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer at.</div>
+                            <div class="msg-container msg-me">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ut</div>
+                            <div class="msg-container msg-me">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ut</div>
+                            <div class="msg-container msg-other">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer at.</div>
+                            <div class="msg-container msg-me">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ut</div>
+                            <div class="msg-container msg-me">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ut</div>
+                            <div class="msg-container msg-other">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer at.</div>
+                            <div class="msg-container msg-other" id="msg">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer at.</div>
+                            <div class="msg-container msg-me">Ik sta op de parkeerplaats</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="phone-notify">
+                    <span id="notify-titel">Systeem</span>
+                    <span id="notify-message">Je hebt niet alles ingevuld</span>
                 </div>
 
                 <div class="home-container">

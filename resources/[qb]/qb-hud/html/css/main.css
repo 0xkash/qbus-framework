@@ -82,11 +82,11 @@ p {
 #minus-changeamount {
     text-shadow: 1px 1px #00000083;
     text-align: right;
-    color: #530f0f;
+    color: #c75f60;
 }
 
 #minus-symbol {
-    color: #530f0f;
+    color: #c75f60;
 }
 
 #plus-symbol {
@@ -97,7 +97,7 @@ p {
     text-shadow: 1px 1px #00000083;
     text-align: right;
     margin-top: 10px;
-    color: #530f0f;
+    color: #c75f60;
 }
 
 .plus {

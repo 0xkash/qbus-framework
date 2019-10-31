@@ -46,7 +46,7 @@
     border-radius: 5px;
     background-color: rgba(255, 255, 255, 0.0);
     transition: all 0.3s ease-in-out;
-    z-index: 101;
+    z-index: 121;
 }
 
 .home-container:hover {
@@ -77,26 +77,26 @@
     left: 0;
     right: 0;
     z-index: 101;
+    background-color: rgba(0, 0, 0, 0.35);
+    box-shadow: inset 0px 0px 3px 0px rgba(255, 255, 255, 0.2);
 }
 
 #provider {
     font-size: 9px;
-    font-family: 'Roboto Mono';
+    font-family: 'Open Sans';
     margin-left: 10px;
     margin-top: 6px;
     float: left;
     color: #ffffff;
-    text-shadow: 1px 1px 1px #00000050;
 }
 
 #time {
     font-size: 9px;
-    font-family: 'Roboto Mono';
+    font-family: 'Open Sans';
     margin-right: 10px;
     margin-top: 6px;
     color: #ffffff;
     float: right;
-    text-shadow: 1px 1px 1px #00000050;
 }
 
 .phone-home-page {
