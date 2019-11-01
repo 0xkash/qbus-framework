@@ -1,4 +1,5 @@
 var selectedChar = null;
+qbMultiCharacters = {}
 
 $(document).ready(function (){
 
@@ -25,14 +26,13 @@ $(document).ready(function (){
 
     $('.continue-btn').click(function(e){
         e.preventDefault();
-        
-        $('.welcomescreen').fadeOut(150);
-        $('.server-log').fadeOut(150);
+
+        qbMultiCharacters.fadeOutUp('.welcomescreen', 400);
+        qbMultiCharacters.fadeOutDown('.server-log', 400);
         setTimeout(function(){
-            $('.characters-block').fadeIn(100);
-            $('.main-screen').css("background-color", "transparent");
+            qbMultiCharacters.fadeInDown('.characters-block', '17%', 400);
             $.post('http://qb-multicharacter/setupCharacters');
-        }, 250)
+        }, 400)
     });
 
     $('.disconnect-btn').click(function(e){
@@ -48,7 +48,7 @@ $(document).ready(function (){
 
 function setupCharInfo(cData) {
     if (cData == 'empty') {
-        $('.character-info-valid').html('<span id="no-char">This is an empty slot. <br>Create your character by pressing on \'Create Character\'.</span>');
+        $('.character-info-valid').html('<span id="no-char">Het geselecteerde karakter slot is nog niet in gebruik.<br><br>Dit karakter heeft dus nog geen informatie.</span>');
     } else {
         $('.character-info-valid').html(
         '<div class="character-info-box"><span id="info-label">Name: </span><span class="char-info-js">'+cData.charinfo.firstname+' '+cData.charinfo.lastname+'</span></div>' +
@@ -91,18 +91,19 @@ $(document).on('click', '.character', function(e) {
         if ((selectedChar).data('cid') == "") {
             $(selectedChar).addClass("char-selected");
             setupCharInfo('empty')
-            $("#play-text").html("create your character");
+            $("#play-text").html("Karakter aanmaken");
             if ($("#delete").css("display") != "none") {
                 $("#delete").hide();
             }
+            $("#play").css({"display":"block"});
+            $("#delete").css({"display":"none"});
         } else {
             $(selectedChar).addClass("char-selected");
             setupCharInfo($(this).data('cData'))
-            $("#play-text").html("Play selected character");
-            $("#delete-text").html("delete selected character");
-            if ($("#delete").css("display") != "block") {
-                $("#delete").show();
-            }
+            $("#play-text").html("Karakter Spelen");
+            $("#delete-text").html("Karakter Verwijderen");
+            $("#play").css({"display":"block"});
+            $("#delete").css({"display":"block"});
         }
     } else {
         $(selectedChar).removeClass("char-selected");
@@ -110,18 +111,16 @@ $(document).on('click', '.character', function(e) {
         if ((selectedChar).data('cid') == "") {
             $(selectedChar).addClass("char-selected");
             setupCharInfo('empty')
-            $("#play-text").html("create your character");
-            if ($("#delete").css("display") != "none") {
-                $("#delete").hide();
-            }
+            $("#play-text").html("Karakter aanmaken");
+            $("#play").css({"display":"block"});
+            $("#delete").css({"display":"none"});
         } else {
             $(selectedChar).addClass("char-selected");
             setupCharInfo($(this).data('cData'))
-            $("#play-text").html("Play selected character");
-            $("#delete-text").html("delete selected character");
-            if ($("#delete").css("display") != "block") {
-                $("#delete").show();
-            }
+            $("#play-text").html("Karakter Spelen");
+            $("#delete-text").html("Karakter Verwijderen");
+            $("#play").css({"display":"block"});
+            $("#delete").css({"display":"block"});
         }
     }
 });
@@ -204,3 +203,19 @@ $("#delete").click(function (e) {
         }
     }
 });
+
+qbMultiCharacters.fadeOutUp = function(element, time) {
+    $(element).css({"display":"block"}).animate({top: "-50.5%",}, time, function(){
+        $(element).css({"display":"none"});
+    });
+}
+
+qbMultiCharacters.fadeOutDown = function(element, time) {
+    $(element).css({"display":"block"}).animate({top: "103.5%",}, time, function(){
+        $(element).css({"display":"none"});
+    });
+}
+
+qbMultiCharacters.fadeInDown = function(element, percent, time) {
+    $(element).css({"display":"block"}).animate({top: percent,}, time);
+}

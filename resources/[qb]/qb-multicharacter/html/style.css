@@ -13,25 +13,29 @@
 
 .characters-block {
     display: none;
-    position: relative;
+    position: absolute;
     width: 800px;
     height: 550px;
-    background-color: rgba(241, 241, 241, 0.95);
-    top: 125px;
-    margin-left: auto;
-    margin-right: auto;
-    border-bottom: 2px solid #fff;
-    box-shadow: 0px 0px 13px 0px rgba(0,0,0,0.4);
+    background-color: rgba(0, 0, 0, 0.9);
+    top: -80%;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    border-bottom: 2px solid #b12424;
+    box-shadow: 0px 0px 6px 1px rgba(0,0,0,0.25);
+    box-shadow: inset 0px 0px 150px 0px rgba(255, 255, 255, 0.1);
+    overflow: visible !important;
 }
 
 .characters-block-header {
     position: relative;
     top: 0;
     width: 100%;
-    height: 40px;
-    background-color: #b12424;
+    height: 30px;
+    background-color: #881a1a;
     border-bottom: 2px solid #fff;
-    font-family: 'Roboto Mono' monospace;
+    font-family: 'Lato' monospace;
+    box-shadow: inset 0px 0px 150px 0px rgba(255, 255, 255, 0.1);
 }
 
 .disconnect-server-btn {
@@ -88,8 +92,8 @@
 .characters-block-header > p {
     text-align: center;
     color: white;
-    padding-top: 10px;
-    font-family: 'Roboto Mono', monospace;
+    line-height: 24px;
+    font-family: 'Lato', monospace;
 }
 
 .characters-list {
@@ -98,14 +102,20 @@
     height: 50%;
     left: 30px;
     top: 60px;
+	overflow: visible !important;
 }
 
 .character {
     width: 100%;
     height: 20%;
-    background-color: rgba(0, 0, 0, 0.691);
     margin-bottom: 10px;
-    box-shadow: inset 0px 0px 4px 0px rgba(44, 44, 44, 0.3);
+    box-shadow: inset 0px 0px 150px 0px rgba(255, 255, 255, 0.1);
+    font-family: 'Lato' monospace;
+}
+
+.character > span {
+    color: rgb(255, 255, 255);
+    font-family: 'Lato' monospace !important;
 }
 
 #cid {
@@ -126,10 +136,11 @@
 
 #slot-name {
     position: relative;
-    color: white;
+    color: rgb(230, 230, 230);
     font-size: 17px;
     top: 17px;
     left: 20px;
+    font-family: 'Lato' monospace;
 }
 
 .character-btn {
@@ -137,7 +148,7 @@
     width: 40%;
     height: 10%;
     left: 30px;
-    top: 350px;
+    top: 65%;
     margin-bottom: 15px;
     transition: 0.2s;
 }
@@ -150,6 +161,7 @@
 }
 
 #play {
+    display: none;
     background: linear-gradient(to right, #56ab2f, #74aa32); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     border-radius: 4px;
     transition: all 0.3s ease;
@@ -161,6 +173,7 @@
 }
 
 #delete {
+    display: none;
     background-color: rgba(151, 23, 23, 0.9);
     border-radius: 4px;
     transition: all 0.3s ease;
@@ -177,12 +190,16 @@
     height: 83.7%;
     right: 30px;
     top: 60px;
-    background-color: rgba(0, 0, 0, 0.75);
+    background-color: rgba(0, 0, 0, 0.5);
+    overflow: visible !important;
 }
 
 #char-info-icon {
+    position: relative;
     font-size: 28px;
     color: white;
+    right: 20px;
+    overflow: visible !important;
 }
 
 #char-info-titel {
@@ -190,13 +207,14 @@
     font-size: 17px;
     color: white;
     top: 7px;
-    left: 38px;
+    left: 14px;
+    overflow: visible !important;
 }
 
 #no-char {
     position: absolute;
-    color: white;
-    font-size: 20px;
+    color: rgb(255, 255, 255);
+    font-size: 16px;
     top: 30%;
     text-align: center;
 }
@@ -205,11 +223,13 @@
     position: relative;
     left: 28%;
     top: 3%;
+    overflow: visible !important;
 }
 
 .character-info-valid {
     position: relative;
     top: 10%;
+    overflow: visible !important;
 }
 
 .character-info-box {
@@ -393,7 +413,7 @@
 }
 .topbar {
     position: absolute;
-    background-color: rgba(0, 0, 0, 0.9);
+    background-color: rgb(0, 0, 0);
     top: 0;
     left: 0;
     width: 100%;
@@ -404,7 +424,7 @@
 
 .bottombar {
     position: absolute;
-    background-color: rgba(0, 0, 0, 0.9);
+    background-color: rgb(0, 0, 0);
     bottom: 0;
     left: 0;
     width: 100%;
@@ -473,17 +493,19 @@
     margin-right: auto;
     background-color: rgba(0, 0, 0, 0.9);
     height: 28%;
-    width: 100%;
+    width: 30%;
     border-top: 2px solid #b12424;
     border-bottom: 2px solid #b12424;
     box-shadow: 0px 0px 6px 1px rgba(0,0,0,0.25);
     box-shadow: inset 0px 0px 100px 0px rgba(255, 255, 255, 0.1);
+	overflow: visible !important;
 }
 
 .welcomescreen > p {
     position: relative;
     color: #ffffff;
     text-align: center;
+	overflow: visible !important;
 }
 
 #welcome-titel {
@@ -499,18 +521,21 @@
     position: absolute;
     width: 70px;
     top: 10%;
-    left: 40%;
+    left: 16%;
+}
+
+.start-btn {
+    position: relative;
+    margin-left: 30px;
+    float: left;
+    top: 45%;
+    left: 24%;
 }
 
 .continue-btn {
-    position: absolute;
-    width: 8%;
+    width: 17%;
     height: 36px;
-    margin: 0 auto;
-    left: 0;
-    right: 0;
     background-color: #ca382c;
-    bottom: 60px;
     border-radius: 4px;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.342);
 }
@@ -523,23 +548,18 @@
 }
 
 .disconnect-btn {
-    position: absolute;
-    width: 4%;
-    height: 25px;
+    width: 17%;
+    height: 36px;
     background-color: #ca382c;
-    top: 30%;
-    left: 0.5%;
-    border-radius: 2px;
+    border-radius: 4px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.342);
 }
 
 .disconnect-btn > p {
     text-align: center;
-    line-height: 25px;
-    color: #ffffff;
-    font-family: 'Lato', monospace;
-    font-size: 10px;
-    font-weight: bold;
-    letter-spacing: 1px;
+    line-height: 34px;
+    color: white;
+    font-family: 'B612 Mono', monospace;
 }
 
 ::-webkit-scrollbar-track

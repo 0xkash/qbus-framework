@@ -15,9 +15,6 @@ local closesthouse = nil
 local hasKey = false
 local isOwned = false
 
-local stashLoc = {}
-local closetLoc = {}
-
 local isLoggedIn = false
 local contractOpen = false
 
@@ -80,11 +77,19 @@ local data = nil
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     isLoggedIn = true
+    SetClosestHouse()
+    TriggerEvent('qb-houses:client:setupHouseBlips')
+    Citizen.Wait(100)
+    TriggerEvent('qb-garages:client:setHouseGarage', closesthouse, hasKey)
 end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerUnload')
 AddEventHandler('QBCore:Client:OnPlayerUnload', function()
     isLoggedIn = false
+    inside = false
+    closesthouse = nil
+    hasKey = false
+    isOwned = false
 end)
 
 RegisterNetEvent('qb-houses:client:lockHouse')
@@ -114,9 +119,23 @@ AddEventHandler('qb-houses:client:toggleDoorlock', function()
     end
 end)
 
+DrawText3Ds = function(x, y, z, text)
+	SetTextScale(0.35, 0.35)
+    SetTextFont(4)
+    SetTextProportional(1)
+    SetTextColour(255, 255, 255, 215)
+    SetTextEntry("STRING")
+    SetTextCentre(true)
+    AddTextComponentString(text)
+    SetDrawOrigin(x,y,z, 0)
+    DrawText(0.0, 0.0)
+    local factor = (string.len(text)) / 370
+    DrawRect(0.0, 0.0+0.0125, 0.017+ factor, 0.03, 0, 0, 0, 75)
+    ClearDrawOrigin()
+end
 Citizen.CreateThread(function()
     while true do
-        Citizen.Wait(0)
+        Citizen.Wait(3)
 
         local pos = GetEntityCoords(GetPlayerPed(-1), true)
 
@@ -126,9 +145,9 @@ Citizen.CreateThread(function()
                 if closesthouse ~= nil then
                     if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z, true) < 1.5)then
                         if Config.Houses[closesthouse].locked then
-                            QBCore.Functions.DrawText3D(Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z + 0.98, '~r~E~w~ - Ga naar binnen')
+                            DrawText3Ds(Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z + 0.98, '~r~E~w~ - Ga naar binnen')
                         elseif not Config.Houses[closesthouse].locked then
-                            QBCore.Functions.DrawText3D(Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z + 0.98, '~g~E~w~ - Ga naar binnen')
+                            DrawText3Ds(Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z + 0.98, '~g~E~w~ - Ga naar binnen')
                         end
                         if IsControlJustPressed(0, Keys["E"]) then
                             enterOwnedHouse(closesthouse)
@@ -141,7 +160,7 @@ Citizen.CreateThread(function()
             if inside then
                 if not entering then
                     if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.enter.x + POIOffsets.exit.x, Config.Houses[closesthouse].coords.enter.y + POIOffsets.exit.y, Config.Houses[closesthouse].coords.enter.z - 25 + POIOffsets.exit.z, true) < 1.5)then
-                        QBCore.Functions.DrawText3D(Config.Houses[closesthouse].coords.enter.x + POIOffsets.exit.x, Config.Houses[closesthouse].coords.enter.y + POIOffsets.exit.y, Config.Houses[closesthouse].coords.enter.z - 25 + POIOffsets.exit.z, '~g~E~w~ - Om huis te verlaten')
+                        DrawText3Ds(Config.Houses[closesthouse].coords.enter.x + POIOffsets.exit.x, Config.Houses[closesthouse].coords.enter.y + POIOffsets.exit.y, Config.Houses[closesthouse].coords.enter.z - 25 + POIOffsets.exit.z, '~g~E~w~ - Om huis te verlaten')
                         if IsControlJustPressed(0, Keys["E"]) then
                             leaveOwnedHouse(closesthouse)
                         end
@@ -154,12 +173,12 @@ Citizen.CreateThread(function()
             if inside then
                 if closesthouse ~= nil then
                     if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.stash.x, Config.Houses[closesthouse].coords.stash.y, Config.Houses[closesthouse].coords.stash.z, true) < 1.5)then
-                        QBCore.Functions.DrawText3D(Config.Houses[closesthouse].coords.stash.x, Config.Houses[closesthouse].coords.stash.y, Config.Houses[closesthouse].coords.stash.z, '~g~E~w~ - Stash')
+                        DrawText3Ds(Config.Houses[closesthouse].coords.stash.x, Config.Houses[closesthouse].coords.stash.y, Config.Houses[closesthouse].coords.stash.z, '~g~E~w~ - Stash')
                         if IsControlJustPressed(0, Keys["E"]) then
                             print('yeet')
                         end
                     elseif(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.stash.x, Config.Houses[closesthouse].coords.stash.y, Config.Houses[closesthouse].coords.stash.z, true) < 3)then
-                        QBCore.Functions.DrawText3D(Config.Houses[closesthouse].coords.stash.x, Config.Houses[closesthouse].coords.stash.y, Config.Houses[closesthouse].coords.stash.z, 'Stash')
+                        DrawText3Ds(Config.Houses[closesthouse].coords.stash.x, Config.Houses[closesthouse].coords.stash.y, Config.Houses[closesthouse].coords.stash.z, 'Stash')
                     end
                 end
             end
@@ -167,7 +186,7 @@ Citizen.CreateThread(function()
             if inside then
                 if closesthouse ~= nil then
                     if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.outfit.x, Config.Houses[closesthouse].coords.outfit.y, Config.Houses[closesthouse].coords.outfit.z, true) < 1.5)then
-                        QBCore.Functions.DrawText3D(Config.Houses[closesthouse].coords.outfit.x, Config.Houses[closesthouse].coords.outfit.y, Config.Houses[closesthouse].coords.outfit.z, '~g~E~w~ - Outfits')
+                        DrawText3Ds(Config.Houses[closesthouse].coords.outfit.x, Config.Houses[closesthouse].coords.outfit.y, Config.Houses[closesthouse].coords.outfit.z, '~g~E~w~ - Outfits')
                         if IsControlJustPressed(0, Keys["E"]) then
                             MenuOutfits()
                             Menu.hidden = not Menu.hidden
@@ -175,7 +194,7 @@ Citizen.CreateThread(function()
 
                         Menu.renderGUI()
                     elseif(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.outfit.x, Config.Houses[closesthouse].coords.outfit.y, Config.Houses[closesthouse].coords.outfit.z, true) < 3)then
-                        QBCore.Functions.DrawText3D(Config.Houses[closesthouse].coords.outfit.x, Config.Houses[closesthouse].coords.outfit.y, Config.Houses[closesthouse].coords.outfit.z, 'Outfits')
+                        DrawText3Ds(Config.Houses[closesthouse].coords.outfit.x, Config.Houses[closesthouse].coords.outfit.y, Config.Houses[closesthouse].coords.outfit.z, 'Outfits')
                     end
                 end
             end
@@ -183,12 +202,22 @@ Citizen.CreateThread(function()
             if inside then
                 if closesthouse ~= nil then
                     if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.logout.x, Config.Houses[closesthouse].coords.logout.y, Config.Houses[closesthouse].coords.logout.z, true) < 1.5)then
-                        QBCore.Functions.DrawText3D(Config.Houses[closesthouse].coords.logout.x, Config.Houses[closesthouse].coords.logout.y, Config.Houses[closesthouse].coords.logout.z, '~g~E~w~ - Uitloggen')
+                        DrawText3Ds(Config.Houses[closesthouse].coords.logout.x, Config.Houses[closesthouse].coords.logout.y, Config.Houses[closesthouse].coords.logout.z, '~g~E~w~ - Uitloggen')
                         if IsControlJustPressed(0, Keys["E"]) then
-                            TriggerServerEvent('qb-houses:server:logOut')
+                            exports['qb-interior']:DespawnInterior(houseObj, function()
+                                DoScreenFadeOut(250)
+                                Citizen.Wait(1000)
+                                TriggerEvent('qb-weathersync:client:EnableSync')
+                                TriggerEvent('qb-houses:client:insideHouse', false)
+                                SetEntityCoords(GetPlayerPed(-1), Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z + 0.5)
+                                SetEntityHeading(GetPlayerPed(-1), Config.Houses[closesthouse].coords.enter.h)
+                                inOwned = false
+                                inside = false
+                                TriggerServerEvent('qb-houses:server:logOut')
+                            end)
                         end
                     elseif(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.logout.x, Config.Houses[closesthouse].coords.logout.y, Config.Houses[closesthouse].coords.logout.z, true) < 3)then
-                        QBCore.Functions.DrawText3D(Config.Houses[closesthouse].coords.logout.x, Config.Houses[closesthouse].coords.logout.y, Config.Houses[closesthouse].coords.logout.z, 'Uitloggen')
+                        DrawText3Ds(Config.Houses[closesthouse].coords.logout.x, Config.Houses[closesthouse].coords.logout.y, Config.Houses[closesthouse].coords.logout.z, 'Uitloggen')
                     end
                 end
             end
@@ -197,7 +226,7 @@ Citizen.CreateThread(function()
                 if closesthouse ~= nil then
                     if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z, true) < 1.5)then
                         if not viewCam then
-                            QBCore.Functions.DrawText3D(Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z + 1.2, '[~g~E~w~] Om het huis te bezichtigen')
+                            DrawText3Ds(Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z + 1.2, '[~g~E~w~] Om het huis te bezichtigen')
                             if IsControlJustPressed(0, Keys["E"]) then
                                 TriggerServerEvent('qb-houses:server:viewHouse', closesthouse)
                             end
@@ -209,17 +238,17 @@ Citizen.CreateThread(function()
                     if not inOwned then
                         if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z, true) < 1.5)then
                             if not Config.Houses[closesthouse].locked then
-                                QBCore.Functions.DrawText3D(Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z + 1.2, '[~g~E~w~] Om naar ~b~binnen~w~ te gaan')
+                                DrawText3Ds(Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z + 1.2, '[~g~E~w~] Om naar ~b~binnen~w~ te gaan')
                                 if IsControlJustPressed(0, Keys["E"])  then
                                     enterNonOwnedHouse(closesthouse)
                                 end
                             else
-                                QBCore.Functions.DrawText3D(Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z + 1.2, 'De deur is ~r~vergrendeld')
+                                DrawText3Ds(Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z + 1.2, 'De deur is ~r~vergrendeld')
                             end
                         end
                     elseif inOwned then
                         if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.enter.x + POIOffsets.exit.x, Config.Houses[closesthouse].coords.enter.y + POIOffsets.exit.y, Config.Houses[closesthouse].coords.enter.z - 25 + POIOffsets.exit.z, true) < 1.5)then
-                            QBCore.Functions.DrawText3D(Config.Houses[closesthouse].coords.enter.x + POIOffsets.exit.x, Config.Houses[closesthouse].coords.enter.y + POIOffsets.exit.y, Config.Houses[closesthouse].coords.enter.z - 25 + POIOffsets.exit.z, '[~g~E~w~] Om huis te verlaten')
+                            DrawText3Ds(Config.Houses[closesthouse].coords.enter.x + POIOffsets.exit.x, Config.Houses[closesthouse].coords.enter.y + POIOffsets.exit.y, Config.Houses[closesthouse].coords.enter.z - 25 + POIOffsets.exit.z, '[~g~E~w~] Om huis te verlaten')
                             if IsControlJustPressed(0, Keys["E"]) then
                                 leaveNonOwnedHouse(closesthouse)
                             end
@@ -228,7 +257,7 @@ Citizen.CreateThread(function()
                         -- STASH
                         local StashObject = nil
                         if(GetDistanceBetweenCoords(pos, 894.17, -617.66, 34.54, true) < 1.5)then
-                            QBCore.Functions.DrawText3D(894.17, -617.66, 34.54, '[~g~E~w~] Stash')
+                            DrawText3Ds(894.17, -617.66, 34.54, '[~g~E~w~] Stash')
                             if IsControlJustPressed(0, Keys["E"]) then
                                 print('yeet')
                             end
@@ -239,7 +268,7 @@ Citizen.CreateThread(function()
                                 FreezeEntityPosition(StashObject, true)
                                 SetEntityHeading(StashObject, -90.0)
                             end
-                            QBCore.Functions.DrawText3D(894.17, -617.66, 34.54, 'Stash')
+                            DrawText3Ds(894.17, -617.66, 34.54, 'Stash')
                         end
                     end
                 end
@@ -413,21 +442,6 @@ function leaveNonOwnedHouse(house)
     end)
 end
 
-Citizen.CreateThread(function()
-    while true do
-        Citizen.Wait(5)
-
-        for k, v in pairs(Config.Houses) do
-            local ped = GetPlayerPed(-1)
-            local dist = GetDistanceBetweenCoords(GetEntityCoords(ped), Config.Houses[k].coords.enter.x, Config.Houses[k].coords.enter.y, Config.Houses[k].coords.enter.z, false)
-
-            if dist < 2.5 then
-                DrawMarker(2, Config.Houses[k].coords.enter.x, Config.Houses[k].coords.enter.y, Config.Houses[k].coords.enter.z + 0.9, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.3, 0.2, 255, 255, 255, 55, false, false, false, true, false, false, false)
-            end
-        end
-    end
-end)
-
 RegisterNetEvent('qb-houses:client:setupHouseBlips')
 AddEventHandler('qb-houses:client:setupHouseBlips', function()
     Citizen.CreateThread(function()
@@ -435,8 +449,8 @@ AddEventHandler('qb-houses:client:setupHouseBlips', function()
         if isLoggedIn then
             QBCore.Functions.TriggerCallback('qb-houses:server:getOwnedHouses', function(ownedHouses)
                 if ownedHouses ~= nil then
-                    for i=1, #ownedHouses, 1 do
-                        local house = Config.Houses[ownedHouses[i]]
+                    for k, v in pairs(ownedHouses) do
+                        local house = Config.Houses[ownedHouses[k]]
                         HouseBlip = AddBlipForCoord(house.coords.enter.x, house.coords.enter.y, house.coords.enter.z)
 
                         SetBlipSprite (HouseBlip, 40)
