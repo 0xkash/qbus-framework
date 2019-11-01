@@ -4,6 +4,7 @@ TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 Drops = {}
 Trunks = {}
 Gloveboxes = {}
+Stashes = {}
 
 RegisterServerEvent("inventory:server:OpenInventory")
 AddEventHandler('inventory:server:OpenInventory', function(name, id)
@@ -15,18 +16,28 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id)
 			secondInv.name = "stash-"..id
 			secondInv.label = "Stash-"..id
 			secondInv.maxweight = 1000000
-			secondInv.inventory = GetStashItems(id)
+			secondInv.inventory = {}
 			secondInv.slots = 100
+			if next(GetStashItems(id)) ~= nil then
+				secondInv.inventory = GetStashItems(id)
+				Stashes[id] = {}
+				Stashes[id].items = GetStashItems(id)
+			else
+				Stashes[id] = {}
+				Stashes[id].items = {}
+			end
 		elseif name == "trunk" then
 			secondInv.name = "trunk-"..id
 			secondInv.label = "Trunk-"..id
 			secondInv.maxweight = 1000000
 			secondInv.inventory = {}
 			secondInv.slots = 69
-			if Trunks[id] ~= nil then
-				secondInv.inventory = Trunks[id].items
-			elseif GetOwnedVehicleItems(id) ~= nil then
+			if IsVehicleOwned(id) and next(GetOwnedVehicleItems(id)) ~= nil then
 				secondInv.inventory = GetOwnedVehicleItems(id)
+				Trunks[id] = {}
+				Trunks[id].items = GetOwnedVehicleItems(id)
+			elseif Trunks[id] ~= nil then
+				secondInv.inventory = Trunks[id].items
 			else
 				Trunks[id] = {}
 				Trunks[id].items = {}
@@ -39,8 +50,10 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id)
 			secondInv.slots = 5
 			if Gloveboxes[id] ~= nil then
 				secondInv.inventory = Gloveboxes[id].items
-			elseif GetOwnedVehicleGloveboxItems(id) ~= nil then
+			elseif IsVehicleOwned(id) and next(GetOwnedVehicleGloveboxItems(id)) ~= nil then
 				secondInv.inventory = GetOwnedVehicleGloveboxItems(id)
+				Gloveboxes[id] = {}
+				Gloveboxes[id].items = GetOwnedVehicleGloveboxItems(id)
 			else
 				Gloveboxes[id] = {}
 				Gloveboxes[id].items = {}
@@ -57,6 +70,21 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id)
 		TriggerClientEvent("inventory:client:OpenInventory", src, Player.PlayerData.items, secondInv)
 	else
 		TriggerClientEvent("inventory:client:OpenInventory", src, Player.PlayerData.items)
+	end
+end)
+
+RegisterServerEvent("inventory:server:SaveInventory")
+AddEventHandler('inventory:server:SaveInventory', function(type, id)
+	if type == "trunk" then
+		if (IsVehicleOwned(id)) then
+			SaveOwnedVehicleItems(id, Trunks[id].items)
+		end
+	elseif type == "glovebox" then
+		if (IsVehicleOwned(id)) then
+			SaveOwnedGloveboxItems(id, Gloveboxes[id].items)
+		end
+	elseif type == "stash" then
+		SaveStashItems(id, Stashes[id].items)
 	end
 end)
 
@@ -113,12 +141,7 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 				Player.Functions.AddItem(fromItemData.name, fromAmount, toSlot, fromItemData.info)
 			elseif QBCore.Shared.SplitStr(toInventory, "-")[1] == "trunk" then
 				local plate = QBCore.Shared.SplitStr(toInventory, "-")[2]
-				local toItemData = {}
-				if IsVehicleOwned(plate) then
-					toItemData = GetOwnedVehicleItems(plate)[toSlot]
-				else
-					toItemData = Trunks[plate].items[toSlot]
-				end
+				local toItemData = Trunks[plate].items[toSlot]
 				Player.Functions.RemoveItem(fromItemData.name, fromAmount, fromSlot)
 				--Player.PlayerData.items[toSlot] = fromItemData
 				if toItemData ~= nil then
@@ -136,12 +159,7 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 				AddToTrunk(plate, toSlot, itemInfo["name"], fromAmount, fromItemData.info)
 			elseif QBCore.Shared.SplitStr(toInventory, "-")[1] == "glovebox" then
 				local plate = QBCore.Shared.SplitStr(toInventory, "-")[2]
-				local toItemData = {}
-				if IsVehicleOwned(plate) then
-					toItemData = GetOwnedVehicleGloveboxItems(plate)[toSlot]
-				else
-					toItemData = Gloveboxes[plate].items[toSlot]
-				end
+				local toItemData = Gloveboxes[plate].items[toSlot]
 				Player.Functions.RemoveItem(fromItemData.name, fromAmount, fromSlot)
 				--Player.PlayerData.items[toSlot] = fromItemData
 				if toItemData ~= nil then
@@ -159,7 +177,7 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 				AddToGlovebox(plate, toSlot, itemInfo["name"], fromAmount, fromItemData.info)
 			elseif QBCore.Shared.SplitStr(toInventory, "-")[1] == "stash" then
 				local stashId = QBCore.Shared.SplitStr(toInventory, "-")[2]
-				local toItemData = GetStashItems(stashId)[toSlot]
+				local toItemData = Stashes[stashId].items[toSlot]
 				Player.Functions.RemoveItem(fromItemData.name, fromAmount, fromSlot)
 				--Player.PlayerData.items[toSlot] = fromItemData
 				if toItemData ~= nil then
@@ -204,12 +222,7 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 		end
 	elseif QBCore.Shared.SplitStr(fromInventory, "-")[1] == "trunk" then
 		local plate = QBCore.Shared.SplitStr(fromInventory, "-")[2]
-		local fromItemData = {}
-		if IsVehicleOwned(plate) then
-			fromItemData = GetOwnedVehicleItems(plate)[fromSlot]
-		else
-			fromItemData = Trunks[plate].items[fromSlot]
-		end
+		local fromItemData = Trunks[plate].items[fromSlot]
 		local fromAmount = tonumber(fromAmount) ~= nil and tonumber(fromAmount) or fromItemData.amount
 		if fromItemData ~= nil and fromItemData.amount >= fromAmount then
 			local itemInfo = QBCore.Shared.Items[fromItemData.name:lower()]
@@ -217,6 +230,7 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 				local toItemData = Player.Functions.GetItemBySlot(toSlot)
 				RemoveFromTrunk(plate, fromSlot, itemInfo["name"], fromAmount)
 				if toItemData ~= nil then
+					local itemInfo = QBCore.Shared.Items[toItemData.name:lower()]
 					local toAmount = tonumber(toAmount) ~= nil and tonumber(toAmount) or toItemData.amount
 					if toItemData.name ~= fromItemData.name then
 						Player.Functions.RemoveItem(toItemData.name, toAmount, toSlot)
@@ -227,12 +241,7 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 				end
 				Player.Functions.AddItem(fromItemData.name, fromAmount, toSlot, fromItemData.info)
 			else
-				local toItemData = {}
-				if IsVehicleOwned(plate) then
-					toItemData = GetOwnedVehicleItems(plate)[toSlot]
-				else
-					toItemData = Trunks[plate].items[toSlot]
-				end
+				local toItemData = Trunks[plate].items[toSlot]
 				RemoveFromTrunk(plate, fromSlot, itemInfo["name"], fromAmount)
 				--Player.PlayerData.items[toSlot] = fromItemData
 				if toItemData ~= nil then
@@ -242,7 +251,7 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 					if toItemData.name ~= fromItemData.name then
 						local itemInfo = QBCore.Shared.Items[toItemData.name:lower()]
 						RemoveFromTrunk(plate, toSlot, itemInfo["name"], toAmount)
-						AddToTrunk(plate, toSlot, itemInfo["name"], toAmount, toItemData.info)
+						AddToTrunk(plate, fromSlot, itemInfo["name"], toAmount, toItemData.info)
 					end
 				else
 					--Player.PlayerData.items[fromSlot] = nil
@@ -255,12 +264,7 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 		end
 	elseif QBCore.Shared.SplitStr(fromInventory, "-")[1] == "glovebox" then
 		local plate = QBCore.Shared.SplitStr(fromInventory, "-")[2]
-		local fromItemData = {}
-		if IsVehicleOwned(plate) then
-			fromItemData = GetOwnedVehicleGloveboxItems(plate)[fromSlot]
-		else
-			fromItemData = Gloveboxes[plate].items[fromSlot]
-		end
+		local fromItemData = Gloveboxes[plate].items[fromSlot]
 		local fromAmount = tonumber(fromAmount) ~= nil and tonumber(fromAmount) or fromItemData.amount
 		if fromItemData ~= nil and fromItemData.amount >= fromAmount then
 			local itemInfo = QBCore.Shared.Items[fromItemData.name:lower()]
@@ -268,6 +272,7 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 				local toItemData = Player.Functions.GetItemBySlot(toSlot)
 				RemoveFromGlovebox(plate, fromSlot, itemInfo["name"], fromAmount)
 				if toItemData ~= nil then
+					local itemInfo = QBCore.Shared.Items[toItemData.name:lower()]
 					local toAmount = tonumber(toAmount) ~= nil and tonumber(toAmount) or toItemData.amount
 					if toItemData.name ~= fromItemData.name then
 						Player.Functions.RemoveItem(toItemData.name, toAmount, toSlot)
@@ -278,12 +283,7 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 				end
 				Player.Functions.AddItem(fromItemData.name, fromAmount, toSlot, fromItemData.info)
 			else
-				local toItemData = {}
-				if IsVehicleOwned(plate) then
-					toItemData = GetOwnedVehicleGloveboxItems(plate)[toSlot]
-				else
-					toItemData = Gloveboxes[plate].items[toSlot]
-				end
+				local toItemData = Gloveboxes[plate].items[toSlot]
 				RemoveFromGlovebox(plate, fromSlot, itemInfo["name"], fromAmount)
 				--Player.PlayerData.items[toSlot] = fromItemData
 				if toItemData ~= nil then
@@ -293,7 +293,7 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 					if toItemData.name ~= fromItemData.name then
 						local itemInfo = QBCore.Shared.Items[toItemData.name:lower()]
 						RemoveFromGlovebox(plate, toSlot, itemInfo["name"], toAmount)
-						AddToGlovebox(plate, toSlot, itemInfo["name"], toAmount, toItemData.info)
+						AddToGlovebox(plate, fromSlot, itemInfo["name"], toAmount, toItemData.info)
 					end
 				else
 					--Player.PlayerData.items[fromSlot] = nil
@@ -306,7 +306,7 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 		end
 	elseif QBCore.Shared.SplitStr(fromInventory, "-")[1] == "stash" then
 		local stashId = QBCore.Shared.SplitStr(fromInventory, "-")[2]
-		local fromItemData = GetStashItems(stashId)[fromSlot]
+		local fromItemData = Stashes[stashId].items[fromSlot]
 		local fromAmount = tonumber(fromAmount) ~= nil and tonumber(fromAmount) or fromItemData.amount
 		if fromItemData ~= nil and fromItemData.amount >= fromAmount then
 			local itemInfo = QBCore.Shared.Items[fromItemData.name:lower()]
@@ -314,6 +314,7 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 				local toItemData = Player.Functions.GetItemBySlot(toSlot)
 				RemoveFromStash(stashId, fromSlot, itemInfo["name"], fromAmount)
 				if toItemData ~= nil then
+					local itemInfo = QBCore.Shared.Items[toItemData.name:lower()]
 					local toAmount = tonumber(toAmount) ~= nil and tonumber(toAmount) or toItemData.amount
 					if toItemData.name ~= fromItemData.name then
 						Player.Functions.RemoveItem(toItemData.name, toAmount, toSlot)
@@ -324,7 +325,7 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 				end
 				Player.Functions.AddItem(fromItemData.name, fromAmount, toSlot, fromItemData.info)
 			else
-				local toItemData = GetStashItems(stashId)[toSlot]
+				local toItemData = Stashes[stashId].items[toSlot]
 				RemoveFromStash(stashId, fromSlot, itemInfo["name"], fromAmount)
 				--Player.PlayerData.items[toSlot] = fromItemData
 				if toItemData ~= nil then
@@ -334,7 +335,7 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 					if toItemData.name ~= fromItemData.name then
 						local itemInfo = QBCore.Shared.Items[toItemData.name:lower()]
 						RemoveFromStash(stashId, toSlot, itemInfo["name"], toAmount)
-						AddToStash(stashId, toSlot, itemInfo["name"], toAmount, toItemData.info)
+						AddToStash(stashId, fromSlot, itemInfo["name"], toAmount, toItemData.info)
 					end
 				else
 					--Player.PlayerData.items[fromSlot] = nil
@@ -377,7 +378,7 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 					if toItemData.name ~= fromItemData.name then
 						local itemInfo = QBCore.Shared.Items[toItemData.name:lower()]
 						RemoveFromDrop(toInventory, toSlot, itemInfo["name"], toAmount)
-						AddToDrop(fromInventory, toSlot, itemInfo["name"], toAmount, toItemData.info)
+						AddToDrop(fromInventory, fromSlot, itemInfo["name"], toAmount, toItemData.info)
 					end
 				else
 					--Player.PlayerData.items[fromSlot] = nil
@@ -392,13 +393,15 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 end)
 
 function IsVehicleOwned(plate)
+	local val = false
 	QBCore.Functions.ExecuteSql("SELECT * FROM `player_vehicles` WHERE `plate` = '"..plate.."'", function(result)
 		if (result[1] ~= nil) then
-			return true
+			val = true
+		else
+			val = false
 		end
-		return false
 	end)
-	return false
+	return val
 end
 
 -- Stash Items
@@ -422,7 +425,9 @@ function GetStashItems(stashId)
 					slot = item.slot,
 				}
 			end
+			return items
 		end
+		return items
 	end)
 	return items
 end
@@ -440,12 +445,11 @@ end
 
 function AddToStash(stashId, slot, itemName, amount, info)
 	local amount = tonumber(amount)
-	local stashItems = GetStashItems(stashId)
-	if stashItems[slot] ~= nil and stashItems[slot].name == itemName then
-		stashItems[slot].amount = stashItems[slot].amount + amount
+	if Stashes[stashId].items[slot] ~= nil and Stashes[stashId].items[slot].name == itemName then
+		Stashes[stashId].items[slot].amount = Stashes[stashId].items[slot].amount + amount
 	else
 		local itemInfo = QBCore.Shared.Items[itemName:lower()]
-		stashItems[slot] = {
+		Stashes[stashId].items[slot] = {
 			name = itemInfo["name"],
 			amount = amount,
 			info = info ~= nil and info or "",
@@ -459,27 +463,25 @@ function AddToStash(stashId, slot, itemName, amount, info)
 			slot = slot,
 		}
 	end
-	SaveStashItems(stashId, stashItems)
 end
 
 function RemoveFromStash(stashId, slot, itemName, amount)
-	local stashItems = GetStashItems(stashId)
-	if stashItems[slot] ~= nil and stashItems[slot].name == itemName then
-		if stashItems[slot].amount > amount then
-			stashItems[slot].amount = stashItems[slot].amount - amount
+	local amount = tonumber(amount)
+	if Stashes[stashId].items[slot] ~= nil and Stashes[stashId].items[slot].name == itemName then
+		if Stashes[stashId].items[slot].amount > amount then
+			Stashes[stashId].items[slot].amount = Stashes[stashId].items[slot].amount - amount
 		else
-			stashItems[slot] = nil
-			if next(stashItems) == nil then
-				stashItems = nil
+			Stashes[stashId].items[slot] = nil
+			if next(Stashes[stashId].items) == nil then
+				Stashes[stashId].items = {}
 			end
 		end
 	else
-		stashItems[slot ]= nil
-		if stashItems == nil then
-			stashItems[slot] = nil
+		Stashes[stashId].items[slot]= nil
+		if Stashes[stashId].items == nil then
+			Stashes[stashId].items[slot] = nil
 		end
 	end
-	SaveStashItems(stashId, stashItems)
 end
 
 -- Trunk items
@@ -503,7 +505,9 @@ function GetOwnedVehicleItems(plate)
 					slot = item.slot,
 				}
 			end
+			return items
 		end
+		return items
 	end)
 	return items
 end
@@ -521,83 +525,40 @@ end
 
 function AddToTrunk(plate, slot, itemName, amount, info)
 	local amount = tonumber(amount)
-	if IsVehicleOwned(plate) then
-		local trunkItems = GetOwnedVehicleItems(plate)
-		if trunkItems[slot] ~= nil and trunkItems[slot].name == itemName then
-			trunkItems[slot].amount = trunkItems[slot].amount + amount
-		else
-			local itemInfo = QBCore.Shared.Items[itemName:lower()]
-			trunkItems[slot] = {
-				name = itemInfo["name"],
-				amount = amount,
-				info = info ~= nil and info or "",
-				label = itemInfo["label"],
-				description = itemInfo["description"] ~= nil and itemInfo["description"] or "",
-				weight = itemInfo["weight"], 
-				type = itemInfo["type"], 
-				unique = itemInfo["unique"], 
-				useable = itemInfo["useable"], 
-				image = itemInfo["image"],
-				slot = slot,
-			}
-		end
-		SaveOwnedVehicleItems(plate, trunkItems)
+	if Trunks[plate].items[slot] ~= nil and Trunks[plate].items[slot].name == itemName then
+		Trunks[plate].items[slot].amount = Trunks[plate].items[slot].amount + amount
 	else
-		if Trunks[plate].items[slot] ~= nil and Trunks[plate].items[slot].name == itemName then
-			Trunks[plate].items[slot].amount = Trunks[plate].items[slot].amount + amount
-		else
-			local itemInfo = QBCore.Shared.Items[itemName:lower()]
-			Trunks[plate].items[slot] = {
-				name = itemInfo["name"],
-				amount = amount,
-				info = info ~= nil and info or "",
-				label = itemInfo["label"],
-				description = itemInfo["description"] ~= nil and itemInfo["description"] or "",
-				weight = itemInfo["weight"], 
-				type = itemInfo["type"], 
-				unique = itemInfo["unique"], 
-				useable = itemInfo["useable"], 
-				image = itemInfo["image"],
-				slot = slot,
-			}
-		end
+		local itemInfo = QBCore.Shared.Items[itemName:lower()]
+		Trunks[plate].items[slot] = {
+			name = itemInfo["name"],
+			amount = amount,
+			info = info ~= nil and info or "",
+			label = itemInfo["label"],
+			description = itemInfo["description"] ~= nil and itemInfo["description"] or "",
+			weight = itemInfo["weight"], 
+			type = itemInfo["type"], 
+			unique = itemInfo["unique"], 
+			useable = itemInfo["useable"], 
+			image = itemInfo["image"],
+			slot = slot,
+		}
 	end
 end
 
 function RemoveFromTrunk(plate, slot, itemName, amount)
-	if IsVehicleOwned(plate) then
-		local trunkItems = GetOwnedVehicleItems(plate)
-		if trunkItems[slot] ~= nil and trunkItems[slot].name == itemName then
-			if trunkItems[slot].amount > amount then
-				trunkItems[slot].amount = trunkItems[slot].amount - amount
-			else
-				trunkItems[slot] = nil
-				if next(trunkItems) == nil then
-					trunkItems = nil
-				end
-			end
+	if Trunks[plate].items[slot] ~= nil and Trunks[plate].items[slot].name == itemName then
+		if Trunks[plate].items[slot].amount > amount then
+			Trunks[plate].items[slot].amount = Trunks[plate].items[slot].amount - amount
 		else
-			trunkItems[slot ]= nil
-			if trunkItems == nil then
-				trunkItems[slot] = nil
+			Trunks[plate].items[slot] = nil
+			if next(Trunks[plate].items) == nil then
+				Trunks[plate].items = {}
 			end
 		end
-		SaveOwnedVehicleItems(plate, trunkItems)
 	else
-		if Trunks[plate].items[slot] ~= nil and Trunks[plate].items[slot].name == itemName then
-			if Trunks[plate].items[slot].amount > amount then
-				Trunks[plate].items[slot].amount = Trunks[plate].items[slot].amount - amount
-			else
-				Trunks[plate].items[slot] = nil
-				if next(Trunks[plate].items) == nil then
-					Trunks[plate].items = {}
-				end
-			end
-		else
-			Trunks[plate].items[slot]= nil
-			if Trunks[plate].items == nil then
-				Trunks[plate].items[slot] = nil
-			end
+		Trunks[plate].items[slot]= nil
+		if Trunks[plate].items == nil then
+			Trunks[plate].items[slot] = nil
 		end
 	end
 end
@@ -623,12 +584,14 @@ function GetOwnedVehicleGloveboxItems(plate)
 					slot = item.slot,
 				}
 			end
+			return items
 		end
+		return items
 	end)
 	return items
 end
 
-function SaveOwnedVehicleGloveboxItems(plate, items)
+function SaveOwnedGloveboxItems(plate, items)
 	QBCore.Functions.ExecuteSql("DELETE FROM `gloveboxitems` WHERE `plate` = '"..plate.."'")
 	if items ~= nil then
 		for slot, item in pairs(items) do
@@ -641,83 +604,40 @@ end
 
 function AddToGlovebox(plate, slot, itemName, amount, info)
 	local amount = tonumber(amount)
-	if IsVehicleOwned(plate) then
-		local gloveItems = GetOwnedVehicleGloveboxItems(plate)
-		if gloveItems[slot] ~= nil and gloveItems[slot].name == itemName then
-			gloveItems[slot].amount = gloveItems[slot].amount + amount
-		else
-			local itemInfo = QBCore.Shared.Items[itemName:lower()]
-			gloveItems[slot] = {
-				name = itemInfo["name"],
-				amount = amount,
-				info = info ~= nil and info or "",
-				label = itemInfo["label"],
-				description = itemInfo["description"] ~= nil and itemInfo["description"] or "",
-				weight = itemInfo["weight"], 
-				type = itemInfo["type"], 
-				unique = itemInfo["unique"], 
-				useable = itemInfo["useable"], 
-				image = itemInfo["image"],
-				slot = slot,
-			}
-		end
-		SaveOwnedVehicleGloveboxItems(plate, gloveItems)
+	if Gloveboxes[plate].items[slot] ~= nil and Gloveboxes[plate].items[slot].name == itemName then
+		Gloveboxes[plate].items[slot].amount = Gloveboxes[plate].items[slot].amount + amount
 	else
-		if Gloveboxes[plate].items[slot] ~= nil and Gloveboxes[plate].items[slot].name == itemName then
-			Gloveboxes[plate].items[slot].amount = Gloveboxes[plate].items[slot].amount + amount
-		else
-			local itemInfo = QBCore.Shared.Items[itemName:lower()]
-			Gloveboxes[plate].items[slot] = {
-				name = itemInfo["name"],
-				amount = amount,
-				info = info ~= nil and info or "",
-				label = itemInfo["label"],
-				description = itemInfo["description"] ~= nil and itemInfo["description"] or "",
-				weight = itemInfo["weight"], 
-				type = itemInfo["type"], 
-				unique = itemInfo["unique"], 
-				useable = itemInfo["useable"], 
-				image = itemInfo["image"],
-				slot = slot,
-			}
-		end
+		local itemInfo = QBCore.Shared.Items[itemName:lower()]
+		Gloveboxes[plate].items[slot] = {
+			name = itemInfo["name"],
+			amount = amount,
+			info = info ~= nil and info or "",
+			label = itemInfo["label"],
+			description = itemInfo["description"] ~= nil and itemInfo["description"] or "",
+			weight = itemInfo["weight"], 
+			type = itemInfo["type"], 
+			unique = itemInfo["unique"], 
+			useable = itemInfo["useable"], 
+			image = itemInfo["image"],
+			slot = slot,
+		}
 	end
 end
 
 function RemoveFromGlovebox(plate, slot, itemName, amount)
-	if IsVehicleOwned(plate) then
-		local gloveItems = GetOwnedVehicleGloveboxItems(plate)
-		if gloveItems[slot] ~= nil and gloveItems[slot].name == itemName then
-			if gloveItems[slot].amount > amount then
-				gloveItems[slot].amount = gloveItems[slot].amount - amount
-			else
-				gloveItems[slot] = nil
-				if next(gloveItems) == nil then
-					gloveItems = nil
-				end
-			end
+	if Gloveboxes[plate].items[slot] ~= nil and Gloveboxes[plate].items[slot].name == itemName then
+		if Gloveboxes[plate].items[slot].amount > amount then
+			Gloveboxes[plate].items[slot].amount = Gloveboxes[plate].items[slot].amount - amount
 		else
-			gloveItems[slot ]= nil
-			if gloveItems == nil then
-				gloveItems[slot] = nil
+			Gloveboxes[plate].items[slot] = nil
+			if next(Gloveboxes[plate].items) == nil then
+				Gloveboxes[plate].items = {}
 			end
 		end
-		SaveOwnedVehicleGloveboxItems(plate, gloveItems)
 	else
-		if Gloveboxes[plate].items[slot] ~= nil and Gloveboxes[plate].items[slot].name == itemName then
-			if Gloveboxes[plate].items[slot].amount > amount then
-				Gloveboxes[plate].items[slot].amount = Gloveboxes[plate].items[slot].amount - amount
-			else
-				Gloveboxes[plate].items[slot] = nil
-				if next(Gloveboxes[plate].items) == nil then
-					Gloveboxes[plate].items = {}
-				end
-			end
-		else
-			Gloveboxes[plate].items[slot]= nil
-			if Gloveboxes[plate].items == nil then
-				Gloveboxes[plate].items[slot] = nil
-			end
+		Gloveboxes[plate].items[slot]= nil
+		if Gloveboxes[plate].items == nil then
+			Gloveboxes[plate].items[slot] = nil
 		end
 	end
 end
@@ -869,12 +789,4 @@ QBCore.Functions.CreateUseableItem("id_card", function(source, item)
 	if Player.Functions.GetItemBySlot(item.slot) ~= nil then
         TriggerClientEvent("inventory:client:ShowId", -1, source, Player.PlayerData.citizenid, item.info)
     end
-end)
-
-RegisterServerEvent('inventory:server:ShowIdRadial')
-AddEventHandler('inventory:server:ShowIdRadial', function(data)
-	local src = source
-	local Player = QBCore.Functions.GetPlayer(src)
-
-    TriggerClientEvent("inventory:client:ShowId", -1, src, Player.PlayerData.citizenid, Player.PlayerData.charinfo)
 end)

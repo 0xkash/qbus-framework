@@ -147,10 +147,9 @@ function updateweights($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
         return true;
     }
 
-    if ($fromInv != $toInv) {
+    if ($fromInv.attr("data-inventory") != $toInv.attr("data-inventory")) {
         fromData = $fromInv.find("[data-slot=" + $fromSlot + "]").data("item");
         toData = $toInv.find("[data-slot=" + $toSlot + "]").data("item");
-        console.log(fromData.amount)
         if ($toAmount == 0) {$toAmount=fromData.amount}
         if (toData == null || fromData.name == toData.name) {
             if ($fromInv.attr("data-inventory") == "player" || $fromInv.attr("data-inventory") == "hotbar") {

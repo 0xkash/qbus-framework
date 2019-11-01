@@ -10,6 +10,9 @@ local CurrentDrop = 0
 local DropsNear = {}
 
 local CurrentVehicle = nil
+local CurrentGlovebox = nil
+local CurrentStash = nil
+
 local showTrunkPos = false
 
 Citizen.CreateThread(function() 
@@ -51,15 +54,6 @@ end)
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(7)
-        if QBCore ~= nil and not inInventory then
-            
-        end
-    end
-end)
-
-Citizen.CreateThread(function()
-    while true do
-        Citizen.Wait(7)
         DisableControlAction(0, Keys["TAB"], true)
         DisableControlAction(0, Keys["1"], true)
         DisableControlAction(0, Keys["2"], true)
@@ -69,7 +63,8 @@ Citizen.CreateThread(function()
         if IsDisabledControlJustReleased(0, Keys["TAB"]) then
             if IsPedInAnyVehicle(GetPlayerPed(-1)) then
                 local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1), false)
-                CurrentVehicle = GetVehicleNumberPlateText(vehicle)
+                CurrentGlovebox = GetVehicleNumberPlateText(vehicle)
+                CurrentVehicle = nil
             else
                 local vehicle = QBCore.Functions.GetClosestVehicle()
                 if vehicle ~= 0 and vehicle ~= nil then
@@ -80,6 +75,7 @@ Citizen.CreateThread(function()
                     end
                     if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, trunkpos) < 2.0) and not IsPedInAnyVehicle(GetPlayerPed(-1)) then
                         CurrentVehicle = GetVehicleNumberPlateText(vehicle)
+                        CurrentGlovebox = nil
                     else
                         CurrentVehicle = nil
                     end
@@ -89,12 +85,10 @@ Citizen.CreateThread(function()
             end
 
             if CurrentVehicle ~= nil then
-                if IsPedInAnyVehicle(GetPlayerPed(-1)) then
-                    TriggerServerEvent("inventory:server:OpenInventory", "glovebox", CurrentVehicle)
-                else
-                    TriggerServerEvent("inventory:server:OpenInventory", "trunk", CurrentVehicle)
-                    OpenTrunk()
-                end
+                TriggerServerEvent("inventory:server:OpenInventory", "trunk", CurrentVehicle)
+                OpenTrunk()
+            elseif CurrentGlovebox ~= nil then
+                TriggerServerEvent("inventory:server:OpenInventory", "glovebox", CurrentGlovebox)
             elseif CurrentDrop ~= 0 then
                 TriggerServerEvent("inventory:server:OpenInventory", "drop", CurrentDrop)
             else
@@ -249,8 +243,6 @@ RegisterNetEvent("inventory:client:ShowId")
 AddEventHandler("inventory:client:ShowId", function(sourceId, citizenid, character)
     local sourcePos = GetEntityCoords(GetPlayerPed(GetPlayerFromServerId(sourceId)), false)
     local pos = GetEntityCoords(GetPlayerPed(-1), false)
-    
-    print(GetDistanceBetweenCoords(pos.x, pos.y, pos.z, sourcePos.x, sourcePos.y, sourcePos.z, true))
     if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, sourcePos.x, sourcePos.y, sourcePos.z, true) < 2.0) then
         local gender = "Man"
         if character.gender == 1 then
@@ -263,9 +255,22 @@ AddEventHandler("inventory:client:ShowId", function(sourceId, citizenid, charact
     end
 end)
 
+RegisterNetEvent("inventory:client:SetCurrentStash")
+AddEventHandler("inventory:client:SetCurrentStash", function(stash)
+    CurrentStash = stash
+end)
+
 RegisterNUICallback("CloseInventory", function(data, cb)
     if CurrentVehicle ~= nil then
         CloseTrunk()
+        TriggerServerEvent("inventory:server:SaveInventory", "trunk", CurrentVehicle)
+        CurrentVehicle = nil
+    elseif CurrentGlovebox ~= nil then
+        TriggerServerEvent("inventory:server:SaveInventory", "glovebox", CurrentGlovebox)
+        CurrentGlovebox = nil
+    elseif CurrentStash ~= nil then
+        TriggerServerEvent("inventory:server:SaveInventory", "stash", CurrentStash)
+        CurrentStash = nil
     end
     SetNuiFocus(false, false)
     inInventory = false
