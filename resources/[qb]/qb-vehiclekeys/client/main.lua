@@ -37,14 +37,15 @@ Citizen.CreateThread(function()
                     if result then
                         HasKey = true
                         SetVehicleEngineOn(veh, true, false, true)
+                        print('ja man')
                     else
                         HasKey = false
                         SetVehicleEngineOn(veh, false, false, true)
+                        print('nein')
                     end
                     LastVehicle = GetVehiclePedIsIn(GetPlayerPed(-1), false)
                 end, plate)
             end
-
         end
 
         if not HasKey and IsPedInAnyVehicle(GetPlayerPed(-1), false) and GetPedInVehicleSeat(GetVehiclePedIsIn(GetPlayerPed(-1), false), -1) == GetPlayerPed(-1) and QBCore ~= nil and not IsHotwiring then
@@ -125,6 +126,7 @@ AddEventHandler('vehiclekeys:client:SetOwner', function(plate)
         SetVehicleEngineOn(GetVehiclePedIsIn(GetPlayerPed(-1), true), true, false, true)
     end
     HasKey = true
+    QBCore.Functions.Notify('Je hebt de sleutels van het voertuig ontvangen', 'success', 3500)
 end)
 
 RegisterNetEvent('vehiclekeys:client:GiveKeys')

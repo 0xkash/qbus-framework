@@ -162,6 +162,6 @@ AddEventHandler('qb-vehicleshop:client:buyShowroomVehicle', function(vehicle, pl
         exports['LegacyFuel']:SetFuel(veh, 100)
         SetVehicleNumberPlateText(veh, plate)
         SetEntityHeading(veh, QB.DefaultBuySpawn.h)
-        TriggerEvent("vehiclekeys:client:SetOwner", plate)
+		TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
     end, QB.DefaultBuySpawn)
 end)

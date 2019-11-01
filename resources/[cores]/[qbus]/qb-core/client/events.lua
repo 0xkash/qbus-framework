@@ -23,6 +23,7 @@ RegisterNetEvent('QBCore:Command:SpawnVehicle')
 AddEventHandler('QBCore:Command:SpawnVehicle', function(model)
 	QBCore.Functions.SpawnVehicle(model, function(vehicle)
 		TaskWarpPedIntoVehicle(GetPlayerPed(-1), vehicle, -1)
+		TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(vehicle))
 	end)
 end)
 
