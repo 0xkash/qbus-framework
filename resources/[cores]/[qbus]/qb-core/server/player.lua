@@ -393,6 +393,7 @@ QBCore.Player.GetJobInfo = function(job, grade)
 	QBCore.Functions.ExecuteSql("SELECT * FROM `jobs`", function(result)
 		for _, info in pairs(result) do
 			if tostring(info.name) == tostring(job) then
+				info.grades = json.decode(info.grades)
 				for _, gradeinfo in pairs(info.grades) do
 					JobInfo.name = info.name
 					JobInfo.label = info.label

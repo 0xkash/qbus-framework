@@ -46,7 +46,6 @@ Citizen.CreateThread(function()
     while true do
         if isLoggedIn then
             SetClosestHouse()
-            TriggerEvent('qb-houses:client:setupHouseBlips')
             Citizen.Wait(100)
             TriggerEvent('qb-garages:client:setHouseGarage', closesthouse, hasKey)
         end
@@ -133,6 +132,7 @@ DrawText3Ds = function(x, y, z, text)
     DrawRect(0.0, 0.0+0.0125, 0.017+ factor, 0.03, 0, 0, 0, 75)
     ClearDrawOrigin()
 end
+
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(3)
@@ -370,7 +370,7 @@ function openContract(bool)
 end
 
 function enterOwnedHouse(house)
-    local coords = { x = Config.Houses[closesthouse].coords.enter.x, y = Config.Houses[closesthouse].coords.enter.y, z= Config.Houses[closesthouse].coords.enter.z - 25}
+    local coords = { x = Config.Houses[house].coords.enter.x, y = Config.Houses[house].coords.enter.y, z= Config.Houses[house].coords.enter.z - 25}
     if Config.Houses[house].tier == 1 then
         data = exports['qb-interior']:CreateTier1House(coords, false)
     end
@@ -391,6 +391,11 @@ function enterOwnedHouse(house)
     NetworkOverrideClockTime(23, 0, 0)
     entering = false
 end
+
+RegisterNetEvent('qb-houses:client:enterOwnedHouse')
+AddEventHandler('qb-houses:client:enterOwnedHouse', function(house)
+    enterOwnedHouse(house)
+end)
 
 function leaveOwnedHouse(house)
     DoScreenFadeOut(250)

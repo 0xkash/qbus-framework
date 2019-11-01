@@ -21,6 +21,21 @@ AddEventHandler('qb-garages:client:setHouseGarage', function(house, hasKey)
     hasGarageKey = hasKey
 end)
 
+DrawText3Ds = function(x, y, z, text)
+	SetTextScale(0.35, 0.35)
+    SetTextFont(4)
+    SetTextProportional(1)
+    SetTextColour(255, 255, 255, 215)
+    SetTextEntry("STRING")
+    SetTextCentre(true)
+    AddTextComponentString(text)
+    SetDrawOrigin(x,y,z, 0)
+    DrawText(0.0, 0.0)
+    local factor = (string.len(text)) / 370
+    DrawRect(0.0, 0.0+0.0125, 0.017+ factor, 0.03, 0, 0, 0, 75)
+    ClearDrawOrigin()
+end
+
 local currentGarage = nil
 
 Citizen.CreateThread(function()
@@ -36,6 +51,20 @@ Citizen.CreateThread(function()
         BeginTextCommandSetBlipName("STRING")
         AddTextComponentSubstringPlayerName(Garages[k].label)
         EndTextCommandSetBlipName(Garage)
+    end
+
+    for k, v in pairs(Depots) do
+        Depot = AddBlipForCoord(Depots[k].takeVehicle.x, Depots[k].takeVehicle.y, Depots[k].takeVehicle.z)
+
+        SetBlipSprite (Depot, 365)
+        SetBlipDisplay(Depot, 4)
+        SetBlipScale  (Depot, 0.65)
+        SetBlipAsShortRange(Depot, true)
+        SetBlipColour(Depot, 3)
+
+        BeginTextCommandSetBlipName("STRING")
+        AddTextComponentSubstringPlayerName(Depots[k].label)
+        EndTextCommandSetBlipName(Depot)
     end
 end)
 
@@ -127,7 +156,7 @@ function DepotLijst()
 
 
                 if v.state == 0 then
-                    v.state = "In"
+                    v.state = "Depot"
                 end
 
                 Menu.addButton(GetDisplayNameFromVehicleModel(GetHashKey(v.vehicle)), "TakeOutDepotVehicle", v, v.state, " Motor: " .. enginePercent.."%", " Body: " .. bodyPercent.."%", " Fuel: "..currentFuel.."%")
@@ -183,12 +212,14 @@ function TakeOutVehicle(vehicle)
             SetVehicleNumberPlateText(veh, vehicle.plate)
             SetEntityHeading(veh, Garages[currentGarage].spawnPoint.h)
             print(Garages[currentGarage].spawnPoint.h)
-            TaskWarpPedIntoVehicle(GetPlayerPed(-1), veh, -1)
             exports['LegacyFuel']:SetFuel(veh, vehicle.fuel)
             doCarDamage(veh, vehicle)
             TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, vehicle.garage)
             QBCore.Functions.Notify("Voertuig Uit: Motor: " .. enginePercent .. "% Body: " .. bodyPercent.. "% Fuel: "..currentFuel.. "%", "primary", 4500)
             closeMenuFull()
+            TaskWarpPedIntoVehicle(GetPlayerPed(-1), veh, -1)
+            TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
+            SetVehicleEngineOn(veh, true, true)
         end, Garages[currentGarage].spawnPoint, true)
     elseif vehicle.state == "Uit" then
         QBCore.Functions.Notify("Staat je voertuig in het depot??", "error", 2500)
@@ -198,7 +229,7 @@ function TakeOutVehicle(vehicle)
 end
 
 function TakeOutDepotVehicle(vehicle)
-    if vehicle.state == "Garage" then
+    if vehicle.state == "Depot" then
         QBCore.Functions.SpawnVehicle(vehicle.vehicle, function(veh)
             enginePercent = round(vehicle.engine / 10, 0)
             bodyPercent = round(vehicle.body / 10, 0)
@@ -213,6 +244,8 @@ function TakeOutDepotVehicle(vehicle)
             TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, vehicle.garage)
             QBCore.Functions.Notify("Voertuig Uit: Motor: " .. enginePercent .. "% Body: " .. bodyPercent.. "% Fuel: "..currentFuel.. "%", "primary", 4500)
             closeMenuFull()
+            TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
+            SetVehicleEngineOn(veh, true, true)
         end, Depots[currentGarage].spawnPoint, true)
     end
 end
@@ -232,6 +265,8 @@ function TakeOutGarageVehicle(vehicle)
             TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, vehicle.garage)
             QBCore.Functions.Notify("Voertuig Uit: Motor: " .. enginePercent .. "% Body: " .. bodyPercent.. "% Fuel: "..currentFuel.. "%", "primary", 4500)
             closeMenuFull()
+            TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
+            SetVehicleEngineOn(veh, true, true)
         end, HouseGarages[currentHouseGarage].takeVehicle, true)
     end
 end
@@ -319,7 +354,7 @@ Citizen.CreateThread(function()
                 DrawMarker(2, Garages[k].takeVehicle.x, Garages[k].takeVehicle.y, Garages[k].takeVehicle.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
                 if takeDist <= 1.5 then
                     if not IsPedInAnyVehicle(ped) then
-                        QBCore.Functions.DrawText3D(Garages[k].takeVehicle.x, Garages[k].takeVehicle.y, Garages[k].takeVehicle.z + 0.5, '~g~E~w~ - Garage')
+                        DrawText3Ds(Garages[k].takeVehicle.x, Garages[k].takeVehicle.y, Garages[k].takeVehicle.z + 0.5, '~g~E~w~ - Garage')
                         if IsControlJustPressed(1, 177) and not Menu.hidden then
                             close()
                             PlaySound(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0, 0, 1)
@@ -330,7 +365,7 @@ Citizen.CreateThread(function()
                             currentGarage = k
                         end
                     else
-                        QBCore.Functions.DrawText3D(Garages[k].takeVehicle.x, Garages[k].takeVehicle.y, Garages[k].takeVehicle.z, Garages[k].label)
+                        DrawText3Ds(Garages[k].takeVehicle.x, Garages[k].takeVehicle.y, Garages[k].takeVehicle.z, Garages[k].label)
                     end
                 end
 
@@ -346,7 +381,7 @@ Citizen.CreateThread(function()
             if putDist <= 15 and IsPedInAnyVehicle(ped) then
                 DrawMarker(2, Garages[k].putVehicle.x, Garages[k].putVehicle.y, Garages[k].putVehicle.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 255, 255, 255, 255, false, false, false, true, false, false, false)
                 if putDist <= 1.5 then
-                    QBCore.Functions.DrawText3D(Garages[k].putVehicle.x, Garages[k].putVehicle.y, Garages[k].putVehicle.z + 0.5, '~g~E~w~ - Parkeer Voertuig')
+                    DrawText3Ds(Garages[k].putVehicle.x, Garages[k].putVehicle.y, Garages[k].putVehicle.z + 0.5, '~g~E~w~ - Parkeer Voertuig')
                     if IsControlJustPressed(0, 38) then
                         local curVeh = GetVehiclePedIsIn(ped)
                         local plate = GetVehicleNumberPlateText(curVeh)
@@ -386,7 +421,7 @@ Citizen.CreateThread(function()
                         DrawMarker(2, HouseGarages[currentHouseGarage].takeVehicle.x, HouseGarages[currentHouseGarage].takeVehicle.y, HouseGarages[currentHouseGarage].takeVehicle.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
                         if takeDist <= 1.5 then
                             if not IsPedInAnyVehicle(ped) then
-                                QBCore.Functions.DrawText3D(HouseGarages[currentHouseGarage].takeVehicle.x, HouseGarages[currentHouseGarage].takeVehicle.y, HouseGarages[currentHouseGarage].takeVehicle.z + 0.5, '~g~E~w~ - Garage')
+                                DrawText3Ds(HouseGarages[currentHouseGarage].takeVehicle.x, HouseGarages[currentHouseGarage].takeVehicle.y, HouseGarages[currentHouseGarage].takeVehicle.z + 0.5, '~g~E~w~ - Garage')
                                 if IsControlJustPressed(1, 177) and not Menu.hidden then
                                     close()
                                     PlaySound(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0, 0, 1)
@@ -396,7 +431,7 @@ Citizen.CreateThread(function()
                                     Menu.hidden = not Menu.hidden
                                 end
                             elseif IsPedInAnyVehicle(ped) then
-                                QBCore.Functions.DrawText3D(HouseGarages[currentHouseGarage].takeVehicle.x, HouseGarages[currentHouseGarage].takeVehicle.y, HouseGarages[currentHouseGarage].takeVehicle.z + 0.5, '~g~E~w~ - Om te parkeren')
+                                DrawText3Ds(HouseGarages[currentHouseGarage].takeVehicle.x, HouseGarages[currentHouseGarage].takeVehicle.y, HouseGarages[currentHouseGarage].takeVehicle.z + 0.5, '~g~E~w~ - Om te parkeren')
                                 if IsControlJustPressed(0, 38) then
                                     local curVeh = GetVehiclePedIsIn(ped)
                                     local plate = GetVehicleNumberPlateText(curVeh)
@@ -444,7 +479,7 @@ Citizen.CreateThread(function()
                 DrawMarker(2, Depots[k].takeVehicle.x, Depots[k].takeVehicle.y, Depots[k].takeVehicle.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
                 if takeDist <= 1.5 then
                     if not IsPedInAnyVehicle(ped) then
-                        QBCore.Functions.DrawText3D(Depots[k].takeVehicle.x, Depots[k].takeVehicle.y, Depots[k].takeVehicle.z + 0.5, '~g~E~w~ - Garage')
+                        DrawText3Ds(Depots[k].takeVehicle.x, Depots[k].takeVehicle.y, Depots[k].takeVehicle.z + 0.5, '~g~E~w~ - Garage')
                         if IsControlJustPressed(1, 177) and not Menu.hidden then
                             close()
                             PlaySound(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0, 0, 1)

@@ -125,6 +125,7 @@ AddEventHandler('vehiclekeys:client:SetOwner', function(plate)
     if IsPedInAnyVehicle(GetPlayerPed(-1)) then
         SetVehicleEngineOn(GetVehiclePedIsIn(GetPlayerPed(-1), true), true, false, true)
     end
+    HasKey = true
 end)
 
 RegisterNetEvent('vehiclekeys:client:GiveKeys')

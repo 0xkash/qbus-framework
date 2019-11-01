@@ -15,7 +15,6 @@ end)
 
 RegisterNetEvent('3dme:triggerDisplay')
 AddEventHandler('3dme:triggerDisplay', function(text, source)
-    print(text)
     local offset = 1 + (nbrDisplaying*0.14)
     Display(GetPlayerFromServerId(source), text, offset)
 end)
@@ -24,7 +23,7 @@ function Display(mePlayer, text, offset)
     local displaying = true
 
     Citizen.CreateThread(function()
-        Wait(time)
+        Wait(5000)
         displaying = false
     end)
     Citizen.CreateThread(function()

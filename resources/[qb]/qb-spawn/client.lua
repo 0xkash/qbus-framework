@@ -18,8 +18,7 @@ RegisterNetEvent('qb-spawn:client:openUI')
 AddEventHandler('qb-spawn:client:openUI', function(value)
     SetEntityVisible(GetPlayerPed(-1), false)
     DoScreenFadeOut(250)
-    Citizen.Wait(1000)
-    setupSpawnLocations()
+    Citizen.Wait(2000)
     DoScreenFadeIn(250)
     QBCore.Functions.GetPlayerData(function(PlayerData)     
         cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", PlayerData.position.x, PlayerData.position.y, PlayerData.position.z + 150, -85.00, 0.00, 0.00, 100.00, false, 0)
@@ -41,12 +40,12 @@ end)
 
 local cam = nil
 
-function setupSpawnLocations()
-    SendNUIMessage({
-        action = "setupLocations",
-        locations = QB.Spawns
-    })
-end
+-- function setupSpawnLocations()
+--     SendNUIMessage({
+--         action = "setupLocations",
+--         locations = QB.Spawns
+--     })
+-- end
 
 RegisterNUICallback('setCam', function(data)
     local location = tostring(data.posname)
@@ -68,9 +67,13 @@ end)
 
 RegisterNUICallback('spawnplayer', function(data)
     local location = tostring(data.spawnloc)
+    local type = tostring(data.typeLoc)
     local ped = GetPlayerPed(-1)
 
-    if location == "current" then
+    print(type)
+
+    if type == "current" then
+        print('current')
         SetDisplay(false)
         DoScreenFadeOut(500)
         Citizen.Wait(5000)
@@ -88,7 +91,23 @@ RegisterNUICallback('spawnplayer', function(data)
         SetEntityVisible(GetPlayerPed(-1), true)
         Citizen.Wait(500)
         DoScreenFadeIn(250)
-    else
+    elseif type == "house" then
+        SetDisplay(false)
+        DoScreenFadeOut(500)
+        Citizen.Wait(5000)
+        TriggerEvent('qb-houses:client:enterOwnedHouse', location)
+        TriggerServerEvent('QBCore:Server:OnPlayerLoaded')
+        TriggerEvent('QBCore:Client:OnPlayerLoaded')
+        FreezeEntityPosition(ped, false)
+        RenderScriptCams(false, true, 500, true, true)
+        SetCamActive(cam, false)
+        DestroyCam(cam, true)
+        SetEntityVisible(GetPlayerPed(-1), true)
+        Citizen.Wait(500)
+        DoScreenFadeIn(250)
+        print('house')
+    elseif type == "normal" then
+        print('normal')
         local pos = QB.Spawns[location].coords
         SetDisplay(false)
         DoScreenFadeOut(500)
@@ -124,4 +143,27 @@ Citizen.CreateThread(function()
 
         DisableAllControlActions(0)
     end
+end)
+
+RegisterNetEvent('qb-spawn:client:setupHouseSpawns')
+AddEventHandler('qb-spawn:client:setupHouseSpawns', function(cData)
+    print('yeet?')
+    QBCore.Functions.TriggerCallback('qb-spawn:server:getOwnedHouses', function(houses)
+        local myHouses = {}
+        if houses ~= nil then
+            for i = 1, (#houses), 1 do
+                table.insert(myHouses, {
+                    house = houses[i].house,
+                    label = Config.Houses[houses[i].house].adress,
+                })
+            end
+        end
+
+        Citizen.Wait(500)
+        SendNUIMessage({
+            action = "setupLocations",
+            locations = QB.Spawns,
+            houses = myHouses,
+        })
+    end, cData.citizenid)
 end)

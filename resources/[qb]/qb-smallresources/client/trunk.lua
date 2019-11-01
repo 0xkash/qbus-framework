@@ -1,7 +1,16 @@
 local inTrunk = false
 
 local geluidjes = {
-    [1] = "*fart*"
+    [1] = "*fart*",
+    [2] = "*fart*",
+    [3] = "*fart*",
+    [4] = "*fart*",
+    [5] = "*fart*",
+    [6] = "*fart*",
+    [7] = "*fart*",
+    [8] = "*fart*",
+    [9] = "*fart*",
+    [10] = "*fart*",
 }
 
 function loadDict(dict)
@@ -41,7 +50,7 @@ AddEventHandler('qb-smallresources:trunk:client:getInTrunk', function()
                         inTrunk = true
                         Citizen.Wait(500)
                         SetVehicleDoorShut(closestVehicle, 5, false)
-                        QBCore.Functions.Notify('Je ligt in de kofferbak, /kofferbak om er uit te gaan.', 'success', 4000)
+                        QBCore.Functions.Notify('Je ligt in de kofferbak.', 'success', 4000)
                     else
                         QBCore.Functions.Notify('Is de kofferbak dicht?', 'error', 2500)
                     end
@@ -51,7 +60,7 @@ AddEventHandler('qb-smallresources:trunk:client:getInTrunk', function()
             else
                 SetVehicleDoorOpen(closestVehicle, 5, false)
                 Citizen.Wait(500)
-                local vehCoords = GetOffsetFromEntityInWorldCoords(closestVehicle, 0, -3.5, 0)
+                local vehCoords = GetOffsetFromEntityInWorldCoords(closestVehicle, 0, -5.0, 0)
                 DetachEntity(ped, true, true)
                 ClearPedTasks(ped)
                 inTrunk = false
@@ -63,22 +72,4 @@ AddEventHandler('qb-smallresources:trunk:client:getInTrunk', function()
             print('yeet')
         end
     end, plate)
-end)
-
-Citizen.CreateThread(function()
-    while true do
-        if inTrunk then
-            local vehCoords = GetEntityCoords(GetPlayerPed(-1))
-            local randomText = math.random(10)
-
-            print(randomText)
-
-            DrawText3Ds(vehCoords.x, vehCoords.y, vehCoords.z, '~g~E~w~ Om geluidje te maken')
-
-            if IsControlJustPressed(0, 51) then
-                TriggerClientEvent('3dme:triggerDisplay', -1, text, source)
-            end
-        end
-        Citizen.Wait(3)
-    end
 end)

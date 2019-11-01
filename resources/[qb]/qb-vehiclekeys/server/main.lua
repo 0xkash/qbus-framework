@@ -46,7 +46,7 @@ AddEventHandler('vehiclekeys:server:GiveVehicleKeys', function(plate, target)
         if QBCore.Functions.GetPlayer(target) ~= nil then
             TriggerClientEvent('vehiclekeys:client:SetOwner', target, plate)
             TriggerClientEvent('QBCore:Notify', src, "Je hebt je sleutels gegeven!")
-            TriggerClientEvent('QBCore:Notify', src, "Je hebt je sleutels ontvangen!")
+            TriggerClientEvent('QBCore:Notify', target, "Je hebt je sleutels ontvangen!")
         else
             TriggerClientEvent('chatMessage', src, "SYSTEM", "error", "Speler is niet online!")
         end

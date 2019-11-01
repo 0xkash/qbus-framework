@@ -46,31 +46,17 @@ p {
     right: 10px;
 }
 
-#cash-symbol {
-    color: #1a530f;
-    margin-right: 10px;
-}
-
-#bank-symbol {
-    color: #217ebd;
-    margin-right: 10px;
-}
-
 .money-cash {
-    text-shadow: 1px 1px #00000083;
+    color: rgb(210, 210, 210);
+    text-shadow: 2px 2px #00000096;
     text-align: right;
 }
 
 .money-bank {
-    text-shadow: 1px 1px #00000083;
+    color: rgb(167, 167, 167);
+    text-shadow: 2px 2px #00000096;
     text-align: right;
     top: 55px;
-}
-
-#changeamount {
-    text-shadow: 1px 1px #00000083;
-    text-align: right;
-    color: white;
 }
 
 #plus-changeamount {
@@ -83,14 +69,6 @@ p {
     text-shadow: 1px 1px #00000083;
     text-align: right;
     color: #c75f60;
-}
-
-#minus-symbol {
-    color: #c75f60;
-}
-
-#plus-symbol {
-    color: #1a530f;
 }
 
 .minus {
