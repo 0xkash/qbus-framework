@@ -376,26 +376,26 @@ AnimationList.Emotes = {
    {
        EmoteLoop = true,
    }},
-   ["crossarms"] = {"amb@world_human_hang_out_street@female_arms_crossed@idle_a", "idle_a", "Crossarms", AnimationOptions =
+   ["cross"] = {"amb@world_human_hang_out_street@female_arms_crossed@idle_a", "idle_a", "Cross", AnimationOptions =
    {
        EmoteLoop = true,
        EmoteMoving = true,
    }},
-   ["crossarms2"] = {"amb@world_human_hang_out_street@male_c@idle_a", "idle_b", "Crossarms 2", AnimationOptions =
+   ["cross2"] = {"amb@world_human_hang_out_street@male_c@idle_a", "idle_b", "Cross 2", AnimationOptions =
    {
        EmoteMoving = true,
    }},
-   ["crossarms3"] = {"anim@heists@heist_corona@single_team", "single_team_loop_boss", "Crossarms 3", AnimationOptions =
-   {
-       EmoteLoop = true,
-       EmoteMoving = true,
-   }},
-   ["crossarms4"] = {"random@street_race", "_car_b_lookout", "Crossarms 4", AnimationOptions =
+   ["cross3"] = {"anim@heists@heist_corona@single_team", "single_team_loop_boss", "Cross 3", AnimationOptions =
    {
        EmoteLoop = true,
        EmoteMoving = true,
    }},
-   ["crossarms5"] = {"anim@amb@nightclub@peds@", "rcmme_amanda1_stand_loop_cop", "Crossarms 5", AnimationOptions =
+   ["cross4"] = {"random@street_race", "_car_b_lookout", "Cross 4", AnimationOptions =
+   {
+       EmoteLoop = true,
+       EmoteMoving = true,
+   }},
+   ["cross5"] = {"anim@amb@nightclub@peds@", "rcmme_amanda1_stand_loop_cop", "Cross 5", AnimationOptions =
    {
        EmoteLoop = true,
        EmoteMoving = true,
@@ -405,7 +405,7 @@ AnimationList.Emotes = {
        EmoteLoop = true,
        EmoteMoving = true,
    }},
-   ["crossarms6"] = {"random@shop_gunstore", "_idle", "Crossarms 6", AnimationOptions =
+   ["cross6"] = {"random@shop_gunstore", "_idle", "Cross 6", AnimationOptions =
    {
        EmoteLoop = true,
        EmoteMoving = true,
