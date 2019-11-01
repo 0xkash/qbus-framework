@@ -107,15 +107,13 @@ Citizen.CreateThread(function()
                                 end
                             end
                         end
-                        damagedone = true       
-                        SetVehicleTyreBurst(currentVehicle, tireToBurst, true, 1000) 
+                        damagedone = true
                         SetVehicleEngineHealth(currentVehicle, 0)
                         SetVehicleEngineOn(currentVehicle, false, true, true)
                     end
                     if currentvehicleBodyHealth < 350.0 and not damagedone then
                         damagedone = true
                         SetVehicleBodyHealth(targetVehicle, 945.0)
-                        SetVehicleTyreBurst(currentVehicle, tireToBurst, true, 1000) 
                         SetVehicleEngineHealth(currentVehicle, 0)
                         SetVehicleEngineOn(currentVehicle, false, true, true)
                         Citizen.Wait(1000)
@@ -168,8 +166,7 @@ Citizen.CreateThread(function()
                 Citizen.Wait(200)
                 newvehicleBodyHealth = GetVehicleBodyHealth(lastVehicle)
                 if not damagedone and newvehicleBodyHealth < currentvehicleBodyHealth then
-                    damagedone = true                   
-                    SetVehicleTyreBurst(lastVehicle, tireToBurst, true, 1000) 
+                    damagedone = true
                     SetVehicleEngineHealth(lastVehicle, 0)
                     SetVehicleEngineOn(lastVehicle, false, true, true)
                     Citizen.Wait(1000)

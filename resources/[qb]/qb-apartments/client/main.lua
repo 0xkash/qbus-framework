@@ -53,6 +53,7 @@ Citizen.CreateThread(function()
                     QBCore.Functions.DrawText3D(Apartments.Locations[ClosestHouse].coords.stash.x, Apartments.Locations[ClosestHouse].coords.stash.y, Apartments.Locations[ClosestHouse].coords.stash.z, '~g~E~w~ - Stash')
                     if IsControlJustPressed(0, Keys["E"]) then
                         if CurrentApartment ~= nil then
+                            TriggerEvent("inventory:client:SetCurrentStash", CurrentApartment)
                             TriggerServerEvent("inventory:server:OpenInventory", "stash", CurrentApartment)
                         end
                     end
