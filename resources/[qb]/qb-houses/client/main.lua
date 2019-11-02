@@ -175,7 +175,8 @@ Citizen.CreateThread(function()
                     if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.stash.x, Config.Houses[closesthouse].coords.stash.y, Config.Houses[closesthouse].coords.stash.z, true) < 1.5)then
                         DrawText3Ds(Config.Houses[closesthouse].coords.stash.x, Config.Houses[closesthouse].coords.stash.y, Config.Houses[closesthouse].coords.stash.z, '~g~E~w~ - Stash')
                         if IsControlJustPressed(0, Keys["E"]) then
-                            print('yeet')
+                            TriggerEvent("inventory:client:SetCurrentStash", closesthouse)
+                            TriggerServerEvent("inventory:server:OpenInventory", "stash", closesthouse)
                         end
                     elseif(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.stash.x, Config.Houses[closesthouse].coords.stash.y, Config.Houses[closesthouse].coords.stash.z, true) < 3)then
                         DrawText3Ds(Config.Houses[closesthouse].coords.stash.x, Config.Houses[closesthouse].coords.stash.y, Config.Houses[closesthouse].coords.stash.z, 'Stash')
@@ -258,7 +259,8 @@ Citizen.CreateThread(function()
                         if(GetDistanceBetweenCoords(pos, 894.17, -617.66, 34.54, true) < 1.5)then
                             DrawText3Ds(894.17, -617.66, 34.54, '[~g~E~w~] Stash')
                             if IsControlJustPressed(0, Keys["E"]) then
-                                print('yeet')
+                                TriggerEvent("inventory:client:SetCurrentStash", closesthouse)
+                                TriggerServerEvent("inventory:server:OpenInventory", "stash", closesthouse)
                             end
                         elseif(GetDistanceBetweenCoords(pos, 894.17, -617.66, 34.54, true) < 30)then
                             if not DoesEntityExist(SafeObject) then
@@ -327,7 +329,6 @@ function OutfitsLijst()
         end
         Menu.addButton("Terug", "MenuOutfits",nil)
     end)
-    print('yeet')
 end
 
 function optionMenu(outfitData)
@@ -561,6 +562,4 @@ function SetClosestHouse()
     QBCore.Functions.TriggerCallback('qb-houses:server:isOwned', function(result)
         isOwned = result
     end, closesthouse)
-
-    print(closesthouse)
 end

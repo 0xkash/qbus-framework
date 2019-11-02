@@ -38,7 +38,6 @@ end)
 
 RegisterServerEvent('apartments:server:OpenDoor')
 AddEventHandler('apartments:server:OpenDoor', function(target, apartmentId, apartment)
-    print(target)
     local src = source
     local OtherPlayer = QBCore.Functions.GetPlayer(target)
     if OtherPlayer ~= nil then
@@ -49,14 +48,36 @@ end)
 
 RegisterServerEvent('apartments:server:AddObject')
 AddEventHandler('apartments:server:AddObject', function(apartmentId, apartment, offset)
-    ApartmentObjects[apartment] ={}
-    ApartmentObjects[apartment].apartments = {}
-    ApartmentObjects[apartment].apartments[apartmentId] = offset
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    if ApartmentObjects[apartment] ~= nil and ApartmentObjects[apartment].apartments ~= nil and ApartmentObjects[apartment].apartments[apartmentId] ~= nil then
+        ApartmentObjects[apartment].apartments[apartmentId].players[src] = Player.PlayerData.citizenid
+    else
+        if ApartmentObjects[apartment] ~= nil and ApartmentObjects[apartment].apartments ~= nil then
+            ApartmentObjects[apartment].apartments[apartmentId] = {}
+            ApartmentObjects[apartment].apartments[apartmentId].offset = offset
+            ApartmentObjects[apartment].apartments[apartmentId].players = {}
+            ApartmentObjects[apartment].apartments[apartmentId].players[src] = Player.PlayerData.citizenid
+        else
+            ApartmentObjects[apartment] = {}
+            ApartmentObjects[apartment].apartments = {}
+            ApartmentObjects[apartment].apartments[apartmentId] = {}
+            ApartmentObjects[apartment].apartments[apartmentId].offset = offset
+            ApartmentObjects[apartment].apartments[apartmentId].players = {}
+            ApartmentObjects[apartment].apartments[apartmentId].players[src] = Player.PlayerData.citizenid
+        end
+    end
 end)
 
 RegisterServerEvent('apartments:server:RemoveObject')
 AddEventHandler('apartments:server:RemoveObject', function(apartmentId, apartment)
-    ApartmentObjects[apartment].apartments[apartmentId] = nil
+    local src = source
+    if ApartmentObjects[apartment].apartments[apartmentId].players ~= nil then
+        ApartmentObjects[apartment].apartments[apartmentId].players[src] = nil
+        if next(ApartmentObjects[apartment].apartments[apartmentId].players) == nil then
+            ApartmentObjects[apartment].apartments[apartmentId] = nil
+        end
+    end
 end)
 
 function CreateApartmentId(type)
@@ -86,26 +107,22 @@ end
 
 QBCore.Functions.CreateCallback('apartments:GetApartmentOffset', function(source, cb, apartmentId)
     local retval = 0
-    print(AparmentId)
     if ApartmentObjects ~= nil then
         for k, v in pairs(ApartmentObjects) do
-            if (ApartmentObjects[k].apartments[apartmentId] ~= nil and tonumber(ApartmentObjects[k].apartments[apartmentId]) ~= 0) then
-                print("SADADAD")
-                retval = tonumber(ApartmentObjects[k].apartments[apartmentId])
+            if (ApartmentObjects[k].apartments[apartmentId] ~= nil and tonumber(ApartmentObjects[k].apartments[apartmentId].offset) ~= 0) then
+                retval = tonumber(ApartmentObjects[k].apartments[apartmentId].offset)
             end
         end
     end
     cb(retval)
 end)
 
-QBCore.Functions.CreateCallback('apartments:GetApartmentOffsetCount', function(source, cb, apartment)
-    local retval = 0
+QBCore.Functions.CreateCallback('apartments:GetApartmentOffsetNewOffset', function(source, cb, apartment)
+    local retval = Apartments.SpawnOffset
     if ApartmentObjects ~= nil and ApartmentObjects[apartment] ~= nil and ApartmentObjects[apartment].apartments ~= nil then
-        print(json.encode(ApartmentObjects[apartment]))
         for k, v in pairs(ApartmentObjects[apartment].apartments) do
             if (ApartmentObjects[apartment].apartments[k] ~= nil) then
-                retval = retval + 1
-                print(retval)
+                retval = ApartmentObjects[apartment].apartments[k].offset + Apartments.SpawnOffset
             end
         end
     end

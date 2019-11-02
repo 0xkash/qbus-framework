@@ -213,16 +213,11 @@ function EnterApartment(house, apartmentId)
     openHouseAnim()
     Citizen.Wait(250)
     QBCore.Functions.TriggerCallback('apartments:GetApartmentOffset', function(offset)
-        print(offset)
         if offset == nil or offset == 0 then
-            QBCore.Functions.TriggerCallback('apartments:GetApartmentOffsetCount', function(count)
-                if count == 0 then
-                    CurrentOffset = Apartments.SpawnOffset
-                else
-                    CurrentOffset = (count * Apartments.SpawnOffset)
-                end
-                TriggerServerEvent("apartments:server:AddObject", apartmentId, house, offset)
+            QBCore.Functions.TriggerCallback('apartments:GetApartmentOffsetNewOffset', function(newoffset)
+                CurrentOffset = newoffset
                 print("Current offset: " ..CurrentOffset)
+                TriggerServerEvent("apartments:server:AddObject", apartmentId, house, CurrentOffset)
                 
                 local coords = { x = Apartments.Locations[house].coords.enter.x, y = Apartments.Locations[house].coords.enter.y, z = Apartments.Locations[house].coords.enter.z - CurrentOffset}
                 data = exports['qb-interior']:CreateTier1HouseFurnished(coords)
@@ -247,10 +242,11 @@ function EnterApartment(house, apartmentId)
                 
 
                 TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_close", 1.0)
-            end)
+            end, house)
         else
             CurrentOffset = offset
             TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_open", 1.0)
+            TriggerServerEvent("apartments:server:AddObject", apartmentId, house, CurrentOffset)
             local coords = { x = Apartments.Locations[ClosestHouse].coords.enter.x, y = Apartments.Locations[ClosestHouse].coords.enter.y, z = Apartments.Locations[ClosestHouse].coords.enter.z - CurrentOffset}
             data = exports['qb-interior']:CreateTier1HouseFurnished(coords, false)
             
@@ -291,6 +287,7 @@ function LeaveApartment(house)
         SetEntityCoords(GetPlayerPed(-1), Apartments.Locations[house].coords.enter.x, Apartments.Locations[house].coords.enter.y,Apartments.Locations[house].coords.enter.z)
         SetEntityHeading(GetPlayerPed(-1), Apartments.Locations[house].coords.enter.h)
         Citizen.Wait(1000)
+        TriggerServerEvent("apartments:server:RemoveObject", CurrentApartment, house)
         CurrentApartment = nil
         InApartment = false
         CurrentOffset = 0
