@@ -7,7 +7,7 @@ Gloveboxes = {}
 Stashes = {}
 
 RegisterServerEvent("inventory:server:OpenInventory")
-AddEventHandler('inventory:server:OpenInventory', function(name, id)
+AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 	local src = source
 	local Player = QBCore.Functions.GetPlayer(src)
 	if name ~= nil and id ~= nil then
@@ -29,9 +29,9 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id)
 		elseif name == "trunk" then
 			secondInv.name = "trunk-"..id
 			secondInv.label = "Trunk-"..id
-			secondInv.maxweight = 1000000
+			secondInv.maxweight = other.maxweight ~= nil and other.maxweight or 60000
 			secondInv.inventory = {}
-			secondInv.slots = 69
+			secondInv.slots = other.slots ~= nil and other.slots or 50
 			if IsVehicleOwned(id) and next(GetOwnedVehicleItems(id)) ~= nil then
 				secondInv.inventory = GetOwnedVehicleItems(id)
 				Trunks[id] = {}

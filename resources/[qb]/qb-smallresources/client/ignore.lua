@@ -28,20 +28,3 @@ Citizen.CreateThread(function()
        RemoveAllPickupsOfType(0xB0769393) -- sns
     end
 end)
-
-Citizen.CreateThread(function()
-    while true do
-        local player = PlayerId()
-        local playerPed = GetPlayerPed(-1)
-        NetworkSetFriendlyFireOption(true)
-        SetCanAttackFriendly(playerPed, true, true)
-
-        -- Enable Left & Right Mouse
-
-        EnableControlAction(0, 346, true)
-        EnableControlAction(0, 347, true)
-        print('?')
-
-        Citizen.Wait(10000)
-    end
-end)

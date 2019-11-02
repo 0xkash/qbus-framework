@@ -61,9 +61,11 @@ Citizen.CreateThread(function()
         DisableControlAction(0, Keys["4"], true)
         DisableControlAction(0, Keys["5"], true)
         if IsDisabledControlJustReleased(0, Keys["TAB"]) then
+            local curVeh = nil
             if IsPedInAnyVehicle(GetPlayerPed(-1)) then
                 local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1), false)
                 CurrentGlovebox = GetVehicleNumberPlateText(vehicle)
+                curVeh = vehicle
                 CurrentVehicle = nil
             else
                 local vehicle = QBCore.Functions.GetClosestVehicle()
@@ -75,6 +77,7 @@ Citizen.CreateThread(function()
                     end
                     if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, trunkpos) < 2.0) and not IsPedInAnyVehicle(GetPlayerPed(-1)) then
                         CurrentVehicle = GetVehicleNumberPlateText(vehicle)
+                        curVeh = vehicle
                         CurrentGlovebox = nil
                     else
                         CurrentVehicle = nil
@@ -85,7 +88,11 @@ Citizen.CreateThread(function()
             end
 
             if CurrentVehicle ~= nil then
-                TriggerServerEvent("inventory:server:OpenInventory", "trunk", CurrentVehicle)
+                local other = {
+                    maxweight = QBCore.Shared.VehicleModels[GetEntityModel(curVeh)]["trunkspace"],
+                    slots = QBCore.Shared.VehicleModels[GetEntityModel(curVeh)]["trunkslots"],
+                }
+                TriggerServerEvent("inventory:server:OpenInventory", "trunk", CurrentVehicle, other)
                 OpenTrunk()
             elseif CurrentGlovebox ~= nil then
                 TriggerServerEvent("inventory:server:OpenInventory", "glovebox", CurrentGlovebox)
