@@ -31,7 +31,8 @@ $(document).on('click', '.location', function(evt){
     $("#submit-spawn").attr("data-type", type);
     $("#submit-spawn").fadeIn(100)
     $.post('http://qb-spawn/setCam', JSON.stringify({
-        posname: location
+        posname: location,
+        type: type,
     }));
     if (currentLocation !== null) {
         $(currentLocation).removeClass('selected');

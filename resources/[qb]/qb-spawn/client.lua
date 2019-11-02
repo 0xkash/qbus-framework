@@ -39,6 +39,7 @@ RegisterNUICallback("exit", function(data)
 end)
 
 local cam = nil
+local cam2 = nil
 
 -- function setupSpawnLocations()
 --     SendNUIMessage({
@@ -49,19 +50,51 @@ local cam = nil
 
 RegisterNUICallback('setCam', function(data)
     local location = tostring(data.posname)
+    local type = tostring(data.type)
 
-    if location == "current" then
-        QBCore.Functions.GetPlayerData(function(PlayerData)     
-            cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", PlayerData.position.x, PlayerData.position.y, PlayerData.position.z + 150, -85.00, 0.00, 0.00, 100.00, false, 0)
-            SetCamActive(cam, true)
-            RenderScriptCams(true, false, 1, true, true)
+    local camZPlus1 = 300
+    local camZPlus2 = 50
+    local pointCamCoords = 5
+    local pointCamCoords2 = 0
+    local cam1Time = 400
+    local cam2Time = 1000
+
+    if type == "current" then
+        QBCore.Functions.GetPlayerData(function(PlayerData)
+            cam2 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", PlayerData.position.x, PlayerData.position.y, PlayerData.position.z + camZPlus1, 300.00,0.00,0.00, 110.00, false, 0)
+            PointCamAtCoord(cam2, PlayerData.position.x, PlayerData.position.y, PlayerData.position.z + pointCamCoords)
+            SetCamActiveWithInterp(cam2, cam, cam1Time, true, true)
+            Citizen.Wait(cam1Time)
+    
+            cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", PlayerData.position.x, PlayerData.position.y, PlayerData.position.z + camZPlus2, 300.00,0.00,0.00, 110.00, false, 0)
+            PointCamAtCoord(cam, PlayerData.position.x, PlayerData.position.y, PlayerData.position.z + pointCamCoords2)
+            SetCamActiveWithInterp(cam, cam2, cam2Time, true, true)
+            SetEntityCoords(GetPlayerPed(-1), PlayerData.position.x, PlayerData.position.y, PlayerData.position.z)
         end)
-    else
+    elseif type == "house" then
+        local campos = Config.Houses[location].coords.enter
+
+        cam2 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", campos.x, campos.y, campos.z + camZPlus1, 300.00,0.00,0.00, 110.00, false, 0)
+        PointCamAtCoord(cam2, campos.x, campos.y, campos.z + pointCamCoords)
+        SetCamActiveWithInterp(cam2, cam, cam1Time, true, true)
+        Citizen.Wait(cam1Time)
+
+        cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", campos.x, campos.y, campos.z + camZPlus2, 300.00,0.00,0.00, 110.00, false, 0)
+        PointCamAtCoord(cam, campos.x, campos.y, campos.z + pointCamCoords2)
+        SetCamActiveWithInterp(cam, cam2, cam2Time, true, true)
+        SetEntityCoords(GetPlayerPed(-1), campos.x, campos.y, campos.z)
+    elseif type == "normal" then
         local campos = QB.Spawns[location].coords
 
-        cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", campos.x, campos.y, campos.z + 150, -85.00, 0.00, 0.00, 100.00, false, 0)
-        SetCamActive(cam, true)
-        RenderScriptCams(true, false, 1, true, true)
+        cam2 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", campos.x, campos.y, campos.z + camZPlus1, 300.00,0.00,0.00, 110.00, false, 0)
+        PointCamAtCoord(cam2, campos.x, campos.y, campos.z + pointCamCoords)
+        SetCamActiveWithInterp(cam2, cam, cam1Time, true, true)
+        Citizen.Wait(cam1Time)
+
+        cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", campos.x, campos.y, campos.z + camZPlus2, 300.00,0.00,0.00, 110.00, false, 0)
+        PointCamAtCoord(cam, campos.x, campos.y, campos.z + pointCamCoords2)
+        SetCamActiveWithInterp(cam, cam2, cam2Time, true, true)
+        SetEntityCoords(GetPlayerPed(-1), campos.x, campos.y, campos.z)
     end
 end)
 
