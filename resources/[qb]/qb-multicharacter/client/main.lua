@@ -102,7 +102,7 @@ RegisterNUICallback('cDataPed', function(data)
     DeleteEntity(charPed)
 
     if cData ~= nil then
-        QBCore.Functions.TriggerCallback('qb-multicharacter:server:getSkin', function(model, skin)
+        QBCore.Functions.TriggerCallback('qb-multicharacter:server:getSkin', function(model, data)
             if model ~= nil then
                 model = model ~= nil and tonumber(model) or false
 
@@ -116,6 +116,32 @@ RegisterNUICallback('cDataPed', function(data)
                     end
 
                     charPed = CreatePed(3, model, -814.02, 176.16, 75.749, 351.5, false, true)
+                    
+                    data = json.decode(data)
+            
+                    for i = 0, 11 do
+                        local idx = tostring(i)
+                        if (i == 1) then
+                            SetPedHeadBlendData(charPed, data.drawables[idx], data.drawables[idx], data.drawables[idx], data.drawables[idx], data.drawables[idx], data.drawables[idx], 1.0, 1.0, 1.0, true)
+                        elseif (i == 3) then
+                            SetPedComponentVariation(charPed, i, tonumber(data.drawables[idx]), 0, 0)
+                            SetPedHairColor(charPed, tonumber(data.textures[idx]), tonumber(data.palletetextures[idx]))
+                        else
+                            SetPedComponentVariation(charPed, i, tonumber(data.drawables[idx]), tonumber(data.textures[idx]), tonumber(data.palletetextures[idx]))
+                        end
+                    end
+            
+                    for i = 0, 8 do
+                        local idx = tostring(i)
+                        if (i ~= 4 and i ~= 5 and i ~= 6) then
+                            SetPedPropIndex(charPed, i, tonumber(data.props[idx]), tonumber(data.proptextures[idx]), true)
+                        end
+                    end
+                    for i = 0, 4 do
+                        local idx = tostring(i)
+                        SetPedHeadOverlay(charPed, i, tonumber(data.overlays[idx]), 1.0)
+                        SetPedHeadOverlayColor(charPed, i, 1, tonumber(data.overlaycolors[idx]), 0)
+                    end
                 end)
             else
                 charPed = CreatePed(4, GetHashKey("mp_m_freemode_01"), -814.02, 176.16, 75.85, 351.5, false, true)
