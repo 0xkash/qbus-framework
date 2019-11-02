@@ -82,3 +82,16 @@ end)
 QBCore.Commands.Add("closeNUI", "Geef een item aan een speler", {{name="id", help="Speler ID"},{name="item", help="Naam van het item (geen label)"}, {name="amount", help="Aantal items"}}, true, function(source, args)
     TriggerClientEvent('qb-multicharacter:client:closeNUI', source)
 end)
+
+QBCore.Functions.CreateCallback("qb-multicharacter:server:getSkin", function(source, cb, cid)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+
+    QBCore.Functions.ExecuteSql("SELECT * FROM `playerskins` WHERE `citizenid` = '"..cid.."' AND `active` = 1", function(result)
+        if result[1] ~= nil then
+            cb(result[1].model, result[1].skin)
+        else
+            cb(nil)
+        end
+    end)
+end)

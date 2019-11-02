@@ -53,10 +53,10 @@ RegisterNUICallback('setCam', function(data)
     local type = tostring(data.type)
 
     local camZPlus1 = 300
-    local camZPlus2 = 50
+    local camZPlus2 = 100
     local pointCamCoords = 5
     local pointCamCoords2 = 0
-    local cam1Time = 400
+    local cam1Time = 1000
     local cam2Time = 1000
 
     if type == "current" then
