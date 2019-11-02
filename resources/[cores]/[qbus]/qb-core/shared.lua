@@ -232,6 +232,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/f/f3/Blade-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["buccaneer"] = {
 		["name"] = "Buccaneer",
@@ -243,6 +244,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/9/9f/Buccaneer-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["buccaneer2"] = {
 		["name"] = "Buccaneer Rider",
@@ -254,6 +256,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/a/a2/BuccaneerCustom-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["chino"] = {
 		["name"] = "Chino",
@@ -265,6 +268,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/1/17/Chino-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["chino2"] = {
 		["name"] = "Chino Luxe",
@@ -276,6 +280,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/3/3f/ChinoCustom-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["coquette3"] = {
 		["name"] = "Coquette BlackFin",
@@ -287,6 +292,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/d/df/CoquetteBlackFin-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["dominator"] = {
 		["name"] = "Dominator",
@@ -298,6 +304,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/7/78/Dominator-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["dukes"] = {
 		["name"] = "Dukes",
@@ -309,6 +316,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/5/53/Dukes-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["gauntlet"] = {
 		["name"] = "Gauntlet",
@@ -320,6 +328,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/d/dd/Gauntlet-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["muscle"] = {
 		["name"] = "Hotknife",
@@ -331,6 +340,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/0/07/Hotknife-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["faction"] = {
 		["name"] = "Faction",
@@ -342,6 +352,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/0/07/Faction-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["faction2"] = {
 		["name"] = "Faction Rider",
@@ -353,6 +364,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/f/f0/FactionCustom-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["nightshade"] = {
 		["name"] = "Nightshade",
@@ -364,6 +376,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/3/3e/Nightshade-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["phoenix"] = {
 		["name"] = "Phoenix",
@@ -375,6 +388,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/a/af/Phoenix-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["picador"] = {
 		["name"] = "Picador",
@@ -386,6 +400,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/5/5a/Picador-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["sabregt"] = {
 		["name"] = "Sabre Turbo",
@@ -397,6 +412,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/e/e6/SabreTurbo-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["sabregt2"] = {
 		["name"] = "Sabre GT",
@@ -408,6 +424,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/1/18/SabreTurboCustom-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["slamvan3"] = {
 		["name"] = "Slam Van",
@@ -419,6 +436,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/9/96/SlamvanCustom-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["tampa"] = {
 		["name"] = "Tampa",
@@ -430,6 +448,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/d/d8/Tampa-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["virgo"] = {
 		["name"] = "Virgo",
@@ -441,6 +460,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/2/24/Virgo-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["vigero"] = {
 		["name"] = "Vigero",
@@ -452,6 +472,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/c/c4/Vigero-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["voodoo"] = {
 		["name"] = "Voodoo",
@@ -463,6 +484,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/f/fc/VoodooCustom-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["blista"] = {
 		["name"] = "Blista",
@@ -474,6 +496,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/c/c0/Blista-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["brioso"] = {
 		["name"] = "Brioso R/A",
@@ -485,6 +508,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/8/80/BriosoRA-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["issi2"] = {
 		["name"] = "Issi",
@@ -496,6 +520,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/9/9c/IssiDown-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["panto"] = {
 		["name"] = "Panto",
@@ -507,6 +532,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/a/ad/Panto-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["prairie"] = {
 		["name"] = "Prairie",
@@ -518,6 +544,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/0/06/Prairie-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["bison"] = {
 		["name"] = "Bison",
@@ -529,6 +556,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/6/69/Bison-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["bobcatxl"] = {
 		["name"] = "Bobcat XL",
@@ -540,6 +568,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/3/37/BobcatXL-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["burrito3"] = {
 		["name"] = "Burrito",
@@ -551,6 +580,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/8/80/Burrito3-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["gburrito2"] = {
 		["name"] = "Burrito Custom",
@@ -562,6 +592,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/4/4f/GangBurrito2-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["moonbeam"] = {
 		["name"] = "Moonbeam",
@@ -573,6 +604,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/b/b3/Moonbeam-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["rumpo"] = {
 		["name"] = "Rumpo",
@@ -584,6 +616,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/d/d3/Rumpo-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["asea"] = {
 		["name"] = "Asea",
@@ -595,6 +628,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/5/58/Asea-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["cognoscenti"] = {
 		["name"] = "Cognoscenti",
@@ -606,6 +640,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/f/ff/Cognoscenti-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["emperor"] = {
 		["name"] = "Emperor",
@@ -617,6 +652,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/4/4c/Emperor-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["fugitive"] = {
 		["name"] = "Fugitive",
@@ -628,6 +664,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/5/5c/Fugitive-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["glendale"] = {
 		["name"] = "Glendale",
@@ -639,6 +676,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/4/47/Glendale-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["intruder"] = {
 		["name"] = "Intruder",
@@ -650,6 +688,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/7/7c/Intruder-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["premier"] = {
 		["name"] = "Premier",
@@ -661,6 +700,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/c/ca/Premier-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["primo2"] = {
 		["name"] = "Primo Custom",
@@ -672,6 +712,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/c/ca/PrimoCustom-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["regina"] = {
 		["name"] = "Regina",
@@ -683,6 +724,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/7/71/Regina-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["schafter2"] = {
 		["name"] = "Schafter",
@@ -694,6 +736,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/5/57/Schafter-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["superd"] = {
 		["name"] = "Super Diamond",
@@ -705,6 +748,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/d/d8/SuperDiamond-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["tailgater"] = {
 		["name"] = "Tailgater",
@@ -716,6 +760,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/e/e1/Tailgater-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["washington"] = {
 		["name"] = "Washington",
@@ -727,6 +772,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/1/12/Washington-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["baller2"] = {
 		["name"] = "Baller",
@@ -738,6 +784,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/e/ef/Baller2-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["baller3"] = {
 		["name"] = "Baller LE",
@@ -749,6 +796,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/7/71/BallerLE-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["cavalcade2"] = {
 		["name"] = "Cavalcade",
@@ -760,6 +808,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/0/08/Cavalcade2-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["dubsta2"] = {
 		["name"] = "Dubsta Luxuary",
@@ -771,6 +820,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/f/fa/Dubsta2-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["fq2"] = {
 		["name"] = "FQ2",
@@ -782,6 +832,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/6/6e/FQ2-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["granger"] = {
 		["name"] = "Granger",
@@ -793,6 +844,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/d/de/Granger-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["gresley"] = {
 		["name"] = "Gresley",
@@ -804,6 +856,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/f/ff/Gresley-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["huntley"] = {
 		["name"] = "Huntley S",
@@ -815,6 +868,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/2/2f/HuntleyS-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["landstalker"] = {
 		["name"] = "Landstalker",
@@ -826,6 +880,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/7/77/Landstalker-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["patriot"] = {
 		["name"] = "Patriot",
@@ -846,6 +901,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/b/b6/Radius-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["rocoto"] = {
 		["name"] = "Rocoto",
@@ -857,6 +913,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/2/28/Rocoto-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["seminole"] = {
 		["name"] = "Seminole",
@@ -868,6 +925,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/a/a0/Seminole-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["xls"] = {
 		["name"] = "XLS",
@@ -879,6 +937,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/8/8c/XLS-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["btype"] = {
 		["name"] = "Roosevelt",
@@ -890,6 +949,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/b/b4/Roosevelt-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["btype3"] = {
 		["name"] = "Roosevelt Valor",
@@ -901,6 +961,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/2/2a/RooseveltValor-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["btype2"] = {
 		["name"] = "Franken Stange",
@@ -912,6 +973,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/6/63/FränkenStange-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["casco"] = {
 		["name"] = "Casco",
@@ -923,6 +985,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/8/86/Casco-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["coquette2"] = {
 		["name"] = "Coquette Classic",
@@ -934,6 +997,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/0/0b/CoquetteClassic-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["monroe"] = {
 		["name"] = "Monroe",
@@ -945,6 +1009,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/4/44/Monroe-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["pigalle"] = {
 		["name"] = "Pigalle",
@@ -956,6 +1021,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/d/d4/Pigalle-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["stingergt"] = {
 		["name"] = "Stinger GT",
@@ -967,6 +1033,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/c/c5/StingerGT-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["feltzer3"] = {
 		["name"] = "Stirling GT",
@@ -978,6 +1045,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/d/d2/StirlingGT-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["ztype"] = {
 		["name"] = "Z-Type",
@@ -989,6 +1057,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/9/9d/Z-Type-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["coupes"] = {
 		["name"] = "Cognoscenti Cabrio",
@@ -1000,6 +1069,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/2/28/CognoscentiCabrioUp-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["exemplar"] = {
 		["name"] = "Exemplar",
@@ -1011,6 +1081,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/d/de/Exemplar-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["f620"] = {
 		["name"] = "F620",
@@ -1022,6 +1093,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/f/f8/F620-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["felon"] = {
 		["name"] = "Felon",
@@ -1033,6 +1105,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/d/de/Felon-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["felon2"] = {
 		["name"] = "Felon GT",
@@ -1044,6 +1117,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/0/0f/FelonGTDown-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["jackal"] = {
 		["name"] = "Jackal",
@@ -1055,6 +1129,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/4/48/Jackal-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["oracle2"] = {
 		["name"] = "Oracle XS",
@@ -1066,6 +1141,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/2/22/OracleXS-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["sentinel"] = {
 		["name"] = "Sentinel",
@@ -1077,6 +1153,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/7/75/SentinelUp-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["sentinel2"] = {
 		["name"] = "Sentinel XS",
@@ -1088,6 +1165,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/d/d0/SentinelXS-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["windsor"] = {
 		["name"] = "Windsor",
@@ -1099,6 +1177,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/2/26/Windsor-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["windsor2"] = {
 		["name"] = "Windsor Drop",
@@ -1110,6 +1189,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/3/31/WindsorDropUp-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["zion"] = {
 		["name"] = "Zion",
@@ -1121,6 +1201,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/c/cc/Zion-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["zion2"] = {
 		["name"] = "Zion Cabrio",
@@ -1132,6 +1213,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/c/cb/ZionCabrioDown-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["ninef"] = {
 		["name"] = "9F",
@@ -1143,6 +1225,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/2/2d/9F-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["ninef2"] = {
 		["name"] = "9F Cabrio",
@@ -1154,6 +1237,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/a/a1/9FCabrio-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["alpha"] = {
 		["name"] = "Alpha",
@@ -1165,6 +1249,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/9/94/Alpha-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["banshee"] = {
 		["name"] = "Banshee",
@@ -1176,6 +1261,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/8/82/Banshee-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["bestiagts"] = {
 		["name"] = "Bestia GTS",
@@ -1187,6 +1273,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/a/a5/BestiaGTS-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["buffalo"] = {
 		["name"] = "Buffalo",
@@ -1198,6 +1285,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/7/7d/Buffalo-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["buffalo2"] = {
 		["name"] = "Buffalo S",
@@ -1209,6 +1297,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/e/e1/BuffaloS-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["carbonizzare"] = {
 		["name"] = "Carbonizzare",
@@ -1220,6 +1309,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/7/7b/CarbonizzareDown-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["comet2"] = {
 		["name"] = "Comet",
@@ -1231,6 +1321,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/d/d2/Comet-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["coquette"] = {
 		["name"] = "Coquette",
@@ -1242,6 +1333,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/0/08/Coquette-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["elegy2"] = {
 		["name"] = "Elegy RH8",
@@ -1253,6 +1345,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/4/4f/ElegyRH8-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["feltzer2"] = {
 		["name"] = "Feltzer",
@@ -1264,6 +1357,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/8/8f/Feltzer-GTAVPC-Front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["furoregt"] = {
 		["name"] = "Furore GT",
@@ -1275,6 +1369,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/5/56/FuroreGT-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["fusilade"] = {
 		["name"] = "Fusilade",
@@ -1286,6 +1381,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/a/a0/Fusilade-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["jester"] = {
 		["name"] = "Jester",
@@ -1297,6 +1393,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/a/af/Jester-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["khamelion"] = {
 		["name"] = "Khamelion",
@@ -1308,6 +1405,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/1/1f/Khamelion-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["kuruma"] = {
 		["name"] = "Kuruma",
@@ -1319,6 +1417,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/5/53/Kuruma-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["lynx"] = {
 		["name"] = "Lynx",
@@ -1330,6 +1429,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/a/a7/Lynx-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["mamba"] = {
 		["name"] = "Mamba",
@@ -1341,6 +1441,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/d/d4/Mamba-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["massacro"] = {
 		["name"] = "Massacro",
@@ -1352,6 +1453,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/1/12/Massacro-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["rapidgt"] = {
 		["name"] = "Rapid GT",
@@ -1363,6 +1465,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/4/42/RapidGT-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["rapidgt2"] = {
 		["name"] = "Rapid GT Convertible",
@@ -1374,6 +1477,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/f/f8/RapidGT2-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["schafter3"] = {
 		["name"] = "Schafter V12",
@@ -1385,6 +1489,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/a/a6/SchafterV12-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["seven70"] = {
 		["name"] = "Seven-70",
@@ -1396,6 +1501,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/2/21/Seven70-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["sultan"] = {
 		["name"] = "Sultan",
@@ -1407,6 +1513,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/b/bb/Sultan-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["surano"] = {
 		["name"] = "Surano",
@@ -1418,6 +1525,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/f/fd/SuranoDown-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["verlierer2"] = {
 		["name"] = "Verlierer",
@@ -1429,6 +1537,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/8/8c/Verlierer-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["adder"] = {
 		["name"] = "Adder",
@@ -1440,6 +1549,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/9/9e/Adder-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["banshee2"] = {
 		["name"] = "Banshee 900R",
@@ -1451,6 +1561,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/e/e2/Banshee900RTopless-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["bullet"] = {
 		["name"] = "Bullet",
@@ -1462,6 +1573,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/3/3d/Bullet-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["cheetah"] = {
 		["name"] = "Cheetah",
@@ -1473,6 +1585,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/1/1e/Cheetah-GTAV-Front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["entityxf"] = {
 		["name"] = "Entity XF",
@@ -1484,6 +1597,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/9/95/EntityXF-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["fmj"] = {
 		["name"] = "FMJ",
@@ -1495,6 +1609,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/8/8c/FMJ-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["infernus"] = {
 		["name"] = "Infernus",
@@ -1506,6 +1621,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/0/0e/Infernus-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["pfister811"] = {
 		["name"] = "811",
@@ -1517,6 +1633,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/c/c7/811A-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["reaper"] = {
 		["name"] = "Reaper",
@@ -1528,6 +1645,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/5/5f/Reaper-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["t20"] = {
 		["name"] = "T20",
@@ -1539,6 +1657,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/2/20/T20-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["turismor"] = {
 		["name"] = "Turismo R",
@@ -1550,6 +1669,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/6/61/TurismoR-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["vacca"] = {
 		["name"] = "Vacca",
@@ -1561,6 +1681,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/b/b4/Vacca-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["voltic"] = {
 		["name"] = "Voltic",
@@ -1572,6 +1693,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/8/87/Voltic-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["prototipo"] = {
 		["name"] = "X80 Proto",
@@ -1583,6 +1705,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/b/b3/X80Proto-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["zentorno"] = {
 		["name"] = "Zentorno",
@@ -1594,6 +1717,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/6/60/Zentorno-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["avarus"] = {
 		["name"] = "Avarus",
@@ -1605,6 +1729,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/1/1a/Avarus-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["bagger"] = {
 		["name"] = "Bagger",
@@ -1616,6 +1741,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/1/10/Bagger-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["bati"] = {
 		["name"] = "Bati 801",
@@ -1627,6 +1753,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/6/65/Bati801-GTAV-FrontQuarter.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["carbonrs"] = {
 		["name"] = "Carbon RS",
@@ -1638,6 +1765,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/2/2d/CarbonRS-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["chimera"] = {
 		["name"] = "Chimera",
@@ -1649,6 +1777,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/8/8a/Chimera-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["daemon"] = {
 		["name"] = "Daemon",
@@ -1660,6 +1789,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/6/6b/Daemon2-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["defiler"] = {
 		["name"] = "Defiler",
@@ -1671,6 +1801,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/f/f5/Defiler-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["esskey"] = {
 		["name"] = "Esskey",
@@ -1682,6 +1813,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/4/4e/Esskey-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["faggio"] = {
 		["name"] = "Faggio Sport",
@@ -1693,6 +1825,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/5/50/FaggioSport-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["hakuchou"] = {
 		["name"] = "Hakuchou",
@@ -1704,6 +1837,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/a/ab/Hakuchou-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["hexer"] = {
 		["name"] = "Hexer",
@@ -1715,6 +1849,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/6/64/Hexer-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["nemesis"] = {
 		["name"] = "Nemesis",
@@ -1726,6 +1861,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/4/4b/Nemesis-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["nightblade"] = {
 		["name"] = "Nightblade",
@@ -1737,6 +1873,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/6/6b/Nightblade-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["pcj"] = {
 		["name"] = "PCJ-600",
@@ -1748,6 +1885,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/7/74/PCJ600-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["ruffian"] = {
 		["name"] = "Ruffian",
@@ -1759,6 +1897,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/7/70/Ruffian-GTAV-front-variant2.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["thrust"] = {
 		["name"] = "Thrust",
@@ -1770,6 +1909,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/4/4e/Thrust-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["visione"] = {
 		["name"] = "Visione",
@@ -1781,6 +1921,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/5/57/Visione-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["gt500"] = {
 		["name"] = "GT500",
@@ -1792,6 +1933,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/2/25/GT500-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["cyclone"] = {
 		["name"] = "Cyclone",
@@ -1803,6 +1945,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/0/07/Cyclone-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["comet5"] = {
 		["name"] = "Comet SR",
@@ -1814,6 +1957,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/0/0f/CometSR-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["rapidgt3"] = {
 		["name"] = "Rapid GT",
@@ -1825,6 +1969,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/1/13/RapidGTClassic-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["streiter"] = {
 		["name"] = "Streiter",
@@ -1836,6 +1981,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/3/38/Streiter-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["pariah"] = {
 		["name"] = "Pariah",
@@ -1847,6 +1993,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/f/ff/Pariah-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["raiden"] = {
 		["name"] = "Raiden",
@@ -1858,6 +2005,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/b/b5/Raiden-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["hustler"] = {
 		["name"] = "Hustler",
@@ -1869,6 +2017,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/f/f1/Hustler-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["yosemite"] = {
 		["name"] = "Yosemite",
@@ -1880,6 +2029,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/0/09/Yosemite-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["hermes"] = {
 		["name"] = "Hermes",
@@ -1891,6 +2041,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/9/9b/Hermes-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["sc1"] = {
 		["name"] = "SC1",
@@ -1902,6 +2053,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/3/3a/SC1-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["z190"] = {
 		["name"] = "190Z",
@@ -1913,6 +2065,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/b/be/190z-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["neon"] = {
 		["name"] = "Neon",
@@ -1924,6 +2077,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/c/c0/Neon-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["autarch"] = {
 		["name"] = "Autarch",
@@ -1935,6 +2089,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/6/6c/Autarch-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["blista2"] = {
 		["name"] = "Blista Compact",
@@ -1946,6 +2101,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/0/06/BlistaCompact-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["issi3"] = {
 		["name"] = "Issi Classic",
@@ -1957,6 +2113,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/9/9f/IssiClassic-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["dilettante"] = {
 		["name"] = "Dilettante",
@@ -1968,6 +2125,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/8/80/Dilettante-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["rhapsody"] = {
 		["name"] = "Rhapsody",
@@ -1979,6 +2137,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/c/cc/Rhapsody-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["stalion"] = {
 		["name"] = "Stallion",
@@ -1990,6 +2149,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/0/00/Stallion-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["infernus2"] = {
 		["name"] = "Infernus Classic",
@@ -2001,6 +2161,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/7/73/InfernusClassic-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["ruston"] = {
 		["name"] = "Ruston",
@@ -2012,6 +2173,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/2/2c/Ruston-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["specter"] = {
 		["name"] = "Specter",
@@ -2023,6 +2185,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/7/7b/Specter-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["cheetah2"] = {
 		["name"] = "Cheetah Classic",
@@ -2034,6 +2197,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/3/38/CheetahClassic-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["torero"] = {
 		["name"] = "Torero",
@@ -2045,6 +2209,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/4/47/Torero-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["gp1"] = {
 		["name"] = "GP1",
@@ -2056,6 +2221,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/8/8a/GP1-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["penetrator"] = {
 		["name"] = "Penetrator",
@@ -2067,6 +2233,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/9/9c/Penetrator-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["tempesta"] = {
 		["name"] = "Tempesta",
@@ -2078,6 +2245,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/3/35/Tempesta-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["vagner"] = {
 		["name"] = "Vagner",
@@ -2089,6 +2257,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/1/14/Vagner-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["italigtb"] = {
 		["name"] = "Itali GTB",
@@ -2100,6 +2269,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/4/44/ItaliGTB-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["xa21"] = {
 		["name"] = "XA-21",
@@ -2111,6 +2281,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/6/69/XA21-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["jester3"] = {
 		["name"] = "Jester Classic",
@@ -2122,6 +2293,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/1/1a/JesterClassic-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["elegy"] = {
 		["name"] = "Elegy Retro Custom",
@@ -2133,6 +2305,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/6/68/ElegyRetroCustom-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["dominator3"] = {
 		["name"] = "Dominator GTX",
@@ -2144,6 +2317,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/8/8b/DominatorGTX-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["tezeract"] = {
 		["name"] = "Tezeract",
@@ -2155,6 +2329,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/c/ca/Tezeract-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["entity2"] = {
 		["name"] = "Entity XXR",
@@ -2166,6 +2341,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/9/9a/EntityXXR-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["nero"] = {
 		["name"] = "Nero",
@@ -2177,6 +2353,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/5/5e/Nero-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["comet3"] = {
 		["name"] = "Comet Retro Custom",
@@ -2188,6 +2365,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/a/a0/CometRetroCustom-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["taipan"] = {
 		["name"] = "Taipan",
@@ -2199,6 +2377,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/4/4c/Taipan-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["tyrant"] = {
 		["name"] = "Tyrant",
@@ -2210,6 +2389,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/f/f7/Tyrant-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["osiris"] = {
 		["name"] = "Osiris",
@@ -2221,6 +2401,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/5/53/Osiris-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["flashgt"] = {
 		["name"] = "Flash GT",
@@ -2232,6 +2413,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/3/3b/FlashGT-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["specter2"] = {
 		["name"] = "Specter Custom",
@@ -2243,6 +2425,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/0/01/SpecterCustom-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["surge"] = {
 		["name"] = "Surge",
@@ -2254,6 +2437,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/c/c2/Surge-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["ellie"] = {
 		["name"] = "Ellie",
@@ -2265,6 +2449,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/6/6b/Ellie-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["bjxl"] = {
 		["name"] = "BeeJay XL",
@@ -2276,6 +2461,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/d/da/BeeJayXL-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	["faggio3"] = {
 		["name"] = "Faggio Mod",
@@ -2287,6 +2473,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/0/07/FaggioMod-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	}
 }
 
@@ -2301,6 +2488,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/f/f3/Blade-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("buccaneer")] = {
 		["name"] = "Buccaneer",
@@ -2312,6 +2500,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/9/9f/Buccaneer-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("buccaneer2")] = {
 		["name"] = "Buccaneer Rider",
@@ -2323,6 +2512,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/a/a2/BuccaneerCustom-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("chino")] = {
 		["name"] = "Chino",
@@ -2334,6 +2524,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/1/17/Chino-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("chino2")] = {
 		["name"] = "Chino Luxe",
@@ -2345,6 +2536,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/3/3f/ChinoCustom-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("coquette3")] = {
 		["name"] = "Coquette BlackFin",
@@ -2356,6 +2548,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/d/df/CoquetteBlackFin-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("dominator")] = {
 		["name"] = "Dominator",
@@ -2367,6 +2560,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/7/78/Dominator-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("dukes")] = {
 		["name"] = "Dukes",
@@ -2378,6 +2572,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/5/53/Dukes-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("gauntlet")] = {
 		["name"] = "Gauntlet",
@@ -2389,6 +2584,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/d/dd/Gauntlet-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("muscle")] = {
 		["name"] = "Hotknife",
@@ -2400,6 +2596,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/0/07/Hotknife-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("faction")] = {
 		["name"] = "Faction",
@@ -2411,6 +2608,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/0/07/Faction-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("faction2")] = {
 		["name"] = "Faction Rider",
@@ -2422,6 +2620,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/f/f0/FactionCustom-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("nightshade")] = {
 		["name"] = "Nightshade",
@@ -2433,6 +2632,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/3/3e/Nightshade-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("phoenix")] = {
 		["name"] = "Phoenix",
@@ -2444,6 +2644,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/a/af/Phoenix-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("picador")] = {
 		["name"] = "Picador",
@@ -2455,6 +2656,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/5/5a/Picador-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("sabregt")] = {
 		["name"] = "Sabre Turbo",
@@ -2466,6 +2668,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/e/e6/SabreTurbo-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("sabregt2")] = {
 		["name"] = "Sabre GT",
@@ -2477,6 +2680,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/1/18/SabreTurboCustom-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("slamvan3")] = {
 		["name"] = "Slam Van",
@@ -2488,6 +2692,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/9/96/SlamvanCustom-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("tampa")] = {
 		["name"] = "Tampa",
@@ -2499,6 +2704,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/d/d8/Tampa-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("virgo")] = {
 		["name"] = "Virgo",
@@ -2510,6 +2716,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/2/24/Virgo-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("vigero")] = {
 		["name"] = "Vigero",
@@ -2521,6 +2728,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/c/c4/Vigero-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("voodoo")] = {
 		["name"] = "Voodoo",
@@ -2532,6 +2740,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/f/fc/VoodooCustom-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("blista")] = {
 		["name"] = "Blista",
@@ -2543,6 +2752,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/c/c0/Blista-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("brioso")] = {
 		["name"] = "Brioso R/A",
@@ -2554,6 +2764,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/8/80/BriosoRA-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("issi2")] = {
 		["name"] = "Issi",
@@ -2565,6 +2776,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/9/9c/IssiDown-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("panto")] = {
 		["name"] = "Panto",
@@ -2576,6 +2788,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/a/ad/Panto-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("prairie")] = {
 		["name"] = "Prairie",
@@ -2587,6 +2800,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/0/06/Prairie-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("bison")] = {
 		["name"] = "Bison",
@@ -2598,6 +2812,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/6/69/Bison-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("bobcatxl")] = {
 		["name"] = "Bobcat XL",
@@ -2609,6 +2824,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/3/37/BobcatXL-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("burrito3")] = {
 		["name"] = "Burrito",
@@ -2620,6 +2836,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/8/80/Burrito3-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("gburrito2")] = {
 		["name"] = "Burrito Custom",
@@ -2631,6 +2848,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/4/4f/GangBurrito2-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("moonbeam")] = {
 		["name"] = "Moonbeam",
@@ -2642,6 +2860,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/b/b3/Moonbeam-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("rumpo")] = {
 		["name"] = "Rumpo",
@@ -2653,6 +2872,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/d/d3/Rumpo-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("asea")] = {
 		["name"] = "Asea",
@@ -2664,6 +2884,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/5/58/Asea-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("cognoscenti")] = {
 		["name"] = "Cognoscenti",
@@ -2675,6 +2896,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/f/ff/Cognoscenti-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("emperor")] = {
 		["name"] = "Emperor",
@@ -2686,6 +2908,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/4/4c/Emperor-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("fugitive")] = {
 		["name"] = "Fugitive",
@@ -2697,6 +2920,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/5/5c/Fugitive-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("glendale")] = {
 		["name"] = "Glendale",
@@ -2708,6 +2932,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/4/47/Glendale-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("intruder")] = {
 		["name"] = "Intruder",
@@ -2719,6 +2944,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/7/7c/Intruder-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("premier")] = {
 		["name"] = "Premier",
@@ -2730,6 +2956,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/c/ca/Premier-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("primo2")] = {
 		["name"] = "Primo Custom",
@@ -2741,6 +2968,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/c/ca/PrimoCustom-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("regina")] = {
 		["name"] = "Regina",
@@ -2752,6 +2980,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/7/71/Regina-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("schafter2")] = {
 		["name"] = "Schafter",
@@ -2763,6 +2992,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/5/57/Schafter-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("superd")] = {
 		["name"] = "Super Diamond",
@@ -2774,6 +3004,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/d/d8/SuperDiamond-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("tailgater")] = {
 		["name"] = "Tailgater",
@@ -2785,6 +3016,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/e/e1/Tailgater-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("washington")] = {
 		["name"] = "Washington",
@@ -2796,6 +3028,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/1/12/Washington-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("baller2")] = {
 		["name"] = "Baller",
@@ -2807,6 +3040,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/e/ef/Baller2-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("baller3")] = {
 		["name"] = "Baller LE",
@@ -2818,6 +3052,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/7/71/BallerLE-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("cavalcade2")] = {
 		["name"] = "Cavalcade",
@@ -2829,6 +3064,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/0/08/Cavalcade2-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("dubsta2")] = {
 		["name"] = "Dubsta Luxuary",
@@ -2840,6 +3076,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/f/fa/Dubsta2-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("fq2")] = {
 		["name"] = "FQ2",
@@ -2851,6 +3088,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/6/6e/FQ2-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("granger")] = {
 		["name"] = "Granger",
@@ -2862,6 +3100,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/d/de/Granger-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("gresley")] = {
 		["name"] = "Gresley",
@@ -2873,6 +3112,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/f/ff/Gresley-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("huntley")] = {
 		["name"] = "Huntley S",
@@ -2884,6 +3124,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/2/2f/HuntleyS-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("landstalker")] = {
 		["name"] = "Landstalker",
@@ -2895,6 +3136,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/7/77/Landstalker-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("patriot")] = {
 		["name"] = "Patriot",
@@ -2915,6 +3157,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/b/b6/Radius-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("rocoto")] = {
 		["name"] = "Rocoto",
@@ -2926,6 +3169,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/2/28/Rocoto-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("seminole")] = {
 		["name"] = "Seminole",
@@ -2937,6 +3181,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/a/a0/Seminole-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("xls")] = {
 		["name"] = "XLS",
@@ -2948,6 +3193,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/8/8c/XLS-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("btype")] = {
 		["name"] = "Roosevelt",
@@ -2959,6 +3205,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/b/b4/Roosevelt-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("btype3")] = {
 		["name"] = "Roosevelt Valor",
@@ -2970,6 +3217,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/2/2a/RooseveltValor-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("btype2")] = {
 		["name"] = "Franken Stange",
@@ -2981,6 +3229,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/6/63/FränkenStange-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("casco")] = {
 		["name"] = "Casco",
@@ -2992,6 +3241,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/8/86/Casco-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("coquette2")] = {
 		["name"] = "Coquette Classic",
@@ -3003,6 +3253,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/0/0b/CoquetteClassic-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("monroe")] = {
 		["name"] = "Monroe",
@@ -3014,6 +3265,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/4/44/Monroe-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("pigalle")] = {
 		["name"] = "Pigalle",
@@ -3025,6 +3277,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/d/d4/Pigalle-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("stingergt")] = {
 		["name"] = "Stinger GT",
@@ -3036,6 +3289,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/c/c5/StingerGT-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("feltzer3")] = {
 		["name"] = "Stirling GT",
@@ -3047,6 +3301,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/d/d2/StirlingGT-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("ztype")] = {
 		["name"] = "Z-Type",
@@ -3058,6 +3313,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/9/9d/Z-Type-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("coupes")] = {
 		["name"] = "Cognoscenti Cabrio",
@@ -3069,6 +3325,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/2/28/CognoscentiCabrioUp-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("exemplar")] = {
 		["name"] = "Exemplar",
@@ -3080,6 +3337,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/d/de/Exemplar-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("f620")] = {
 		["name"] = "F620",
@@ -3091,6 +3349,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/f/f8/F620-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("felon")] = {
 		["name"] = "Felon",
@@ -3102,6 +3361,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/d/de/Felon-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("felon2")] = {
 		["name"] = "Felon GT",
@@ -3113,6 +3373,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/0/0f/FelonGTDown-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("jackal")] = {
 		["name"] = "Jackal",
@@ -3124,6 +3385,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/4/48/Jackal-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("oracle2")] = {
 		["name"] = "Oracle XS",
@@ -3135,6 +3397,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/2/22/OracleXS-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("sentinel")] = {
 		["name"] = "Sentinel",
@@ -3146,6 +3409,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/7/75/SentinelUp-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("sentinel2")] = {
 		["name"] = "Sentinel XS",
@@ -3157,6 +3421,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/d/d0/SentinelXS-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("windsor")] = {
 		["name"] = "Windsor",
@@ -3168,6 +3433,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/2/26/Windsor-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("windsor2")] = {
 		["name"] = "Windsor Drop",
@@ -3179,6 +3445,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/3/31/WindsorDropUp-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("zion")] = {
 		["name"] = "Zion",
@@ -3190,6 +3457,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/c/cc/Zion-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("zion2")] = {
 		["name"] = "Zion Cabrio",
@@ -3201,6 +3469,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/c/cb/ZionCabrioDown-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("ninef")] = {
 		["name"] = "9F",
@@ -3212,6 +3481,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/2/2d/9F-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("ninef2")] = {
 		["name"] = "9F Cabrio",
@@ -3223,6 +3493,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/a/a1/9FCabrio-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("alpha")] = {
 		["name"] = "Alpha",
@@ -3234,6 +3505,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/9/94/Alpha-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("banshee")] = {
 		["name"] = "Banshee",
@@ -3245,6 +3517,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/8/82/Banshee-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("bestiagts")] = {
 		["name"] = "Bestia GTS",
@@ -3256,6 +3529,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/a/a5/BestiaGTS-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("buffalo")] = {
 		["name"] = "Buffalo",
@@ -3267,6 +3541,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/7/7d/Buffalo-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("buffalo2")] = {
 		["name"] = "Buffalo S",
@@ -3278,6 +3553,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/e/e1/BuffaloS-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("carbonizzare")] = {
 		["name"] = "Carbonizzare",
@@ -3289,6 +3565,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/7/7b/CarbonizzareDown-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("comet2")] = {
 		["name"] = "Comet",
@@ -3300,6 +3577,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/d/d2/Comet-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("coquette")] = {
 		["name"] = "Coquette",
@@ -3311,6 +3589,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/0/08/Coquette-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("elegy2")] = {
 		["name"] = "Elegy RH8",
@@ -3322,6 +3601,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/4/4f/ElegyRH8-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("feltzer2")] = {
 		["name"] = "Feltzer",
@@ -3333,6 +3613,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/8/8f/Feltzer-GTAVPC-Front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("furoregt")] = {
 		["name"] = "Furore GT",
@@ -3344,6 +3625,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/5/56/FuroreGT-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("fusilade")] = {
 		["name"] = "Fusilade",
@@ -3355,6 +3637,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/a/a0/Fusilade-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("jester")] = {
 		["name"] = "Jester",
@@ -3366,6 +3649,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/a/af/Jester-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("khamelion")] = {
 		["name"] = "Khamelion",
@@ -3377,6 +3661,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/1/1f/Khamelion-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("kuruma")] = {
 		["name"] = "Kuruma",
@@ -3388,6 +3673,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/5/53/Kuruma-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("lynx")] = {
 		["name"] = "Lynx",
@@ -3399,6 +3685,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/a/a7/Lynx-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("mamba")] = {
 		["name"] = "Mamba",
@@ -3410,6 +3697,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/d/d4/Mamba-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("massacro")] = {
 		["name"] = "Massacro",
@@ -3421,6 +3709,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/1/12/Massacro-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("rapidgt")] = {
 		["name"] = "Rapid GT",
@@ -3432,6 +3721,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/4/42/RapidGT-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("rapidgt2")] = {
 		["name"] = "Rapid GT Convertible",
@@ -3443,6 +3733,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/f/f8/RapidGT2-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("schafter3")] = {
 		["name"] = "Schafter V12",
@@ -3454,6 +3745,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/a/a6/SchafterV12-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("seven70")] = {
 		["name"] = "Seven-70",
@@ -3465,6 +3757,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/2/21/Seven70-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("sultan")] = {
 		["name"] = "Sultan",
@@ -3476,6 +3769,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/b/bb/Sultan-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("surano")] = {
 		["name"] = "Surano",
@@ -3487,6 +3781,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/f/fd/SuranoDown-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("verlierer2")] = {
 		["name"] = "Verlierer",
@@ -3498,6 +3793,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/8/8c/Verlierer-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("adder")] = {
 		["name"] = "Adder",
@@ -3509,6 +3805,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/9/9e/Adder-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("banshee2")] = {
 		["name"] = "Banshee 900R",
@@ -3520,6 +3817,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/e/e2/Banshee900RTopless-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("bullet")] = {
 		["name"] = "Bullet",
@@ -3531,6 +3829,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/3/3d/Bullet-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("cheetah")] = {
 		["name"] = "Cheetah",
@@ -3542,6 +3841,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/1/1e/Cheetah-GTAV-Front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("entityxf")] = {
 		["name"] = "Entity XF",
@@ -3553,6 +3853,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/9/95/EntityXF-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("fmj")] = {
 		["name"] = "FMJ",
@@ -3564,6 +3865,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/8/8c/FMJ-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("infernus")] = {
 		["name"] = "Infernus",
@@ -3575,6 +3877,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/0/0e/Infernus-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("pfister811")] = {
 		["name"] = "811",
@@ -3586,6 +3889,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/c/c7/811A-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("reaper")] = {
 		["name"] = "Reaper",
@@ -3597,6 +3901,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/5/5f/Reaper-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("t20")] = {
 		["name"] = "T20",
@@ -3608,6 +3913,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/2/20/T20-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("turismor")] = {
 		["name"] = "Turismo R",
@@ -3619,6 +3925,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/6/61/TurismoR-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("vacca")] = {
 		["name"] = "Vacca",
@@ -3630,6 +3937,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/b/b4/Vacca-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("voltic")] = {
 		["name"] = "Voltic",
@@ -3641,6 +3949,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/8/87/Voltic-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("prototipo")] = {
 		["name"] = "X80 Proto",
@@ -3652,6 +3961,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/b/b3/X80Proto-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("zentorno")] = {
 		["name"] = "Zentorno",
@@ -3663,6 +3973,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/6/60/Zentorno-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("avarus")] = {
 		["name"] = "Avarus",
@@ -3674,6 +3985,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/1/1a/Avarus-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("bagger")] = {
 		["name"] = "Bagger",
@@ -3685,6 +3997,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/1/10/Bagger-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("bati")] = {
 		["name"] = "Bati 801",
@@ -3696,6 +4009,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/6/65/Bati801-GTAV-FrontQuarter.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("carbonrs")] = {
 		["name"] = "Carbon RS",
@@ -3707,6 +4021,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/2/2d/CarbonRS-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("chimera")] = {
 		["name"] = "Chimera",
@@ -3718,6 +4033,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/8/8a/Chimera-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("daemon")] = {
 		["name"] = "Daemon",
@@ -3729,6 +4045,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/6/6b/Daemon2-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("defiler")] = {
 		["name"] = "Defiler",
@@ -3740,6 +4057,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/f/f5/Defiler-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("esskey")] = {
 		["name"] = "Esskey",
@@ -3751,6 +4069,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/4/4e/Esskey-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("faggio")] = {
 		["name"] = "Faggio Sport",
@@ -3762,6 +4081,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/5/50/FaggioSport-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("hakuchou")] = {
 		["name"] = "Hakuchou",
@@ -3773,6 +4093,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/a/ab/Hakuchou-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("hexer")] = {
 		["name"] = "Hexer",
@@ -3784,6 +4105,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/6/64/Hexer-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("nemesis")] = {
 		["name"] = "Nemesis",
@@ -3795,6 +4117,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/4/4b/Nemesis-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("nightblade")] = {
 		["name"] = "Nightblade",
@@ -3806,6 +4129,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/6/6b/Nightblade-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("pcj")] = {
 		["name"] = "PCJ-600",
@@ -3817,6 +4141,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/7/74/PCJ600-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("ruffian")] = {
 		["name"] = "Ruffian",
@@ -3828,6 +4153,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/7/70/Ruffian-GTAV-front-variant2.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("thrust")] = {
 		["name"] = "Thrust",
@@ -3839,6 +4165,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/4/4e/Thrust-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("visione")] = {
 		["name"] = "Visione",
@@ -3850,6 +4177,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/5/57/Visione-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("gt500")] = {
 		["name"] = "GT500",
@@ -3861,6 +4189,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/2/25/GT500-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("cyclone")] = {
 		["name"] = "Cyclone",
@@ -3872,6 +4201,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/0/07/Cyclone-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("comet5")] = {
 		["name"] = "Comet SR",
@@ -3883,6 +4213,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/0/0f/CometSR-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("rapidgt3")] = {
 		["name"] = "Rapid GT",
@@ -3894,6 +4225,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/1/13/RapidGTClassic-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("streiter")] = {
 		["name"] = "Streiter",
@@ -3905,6 +4237,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/3/38/Streiter-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("pariah")] = {
 		["name"] = "Pariah",
@@ -3916,6 +4249,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/f/ff/Pariah-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("raiden")] = {
 		["name"] = "Raiden",
@@ -3927,6 +4261,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/b/b5/Raiden-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("hustler")] = {
 		["name"] = "Hustler",
@@ -3938,6 +4273,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/f/f1/Hustler-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("yosemite")] = {
 		["name"] = "Yosemite",
@@ -3949,6 +4285,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/0/09/Yosemite-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("hermes")] = {
 		["name"] = "Hermes",
@@ -3960,6 +4297,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/9/9b/Hermes-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("sc1")] = {
 		["name"] = "SC1",
@@ -3971,6 +4309,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/3/3a/SC1-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("z190")] = {
 		["name"] = "190Z",
@@ -3982,6 +4321,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/b/be/190z-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("neon")] = {
 		["name"] = "Neon",
@@ -3993,6 +4333,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/c/c0/Neon-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("autarch")] = {
 		["name"] = "Autarch",
@@ -4004,6 +4345,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/6/6c/Autarch-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("blista2")] = {
 		["name"] = "Blista Compact",
@@ -4015,6 +4357,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/0/06/BlistaCompact-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("issi3")] = {
 		["name"] = "Issi Classic",
@@ -4026,6 +4369,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/9/9f/IssiClassic-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("dilettante")] = {
 		["name"] = "Dilettante",
@@ -4037,6 +4381,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/8/80/Dilettante-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("rhapsody")] = {
 		["name"] = "Rhapsody",
@@ -4048,6 +4393,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/c/cc/Rhapsody-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("stalion")] = {
 		["name"] = "Stallion",
@@ -4059,6 +4405,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/0/00/Stallion-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("infernus2")] = {
 		["name"] = "Infernus Classic",
@@ -4070,6 +4417,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/7/73/InfernusClassic-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("ruston")] = {
 		["name"] = "Ruston",
@@ -4081,6 +4429,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/2/2c/Ruston-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("specter")] = {
 		["name"] = "Specter",
@@ -4092,6 +4441,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/7/7b/Specter-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("cheetah2")] = {
 		["name"] = "Cheetah Classic",
@@ -4103,6 +4453,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/3/38/CheetahClassic-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("torero")] = {
 		["name"] = "Torero",
@@ -4114,6 +4465,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/4/47/Torero-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("gp1")] = {
 		["name"] = "GP1",
@@ -4125,6 +4477,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/8/8a/GP1-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("penetrator")] = {
 		["name"] = "Penetrator",
@@ -4136,6 +4489,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/9/9c/Penetrator-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("tempesta")] = {
 		["name"] = "Tempesta",
@@ -4147,6 +4501,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/3/35/Tempesta-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("vagner")] = {
 		["name"] = "Vagner",
@@ -4158,6 +4513,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/1/14/Vagner-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("italigtb")] = {
 		["name"] = "Itali GTB",
@@ -4169,6 +4525,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/4/44/ItaliGTB-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("xa21")] = {
 		["name"] = "XA-21",
@@ -4180,6 +4537,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/6/69/XA21-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("jester3")] = {
 		["name"] = "Jester Classic",
@@ -4191,6 +4549,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/1/1a/JesterClassic-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("elegy")] = {
 		["name"] = "Elegy Retro Custom",
@@ -4202,6 +4561,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/6/68/ElegyRetroCustom-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("dominator3")] = {
 		["name"] = "Dominator GTX",
@@ -4213,6 +4573,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/8/8b/DominatorGTX-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("tezeract")] = {
 		["name"] = "Tezeract",
@@ -4224,6 +4585,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/c/ca/Tezeract-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("entity2")] = {
 		["name"] = "Entity XXR",
@@ -4235,6 +4597,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/9/9a/EntityXXR-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("nero")] = {
 		["name"] = "Nero",
@@ -4246,6 +4609,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/5/5e/Nero-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("comet3")] = {
 		["name"] = "Comet Retro Custom",
@@ -4257,6 +4621,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/a/a0/CometRetroCustom-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("taipan")] = {
 		["name"] = "Taipan",
@@ -4268,6 +4633,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/4/4c/Taipan-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("tyrant")] = {
 		["name"] = "Tyrant",
@@ -4279,6 +4645,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/f/f7/Tyrant-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("osiris")] = {
 		["name"] = "Osiris",
@@ -4290,6 +4657,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/5/53/Osiris-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("flashgt")] = {
 		["name"] = "Flash GT",
@@ -4301,6 +4669,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/3/3b/FlashGT-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("specter2")] = {
 		["name"] = "Specter Custom",
@@ -4312,6 +4681,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/0/01/SpecterCustom-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("surge")] = {
 		["name"] = "Surge",
@@ -4323,6 +4693,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/c/c2/Surge-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("ellie")] = {
 		["name"] = "Ellie",
@@ -4334,6 +4705,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/6/6b/Ellie-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("bjxl")] = {
 		["name"] = "BeeJay XL",
@@ -4345,6 +4717,7 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/d/da/BeeJayXL-GTAV-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	},
 	[GetHashKey("faggio3")] = {
 		["name"] = "Faggio Mod",
@@ -4356,5 +4729,6 @@ QBShared.VehicleModels = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/0/07/FaggioMod-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
+		["shop"] = "pdm",
 	}
 }
