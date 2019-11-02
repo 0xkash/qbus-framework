@@ -1,5 +1,7 @@
 Apartments = {}
 
+Apartments.SpawnOffset = 50
+
 Apartments.Locations = {
     ["apartment1"] = {
         name = "apartment1",

@@ -1,6 +1,8 @@
 QBCore = nil
 TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 
+ObjectsCounts = {}
+
 RegisterServerEvent('apartments:server:CreateApartment')
 AddEventHandler('apartments:server:CreateApartment', function(type)
     local src = source
@@ -21,6 +23,40 @@ AddEventHandler('apartments:server:UpdateApartment', function(type)
 
     TriggerClientEvent('QBCore:Notify', src, "Je bent van appartement veranderd!")
     TriggerClientEvent("apartments:client:SetHomeBlip", src, type)
+end)
+
+RegisterServerEvent('apartments:server:RingDoor')
+AddEventHandler('apartments:server:RingDoor', function(target)
+    local src = source
+    local OtherPlayer = QBCore.Functions.GetPlayer(target)
+    print(src)
+    if OtherPlayer ~= nil then
+        TriggerClientEvent('apartments:client:RingDoor', OtherPlayer.PlayerData.source, src)
+    end
+end)
+
+RegisterServerEvent('apartments:server:OpenDoor')
+AddEventHandler('apartments:server:OpenDoor', function(target, apartmentId, apartment)
+    print(target)
+    local src = source
+    local OtherPlayer = QBCore.Functions.GetPlayer(target)
+    if OtherPlayer ~= nil then
+        print(apartmentId)
+        TriggerClientEvent('apartments:client:SpawnInApartment', OtherPlayer.PlayerData.source, apartmentId, apartment)
+        TriggerClientEvent('QBCore:Notify', src, "Hij is binnen!", "success")
+    end
+end)
+
+RegisterServerEvent('apartments:server:SetApartmentOffset')
+AddEventHandler('apartments:server:SetApartmentOffset', function(apartment, apartmentId, offset)
+    ObjectsCounts[apartment].apartments = {}
+
+    ObjectsCounts[apartment].apartments[apartmentId] = offset
+end)
+
+RegisterServerEvent('apartments:server:RemoveApartmentOffset')
+AddEventHandler('apartments:server:RemoveApartmentOffset', function(apartment, apartmentId)
+    ObjectsCounts[apartment].apartments[apartmentId] = nil
 end)
 
 function CreateApartmentId(type)
@@ -47,6 +83,28 @@ function GetOwnedApartment(citizenid)
     end)
     return nil
 end
+
+QBCore.Functions.CreateCallback('apartments:GetApartmentOffset', function(source, cb, apartment, apartmentid)
+	local src = source
+    local retval = 0
+    if ObjectsCounts ~= nil and ObjectsCounts[apartment] ~= nil and tonumber(ObjectsCounts[apartment].apartments[apartmentId]) ~= 0 then
+        retval = tonumber(ObjectsCounts[apartment][apartmentId])
+    end
+    cb(retval)
+end)
+
+QBCore.Functions.CreateCallback('apartments:GetApartmentOffsetCount', function(source, cb, apartment)
+	local src = source
+    local retval = 1
+    if ObjectsCounts ~= nil and ObjectsCounts[apartment] ~= nil then
+        for k, v in pairs(ObjectsCounts[apartment]) do
+            if ObjectsCounts[apartment].v[k] ~= nil then  
+                retval = retval + 1
+            end
+        end
+    end
+    cb(retval)
+end)
 
 QBCore.Functions.CreateCallback('apartments:GetOwnedApartment', function(source, cb)
 	local src = source
