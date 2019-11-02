@@ -1,9 +1,8 @@
 var selectedChar = null;
 qbMultiCharacters = {}
+$('.container').hide();
 
 $(document).ready(function (){
-
-    // $('.container').hide();
     window.addEventListener('message', function (event) {
         var item = event.data;
 
@@ -27,10 +26,11 @@ $(document).ready(function (){
     $('.continue-btn').click(function(e){
         e.preventDefault();
 
-        qbMultiCharacters.fadeOutUp('.welcomescreen', 400);
-        qbMultiCharacters.fadeOutDown('.server-log', 400);
+        qbMultiCharacters.fadeOutUp('.welcomescreen', undefined, 400);
+        qbMultiCharacters.fadeOutDown('.server-log', undefined, 400);
         setTimeout(function(){
-            qbMultiCharacters.fadeInDown('.characters-block', '17%', 400);
+            qbMultiCharacters.fadeInDown('.characters-list', '20%', 400);
+            qbMultiCharacters.fadeInDown('.character-info', '20%', 400);
             $.post('http://qb-multicharacter/setupCharacters');
         }, 400)
     });
@@ -85,6 +85,7 @@ $(document).on('click', '#close-log', function(e){
 });
 
 $(document).on('click', '.character', function(e) {
+    var cDataPed = $(this).data('cData');
     e.preventDefault();
     if (selectedChar === null) {
         selectedChar = $(this);
@@ -97,6 +98,9 @@ $(document).on('click', '.character', function(e) {
             }
             $("#play").css({"display":"block"});
             $("#delete").css({"display":"none"});
+            $.post('http://qb-multicharacter/cDataPed', JSON.stringify({
+                cData: cDataPed
+            }));
         } else {
             $(selectedChar).addClass("char-selected");
             setupCharInfo($(this).data('cData'))
@@ -104,6 +108,9 @@ $(document).on('click', '.character', function(e) {
             $("#delete-text").html("Karakter Verwijderen");
             $("#play").css({"display":"block"});
             $("#delete").css({"display":"block"});
+            $.post('http://qb-multicharacter/cDataPed', JSON.stringify({
+                cData: cDataPed
+            }));
         }
     } else {
         $(selectedChar).removeClass("char-selected");
@@ -114,6 +121,9 @@ $(document).on('click', '.character', function(e) {
             $("#play-text").html("Karakter aanmaken");
             $("#play").css({"display":"block"});
             $("#delete").css({"display":"none"});
+            $.post('http://qb-multicharacter/cDataPed', JSON.stringify({
+                cData: cDataPed
+            }));
         } else {
             $(selectedChar).addClass("char-selected");
             setupCharInfo($(this).data('cData'))
@@ -121,6 +131,9 @@ $(document).on('click', '.character', function(e) {
             $("#delete-text").html("Karakter Verwijderen");
             $("#play").css({"display":"block"});
             $("#delete").css({"display":"block"});
+            $.post('http://qb-multicharacter/cDataPed', JSON.stringify({
+                cData: cDataPed
+            }));
         }
     }
 });
@@ -183,6 +196,12 @@ $("#play").click(function (e) {
             $.post('http://qb-multicharacter/selectCharacter', JSON.stringify({
                 cData: $(selectedChar).data('cData')
             }));
+            qbMultiCharacters.fadeInDown('.welcomescreen', '15%', 400);
+            qbMultiCharacters.fadeInDown('.server-log', '25%', 400);
+            setTimeout(function(){
+                qbMultiCharacters.fadeOutDown('.characters-list', "-40%", 400);
+                qbMultiCharacters.fadeOutDown('.character-info', "-40%", 400);
+            }, 300);
         } else {
             $('.characters-block').css("filter", "blur(2px)")
             $('.character-register').fadeIn(250);
@@ -205,15 +224,22 @@ $("#delete").click(function (e) {
 });
 
 qbMultiCharacters.fadeOutUp = function(element, time) {
-    $(element).css({"display":"block"}).animate({top: "-50.5%",}, time, function(){
+    $(element).css({"display":"block"}).animate({top: "-80.5%",}, time, function(){
         $(element).css({"display":"none"});
     });
 }
 
-qbMultiCharacters.fadeOutDown = function(element, time) {
-    $(element).css({"display":"block"}).animate({top: "103.5%",}, time, function(){
-        $(element).css({"display":"none"});
-    });
+qbMultiCharacters.fadeOutDown = function(element, percent, time) {
+    console.log(percent)
+    if (percent !== undefined) {
+        $(element).css({"display":"block"}).animate({top: percent,}, time, function(){
+            $(element).css({"display":"none"});
+        });
+    } else {
+        $(element).css({"display":"block"}).animate({top: "103.5%",}, time, function(){
+            $(element).css({"display":"none"});
+        });
+    }
 }
 
 qbMultiCharacters.fadeInDown = function(element, percent, time) {

@@ -97,19 +97,40 @@
 }
 
 .characters-list {
+    display: none;
     position: absolute;
-    width: 40%;
-    height: 50%;
-    left: 30px;
-    top: 60px;
-	overflow: visible !important;
+    width: 22%;
+    height: auto;
+    left: 14%;
+    top: -40%;
+    overflow: visible !important;
+    /* background-color: rgba(0, 0, 0, 0.15); */
+    padding: 30px;
+}
+
+.character-list-header {
+    position: absolute;
+    top: -20px;
+    width: 100%;
+    height: 8%;
+    right: 0;
+}
+
+.character-list-header > p {
+    text-align: center;
+    line-height: 37px;
+    font-family: 'Lato', monospace;
+    letter-spacing: 2px;
+    font-weight: bold;
+    color: white;
 }
 
 .character {
+    position: relative;
     width: 100%;
-    height: 20%;
-    margin-bottom: 10px;
-    box-shadow: inset 0px 0px 150px 0px rgba(255, 255, 255, 0.1);
+    height: 75px;
+    margin-top: 15px;
+    background-color: rgba(0, 0, 0, 0.75);
     font-family: 'Lato' monospace;
 }
 
@@ -123,7 +144,7 @@
     float: right;
     font-size: 11px;
     right: 35px;
-    top: 23px;
+    line-height: 75px;
 }
 
 .char-selected {
@@ -138,26 +159,26 @@
     position: relative;
     color: rgb(230, 230, 230);
     font-size: 17px;
-    top: 17px;
+    line-height: 75px;
     left: 20px;
     font-family: 'Lato' monospace;
 }
 
 .character-btn {
     position: relative;
-    width: 40%;
-    height: 10%;
-    left: 30px;
+    width: 100%;
+    height: 60px;
     top: 65%;
-    margin-bottom: 15px;
     transition: 0.2s;
+    float: left;
+    margin-top: 10px;
 }
 
 .character-btn > p {
     color: white;
     text-align: center;
     text-transform: uppercase;
-    padding-top: 21px;
+    line-height: 60px;
 }
 
 #play {
@@ -185,11 +206,12 @@
 }
 
 .character-info {
+    display: none;
     position: absolute;
-    width: 40%;
-    height: 83.7%;
-    right: 30px;
-    top: 60px;
+    width: 20%;
+    height: 60%;
+    right: 14%;
+    top: -40%;
     background-color: rgba(0, 0, 0, 0.5);
     overflow: visible !important;
 }
@@ -577,7 +599,3 @@
 {
 	background-color: #b12424e5;
 }
-
-/*
- *  STYLE 4
- */

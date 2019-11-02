@@ -1,5 +1,7 @@
 QBCore = nil
 
+local charPed = nil
+
 Citizen.CreateThread(function() 
     while true do
         Citizen.Wait(10)
@@ -8,6 +10,16 @@ Citizen.CreateThread(function()
             Citizen.Wait(200)
         end
     end
+end)
+
+Citizen.CreateThread(function()
+	while true do
+		Citizen.Wait(0)
+		if NetworkIsSessionStarted() then
+			TriggerEvent('qb-multicharacter:client:chooseChar')
+			return
+		end
+	end
 end)
 
 --- CODE
@@ -23,18 +35,8 @@ function openCharMenu(bool)
     })
     choosingCharacter = bool
     skyCam(bool)
+    print('yeet?')
 end
-
-Citizen.CreateThread(function()
-	while true do
-		Citizen.Wait(7)
-        if NetworkIsSessionStarted() then
-            Citizen.Wait(100)
-            selectChar()
-			return
-		end
-	end
-end)
 
 RegisterNUICallback('closeUI', function()
     openCharMenu(false)
@@ -46,11 +48,13 @@ end)
 
 RegisterNUICallback('selectCharacter', function(data)
     local cData = data.cData
-    
+    DoScreenFadeOut(10)
     TriggerServerEvent('qb-multicharacter:server:loadUserData', cData)
     TriggerEvent('qb-spawn:client:setupHouseSpawns', cData)
     TriggerEvent('qb-spawn:client:openUI', true)
     openCharMenu(false)
+    SetEntityAsMissionEntity(charPed, true, true)
+    DeleteEntity(charPed)
 end)
 
 RegisterNetEvent('qb-multicharacter:client:closeNUI')
@@ -60,18 +64,74 @@ end)
 
 RegisterNetEvent('qb-multicharacter:client:chooseChar')
 AddEventHandler('qb-multicharacter:client:chooseChar', function()
+    SetNuiFocus(false, false)
+    -- Sets the loadingscreen shutdown to manual so that it wont dissapear when interior not loaded
+    SetManualShutdownLoadingScreenNui(true)
+    -- Loads Micheals interior
+    local interior = GetInteriorAtCoords(-814.89,181.95,76.85 - 18.9)
+    LoadInterior(interior)
+    while not IsInteriorReady(interior) do
+        Citizen.Wait(1000)
+        print("[Loading Selector Interior, Please Wait!]")
+    end
+    -- Freezes player and places player inside interior hidden room
+    FreezeEntityPosition(GetPlayerPed(-1), true)
+    SetEntityCoords(GetPlayerPed(-1), -798.45,186.62,75.54)
+    Citizen.Wait(100)
+    -- Closes loading screen
+    ShutdownLoadingScreenNui()
+
+    DoScreenFadeOut(0)
+    DoScreenFadeIn(1000)
     openCharMenu(true)
-    QBCore.Functions.TriggerCallback("test:yeet", function(result)
-        SendNUIMessage({
-            action = "setupCharacters",
-            characters = result
-        })
-    end)
 end)
 
 function selectChar()
     openCharMenu(true)
 end
+
+RegisterNUICallback('cDataPed', function(data)
+    local cData = data.cData
+	RequestModel(GetHashKey("mp_m_freemode_01"))
+
+	while not HasModelLoaded(GetHashKey("mp_m_freemode_01")) do
+	    Wait(1)
+    end
+    
+    SetEntityAsMissionEntity(charPed, true, true)
+    DeleteEntity(charPed)
+
+    if cData ~= nil then
+        QBCore.Functions.TriggerCallback('qb-multicharacter:server:getSkin', function(model, skin)
+            if model ~= nil then
+                model = model ~= nil and tonumber(model) or false
+
+                if not IsModelInCdimage(model) or not IsModelValid(model) then setDefault() return end
+            
+                Citizen.CreateThread(function()
+                    RequestModel(model)
+            
+                    while not HasModelLoaded(model) do
+                        Citizen.Wait(0)
+                    end
+
+                    charPed = CreatePed(3, model, -814.02, 176.16, 75.749, 351.5, false, true)
+                end)
+            else
+                charPed = CreatePed(4, GetHashKey("mp_m_freemode_01"), -814.02, 176.16, 75.85, 351.5, false, true)
+            end
+        end, cData.citizenid)
+    else
+        charPed = CreatePed(4, GetHashKey("mp_m_freemode_01"), -814.02, 176.16, 75.85, 351.5, false, true)
+    end
+
+    Citizen.Wait(100)
+    
+    SetEntityHeading(charPed, 351.5)
+    FreezeEntityPosition(charPed, true)
+    SetEntityInvincible(charPed, true)
+    SetBlockingOfNonTemporaryEvents(charPed, true)
+end)
 
 RegisterNUICallback('setupCharacters', function()
     QBCore.Functions.TriggerCallback("test:yeet", function(result)
@@ -79,6 +139,7 @@ RegisterNUICallback('setupCharacters', function()
             action = "setupCharacters",
             characters = result
         })
+        SetTimecycleModifier('default')
     end)
 end)
 
@@ -100,7 +161,7 @@ function skyCam(bool)
         SetTimecycleModifier('hud_def_blur')
         SetTimecycleModifierStrength(1.0)
         FreezeEntityPosition(GetPlayerPed(-1), true)
-        cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", -358.56, -981.96, 286.25, 320.00, 0.00, -50.00, 90.00, false, 0)
+        cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", -813.35, 179.67, 77.3, -2.00, 0.00, 180.00, 90.00, false, 0)
         SetCamActive(cam, true)
         RenderScriptCams(true, false, 1, true, true)
     else
@@ -110,6 +171,7 @@ function skyCam(bool)
         RenderScriptCams(false, false, 1, true, true)
         FreezeEntityPosition(GetPlayerPed(-1), false)
     end
+    SetTimecycleModifier('default')
 end
 
 skyCam(false)
