@@ -29,9 +29,9 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 		elseif name == "trunk" then
 			secondInv.name = "trunk-"..id
 			secondInv.label = "Trunk-"..id
-			secondInv.maxweight = other.maxweight
+			secondInv.maxweight = other.maxweight ~= nil and other.maxweight or 60000
 			secondInv.inventory = {}
-			secondInv.slots = other.slots
+			secondInv.slots = other.slots ~= nil and other.slots or 50
 			if IsVehicleOwned(id) and next(GetOwnedVehicleItems(id)) ~= nil then
 				secondInv.inventory = GetOwnedVehicleItems(id)
 				Trunks[id] = {}
