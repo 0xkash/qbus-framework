@@ -225,7 +225,7 @@ function EnterApartment(house, apartmentId)
                 TriggerServerEvent("apartments:server:AddObject", apartmentId, house, CurrentOffset)
                 
                 local coords = { x = Apartments.Locations[house].coords.enter.x, y = Apartments.Locations[house].coords.enter.y, z = Apartments.Locations[house].coords.enter.z - CurrentOffset}
-                data = exports['qb-interior']:CreateTier1HouseFurnished(coords)
+                data = exports['qb-interior']:CreateApartmentFurnished(coords)
                 Citizen.Wait(100)
                 houseObj = data[1]
                 POIOffsets = data[2]
@@ -253,7 +253,7 @@ function EnterApartment(house, apartmentId)
             TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_open", 1.0)
             TriggerServerEvent("apartments:server:AddObject", apartmentId, house, CurrentOffset)
             local coords = { x = Apartments.Locations[ClosestHouse].coords.enter.x, y = Apartments.Locations[ClosestHouse].coords.enter.y, z = Apartments.Locations[ClosestHouse].coords.enter.z - CurrentOffset}
-            data = exports['qb-interior']:CreateTier1HouseFurnished(coords, false)
+            data = exports['qb-interior']:CreateApartmentFurnished(coords, false)
             
             Citizen.Wait(100)
             houseObj = data[1]

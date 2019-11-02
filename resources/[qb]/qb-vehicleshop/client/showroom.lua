@@ -78,7 +78,7 @@ Citizen.CreateThread(function()
         QBCore.Functions.SpawnVehicle(QB.ShowroomVehicles[k].defaultVehicle, function(veh)
             SetEntityHeading(veh, QB.ShowroomVehicles[k].coords.h)
             SetVehicleDoorsLocked(veh, 3)
-        end, QB.ShowroomVehicles[k].coords)
+        end, QB.ShowroomVehicles[k].coords, false)
     end
 end)
 
