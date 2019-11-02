@@ -39,8 +39,8 @@ function GetCatVehicles(catergory)
     ped = GetPlayerPed(-1)
     MenuTitle = "Cat Vehs"
     ClearMenu()
-    for k, v in pairs(QB.CategoryVehicles[catergory]) do
-        Menu.addButton(QB.CategoryVehicles[catergory][k].label, "SelectVehicle", v)
+    for k, v in pairs(shopVehicles[catergory]) do
+        Menu.addButton(shopVehicles[catergory][k].name, "SelectVehicle", v)
     end
 
     Menu.addButton("Sluit Menu", "close", nil) 
@@ -50,11 +50,11 @@ function SelectVehicle(vehicleData)
     local vehCoords = GetClosestVehicle(currentCarValue.coords.x, currentCarValue.coords.y, currentCarValue.coords.z, 1.0, 0, 70)
     QBCore.Functions.DeleteVehicle(vehCoords)
 
-    QBCore.Functions.SpawnVehicle(vehicleData.vehicle, function(veh)
+    QBCore.Functions.SpawnVehicle(vehicleData["model"], function(veh)
         SetEntityHeading(veh, currentCarValue.coords.h)
         SetVehicleDoorsLocked(veh, 3)
     end, currentCarValue.coords)
-    QB.ShowroomVehicles[currentCarKey].chosenVehicle = vehicleData.vehicle
+    QB.ShowroomVehicles[currentCarKey].chosenVehicle = vehicleData["model"]
     close()
 end
 
@@ -112,8 +112,8 @@ Citizen.CreateThread(function()
                     end
 
                     if IsControlJustPressed(0, Keys["E"]) then
-                        local class = GetVehicleClassFromName(GetHashKey(QB.ShowroomVehicles[k].chosenVehicle))
-                        TriggerServerEvent('qb-vehicleshop:server:buyShowroomVehicle', QB.ShowroomVehicles[k].chosenVehicle, QB.Classes[class])
+                        local class = QBCore.Shared.Vehicles[QB.ShowroomVehicles[k].chosenVehicle]["category"]
+                        TriggerServerEvent('qb-vehicleshop:server:buyShowroomVehicle', QB.ShowroomVehicles[k].chosenVehicle, class)
                     end
 
                     if not Menu.hidden then
@@ -163,5 +163,5 @@ AddEventHandler('qb-vehicleshop:client:buyShowroomVehicle', function(vehicle, pl
         SetVehicleNumberPlateText(veh, plate)
         SetEntityHeading(veh, QB.DefaultBuySpawn.h)
 		TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
-    end, QB.DefaultBuySpawn)
+    end, QB.DefaultBuySpawn, false)
 end)

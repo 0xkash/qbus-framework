@@ -25,6 +25,42 @@ end)
 
 local inVehicleShop = false
 
+shopVehicles = {
+    ["coupes"] = {},
+    ["sedans"] = {},
+    ["super"] = {},
+    ["sports"] = {},
+}
+
+RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
+AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+    for k, v in pairs(QBCore.Shared.Vehicles) do
+        if QBCore.Shared.Vehicles[k]["category"] == "coupes" then
+            -- if QBCore.Shared.Vehicles[k]["shop"] == "pdm" then
+                table.insert(shopVehicles["coupes"], QBCore.Shared.Vehicles[k])
+            -- end
+        end
+        
+        if QBCore.Shared.Vehicles[k]["category"] == "sedans" then
+            -- if QBCore.Shared.Vehicles[k]["shop"] == "pdm" then
+                table.insert(shopVehicles["sedans"], QBCore.Shared.Vehicles[k])
+            -- end
+        end
+        
+        if QBCore.Shared.Vehicles[k]["category"] == "super" then
+            -- if QBCore.Shared.Vehicles[k]["shop"] == "pdm" then
+                table.insert(shopVehicles["super"], QBCore.Shared.Vehicles[k])
+            -- end
+        end
+        
+        if QBCore.Shared.Vehicles[k]["category"] == "sports" then
+            -- if QBCore.Shared.Vehicles[k]["shop"] == "pdm" then
+                table.insert(shopVehicles["sports"], QBCore.Shared.Vehicles[k])
+            -- end
+        end
+    end
+end)
+
 function openVehicleShop(bool)
     SetNuiFocus(bool, bool)
     SendNUIMessage({
@@ -33,15 +69,15 @@ function openVehicleShop(bool)
     })
 end
 
-function setupVehicles(category)
+function setupVehicles(vehs)
     SendNUIMessage({
         action = "setupVehicles",
-        vehicles = QB.Vehicles[category]
+        vehicles = vehs
     })
 end
 
 RegisterNUICallback('GetCategoryVehicles', function(data)
-    setupVehicles(data.selectedCategory)
+    setupVehicles(shopVehicles[data.selectedCategory])
 end)
 
 RegisterNUICallback('exit', function()

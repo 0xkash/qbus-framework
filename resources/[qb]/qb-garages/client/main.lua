@@ -118,7 +118,7 @@ function HouseGarage(house)
                     v.state = "In Beslag"
                 end
 
-                Menu.addButton(GetDisplayNameFromVehicleModel(GetHashKey(v.vehicle)), "TakeOutGarageVehicle", v, v.state, " Motor: " .. enginePercent.."%", " Body: " .. bodyPercent.."%", " Fuel: "..currentFuel.."%")
+                Menu.addButton(QBCore.Shared.Vehicles[v.vehicle]["name"], "TakeOutGarageVehicle", v, v.state, " Motor: " .. enginePercent.."%", " Body: " .. bodyPercent.."%", " Fuel: "..currentFuel.."%")
             end
         end
             
@@ -159,7 +159,7 @@ function DepotLijst()
                     v.state = "Depot"
                 end
 
-                Menu.addButton(GetDisplayNameFromVehicleModel(GetHashKey(v.vehicle)), "TakeOutDepotVehicle", v, v.state, " Motor: " .. enginePercent.."%", " Body: " .. bodyPercent.."%", " Fuel: "..currentFuel.."%")
+                Menu.addButton(QBCore.Shared.Vehicles[v.vehicle]["name"], "TakeOutDepotVehicle", v, v.state, " Motor: " .. enginePercent.."%", " Body: " .. bodyPercent.."%", " Fuel: "..currentFuel.."%")
             end
         end
             
@@ -194,7 +194,7 @@ function VoertuigLijst()
                     v.state = "In Beslag"
                 end
 
-                Menu.addButton(GetDisplayNameFromVehicleModel(GetHashKey(v.vehicle)), "TakeOutVehicle", v, v.state, " Motor: " .. enginePercent .. "%", " Body: " .. bodyPercent.. "%", " Fuel: "..currentFuel.. "%")
+                Menu.addButton(QBCore.Shared.Vehicles[v.vehicle]["name"], "TakeOutVehicle", v, v.state, " Motor: " .. enginePercent .. "%", " Body: " .. bodyPercent.. "%", " Fuel: "..currentFuel.. "%")
             end
         end
             
@@ -415,55 +415,53 @@ Citizen.CreateThread(function()
 
         if currentHouseGarage ~= nil then
             if hasGarageKey then
-                for k, v in pairs(HouseGarages) do
-                    local takeDist = GetDistanceBetweenCoords(pos, HouseGarages[currentHouseGarage].takeVehicle.x, HouseGarages[currentHouseGarage].takeVehicle.y, HouseGarages[currentHouseGarage].takeVehicle.z)
-                    if takeDist <= 15 then
-                        DrawMarker(2, HouseGarages[currentHouseGarage].takeVehicle.x, HouseGarages[currentHouseGarage].takeVehicle.y, HouseGarages[currentHouseGarage].takeVehicle.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
-                        if takeDist <= 1.5 then
-                            if not IsPedInAnyVehicle(ped) then
-                                DrawText3Ds(HouseGarages[currentHouseGarage].takeVehicle.x, HouseGarages[currentHouseGarage].takeVehicle.y, HouseGarages[currentHouseGarage].takeVehicle.z + 0.5, '~g~E~w~ - Garage')
-                                if IsControlJustPressed(1, 177) and not Menu.hidden then
-                                    close()
-                                    PlaySound(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0, 0, 1)
-                                end
-                                if IsControlJustPressed(0, 38) then
-                                    MenuHouseGarage(currentHouseGarage)
-                                    Menu.hidden = not Menu.hidden
-                                end
-                            elseif IsPedInAnyVehicle(ped) then
-                                DrawText3Ds(HouseGarages[currentHouseGarage].takeVehicle.x, HouseGarages[currentHouseGarage].takeVehicle.y, HouseGarages[currentHouseGarage].takeVehicle.z + 0.5, '~g~E~w~ - Om te parkeren')
-                                if IsControlJustPressed(0, 38) then
-                                    local curVeh = GetVehiclePedIsIn(ped)
-                                    local plate = GetVehicleNumberPlateText(curVeh)
-                                    QBCore.Functions.TriggerCallback('qb-garage:server:checkVehicleOwner', function(owned)
-                                        if owned then
-                                            local bodyDamage = round(GetVehicleBodyHealth(curVeh), 1)
-                                            local engineDamage = round(GetVehicleEngineHealth(curVeh), 1)
-                                            local totalFuel = exports['LegacyFuel']:GetFuel(curVeh)
-                    
-                                            TriggerServerEvent('qb-garage:server:updateVehicleStatus', totalFuel, engineDamage, bodyDamage, plate, k)
-                                            TriggerServerEvent('qb-garage:server:updateVehicleState', 1, plate, currentHouseGarage)
-                                            QBCore.Functions.DeleteVehicle(curVeh)
-                                            QBCore.Functions.Notify("Voertuig geparkeerd in, "..HouseGarages[currentHouseGarage].label, "primary", 4500)
-                                        else
-                                            QBCore.Functions.Notify("Niemand is in bezit van dit voertuig...", "error", 3500)
-                                        end
-                                    end, plate)
-                                end
+                local takeDist = GetDistanceBetweenCoords(pos, HouseGarages[currentHouseGarage].takeVehicle.x, HouseGarages[currentHouseGarage].takeVehicle.y, HouseGarages[currentHouseGarage].takeVehicle.z)
+                if takeDist <= 15 then
+                    DrawMarker(2, HouseGarages[currentHouseGarage].takeVehicle.x, HouseGarages[currentHouseGarage].takeVehicle.y, HouseGarages[currentHouseGarage].takeVehicle.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
+                    if takeDist < 2.0 then
+                        if not IsPedInAnyVehicle(ped) then
+                            DrawText3Ds(HouseGarages[currentHouseGarage].takeVehicle.x, HouseGarages[currentHouseGarage].takeVehicle.y, HouseGarages[currentHouseGarage].takeVehicle.z + 0.5, '~g~E~w~ - Garage')
+                            if IsControlJustPressed(1, 177) and not Menu.hidden then
+                                close()
+                                PlaySound(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0, 0, 1)
+                            end
+                            if IsControlJustPressed(0, 38) then
+                                MenuHouseGarage(currentHouseGarage)
+                                Menu.hidden = not Menu.hidden
+                            end
+                        elseif IsPedInAnyVehicle(ped) then
+                            DrawText3Ds(HouseGarages[currentHouseGarage].takeVehicle.x, HouseGarages[currentHouseGarage].takeVehicle.y, HouseGarages[currentHouseGarage].takeVehicle.z + 0.5, '~g~E~w~ - Om te parkeren')
+                            if IsControlJustPressed(0, 38) then
+                                local curVeh = GetVehiclePedIsIn(ped)
+                                local plate = GetVehicleNumberPlateText(curVeh)
+                                QBCore.Functions.TriggerCallback('qb-garage:server:checkVehicleOwner', function(owned)
+                                    if owned then
+                                        local bodyDamage = round(GetVehicleBodyHealth(curVeh), 1)
+                                        local engineDamage = round(GetVehicleEngineHealth(curVeh), 1)
+                                        local totalFuel = exports['LegacyFuel']:GetFuel(curVeh)
+                
+                                        TriggerServerEvent('qb-garage:server:updateVehicleStatus', totalFuel, engineDamage, bodyDamage, plate, k)
+                                        TriggerServerEvent('qb-garage:server:updateVehicleState', 1, plate, currentHouseGarage)
+                                        QBCore.Functions.DeleteVehicle(curVeh)
+                                        QBCore.Functions.Notify("Voertuig geparkeerd in, "..HouseGarages[currentHouseGarage].label, "primary", 4500)
+                                    else
+                                        QBCore.Functions.Notify("Niemand is in bezit van dit voertuig...", "error", 3500)
+                                    end
+                                end, plate)
                             end
                         end
-
+                        
                         Menu.renderGUI()
+                    end
 
-                        if takeDist >= 4 and not Menu.hidden then
-                            closeMenuFull()
-                        end
+                    if takeDist > 1.99 and not Menu.hidden then
+                        closeMenuFull()
                     end
                 end
             end
         end
 
-        Citizen.Wait(2)
+        Citizen.Wait(0)
     end
 end)
 
