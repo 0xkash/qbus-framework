@@ -129,16 +129,26 @@ QBCore.Functions.CreateCallback('apartments:GetApartmentOffsetNewOffset', functi
     cb(retval)
 end)
 
-QBCore.Functions.CreateCallback('apartments:GetOwnedApartment', function(source, cb)
-	local src = source
-    local Player = QBCore.Functions.GetPlayer(src)
-    QBCore.Functions.ExecuteSql("SELECT * FROM `apartments` WHERE `citizenid` = '"..Player.PlayerData.citizenid.."' ", function(result)
-        if result[1] ~= nil then 
-            return cb(result[1])
-        end
+QBCore.Functions.CreateCallback('apartments:GetOwnedApartment', function(source, cb, cid)
+    if cid ~= nil then
+        QBCore.Functions.ExecuteSql("SELECT * FROM `apartments` WHERE `citizenid` = '"..cid.."' ", function(result)
+            if result[1] ~= nil then 
+                return cb(result[1])
+            end
+            return cb(nil)
+        end)
         return cb(nil)
-    end)
-    return cb(nil)
+    else
+        local src = source
+        local Player = QBCore.Functions.GetPlayer(src)
+        QBCore.Functions.ExecuteSql("SELECT * FROM `apartments` WHERE `citizenid` = '"..Player.PlayerData.citizenid.."' ", function(result)
+            if result[1] ~= nil then 
+                return cb(result[1])
+            end
+            return cb(nil)
+        end)
+        return cb(nil)
+    end
 end)
 
 QBCore.Functions.CreateCallback('apartments:IsOwner', function(source, cb, apartment)

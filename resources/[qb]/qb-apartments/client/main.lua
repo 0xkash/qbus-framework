@@ -147,8 +147,6 @@ end)
 
 RegisterNetEvent('apartments:client:setupSpawnUI')
 AddEventHandler('apartments:client:setupSpawnUI', function(cData)
-    isLoggedIn = true
-    TriggerServerEvent("apartments:server:SetMotelObject")
     QBCore.Functions.TriggerCallback('apartments:GetOwnedApartment', function(result)
         if result ~= nil then
             TriggerEvent('qb-spawn:client:setupSpawns', cData, false, nil)
@@ -158,7 +156,12 @@ AddEventHandler('apartments:client:setupSpawnUI', function(cData)
             TriggerEvent('qb-spawn:client:setupSpawns', cData, true, Apartments.Locations)
             TriggerEvent('qb-spawn:client:openUI', true)
         end
-    end)
+    end, cData.citizenid)
+end)
+
+RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
+AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+    isLoggedIn = true
 end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerUnload')
