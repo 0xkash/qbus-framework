@@ -16,6 +16,10 @@ $(document).ready(function() {
         if (data.action == "setupLocations") {
             setupLocations(data.locations, data.houses)
         }
+
+        if (data.action == "setupAppartements") {
+            setupApps(data.locations)
+        }
     })
 })
 
@@ -26,19 +30,21 @@ $(document).on('click', '.location', function(evt){
     var location = $(this).data('location'); //get the text
     var type = $(this).data('type'); //get the text
     var label = $(this).data('label'); //get the text
-    $("#spawn-label").html("Bevestig")
-    $("#submit-spawn").attr("data-location", location);
-    $("#submit-spawn").attr("data-type", type);
-    $("#submit-spawn").fadeIn(100)
-    $.post('http://qb-spawn/setCam', JSON.stringify({
-        posname: location,
-        type: type,
-    }));
-    if (currentLocation !== null) {
-        $(currentLocation).removeClass('selected');
+    if (type !== "lab") {
+        $("#spawn-label").html("Bevestig")
+        $("#submit-spawn").attr("data-location", location);
+        $("#submit-spawn").attr("data-type", type);
+        $("#submit-spawn").fadeIn(100)
+        $.post('http://qb-spawn/setCam', JSON.stringify({
+            posname: location,
+            type: type,
+        }));
+        if (currentLocation !== null) {
+            $(currentLocation).removeClass('selected');
+        }
+        $(this).addClass('selected');
+        currentLocation = this
     }
-    $(this).addClass('selected');
-    currentLocation = this
 });
 
 $(document).on('click', '#submit-spawn', function(evt){
@@ -50,15 +56,23 @@ $(document).on('click', '#submit-spawn', function(evt){
     setTimeout(function(){
         $(".hideContainer").removeClass("hideContainer");
     }, 900);
-    $.post('http://qb-spawn/spawnplayer', JSON.stringify({
-        spawnloc: location,
-        typeLoc: spawnType
-    }));
+    if (spawnType !== "appartment") {
+        $.post('http://qb-spawn/spawnplayer', JSON.stringify({
+            spawnloc: location,
+            typeLoc: spawnType
+        }));
+    } else {
+        $.post('http://qb-spawn/chooseAppa', JSON.stringify({
+            appType: location,
+        }));
+    }
 });
 
 function setupLocations(locations, myHouses) {
     var parent = $('.spawn-locations')
     $(parent).html("");
+
+    $(parent).append('<div class="loclabel" id="location" data-location="null" data-type="lab" data-label="Waar wil je beginnen?"><p><span id="null">Waar wil je beginnen?</span></p></div>')
     
     setTimeout(function(){
         $(parent).append('<div class="location" id="location" data-location="current" data-type="current" data-label="Laatste Locatie"><p><span id="current-location">Laatste Locatie</span></p></div>');
@@ -76,4 +90,18 @@ function setupLocations(locations, myHouses) {
         $(parent).append('<div class="submit-spawn" id="submit-spawn"><p><span id="spawn-label"></span></p></div>');
         $('.submit-spawn').hide();
     }, 100)
+}
+
+function setupApps(apps) {
+    var parent = $('.spawn-locations')
+    $(parent).html("");
+
+    $(parent).append('<div class="loclabel" id="location" data-location="null" data-type="lab" data-label="Kies een appartement"><p><span id="null">Kies een appartement</span></p></div>')
+
+    $.each(apps, function(index, app){
+        $(parent).append('<div class="location" id="location" data-location="'+app.name+'" data-type="appartment" data-label="'+app.label+'"><p><span id="'+app.name+'">'+app.label+'</span></p></div>')
+    });
+
+    $(parent).append('<div class="submit-spawn" id="submit-spawn"><p><span id="spawn-label"></span></p></div>');
+    $('.submit-spawn').hide();
 }

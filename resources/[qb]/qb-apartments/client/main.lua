@@ -145,16 +145,18 @@ AddEventHandler('onResourceStop', function(resource)
     end
 end)
 
-RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
-AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+RegisterNetEvent('apartments:client:setupSpawnUI')
+AddEventHandler('apartments:client:setupSpawnUI', function(cData)
     isLoggedIn = true
     TriggerServerEvent("apartments:server:SetMotelObject")
     QBCore.Functions.TriggerCallback('apartments:GetOwnedApartment', function(result)
         if result ~= nil then
+            TriggerEvent('qb-spawn:client:setupSpawns', cData, false, nil)
+            TriggerEvent('qb-spawn:client:openUI', true)
             TriggerEvent("apartments:client:SetHomeBlip", result.type)
         else
-            -- keuze menu yeet
-            TriggerServerEvent("apartments:server:CreateApartment", "apartment1", Apartments.Locations["apartment1"].label)
+            TriggerEvent('qb-spawn:client:setupSpawns', cData, true, Apartments.Locations)
+            TriggerEvent('qb-spawn:client:openUI', true)
         end
     end)
 end)
