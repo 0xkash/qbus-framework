@@ -122,3 +122,8 @@ end, "god")
 QBCore.Commands.Add("testnotify", "test notify", {{name="text", help="Tekst enzo"}}, true, function(source, args)
 	TriggerClientEvent('QBCore:Notify', source, table.concat(args, " "), "success")
 end, "god")
+
+QBCore.Commands.Add("baan", "Kijk wat je baan is", {}, false, function(source, args)
+	local Player = QBCore.Functions.GetPlayer(source)
+	TriggerClientEvent('chatMessage', source, "SYSTEM", "warning", "Baan: "..Player.PlayerData.job.label.." Functie: "..Player.PlayerData.job.gradelabel)
+end, "god")

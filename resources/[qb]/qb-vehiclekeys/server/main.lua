@@ -5,6 +5,7 @@ local VehicleList = {}
 
 QBCore.Functions.CreateCallback('vehiclekeys:CheckHasKey', function(source, cb, plate)
     local Player = QBCore.Functions.GetPlayer(source)
+    print('Dit kenteken check ik '..plate)
     cb(CheckOwner(plate, Player.PlayerData.citizenid))
 end)
 
@@ -36,6 +37,7 @@ AddEventHandler('vehiclekeys:server:SetVehicleOwner', function(plate)
         VehicleList[vehicleId].owners[1] = Player.PlayerData.citizenid
         print(json.encode(VehicleList[vehicleId]))
     end
+    print('Owner: '..plate)
 end)
 
 RegisterServerEvent('vehiclekeys:server:GiveVehicleKeys')
@@ -46,7 +48,7 @@ AddEventHandler('vehiclekeys:server:GiveVehicleKeys', function(plate, target)
         if QBCore.Functions.GetPlayer(target) ~= nil then
             TriggerClientEvent('vehiclekeys:client:SetOwner', target, plate)
             TriggerClientEvent('QBCore:Notify', src, "Je hebt je sleutels gegeven!")
-            TriggerClientEvent('QBCore:Notify', src, "Je hebt je sleutels ontvangen!")
+            TriggerClientEvent('QBCore:Notify', target, "Je hebt je sleutels ontvangen!")
         else
             TriggerClientEvent('chatMessage', src, "SYSTEM", "error", "Speler is niet online!")
         end
@@ -77,18 +79,20 @@ function DoesPlateExist(plate)
 end
 
 function CheckOwner(plate, identifier)
+    local retval = false
     if VehicleList ~= nil then
         for k, val in pairs(VehicleList) do
+            print(json.encode(VehicleList[k].owners))
             if val.plate == plate then
                 for key, owner in pairs(VehicleList[k].owners) do
                     if owner == identifier then
-                        return true
+                        retval = true
                     end
                 end
             end
         end
     end
-    return false
+    return retval
 end
 
 QBCore.Functions.CreateUseableItem("lockpick", function(source, item)

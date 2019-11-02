@@ -97,6 +97,14 @@ Config.MenuItems = {
                 items = {},
             },
             {
+                id    = 'getintrunk',
+                title = 'Kofferbak [In/Uit]',
+                icon = '#vehiclekey',
+                type = 'client',
+                event = 'qb-smallresources:trunk:client:getInTrunk',
+                shouldClose = true,
+            },
+            {
                 id    = 'vehicledoors',
                 title = 'Voertuig Deuren',
                 icon = '#vehicledoors',

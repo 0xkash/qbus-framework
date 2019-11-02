@@ -1,5 +1,7 @@
 -- Thanks Stroudy <3
 function CreateHotelFurnished(spawn)
+	local object = {}
+
 	local building = CreateObject(GetHashKey('playerhouse_hotel'),generator.x - 0.7,generator.y-0.4,generator.z-1.42,false,false,false)
 
 	FreezeEntityPosition(building,true)

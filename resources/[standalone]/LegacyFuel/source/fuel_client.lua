@@ -1,3 +1,14 @@
+QBCore = nil
+
+Citizen.CreateThread(function() 
+    while true do
+        Citizen.Wait(10)
+        if QBCore == nil then
+            TriggerEvent("QBCore:GetObject", function(obj) QBCore = obj end)    
+            Citizen.Wait(200)
+        end
+    end
+end)
 
 
 local isNearPump = false
@@ -98,6 +109,7 @@ function FindNearestFuelPump()
 end
 
 Citizen.CreateThread(function()
+	Citizen.Wait(200)
 	while true do
 		Citizen.Wait(250)
 
@@ -216,13 +228,13 @@ AddEventHandler('fuel:refuelFromPump', function(pumpObject, ped, vehicle)
 end)
 
 Citizen.CreateThread(function()
+	Citizen.Wait(200)
 	while true do
 		Citizen.Wait(1)
 
 		local ped = PlayerPedId()
 
 		if not isFueling and ((isNearPump and GetEntityHealth(isNearPump) > 0) or (GetSelectedPedWeapon(ped) == 883325847 and not isNearPump)) then
-			print('yeet')
 			if IsPedInAnyVehicle(ped) and GetPedInVehicleSeat(GetVehiclePedIsIn(ped), -1) == ped then
 				local pumpCoords = GetEntityCoords(isNearPump)
 

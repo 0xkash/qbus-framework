@@ -48,6 +48,7 @@ RegisterNUICallback('selectCharacter', function(data)
     local cData = data.cData
     
     TriggerServerEvent('qb-multicharacter:server:loadUserData', cData)
+    TriggerEvent('qb-spawn:client:setupHouseSpawns', cData)
     TriggerEvent('qb-spawn:client:openUI', true)
     openCharMenu(false)
 end)

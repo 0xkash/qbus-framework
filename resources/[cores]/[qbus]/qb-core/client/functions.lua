@@ -69,8 +69,6 @@ QBCore.Functions.SpawnVehicle = function(model, cb, coords, isnetworked)
 
     SetModelAsNoLongerNeeded(model)
 
-    TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
-
     if cb ~= nil then
         cb(veh)
     end

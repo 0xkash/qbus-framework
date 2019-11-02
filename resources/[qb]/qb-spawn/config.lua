@@ -9,7 +9,7 @@ QB.Spawns = {
             h = 144.5 
         },
         location = "legion",
-        label = "Legion Square",
+        label = "Blokkenpark",
     },
 
     ["policedp"] = {
@@ -20,7 +20,7 @@ QB.Spawns = {
             h = 3.5 
         },
         location = "policedp",
-        label = "Police Departement",
+        label = "Politie HB",
     },
 
     ["motel"] = {

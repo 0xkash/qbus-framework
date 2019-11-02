@@ -22,8 +22,8 @@ Config.ShowAllGasStations = true
 
 -- Configure the strings as you wish here.
 Config.Strings = {
-	ExitVehicle = "Stap af om te tanken",
-	EToRefuel = "[~g~E~w~] Om voertuig te tanken",
+	ExitVehicle = "Stap uit / af om te tanken",
+	EToRefuel = "[~g~E~w~] Om voertuig te tanken ",
 	JerryCanEmpty = "Jerry can is empty",
 	FullTank = "Brandstof niveau is maximaal",
 	PurchaseJerryCan = "Press ~g~E ~w~to purchase a jerry can for ~g~$" .. Config.JerryCanCost,

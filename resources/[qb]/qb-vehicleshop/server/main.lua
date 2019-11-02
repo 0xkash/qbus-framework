@@ -29,6 +29,25 @@ AddEventHandler('qb-vehicleshop:server:buyVehicle', function(vehicleData, garage
     end
 end)
 
+RegisterNetEvent('qb-vehicleshop:server:buyShowroomVehicle')
+AddEventHandler('qb-vehicleshop:server:buyShowroomVehicle', function(vehicle, class)
+    local src = source
+    local pData = QBCore.Functions.GetPlayer(src)
+    local cid = pData.PlayerData.citizenid
+    local balance = pData.PlayerData.money["bank"]
+    local vehiclePrice = QB.CategoryVehicles[class][vehicle].price
+    local plate = GeneratePlate()
+
+    if (balance - vehiclePrice) >= 0 then
+        QBCore.Functions.ExecuteSql("INSERT INTO `player_vehicles` (`steam`, `citizenid`, `vehicle`, `hash`, `mods`, `plate`, `state`) VALUES ('"..pData.PlayerData.steam.."', '"..cid.."', '"..vehicle.."', '"..GetHashKey(vehicle).."', '{}', '"..plate.."', 0)")
+        TriggerClientEvent("QBCore:Notify", src, "Gelukt! Je voertuig staat buiten te op je te wachten.", "success", 5000)
+        TriggerClientEvent('qb-vehicleshop:client:buyShowroomVehicle', src, vehicle, plate)
+        pData.Functions.RemoveMoney('bank', vehiclePrice)
+    else
+		TriggerClientEvent("QBCore:Notify", src, "Je hebt niet voldoende geld, je mist €"..format_thousand(vData.price - balance), "error", 5000)
+    end
+end)
+
 function format_thousand(v)
     local s = string.format("%d", math.floor(v))
     local pos = string.len(s) % 3
@@ -67,3 +86,9 @@ function GetRandomLetter(length)
 		return ''
 	end
 end
+
+RegisterServerEvent('qb-vehicleshop:server:setShowroomCarInUse')
+AddEventHandler('qb-vehicleshop:server:setShowroomCarInUse', function(showroomVehicle, bool)
+    QB.ShowroomVehicles[showroomVehicle].inUse = bool
+    TriggerClientEvent('qb-vehicleshop:client:setShowroomCarInUse', -1, showroomVehicle, bool)
+end)

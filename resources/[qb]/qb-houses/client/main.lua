@@ -46,7 +46,6 @@ Citizen.CreateThread(function()
     while true do
         if isLoggedIn then
             SetClosestHouse()
-            TriggerEvent('qb-houses:client:setupHouseBlips')
             Citizen.Wait(100)
             TriggerEvent('qb-garages:client:setHouseGarage', closesthouse, hasKey)
         end
@@ -133,6 +132,7 @@ DrawText3Ds = function(x, y, z, text)
     DrawRect(0.0, 0.0+0.0125, 0.017+ factor, 0.03, 0, 0, 0, 75)
     ClearDrawOrigin()
 end
+
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(3)
@@ -208,7 +208,6 @@ Citizen.CreateThread(function()
                                 DoScreenFadeOut(250)
                                 Citizen.Wait(1000)
                                 TriggerEvent('qb-weathersync:client:EnableSync')
-                                TriggerEvent('qb-houses:client:insideHouse', false)
                                 SetEntityCoords(GetPlayerPed(-1), Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z + 0.5)
                                 SetEntityHeading(GetPlayerPed(-1), Config.Houses[closesthouse].coords.enter.h)
                                 inOwned = false
@@ -276,6 +275,13 @@ Citizen.CreateThread(function()
         end          
     end
 end)
+
+function openHouseAnim()
+    loadAnimDict("anim@heists@keycard@") 
+    TaskPlayAnim( GetPlayerPed(-1), "anim@heists@keycard@", "exit", 5.0, 1.0, -1, 16, 0, 0, 0, 0 )
+    Citizen.Wait(400)
+    ClearPedTasks(GetPlayerPed(-1))
+end
 
 function loadAnimDict(dict)
     while (not HasAnimDictLoaded(dict)) do
@@ -370,9 +376,12 @@ function openContract(bool)
 end
 
 function enterOwnedHouse(house)
-    local coords = { x = Config.Houses[closesthouse].coords.enter.x, y = Config.Houses[closesthouse].coords.enter.y, z= Config.Houses[closesthouse].coords.enter.z - 25}
+    TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_open", 0.25)
+    openHouseAnim()
+    Citizen.Wait(250)
+    local coords = { x = Config.Houses[house].coords.enter.x, y = Config.Houses[house].coords.enter.y, z= Config.Houses[house].coords.enter.z - 25}
     if Config.Houses[house].tier == 1 then
-        data = exports['qb-interior']:CreateTier1House(coords, false)
+        data = exports['qb-interior']:CreateTier1HouseFurnished(coords)
     end
     Citizen.Wait(100)
     houseObj = data[1]
@@ -382,7 +391,6 @@ function enterOwnedHouse(house)
     Citizen.Wait(500)
     SetRainFxIntensity(0.0)
     TriggerEvent('qb-weathersync:client:DisableSync')
-    TriggerEvent('qb-houses:client:insideHouse', true)
     -- TriggerEvent('tb-weed:client:getHousePlants', closesthouse)
     Citizen.Wait(100)
     SetWeatherTypePersist('EXTRASUNNY')
@@ -392,13 +400,20 @@ function enterOwnedHouse(house)
     entering = false
 end
 
+RegisterNetEvent('qb-houses:client:enterOwnedHouse')
+AddEventHandler('qb-houses:client:enterOwnedHouse', function(house)
+    enterOwnedHouse(house)
+end)
+
 function leaveOwnedHouse(house)
+    TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_open", 0.25)
+    openHouseAnim()
+    Citizen.Wait(250)
     DoScreenFadeOut(250)
     Citizen.Wait(500)
     exports['qb-interior']:DespawnInterior(houseObj, function()
         TriggerEvent('qb-weathersync:client:EnableSync')
-        Citizen.Wait(100)
-        TriggerEvent('qb-houses:client:insideHouse', false)
+        Citizen.Wait(250)
         DoScreenFadeIn(250)
         SetEntityCoords(GetPlayerPed(-1), Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z + 0.5)
         SetEntityHeading(GetPlayerPed(-1), Config.Houses[closesthouse].coords.enter.h)
@@ -407,6 +422,9 @@ function leaveOwnedHouse(house)
 end
 
 function enterNonOwnedHouse(house)
+    TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_open", 0.25)
+    openHouseAnim()
+    Citizen.Wait(250)
     local coords = { x = Config.Houses[closesthouse].coords.enter.x, y = Config.Houses[closesthouse].coords.enter.y, z= Config.Houses[closesthouse].coords.enter.z - 25}
     if Config.Houses[house].tier == 1 then
         data = exports['qb-interior']:CreateTier1House(coords, false)
@@ -418,7 +436,6 @@ function enterNonOwnedHouse(house)
     Citizen.Wait(500)
     SetRainFxIntensity(0.0)
     TriggerEvent('qb-weathersync:client:DisableSync')
-    TriggerEvent('qb-houses:client:insideHouse', true)
     -- TriggerEvent('tb-weed:client:getHousePlants', house)
     Citizen.Wait(100)
     SetWeatherTypePersist('EXTRASUNNY')
@@ -429,12 +446,14 @@ function enterNonOwnedHouse(house)
 end
 
 function leaveNonOwnedHouse(house)
+    TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_open", 0.25)
+    openHouseAnim()
+    Citizen.Wait(250)
     DoScreenFadeOut(250)
     Citizen.Wait(500)
     exports['qb-interior']:DespawnInterior(houseObj, function()
         TriggerEvent('qb-weathersync:client:EnableSync')
-        Citizen.Wait(100)
-        TriggerEvent('qb-houses:client:insideHouse', false)
+        Citizen.Wait(250)
         DoScreenFadeIn(250)
         SetEntityCoords(GetPlayerPed(-1), Config.Houses[house].coords.enter.x, Config.Houses[house].coords.enter.y, Config.Houses[house].coords.enter.z + 0.5)
         SetEntityHeading(GetPlayerPed(-1), Config.Houses[house].coords.enter.h)
