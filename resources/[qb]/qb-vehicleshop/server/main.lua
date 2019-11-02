@@ -44,7 +44,7 @@ AddEventHandler('qb-vehicleshop:server:buyShowroomVehicle', function(vehicle, cl
         TriggerClientEvent('qb-vehicleshop:client:buyShowroomVehicle', src, vehicle, plate)
         pData.Functions.RemoveMoney('bank', vehiclePrice)
     else
-		TriggerClientEvent("QBCore:Notify", src, "Je hebt niet voldoende geld, je mist €"..format_thousand(vData.price - balance), "error", 5000)
+		TriggerClientEvent("QBCore:Notify", src, "Je hebt niet voldoende geld, je mist €"..format_thousand(vehiclePrice - balance), "error", 5000)
     end
 end)
 
