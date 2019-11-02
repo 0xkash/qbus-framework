@@ -1,6 +1,8 @@
 QBCore = nil
 TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 
+local ApartmentObjects = {}
+
 RegisterServerEvent('apartments:server:CreateApartment')
 AddEventHandler('apartments:server:CreateApartment', function(type)
     local src = source
@@ -44,6 +46,18 @@ AddEventHandler('apartments:server:OpenDoor', function(target, apartmentId, apar
     end
 end)
 
+RegisterServerEvent('apartments:server:AddObject')
+AddEventHandler('apartments:server:AddObject', function(apartmentId, apartment, offset)
+    ApartmentObjects[apartment] ={}
+    ApartmentObjects[apartment].apartments = {}
+    ApartmentObjects[apartment].apartments[apartmentId] = offset
+end)
+
+RegisterServerEvent('apartments:server:RemoveObject')
+AddEventHandler('apartments:server:RemoveObject', function(apartmentId, apartment)
+    ApartmentObjects[apartment].apartments[apartmentId] = nil
+end)
+
 function CreateApartmentId(type)
     local UniqueFound = false
 	local AparmentId = nil
@@ -68,6 +82,30 @@ function GetOwnedApartment(citizenid)
     end)
     return nil
 end
+
+QBCore.Functions.CreateCallback('apartments:GetApartmentOffset', function(source, cb, apartmentId)
+    local retval = 0
+    if ApartmentObjects ~= nil then
+        for k, v in pairs(ApartmentObjects) do
+            if (tonumber(ApartmentObjects[k].apartments[apartmentId]) ~= 0) then
+                retval = tonumber(ApartmentObjects[k].apartments[apartmentId])
+            end
+        end
+    end
+    cb(retval)
+end)
+
+QBCore.Functions.CreateCallback('apartments:GetApartmentOffsetCount', function(source, cb, apartment)
+    local retval = 0
+    if ApartmentObjects ~= nil and ApartmentObjects[apartment] ~= nil and ApartmentObjects[apartment].apartments ~= nil then
+        for k, v in pairs(ApartmentObjects[apartment].apartments) do
+            if (ApartmentObjects[apartment].apartments[k] ~= nil) then
+                retval = retval + 1
+            end
+        end
+    end
+    cb(retval)
+end)
 
 QBCore.Functions.CreateCallback('apartments:GetOwnedApartment', function(source, cb)
 	local src = source

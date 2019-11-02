@@ -92,7 +92,7 @@ function AddEmoteMenu(menu)
 
     for a,b in pairsByKeys(AnimationList.Emotes) do
       x,y,z = table.unpack(b)
-      emoteitem = NativeUI.CreateItem(z, "/e ("..a..")")
+      emoteitem = NativeUI.CreateItem(z, "/a ("..a..")")
       favemoteitem = NativeUI.CreateItem(z)
       submenu:AddItem(emoteitem)
       favmenu:AddItem(favemoteitem)
@@ -102,14 +102,14 @@ function AddEmoteMenu(menu)
 
     for a,b in pairsByKeys(AnimationList.Dances) do
       x,y,z = table.unpack(b)
-      danceitem = NativeUI.CreateItem(z, "/e ("..a..")")
+      danceitem = NativeUI.CreateItem(z, "/a ("..a..")")
       dancemenu:AddItem(danceitem)
       table.insert(DanceTable, a)
     end
 
     for a,b in pairsByKeys(AnimationList.PropEmotes) do
       x,y,z = table.unpack(b)
-      propitem = NativeUI.CreateItem(z, "/e ("..a..")")
+      propitem = NativeUI.CreateItem(z, "/a ("..a..")")
       propfavitem = NativeUI.CreateItem(z)
       propmenu:AddItem(propitem)
       favmenu:AddItem(propfavitem)

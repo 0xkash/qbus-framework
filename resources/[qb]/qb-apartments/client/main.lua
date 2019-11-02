@@ -20,6 +20,9 @@ local CurrentDoorBell = 0
 
 local CurrentOffset = 0
 
+local houseObj = {}
+local POIOffsets = nil
+
 Citizen.CreateThread(function()
 	while QBCore == nil do
 		TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
@@ -36,66 +39,65 @@ Citizen.CreateThread(function()
     end
 end)
 
+
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(1)
         if isLoggedIn and ClosestHouse ~= nil then
             if InApartment then
                 local pos = GetEntityCoords(GetPlayerPed(-1))
+
+                if IsControlJustPressed(0, Keys["H"]) then
+                    print(json.encode({x = Apartments.Locations[ClosestHouse].coords.enter.x - pos.x, y = Apartments.Locations[ClosestHouse].coords.enter.y - pos.y, z = Apartments.Locations[ClosestHouse].coords.enter.z - pos.z}))
+                end
+
                 if CurrentDoorBell ~= 0 then
                     if(GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Apartments.Locations[ClosestHouse].coords.exit.x, Apartments.Locations[ClosestHouse].coords.exit.y,Apartments.Locations[ClosestHouse].coords.exit.z, true) < 1.2)then
                         QBCore.Functions.DrawText3D(Apartments.Locations[ClosestHouse].coords.exit.x, Apartments.Locations[ClosestHouse].coords.exit.y, Apartments.Locations[ClosestHouse].coords.exit.z + 0.1, '~g~G~w~ - Open deur')
                         if IsControlJustPressed(0, Keys["G"]) then
-                            print(CurrentDoorBell)
-                            print(CurrentApartment)
-                            print(ClosestHouse)
                             TriggerServerEvent("apartments:server:OpenDoor", CurrentDoorBell, CurrentApartment, ClosestHouse)
                             CurrentDoorBell = 0
                         end
                     end
                 end
-
-                if(GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Apartments.Locations[ClosestHouse].coords.exit.x, Apartments.Locations[ClosestHouse].coords.exit.y,Apartments.Locations[ClosestHouse].coords.exit.z, true) < 1.2)then
-                    QBCore.Functions.DrawText3D(Apartments.Locations[ClosestHouse].coords.exit.x, Apartments.Locations[ClosestHouse].coords.exit.y, Apartments.Locations[ClosestHouse].coords.exit.z, '~g~E~w~ - Ga uit appartement')
+                --exit
+                if(GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Apartments.Locations[ClosestHouse].coords.enter.x + POIOffsets.exit.x, Apartments.Locations[ClosestHouse].coords.enter.y + POIOffsets.exit.y, Apartments.Locations[ClosestHouse].coords.enter.z - CurrentOffset + POIOffsets.exit.z, true) < 1.2)then
+                    QBCore.Functions.DrawText3D(Apartments.Locations[ClosestHouse].coords.enter.x + POIOffsets.exit.x, Apartments.Locations[ClosestHouse].coords.enter.y + POIOffsets.exit.y, Apartments.Locations[ClosestHouse].coords.enter.z - CurrentOffset + POIOffsets.exit.z, '~g~E~w~ - Ga uit appartement')
                     if IsControlJustPressed(0, Keys["E"]) then
-                        loadAnimDict("anim@heists@keycard@") 
-                        TaskPlayAnim( GetPlayerPed(-1), "anim@heists@keycard@", "exit", 5.0, 1.0, -1, 16, 0, 0, 0, 0 )
-                        Citizen.Wait(400)
-                        ClearPedTasks(GetPlayerPed(-1))
                         LeaveApartment(ClosestHouse)
                     end
                 end
-
-                if(GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Apartments.Locations[ClosestHouse].coords.stash.x, Apartments.Locations[ClosestHouse].coords.stash.y,Apartments.Locations[ClosestHouse].coords.stash.z, true) < 1.2)then
-                    QBCore.Functions.DrawText3D(Apartments.Locations[ClosestHouse].coords.stash.x, Apartments.Locations[ClosestHouse].coords.stash.y, Apartments.Locations[ClosestHouse].coords.stash.z, '~g~E~w~ - Stash')
+                --stash
+                if(GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Apartments.Locations[ClosestHouse].coords.enter.x - POIOffsets.stash.x, Apartments.Locations[ClosestHouse].coords.enter.y - POIOffsets.stash.y, Apartments.Locations[ClosestHouse].coords.enter.z - CurrentOffset + POIOffsets.stash.z, true) < 1.2)then
+                    QBCore.Functions.DrawText3D(Apartments.Locations[ClosestHouse].coords.enter.x - POIOffsets.stash.x, Apartments.Locations[ClosestHouse].coords.enter.y - POIOffsets.stash.y, Apartments.Locations[ClosestHouse].coords.enter.z - CurrentOffset + POIOffsets.stash.z, '~g~E~w~ - Stash')
                     if IsControlJustPressed(0, Keys["E"]) then
                         if CurrentApartment ~= nil then
                             TriggerEvent("inventory:client:SetCurrentStash", CurrentApartment)
                             TriggerServerEvent("inventory:server:OpenInventory", "stash", CurrentApartment)
                         end
                     end
-                elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Apartments.Locations[ClosestHouse].coords.stash.x, Apartments.Locations[ClosestHouse].coords.stash.y, Apartments.Locations[ClosestHouse].coords.stash.z, true) < 3)then
-                    QBCore.Functions.DrawText3D(Apartments.Locations[ClosestHouse].coords.stash.x, Apartments.Locations[ClosestHouse].coords.stash.y, Apartments.Locations[ClosestHouse].coords.stash.z, 'Stash')
+                elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Apartments.Locations[ClosestHouse].coords.enter.x - POIOffsets.stash.x, Apartments.Locations[ClosestHouse].coords.enter.y - POIOffsets.stash.y, Apartments.Locations[ClosestHouse].coords.enter.z - CurrentOffset + POIOffsets.stash.z, true) < 3)then
+                    QBCore.Functions.DrawText3D(Apartments.Locations[ClosestHouse].coords.enter.x - POIOffsets.stash.x, Apartments.Locations[ClosestHouse].coords.enter.y - POIOffsets.stash.y, Apartments.Locations[ClosestHouse].coords.enter.z - CurrentOffset + POIOffsets.stash.z, 'Stash')
                 end
-                
-                if(GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Apartments.Locations[ClosestHouse].coords.outfits.x, Apartments.Locations[ClosestHouse].coords.outfits.y, Apartments.Locations[ClosestHouse].coords.outfits.z, true) < 1.2)then
-                    QBCore.Functions.DrawText3D(Apartments.Locations[ClosestHouse].coords.outfits.x, Apartments.Locations[ClosestHouse].coords.outfits.y, Apartments.Locations[ClosestHouse].coords.outfits.z, '~g~E~w~ - Outfits')
+                --outfits
+                if(GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Apartments.Locations[ClosestHouse].coords.enter.x - POIOffsets.clothes.x, Apartments.Locations[ClosestHouse].coords.enter.y - POIOffsets.clothes.y, Apartments.Locations[ClosestHouse].coords.enter.z - CurrentOffset + POIOffsets.clothes.z, true) < 1.2)then
+                    QBCore.Functions.DrawText3D(Apartments.Locations[ClosestHouse].coords.enter.x - POIOffsets.clothes.x, Apartments.Locations[ClosestHouse].coords.enter.y - POIOffsets.clothes.y, Apartments.Locations[ClosestHouse].coords.enter.z - CurrentOffset + POIOffsets.clothes.z, '~g~E~w~ - Outfits')
                     if IsControlJustPressed(0, Keys["E"]) then
                         MenuOutfits()
                         Menu.hidden = not Menu.hidden
                     end
                     Menu.renderGUI()
-                elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Apartments.Locations[ClosestHouse].coords.outfits.x, Apartments.Locations[ClosestHouse].coords.outfits.y, Apartments.Locations[ClosestHouse].coords.outfits.z, true) < 3)then
-                    QBCore.Functions.DrawText3D(Apartments.Locations[ClosestHouse].coords.outfits.x, Apartments.Locations[ClosestHouse].coords.outfits.y, Apartments.Locations[ClosestHouse].coords.outfits.z, 'Outfits')
+                elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Apartments.Locations[ClosestHouse].coords.enter.x - POIOffsets.clothes.x, Apartments.Locations[ClosestHouse].coords.enter.y - POIOffsets.clothes.y, Apartments.Locations[ClosestHouse].coords.enter.z - CurrentOffset + POIOffsets.clothes.z, true) < 3)then
+                    QBCore.Functions.DrawText3D(Apartments.Locations[ClosestHouse].coords.enter.x - POIOffsets.clothes.x, Apartments.Locations[ClosestHouse].coords.enter.y - POIOffsets.clothes.y, Apartments.Locations[ClosestHouse].coords.enter.z - CurrentOffset + POIOffsets.clothes.z, 'Outfits')
                 end
-
-                if(GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Apartments.Locations[ClosestHouse].coords.logout.x, Apartments.Locations[ClosestHouse].coords.logout.y,Apartments.Locations[ClosestHouse].coords.logout.z, true) < 1.5)then
-                    QBCore.Functions.DrawText3D(Apartments.Locations[ClosestHouse].coords.logout.x, Apartments.Locations[ClosestHouse].coords.logout.y, Apartments.Locations[ClosestHouse].coords.logout.z, '~g~E~w~ - Uitloggen')
+                --logout
+                if(GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Apartments.Locations[ClosestHouse].coords.enter.x - POIOffsets.logout.x, Apartments.Locations[ClosestHouse].coords.enter.y - POIOffsets.logout.y, Apartments.Locations[ClosestHouse].coords.enter.z - CurrentOffset + POIOffsets.logout.z, true) < 1.5)then
+                    QBCore.Functions.DrawText3D(Apartments.Locations[ClosestHouse].coords.enter.x - POIOffsets.logout.x, Apartments.Locations[ClosestHouse].coords.enter.y - POIOffsets.logout.y, Apartments.Locations[ClosestHouse].coords.enter.z - CurrentOffset + POIOffsets.logout.z, '~g~E~w~ - Uitloggen')
                     if IsControlJustPressed(0, Keys["E"]) then
                         TriggerServerEvent('qb-houses:server:logOut')
                     end
-                elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Apartments.Locations[ClosestHouse].coords.logout.x, Apartments.Locations[ClosestHouse].coords.logout.y,Apartments.Locations[ClosestHouse].coords.logout.z, true) < 3)then
-                    QBCore.Functions.DrawText3D(Apartments.Locations[ClosestHouse].coords.logout.x, Apartments.Locations[ClosestHouse].coords.logout.y, Apartments.Locations[ClosestHouse].coords.logout.z, 'Uitloggen')
+                elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Apartments.Locations[ClosestHouse].coords.enter.x - POIOffsets.logout.x, Apartments.Locations[ClosestHouse].coords.enter.y - POIOffsets.logout.y, Apartments.Locations[ClosestHouse].coords.enter.z - CurrentOffset + POIOffsets.logout.z, true) < 3)then
+                    QBCore.Functions.DrawText3D(Apartments.Locations[ClosestHouse].coords.enter.x - POIOffsets.logout.x, Apartments.Locations[ClosestHouse].coords.enter.y - POIOffsets.logout.y, Apartments.Locations[ClosestHouse].coords.enter.z - CurrentOffset + POIOffsets.logout.z, 'Uitloggen')
                 end
             elseif IsOwned then
                 local pos = GetEntityCoords(GetPlayerPed(-1))
@@ -103,11 +105,9 @@ Citizen.CreateThread(function()
                     QBCore.Functions.DrawText3D(Apartments.Locations[ClosestHouse].coords.enter.x, Apartments.Locations[ClosestHouse].coords.enter.y, Apartments.Locations[ClosestHouse].coords.enter.z, '~g~E~w~ - Ga in appartement')
                     if IsControlJustPressed(0, Keys["E"]) then
                         QBCore.Functions.TriggerCallback('apartments:GetOwnedApartment', function(result)
-                            loadAnimDict("anim@heists@keycard@") 
-                            TaskPlayAnim( GetPlayerPed(-1), "anim@heists@keycard@", "exit", 5.0, 1.0, -1, 16, 0, 0, 0, 0 )
-                            Citizen.Wait(400)
-                            ClearPedTasks(GetPlayerPed(-1))
-                            EnterApartment(ClosestHouse, result.name)
+                            if result ~= nil then
+                                EnterApartment(ClosestHouse, result.name)
+                            end
                         end)
                     end
                 end
@@ -121,6 +121,27 @@ Citizen.CreateThread(function()
                     end
                 end
             end
+        end
+    end
+end)
+
+AddEventHandler('onResourceStop', function(resource)
+    if resource == GetCurrentResourceName() then
+        if houseObj ~= nil then
+            print(ClosestHouse)
+            exports['qb-interior']:DespawnInterior(houseObj, function()
+                CurrentApartment = nil
+                TriggerEvent('qb-weathersync:client:EnableSync')
+                DoScreenFadeIn(500)
+                while not IsScreenFadedOut() do
+                    Citizen.Wait(10)
+                end
+                SetEntityCoords(GetPlayerPed(-1), Apartments.Locations[ClosestHouse].coords.enter.x, Apartments.Locations[ClosestHouse].coords.enter.y,Apartments.Locations[ClosestHouse].coords.enter.z)
+                SetEntityHeading(GetPlayerPed(-1), Apartments.Locations[ClosestHouse].coords.enter.h)
+                Citizen.Wait(1000)
+                InApartment = false
+                DoScreenFadeIn(1000)
+            end)
         end
     end
 end)
@@ -142,6 +163,9 @@ end)
 RegisterNetEvent('QBCore:Client:OnPlayerUnload')
 AddEventHandler('QBCore:Client:OnPlayerUnload', function()
     isLoggedIn = false
+    CurrentApartment = nil
+    InApartment = false
+    CurrentOffset = 0
 end)
 
 RegisterNetEvent('apartments:client:SpawnInApartment')
@@ -184,53 +208,90 @@ AddEventHandler('apartments:client:RingDoor', function(player)
 end)
 
 function EnterApartment(house, apartmentId)
-    local coords = { x = Config.Houses[closesthouse].coords.enter.x, y = Config.Houses[closesthouse].coords.enter.y, z= Config.Houses[closesthouse].coords.enter.z - 25}
-    if Config.Houses[house].tier == 1 then
-        data = exports['qb-interior']:CreateTier1House(coords, false)
-    end
-    --TriggerEvent('instances:client:JoinInstance', apartmentId, house)
-    InApartment = true
-    CurrentApartment = apartmentId
-    Citizen.CreateThread(function()
-        TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_open", 1.0)
-        DoScreenFadeOut(500)
-        while not IsScreenFadedOut() do
-            Citizen.Wait(10)
+    TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_open", 1.0)
+    openHouseAnim()
+    Citizen.Wait(250)
+    QBCore.Functions.TriggerCallback('apartments:GetApartmentOffset', function(offset)
+        if offset == 0 then
+            QBCore.Functions.TriggerCallback('apartments:GetApartmentOffsetCount', function(count)
+                if count == 0 then
+                    CurrentOffset = Apartments.SpawnOffset
+                else
+                    CurrentOffset = (count * Apartments.SpawnOffset)
+                end
+                print("Current offset: " ..CurrentOffset)
+                
+                local coords = { x = Apartments.Locations[ClosestHouse].coords.enter.x, y = Apartments.Locations[ClosestHouse].coords.enter.y, z = Apartments.Locations[ClosestHouse].coords.enter.z - CurrentOffset}
+                data = exports['qb-interior']:CreateTier1HouseFurnished(coords)
+                Citizen.Wait(100)
+                houseObj = data[1]
+                POIOffsets = data[2]
+
+                print(json.encode(POIOffsets.clothes))
+
+                InApartment = true
+                CurrentApartment = apartmentId
+                
+                Citizen.Wait(500)
+                SetRainFxIntensity(0.0)
+                TriggerEvent('qb-weathersync:client:DisableSync')
+                -- TriggerEvent('tb-weed:client:getHousePlants', house)
+                Citizen.Wait(100)
+                SetWeatherTypePersist('EXTRASUNNY')
+                SetWeatherTypeNow('EXTRASUNNY')
+                SetWeatherTypeNowPersist('EXTRASUNNY')
+                NetworkOverrideClockTime(23, 0, 0)
+                --TriggerEvent('instances:client:JoinInstance', apartmentId, house)
+                
+
+                TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_close", 1.0)
+            end)
+        else
+            CurrentOffset = offset
+            TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_open", 1.0)
+            local coords = { x = Apartments.Locations[ClosestHouse].coords.enter.x, y = Apartments.Locations[ClosestHouse].coords.enter.y, z = Apartments.Locations[ClosestHouse].coords.enter.z - CurrentOffset}
+            data = exports['qb-interior']:CreateTier1HouseFurnished(coords, false)
+            
+            Citizen.Wait(100)
+            houseObj = data[1]
+            POIOffsets = data[2]
+
+            InApartment = true
+            CurrentApartment = apartmentId
+            
+            Citizen.Wait(500)
+            SetRainFxIntensity(0.0)
+            TriggerEvent('qb-weathersync:client:DisableSync')
+            -- TriggerEvent('tb-weed:client:getHousePlants', house)
+            Citizen.Wait(100)
+            SetWeatherTypePersist('EXTRASUNNY')
+            SetWeatherTypeNow('EXTRASUNNY')
+            SetWeatherTypeNowPersist('EXTRASUNNY')
+            NetworkOverrideClockTime(23, 0, 0)
+            --TriggerEvent('instances:client:JoinInstance', apartmentId, house)
+            
+
+            TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_close", 1.0)
         end
-        SetRainFxIntensity(0.0)
-        TriggerEvent('qb-weathersync:client:DisableSync')
-        Citizen.Wait(100)
-        SetWeatherTypePersist('EXTRASUNNY')
-        SetWeatherTypeNow('EXTRASUNNY')
-        SetWeatherTypeNowPersist('EXTRASUNNY')
-        NetworkOverrideClockTime(23, 0, 0)
-        SetEntityCoords(GetPlayerPed(-1), Apartments.Locations[house].coords.exit.x, Apartments.Locations[house].coords.exit.y,Apartments.Locations[house].coords.exit.z, 0, 0, 0, false)
-        SetEntityHeading(GetPlayerPed(-1), Apartments.Locations[house].coords.exit.h)
-
-        Citizen.Wait(1000)
-
-        DoScreenFadeIn(1000)
-        TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_close", 1.0)
-    end)
+    end, apartmentId)
 end
 
 function LeaveApartment(house)
-    TriggerEvent('instances:client:LeaveInstance')
-    InApartment = false
-    CurrentApartment = nil
-    Citizen.CreateThread(function()
-        TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_open", 1.0)
-        DoScreenFadeOut(500)
-        while not IsScreenFadedOut() do
-            Citizen.Wait(10)
-        end
-        TriggerEvent('qb-weathersync:client:EnableSync')
-        Citizen.Wait(100)
-        SetEntityCoords(GetPlayerPed(-1), Apartments.Locations[house].coords.enter.x, Apartments.Locations[house].coords.enter.y,Apartments.Locations[house].coords.enter.z, 0, 0, 0, false)
-        SetEntityHeading(GetPlayerPed(-1), Apartments.Locations[house].coords.enter.h)
-
+    --TriggerEvent('instances:client:LeaveInstance')
+    TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_open", 1.0)
+    openHouseAnim()
+    DoScreenFadeOut(500)
+    while not IsScreenFadedOut() do
+        Citizen.Wait(10)
+    end
+    exports['qb-interior']:DespawnInterior(houseObj, function()
+        --TriggerEvent('qb-weathersync:client:EnableSync')
+        SetEntityCoords(GetPlayerPed(-1), Apartments.Locations[ClosestHouse].coords.enter.x, Apartments.Locations[ClosestHouse].coords.enter.y,Apartments.Locations[ClosestHouse].coords.enter.z)
+        SetEntityHeading(GetPlayerPed(-1), Apartments.Locations[ClosestHouse].coords.enter.h)
         Citizen.Wait(1000)
-        
+        CurrentApartment = nil
+        InApartment = false
+        CurrentOffset = 0
         DoScreenFadeIn(1000)
         TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_close", 1.0)
     end)
@@ -258,6 +319,13 @@ function SetClosestApartment()
             IsOwned = result
         end, ClosestHouse)
     end
+end
+
+function openHouseAnim()
+    loadAnimDict("anim@heists@keycard@") 
+    TaskPlayAnim( GetPlayerPed(-1), "anim@heists@keycard@", "exit", 5.0, 1.0, -1, 16, 0, 0, 0, 0 )
+    Citizen.Wait(400)
+    ClearPedTasks(GetPlayerPed(-1))
 end
 
 function MenuOwners()

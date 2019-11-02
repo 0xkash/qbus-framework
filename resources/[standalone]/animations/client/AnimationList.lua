@@ -873,27 +873,27 @@ AnimationList.Emotes = {
    {
        EmoteLoop = true,
    }},
-   ["sitchair2"] = {"timetable@ron@ig_5_p3", "ig_5_p3_base", "Sit Chair 2", AnimationOptions =
+   ["chair2"] = {"timetable@ron@ig_5_p3", "ig_5_p3_base", "Chair 2", AnimationOptions =
    {
        EmoteLoop = true,
    }},
-   ["sitchair3"] = {"timetable@reunited@ig_10", "base_amanda", "Sit Chair 3", AnimationOptions =
+   ["chair3"] = {"timetable@reunited@ig_10", "base_amanda", "Chair 3", AnimationOptions =
    {
        EmoteLoop = true,
    }},
-   ["sitchair4"] = {"timetable@ron@ig_3_couch", "base", "Sit Chair 4", AnimationOptions =
+   ["chair4"] = {"timetable@ron@ig_3_couch", "base", "Chair 4", AnimationOptions =
    {
        EmoteLoop = true,
    }},
-   ["sitchair5"] = {"timetable@jimmy@mics3_ig_15@", "mics3_15_base_tracy", "Sit Chair 5", AnimationOptions =
+   ["chair5"] = {"timetable@jimmy@mics3_ig_15@", "mics3_15_base_tracy", "Chair 5", AnimationOptions =
    {
        EmoteLoop = true,
    }},
-   ["sitchair6"] = {"timetable@maid@couch@", "base", "Sit Chair 6", AnimationOptions =
+   ["chair6"] = {"timetable@maid@couch@", "base", "Chair 6", AnimationOptions =
    {
        EmoteLoop = true,
    }},
-   ["sitchairside"] = {"timetable@ron@ron_ig_2_alt1", "ig_2_alt1_base", "Sit Chair Side", AnimationOptions =
+   ["chairside"] = {"timetable@ron@ron_ig_2_alt1", "ig_2_alt1_base", "Chair Side", AnimationOptions =
    {
        EmoteLoop = true,
    }},
@@ -1459,9 +1459,9 @@ AnimationList.Emotes = {
    ["prostlow"] = {"Scenario", "WORLD_HUMAN_PROSTITUTE_LOW_CLASS", "Prostitue Low"},
    ["puddle"] = {"Scenario", "WORLD_HUMAN_BUM_WASH", "Puddle"},
    ["record"] = {"Scenario", "WORLD_HUMAN_MOBILE_FILM_SHOCKING", "Record"},
-   -- Sitchair is a litte special, since you want the player to be seated correctly.
+   -- chair is a litte special, since you want the player to be seated correctly.
    -- So we set it as "ScenarioObject" and do TaskStartScenarioAtPosition() instead of "AtPlace"
-   ["sitchair"] = {"ScenarioObject", "PROP_HUMAN_SEAT_CHAIR_MP_PLAYER", "Sit Chair"},
+   ["chair"] = {"ScenarioObject", "PROP_HUMAN_SEAT_CHAIR_MP_PLAYER", "Chair"},
    ["smoke"] = {"Scenario", "WORLD_HUMAN_SMOKING", "Smoke"},
    ["smokeweed"] = {"MaleScenario", "WORLD_HUMAN_DRUG_DEALER", "Smoke Weed"},
    ["statue"] = {"Scenario", "WORLD_HUMAN_HUMAN_STATUE", "Statue"},
