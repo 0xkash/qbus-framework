@@ -86,9 +86,11 @@ end
 
 QBCore.Functions.CreateCallback('apartments:GetApartmentOffset', function(source, cb, apartmentId)
     local retval = 0
+    print(AparmentId)
     if ApartmentObjects ~= nil then
         for k, v in pairs(ApartmentObjects) do
-            if (tonumber(ApartmentObjects[k].apartments[apartmentId]) ~= 0) then
+            if (ApartmentObjects[k].apartments[apartmentId] ~= nil and tonumber(ApartmentObjects[k].apartments[apartmentId]) ~= 0) then
+                print("SADADAD")
                 retval = tonumber(ApartmentObjects[k].apartments[apartmentId])
             end
         end
@@ -99,9 +101,11 @@ end)
 QBCore.Functions.CreateCallback('apartments:GetApartmentOffsetCount', function(source, cb, apartment)
     local retval = 0
     if ApartmentObjects ~= nil and ApartmentObjects[apartment] ~= nil and ApartmentObjects[apartment].apartments ~= nil then
+        print(json.encode(ApartmentObjects[apartment]))
         for k, v in pairs(ApartmentObjects[apartment].apartments) do
             if (ApartmentObjects[apartment].apartments[k] ~= nil) then
                 retval = retval + 1
+                print(retval)
             end
         end
     end
