@@ -4,13 +4,15 @@ TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 local ApartmentObjects = {}
 
 RegisterServerEvent('apartments:server:CreateApartment')
-AddEventHandler('apartments:server:CreateApartment', function(type)
+AddEventHandler('apartments:server:CreateApartment', function(type, label)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    local apartmentId = CreateApartmentId(type)
-    QBCore.Functions.ExecuteSql("INSERT INTO `apartments` (`name`, `type`, `citizenid`) VALUES ('"..apartmentId.."', '"..type.."', '"..Player.PlayerData.citizenid.."')")
+    local num = CreateApartmentId(type)
+    local apartmentId = tostring(type .. num)
+    local label = tostring(label .. " " .. num)
+    QBCore.Functions.ExecuteSql("INSERT INTO `apartments` (`name`, `type`, `label`, `citizenid`) VALUES ('"..apartmentId.."', '"..type.."', '"..label.."', '"..Player.PlayerData.citizenid.."')")
 
-    TriggerClientEvent('QBCore:Notify', src, "Je hebt een appartementje!", "success")
+    TriggerClientEvent('QBCore:Notify', src, "Je hebt een appartementje ("..label..")")
     TriggerClientEvent("apartments:client:SpawnInApartment", src, apartmentId, type)
     TriggerClientEvent("apartments:client:SetHomeBlip", src, type)
 end)
@@ -40,7 +42,6 @@ AddEventHandler('apartments:server:OpenDoor', function(target, apartmentId, apar
     local src = source
     local OtherPlayer = QBCore.Functions.GetPlayer(target)
     if OtherPlayer ~= nil then
-        print(apartmentId)
         TriggerClientEvent('apartments:client:SpawnInApartment', OtherPlayer.PlayerData.source, apartmentId, apartment)
         TriggerClientEvent('QBCore:Notify', src, "Hij is binnen!", "success")
     end
@@ -63,8 +64,8 @@ function CreateApartmentId(type)
 	local AparmentId = nil
 
 	while not UniqueFound do
-		AparmentId = tostring(type .. tostring(math.random(10000, 99999)))
-		QBCore.Functions.ExecuteSql("SELECT COUNT(*) as count FROM `apartments` WHERE `name` = '"..AparmentId.."'", function(result)
+		AparmentId = tostring(math.random(1, 9999))
+		QBCore.Functions.ExecuteSql("SELECT COUNT(*) as count FROM `apartments` WHERE `name` = '"..tostring(type .. AparmentId).."'", function(result)
 			if result[1].count == 0 then
 				UniqueFound = true
 			end
@@ -85,9 +86,11 @@ end
 
 QBCore.Functions.CreateCallback('apartments:GetApartmentOffset', function(source, cb, apartmentId)
     local retval = 0
+    print(AparmentId)
     if ApartmentObjects ~= nil then
         for k, v in pairs(ApartmentObjects) do
-            if (tonumber(ApartmentObjects[k].apartments[apartmentId]) ~= 0) then
+            if (ApartmentObjects[k].apartments[apartmentId] ~= nil and tonumber(ApartmentObjects[k].apartments[apartmentId]) ~= 0) then
+                print("SADADAD")
                 retval = tonumber(ApartmentObjects[k].apartments[apartmentId])
             end
         end
@@ -98,9 +101,11 @@ end)
 QBCore.Functions.CreateCallback('apartments:GetApartmentOffsetCount', function(source, cb, apartment)
     local retval = 0
     if ApartmentObjects ~= nil and ApartmentObjects[apartment] ~= nil and ApartmentObjects[apartment].apartments ~= nil then
+        print(json.encode(ApartmentObjects[apartment]))
         for k, v in pairs(ApartmentObjects[apartment].apartments) do
             if (ApartmentObjects[apartment].apartments[k] ~= nil) then
                 retval = retval + 1
+                print(retval)
             end
         end
     end

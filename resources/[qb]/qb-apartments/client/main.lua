@@ -128,7 +128,6 @@ end)
 AddEventHandler('onResourceStop', function(resource)
     if resource == GetCurrentResourceName() then
         if houseObj ~= nil then
-            print(ClosestHouse)
             exports['qb-interior']:DespawnInterior(houseObj, function()
                 CurrentApartment = nil
                 TriggerEvent('qb-weathersync:client:EnableSync')
@@ -155,7 +154,7 @@ AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
             TriggerEvent("apartments:client:SetHomeBlip", result.type)
         else
             -- keuze menu yeet
-            TriggerServerEvent("apartments:server:CreateApartment", "apartment1")
+            TriggerServerEvent("apartments:server:CreateApartment", "apartment1", Apartments.Locations["apartment1"].label)
         end
     end)
 end)
@@ -171,8 +170,10 @@ end)
 RegisterNetEvent('apartments:client:SpawnInApartment')
 AddEventHandler('apartments:client:SpawnInApartment', function(apartmentId, apartment)
     --TriggerEvent('instances:client:JoinInstance', apartmentId, apartment)
+    print("spawned at "..apartment)
     ClosestHouse = apartment
     EnterApartment(apartment, apartmentId)
+    IsOwned = true
 end)
 
 RegisterNetEvent('apartments:client:SetHomeBlip')
@@ -212,25 +213,26 @@ function EnterApartment(house, apartmentId)
     openHouseAnim()
     Citizen.Wait(250)
     QBCore.Functions.TriggerCallback('apartments:GetApartmentOffset', function(offset)
-        if offset == 0 then
+        print(offset)
+        if offset == nil or offset == 0 then
             QBCore.Functions.TriggerCallback('apartments:GetApartmentOffsetCount', function(count)
                 if count == 0 then
                     CurrentOffset = Apartments.SpawnOffset
                 else
                     CurrentOffset = (count * Apartments.SpawnOffset)
                 end
+                TriggerServerEvent("apartments:server:AddObject", apartmentId, house, offset)
                 print("Current offset: " ..CurrentOffset)
                 
-                local coords = { x = Apartments.Locations[ClosestHouse].coords.enter.x, y = Apartments.Locations[ClosestHouse].coords.enter.y, z = Apartments.Locations[ClosestHouse].coords.enter.z - CurrentOffset}
+                local coords = { x = Apartments.Locations[house].coords.enter.x, y = Apartments.Locations[house].coords.enter.y, z = Apartments.Locations[house].coords.enter.z - CurrentOffset}
                 data = exports['qb-interior']:CreateTier1HouseFurnished(coords)
                 Citizen.Wait(100)
                 houseObj = data[1]
                 POIOffsets = data[2]
 
-                print(json.encode(POIOffsets.clothes))
-
                 InApartment = true
                 CurrentApartment = apartmentId
+                ClosestHouse = house
                 
                 Citizen.Wait(500)
                 SetRainFxIntensity(0.0)
@@ -286,8 +288,8 @@ function LeaveApartment(house)
     end
     exports['qb-interior']:DespawnInterior(houseObj, function()
         --TriggerEvent('qb-weathersync:client:EnableSync')
-        SetEntityCoords(GetPlayerPed(-1), Apartments.Locations[ClosestHouse].coords.enter.x, Apartments.Locations[ClosestHouse].coords.enter.y,Apartments.Locations[ClosestHouse].coords.enter.z)
-        SetEntityHeading(GetPlayerPed(-1), Apartments.Locations[ClosestHouse].coords.enter.h)
+        SetEntityCoords(GetPlayerPed(-1), Apartments.Locations[house].coords.enter.x, Apartments.Locations[house].coords.enter.y,Apartments.Locations[house].coords.enter.z)
+        SetEntityHeading(GetPlayerPed(-1), Apartments.Locations[house].coords.enter.h)
         Citizen.Wait(1000)
         CurrentApartment = nil
         InApartment = false
@@ -313,7 +315,7 @@ function SetClosestApartment()
             current = id
         end
     end
-    if current ~= ClosestHouse then
+    if current ~= ClosestHouse and not InApartment then
         ClosestHouse = current
         QBCore.Functions.TriggerCallback('apartments:IsOwner', function(result)
             IsOwned = result
