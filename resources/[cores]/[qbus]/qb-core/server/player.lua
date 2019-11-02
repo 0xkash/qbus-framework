@@ -304,9 +304,9 @@ QBCore.Player.Save = function(source)
 end
 
 QBCore.Player.Logout = function(source)
-	QBCore.Players[source].Functions.Save()
 	TriggerClientEvent('QBCore:Client:OnPlayerUnload', source)
-	TriggerEvent('QBCore:Server:OnPlayerUnload')
+	-- TriggerEvent('QBCore:Server:OnPlayerUnload')
+	QBCore.Players[source].Functions.Save()
 	QBCore.Players[source] = nil
 end
 
