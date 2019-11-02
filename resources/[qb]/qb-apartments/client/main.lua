@@ -20,10 +20,6 @@ local CurrentDoorBell = 0
 
 local CurrentOffset = 0
 
-local houseObj = nil
-local POIOffsets = nil
-local data = nil
-
 Citizen.CreateThread(function()
 	while QBCore == nil do
 		TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
@@ -59,8 +55,8 @@ Citizen.CreateThread(function()
                     end
                 end
 
-                if(GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Apartments.Locations[ClosestHouse].coords.enter.x + POIOffsets.exit.x, Apartments.Locations[ClosestHouse].coords.enter.y + POIOffsets.exit.y, Apartments.Locations[ClosestHouse].coords.enter.z + POIOffsets.exit.z, true) < 1.2)then
-                    QBCore.Functions.DrawText3D(Apartments.Locations[ClosestHouse].coords.enter.x + POIOffsets.exit.x, Apartments.Locations[ClosestHouse].coords.enter.y + POIOffsets.exit.y, Apartments.Locations[ClosestHouse].coords.enter.z + POIOffsets.exit.z, '~g~E~w~ - Ga uit appartement')
+                if(GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Apartments.Locations[ClosestHouse].coords.exit.x, Apartments.Locations[ClosestHouse].coords.exit.y,Apartments.Locations[ClosestHouse].coords.exit.z, true) < 1.2)then
+                    QBCore.Functions.DrawText3D(Apartments.Locations[ClosestHouse].coords.exit.x, Apartments.Locations[ClosestHouse].coords.exit.y, Apartments.Locations[ClosestHouse].coords.exit.z, '~g~E~w~ - Ga uit appartement')
                     if IsControlJustPressed(0, Keys["E"]) then
                         loadAnimDict("anim@heists@keycard@") 
                         TaskPlayAnim( GetPlayerPed(-1), "anim@heists@keycard@", "exit", 5.0, 1.0, -1, 16, 0, 0, 0, 0 )
@@ -132,6 +128,7 @@ end)
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     isLoggedIn = true
+    TriggerServerEvent("apartments:server:SetMotelObject")
     QBCore.Functions.TriggerCallback('apartments:GetOwnedApartment', function(result)
         if result ~= nil then
             TriggerEvent("apartments:client:SetHomeBlip", result.type)
@@ -187,76 +184,55 @@ AddEventHandler('apartments:client:RingDoor', function(player)
 end)
 
 function EnterApartment(house, apartmentId)
-    QBCore.Functions.TriggerCallback('apartments:GetApartmentOffset', function(offset)
-        if offset == 0 then
-            QBCore.Functions.TriggerCallback('apartments:GetApartmentOffsetCount', function(count)
-                CurrentOffset = (count * Apartments.SpawnOffset)
-                local coords = { x = Apartments.Locations[house].coords.enter.x, y = Apartments.Locations[house].coords.enter.y, z = Apartments.Locations[house].coords.enter.z - CurrentOffset}
-                data = exports['qb-interior']:CreateTier1HouseFurnished(coords, false)
-                TriggerServerEvent("apartments:server:SetApartmentOffset", house, apartmentId, CurrentOffset)
-                Citizen.Wait(100)
-                houseObj = data[1]
-                POIOffsets = data[2]
-                --TriggerEvent('instances:client:JoinInstance', apartmentId, house)
-                CurrentApartment = apartmentId
-                
-                InApartment = true
-                Citizen.CreateThread(function()
-                    TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_open", 1.0)
-                    Citizen.Wait(500)
-                    SetRainFxIntensity(0.0)
-                    TriggerEvent('qb-weathersync:client:DisableSync')
-                    TriggerEvent('qb-houses:client:insideHouse', true)
-                    Citizen.Wait(100)
-                    SetWeatherTypePersist('EXTRASUNNY')
-                    SetWeatherTypeNow('EXTRASUNNY')
-                    SetWeatherTypeNowPersist('EXTRASUNNY')
-                    NetworkOverrideClockTime(23, 0, 0)
-                    TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_close", 1.0)
-                end)
-            end, house)
-        else
-            CurrentOffset = offset
-            local coords = { x = Apartments.Locations[house].coords.enter.x, y = Apartments.Locations[house].coords.enter.y, z = Apartments.Locations[house].coords.enter.z - CurrentOffset}
-            data = exports['qb-interior']:CreateTier1HouseFurnished(coords, false)
-            TriggerServerEvent("apartments:server:SetApartmentOffset", house, apartmentId, CurrentOffset)
-            Citizen.Wait(100)
-            houseObj = data[1]
-            POIOffsets = data[2]
-            --TriggerEvent('instances:client:JoinInstance', apartmentId, house)
-            CurrentApartment = apartmentId
-            InApartment = true
-            Citizen.CreateThread(function()
-                TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_open", 1.0)
-                Citizen.Wait(500)
-                SetRainFxIntensity(0.0)
-                TriggerEvent('qb-weathersync:client:DisableSync')
-                TriggerEvent('qb-houses:client:insideHouse', true)
-                Citizen.Wait(100)
-                SetWeatherTypePersist('EXTRASUNNY')
-                SetWeatherTypeNow('EXTRASUNNY')
-                SetWeatherTypeNowPersist('EXTRASUNNY')
-                NetworkOverrideClockTime(23, 0, 0)
-                TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_close", 1.0)
-            end)
+    local coords = { x = Config.Houses[closesthouse].coords.enter.x, y = Config.Houses[closesthouse].coords.enter.y, z= Config.Houses[closesthouse].coords.enter.z - 25}
+    if Config.Houses[house].tier == 1 then
+        data = exports['qb-interior']:CreateTier1House(coords, false)
+    end
+    --TriggerEvent('instances:client:JoinInstance', apartmentId, house)
+    InApartment = true
+    CurrentApartment = apartmentId
+    Citizen.CreateThread(function()
+        TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_open", 1.0)
+        DoScreenFadeOut(500)
+        while not IsScreenFadedOut() do
+            Citizen.Wait(10)
         end
-    end, house, apartmentId)
+        SetRainFxIntensity(0.0)
+        TriggerEvent('qb-weathersync:client:DisableSync')
+        Citizen.Wait(100)
+        SetWeatherTypePersist('EXTRASUNNY')
+        SetWeatherTypeNow('EXTRASUNNY')
+        SetWeatherTypeNowPersist('EXTRASUNNY')
+        NetworkOverrideClockTime(23, 0, 0)
+        SetEntityCoords(GetPlayerPed(-1), Apartments.Locations[house].coords.exit.x, Apartments.Locations[house].coords.exit.y,Apartments.Locations[house].coords.exit.z, 0, 0, 0, false)
+        SetEntityHeading(GetPlayerPed(-1), Apartments.Locations[house].coords.exit.h)
+
+        Citizen.Wait(1000)
+
+        DoScreenFadeIn(1000)
+        TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_close", 1.0)
+    end)
 end
 
 function LeaveApartment(house)
-    --TriggerEvent('instances:client:LeaveInstance')
+    TriggerEvent('instances:client:LeaveInstance')
     InApartment = false
     CurrentApartment = nil
-    DoScreenFadeOut(250)
-    Citizen.Wait(500)
-    exports['qb-interior']:DespawnInterior(houseObj, function()
+    Citizen.CreateThread(function()
+        TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_open", 1.0)
+        DoScreenFadeOut(500)
+        while not IsScreenFadedOut() do
+            Citizen.Wait(10)
+        end
         TriggerEvent('qb-weathersync:client:EnableSync')
         Citizen.Wait(100)
-        TriggerServerEvent("apartments:server:RemoveApartmentOffset", house, apartmentId)
-        DoScreenFadeIn(250)
-        SetEntityCoords(GetPlayerPed(-1), Apartments.Locations[house].coords.enter.x, Apartments.Locations[house].coords.enter.y, Apartments.Locations[house].coords.enter.z)
+        SetEntityCoords(GetPlayerPed(-1), Apartments.Locations[house].coords.enter.x, Apartments.Locations[house].coords.enter.y,Apartments.Locations[house].coords.enter.z, 0, 0, 0, false)
         SetEntityHeading(GetPlayerPed(-1), Apartments.Locations[house].coords.enter.h)
-        inside = false
+
+        Citizen.Wait(1000)
+        
+        DoScreenFadeIn(1000)
+        TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_close", 1.0)
     end)
 end
 
