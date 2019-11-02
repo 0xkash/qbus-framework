@@ -26,7 +26,7 @@ Citizen.CreateThread(function()
     BahamaMamas.Enable(true)
 
     -- Pillbox hospital: 307.1680, -590.807, 43.280
-    PillboxHospital.Enable(true)
+    PillboxHospital.Enable(false)
 
     -- Zancudo Gates (GTAO like): -1600.30100000, 2806.73100000, 18.79683000
     ZancudoGates.LoadDefault()
@@ -136,6 +136,10 @@ Citizen.CreateThread(function()
     -- =----------------------- [DLC: After Hours] -----------------------=
     -- ====================================================================
     AfterHoursNightclubs.LoadDefault()          -- -1604.664, -3012.583, -78.000
+
+    --pillbox
+    RequestIpl("rc12b_hospitalinterior")
+    RequestIpl("rc12b_destroyed")
 
 end)
 

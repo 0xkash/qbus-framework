@@ -26,7 +26,7 @@ Apartments.Locations = {
     },
     ["apartment4"] = {
         name = "apartment4",
-        label = "Templar Tower",
+        label = "Tinsel Towers",
         coords = {
             enter = {x = -621.016, y = 46.677, z = 43.591, h = 179.36},
         }
