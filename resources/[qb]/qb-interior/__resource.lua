@@ -26,4 +26,5 @@ exports {
 
 	'CreateTier1HouseFurnished',
 	'CreateHotelFurnished',
+	'CreateApartmentFurnished',
 }
