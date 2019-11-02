@@ -10,12 +10,14 @@ files {
 	'playerhouse_hotel/playerhouse_hotel.ytyp',
 	'stream/playerhouse_hotel/playerhouse_hotel.ytyp',
 	'stream/playerhouse_tier3/playerhouse_tier3.ytyp',
+	'stream/playerhouse_appartment_motel/playerhouse_appartment_motel.ytyp',
 }
 
 data_file 'DLC_ITYP_REQUEST' 'stream/v_int_20.ytyp'
 data_file 'DLC_ITYP_REQUEST' 'stream/playerhouse_hotel/playerhouse_hotel.ytyp'
 data_file 'DLC_ITYP_REQUEST' 'stream/playerhouse_tier1/playerhouse_tier1.ytyp'
 data_file 'DLC_ITYP_REQUEST' 'stream/playerhouse_tier3/playerhouse_tier3.ytyp'
+data_file 'DLC_ITYP_REQUEST' 'stream/playerhouse_appartment_motel/playerhouse_appartment_motel.ytyp'
 
 exports {
 	'DespawnInterior',
@@ -26,4 +28,5 @@ exports {
 
 	'CreateTier1HouseFurnished',
 	'CreateHotelFurnished',
+	'CreateApartmentFurnished',
 }

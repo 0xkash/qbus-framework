@@ -85,7 +85,7 @@ Citizen.CreateThread(function()
                                 end
                             elseif seatbeltOn and not IsThisModelABike(currentVehicle) then
                                 if lastFrameVehiclespeed > 150 then
-                                    if math.random(math.ceil(lastFrameVehiclespeed)) > 99 then
+                                    if math.random(math.ceil(lastFrameVehiclespeed)) > 200 then
                                         EjectFromVehicle()                           
                                     end
                                 end
@@ -101,7 +101,7 @@ Citizen.CreateThread(function()
                                 end
                             elseif seatbeltOn and not IsThisModelABike(currentVehicle) then
                                 if lastFrameVehiclespeed > 120 then
-                                    if math.random(math.ceil(lastFrameVehiclespeed)) > 99 then
+                                    if math.random(math.ceil(lastFrameVehiclespeed)) > 200 then
                                         EjectFromVehicle()                           
                                     end
                                 end
