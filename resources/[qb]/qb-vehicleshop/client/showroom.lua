@@ -1,4 +1,5 @@
 local ClosestVehicle = nil
+local isLoggedIn = true
 local inMenu = false
 local modelLoaded = true
 
@@ -333,9 +334,6 @@ function OpenCreator()
     TriggerServerEvent('qb-vehicleshop:server:setShowroomCarInUse', ClosestVehicle, false)
 end
 
-local ClosestVehicle = nil
-local isLoggedIn = true
-
 function setClosestShowroomVehicle()
     local pos = GetEntityCoords(GetPlayerPed(-1), true)
     local current = nil
@@ -359,10 +357,14 @@ end
 
 Citizen.CreateThread(function()
     while true do
+        local pos = GetEntityCoords(GetPlayerPed(-1), true)
+        local shopDist = GetDistanceBetweenCoords(pos, QB.VehicleShops[1].x, QB.VehicleShops[1].y, QB.VehicleShops[1].z, false)
         if isLoggedIn then
-            setClosestShowroomVehicle()
+            if shopDist <= 50 then
+                setClosestShowroomVehicle()
+            end
         end
-        Citizen.Wait(2000)
+        Citizen.Wait(1000)
     end
 end)
 
@@ -384,10 +386,10 @@ Citizen.CreateThread(function()
                     if not QB.ShowroomVehicles[ClosestVehicle].inUse then
                         if not vehshop.opened then
                             if not buySure then
-                                DrawText3Ds(QB.ShowroomVehicles[ClosestVehicle].coords.x, QB.ShowroomVehicles[ClosestVehicle].coords.y, QB.ShowroomVehicles[ClosestVehicle].coords.z + 1.8, '~g~G~w~ - Verander Voertuig (~g~'..displayName..'~w~)')
+                                DrawText3Ds(QB.ShowroomVehicles[ClosestVehicle].coords.x, QB.ShowroomVehicles[ClosestVehicle].coords.y, QB.ShowroomVehicles[ClosestVehicle].coords.z + 1.8, '~g~G~w~ - Verander voertuig (~g~'..displayName..'~w~)')
                             end
                             if not buySure then
-                                DrawText3Ds(QB.ShowroomVehicles[ClosestVehicle].coords.x, QB.ShowroomVehicles[ClosestVehicle].coords.y, QB.ShowroomVehicles[ClosestVehicle].coords.z + 1.65, '~g~E~w~ - Voertuig Kopen (~g~€'..vehPrice..'~w~)')
+                                DrawText3Ds(QB.ShowroomVehicles[ClosestVehicle].coords.x, QB.ShowroomVehicles[ClosestVehicle].coords.y, QB.ShowroomVehicles[ClosestVehicle].coords.z + 1.70, '~g~E~w~ - Koop voertuig (~g~€'..vehPrice..'~w~)')
                             elseif buySure then
                                 DrawText3Ds(QB.ShowroomVehicles[ClosestVehicle].coords.x, QB.ShowroomVehicles[ClosestVehicle].coords.y, QB.ShowroomVehicles[ClosestVehicle].coords.z + 1.65, 'Weet je het zeker? | ~g~[7]~w~ Ja -/- ~r~[8]~w~ Nee')
                             end
@@ -508,8 +510,10 @@ Citizen.CreateThread(function()
                 elseif QB.ShowroomVehicles[ClosestVehicle].inUse then
                     DrawText3Ds(QB.ShowroomVehicles[ClosestVehicle].coords.x, QB.ShowroomVehicles[ClosestVehicle].coords.y, QB.ShowroomVehicles[ClosestVehicle].coords.z + 0.5, 'Voertuig is in gebruik')
                 end
-            elseif dist > 1.49 then
-                CloseCreator()
+            elseif dist > 1.5 then
+                if vehshop.opened then
+                    CloseCreator()
+                end
             end
         end
 
