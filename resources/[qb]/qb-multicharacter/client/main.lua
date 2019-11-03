@@ -67,15 +67,16 @@ AddEventHandler('qb-multicharacter:client:chooseChar', function()
     -- Sets the loadingscreen shutdown to manual so that it wont dissapear when interior not loaded
     SetManualShutdownLoadingScreenNui(true)
     -- Loads Micheals interior
-    local interior = GetInteriorAtCoords(-814.89,181.95,76.85 - 18.9)
+    local interior = GetInteriorAtCoords(300.38, -991.13, -98.28)
     LoadInterior(interior)
     while not IsInteriorReady(interior) do
         Citizen.Wait(1000)
         print("[Loading Selector Interior, Please Wait!]")
     end
+    
     -- Freezes player and places player inside interior hidden room
     FreezeEntityPosition(GetPlayerPed(-1), true)
-    SetEntityCoords(GetPlayerPed(-1), -798.45,186.62,75.54)
+    SetEntityCoords(GetPlayerPed(-1), 296.22, -992.08, -99.0)
     Citizen.Wait(100)
     -- Closes loading screen
     ShutdownLoadingScreenNui()
@@ -114,7 +115,7 @@ RegisterNUICallback('cDataPed', function(data)
                         Citizen.Wait(0)
                     end
 
-                    charPed = CreatePed(3, model, -814.02, 176.16, 75.749, 351.5, false, true)
+                    charPed = CreatePed(3, model, 306.25, -991.09, -99.99, 89.5, false, true)
                     
                     data = json.decode(data)
             
@@ -143,18 +144,19 @@ RegisterNUICallback('cDataPed', function(data)
                     end
                 end)
             else
-                charPed = CreatePed(4, GetHashKey("mp_m_freemode_01"), -814.02, 176.16, 75.85, 351.5, false, true)
+                charPed = CreatePed(4, GetHashKey("mp_m_freemode_01"), 306.25, -991.09, -99.99, 89.5, false, true)
             end
         end, cData.citizenid)
     else
-        charPed = CreatePed(4, GetHashKey("mp_m_freemode_01"), -814.02, 176.16, 75.85, 351.5, false, true)
+        charPed = CreatePed(4, GetHashKey("mp_m_freemode_01"), 306.25, -991.09, -99.99, 89.5, false, true)
     end
 
     Citizen.Wait(100)
     
-    SetEntityHeading(charPed, 351.5)
-    FreezeEntityPosition(charPed, true)
+    SetEntityHeading(charPed, 89.5)
+    FreezeEntityPosition(charPed, false)
     SetEntityInvincible(charPed, true)
+    PlaceObjectOnGroundProperly(charPed)
     SetBlockingOfNonTemporaryEvents(charPed, true)
 end)
 
@@ -185,8 +187,8 @@ function skyCam(bool)
         DoScreenFadeIn(10)
         SetTimecycleModifier('hud_def_blur')
         SetTimecycleModifierStrength(1.0)
-        FreezeEntityPosition(GetPlayerPed(-1), true)
-        cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", -813.35, 179.67, 77.3, -2.00, 0.00, 180.00, 90.00, false, 0)
+        FreezeEntityPosition(GetPlayerPed(-1), false)
+        cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", 304.31, -991.16, -98.99, -2.00, 0.00, 269.50, 85.00, false, 0)
         SetCamActive(cam, true)
         RenderScriptCams(true, false, 1, true, true)
     else
@@ -196,7 +198,6 @@ function skyCam(bool)
         RenderScriptCams(false, false, 1, true, true)
         FreezeEntityPosition(GetPlayerPed(-1), false)
     end
-    SetTimecycleModifier('default')
 end
 
 skyCam(false)

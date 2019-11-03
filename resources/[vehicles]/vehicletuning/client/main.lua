@@ -10,11 +10,12 @@ Citizen.CreateThread(function()
     end
 end)
 
+local lastCatOption = 0
 
 local lastMenuPos = 1
 local lsc = {
 	inside = false,
-	title = "Vehicle Tuning",
+	title = "Voertuig Tuning",
 	currentmenu = "repair",
 	lastmenu = nil,
 	currentpos = nil,
@@ -1363,22 +1364,24 @@ local mods = {
 }
 
 function f(n)
-return n + 0.0001
+	return n + 0.0001
 end
 
 function LocalPed()
-return GetPlayerPed(-1)
+	return GetPlayerPed(-1)
 end
 
 function try(f, catch_f)
-local status, exception = pcall(f)
-if not status then
-catch_f(exception)
+	local status, exception = pcall(f)
+	if not status then
+	catch_f(exception)
+	end
 end
-end
+
 function firstToUpper(str)
     return (str:gsub("^%l", string.upper))
 end
+
 function DriveInGarage()
 		local pos = lsc.currentpos.inside
 		local ped = GetPlayerPed(-1)
@@ -1655,7 +1658,6 @@ function DriveInGarage()
 			SetEntityInvincible(veh,true)
 			SetEntityCollision(veh,false,false)
 		end
-	
 end
 
 function DriveOutOfGarage(pos)
@@ -1731,7 +1733,7 @@ end
 function drawMenuCost(button,x,y,selected)
 	SetTextFont(2)
 	SetTextProportional(0)
-	SetTextScale(0.5, 0.5)
+	SetTextScale(0.35, 0.35)
 	if selected then
 		SetTextColour(0, 0, 0, 255)
 	else
@@ -1749,7 +1751,7 @@ end
 function drawMenuOwned(x,y,selected)
 	SetTextFont(2)
 	SetTextProportional(0)
-	SetTextScale(0.5, 0.5)
+	SetTextScale(0.35, 0.35)
 	if selected then
 		SetTextColour(0, 0, 0, 255)
 	else
@@ -1810,7 +1812,6 @@ Citizen.CreateThread(function()
 			local ped = LocalPed()
 			local veh = GetVehiclePedIsUsing(ped)
 			local menu = lsc.menu[lsc.currentmenu]
-					drawTxt(lsc.title,1,1,lsc.menu.x,lsc.menu.y,1.0, 255,255,255,255)
 					drawMenuTitle(menu.title, lsc.menu.x,lsc.menu.y + 0.08)
 					drawTxt(lsc.selectedbutton.."/"..tablelength(menu.buttons),0,0,lsc.menu.x + lsc.menu.width/2 - 0.0328,lsc.menu.y + 0.066,0.4, 255,255,255,255)
 					local y = lsc.menu.y + 0.12
@@ -2433,6 +2434,7 @@ end
 
 
 function Back()
+	print(lsc.selectedbutton)
 	if backlock then
 		return
 	end

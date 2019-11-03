@@ -34,3 +34,7 @@ Citizen.CreateThread(function()
         Citizen.Wait(Config.tickInterval)
     end
 end)
+
+QBCore.Functions.CreateCallback('qb-storerobbery:server:getRegisterStatus', function(source, cb)
+    cb(Config.Registers)
+end)
