@@ -25,6 +25,11 @@ Config.ForceInjury = 45
 Config.AlwaysBleedChance = 35
 
 --[[
+    Message Timer : How long it will take to display limb/bleed message
+]]
+Config.MessageTimer = 12
+
+--[[
     AIHealTimer : How long it will take to be healed after checking in, in seconds
 ]]
 Config.AIHealTimer = 5

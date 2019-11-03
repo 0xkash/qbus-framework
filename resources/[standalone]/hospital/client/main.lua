@@ -126,6 +126,14 @@ Citizen.CreateThread(function()
     end
 end)
 
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait((1000 * Config.MessageTimer))
+        DoLimbAlert()
+        DoBleedAlert()
+    end
+end)
+
 RegisterNetEvent('hospital:client:Revive')
 AddEventHandler('hospital:client:Revive', function()
     local player = PlayerPedId()
