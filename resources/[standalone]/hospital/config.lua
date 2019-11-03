@@ -1,6 +1,24 @@
 Config = {}
 
-Config.DeathTime = 10
+Config.Locations = {
+    ["checking"] = { x = 308.474, y = -596.023, z = 43.291, h = 0.0},
+    ["beds"] = {
+        [1] = { x = 356.73, y = -585.71, z = 43.11, h = -20.0, taken = false, model = 1631638868 },
+        [2] = { x = 360.51, y = -586.66, z = 43.11, h = -20.0, taken = false, model = -1091386327 },
+        [3] = { x = 353.12, y = -584.66, z = 43.50, h = -20.0, taken = false, model = 1631638868 },
+        [4] = { x = 349.62, y = -583.53, z = 43.022, h = -20.0, taken = false, model = -1091386327 },
+        [5] = { x = 344.80, y = -581.12, z = 43.02, h = 80.0, taken = false, model = -1091386327 },
+        [6] = { x = 334.09, y = -578.43, z = 43.01, h = 80.0, taken = false, model = -1091386327 },
+        [7] = { x = 323.64, y = -575.16, z = 43.02, h = -20.0, taken = false, model = -1091386327 },
+        [8] = { x = 326.97, y = -576.229, z = 43.02, h = -20.0, taken = false, model = -1091386327 },
+        [9] = { x = 354.24, y = -592.74, z = 43.11, h = 160.0, taken = false, model = 2117668672 },
+        [10] = { x = 357.34, y = -594.45, z = 43.11, h = 160.0, taken = false, model = 2117668672 },
+        [11] = { x = 350.80, y = -591.72, z = 43.11, h = 160.0, taken = false, model = 2117668672 },
+        [12] = { x = 346.89, y = -591.01, z = 42.58, h = 160.0, taken = false, model = 2117668672 },
+    }
+}
+
+Config.DeathTime = 2
 
 --[[
     GENERAL SETTINGS | THESE WILL AFFECT YOUR ENTIRE SERVER SO BE SURE TO SET THESE CORRECTLY
@@ -34,7 +52,7 @@ Config.MessageTimer = 12
 --[[
     AIHealTimer : How long it will take to be healed after checking in, in seconds
 ]]
-Config.AIHealTimer = 5
+Config.AIHealTimer = 20
 
 --[[ 
     BleedTickRate : How much time, in seconds, between bleed ticks

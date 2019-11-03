@@ -10,9 +10,18 @@ Keys = {
 	["NENTER"] = 201, ["N4"] = 108, ["N5"] = 60, ["N6"] = 107, ["N+"] = 96, ["N-"] = 97, ["N7"] = 117, ["N8"] = 61, ["N9"] = 118
 }
 
+DoScreenFadeIn(100)
+
+inBedDict = "misslamar1dead_body"
+inBedAnim = "dead_idle"
+
+getOutDict = 'switch@franklin@bed'
+getOutAnim = 'sleep_getup_rubeyes'
+
 isLoggedIn = false
 
 isInHospitalBed = false
+canLeaveBed = true
 
 bedOccupying = nil
 bedObject = nil
@@ -37,10 +46,9 @@ headCount = 0
 playerHealth = nil
 playerArmour = nil
 
-limbNotifId = 'MHOS_LIMBS'
-bleedMoveNotifId = 'MHOS_BLEEDMOVE'
-
 isDead = false
+
+closestBed = nil
 
 BodyParts = {
     ['HEAD'] = { label = 'Hoofd', causeLimp = false, isDamaged = false, severity = 0 },
@@ -134,8 +142,73 @@ Citizen.CreateThread(function()
     while true do
         Citizen.Wait((1000 * Config.MessageTimer))
         DoLimbAlert()
-        Citizen.Wait(math.random(1000, 3000))
-        DoBleedAlert()
+    end
+end)
+
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(1000)
+        SetClosestBed()
+    end
+end)
+
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(7)
+        if QBCore ~= nil then
+            local pos = GetEntityCoords(GetPlayerPed(-1))
+            if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["checking"].x, Config.Locations["checking"].y, Config.Locations["checking"].z, true) < 1.5) then
+                QBCore.Functions.DrawText3D(Config.Locations["checking"].x, Config.Locations["checking"].y, Config.Locations["checking"].z, "~g~E~w~ - Om in te checken")
+                if IsControlJustReleased(0, Keys["E"]) then
+                    TriggerEvent('animations:client:EmoteCommandStart', {"notepad"})
+                    QBCore.Functions.Progressbar("hospital_checkin", "Inchecken..", 2000, false, true, {
+                        disableMovement = true,
+                        disableCarMovement = true,
+                        disableMouse = false,
+                        disableCombat = true,
+                    }, {}, {}, {}, function() -- Done
+                        TriggerEvent('animations:client:EmoteCommandStart', {"c"})
+                        TriggerEvent("hospital:client:RespawnAtHospital")
+                    end, function() -- Cancel
+                        TriggerEvent('animations:client:EmoteCommandStart', {"c"})
+                        QBCore.Functions.Notify("Niet ingecheckt!", "error")
+                    end)
+                end
+            elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["checking"].x, Config.Locations["checking"].y, Config.Locations["checking"].z, true) < 4.5) then
+                QBCore.Functions.DrawText3D(Config.Locations["checking"].x, Config.Locations["checking"].y, Config.Locations["checking"].z, "Inchecken")
+            end
+
+            if closestBed ~= nil and not isInHospitalBed then
+                if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["beds"][closestBed].x, Config.Locations["beds"][closestBed].y, Config.Locations["beds"][closestBed].z, true) < 1.5) then
+                    QBCore.Functions.DrawText3D(Config.Locations["beds"][closestBed].x, Config.Locations["beds"][closestBed].y, Config.Locations["beds"][closestBed].z + 0.3, "~g~E~w~ - Om in bed te liggen")
+                    if IsControlJustReleased(0, Keys["E"]) then
+                        TriggerServerEvent("hospital:server:SendToBed", closestBed)
+                    end
+                end
+            end
+            
+        else
+            Citizen.Wait(1000)
+        end
+    end
+end)
+
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(7)
+        if QBCore ~= nil then
+            if isInHospitalBed and canLeaveBed then
+                local pos = GetEntityCoords(GetPlayerPed(-1))
+                QBCore.Functions.DrawText3D(pos.x, pos.y, pos.z, "~g~E~w~ - Om uit bet te stappen..")
+                if IsControlJustReleased(0, Keys["E"]) then
+                    LeaveBed()
+                end
+            else
+                Citizen.Wait(1000)
+            end
+        else
+            Citizen.Wait(1000)
+        end
     end
 end)
 
@@ -149,6 +222,14 @@ AddEventHandler('hospital:client:Revive', function()
         TriggerServerEvent("hospital:server:SetDeathStatus", false)
         isDead = false
         SetEntityInvincible(GetPlayerPed(-1), false)
+    end
+
+    if isInHospitalBed then
+        loadAnimDict(inBedDict)
+        TaskPlayAnim(player, inBedDict , inBedAnim, 8.0, 1.0, -1, 1, 0, 0, 0, 0 )
+        SetEntityInvincible(GetPlayerPed(-1), true)
+        SetEntityHeading(player, bedOccupyingData.h + 180)
+        canLeaveBed = true
     end
 
     SetEntityHealth(player, GetEntityMaxHealth(player))
@@ -168,6 +249,30 @@ end)
 RegisterNetEvent('hospital:client:KillPlayer')
 AddEventHandler('hospital:client:KillPlayer', function()
     SetEntityHealth(GetPlayerPed(-1), 0)
+end)
+
+RegisterNetEvent('hospital:client:SendToBed')
+AddEventHandler('hospital:client:SendToBed', function(id, data, isRevive)
+    bedOccupying = id
+    bedOccupyingData = data
+    SetBedCam()
+    Citizen.CreateThread(function ()
+        Citizen.Wait(5)
+        local player = PlayerPedId()
+        if isRevive then
+            QBCore.Functions.Notify("Je wordt geholpen..")
+            Citizen.Wait(Config.AIHealTimer * 1000)
+            TriggerEvent("hospital:client:Revive")
+        else
+            canLeaveBed = true
+        end
+    end)
+end)
+
+
+RegisterNetEvent('hospital:client:RespawnAtHospital')
+AddEventHandler('hospital:client:RespawnAtHospital', function()
+    TriggerServerEvent("hospital:server:SendToBed")
 end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
@@ -249,6 +354,26 @@ function IsInjuryCausingLimp()
     return false
 end
 
+function SetClosestBed() 
+    local pos = GetEntityCoords(GetPlayerPed(-1), true)
+    local current = nil
+    local dist = nil
+    for k, v in pairs(Config.Locations["beds"]) do
+        if current ~= nil then
+            if(GetDistanceBetweenCoords(pos, Config.Locations["beds"][k].x, Config.Locations["beds"][k].y, Config.Locations["beds"][k].z, true) < dist)then
+                current = k
+                dist = GetDistanceBetweenCoords(pos, Config.Locations["beds"][k].x, Config.Locations["beds"][k].y, Config.Locations["beds"][k].z, true)
+            end
+        else
+            dist = GetDistanceBetweenCoords(pos, Config.Locations["beds"][k].x, Config.Locations["beds"][k].y, Config.Locations["beds"][k].z, true)
+            current = k
+        end
+    end
+    if current ~= closestBed and not isInHospitalBed then
+        closestBed = current
+    end
+end
+
 function ResetAll()
     isBleeding = 0
     bleedTickTimer = 0
@@ -279,6 +404,73 @@ function ResetAll()
         limbs = BodyParts,
         isBleeding = tonumber(isBleeding)
     })
+end
+
+function SetBedCam()
+    isInHospitalBed = true
+    canLeaveBed = false
+    local player = PlayerPedId()
+
+    DoScreenFadeOut(1000)
+
+    while not IsScreenFadedOut() do
+        Citizen.Wait(100)
+    end
+
+	if IsPedDeadOrDying(player) then
+		local playerPos = GetEntityCoords(player, true)
+		NetworkResurrectLocalPlayer(playerPos, true, true, false)
+    end
+    
+    bedObject = GetClosestObjectOfType(bedOccupyingData.x, bedOccupyingData.y, bedOccupyingData.z, 1.0, bedOccupyingData.model, false, false, false)
+    FreezeEntityPosition(bedObject, true)
+
+    SetEntityCoords(player, bedOccupyingData.x, bedOccupyingData.y, bedOccupyingData.z + 0.02)
+    SetEntityInvincible(PlayerPedId(), true)
+
+    loadAnimDict(inBedDict)
+
+    TaskPlayAnim(player, inBedDict , inBedAnim, 8.0, 1.0, -1, 1, 0, 0, 0, 0 )
+    SetEntityHeading(player, bedOccupyingData.h + 180)
+
+    cam = CreateCam("DEFAULT_SCRIPTED_CAMERA", 1)
+    SetCamActive(cam, true)
+    RenderScriptCams(true, false, 1, true, true)
+    AttachCamToPedBone(cam, player, 31085, 0, 1.0, 1.0 , true)
+    SetCamFov(cam, 90.0)
+    SetCamRot(cam, -45.0, 0.0, GetEntityHeading(player) + 180, true)
+
+    DoScreenFadeIn(1000)
+
+    Citizen.Wait(1000)
+    FreezeEntityPosition(player, true)
+end
+
+function LeaveBed()
+    local player = PlayerPedId()
+
+    RequestAnimDict(getOutDict)
+    while not HasAnimDictLoaded(getOutDict) do
+        Citizen.Wait(0)
+    end
+    
+    FreezeEntityPosition(player, false)
+    SetEntityInvincible(player, false)
+    SetEntityHeading(player, bedOccupyingData.h - 90)
+    TaskPlayAnim(player, getOutDict , getOutAnim, 100.0, 1.0, -1, 8, -1, 0, 0, 0)
+    Citizen.Wait(4000)
+    ClearPedTasks(player)
+    TriggerServerEvent('hospital:server:LeaveBed', bedOccupying)
+    FreezeEntityPosition(bedObject, true)
+
+    
+    RenderScriptCams(0, true, 200, true, true)
+    DestroyCam(cam, false)
+
+    bedOccupying = nil
+    bedObject = nil
+    bedOccupyingData = nil
+    isInHospitalBed = false
 end
 
 function loadAnimDict(dict)

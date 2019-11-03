@@ -14,8 +14,11 @@ Citizen.CreateThread(function()
 			if IsEntityDead(playerPed) and not isDead then
 				local killer, killerWeapon = NetworkGetEntityKillerOfPlayer(player)
                 local killerServerId = NetworkGetPlayerIndexFromPed(killer)
+                deathTime = Config.DeathTime
+
+                OnDeath()
                 
-				OnDeath()
+                DeathTimer()
 			end
 		end
 	end
@@ -30,22 +33,21 @@ Citizen.CreateThread(function()
 			EnableControlAction(0, Keys['T'], true)
 			EnableControlAction(0, Keys['E'], true)
 
-
-            if deathTime > 0 then
-                DrawTxt(0.89, 1.44, 1.0,1.0,0.6, "RESPAWN OVER: ~b~" .. math.ceil(deathTime) .. "~w~ SECONDEN", 255, 255, 255, 255)
-            else
-                DrawTxt(0.89, 1.44, 1.0,1.0,0.6, "~w~ HOUD ~b~E ~w~INGEDRUKT OM TE RESPAWNEN", 255, 255, 255, 255)
+            if not isInHospitalBed then 
+                if deathTime > 0 then
+                    DrawTxt(0.89, 1.44, 1.0,1.0,0.6, "RESPAWN OVER: ~b~" .. math.ceil(deathTime) .. "~w~ SECONDEN", 255, 255, 255, 255)
+                else
+                    DrawTxt(0.89, 1.44, 1.0,1.0,0.6, "~w~ HOUD ~b~E ~w~INGEDRUKT OM TE RESPAWNEN", 255, 255, 255, 255)
+                end
             end
 
             loadAnimDict(deadAnimDict)
-            if IsPedInAnyVehicle(player) then
-                if not IsEntityPlayingAnim(PlayerPedId(), deadCarAnimDict, deadCarAnim, 3) then
-                    TaskPlayAnim(PlayerPedId(), deadCarAnimDict, deadCarAnim, 1.0, 1.0, -1, 1, 0, 0, 0, 0)
-                end
-            else
-                if not IsEntityPlayingAnim(PlayerPedId(), deadAnimDict, deadAnim, 3) then
-                    TaskPlayAnim(PlayerPedId(), deadAnimDict, deadAnim, 1.0, 1.0, -1, 1, 0, 0, 0, 0)
-                end
+            if not IsEntityPlayingAnim(PlayerPedId(), deadAnimDict, deadAnim, 3) and not isInHospitalBed then
+                TaskPlayAnim(PlayerPedId(), deadAnimDict, deadAnim, 1.0, 1.0, -1, 1, 0, 0, 0, 0)
+            end
+            loadAnimDict(inBedDict)
+            if not IsEntityPlayingAnim(PlayerPedId(), inBedDict, inBedAnim, 3) and isInHospitalBed then
+                TaskPlayAnim(PlayerPedId(), inBedDict, inBedAnim, 1.0, 1.0, -1, 1, 0, 0, 0, 0)
             end
 
             SetCurrentPedWeapon(GetPlayerPed(-1), GetHashKey("WEAPON_UNARMED"), true)
@@ -59,7 +61,6 @@ function OnDeath()
     if not isDead then
         isDead = true
         TriggerServerEvent("hospital:server:SetDeathStatus", true)
-        DeathTimer()
         TriggerServerEvent("InteractSound_SV:PlayOnSource", "demo", 0.1)
         local player = GetPlayerPed(-1)
 
@@ -80,14 +81,13 @@ function OnDeath()
 end
 
 function DeathTimer()
-    deathTime = Config.DeathTime
     local hold = 0
     while isDead do
         Citizen.Wait(1000)
         deathTime = deathTime - 1
 
         if deathTime <= 0 then
-            if IsControlPressed(0, Keys["E"]) and hold > 2 then
+            if IsControlPressed(0, Keys["E"]) and hold > 1 and not isInHospitalBed then
                 TriggerEvent("hospital:client:RespawnAtHospital")
             end
 
