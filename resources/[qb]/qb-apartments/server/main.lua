@@ -28,11 +28,12 @@ AddEventHandler('apartments:server:UpdateApartment', function(type)
 end)
 
 RegisterServerEvent('apartments:server:RingDoor')
-AddEventHandler('apartments:server:RingDoor', function(target)
+AddEventHandler('apartments:server:RingDoor', function(apartmentId, apartment)
     local src = source
-    local OtherPlayer = QBCore.Functions.GetPlayer(target)
-    if OtherPlayer ~= nil then
-        TriggerClientEvent('apartments:client:RingDoor', OtherPlayer.PlayerData.source, src)
+    if ApartmentObjects[apartment].apartments[apartmentId] ~= nil and next(ApartmentObjects[apartment].apartments[apartmentId].players) ~= nil then
+        for k, v in pairs(ApartmentObjects[apartment].apartments[apartmentId].players) do
+            TriggerClientEvent('apartments:client:RingDoor', k, src)
+        end
     end
 end)
 
@@ -95,6 +96,16 @@ function CreateApartmentId(type)
 	return AparmentId
 end
 
+function GetApartmentInfo(apartmentId)
+    local retval = nil
+    QBCore.Functions.ExecuteSql("SELECT * FROM `apartments` WHERE `name` = '"..apartmentId.."' ", function(result)
+        if result[1] ~= nil then 
+            retval = result[1]
+        end
+    end)
+    return retval
+end
+
 function GetOwnedApartment(citizenid)
     QBCore.Functions.ExecuteSql("SELECT * FROM `apartments` WHERE `citizenid` = '"..citizenid.."' ", function(result)
         if result[1] ~= nil then 
@@ -104,6 +115,19 @@ function GetOwnedApartment(citizenid)
     end)
     return nil
 end
+
+QBCore.Functions.CreateCallback('apartments:GetAvailableApartments', function(source, cb, apartment)
+    local apartments = {}
+    if ApartmentObjects ~= nil and ApartmentObjects[apartment] ~= nil and ApartmentObjects[apartment].apartments ~= nil then
+        for k, v in pairs(ApartmentObjects[apartment].apartments) do
+            if (ApartmentObjects[apartment].apartments[k] ~= nil and next(ApartmentObjects[apartment].apartments[k].players) ~= nil) then
+                local apartmentInfo = GetApartmentInfo(k)
+                apartments[k] = apartmentInfo.label
+            end
+        end
+    end
+    cb(apartments)
+end)
 
 QBCore.Functions.CreateCallback('apartments:GetApartmentOffset', function(source, cb, apartmentId)
     local retval = 0
