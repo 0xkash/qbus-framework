@@ -61,8 +61,8 @@ Citizen.CreateThread(function()
                     end
                 end
                 --exit
-                if(GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Apartments.Locations[ClosestHouse].coords.enter.x + POIOffsets.exit.x, Apartments.Locations[ClosestHouse].coords.enter.y + POIOffsets.exit.y, Apartments.Locations[ClosestHouse].coords.enter.z - CurrentOffset + POIOffsets.exit.z, true) < 1.2)then
-                    QBCore.Functions.DrawText3D(Apartments.Locations[ClosestHouse].coords.enter.x + POIOffsets.exit.x, Apartments.Locations[ClosestHouse].coords.enter.y + POIOffsets.exit.y, Apartments.Locations[ClosestHouse].coords.enter.z - CurrentOffset + POIOffsets.exit.z, '~g~E~w~ - Ga uit appartement')
+                if(GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Apartments.Locations[ClosestHouse].coords.enter.x - POIOffsets.exit.x, Apartments.Locations[ClosestHouse].coords.enter.y - POIOffsets.exit.y, Apartments.Locations[ClosestHouse].coords.enter.z - CurrentOffset + POIOffsets.exit.z, true) < 1.2)then
+                    QBCore.Functions.DrawText3D(Apartments.Locations[ClosestHouse].coords.enter.x - POIOffsets.exit.x, Apartments.Locations[ClosestHouse].coords.enter.y - POIOffsets.exit.y, Apartments.Locations[ClosestHouse].coords.enter.z - CurrentOffset + POIOffsets.exit.z, '~g~E~w~ - Ga uit appartement')
                     if IsControlJustPressed(0, Keys["E"]) then
                         LeaveApartment(ClosestHouse)
                     end
@@ -175,7 +175,6 @@ end)
 RegisterNetEvent('apartments:client:SpawnInApartment')
 AddEventHandler('apartments:client:SpawnInApartment', function(apartmentId, apartment)
     --TriggerEvent('instances:client:JoinInstance', apartmentId, apartment)
-    print("spawned at "..apartment)
     ClosestHouse = apartment
     EnterApartment(apartment, apartmentId)
     IsOwned = true
@@ -208,7 +207,6 @@ end)
 
 RegisterNetEvent('apartments:client:RingDoor')
 AddEventHandler('apartments:client:RingDoor', function(player)
-    print(player)
     CurrentDoorBell = player
     QBCore.Functions.Notify("Iemand belt aan de deur!")
 end)
@@ -221,7 +219,6 @@ function EnterApartment(house, apartmentId)
         if offset == nil or offset == 0 then
             QBCore.Functions.TriggerCallback('apartments:GetApartmentOffsetNewOffset', function(newoffset)
                 CurrentOffset = newoffset
-                print("Current offset: " ..CurrentOffset)
                 TriggerServerEvent("apartments:server:AddObject", apartmentId, house, CurrentOffset)
                 
                 local coords = { x = Apartments.Locations[house].coords.enter.x, y = Apartments.Locations[house].coords.enter.y, z = Apartments.Locations[house].coords.enter.z - CurrentOffset}
@@ -253,7 +250,7 @@ function EnterApartment(house, apartmentId)
             TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_open", 1.0)
             TriggerServerEvent("apartments:server:AddObject", apartmentId, house, CurrentOffset)
             local coords = { x = Apartments.Locations[ClosestHouse].coords.enter.x, y = Apartments.Locations[ClosestHouse].coords.enter.y, z = Apartments.Locations[ClosestHouse].coords.enter.z - CurrentOffset}
-            data = exports['qb-interior']:CreateApartmentFurnished(coords, false)
+            data = exports['qb-interior']:CreateApartmentFurnished(coords)
             
             Citizen.Wait(100)
             houseObj = data[1]
@@ -351,7 +348,6 @@ function OwnerList()
             closeMenuFull()
         else
             for k, v in pairs(owners) do
-                print(v)
                 Menu.addButton(GetPlayerName(GetPlayerFromServerId(v)), "RingDoor", v) 
             end
         end

@@ -89,17 +89,16 @@ function CreateApartmentFurnished(spawn)
 	local objects = {}
 
     local POIOffsets = {}
-	POIOffsets.exit = json.decode('{"z":2.5,"y":-15.901171875,"x":4.251012802124,"h":2.2633972168}')
+	POIOffsets.exit = json.decode('{"z":2.5,"y":4.00144140625,"x":1.52089355468,"h":2.2633972168}')
 	POIOffsets.clothes = json.decode('{"z":2.5,"y":-3.9233189,"x":-7.84363671,"h":2.2633972168}')
 	POIOffsets.stash = json.decode('{"z":2.5,"y":1.33868212,"x":-9.084908691,"h":2.2633972168}')
 	POIOffsets.logout = json.decode('{"z":2.0,"y":-1.1463337,"x":-6.69117089,"h":2.2633972168}')
 
 	local house = CreateObject(`playerhouse_appartment_motel`, spawn.x, spawn.y, spawn.z, false, false, false)
-	print(house)
     FreezeEntityPosition(house, true)
 	table.insert(objects, house)
 
-	TeleportToInterior(spawn.x + POIOffsets.exit.x, spawn.y + POIOffsets.exit.y, spawn.z + 1.5, POIOffsets.exit.h)
+	TeleportToInterior(spawn.x - 1.52089355468, spawn.y - 4.00144140625, spawn.z + 1.5, POIOffsets.exit.h)
 
     return { objects, POIOffsets }
 end
