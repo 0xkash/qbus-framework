@@ -49,7 +49,6 @@ end)
 
 function OnDeath()
     if not isDead then
-        SetEntityHealth(player, GetEntityMaxHealth(player))
         isDead = true
         local player = GetPlayerPed(-1)
         local pos = GetEntityCoords(GetPlayerPed(-1))
@@ -59,11 +58,11 @@ function OnDeath()
         while IsPedRagdoll(player) do
             Citizen.Wait(10)
         end
-        Citizen.Wait(1000)
-
-        ClearPedTasksImmediately(player)
+        SetEntityHealth(player, GetEntityMaxHealth(player))
         loadAnimDict("misslamar1dead_body")
-	    TaskPlayAnim(GetPlayerPed(-1), "misslamar1dead_body", "dead_idle", 3.0, 3.0, -1, 1, 0, 0, 0, 0)
+        TaskPlayAnim(player, "misslamar1dead_body", "dead_idle", 3.0, 3.0, -1, 1, 0, 0, 0, 0)
+    
+        print("lmao is dead")
     end
 end
 
