@@ -92,3 +92,9 @@ AddEventHandler('qb-vehicleshop:server:setShowroomCarInUse', function(showroomVe
     QB.ShowroomVehicles[showroomVehicle].inUse = bool
     TriggerClientEvent('qb-vehicleshop:client:setShowroomCarInUse', -1, showroomVehicle, bool)
 end)
+
+RegisterServerEvent('qb-vehicleshop:server:setShowroomVehicle')
+AddEventHandler('qb-vehicleshop:server:setShowroomVehicle', function(vData, k)
+    QB.ShowroomVehicles[k].chosenVehicle = vData["model"]
+    TriggerClientEvent('qb-vehicleshop:client:setShowroomVehicle', -1, vData["model"], k)
+end)

@@ -25,7 +25,7 @@ Menu.selection = 0
 Menu.hidden = true
 MenuTitle = "Menu"
 
-function Menu.addButton(name, func,args,extra,damages,bodydamages,fuel)
+function Menu.addButton(name, func,args,extra,price)
 
 	local yoffset = 0.25
 	local xoffset = 0.3
@@ -37,10 +37,8 @@ function Menu.addButton(name, func,args,extra,damages,bodydamages,fuel)
 	if extra ~= nil then
 		Menu.GUI[Menu.buttonCount+1]["extra"] = extra
 	end
-	if damages ~= nil then
-		Menu.GUI[Menu.buttonCount+1]["damages"] = damages
-		Menu.GUI[Menu.buttonCount+1]["bodydamages"] = bodydamages
-		Menu.GUI[Menu.buttonCount+1]["fuel"] = fuel
+	if price ~= nil then
+		Menu.GUI[Menu.buttonCount+1]["price"] = price
 	end
 
 
@@ -52,7 +50,7 @@ function Menu.addButton(name, func,args,extra,damages,bodydamages,fuel)
 	Menu.GUI[Menu.buttonCount+1]["ymin"] = ymin * (Menu.buttonCount + 0.01) +yoffset
 	Menu.GUI[Menu.buttonCount+1]["xmax"] = xmax 
 	Menu.GUI[Menu.buttonCount+1]["ymax"] = ymax 
-	Menu.buttonCount = Menu.buttonCount+1
+	Menu.buttonCount = Menu.buttonCount + 1
 end
 
 
@@ -64,6 +62,7 @@ function Menu.updateSelection()
 			Menu.selection = 0
 		end		
 		PlaySound(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0, 0, 1)
+		print(Menu.selection)
 	elseif IsControlJustPressed(1, Keys["TOP"]) then
 		if(Menu.selection > 0)then
 			Menu.selection = Menu.selection -1
@@ -71,9 +70,11 @@ function Menu.updateSelection()
 			Menu.selection = Menu.buttonCount-1
 		end	
 		PlaySound(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0, 0, 1)
+		print(Menu.selection)
 	elseif IsControlJustPressed(1, 215) then
 		MenuCallFunction(Menu.GUI[Menu.selection +1]["func"], Menu.GUI[Menu.selection +1]["args"])
 		PlaySound(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0, 0, 1)
+		print(Menu.selection)
 	end
 	local iterator = 0
 	for id, settings in ipairs(Menu.GUI) do
@@ -109,15 +110,12 @@ function Menu.renderButtons()
 		screen_w, screen_h =  GetScreenResolution(0, 0)
 		
 		boxColor = {38,38,38,199}
+		priceBox = {255,255,255,199}
 		local movetext = 0.0
-		if(settings["extra"] == "Garage") then
-			boxColor = {44,100,44,200}
-		elseif (settings["extra"] == "In Beslag") then
-			boxColor = {77, 8, 8,155}
-		end
 
 		if(settings["active"]) then
 			boxColor = {31, 116, 207,155}
+			priceBox = {155,155,155,199}
 		end
 
 
@@ -143,26 +141,11 @@ function Menu.renderButtons()
 			SetTextScale(0.28, 0.28)
 			SetTextColour(11, 11, 11, 255)
 			SetTextEntry("STRING") 
-			AddTextComponentString(settings["damages"])
+			AddTextComponentString(settings["price"])
 			DrawText(0.778, (settings["ymin"] - 0.012 )) 
-
-			SetTextFont(4)
-			SetTextScale(0.28, 0.28)
-			SetTextColour(11, 11, 11, 255)
-			SetTextEntry("STRING") 
-			AddTextComponentString(settings["bodydamages"])
-			DrawText(0.815, (settings["ymin"] - 0.012 ))  
-
-			SetTextFont(4)
-			SetTextScale(0.28, 0.28)
-			SetTextColour(11, 11, 11, 255)
-			SetTextEntry("STRING") 
-			AddTextComponentString(settings["fuel"])
-			DrawText(0.854, (settings["ymin"] - 0.012 )) 
-
 			
 
-			DrawRect(0.832, settings["ymin"], 0.11, settings["ymax"]-0.002, 255,255,255,199)
+			DrawRect(0.8, settings["ymin"], 0.05, settings["ymax"]-0.002, priceBox[1], priceBox[2], priceBox[3], 199)
 			--Global.DrawRect(x, y, width, height, r, g, b, a)
 		else
 			SetTextFont(4)

@@ -4,38 +4,17 @@ QB.VehicleShops = {
     {x = -56.71, y = -1096.65, z = 26.42}
 }
 
-QB.Vehicles = {
-    ["sedans"] = {
-        ["schafter2"] = {vehicle = "schafter2", name = "Schafter", class = "sedans", classlabel = "Sedans", image = "schafter", price = 110000},
-    },
-
-    ["coupes"] = {
-        ["windsor"] = {vehicle = "windsor", name = "Windsor", class = "coupes", classlabel = "Coupes", image = "windsor", price = 210000},
-    },
-
-    ["sports"] = {
-        ["buffalo"] = {vehicle = "buffalo", name = "Buffalo", class = "sports", classlabel = "Sports", image = "buffalo", price = 150000},
-    },
-
-    ["super"] = {
-        ["adder"] = {vehicle = "adder", name = "Adder", class = "super", classlabel = "Super", image = "adder", price = 750000},
-        ["t20"] = {vehicle = "t20", name = "T20", class = "super", classlabel = "Super", image = "t20", price = 650000},
-    }
-}
-
 QB.GarageLabel = {
     ["motelgarage"] = "Motel Garage",
     ["sapcounsel"]  = "San Andreas Parking Counsel",
 }
 
 QB.SpawnPoint = {x = -59.18, y = -1109.71, z = 25.45, h = 68.5}
-
 QB.DefaultGarage = "centralgarage"
-
 
 QB.ShowroomVehicles = {
     [1] = {
-        coords = {x = -46.26, y = -1093.47, z = 26.42, h = 205.5},
+        coords = {x = -45.65, y = -1093.66, z = 26.42, h = 69.5},
         defaultVehicle = "adder",
         chosenVehicle = "adder",
         inUse = false,
@@ -47,7 +26,7 @@ QB.ShowroomVehicles = {
         inUse = false,
     },
     [3] = {
-        coords = {x = -41.24, y = -1093.86, z = 26.42, h = 200.5},
+        coords = {x = -39.6, y = -1096.01, z = 26.42, h = 66.5},
         defaultVehicle = "comet2",
         chosenVehicle = "comet2",
         inUse = false,
@@ -64,6 +43,24 @@ QB.ShowroomVehicles = {
         chosenVehicle = "t20",
         inUse = false,
     },
+    [6] = {
+        coords = {x = -43.31, y = -1099.02, z = 26.42, h = 52.5},
+        defaultVehicle = "bati",
+        chosenVehicle = "bati",
+        inUse = false,
+    },
+    [7] = {
+        coords = {x = -50.66, y = -1093.05, z = 26.42, h = 222.5},
+        defaultVehicle = "bati",
+        chosenVehicle = "bati",
+        inUse = false,
+    },
+    [8] = {
+        coords = {x = -44.28, y = -1102.47, z = 26.42, h = 298.5},
+        defaultVehicle = "bati",
+        chosenVehicle = "bati",
+        inUse = false,
+    }
 }
 
 QB.VehicleMenuCategories = {
@@ -73,23 +70,6 @@ QB.VehicleMenuCategories = {
     ["coupes"]  = {label = "Coupes"},
     ["suvs"]    = {label = "SUV's"},
     ["offroad"] = {label = "Offroad"},
-}
-
-QB.CategoryVehicles = {
-    ["sports"] = {
-        ["comet2"] = {
-            vehicle = "comet2",
-            price = 250000,
-            label = "Comet",
-        },
-    },
-    ["super"] = {
-        ["t20"] = {
-            vehicle = "t20",
-            price = 250000,
-            label = "T20",
-        }
-    }
 }
 
 QB.Classes = {

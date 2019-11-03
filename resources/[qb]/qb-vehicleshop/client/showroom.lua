@@ -39,22 +39,14 @@ function GetCatVehicles(catergory)
     ped = GetPlayerPed(-1)
     MenuTitle = "Cat Vehs"
     ClearMenu()
-    for k, v in pairs(shopVehicles[catergory]) do
-        Menu.addButton(shopVehicles[catergory][k].name, "SelectVehicle", v)
-    end
-
     Menu.addButton("Sluit Menu", "close", nil) 
+    for k, v in pairs(shopVehicles[catergory]) do
+        Menu.addButton(shopVehicles[catergory][k].name, "SelectVehicle", v, catergory, "€"..shopVehicles[catergory][k]["price"])
+    end
 end
 
 function SelectVehicle(vehicleData)
-    local vehCoords = GetClosestVehicle(currentCarValue.coords.x, currentCarValue.coords.y, currentCarValue.coords.z, 1.0, 0, 70)
-    QBCore.Functions.DeleteVehicle(vehCoords)
-
-    QBCore.Functions.SpawnVehicle(vehicleData["model"], function(veh)
-        SetEntityHeading(veh, currentCarValue.coords.h)
-        SetVehicleDoorsLocked(veh, 3)
-    end, currentCarValue.coords)
-    QB.ShowroomVehicles[currentCarKey].chosenVehicle = vehicleData["model"]
+    TriggerServerEvent('qb-vehicleshop:server:setShowroomVehicle', vehicleData, currentCarKey)
     close()
 end
 
@@ -69,20 +61,32 @@ end
 
 Citizen.CreateThread(function()
     Citizen.Wait(1000)
-    for k, v in pairs(QB.ShowroomVehicles) do
-        local oldVehicle = GetClosestVehicle(QB.ShowroomVehicles[k].coords.x, QB.ShowroomVehicles[k].coords.y, QB.ShowroomVehicles[k].coords.z, 1.0, 0, 70)
+    for i = 1, #QB.ShowroomVehicles, 1 do
+        local oldVehicle = GetClosestVehicle(QB.ShowroomVehicles[i].coords.x, QB.ShowroomVehicles[i].coords.y, QB.ShowroomVehicles[i].coords.z, 1.0, 0, 70)
         if oldVehicle ~= 0 then
             QBCore.Functions.DeleteVehicle(oldVehicle)
         end
 
-        QBCore.Functions.SpawnVehicle(QB.ShowroomVehicles[k].defaultVehicle, function(veh)
-            SetEntityHeading(veh, QB.ShowroomVehicles[k].coords.h)
-            SetVehicleDoorsLocked(veh, 3)
-        end, QB.ShowroomVehicles[k].coords, false)
+		local model = GetHashKey(QB.ShowroomVehicles[i].chosenVehicle)
+		RequestModel(model)
+		while not HasModelLoaded(model) do
+			Citizen.Wait(0)
+		end
+
+		local veh = CreateVehicle(model, QB.ShowroomVehicles[i].coords.x, QB.ShowroomVehicles[i].coords.y, QB.ShowroomVehicles[i].coords.z, false, false)
+		SetModelAsNoLongerNeeded(model)
+		SetVehicleOnGroundProperly(veh)
+		SetEntityInvincible(veh,true)
+        SetEntityHeading(veh, QB.ShowroomVehicles[i].coords.h)
+        SetVehicleDoorsLocked(veh, 3)
+
+		FreezeEntityPosition(veh,true)
+		SetVehicleNumberPlateText(veh, i .. "CARSALE")
     end
 end)
 
 Citizen.CreateThread(function()
+    Citizen.Wait(1000)
     while true do
         
         local ped = GetPlayerPed(-1)
@@ -94,14 +98,11 @@ Citizen.CreateThread(function()
             if dist < 2.5 then
                 if not QB.ShowroomVehicles[k].inUse then
                     local vehicleHash = GetHashKey(QB.ShowroomVehicles[k].chosenVehicle)
-                    local displayName = GetDisplayNameFromVehicleModel(vehicleHash)
+                    local displayName = QBCore.Shared.Vehicles[QB.ShowroomVehicles[k].chosenVehicle]["name"]
+                    local vehPrice = QBCore.Shared.Vehicles[QB.ShowroomVehicles[k].chosenVehicle]["price"]
 
-                    if QB.ShowroomVehicles[k].chosenVehicle ~= "retrieving" then
-                        DrawText3Ds(QB.ShowroomVehicles[k].coords.x, QB.ShowroomVehicles[k].coords.y, QB.ShowroomVehicles[k].coords.z + 0.5, '~g~G~w~ - Om voertuig te veranderen: ~b~'..displayName)
-                        DrawText3Ds(QB.ShowroomVehicles[k].coords.x, QB.ShowroomVehicles[k].coords.y, QB.ShowroomVehicles[k].coords.z + 0.35, '~g~E~w~ - Om voertuig te kopen')
-                    else
-                        DrawText3Ds(QB.ShowroomVehicles[k].coords.x, QB.ShowroomVehicles[k].coords.y, QB.ShowroomVehicles[k].coords.z + 0.35, 'Voertuig word opgehaald, een moment geduld...')
-                    end
+                    DrawText3Ds(QB.ShowroomVehicles[k].coords.x, QB.ShowroomVehicles[k].coords.y, QB.ShowroomVehicles[k].coords.z + 0.8, '[G] - Verander Voertuig (~g~'..displayName..'~w~) | [H] - Testrit')
+                    DrawText3Ds(QB.ShowroomVehicles[k].coords.x, QB.ShowroomVehicles[k].coords.y, QB.ShowroomVehicles[k].coords.z + 0.65, '[E] - Voertuig Kopen (~g~€'..vehPrice..'~w~)')
 
                     if IsControlJustPressed(0, Keys["G"]) then
                         MenuVehicleList()
@@ -109,6 +110,10 @@ Citizen.CreateThread(function()
                         currentCarKey, currentCarValue = k, v
                         TriggerServerEvent('qb-vehicleshop:server:setShowroomCarInUse', k, true)
                         inMenu = true
+                    end
+
+                    if GetVehiclePedIsTryingToEnter(GetPlayerPed(-1)) ~= nil and GetVehiclePedIsTryingToEnter(GetPlayerPed(-1)) ~= 0 then
+                        ClearPedTasksImmediately(GetPlayerPed(-1))
                     end
 
                     if IsControlJustPressed(0, Keys["E"]) then
@@ -123,12 +128,7 @@ Citizen.CreateThread(function()
                     local vehicleHash = GetHashKey(QB.ShowroomVehicles[k].chosenVehicle)
                     local displayName = GetDisplayNameFromVehicleModel(vehicleHash)
 
-                    if QB.ShowroomVehicles[k].chosenVehicle ~= "retrieving" then
-                        DrawText3Ds(QB.ShowroomVehicles[k].coords.x, QB.ShowroomVehicles[k].coords.y, QB.ShowroomVehicles[k].coords.z + 0.5, '~g~G~w~ - Om voertuig te veranderen: ~b~'..displayName)
-                        DrawText3Ds(QB.ShowroomVehicles[k].coords.x, QB.ShowroomVehicles[k].coords.y, QB.ShowroomVehicles[k].coords.z + 0.35, '~g~E~w~ - Om voertuig te kopen')
-                    else
-                        DrawText3Ds(QB.ShowroomVehicles[k].coords.x, QB.ShowroomVehicles[k].coords.y, QB.ShowroomVehicles[k].coords.z + 0.35, 'Voertuig word opgehaald, een moment geduld...')
-                    end
+                    DrawText3Ds(QB.ShowroomVehicles[k].coords.x, QB.ShowroomVehicles[k].coords.y, QB.ShowroomVehicles[k].coords.z + 0.5, 'Voertuig aan het kiezen...')
 
                     if not Menu.hidden then
                         Menu.renderGUI()
@@ -154,6 +154,32 @@ RegisterNetEvent('qb-vehicleshop:client:setShowroomCarInUse')
 AddEventHandler('qb-vehicleshop:client:setShowroomCarInUse', function(showroomVehicle, inUse)
     QB.ShowroomVehicles[showroomVehicle].inUse = inUse
 end)
+
+RegisterNetEvent('qb-vehicleshop:client:setShowroomVehicle')
+AddEventHandler('qb-vehicleshop:client:setShowroomVehicle', function(showroomVehicle, k)
+    local oldVehicle = GetClosestVehicle(QB.ShowroomVehicles[k].coords.x, QB.ShowroomVehicles[k].coords.y, QB.ShowroomVehicles[k].coords.z, 1.5, 0, 70)
+    QBCore.Functions.DeleteVehicle(oldVehicle)
+
+    local model = GetHashKey(showroomVehicle)
+    RequestModel(model)
+    while not HasModelLoaded(model) do
+        Citizen.Wait(0)
+    end
+
+    local veh = CreateVehicle(model, QB.ShowroomVehicles[k].coords.x, QB.ShowroomVehicles[k].coords.y, QB.ShowroomVehicles[k].coords.z, false, false)
+    SetModelAsNoLongerNeeded(model)
+    SetVehicleOnGroundProperly(veh)
+    SetEntityInvincible(veh,true)
+    SetEntityHeading(veh, QB.ShowroomVehicles[k].coords.h)
+    SetVehicleDoorsLocked(veh, 3)
+
+    FreezeEntityPosition(veh, true)
+    SetVehicleNumberPlateText(veh, k .. "CARSALE")
+
+    QB.ShowroomVehicles[k].chosenVehicle = showroomVehicle
+end)
+
+
 
 RegisterNetEvent('qb-vehicleshop:client:buyShowroomVehicle')
 AddEventHandler('qb-vehicleshop:client:buyShowroomVehicle', function(vehicle, plate)
