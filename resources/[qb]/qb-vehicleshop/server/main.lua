@@ -95,6 +95,7 @@ end)
 
 RegisterServerEvent('qb-vehicleshop:server:setShowroomVehicle')
 AddEventHandler('qb-vehicleshop:server:setShowroomVehicle', function(vData, k)
+    print(vData)
     QB.ShowroomVehicles[k].chosenVehicle = vData
     TriggerClientEvent('qb-vehicleshop:client:setShowroomVehicle', -1, vData, k)
 end)
