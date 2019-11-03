@@ -57,19 +57,6 @@ QBCore.Commands.Add("dv", "Spawn een voertuig", {}, false, function(source, args
 	TriggerClientEvent('QBCore:Command:DeleteVehicle', source)
 end, "moderator")
 
-QBCore.Commands.Add("revive", "Revive een speler of jezelf", {{name="id", help="Speler ID (mag leeg zijn)"}}, false, function(source, args)
-	if args[1] ~= nil then
-		local Player = QBCore.Functions.GetPlayer(tonumber(args[1]))
-		if Player ~= nil then
-			TriggerClientEvent('QBCore:Command:Revive', Player.source)
-		else
-			TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Speler is niet online!")
-		end
-	else
-		TriggerClientEvent('QBCore:Command:Revive', source)
-	end
-end, "moderator")
-
 QBCore.Commands.Add("tpm", "Teleport naar een marker", {}, false, function(source, args)
 	TriggerClientEvent('QBCore:Command:GoToMarker', source)
 end, "moderator")
