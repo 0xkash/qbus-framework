@@ -1,5 +1,5 @@
-local ClosestVehicle = nil
-local isLoggedIn = true
+local ClosestVehicle = 1
+local isLoggedIn = false
 local inMenu = false
 local modelLoaded = true
 
@@ -440,7 +440,9 @@ Citizen.CreateThread(function()
                                 if vehshop.currentmenu == "coupes" or vehshop.currentmenu == "sedans" or vehshop.currentmenu == "super" or vehshop.currentmenu == "sports" then
                                     if selected then
                                         if IsControlJustPressed(1, 18) then
-                                            TriggerServerEvent('qb-vehicleshop:server:setShowroomVehicle', button.model, ClosestVehicle)
+                                            if modelLoaded then
+                                                TriggerServerEvent('qb-vehicleshop:server:setShowroomVehicle', button.model, ClosestVehicle)
+                                            end
                                         end
                                     end
                                 end

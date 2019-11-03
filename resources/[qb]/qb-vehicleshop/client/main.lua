@@ -10,6 +10,7 @@ Keys = {
 }
 
 QBCore = nil
+isLoggedIn = false
 
 Citizen.CreateThread(function() 
     while true do
@@ -59,35 +60,7 @@ AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
             -- end
         end
     end
-end)
-
-Citizen.CreateThread(function()
-    Citizen.Wait(500)
-    for k, v in pairs(QBCore.Shared.Vehicles) do
-        if QBCore.Shared.Vehicles[k]["category"] == "coupes" then
-            -- if QBCore.Shared.Vehicles[k]["shop"] == "pdm" then
-                table.insert(shopVehicles["coupes"], QBCore.Shared.Vehicles[k])
-            -- end
-        end
-        
-        if QBCore.Shared.Vehicles[k]["category"] == "sedans" then
-            -- if QBCore.Shared.Vehicles[k]["shop"] == "pdm" then
-                table.insert(shopVehicles["sedans"], QBCore.Shared.Vehicles[k])
-            -- end
-        end
-        
-        if QBCore.Shared.Vehicles[k]["category"] == "super" then
-            -- if QBCore.Shared.Vehicles[k]["shop"] == "pdm" then
-                table.insert(shopVehicles["super"], QBCore.Shared.Vehicles[k])
-            -- end
-        end
-        
-        if QBCore.Shared.Vehicles[k]["category"] == "sports" then
-            -- if QBCore.Shared.Vehicles[k]["shop"] == "pdm" then
-                table.insert(shopVehicles["sports"], QBCore.Shared.Vehicles[k])
-            -- end
-        end
-    end
+    isLoggedIn = true
 end)
 
 function openVehicleShop(bool)
@@ -135,14 +108,16 @@ Citizen.CreateThread(function()
         local ped = GetPlayerPed(-1)
         local pos = GetEntityCoords(ped)
 
-        for k, v in pairs(QB.VehicleShops) do
-            local dist = GetDistanceBetweenCoords(pos, QB.VehicleShops[k].x, QB.VehicleShops[k].y, QB.VehicleShops[k].z)
-            if dist <= 15 then
-                DrawMarker(2, QB.VehicleShops[k].x, QB.VehicleShops[k].y, QB.VehicleShops[k].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
-                if dist <= 1.5 then
-                    QBCore.Functions.DrawText3D(QB.VehicleShops[k].x, QB.VehicleShops[k].y, QB.VehicleShops[k].z + 0.3, '~g~E~w~ - Premium Deluxe Motorsports')
-                    if IsControlJustPressed(0, 51) then
-                        openVehicleShop(true)
+        if isLoggedIn then
+            for k, v in pairs(QB.VehicleShops) do
+                local dist = GetDistanceBetweenCoords(pos, QB.VehicleShops[k].x, QB.VehicleShops[k].y, QB.VehicleShops[k].z)
+                if dist <= 15 then
+                    DrawMarker(2, QB.VehicleShops[k].x, QB.VehicleShops[k].y, QB.VehicleShops[k].z + 0.98, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
+                    if dist <= 1.5 then
+                        QBCore.Functions.DrawText3D(QB.VehicleShops[k].x, QB.VehicleShops[k].y, QB.VehicleShops[k].z + 1.3, '~g~E~w~ - Premium Deluxe Motorsports')
+                        if IsControlJustPressed(0, 51) then
+                            openVehicleShop(true)
+                        end
                     end
                 end
             end
