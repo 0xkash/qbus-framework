@@ -212,7 +212,7 @@ end)
 
 RegisterNetEvent("inventory:client:AddDropItem")
 AddEventHandler("inventory:client:AddDropItem", function(dropId, player)
-    local coords = GetEntityCoords(GetPlayerPed(-1))
+    local coords = GetEntityCoords(GetPlayerPed(GetPlayerFromServerId(player)))
     local forward = GetEntityForwardVector(GetPlayerPed(-1))
 	local x, y, z = table.unpack(coords + forward * 0.5)
     Drops[dropId] = {
@@ -278,6 +278,9 @@ RegisterNUICallback("CloseInventory", function(data, cb)
     elseif CurrentStash ~= nil then
         TriggerServerEvent("inventory:server:SaveInventory", "stash", CurrentStash)
         CurrentStash = nil
+    else
+        TriggerServerEvent("inventory:server:SaveInventory", "drop", CurrentDrop)
+        CurrentDrop = 0
     end
     SetNuiFocus(false, false)
     inInventory = false
