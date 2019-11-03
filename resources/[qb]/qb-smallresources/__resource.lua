@@ -19,4 +19,5 @@ client_scripts {
 	"client/cruise.lua",
 	"client/recoil.lua",
 	"client/trunk.lua",
+	"client/removeentities.lua",
 }

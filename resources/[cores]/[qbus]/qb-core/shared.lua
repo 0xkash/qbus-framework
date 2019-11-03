@@ -1059,7 +1059,7 @@ QBShared.Vehicles = {
 		["trunkslots"] = 80,
 		["shop"] = "pdm",
 	},
-	["coupes"] = {
+	["cogcabrio"] = {
 		["name"] = "Cognoscenti Cabrio",
 		["brand"] = "Enus",
 		["model"] = "cogcabrio",

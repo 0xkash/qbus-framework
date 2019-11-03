@@ -6,7 +6,6 @@ client_scripts {
     'client/main.lua',
     'config.lua',
     'client/showroom.lua',
-    'client/gui.lua',
 }
 
 server_scripts {

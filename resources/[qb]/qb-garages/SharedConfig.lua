@@ -18,7 +18,11 @@ HouseGarages = {
     ["mirrorpark01"] = {
         label = "Mirror Park 01",
         takeVehicle = {x = 872.91, y = -599.67, z = 58.2, h = 320.5},
-    }
+    },
+    ["mirrorpark02"] = {
+        label = "Mirror Park 02",
+        takeVehicle = {x = 924.65, y = -563.84, z = 57.96, h = 206.5},
+    },
 }
 
 Depots = {
