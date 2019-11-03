@@ -147,7 +147,8 @@ AddEventHandler('hospital:client:Revive', function()
 		local playerPos = GetEntityCoords(player, true)
         NetworkResurrectLocalPlayer(playerPos, true, true, false)
         TriggerServerEvent("hospital:server:SetDeathStatus", false)
-        isDead = true
+        isDead = false
+        SetEntityInvincible(GetPlayerPed(-1), false)
     end
 
     SetEntityHealth(player, GetEntityMaxHealth(player))
@@ -156,7 +157,7 @@ AddEventHandler('hospital:client:Revive', function()
 
     ResetAll()
     
-    QBCore.Functions.Notify("Je hebt weer helemaal top!")
+    QBCore.Functions.Notify("Je bent weer helemaal top!")
 end)
 
 RegisterNetEvent('hospital:client:SetBleeding')
@@ -183,6 +184,8 @@ AddEventHandler('QBCore:Client:OnPlayerUnload', function()
     isLoggedIn = false
     TriggerServerEvent("hospital:server:SetDeathStatus", false)
     isDead = false
+    deathTime = 0
+    SetEntityInvincible(GetPlayerPed(-1), false)
     ResetAll()
 end)
 

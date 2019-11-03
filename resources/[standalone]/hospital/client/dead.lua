@@ -1,10 +1,17 @@
+local deadAnimDict = "dead"
+local deadAnim = "dead_a"
+local deadCarAnimDict = "veh@low@front_ps@idle_duck"
+local deadCarAnim = "sit"
+
+local deathTime = 0
+
 Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(0)
 		local player = PlayerId()
 		if NetworkIsPlayerActive(player) then
 			local playerPed = PlayerPedId()
-			if IsPedFatallyInjured(playerPed) and not isDead then
+			if IsEntityDead(playerPed) and not isDead then
 				local killer, killerWeapon = NetworkGetEntityKillerOfPlayer(player)
                 local killerServerId = NetworkGetPlayerIndexFromPed(killer)
                 
@@ -17,27 +24,28 @@ end)
 Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(0)
-		if IsDead then
+		if isDead then
 			DisableAllControlActions(0)
 			EnableControlAction(0, 1, true)
-			EnableControlAction(0, Keys['~'], true)
-			EnableControlAction(0, Keys['G'], true)
-			EnableControlAction(0, Keys['M'], true)
-			EnableControlAction(0, Keys['N'], true)
 			EnableControlAction(0, Keys['T'], true)
 			EnableControlAction(0, Keys['E'], true)
-			EnableControlAction(0, Keys['RIGHT'], true)
-			EnableControlAction(0, Keys['LEFT'], true)
-			EnableControlAction(0, Keys['ENTER'], true)
-			EnableControlAction(0, Keys['Z'], true)
-			EnableControlAction(0, Keys['F10'], true)
-			EnableControlAction(0, 177, true)
 
 
-			loadAnimDict("missfinale_c1@")
-            if not IsEntityPlayingAnim(PlayerPedId(), "missfinale_c1@", "lying_dead_player0", 3) and not IsEntityPlayingAnim(PlayerPedId(), "amb@lo_res_idles@", "world_human_bum_slumped_left_lo_res_base", 3) then
-                TaskPlayAnim(GetPlayerPed(PlayerId()), 1.0, -1, -1, 1, 0, 0, 0, 0)
-                TaskPlayAnim(GetPlayerPed(PlayerId()), "missfinale_c1@", "lying_dead_player0", 1.0, -1, -1, 1, 0, 0, 0, 0)
+            if deathTime > 0 then
+                DrawTxt(0.89, 1.44, 1.0,1.0,0.6, "RESPAWN OVER: ~b~" .. math.ceil(deathTime) .. "~w~ SECONDEN", 255, 255, 255, 255)
+            else
+                DrawTxt(0.89, 1.44, 1.0,1.0,0.6, "~w~ HOUD ~b~E ~w~INGEDRUKT OM TE RESPAWNEN", 255, 255, 255, 255)
+            end
+
+            loadAnimDict(deadAnimDict)
+            if IsPedInAnyVehicle(player) then
+                if not IsEntityPlayingAnim(PlayerPedId(), deadCarAnimDict, deadCarAnim, 3) then
+                    TaskPlayAnim(PlayerPedId(), deadCarAnimDict, deadCarAnim, 1.0, 1.0, -1, 1, 0, 0, 0, 0)
+                end
+            else
+                if not IsEntityPlayingAnim(PlayerPedId(), deadAnimDict, deadAnim, 3) then
+                    TaskPlayAnim(PlayerPedId(), deadAnimDict, deadAnim, 1.0, 1.0, -1, 1, 0, 0, 0, 0)
+                end
             end
 
             SetCurrentPedWeapon(GetPlayerPed(-1), GetHashKey("WEAPON_UNARMED"), true)
@@ -50,19 +58,57 @@ end)
 function OnDeath()
     if not isDead then
         isDead = true
-        local player = GetPlayerPed(-1)
-        local pos = GetEntityCoords(GetPlayerPed(-1))
-        
         TriggerServerEvent("hospital:server:SetDeathStatus", true)
+        DeathTimer()
+        TriggerServerEvent("InteractSound_SV:PlayOnSource", "demo", 0.1)
+        local player = GetPlayerPed(-1)
 
-        while IsPedRagdoll(player) do
+        while GetEntitySpeed(player) > 0.5 or IsPedRagdoll(player) do
             Citizen.Wait(10)
         end
-        SetEntityHealth(player, GetEntityMaxHealth(player))
-        loadAnimDict("misslamar1dead_body")
-        TaskPlayAnim(player, "misslamar1dead_body", "dead_idle", 3.0, 3.0, -1, 1, 0, 0, 0, 0)
-    
-        print("lmao is dead")
+
+        local pos = GetEntityCoords(player)
+        local heading = GetEntityHeading(player)
+
+        NetworkResurrectLocalPlayer(pos.x, pos.y, pos.z, heading, true, false)
+        SetEntityInvincible(player, true)
+        SetEntityHealth(player, GetEntityMaxHealth(GetPlayerPed(-1)))
+
+        loadAnimDict(deadAnimDict)
+        TaskPlayAnim(player, deadAnimDict, deadAnim, 1.0, 1.0, -1, 1, 0, 0, 0, 0)
     end
+end
+
+function DeathTimer()
+    deathTime = Config.DeathTime
+    local hold = 0
+    while isDead do
+        Citizen.Wait(1000)
+        deathTime = deathTime - 1
+
+        if deathTime <= 0 then
+            if IsControlPressed(0, Keys["E"]) and hold > 2 then
+                TriggerEvent("hospital:client:RespawnAtHospital")
+            end
+
+            if IsControlPressed(0, Keys["E"]) then
+                hold = hold + 1
+            end
+        end
+    end
+end
+
+function DrawTxt(x, y, width, height, scale, text, r, g, b, a, outline)
+    SetTextFont(4)
+    SetTextProportional(0)
+    SetTextScale(scale, scale)
+    SetTextColour(r, g, b, a)
+    SetTextDropShadow(0, 0, 0, 0,255)
+    SetTextEdge(2, 0, 0, 0, 255)
+    SetTextDropShadow()
+    SetTextOutline()
+    SetTextEntry("STRING")
+    AddTextComponentString(text)
+    DrawText(x - width/2, y - height/2 + 0.005)
 end
 

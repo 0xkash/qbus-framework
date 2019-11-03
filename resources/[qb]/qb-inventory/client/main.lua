@@ -61,66 +61,90 @@ Citizen.CreateThread(function()
         DisableControlAction(0, Keys["4"], true)
         DisableControlAction(0, Keys["5"], true)
         if IsDisabledControlJustReleased(0, Keys["TAB"]) then
-            local curVeh = nil
-            if IsPedInAnyVehicle(GetPlayerPed(-1)) then
-                local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1), false)
-                CurrentGlovebox = GetVehicleNumberPlateText(vehicle)
-                curVeh = vehicle
-                CurrentVehicle = nil
-            else
-                local vehicle = QBCore.Functions.GetClosestVehicle()
-                if vehicle ~= 0 and vehicle ~= nil then
-                    local pos = GetEntityCoords(GetPlayerPed(-1))
-                    local trunkpos = GetOffsetFromEntityInWorldCoords(vehicle, 0, -2.5, 0)
-                    if (IsBackEngine(GetEntityModel(vehicle))) then
-                        trunkpos = GetOffsetFromEntityInWorldCoords(vehicle, 0, 2.5, 0)
-                    end
-                    if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, trunkpos) < 2.0) and not IsPedInAnyVehicle(GetPlayerPed(-1)) then
-                        CurrentVehicle = GetVehicleNumberPlateText(vehicle)
+            QBCore.Functions.GetPlayerData(function(PlayerData)
+                if not PlayerData.metadata["isdead"] then
+                    local curVeh = nil
+                    if IsPedInAnyVehicle(GetPlayerPed(-1)) then
+                        local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1), false)
+                        CurrentGlovebox = GetVehicleNumberPlateText(vehicle)
                         curVeh = vehicle
-                        CurrentGlovebox = nil
-                    else
                         CurrentVehicle = nil
+                    else
+                        local vehicle = QBCore.Functions.GetClosestVehicle()
+                        if vehicle ~= 0 and vehicle ~= nil then
+                            local pos = GetEntityCoords(GetPlayerPed(-1))
+                            local trunkpos = GetOffsetFromEntityInWorldCoords(vehicle, 0, -2.5, 0)
+                            if (IsBackEngine(GetEntityModel(vehicle))) then
+                                trunkpos = GetOffsetFromEntityInWorldCoords(vehicle, 0, 2.5, 0)
+                            end
+                            if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, trunkpos) < 2.0) and not IsPedInAnyVehicle(GetPlayerPed(-1)) then
+                                CurrentVehicle = GetVehicleNumberPlateText(vehicle)
+                                curVeh = vehicle
+                                CurrentGlovebox = nil
+                            else
+                                CurrentVehicle = nil
+                            end
+                        else
+                            CurrentVehicle = nil
+                        end
                     end
-                else
-                    CurrentVehicle = nil
-                end
-            end
 
-            if CurrentVehicle ~= nil then
-                local other = {
-                    maxweight = QBCore.Shared.VehicleModels[GetEntityModel(curVeh)]["trunkspace"],
-                    slots = QBCore.Shared.VehicleModels[GetEntityModel(curVeh)]["trunkslots"],
-                }
-                TriggerServerEvent("inventory:server:OpenInventory", "trunk", CurrentVehicle, other)
-                OpenTrunk()
-            elseif CurrentGlovebox ~= nil then
-                TriggerServerEvent("inventory:server:OpenInventory", "glovebox", CurrentGlovebox)
-            elseif CurrentDrop ~= 0 then
-                TriggerServerEvent("inventory:server:OpenInventory", "drop", CurrentDrop)
-            else
-                TriggerServerEvent("inventory:server:OpenInventory")
-            end
+                    if CurrentVehicle ~= nil then
+                        local other = {
+                            maxweight = QBCore.Shared.VehicleModels[GetEntityModel(curVeh)]["trunkspace"],
+                            slots = QBCore.Shared.VehicleModels[GetEntityModel(curVeh)]["trunkslots"],
+                        }
+                        TriggerServerEvent("inventory:server:OpenInventory", "trunk", CurrentVehicle, other)
+                        OpenTrunk()
+                    elseif CurrentGlovebox ~= nil then
+                        TriggerServerEvent("inventory:server:OpenInventory", "glovebox", CurrentGlovebox)
+                    elseif CurrentDrop ~= 0 then
+                        TriggerServerEvent("inventory:server:OpenInventory", "drop", CurrentDrop)
+                    else
+                        TriggerServerEvent("inventory:server:OpenInventory")
+                    end
+                end
+            end)
         end
 
         if IsDisabledControlJustReleased(0, Keys["1"]) then
-            TriggerServerEvent("inventory:server:UseItemSlot", 1)
+            QBCore.Functions.GetPlayerData(function(PlayerData)
+                if not PlayerData.metadata["isdead"] then
+                    TriggerServerEvent("inventory:server:UseItemSlot", 1)
+                end
+            end)
         end
 
         if IsDisabledControlJustReleased(0, Keys["2"]) then
-            TriggerServerEvent("inventory:server:UseItemSlot", 2)
+            QBCore.Functions.GetPlayerData(function(PlayerData)
+                if not PlayerData.metadata["isdead"] then
+                    TriggerServerEvent("inventory:server:UseItemSlot", 2)
+                end
+            end)
         end
 
         if IsDisabledControlJustReleased(0, Keys["3"]) then
-            TriggerServerEvent("inventory:server:UseItemSlot", 3)
+            QBCore.Functions.GetPlayerData(function(PlayerData)
+                if not PlayerData.metadata["isdead"] then
+                    TriggerServerEvent("inventory:server:UseItemSlot", 3)
+                end
+            end)
         end
 
         if IsDisabledControlJustReleased(0, Keys["4"]) then
-            TriggerServerEvent("inventory:server:UseItemSlot", 4)
+            QBCore.Functions.GetPlayerData(function(PlayerData)
+                if not PlayerData.metadata["isdead"] then
+                    TriggerServerEvent("inventory:server:UseItemSlot", 4)
+                end
+            end)
         end
 
         if IsDisabledControlJustReleased(0, Keys["5"]) then
-            TriggerServerEvent("inventory:server:UseItemSlot", 5)
+            QBCore.Functions.GetPlayerData(function(PlayerData)
+                if not PlayerData.metadata["isdead"] then
+                    TriggerServerEvent("inventory:server:UseItemSlot", 5)
+                end
+            end)
         end
     end
 end)
