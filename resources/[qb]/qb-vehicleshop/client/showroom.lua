@@ -351,18 +351,23 @@ Citizen.CreateThread(function()
                     local vehPrice = QBCore.Shared.Vehicles[QB.ShowroomVehicles[k].chosenVehicle]["price"]
 
                     -- DrawText3Ds(QB.ShowroomVehicles[k].coords.x, QB.ShowroomVehicles[k].coords.y, QB.ShowroomVehicles[k].coords.z + 0.8, '[G] - Verander Voertuig (~g~'..displayName..'~w~) | [H] - Testrit')
-                    if not vehshop.opened then
-                        if not buySure then
-                            DrawText3Ds(QB.ShowroomVehicles[k].coords.x, QB.ShowroomVehicles[k].coords.y, QB.ShowroomVehicles[k].coords.z + 0.8, '~g~G~w~ - Verander Voertuig (~g~'..displayName..'~w~)')
+                    if not QB.ShowroomVehicles[k].inUse then
+                        if not vehshop.opened then
+                            if not buySure then
+                                DrawText3Ds(QB.ShowroomVehicles[k].coords.x, QB.ShowroomVehicles[k].coords.y, QB.ShowroomVehicles[k].coords.z + 0.8, '~g~G~w~ - Verander Voertuig (~g~'..displayName..'~w~)')
+                            end
+                            if not buySure then
+                                DrawText3Ds(QB.ShowroomVehicles[k].coords.x, QB.ShowroomVehicles[k].coords.y, QB.ShowroomVehicles[k].coords.z + 0.65, '~g~E~w~ - Voertuig Kopen (~g~€'..vehPrice..'~w~)')
+                            elseif buySure then
+                                DrawText3Ds(QB.ShowroomVehicles[k].coords.x, QB.ShowroomVehicles[k].coords.y, QB.ShowroomVehicles[k].coords.z + 0.65, 'Weet je het zeker? | ~g~[7]~w~ Ja -/- ~r~[8]~w~ Nee')
+                            end
+                        elseif vehshop.opened then
+                            DrawText3Ds(QB.ShowroomVehicles[k].coords.x, QB.ShowroomVehicles[k].coords.y, QB.ShowroomVehicles[k].coords.z + 0.65, 'Voertuig aan het kiezen')
                         end
-                        if not buySure then
-                            DrawText3Ds(QB.ShowroomVehicles[k].coords.x, QB.ShowroomVehicles[k].coords.y, QB.ShowroomVehicles[k].coords.z + 0.65, '~g~E~w~ - Voertuig Kopen (~g~€'..vehPrice..'~w~)')
-                        elseif buySure then
-                            DrawText3Ds(QB.ShowroomVehicles[k].coords.x, QB.ShowroomVehicles[k].coords.y, QB.ShowroomVehicles[k].coords.z + 0.65, 'Weet je het zeker? | ~g~[7]~w~ Ja -/- ~r~[8]~w~ Nee')
-                        end
-                    elseif vehshop.opened then
-                        DrawText3Ds(QB.ShowroomVehicles[k].coords.x, QB.ShowroomVehicles[k].coords.y, QB.ShowroomVehicles[k].coords.z + 0.65, 'Voertuig aan het kiezen')
+                    else
+                        DrawText3Ds(QB.ShowroomVehicles[k].coords.x, QB.ShowroomVehicles[k].coords.y, QB.ShowroomVehicles[k].coords.z + 0.65, 'Voertuig is in gebruik door een klant...')
                     end
+
                     if not vehshop.opened then
                         if IsControlJustPressed(0, Keys["G"]) then
                             if vehshop.opened then
