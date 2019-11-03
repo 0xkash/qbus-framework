@@ -1,5 +1,6 @@
 local currentCarKey, currentCarValue = nil
 local inMenu = false
+local modelLoaded = true
 
 local fakecar = {model = '', car = nil}
 
@@ -244,7 +245,10 @@ function CloseCreator(name, veh, price, financed)
 		local ped = GetPlayerPed(-1)
 		vehshop.opened = false
 		vehshop.menu.from = 1
-		vehshop.menu.to = 10
+        vehshop.menu.to = 10
+        QB.ShowroomVehicles[currentCarKey].inUse = false
+        TriggerServerEvent('qb-vehicleshop:server:setShowroomCarInUse', currentCarKey, false)
+        currentCarKey, currentCarValue = nil
 	end)
 end
 
@@ -297,15 +301,6 @@ function SelectVehicle(vehicleData)
     close()
 end
 
-function close()
-    Menu.hidden = true
-    ClearMenu()
-    QB.ShowroomVehicles[currentCarKey].inUse = false
-    TriggerServerEvent('qb-vehicleshop:server:setShowroomCarInUse', currentCarKey, false)
-    inMenu = false
-    currentCarKey, currentCarValue = nil
-end
-
 Citizen.CreateThread(function()
     Citizen.Wait(1000)
     for i = 1, #QB.ShowroomVehicles, 1 do
@@ -335,7 +330,8 @@ end)
 function OpenCreator()
 	vehshop.currentmenu = "main"
 	vehshop.opened = true
-	vehshop.selectedbutton = 0
+    vehshop.selectedbutton = 0
+    TriggerServerEvent('qb-vehicleshop:server:setShowroomCarInUse', currentCarKey, false)
 end
 
 Citizen.CreateThread(function()
@@ -373,8 +369,8 @@ Citizen.CreateThread(function()
                                 CloseCreator()
                                 currentCarKey, currentCarValue = nil, nil
                             else
-                                OpenCreator()
                                 currentCarKey, currentCarValue = k, v
+                                OpenCreator()
                             end
                         end
                     end
@@ -423,20 +419,24 @@ Citizen.CreateThread(function()
                                 backlock = false
                             end
                             if IsControlJustPressed(1,188) then
-                                if vehshop.selectedbutton > 1 then
-                                    vehshop.selectedbutton = vehshop.selectedbutton -1
-                                    if buttoncount > 10 and vehshop.selectedbutton < vehshop.menu.from then
-                                        vehshop.menu.from = vehshop.menu.from -1
-                                        vehshop.menu.to = vehshop.menu.to - 1
+                                if modelLoaded then
+                                    if vehshop.selectedbutton > 1 then
+                                        vehshop.selectedbutton = vehshop.selectedbutton -1
+                                        if buttoncount > 10 and vehshop.selectedbutton < vehshop.menu.from then
+                                            vehshop.menu.from = vehshop.menu.from -1
+                                            vehshop.menu.to = vehshop.menu.to - 1
+                                        end
                                     end
                                 end
                             end
                             if IsControlJustPressed(1,187)then
-                                if vehshop.selectedbutton < buttoncount then
-                                    vehshop.selectedbutton = vehshop.selectedbutton +1
-                                    if buttoncount > 10 and vehshop.selectedbutton > vehshop.menu.to then
-                                        vehshop.menu.to = vehshop.menu.to + 1
-                                        vehshop.menu.from = vehshop.menu.from + 1
+                                if modelLoaded then
+                                    if vehshop.selectedbutton < buttoncount then
+                                        vehshop.selectedbutton = vehshop.selectedbutton +1
+                                        if buttoncount > 10 and vehshop.selectedbutton > vehshop.menu.to then
+                                            vehshop.menu.to = vehshop.menu.to + 1
+                                            vehshop.menu.from = vehshop.menu.from + 1
+                                        end
                                     end
                                 end
                             end
@@ -477,14 +477,6 @@ Citizen.CreateThread(function()
     end
 end)
 
-Citizen.CreateThread(function()
-	while true do
-		Citizen.Wait(0)
-		
-
-	end
-end)
-
 RegisterNetEvent('qb-vehicleshop:client:setShowroomCarInUse')
 AddEventHandler('qb-vehicleshop:client:setShowroomCarInUse', function(showroomVehicle, inUse)
     QB.ShowroomVehicles[showroomVehicle].inUse = inUse
@@ -497,7 +489,8 @@ AddEventHandler('qb-vehicleshop:client:setShowroomVehicle', function(showroomVeh
         local model = GetHashKey(showroomVehicle)
         RequestModel(model)
         while not HasModelLoaded(model) do
-            Citizen.Wait(0)
+            modelLoaded = false
+            Citizen.Wait(100)
         end
         local veh = CreateVehicle(model, QB.ShowroomVehicles[k].coords.x, QB.ShowroomVehicles[k].coords.y, QB.ShowroomVehicles[k].coords.z, false, false)
         SetModelAsNoLongerNeeded(model)
@@ -508,6 +501,7 @@ AddEventHandler('qb-vehicleshop:client:setShowroomVehicle', function(showroomVeh
 
         FreezeEntityPosition(veh, true)
         SetVehicleNumberPlateText(veh, k .. "CARSALE")
+        modelLoaded = true
     end
 
     QB.ShowroomVehicles[k].chosenVehicle = showroomVehicle
