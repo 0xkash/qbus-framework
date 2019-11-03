@@ -143,7 +143,7 @@ Config.AlwaysBleedChanceWeapons = {
     [Config.WeaponClasses['SMALL_CALIBER']] = true,
     [Config.WeaponClasses['MEDIUM_CALIBER']] = true,
     [Config.WeaponClasses['CUTTING']] = true,
-    [Config.WeaponClasses['WILDLIFE']] = true,
+    [Config.WeaponClasses['WILDLIFE']] = false,
 }
 
 Config.ForceInjuryWeapons = {
@@ -175,10 +175,10 @@ Config.WoundStates = {
 }
 
 Config.BleedingStates = {
-    'klein beetje aan het bloeden..',
-    'redelijk aan het bloeden..',
-    'veel aan het bloeden..',
-    'hevig aan het bloeden..',
+    [1] = {label = 'klein beetje aan het bloeden..', damage = 10, chance = 50},
+    [2] = {label = 'redelijk aan het bloeden..', damage = 15, chance = 65},
+    [3] = {label = 'veel aan het bloeden..', damage = 20, chance = 65},
+    [3] = {label = 'hevig aan het bloeden..', damage = 25, chance = 75},
 }
 
 Config.MovementRate = {

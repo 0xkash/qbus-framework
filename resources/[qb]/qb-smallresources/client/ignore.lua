@@ -28,3 +28,8 @@ Citizen.CreateThread(function()
        RemoveAllPickupsOfType(0xB0769393) -- sns
     end
 end)
+
+AddEventHandler("playerSpawned", function()
+    NetworkSetFriendlyFireOption(true)
+    SetCanAttackFriendly(PlayerPedId(), true, true)
+end)

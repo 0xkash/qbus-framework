@@ -1,5 +1,5 @@
 function ProcessDamage(ped)
-    if not IsEntityDead(ped) then
+    if not isDead then
         for k, v in pairs(injured) do
             if (v.part == 'LLEG' and v.severity > 1) or (v.part == 'RLEG' and v.severity > 1) or (v.part == 'LFOOT' and v.severity > 2) or (v.part == 'RFOOT' and v.severity > 2) then
                 if legCount >= Config.LegInjuryTimer then
@@ -95,7 +95,7 @@ end
 function CheckDamage(ped, bone, weapon, damageDone)
     if weapon == nil then return end
 
-    if Config.Bones[bone] ~= nil and not IsEntityDead(ped) then
+    if Config.Bones[bone] ~= nil and not isDead then
         ApplyImmediateEffects(ped, bone, weapon, damageDone)
 
         if not BodyParts[Config.Bones[bone]].isDamaged then
@@ -124,8 +124,8 @@ function CheckDamage(ped, bone, weapon, damageDone)
         })
 
         ProcessRunStuff(ped)
-        DoLimbAlert()
-        DoBleedAlert()
+        --DoLimbAlert()
+        --DoBleedAlert()
     end
 end
 

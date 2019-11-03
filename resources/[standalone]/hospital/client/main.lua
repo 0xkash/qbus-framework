@@ -10,6 +10,8 @@ Keys = {
 	["NENTER"] = 201, ["N4"] = 108, ["N5"] = 60, ["N6"] = 107, ["N+"] = 96, ["N-"] = 97, ["N7"] = 117, ["N8"] = 61, ["N9"] = 118
 }
 
+isLoggedIn = false
+
 isInHospitalBed = false
 
 bedOccupying = nil
@@ -37,6 +39,8 @@ playerArmour = nil
 
 limbNotifId = 'MHOS_LIMBS'
 bleedMoveNotifId = 'MHOS_BLEEDMOVE'
+
+isDead = false
 
 BodyParts = {
     ['HEAD'] = { label = 'Hoofd', causeLimp = false, isDamaged = false, severity = 0 },
@@ -130,6 +134,7 @@ Citizen.CreateThread(function()
     while true do
         Citizen.Wait((1000 * Config.MessageTimer))
         DoLimbAlert()
+        Citizen.Wait(math.random(1000, 3000))
         DoBleedAlert()
     end
 end)
@@ -138,14 +143,46 @@ RegisterNetEvent('hospital:client:Revive')
 AddEventHandler('hospital:client:Revive', function()
     local player = PlayerPedId()
 
-	if IsPedDeadOrDying(player) then
+	if isDead then
 		local playerPos = GetEntityCoords(player, true)
-		NetworkResurrectLocalPlayer(playerPos, true, true, false)
+        NetworkResurrectLocalPlayer(playerPos, true, true, false)
+        TriggerServerEvent("hospital:server:SetDeathStatus", false)
+        isDead = true
     end
+
     SetEntityHealth(player, GetEntityMaxHealth(player))
     ClearPedBloodDamage(player)
     SetPlayerSprint(PlayerId(), true)
 
+    ResetAll()
+    
+    QBCore.Functions.Notify("Je hebt weer helemaal top!")
+end)
+
+RegisterNetEvent('hospital:client:SetBleeding')
+AddEventHandler('hospital:client:SetBleeding', function()
+    ApplyBleed(1)
+end)
+
+RegisterNetEvent('hospital:client:KillPlayer')
+AddEventHandler('hospital:client:KillPlayer', function()
+    SetEntityHealth(GetPlayerPed(-1), 0)
+end)
+
+RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
+AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+    exports.spawnmanager:setAutoSpawn(false)
+    isLoggedIn = true
+    QBCore.Functions.GetPlayerData(function(PlayerData)
+        isDead = PlayerData.metadata["isdead"]
+    end)
+end)
+
+RegisterNetEvent('QBCore:Client:OnPlayerUnload')
+AddEventHandler('QBCore:Client:OnPlayerUnload', function()
+    isLoggedIn = false
+    TriggerServerEvent("hospital:server:SetDeathStatus", false)
+    isDead = false
     ResetAll()
 end)
 
@@ -170,7 +207,7 @@ end
 
 function DoLimbAlert()
     local player = PlayerPedId()
-    if not IsEntityDead(player) then
+    if not isDead then
         if #injured > 0 then
             local limbDamageMsg = ''
             if #injured <= Config.AlertShowInfo then
@@ -190,8 +227,12 @@ end
 
 function DoBleedAlert()
     local player = PlayerPedId()
-    if not IsEntityDead(player) and isBleeding > 0 then
-        QBCore.Functions.Notify("Je bent "..Config.BleedingStates[isBleeding], "error", 5000)
+    if not isDead and isBleeding > 0 then
+        QBCore.Functions.Notify("Je bent "..Config.BleedingStates[isBleeding].label, "error", 5000)
+        if math.random(100) < Config.BleedingStates[isBleeding].chance then
+            local damage = Config.BleedingStates[isBleeding].damage
+            SetEntityHealth(player, GetEntityHealth(player) - damage)
+        end
     end
 end
 
@@ -235,4 +276,11 @@ function ResetAll()
         limbs = BodyParts,
         isBleeding = tonumber(isBleeding)
     })
+end
+
+function loadAnimDict(dict)
+	while(not HasAnimDictLoaded(dict)) do
+		RequestAnimDict(dict)
+		Citizen.Wait(1)
+	end
 end
