@@ -70,7 +70,7 @@ local weapons = {
 }
 
 local holstered = true
-local canfire = true
+local canFire = true
 local currWeapon = GetHashKey('WEAPON_UNARMED')
 
 QBCore = nil
