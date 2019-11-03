@@ -495,7 +495,7 @@ AddEventHandler('qb-vehicleshop:client:setShowroomVehicle', function(showroomVeh
         RequestModel(model)
         while not HasModelLoaded(model) do
             modelLoaded = false
-            Citizen.Wait(100)
+            Citizen.Wait(10)
         end
         local veh = CreateVehicle(model, QB.ShowroomVehicles[k].coords.x, QB.ShowroomVehicles[k].coords.y, QB.ShowroomVehicles[k].coords.z, false, false)
         SetModelAsNoLongerNeeded(model)
