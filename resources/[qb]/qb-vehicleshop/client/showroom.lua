@@ -405,7 +405,6 @@ Citizen.CreateThread(function()
                                         if selected then
                                             if QB.ShowroomVehicles[k].chosenVehicle ~= button.model then
                                                 QB.ShowroomVehicles[k].chosenVehicle = button.model
-                                                QBCore.Functions.DeleteVehicle(GetClosestVehicle(QB.ShowroomVehicles[k].coords.x, QB.ShowroomVehicles[k].coords.y, QB.ShowroomVehicles[k].coords.z, 1.0, 0, 70))
                                                 TriggerServerEvent('qb-vehicleshop:server:setShowroomVehicle', button.model, currentCarKey)
                                             end
                                         end
@@ -493,6 +492,7 @@ end)
 
 RegisterNetEvent('qb-vehicleshop:client:setShowroomVehicle')
 AddEventHandler('qb-vehicleshop:client:setShowroomVehicle', function(showroomVehicle, k)
+    QBCore.Functions.DeleteVehicle(GetClosestVehicle(QB.ShowroomVehicles[k].coords.x, QB.ShowroomVehicles[k].coords.y, QB.ShowroomVehicles[k].coords.z, 1.0, 0, 70))
     if QB.ShowroomVehicles[k] ~= showroomVehicle then
         local model = GetHashKey(showroomVehicle)
         RequestModel(model)
