@@ -154,17 +154,19 @@ end)
 QBCore.Functions.CreateCallback('apartments:IsOwner', function(source, cb, apartment)
 	local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    QBCore.Functions.ExecuteSql("SELECT * FROM `apartments` WHERE `citizenid` = '"..Player.PlayerData.citizenid.."' ", function(result)
-        if result[1] ~= nil then 
-            if result[1].type == apartment then
-                cb(true)
+    if Player ~= nil then
+        QBCore.Functions.ExecuteSql("SELECT * FROM `apartments` WHERE `citizenid` = '"..Player.PlayerData.citizenid.."' ", function(result)
+            if result[1] ~= nil then 
+                if result[1].type == apartment then
+                    cb(true)
+                else
+                    cb(false)
+                end
             else
                 cb(false)
             end
-        else
-            cb(false)
-        end
-    end)
+        end)
+    end
 end)
 
 

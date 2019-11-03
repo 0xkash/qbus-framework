@@ -317,7 +317,7 @@ function SetClosestApartment()
             current = id
         end
     end
-    if current ~= ClosestHouse and not InApartment then
+    if current ~= ClosestHouse and isLoggedIn and not InApartment then
         ClosestHouse = current
         QBCore.Functions.TriggerCallback('apartments:IsOwner', function(result)
             IsOwned = result
