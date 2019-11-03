@@ -4,14 +4,11 @@ local objects = {
 }
 
 Citizen.CreateThread(function()
-    while true do
-        for k, v in pairs(objects) do
-            local ent = GetClosestObjectOfType(objects[k].x, objects[k].y, objects[k].z, 2.0, GetHashKey(objects[k].model), false, false, false)
+    for k, v in pairs(objects) do
+        local ent = GetClosestObjectOfType(objects[k].x, objects[k].y, objects[k].z, 2.0, GetHashKey(objects[k].model), false, false, false)
 
-            SetEntityAsMissionEntity(ent, 1, 1)
-            DeleteObject(ent)
-            SetEntityAsNoLongerNeeded(ent)
-        end
-        Citizen.Wait(0)
+        SetEntityAsMissionEntity(ent, 1, 1)
+        DeleteObject(ent)
+        SetEntityAsNoLongerNeeded(ent)
     end
 end)
