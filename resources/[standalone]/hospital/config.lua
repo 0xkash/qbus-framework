@@ -1,5 +1,7 @@
 Config = {}
 
+Config.DeathTime = 10
+
 --[[
     GENERAL SETTINGS | THESE WILL AFFECT YOUR ENTIRE SERVER SO BE SURE TO SET THESE CORRECTLY
     MaxHp : Maximum HP Allowed, set to -1 if you want to disable mythic_hospital from setting this
