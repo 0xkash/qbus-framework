@@ -67,7 +67,7 @@ QBCore.Player.CheckPlayerData = function(source, PlayerData)
 	PlayerData.job.grade = PlayerData.job.grade ~= nil and PlayerData.job.grade or 1
 	PlayerData.job.gradelabel = PlayerData.job.gradelabel ~= nil and PlayerData.job.gradelabel or "Uitkering"
 	PlayerData.job.payment = PlayerData.job.payment ~= nil and PlayerData.job.payment or 10
-	PlayerData.job.onduty = PlayerData.job.onduty ~= nil and PlayerData.job.onduty or false
+	PlayerData.job.onduty = PlayerData.job.onduty ~= nil and PlayerData.job.onduty or true
 	
 	PlayerData.gang = PlayerData.gang ~= nil and PlayerData.gang or {}
 	PlayerData.gang.name = PlayerData.gang.name ~= nil and PlayerData.gang.name or "nogang"
@@ -114,10 +114,15 @@ QBCore.Player.CreatePlayer = function(PlayerData)
 			self.PlayerData.job.label = JobInfo.label
 			self.PlayerData.job.grade = JobInfo.grade
 			self.PlayerData.job.gradelabel = JobInfo.gradelabel
+			self.PlayerData.job.onduty = JobInfo.onduty
 			self.Functions.UpdatePlayerData()
 		else
 			-- Job does not exist
 		end
+	end
+
+	self.Functions.SetJobDuty = function(onDuty)
+		self.PlayerData.job.onduty = onDuty
 	end
 
 	self.Functions.SetGang = function(gang, grade)
@@ -400,7 +405,7 @@ QBCore.Player.GetJobInfo = function(job, grade)
 					JobInfo.grade = gradeinfo.grade
 					JobInfo.gradelabel = gradeinfo.gradelabel
 					JobInfo.payment = info.payment
-					JobInfo.onduty = false
+					JobInfo.onduty = true
 				end
 			end
 		end

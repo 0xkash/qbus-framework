@@ -191,22 +191,24 @@ end
 
 
 QBCore.Functions.GetClosestPlayer = function(coords)
-	local players = QBCore.Functions.GetPlayers()
-	local closestDistance = -1
+	local closestPlayers = QBCore.Functions.GetPlayersFromCoords()
+    local closestDistance = -1
     local closestPlayer = -1
+    
+    if coords == nil then
+        coords = GetEntityCoords(GetPlayerPed(-1))
+    end
 
-	if coords == nil then
-		coords = GetEntityCoords(GetPlayerPed(-1))
-	end
+    for i=1, #closestPlayers, 1 do
+        if closestPlayers[i] ~= PlayerId() and closestPlayers[i] ~= -1 then
+            local pos = GetEntityCoords(GetPlayerPed(closestPlayers[i]))
+            local distance = GetDistanceBetweenCoords(pos.x, pos.y, pos.z, coords.x, coords.y, coords.z, true)
 
-	for i=1, #players, 1 do
-		local pos = GetEntityCoords(players[i])
-		local distance = GetDistanceBetweenCoords(pos.x, pos.y, pos.z, coords.x, coords.y, coords.z, true)
-
-		if closestDistance == -1 or closestDistance > distance then
-			closestPlayer = players[i]
-			closestDistance = distance
-		end
+            if closestDistance == -1 or closestDistance > distance then
+                closestPlayer = closestPlayers[i]
+                closestDistance = distance
+            end
+        end
 	end
 
 	return closestPlayer, closestDistance

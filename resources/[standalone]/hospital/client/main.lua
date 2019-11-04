@@ -59,6 +59,9 @@ isHealingPerson = false
 healAnimDict = "mini@cpr@char_a@cpr_str"
 healAnim = "cpr_pumpchest"
 
+doctorsSet = false
+doctorCount = 0
+
 BodyParts = {
     ['HEAD'] = { label = 'Hoofd', causeLimp = false, isDamaged = false, severity = 0 },
     ['NECK'] = { label = 'Nek', causeLimp = false, isDamaged = false, severity = 0 },
@@ -178,60 +181,54 @@ Citizen.CreateThread(function()
     AddTextComponentString("Pillbox Ziekenhuis")
     EndTextCommandSetBlipName(blip)
     while true do
-        Citizen.Wait(7)
+        Citizen.Wait(1)
         if QBCore ~= nil then
             local pos = GetEntityCoords(GetPlayerPed(-1))
-            if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["checking"].x, Config.Locations["checking"].y, Config.Locations["checking"].z, true) < 1.5) then
-                QBCore.Functions.DrawText3D(Config.Locations["checking"].x, Config.Locations["checking"].y, Config.Locations["checking"].z, "~g~E~w~ - Inchecken")
-                if IsControlJustReleased(0, Keys["E"]) then
-                    TriggerEvent('animations:client:EmoteCommandStart', {"notepad"})
-                    QBCore.Functions.Progressbar("hospital_checkin", "Inchecken..", 2000, false, true, {
-                        disableMovement = true,
-                        disableCarMovement = true,
-                        disableMouse = false,
-                        disableCombat = true,
-                    }, {}, {}, {}, function() -- Done
-                        TriggerEvent('animations:client:EmoteCommandStart', {"c"})
-                        TriggerEvent("hospital:client:RespawnAtHospital")
-                    end, function() -- Cancel
-                        TriggerEvent('animations:client:EmoteCommandStart', {"c"})
-                        QBCore.Functions.Notify("Niet ingecheckt!", "error")
+            if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["checking"].x, Config.Locations["checking"].y, Config.Locations["checking"].z, true) < 7.5) then
+                if not doctorsSet then
+                    QBCore.Functions.TriggerCallback('hospital:GetDoctors', function(result)
+                        print("Doctors: " .. result)
+                        doctorCount = result
+                        doctorsSet = true
                     end)
                 end
-            elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["checking"].x, Config.Locations["checking"].y, Config.Locations["checking"].z, true) < 4.5) then
-                QBCore.Functions.DrawText3D(Config.Locations["checking"].x, Config.Locations["checking"].y, Config.Locations["checking"].z, "Inchecken")
+            else
+                doctorsSet = false
             end
 
-            if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["clothing"].x, Config.Locations["clothing"].y, Config.Locations["clothing"].z, true) < 5) then
-                QBCore.Functions.GetPlayerData(function(PlayerData)
-                    if PlayerData.job.name == "doctor" or PlayerData.job.name == "ambulance" then
-                        if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["clothing"].x, Config.Locations["clothing"].y, Config.Locations["clothing"].z, true) < 1.5) then
-                            QBCore.Functions.DrawText3D(Config.Locations["clothing"].x, Config.Locations["clothing"].y, Config.Locations["clothing"].z, "~g~E~w~ - Omkleden | ~g~H~w~ - Outfit opslaan | ~g~G~w~ - Outfits")
-                            if IsControlJustReleased(0, Keys["E"]) then
-                                if PlayerData.charinfo.gender == 0 then
-                                    TriggerEvent("maleclothesstart", false)
-                                else
-                                    TriggerEvent("femaleclothesstart", false)
-                                end
-                                DoScreenFadeIn(50)
-                            elseif IsControlJustReleased(0, Keys["H"]) then
-                                DisplayOnscreenKeyboard(1, "FMMC_KEY_TIP9N", "", "", "", "", "", 20)
-                                while UpdateOnscreenKeyboard() ~= 1 and UpdateOnscreenKeyboard() ~= 2 do
-                                    Citizen.Wait(7)
-                                end
-                                local outfitName = GetOnscreenKeyboardResult()
-                                TriggerEvent("clothes:client:SaveOutfit", false, outfitName)
-                            elseif IsControlJustPressed(0, Keys["G"]) then
-                                MenuOutfits()
-                                Menu.hidden = not Menu.hidden
-                            end
-                            Menu.renderGUI()
-                        elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["clothing"].x, Config.Locations["clothing"].y, Config.Locations["clothing"].z, true) < 4.5) then
-                            QBCore.Functions.DrawText3D(Config.Locations["clothing"].x, Config.Locations["clothing"].y, Config.Locations["clothing"].z, "Omkleden")
-                        end  
+            if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["checking"].x, Config.Locations["checking"].y, Config.Locations["checking"].z, true) < 1.5) then
+                if doctorCount > 0 then
+                    QBCore.Functions.DrawText3D(Config.Locations["checking"].x, Config.Locations["checking"].y, Config.Locations["checking"].z, "~g~E~w~ - Arts oproepen")
+                else
+                    QBCore.Functions.DrawText3D(Config.Locations["checking"].x, Config.Locations["checking"].y, Config.Locations["checking"].z, "~g~E~w~ - Inchecken")
+                end
+                if IsControlJustReleased(0, Keys["E"]) then
+                    if doctorCount > 0 then
+                        TriggerServerEvent("hospital:server:SendDoctorAlert")
+                    else
+                        TriggerEvent('animations:client:EmoteCommandStart', {"notepad"})
+                        QBCore.Functions.Progressbar("hospital_checkin", "Inchecken..", 2000, false, true, {
+                            disableMovement = true,
+                            disableCarMovement = true,
+                            disableMouse = false,
+                            disableCombat = true,
+                        }, {}, {}, {}, function() -- Done
+                            TriggerEvent('animations:client:EmoteCommandStart', {"c"})
+                            TriggerEvent("hospital:client:RespawnAtHospital")
+                        end, function() -- Cancel
+                            TriggerEvent('animations:client:EmoteCommandStart', {"c"})
+                            QBCore.Functions.Notify("Niet ingecheckt!", "error")
+                        end)
                     end
-                end)
+                end
+            elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["checking"].x, Config.Locations["checking"].y, Config.Locations["checking"].z, true) < 4.5) then
+                if doctorCount > 0 then
+                    QBCore.Functions.DrawText3D(Config.Locations["checking"].x, Config.Locations["checking"].y, Config.Locations["checking"].z, "Oproepen")
+                else
+                    QBCore.Functions.DrawText3D(Config.Locations["checking"].x, Config.Locations["checking"].y, Config.Locations["checking"].z, "Inchecken")
+                end
             end
+
             
             if closestBed ~= nil and not isInHospitalBed then
                 if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["beds"][closestBed].x, Config.Locations["beds"][closestBed].y, Config.Locations["beds"][closestBed].z, true) < 1.5) then
@@ -239,20 +236,6 @@ Citizen.CreateThread(function()
                     if IsControlJustReleased(0, Keys["E"]) then
                         TriggerServerEvent("hospital:server:SendToBed", closestBed)
                     end
-                end
-            end
-            
-            if isStatusChecking then
-                for k, v in pairs(statusChecks) do
-                    local x,y,z = table.unpack(GetPedBoneCoords(statusCheckPed, v.bone))
-                    DrawText3D(x, y, z, v.label)
-                end
-            end
-
-            if isHealingPerson then
-                if not IsEntityPlayingAnim(GetPlayerPed(-1), healAnimDict, healAnim, 3) then
-                    loadAnimDict(healAnimDict)	
-                    TaskPlayAnim(GetPlayerPed(-1), healAnimDict, healAnim, 3.0, 3.0, -1, 49, 0, 0, 0, 0)
                 end
             end
         else
@@ -343,65 +326,6 @@ AddEventHandler('hospital:client:KillPlayer', function()
     SetEntityHealth(GetPlayerPed(-1), 0)
 end)
 
-RegisterNetEvent('hospital:client:CheckStatus')
-AddEventHandler('hospital:client:CheckStatus', function()
-    QBCore.Functions.GetPlayerData(function(PlayerData)
-        if PlayerData.job.name == "doctor" or PlayerData.job.name == "ambulance" then
-            local player, distance = QBCore.Functions.GetClosestPlayer()
-            if player ~= 0 and distance < 5.0 then
-                local playerId = GetPlayerServerId(player)
-                statusCheckPed = GetPlayerPed(player)
-                QBCore.Functions.TriggerCallback('hospital:GetPlayerStatus', function(result)
-                    if result ~= nil then
-                        for k, v in pairs(result) do
-                            if k ~= "BLEED" then
-                                table.insert(statusChecks, {bone = Config.BoneIndexes[k], label = v.label .." (".. Config.WoundStates[v.severity] ..")"})
-                            elseif result[k] > 0 then
-                                TriggerEvent("chatMessage", "STATUS CHECK", "error", "Is "..Config.BleedingStates[v].label)
-                            end
-                        end
-                        isStatusChecking = true
-                        statusCheckTime = Config.CheckTime
-                    end
-                end, playerId)
-            end
-        end
-    end)
-end)
-
-RegisterNetEvent('hospital:client:TreatWounds')
-AddEventHandler('hospital:client:TreatWounds', function()
-    QBCore.Functions.GetPlayerData(function(PlayerData)
-        if PlayerData.job.name == "doctor" or PlayerData.job.name == "ambulance" then
-            local player, distance = QBCore.Functions.GetClosestPlayer()
-            if player ~= 0 and distance < 5.0 then
-                local playerId = GetPlayerServerId(player)
-                isHealingPerson = true
-                QBCore.Functions.Progressbar("hospital_healwounds", "Wonden genezen..", 5000, false, true, {
-                    disableMovement = false,
-                    disableCarMovement = false,
-                    disableMouse = false,
-                    disableCombat = true,
-                }, {
-                    animDict = healAnimDict,
-                    anim = healAnim,
-                    flags = 16,
-                }, {}, {}, function() -- Done
-                    isHealingPerson = false
-                    StopAnimTask(GetPlayerPed(-1), healAnimDict, "exit", 1.0)
-                    QBCore.Functions.Notify("Je hebt de persoon geholpen!")
-                    TriggerServerEvent("hospital:server:TreatWounds", playerId)
-                end, function() -- Cancel
-                    isHealingPerson = false
-                    StopAnimTask(GetPlayerPed(-1), healAnimDict, "exit", 1.0)
-                    QBCore.Functions.Notify("Mislukt!", "error")
-                end)
-            end
-        end
-        
-    end)
-end)
-
 RegisterNetEvent('hospital:client:HealInjuries')
 AddEventHandler('hospital:client:HealInjuries', function(type)
     if type == "full" then
@@ -481,7 +405,7 @@ function DoLimbAlert()
             local limbDamageMsg = ''
             if #injured <= Config.AlertShowInfo then
                 for k, v in pairs(injured) do
-                    limbDamageMsg = "Jouw " .. v.label .. " voelt "..Config.WoundStates[v.severity]
+                    limbDamageMsg = limbDamageMsg .. "Jouw " .. v.label .. " voelt "..Config.WoundStates[v.severity]
                     if k < #injured then
                         limbDamageMsg = limbDamageMsg .. " | "
                     end
@@ -489,6 +413,7 @@ function DoLimbAlert()
             else
                 limbDamageMsg = "Je hebt pijn op veel plekken.."
             end
+            print(limbDamageMsg)
             QBCore.Functions.Notify(limbDamageMsg, "primary", 5000)
         end
     end
@@ -534,7 +459,6 @@ end
 function ResetPartial()
     for k, v in pairs(BodyParts) do
         if v.isDamaged and v.severity <= 2 then
-            print(v.label .. " HELPED")
             v.isDamaged = false
             v.severity = 0
         end
@@ -546,10 +470,7 @@ function ResetPartial()
         advanceBleedTimer = 0
         fadeOutTimer = 0
         blackoutTimer = 0
-        print("BLEEDING STOPPED")
     end
-
-    print("Bloed: " ..isBleeding)
     
     TriggerServerEvent('hospital:server:SyncInjuries', {
         limbs = BodyParts,
@@ -726,6 +647,27 @@ function closeMenuFull()
     Menu.hidden = true
     currentGarage = nil
     ClearMenu()
+end
+
+function GetClosestPlayer()
+    local closestPlayers = QBCore.Functions.GetPlayersFromCoords()
+    local closestDistance = -1
+    local closestPlayer = -1
+    local coords = GetEntityCoords(GetPlayerPed(-1))
+
+    for i=1, #closestPlayers, 1 do
+        if closestPlayers[i] ~= PlayerId() then
+            local pos = GetEntityCoords(GetPlayerPed(closestPlayers[i]))
+            local distance = GetDistanceBetweenCoords(pos.x, pos.y, pos.z, coords.x, coords.y, coords.z, true)
+
+            if closestDistance == -1 or closestDistance > distance then
+                closestPlayer = closestPlayers[i]
+                closestDistance = distance
+            end
+        end
+	end
+
+	return closestPlayer, closestDistance
 end
 
 function DrawText3D(x, y, z, text)

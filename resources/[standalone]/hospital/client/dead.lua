@@ -31,7 +31,8 @@ Citizen.CreateThread(function()
 			DisableAllControlActions(0)
 			EnableControlAction(0, 1, true)
 			EnableControlAction(0, Keys['T'], true)
-			EnableControlAction(0, Keys['E'], true)
+            EnableControlAction(0, Keys['E'], true)
+            EnableControlAction(0, Keys['ESC'], true)
 
             if not isInHospitalBed then 
                 if deathTime > 0 then
@@ -77,6 +78,7 @@ function OnDeath()
 
         loadAnimDict(deadAnimDict)
         TaskPlayAnim(player, deadAnimDict, deadAnim, 1.0, 1.0, -1, 1, 0, 0, 0, 0)
+        TriggerEvent("hospital:client:AiCall")
     end
 end
 

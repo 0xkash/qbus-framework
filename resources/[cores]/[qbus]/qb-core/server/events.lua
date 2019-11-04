@@ -168,6 +168,19 @@ AddEventHandler('QBCore:AddCommand', function(name, help, arguments, argsrequire
 	QBCore.Commands.Add(name, help, arguments, argsrequired, callback, persmission)
 end)
 
+RegisterServerEvent("QBCore:ToggleDuty")
+AddEventHandler('QBCore:ToggleDuty', function()
+	local src = source
+	local Player = QBCore.Functions.GetPlayer(src)
+	if Player.PlayerData.job.onduty then
+		PlayerData.Functions.SetJobDuty(false)
+		TriggerClientEvent('QBCore:Notify', src, "Je bent nu uit dienst!")
+	else
+		PlayerData.Functions.SetJobDuty(true)
+		TriggerClientEvent('QBCore:Notify', src, "Je bent nu in dienst!")
+	end
+end)
+
 QBCore.Functions.CreateCallback('QBCore:HasItem', function(source, cb, itemName)
 	local retval = false
 	local Player = QBCore.Functions.GetPlayer(source)

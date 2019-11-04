@@ -6,6 +6,7 @@ client_scripts {
 	'config.lua',
 	'client/main.lua',
 	'client/wounding.lua',
+	'client/job.lua',
 	'client/dead.lua',
 	'client/gui.lua',
 }
