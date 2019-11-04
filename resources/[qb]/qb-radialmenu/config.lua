@@ -161,4 +161,57 @@ Config.MenuItems = {
             },
         }
     },
+    {
+        id = 'jobinteractions',
+        title = 'Werk Interactie',
+        icon = '#vehicle',
+        items = {},
+    },
+}
+
+Config.JobInteractions = {
+    ["doctor"] = {
+        {
+            id    = 'statuscheck',
+            title = 'Check Status',
+            icon = '#general',
+            type = 'client',
+            event = 'hospital:client:CheckStatus',
+            shouldClose = true,
+        },
+        {
+            id    = 'treatwounds',
+            title = 'Genees Wonden',
+            icon = '#general',
+            type = 'client',
+            event = 'hospital:client:TreatWounds',
+            shouldClose = true,
+        },
+        {
+            id    = 'reviveplayer',
+            title = 'Help Omhoog',
+            icon = '#general',
+            type = 'client',
+            event = 'hospital:client:RevivePlayer',
+            shouldClose = true,
+        },
+    },
+    ["ambulance"] = {
+        {
+            id    = 'statuscheck',
+            title = 'Check Status',
+            icon = '#general',
+            type = 'client',
+            event = 'hospital:client:CheckStatus',
+            shouldClose = true,
+        },
+        {
+            id    = 'treatwounds',
+            title = 'Genees Wonden',
+            icon = '#general',
+            type = 'client',
+            event = 'hospital:client:TreatWounds',
+            shouldClose = true,
+        },
+    }
 }

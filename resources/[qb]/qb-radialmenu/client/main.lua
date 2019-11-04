@@ -76,6 +76,11 @@ function setupSubItems()
             shouldClose = true,
         }
     end
+    QBCore.Functions.GetPlayerData(function(PlayerData)
+        if Config.JobInteractions[PlayerData.job.name] ~= nil then
+            Config.MenuItems[4].items = Config.JobInteractions[PlayerData.job.name]
+        end
+    end)
 end
 
 function openRadial(bool)    

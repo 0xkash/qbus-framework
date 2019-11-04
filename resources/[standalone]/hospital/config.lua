@@ -19,7 +19,8 @@ Config.Locations = {
     }
 }
 
-Config.DeathTime = 2
+Config.DeathTime = 300
+Config.CheckTime = 10
 
 --[[
     GENERAL SETTINGS | THESE WILL AFFECT YOUR ENTIRE SERVER SO BE SURE TO SET THESE CORRECTLY
@@ -70,7 +71,7 @@ Config.BleedMovementAdvance = 3
 --[[
     The Base Damage That Is Multiplied By Bleed Level Every Time A Bleed Tick Occurs
 ]]
-Config.BleedTickDamage = 2
+Config.BleedTickDamage = 8
 
 --[[
     FadeOutTimer : How many bleed ticks occur before fadeout happens
@@ -199,7 +200,7 @@ Config.BleedingStates = {
     [1] = {label = 'klein beetje aan het bloeden..', damage = 10, chance = 50},
     [2] = {label = 'redelijk aan het bloeden..', damage = 15, chance = 65},
     [3] = {label = 'veel aan het bloeden..', damage = 20, chance = 65},
-    [3] = {label = 'hevig aan het bloeden..', damage = 25, chance = 75},
+    [4] = {label = 'hevig aan het bloeden..', damage = 25, chance = 75},
 }
 
 Config.MovementRate = {
@@ -266,6 +267,65 @@ Config.Bones = {
     [51826] = 'RLEG',
     [20781] = 'RFOOT',
     [52301] = 'RFOOT',
+}
+
+Config.BoneIndexes = {
+    ['NONE'] = 0,
+    ['HEAD'] = 31085,
+    ['HEAD'] = 31086,
+    ['NECK'] = 39317, 
+    ['SPINE'] = 57597,
+    ['SPINE'] = 23553,
+    ['SPINE'] = 24816,
+    ['SPINE'] = 24817,
+    ['SPINE'] = 24818,
+    ['UPPER_BODY'] = 10706,
+    ['UPPER_BODY'] = 64729,
+    ['LOWER_BODY'] = 11816,
+    ['LARM'] = 45509,
+    ['LARM'] = 61163,
+    ['LHAND'] = 18905,
+    ['LFINGER'] = 4089,
+    ['LFINGER'] = 4090,
+    ['LFINGER'] = 4137,
+    ['LFINGER'] = 4138,
+    ['LFINGER'] = 4153,
+    ['LFINGER'] = 4154,
+    ['LFINGER'] = 4169,
+    ['LFINGER'] = 4170,
+    ['LFINGER'] = 4185,
+    ['LFINGER'] = 4186,
+    ['LFINGER'] = 26610,
+    ['LFINGER'] = 26611,
+    ['LFINGER'] = 26612,
+    ['LFINGER'] = 26613,
+    ['LFINGER'] = 26614,
+    ['LLEG'] = 58271,
+    ['LLEG'] = 63931,
+    ['LFOOT'] = 2108,
+    ['LFOOT'] = 14201,
+    ['RARM'] = 40269,
+    ['RARM'] = 28252,
+    ['RHAND'] = 57005,
+    ['RFINGER'] = 58866,
+    ['RFINGER'] = 58867,
+    ['RFINGER'] = 58868,
+    ['RFINGER'] = 58869,
+    ['RFINGER'] = 58870,
+    ['RFINGER'] = 64016,
+    ['RFINGER'] = 64017,
+    ['RFINGER'] = 64064,
+    ['RFINGER'] = 64065,
+    ['RFINGER'] = 64080,
+    ['RFINGER'] = 64081,
+    ['RFINGER'] = 64096,
+    ['RFINGER'] = 64097,
+    ['RFINGER'] = 64112,
+    ['RFINGER'] = 64113,
+    ['RLEG'] = 36864,
+    ['RLEG'] = 51826,
+    ['RFOOT'] = 20781,
+    ['RFOOT'] = 52301,
 }
 
 Config.Weapons = {

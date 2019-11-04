@@ -50,19 +50,7 @@ AddEventHandler('chatMessage', function(netID, name, message)
 end)
 
 AddEventHandler('rconCommand', function(commandName, args)
-    if commandName == 'status' then
-        for netid, data in pairs(names) do
-            local guid = GetPlayerIdentifiers(netid)
-
-            if guid and guid[1] and data then
-                local ping = GetPlayerPing(netid)
-
-                RconPrint(netid .. ' ' .. guid[1] .. ' ' .. data.name .. ' ' .. GetPlayerEP(netid) .. ' ' .. ping .. "\n")
-            end
-        end
-
-        CancelEvent()
-    elseif commandName:lower() == 'clientkick' then
+    if commandName:lower() == 'clientkick' then
         local playerId = table.remove(args, 1)
         local msg = table.concat(args, ' ')
 

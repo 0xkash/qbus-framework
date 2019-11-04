@@ -50,6 +50,15 @@ isDead = false
 
 closestBed = nil
 
+isStatusChecking = false
+statusChecks = {}
+statusCheckPed = nil
+statusCheckTime = 0
+
+isHealingPerson = false
+healAnimDict = "mini@cpr@char_a@cpr_str"
+healAnim = "cpr_pumpchest"
+
 BodyParts = {
     ['HEAD'] = { label = 'Hoofd', causeLimp = false, isDamaged = false, severity = 0 },
     ['NECK'] = { label = 'Nek', causeLimp = false, isDamaged = false, severity = 0 },
@@ -149,6 +158,13 @@ Citizen.CreateThread(function()
     while true do
         Citizen.Wait(1000)
         SetClosestBed()
+        if isStatusChecking then
+            statusCheckTime = statusCheckTime - 1
+            if statusCheckTime <= 0 then
+                statusChecks = {}
+                isStatusChecking = false
+            end
+        end
     end
 end)
 
@@ -198,6 +214,13 @@ Citizen.CreateThread(function()
                                     TriggerEvent("femaleclothesstart", false)
                                 end
                                 DoScreenFadeIn(50)
+                            elseif IsControlJustReleased(0, Keys["H"]) then
+                                DisplayOnscreenKeyboard(1, "FMMC_KEY_TIP9N", "", "", "", "", "", 20)
+                                while UpdateOnscreenKeyboard() ~= 1 and UpdateOnscreenKeyboard() ~= 2 do
+                                    Citizen.Wait(7)
+                                end
+                                local outfitName = GetOnscreenKeyboardResult()
+                                TriggerEvent("clothes:client:SaveOutfit", false, outfitName)
                             elseif IsControlJustPressed(0, Keys["G"]) then
                                 MenuOutfits()
                                 Menu.hidden = not Menu.hidden
@@ -219,6 +242,19 @@ Citizen.CreateThread(function()
                 end
             end
             
+            if isStatusChecking then
+                for k, v in pairs(statusChecks) do
+                    local x,y,z = table.unpack(GetPedBoneCoords(statusCheckPed, v.bone))
+                    DrawText3D(x, y, z, v.label)
+                end
+            end
+
+            if isHealingPerson then
+                if not IsEntityPlayingAnim(GetPlayerPed(-1), healAnimDict, healAnim, 3) then
+                    loadAnimDict(healAnimDict)	
+                    TaskPlayAnim(GetPlayerPed(-1), healAnimDict, healAnim, 3.0, 3.0, -1, 49, 0, 0, 0, 0)
+                end
+            end
         else
             Citizen.Wait(1000)
         end
@@ -273,14 +309,107 @@ AddEventHandler('hospital:client:Revive', function()
     QBCore.Functions.Notify("Je bent weer helemaal top!")
 end)
 
-RegisterNetEvent('hospital:client:SetBleeding')
-AddEventHandler('hospital:client:SetBleeding', function()
-    ApplyBleed(1)
+RegisterNetEvent('hospital:client:SetPain')
+AddEventHandler('hospital:client:SetPain', function()
+    ApplyBleed(math.random(1,4))
+    if not BodyParts[Config.Bones[24816]].isDamaged then
+        BodyParts[Config.Bones[24816]].isDamaged = true
+        BodyParts[Config.Bones[24816]].severity = math.random(1, 4)
+        table.insert(injured, {
+            part = Config.Bones[24816],
+            label = BodyParts[Config.Bones[24816]].label,
+            severity = BodyParts[Config.Bones[24816]].severity
+        })
+    end
+
+    if not BodyParts[Config.Bones[40269]].isDamaged then
+        BodyParts[Config.Bones[40269]].isDamaged = true
+        BodyParts[Config.Bones[40269]].severity = math.random(1, 4)
+        table.insert(injured, {
+            part = Config.Bones[40269],
+            label = BodyParts[Config.Bones[40269]].label,
+            severity = BodyParts[Config.Bones[40269]].severity
+        })
+    end
+
+    TriggerServerEvent('hospital:server:SyncInjuries', {
+        limbs = BodyParts,
+        isBleeding = tonumber(isBleeding)
+    })
 end)
 
 RegisterNetEvent('hospital:client:KillPlayer')
 AddEventHandler('hospital:client:KillPlayer', function()
     SetEntityHealth(GetPlayerPed(-1), 0)
+end)
+
+RegisterNetEvent('hospital:client:CheckStatus')
+AddEventHandler('hospital:client:CheckStatus', function()
+    QBCore.Functions.GetPlayerData(function(PlayerData)
+        if PlayerData.job.name == "doctor" or PlayerData.job.name == "ambulance" then
+            local player, distance = QBCore.Functions.GetClosestPlayer()
+            if player ~= 0 and distance < 5.0 then
+                local playerId = GetPlayerServerId(player)
+                statusCheckPed = GetPlayerPed(player)
+                QBCore.Functions.TriggerCallback('hospital:GetPlayerStatus', function(result)
+                    if result ~= nil then
+                        for k, v in pairs(result) do
+                            if k ~= "BLEED" then
+                                table.insert(statusChecks, {bone = Config.BoneIndexes[k], label = v.label .." (".. Config.WoundStates[v.severity] ..")"})
+                            elseif result[k] > 0 then
+                                TriggerEvent("chatMessage", "STATUS CHECK", "error", "Is "..Config.BleedingStates[v].label)
+                            end
+                        end
+                        isStatusChecking = true
+                        statusCheckTime = Config.CheckTime
+                    end
+                end, playerId)
+            end
+        end
+    end)
+end)
+
+RegisterNetEvent('hospital:client:TreatWounds')
+AddEventHandler('hospital:client:TreatWounds', function()
+    QBCore.Functions.GetPlayerData(function(PlayerData)
+        if PlayerData.job.name == "doctor" or PlayerData.job.name == "ambulance" then
+            local player, distance = QBCore.Functions.GetClosestPlayer()
+            if player ~= 0 and distance < 5.0 then
+                local playerId = GetPlayerServerId(player)
+                isHealingPerson = true
+                QBCore.Functions.Progressbar("hospital_healwounds", "Wonden genezen..", 5000, false, true, {
+                    disableMovement = false,
+                    disableCarMovement = false,
+                    disableMouse = false,
+                    disableCombat = true,
+                }, {
+                    animDict = healAnimDict,
+                    anim = healAnim,
+                    flags = 16,
+                }, {}, {}, function() -- Done
+                    isHealingPerson = false
+                    StopAnimTask(GetPlayerPed(-1), healAnimDict, "exit", 1.0)
+                    QBCore.Functions.Notify("Je hebt de persoon geholpen!")
+                    TriggerServerEvent("hospital:server:TreatWounds", playerId)
+                end, function() -- Cancel
+                    isHealingPerson = false
+                    StopAnimTask(GetPlayerPed(-1), healAnimDict, "exit", 1.0)
+                    QBCore.Functions.Notify("Mislukt!", "error")
+                end)
+            end
+        end
+        
+    end)
+end)
+
+RegisterNetEvent('hospital:client:HealInjuries')
+AddEventHandler('hospital:client:HealInjuries', function(type)
+    if type == "full" then
+        ResetAll()
+    else
+        ResetPartial()
+    end
+    QBCore.Functions.Notify("Je wonden zijn geholpen!")
 end)
 
 RegisterNetEvent('hospital:client:SendToBed')
@@ -367,12 +496,8 @@ end
 
 function DoBleedAlert()
     local player = PlayerPedId()
-    if not isDead and isBleeding > 0 then
-        QBCore.Functions.Notify("Je bent "..Config.BleedingStates[isBleeding].label, "error", 5000)
-        if math.random(100) < Config.BleedingStates[isBleeding].chance then
-            local damage = Config.BleedingStates[isBleeding].damage
-            SetEntityHealth(player, GetEntityHealth(player) - damage)
-        end
+    if not isDead and tonumber(isBleeding) > 0 then
+        QBCore.Functions.Notify("Je bent "..Config.BleedingStates[tonumber(isBleeding)].label, "error", 5000)
     end
 end
 
@@ -404,6 +529,41 @@ function SetClosestBed()
     if current ~= closestBed and not isInHospitalBed then
         closestBed = current
     end
+end
+
+function ResetPartial()
+    for k, v in pairs(BodyParts) do
+        if v.isDamaged and v.severity <= 2 then
+            print(v.label .. " HELPED")
+            v.isDamaged = false
+            v.severity = 0
+        end
+    end
+
+    if isBleeding <= 2 then
+        isBleeding = 0
+        bleedTickTimer = 0
+        advanceBleedTimer = 0
+        fadeOutTimer = 0
+        blackoutTimer = 0
+        print("BLEEDING STOPPED")
+    end
+
+    print("Bloed: " ..isBleeding)
+    
+    TriggerServerEvent('hospital:server:SyncInjuries', {
+        limbs = BodyParts,
+        isBleeding = tonumber(isBleeding)
+    })
+
+    ProcessRunStuff(PlayerPedId())
+    DoLimbAlert()
+    DoBleedAlert()
+
+    TriggerServerEvent('hospital:server:SyncInjuries', {
+        limbs = BodyParts,
+        isBleeding = tonumber(isBleeding)
+    })
 end
 
 function ResetAll()
@@ -566,6 +726,21 @@ function closeMenuFull()
     Menu.hidden = true
     currentGarage = nil
     ClearMenu()
+end
+
+function DrawText3D(x, y, z, text)
+	SetTextScale(0.3, 0.3)
+    SetTextFont(4)
+    SetTextProportional(1)
+    SetTextColour(255, 255, 255, 215)
+    SetTextEntry("STRING")
+    SetTextCentre(true)
+    AddTextComponentString(text)
+    SetDrawOrigin(x,y,z, 0)
+    DrawText(0.0, 0.0)
+    local factor = (string.len(text)) / 400
+    DrawRect(0.0, 0.0+0.0110, 0.017+ factor, 0.03, 0, 0, 0, 75)
+    ClearDrawOrigin()
 end
 
 function loadAnimDict(dict)

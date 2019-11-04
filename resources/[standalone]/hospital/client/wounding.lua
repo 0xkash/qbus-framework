@@ -27,16 +27,6 @@ Citizen.CreateThread(function()
             if bleedTickTimer >= Config.BleedTickRate and not isInHospitalBed then
                 if not isDead then
                     if isBleeding > 0 then
-                        if isBleeding == 1 then
-                            SetFlash(0, 0, 100, 100, 100)
-                        elseif isBleeding == 2 then
-                            SetFlash(0, 0, 100, 250, 100)
-                        elseif isBleeding == 3 then
-                            SetFlash(0, 0, 100, 500, 100)
-                        elseif isBleeding == 4 then
-                            SetFlash(0, 0, 100, 500, 100)
-                        end
-
                         if fadeOutTimer + 1 == Config.FadeOutTimer then
                             if blackoutTimer + 1 == Config.BlackoutTimer then
                                 SetFlash(0, 0, 100, 7000, 100)

@@ -1014,7 +1014,7 @@ end
 
 function SaveOutfit(skin, outfitName)
 	SetEntityInvincible(GetPlayerPed(-1),true)
-	if skin == nil and lastmodel ~= nil then
+	if (not skin or skin == nil) and lastmodel ~= nil then
 		skin = lastmodel
 	end
 	lastmodel = skin
@@ -1146,6 +1146,11 @@ PedModels = {
   "s_f_y_sheriff_01",
   "s_m_y_swat_01"
 }
+
+RegisterNetEvent('clothes:client:SaveOutfit')
+AddEventHandler('clothes:client:SaveOutfit', function(skin, name)
+	SaveOutfit(skin, name)
+end)
 
 RegisterNetEvent('femaleclothesstart')
 AddEventHandler('femaleclothesstart', function(hasToPay)
