@@ -144,7 +144,6 @@ function EmoteMenuStart(args, hard)
 end
 
 function EmoteCommandStart(args)
-    print(args[1])
     if #args > 0 then
     local name = string.lower(args[1])
     if name == "c" then

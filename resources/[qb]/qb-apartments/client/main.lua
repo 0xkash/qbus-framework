@@ -105,8 +105,10 @@ Citizen.CreateThread(function()
                 if(GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Apartments.Locations[ClosestHouse].coords.doorbell.x, Apartments.Locations[ClosestHouse].coords.doorbell.y,Apartments.Locations[ClosestHouse].coords.doorbell.z, true) < 1.2)then
                     QBCore.Functions.DrawText3D(Apartments.Locations[ClosestHouse].coords.doorbell.x, Apartments.Locations[ClosestHouse].coords.doorbell.y, Apartments.Locations[ClosestHouse].coords.doorbell.z, '~g~G~w~ - Aanbellen')
                     if IsControlJustPressed(0, Keys["G"]) then
-                        print("skuttut")
+                        MenuOwners()
+                        Menu.hidden = not Menu.hidden
                     end
+                    Menu.renderGUI()
                 end
 
                 if IsOwned then
