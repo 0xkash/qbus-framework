@@ -43,7 +43,6 @@ $(document).ready(function (){
     });
 
     $('.datepicker').datepicker();
-    $('select').formSelect();
 });
 
 function setupCharInfo(cData) {
@@ -93,9 +92,6 @@ $(document).on('click', '.character', function(e) {
             $(selectedChar).addClass("char-selected");
             setupCharInfo('empty')
             $("#play-text").html("Karakter aanmaken");
-            if ($("#delete").css("display") != "none") {
-                $("#delete").hide();
-            }
             $("#play").css({"display":"block"});
             $("#delete").css({"display":"none"});
             $.post('http://qb-multicharacter/cDataPed', JSON.stringify({
@@ -140,17 +136,17 @@ $(document).on('click', '.character', function(e) {
 
 $(document).on('click', '#create', function(e){
     e.preventDefault();
-
     $.post('http://qb-multicharacter/createNewCharacter', JSON.stringify({
         firstname: $('#first_name').val(),
         lastname: $('#last_name').val(),
         nationality: $('#nationality').val(),
-        birthdate: $('#datepicker').val(),
-        gender: $('#sex').val(),
+        birthdate: $('#birthdate').val(),
+        gender: $('select[name=gender]').val(),
         cid: $(selectedChar).attr('id').replace('char-', ''),
     }))
-    $('.character-register').fadeOut(150);
-    $('.characters-block').css("filter", "none");
+    $('.characters-list').css("filter", "none")
+    $('.character-info').css("filter", "none")
+    qbMultiCharacters.fadeOutDown('.character-register', '125%', 400);
     refreshCharacters()
 });
 
@@ -176,8 +172,9 @@ function refreshCharacters() {
 
 $("#close-reg").click(function (e) {
     e.preventDefault();
-    $('.characters-block').css("filter", "none");
-    $('.character-register').fadeOut(150);
+    $('.characters-list').css("filter", "none")
+    $('.character-info').css("filter", "none")
+    qbMultiCharacters.fadeOutDown('.character-register', '125%', 400);
 })
 
 $("#close-del").click(function (e) {
@@ -203,8 +200,9 @@ $("#play").click(function (e) {
                 qbMultiCharacters.fadeOutDown('.character-info', "-40%", 400);
             }, 300);
         } else {
-            $('.characters-block').css("filter", "blur(2px)")
-            $('.character-register').fadeIn(250);
+            $('.characters-list').css("filter", "blur(2px)")
+            $('.character-info').css("filter", "blur(2px)")
+            qbMultiCharacters.fadeInDown('.character-register', '25%', 400);
         }
     } else {
         console.log('Select a character')

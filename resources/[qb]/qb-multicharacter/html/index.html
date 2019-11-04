@@ -8,8 +8,7 @@
     <link href="style.css" rel="stylesheet">
     <script src="nui://game/ui/jquery.js" type="text/javascript"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script type="text/javascript" src="includes/jquery-1.4.2.min.js"></script>
     <title>Shayite Multicharacter</title>
 </head>
@@ -87,25 +86,30 @@
                         <i class="material-icons" id="close-reg">close</i>
                     </div>
                     <div class="char-register-inputs">
-                        <input type="text" id="first_name" class="char-reg-input">
-                        <input type="text" id="last_name" class="char-reg-input">
-                        <input type="text" id="nationality" class="char-reg-input">
-                        <input type="date" id="birthdate" class="char-reg-input">
+                        <input type="text" id="first_name" placeholder="Voornaam" class="char-reg-input">
+                        <input type="text" id="last_name" placeholder="Achternaam" class="char-reg-input">
+                        <input type="text" id="nationality" placeholder="Nationliteit" class="char-reg-input">
+                        <input type="date" id="birthdate" placeholder="Geboortedatum" min="1900-01-01" max="2999-12-31" class="char-reg-input">
+                        <select id="gender" name="gender">
+                            <option value="man" selected>Man</option>
+                            <option value="vrouw">Vrouw</option>
+                        </select>
                     </div>
                     <div class="character-reg-btn" id="create"><p id="create-text">Gegevens Bevestigen</p></div>
                 </div>
+
                 <div class="character-delete">
-                    <div class="characters-block-header">
-                        <p>Delete Character</p>
+                    <div class="characters-delete-block-header">
+                        <p>Karakter Verwijderen</p>
                         <i class="material-icons" id="close-del">close</i>
                     </div>
 
-                    <p>Are you sure that you want to delete your character?</p>
+                    <p>Weet je zeker dat je dit karakter wilt verwijderen?</p>
                     <br>
-                    <p id="yeet">All your character data will be removed, you wont be able to revert your data.</p>
+                    <p id="yeet">Al je karakter gegevens zullen verwijderd worden en zal niet kunnen worden terug gehaald.</p>
 
-                    <div class="character-acceptdel-btn" id="accept-delete"><p id="accept-text">Delete Character</p></div>
-                    <div class="character-canceldel-btn" id="cancel-delete"><p id="cancel-text">Cancel</p></div>
+                    <div class="character-acceptdel-btn" id="accept-delete"><p id="accept-text">Karakter Verwijderen</p></div>
+                    <div class="character-canceldel-btn" id="cancel-delete"><p id="cancel-text">Terug</p></div>
                 </div>
             </div>
         </div>

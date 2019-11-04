@@ -52,8 +52,6 @@ RegisterNUICallback('selectCharacter', function(data)
     TriggerServerEvent('qb-multicharacter:server:loadUserData', cData)
     TriggerEvent('apartments:client:setupSpawnUI', cData)
     openCharMenu(false)
-    SetEntityAsMissionEntity(charPed, true, true)
-    DeleteEntity(charPed)
 end)
 
 RegisterNetEvent('qb-multicharacter:client:closeNUI')
@@ -172,7 +170,11 @@ end)
 
 RegisterNUICallback('createNewCharacter', function(data)
     local cData = data
-    cData.gender = tonumber (cData.gender)
+    if cData.gender == "man" then
+        cData.gender = 0
+    elseif cData.gender == "vrouw" then
+        cData.gender = 1
+    end
 
     TriggerServerEvent('qb-multicharacter:server:createCharacter', cData)
     Citizen.Wait(500)

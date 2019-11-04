@@ -53,10 +53,11 @@
 #close-reg {
     position: absolute;
     right: 8px;
-    bottom: 8px;
-    color: rgb(214, 50, 50);
-    background: rgb(226, 226, 226);
+    bottom: 6px;
+    color: rgba(0, 0, 0, 1.0);
+    background: rgb(214, 50, 50);
     border-radius: 50%;
+    font-size: 18px;
 }
 
 #close-log {
@@ -71,10 +72,11 @@
 #close-del {
     position: absolute;
     right: 8px;
-    bottom: 8px;
-    color: rgb(214, 50, 50);
-    background: rgb(226, 226, 226);
+    bottom: 6px;
+    color: rgba(0, 0, 0, 1.0);
+    background: rgb(214, 50, 50);
     border-radius: 50%;
+    font-size: 18px;
 }
 
 .disconnect-server-btn:hover {
@@ -278,24 +280,48 @@
     position: absolute;
     width: 500px;
     height: 250px;
-    background-color: rgba(241, 241, 241, 1.0);
     top: 200px;
-    left: 0; 
+    left: 70px; 
     right: 0; 
     margin-left: auto; 
     margin-right: auto; 
-    border-bottom: 2px solid #fff;
-    box-shadow: 0px 0px 13px 0px rgba(0,0,0,0.4);
+    border-bottom: 4px solid #b12424;
+    background-color: rgba(0, 0, 0, 0.7);
+    box-shadow: 0px 0px 19px 1px rgba(0,0,0,0.54);
     text-align: center;
+    color: white;
+    font-family: 'Lato', monospace;
+    overflow: visible !important;
+}
+
+.characters-delete-block-header {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.7);
+    width: 100%;
+    height: 11%;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    font-size: 11px;
+    line-height: 29px;
+    font-family: 'Lato', monospace;
+    border-bottom: 2px solid #b12424;
+    overflow: visible !important;
+}
+
+.characters-delete-block-header > p {
+    font-family: 'Lato', monospace;
+    overflow: visible !important;
 }
 
 .character-delete > p {
-    padding-top: 20px;
+    padding-top: 50px;
     font-size: 16px;
+    overflow: visible !important;
 }
 
 #yeet {
     font-size: 12px;
+    overflow: visible !important;
 }
 
 .character-acceptdel-btn {
@@ -305,7 +331,15 @@
     bottom: 0;
     left: 5%;
     margin-bottom: 15px;
+    background-color: #78ca2c;
+    border-radius: 4px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.342);
     transition: 0.2s;
+    overflow: visible !important;
+}
+
+.character-acceptdel-btn:hover {
+    background-color: #67af25;
 }
 
 .character-canceldel-btn {
@@ -315,43 +349,31 @@
     bottom: 0;
     right: 5%;
     margin-bottom: 15px;
+    background-color: #ca382c;
+    border-radius: 4px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.342);
     transition: 0.2s;
+    overflow: visible !important;
+}
+
+.character-canceldel-btn:hover {
+    background-color: #aa3126;
 }
 
 .character-acceptdel-btn > p {
     color: white;
     text-align: center;
-    text-transform: uppercase;
-    padding-top: 9px;
+    padding-top: 7px;
+    font-family: 'Lato', monospace;
+    overflow: visible !important;
 }
 
 .character-canceldel-btn > p {
     color: white;
     text-align: center;
-    text-transform: uppercase;
-    padding-top: 9px;
-}
-
-#accept-delete {
-    background: linear-gradient(to right, #56ab2f, #74aa32); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    border-radius: 4px;
-    transition: all 0.3s ease;
-}
-
-#accept-delete:hover {
-    background: linear-gradient(to right, #74aa32, #56ab2f); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    border-radius: 8px;
-}
-
-#cancel-delete {
-    background: linear-gradient(to right, #ab2f2f, #aa3232); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    border-radius: 4px;
-    transition: all 0.3s ease;
-}
-
-#cancel-delete:hover {
-    background: linear-gradient(to right, #aa3232, #ab2f2f); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    border-radius: 8px;
+    padding-top: 7px;
+    font-family: 'Lato', monospace;
+    overflow: visible !important;
 }
 
 .character-register {
@@ -359,9 +381,10 @@
     position: relative;
     width: 25%;
     height: 28%;
-    top: 25%;
+    top: 125%;
     margin-left: auto;
     margin-right: auto;
+    left: 32px;
     background-color: rgba(0, 0, 0, 0.7);
     box-shadow: 0px 0px 19px 1px rgba(0,0,0,0.54);
     font-family: 'Lato', monospace;
@@ -372,11 +395,11 @@
     position: absolute;
     background-color: rgba(0, 0, 0, 0.7);
     width: 100%;
-    height: 8%;
+    height: 11%;
     color: rgb(255, 255, 255);
     text-align: center;
     font-size: 11px;
-    line-height: 30px;
+    line-height: 29px;
     font-family: 'Lato', monospace;
     border-bottom: 2px solid #b12424;
 }
@@ -384,22 +407,133 @@
 .char-register-inputs {
     position: absolute;
     top: 15%;
-    left: 8%;
+    left: 12%;
+    overflow: visible !important;
 }
 
 .char-reg-input {
+    position: relative;
+    float: left;
+    margin-left: 35px;
+    margin-top: 13px;
     border: none;
+    background-color: rgba(0, 0, 0, 0.808);
+    outline: none;
+    width: 120px;
+    height: 30px;
+    color: white;
+    max-width: 100%;
+    padding: 4px;
+    border-radius: 2px 2px 4px 4px;
+    box-shadow: inset 0px 0px 10px 0px rgba(255, 255, 255, 0.1);
+    border: 1px solid #b12424bb;
+    font-family: 'Lato', monospace;
+    text-align: center;
+    transition: all 0.2s ease-in-out;
+}
+
+.char-reg-input:hover {
+    background-color: rgba(34, 34, 34, 0.808);
+}
+
+.char-reg-input:focus {
+    background-color: rgba(34, 34, 34, 0.808);
+    border: 1px solid #b12424;
+}
+
+select {
+    position: absolute;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.808);
+    outline: none;
+    width: 295px;
+    height: 30px;
+    top: 120px;
+    left: 35px;
+    color: white;
+    max-width: 100%;
+    padding: 4px;
+    border-radius: 2px 2px 4px 4px;
+    box-shadow: inset 0px 0px 10px 0px rgba(255, 255, 255, 0.1);
+    border: 1px solid #b12424bb;
+    font-family: 'Lato', monospace;
+    text-align-last: center;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-indent: 1px;
+    text-overflow: '';
+    transition: all 0.2s ease-in-out;
+}
+
+select:hover {
+    background-color: rgba(34, 34, 34, 0.808);
+}
+
+select:focus {
+    background-color: rgba(34, 34, 34, 0.808);
+    border: 1px solid #b12424;
+}
+
+#gender option {
     background-color: transparent;
+    border: none;
     outline: none;
 }
 
+select::placeholder {
+    text-align: center;
+}
+
+select::-ms-expand {
+    display: none;
+}
+
+.char-reg-input::placeholder {
+    color: rgba(255, 255, 255, 0.52);
+}
+
+input[type="date"] {
+    color: white;
+    font-family: 'Lato', monospace;
+    text-align: center;
+}
+
+input[type=date]::-webkit-calendar-picker-indicator{
+    display: none;
+}
+
+input[type=date]::-webkit-inner-spin-button, 
+input[type=date]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+input[type="date"]::-webkit-input-placeholder{ 
+    visibility: hidden !important;
+}
+
+input[type="date"]::-webkit-clear-button {
+    display: none;
+}
+
+#birthdate {
+    color: white;
+    text-align: center;
+    font-family: 'Lato', monospace;
+}
+
 .character-reg-btn {
+    position: absolute;
     width: auto;
-    max-width: 70%;
+    max-width: 50%;
     height: 36px;
     background-color: #ca382c;
     border-radius: 4px;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.342);
+    bottom: 5%;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
 }
 
 .character-reg-btn > p {
@@ -407,34 +541,7 @@
     line-height: 34px;
     color: white;
     font-family: 'B612 Mono', monospace;
-}
-
-/* label color */
-.input-field label {
-    color: rgb(255, 255, 255);
-}
-/* label focus color */
-.input-field input[type=text]:focus + label {
-    color: rgb(15, 15, 15) !important;
-}
-/* label underline focus color */
-.input-field input[type=text]:focus {
-    border-bottom: 1px solid rgb(15, 15, 15) !important;
-    box-shadow: 0 1px 0 0 rgb(15, 15, 15) !important;
-}
-/* valid color */
-.input-field input[type=text].valid {
-    border-bottom: 1px solid rgb(15, 15, 15) !important;
-    box-shadow: 0 1px 0 0 rgb(15, 15, 15) !important;
-}
-/* invalid color */
-.input-field input[type=text].invalid {
-    border-bottom: 1px solid #fff;
-    box-shadow: 0 1px 0 0 #fff;
-}
-/* icon prefix focus color */
-.input-field .prefix.active {
-    color: #fff;
+    font-size: 13px;
 }
 
 .bars div{
@@ -563,7 +670,7 @@
     margin-left: 30px;
     float: left;
     top: 45%;
-    left: 24%;
+    left: 25.5%;
 }
 
 .continue-btn {

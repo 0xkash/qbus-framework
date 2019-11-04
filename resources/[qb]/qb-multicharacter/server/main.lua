@@ -29,11 +29,9 @@ AddEventHandler('qb-multicharacter:server:createCharacter', function(data)
     if QBCore.Player.Login(src, false, newData) then
         print('^2[qb-core]^7 '..GetPlayerName(src)..' has succesfully loaded!')
 		QBCore.Commands.Refresh(src)
-		--TriggerEvent('QBCore:Server:OnPlayerLoaded')
-        --TriggerClientEvent('QBCore:Client:OnPlayerLoaded', src)
 
         TriggerClientEvent("qb-multicharacter:client:closeNUI", src)
-        TriggerClientEvent("qb-spawn:client:openUI", src, true)
+        TriggerClientEvent('apartments:client:setupSpawnUI', src, newData)
 	end
 end)
 
