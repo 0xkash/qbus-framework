@@ -46,4 +46,5 @@ files {
 	'html/images/id_card.png',
 	'html/images/lockpick.png',
 	'html/images/repairkit.png',
+	'html/images/screwdriverset.png',
 }

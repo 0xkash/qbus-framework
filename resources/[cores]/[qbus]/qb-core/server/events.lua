@@ -128,6 +128,13 @@ AddEventHandler('QBCore:Server:UseItem', function(item)
 	end
 end)
 
+RegisterServerEvent("QBCore:Server:RemoveItem")
+AddEventHandler('QBCore:Server:RemoveItem', function(itemName, amount, slot)
+	local src = source
+	local Player = QBCore.Functions.GetPlayer(src)
+	Player.Functions.RemoveItem(itemName, amount, slot)
+end)
+
 AddEventHandler('chatMessage', function(source, n, message)
 	if string.sub(message, 1, 1) == "/" then
 		local args = QBCore.Shared.SplitStr(message, " ")
@@ -159,4 +166,13 @@ end)
 RegisterServerEvent("QBCore:AddCommand")
 AddEventHandler('QBCore:AddCommand', function(name, help, arguments, argsrequired, callback, persmission)
 	QBCore.Commands.Add(name, help, arguments, argsrequired, callback, persmission)
+end)
+
+QBCore.Functions.CreateCallback('QBCore:HasItem', function(source, cb, itemName)
+	local retval = false
+	local Player = QBCore.Functions.GetPlayer(source)
+	if Player.Functions.GetItemByName(itemName) ~= nil then
+		retval = true
+	end
+    cb(retval)
 end)

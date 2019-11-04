@@ -41,8 +41,14 @@ AddEventHandler('lockpicks:UseLockpick', function()
         local dist = GetDistanceBetweenCoords(pos, Config.Registers[k].x, Config.Registers[k].y, Config.Registers[k].z)
 
         if dist <= 1 and not Config.Registers[k].robbed then
-            lockpick(true)
-            currentRegister = k
+            QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
+                if result then
+                    lockpick(true)
+                    currentRegister = k
+                else
+                    QBCore.Functions.Notify("Het lijkt erop dat je een schroevendraaier mist..", "error")
+                end
+            end, "screwdriverset")
         end
     end
 end)
@@ -107,6 +113,8 @@ RegisterNUICallback('success', function()
 end)
 
 RegisterNUICallback('fail', function()
+    TriggerServerEvent("QBCore:Server:RemoveItem", "lockpick", 1)
+    QBCore.Functions.Notify("Je lockpick is gebroken..", "error")
     lockpick(false)
 end)
 
