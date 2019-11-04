@@ -345,12 +345,15 @@ end
 Citizen.CreateThread(function()
     Citizen.Wait(1000)
     while true do
+        Citizen.Wait(5)
         local ped = GetPlayerPed(-1)
         local pos = GetEntityCoords(ped)
+        local inGarageRange = false
 
         for k, v in pairs(Garages) do
             local takeDist = GetDistanceBetweenCoords(pos, Garages[k].takeVehicle.x, Garages[k].takeVehicle.y, Garages[k].takeVehicle.z)
             if takeDist <= 15 then
+                inGarageRange = true
                 DrawMarker(2, Garages[k].takeVehicle.x, Garages[k].takeVehicle.y, Garages[k].takeVehicle.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
                 if takeDist <= 1.5 then
                     if not IsPedInAnyVehicle(ped) then
@@ -379,6 +382,7 @@ Citizen.CreateThread(function()
             local putDist = GetDistanceBetweenCoords(pos, Garages[k].putVehicle.x, Garages[k].putVehicle.y, Garages[k].putVehicle.z)
 
             if putDist <= 15 and IsPedInAnyVehicle(ped) then
+                inGarageRange = true
                 DrawMarker(2, Garages[k].putVehicle.x, Garages[k].putVehicle.y, Garages[k].putVehicle.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 255, 255, 255, 255, false, false, false, true, false, false, false)
                 if putDist <= 1.5 then
                     DrawText3Ds(Garages[k].putVehicle.x, Garages[k].putVehicle.y, Garages[k].putVehicle.z + 0.5, '~g~E~w~ - Parkeer Voertuig')
@@ -403,20 +407,26 @@ Citizen.CreateThread(function()
                 end
             end
         end
-        Citizen.Wait(0)
+
+        if not inGarageRange then
+            Citizen.Wait(5000)
+        end
     end
 end)
 
 Citizen.CreateThread(function()
     Citizen.Wait(2000)
     while true do
+        Citizen.Wait(5)
         local ped = GetPlayerPed(-1)
         local pos = GetEntityCoords(ped)
+        local inGarageRange = false
 
         if currentHouseGarage ~= nil then
             if hasGarageKey then
                 local takeDist = GetDistanceBetweenCoords(pos, HouseGarages[currentHouseGarage].takeVehicle.x, HouseGarages[currentHouseGarage].takeVehicle.y, HouseGarages[currentHouseGarage].takeVehicle.z)
                 if takeDist <= 15 then
+                    inGarageRange = true
                     DrawMarker(2, HouseGarages[currentHouseGarage].takeVehicle.x, HouseGarages[currentHouseGarage].takeVehicle.y, HouseGarages[currentHouseGarage].takeVehicle.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
                     if takeDist < 2.0 then
                         if not IsPedInAnyVehicle(ped) then
@@ -460,20 +470,25 @@ Citizen.CreateThread(function()
                 end
             end
         end
-
-        Citizen.Wait(0)
+        
+        if not inGarageRange then
+            Citizen.Wait(5000)
+        end
     end
 end)
 
 Citizen.CreateThread(function()
     Citizen.Wait(1000)
     while true do
+        Citizen.Wait(5)
         local ped = GetPlayerPed(-1)
         local pos = GetEntityCoords(ped)
+        local inGarageRange = false
 
         for k, v in pairs(Depots) do
             local takeDist = GetDistanceBetweenCoords(pos, Depots[k].takeVehicle.x, Depots[k].takeVehicle.y, Depots[k].takeVehicle.z)
             if takeDist <= 15 then
+                inGarageRange = true
                 DrawMarker(2, Depots[k].takeVehicle.x, Depots[k].takeVehicle.y, Depots[k].takeVehicle.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
                 if takeDist <= 1.5 then
                     if not IsPedInAnyVehicle(ped) then
@@ -497,7 +512,10 @@ Citizen.CreateThread(function()
                 end
             end
         end
-        Citizen.Wait(2)
+
+        if not inGarageRange then
+            Citizen.Wait(5000)
+        end
     end
 end)
 

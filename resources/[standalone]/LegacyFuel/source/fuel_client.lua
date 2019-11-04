@@ -121,8 +121,6 @@ Citizen.CreateThread(function()
 			currentCash = QBCore.Functions.GetPlayerData().money["cash"]
 		else
 			isNearPump = false
-
-			print(math.ceil(pumpDistance * 20))
 			Citizen.Wait(math.ceil(pumpDistance * 20))
 		end
 	end
@@ -287,7 +285,7 @@ function CreateBlip(coords)
 	local blip = AddBlipForCoord(coords)
 
 	SetBlipSprite(blip, 361)
-	SetBlipScale  (blip, 0.65)
+	SetBlipScale  (blip, 0.45)
 	SetBlipColour(blip, 75)
 	SetBlipDisplay(blip, 4)
 	SetBlipAsShortRange(blip, true)
