@@ -118,6 +118,9 @@ function handleDragDrop() {
             fromData = ui.draggable.data("item");
             fromInventory = ui.draggable.parent().attr("data-inventory");
             if(fromData.useable) {
+                if (fromData.shouldClose) {
+                    Inventory.Close();
+                }
                 $.post("http://qb-inventory/UseItem", JSON.stringify({
                     inventory: fromInventory,
                     item: fromData,

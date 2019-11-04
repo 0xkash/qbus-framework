@@ -4,6 +4,8 @@ QBCore.Config = QBConfig
 QBCore.Shared = QBShared
 QBCore.ServerCallbacks = {}
 
+isLoggedIn = false
+
 function GetCoreObject()
 	return QBCore
 end

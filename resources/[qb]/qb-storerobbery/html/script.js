@@ -34,22 +34,12 @@ $(function () {
         if (eventData.action == "ui") {
             if (eventData.toggle) {
                 $('#wrap').fadeIn(250);
-                gameOver = false,
-                gamePaused = false,
-                pin, cyl, driver, cylRotationInterval, pinLastDamaged;
-                maxDistFromSolve = 45
-                pinRot = 1
-                cylRot = 1
-                lastMousePos = 0
+                gameOver = false
+                gamePaused = false
             } else {
-                $('#wrap').fadeOut(250);
-                gameOver = false,
-                gamePaused = false,
-                pin, cyl, driver, cylRotationInterval, pinLastDamaged;
-                maxDistFromSolve = 45
-                pinRot = 1
-                cylRot = 1
-                lastMousePos = 0
+                $('#wrap').fadeOut(50);
+                gameOver = false
+                gamePaused = false
             }
         }
     })
@@ -245,14 +235,12 @@ function outOfPins() {
 function unlock() {
     gameOver = true;
     $.post('http://qb-storerobbery/success');
-    setTimeout(function(){
-        solveDeg = (Math.random() * 180) - 90
-        solvePadding = 4
-        maxDistFromSolve = 45
-        pinRot = 1
-        cylRot = 1
-        lastMousePos = 0
-    }, 100)
+    solveDeg = (Math.random() * 180) - 90
+    solvePadding = 4
+    maxDistFromSolve = 45
+    pinRot = 1
+    cylRot = 1
+    lastMousePos = 0
 }
 
 //UTIL

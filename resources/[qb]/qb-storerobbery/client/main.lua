@@ -16,6 +16,8 @@ local uiOpen            = false
 local currentRegister   = nil
 
 Citizen.CreateThread(function()
+    Citizen.Wait(1000)
+    setupRegister()
     while true do
         local ped = GetPlayerPed(-1)
         local pos = GetEntityCoords(ped)
@@ -23,32 +25,35 @@ Citizen.CreateThread(function()
         for k, v in pairs(Config.Registers) do
             local dist = GetDistanceBetweenCoords(pos, Config.Registers[k].x, Config.Registers[k].y, Config.Registers[k].z)
 
-            if dist <= 1 and IsControlJustPressed(0, 51) and not Config.Registers[k].robbed then
-                lockpick(true)
-                currentRegister = k
-            elseif dist <= 1 and Config.Registers[k].robbed then
-                DrawText3Ds(Config.Registers[k].x, Config.Registers[k].y, Config.Registers[k].z, 'This cash register is empty')
+            if dist <= 1 and Config.Registers[k].robbed then
+                DrawText3Ds(Config.Registers[k].x, Config.Registers[k].y, Config.Registers[k].z, 'De kassa is leeg...')
             end
         end
-        Citizen.Wait(5)
+        Citizen.Wait(3)
     end
 end)
 
-Citizen.CreateThread(function()
+RegisterNetEvent('lockpicks:UseLockpick')
+AddEventHandler('lockpicks:UseLockpick', function()
     for k, v in pairs(Config.Registers) do
-        Blip = AddBlipForCoord(Config.Registers[k].x, Config.Registers[k].y, Config.Registers[k].z)
+        local ped = GetPlayerPed(-1)
+        local pos = GetEntityCoords(ped)
+        local dist = GetDistanceBetweenCoords(pos, Config.Registers[k].x, Config.Registers[k].y, Config.Registers[k].z)
 
-        SetBlipSprite (Blip, 286)
-        SetBlipDisplay(Blip, 4)
-        SetBlipScale  (Blip, 0.4)
-        SetBlipAsShortRange(Blip, true)
-        SetBlipColour(Blip, 0)
-
-        BeginTextCommandSetBlipName("STRING")
-        AddTextComponentSubstringPlayerName("Register Robbery")
-        EndTextCommandSetBlipName(Blip)
+        if dist <= 1 and not Config.Registers[k].robbed then
+            lockpick(true)
+            currentRegister = k
+        end
     end
 end)
+
+function setupRegister()
+    QBCore.Functions.TriggerCallback('qb-storerobbery:server:getRegisterStatus', function(Registers)
+        for k, v in pairs(Registers) do
+            Config.Registers[k].robbed = Registers[k].robbed
+        end
+    end)
+end
 
 DrawText3Ds = function(x, y, z, text)
 	SetTextScale(0.35, 0.35)
@@ -83,6 +88,7 @@ function loadAnimDict(dict)
 end
 
 function takeAnim()
+    local ped = GetPlayerPed(-1)
     while (not HasAnimDictLoaded("amb@prop_human_bum_bin@idle_b")) do
         RequestAnimDict("amb@prop_human_bum_bin@idle_b")
         Citizen.Wait(100)
@@ -97,10 +103,7 @@ RegisterNUICallback('success', function()
     TriggerServerEvent('qb-storerobbery:server:takeMoney')
     TriggerServerEvent('qb-storerobbery:server:setRegisterStatus', currentRegister)
     lockpick(false)
-    loadAnimDict("amb@prop_human_bum_bin@idle_b")
-    TaskPlayAnim(ped, "amb@prop_human_bum_bin@idle_b", "idle_d", 8.0, 8.0, -1, 50, 0, false, false, false)
-    Citizen.Wait(1000)
-    TaskPlayAnim(ped, "amb@prop_human_bum_bin@idle_b", "exit", 8.0, 8.0, -1, 50, 0, false, false, false)
+    takeAnim()
 end)
 
 RegisterNUICallback('fail', function()
