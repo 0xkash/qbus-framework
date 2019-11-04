@@ -10,7 +10,30 @@ Citizen.CreateThread(function()
     end
 end)
 
+function CalculateRepair()
+	local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1))
+	local model = GetEntityModel(vehicle)
+	local damage = (2000 - (GetVehicleBodyHealth(veh) + GetVehicleEngineHealth(veh)))
+	local vehiclePrice = QBCore.Shared.VehicleModels[model]["price"]
+	local addonprice = ((vehiclePrice / 100) * 0.1)
+	local price = (250+1.2*damage) + addonprice
+
+	return round(price)
+end
+
+function CalculateUpgradePrice(standardPrice)
+	local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1))
+	local model = GetEntityModel(vehicle)
+	local vehiclePrice = QBCore.Shared.VehicleModels[model]["price"]
+	local price = ((vehiclePrice / 100) * 13.37) + standardPrice
+
+	return round(price)
+end
+
 local lastCatOption = 0
+
+local editCount = 0
+local isBusy = false
 
 local lastMenuPos = 1
 local lsc = {
@@ -132,471 +155,471 @@ local lsc = {
 			buttons = { 
 				
 			}
-		}
-	,["primarymetallic"] = { 
+		},
+		["primarymetallic"] = { 
 			title = "primary colors", 
 			name = "primarymetallic",
 			buttons = { 
-				{name = "Black",costs = 0, colorindex = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Carbon Black",costs = 0, colorindex = 147, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Hraphite",costs = 0, colorindex = 1, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Anhracite Black",costs = 0, colorindex = 11, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Black Steel",costs = 0, colorindex = 2, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Dark Steel",costs = 0, colorindex = 3, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Silver",costs = 0, colorindex = 4, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bluish Silver",costs = 0, colorindex = 5, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Rolled Steel",costs = 0, colorindex = 6, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Shadow Silver",costs = 0, colorindex = 7, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Stone Silver",costs = 0, colorindex = 8, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Midnight Silver",costs = 0, colorindex = 9, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Cast Iron Silver",costs = 0, colorindex = 10, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Red",costs = 0, colorindex = 27, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Torino Red",costs = 0, colorindex = 28, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Formula Red",costs = 0, colorindex = 29, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Lava Red",costs = 0, colorindex = 150, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Blaze Red",costs = 0, colorindex = 30, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Grace Red",costs = 0, colorindex = 31, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Garnet Red",costs = 0, colorindex = 32, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Sunset Red",costs = 0, colorindex = 33, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Cabernet Red",costs = 0, colorindex = 34, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Wine Red",costs = 0, colorindex = 143, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Candy Red",costs = 0, colorindex = 35, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Hot Pink",costs = 0, colorindex = 135, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Pfsiter Pink",costs = 0, colorindex = 137, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Salmon Pink",costs = 0, colorindex = 136, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Sunrise Orange",costs = 0, colorindex = 36, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Orange",costs = 0, colorindex = 38, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bright Orange",costs = 0, colorindex = 138, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Gold",costs = 0, colorindex = 99, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bronze",costs = 0, colorindex = 90, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Yellow",costs = 0, colorindex = 88, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Race Yellow",costs = 0, colorindex = 89, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Dew Yellow",costs = 0, colorindex = 91, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Dark Green",costs = 0, colorindex = 49, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Racing Green",costs = 0, colorindex = 50, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Sea Green",costs = 0, colorindex = 51, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Olive Green",costs = 0, colorindex = 52, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bright Green",costs = 0, colorindex = 53, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Gasoline Green",costs = 0, colorindex = 54, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Lime Green",costs = 0, colorindex = 92, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Midnight Blue",costs = 0, colorindex = 141, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Galaxy Blue",costs = 0, colorindex = 61, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Dark Blue",costs = 0, colorindex = 62, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Saxon Blue",costs = 0, colorindex = 63, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Blue",costs = 0, colorindex = 64, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Mariner Blue",costs = 0, colorindex = 65, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Harbor Blue",costs = 0, colorindex = 66, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Diamond Blue",costs = 0, colorindex = 67, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Surf Blue",costs = 0, colorindex = 68, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Nautical Blue",costs = 0, colorindex = 69, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Racing Blue",costs = 0, colorindex = 73, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Ultra Blue",costs = 0, colorindex = 70, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Light Blue",costs = 0, colorindex = 74, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Chocolate Brown",costs = 0, colorindex = 96, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bison Brown",costs = 0, colorindex = 101, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Creeen Brown",costs = 0, colorindex = 95, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Feltzer Brown",costs = 0, colorindex = 94, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Maple Brown",costs = 0, colorindex = 97, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Beechwood Brown",costs = 0, colorindex = 103, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Sienna Brown",costs = 0, colorindex = 104, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Saddle Brown",costs = 0, colorindex = 98, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Moss Brown",costs = 0, colorindex = 100, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Woodbeech Brown",costs = 0, colorindex = 102, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Straw Brown",costs = 0, colorindex = 99, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Sandy Brown",costs = 0, colorindex = 105, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bleached Brown",costs = 0, colorindex = 106, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Schafter Purple",costs = 0, colorindex = 71, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Spinnaker Purple",costs = 0, colorindex = 72, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Midnight Purple",costs = 0, colorindex = 142, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bright Purple",costs = 0, colorindex = 145, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Cream",costs = 0, colorindex = 107, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Ice White",costs = 0, colorindex = 111, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Frost White",costs = 0, colorindex = 112, description = "", centre = 0, font = 0, scale = 0.4}
+				{name = "Black",costs = 650, colorindex = 0, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Carbon Black",costs = 650, colorindex = 147, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Hraphite",costs = 650, colorindex = 1, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Anhracite Black",costs = 650, colorindex = 11, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Black Steel",costs = 650, colorindex = 2, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Dark Steel",costs = 650, colorindex = 3, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Silver",costs = 650, colorindex = 4, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bluish Silver",costs = 650, colorindex = 5, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Rolled Steel",costs = 650, colorindex = 6, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Shadow Silver",costs = 650, colorindex = 7, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Stone Silver",costs = 650, colorindex = 8, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Midnight Silver",costs = 650, colorindex = 9, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Cast Iron Silver",costs = 650, colorindex = 10, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Red",costs = 650, colorindex = 27, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Torino Red",costs = 650, colorindex = 28, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Formula Red",costs = 650, colorindex = 29, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Lava Red",costs = 650, colorindex = 150, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Blaze Red",costs = 650, colorindex = 30, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Grace Red",costs = 650, colorindex = 31, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Garnet Red",costs = 650, colorindex = 32, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Sunset Red",costs = 650, colorindex = 33, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Cabernet Red",costs = 650, colorindex = 34, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Wine Red",costs = 650, colorindex = 143, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Candy Red",costs = 650, colorindex = 35, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Hot Pink",costs = 650, colorindex = 135, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Pfsiter Pink",costs = 650, colorindex = 137, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Salmon Pink",costs = 650, colorindex = 136, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Sunrise Orange",costs = 650, colorindex = 36, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Orange",costs = 650, colorindex = 38, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bright Orange",costs = 650, colorindex = 138, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Gold",costs = 650, colorindex = 99, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bronze",costs = 650, colorindex = 90, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Yellow",costs = 650, colorindex = 88, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Race Yellow",costs = 650, colorindex = 89, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Dew Yellow",costs = 650, colorindex = 91, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Dark Green",costs = 650, colorindex = 49, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Racing Green",costs = 650, colorindex = 50, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Sea Green",costs = 650, colorindex = 51, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Olive Green",costs = 650, colorindex = 52, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bright Green",costs = 650, colorindex = 53, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Gasoline Green",costs = 650, colorindex = 54, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Lime Green",costs = 650, colorindex = 92, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Midnight Blue",costs = 650, colorindex = 141, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Galaxy Blue",costs = 650, colorindex = 61, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Dark Blue",costs = 650, colorindex = 62, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Saxon Blue",costs = 650, colorindex = 63, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Blue",costs = 650, colorindex = 64, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Mariner Blue",costs = 650, colorindex = 65, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Harbor Blue",costs = 650, colorindex = 66, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Diamond Blue",costs = 650, colorindex = 67, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Surf Blue",costs = 650, colorindex = 68, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Nautical Blue",costs = 650, colorindex = 69, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Racing Blue",costs = 650, colorindex = 73, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Ultra Blue",costs = 650, colorindex = 70, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Light Blue",costs = 650, colorindex = 74, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Chocolate Brown",costs = 650, colorindex = 96, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bison Brown",costs = 650, colorindex = 101, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Creeen Brown",costs = 650, colorindex = 95, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Feltzer Brown",costs = 650, colorindex = 94, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Maple Brown",costs = 650, colorindex = 97, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Beechwood Brown",costs = 650, colorindex = 103, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Sienna Brown",costs = 650, colorindex = 104, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Saddle Brown",costs = 650, colorindex = 98, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Moss Brown",costs = 650, colorindex = 100, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Woodbeech Brown",costs = 650, colorindex = 102, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Straw Brown",costs = 650, colorindex = 99, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Sandy Brown",costs = 650, colorindex = 105, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bleached Brown",costs = 650, colorindex = 106, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Schafter Purple",costs = 650, colorindex = 71, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Spinnaker Purple",costs = 650, colorindex = 72, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Midnight Purple",costs = 650, colorindex = 142, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bright Purple",costs = 650, colorindex = 145, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Cream",costs = 650, colorindex = 107, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Ice White",costs = 650, colorindex = 111, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Frost White",costs = 650, colorindex = 112, description = "", centre = 0, font = 0, scale = 0.4}
 			}
 		},
 		["secondarymetallic"] = { 
 			title = "secondary colors", 
 			name = "secondarymetallic",
 			buttons = { 
-				{name = "Black",costs = 0, colorindex = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Carbon Black",costs = 0, colorindex = 147, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Hraphite",costs = 0, colorindex = 1, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Anhracite Black",costs = 0, colorindex = 11, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Black Steel",costs = 0, colorindex = 2, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Dark Steel",costs = 0, colorindex = 3, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Silver",costs = 0, colorindex = 4, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bluish Silver",costs = 0, colorindex = 5, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Rolled Steel",costs = 0, colorindex = 6, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Shadow Silver",costs = 0, colorindex = 7, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Stone Silver",costs = 0, colorindex = 8, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Midnight Silver",costs = 0, colorindex = 9, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Cast Iron Silver",costs = 0, colorindex = 10, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Red",costs = 0, colorindex = 27, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Torino Red",costs = 0, colorindex = 28, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Formula Red",costs = 0, colorindex = 29, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Lava Red",costs = 0, colorindex = 150, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Blaze Red",costs = 0, colorindex = 30, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Grace Red",costs = 0, colorindex = 31, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Garnet Red",costs = 0, colorindex = 32, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Sunset Red",costs = 0, colorindex = 33, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Cabernet Red",costs = 0, colorindex = 34, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Wine Red",costs = 0, colorindex = 143, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Candy Red",costs = 0, colorindex = 35, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Hot Pink",costs = 0, colorindex = 135, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Pfsiter Pink",costs = 0, colorindex = 137, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Salmon Pink",costs = 0, colorindex = 136, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Sunrise Orange",costs = 0, colorindex = 36, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Orange",costs = 0, colorindex = 38, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bright Orange",costs = 0, colorindex = 138, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Gold",costs = 0, colorindex = 99, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bronze",costs = 0, colorindex = 90, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Yellow",costs = 0, colorindex = 88, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Race Yellow",costs = 0, colorindex = 89, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Dew Yellow",costs = 0, colorindex = 91, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Dark Green",costs = 0, colorindex = 49, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Racing Green",costs = 0, colorindex = 50, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Sea Green",costs = 0, colorindex = 51, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Olive Green",costs = 0, colorindex = 52, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bright Green",costs = 0, colorindex = 53, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Gasoline Green",costs = 0, colorindex = 54, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Lime Green",costs = 0, colorindex = 92, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Midnight Blue",costs = 0, colorindex = 141, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Galaxy Blue",costs = 0, colorindex = 61, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Dark Blue",costs = 0, colorindex = 62, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Saxon Blue",costs = 0, colorindex = 63, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Blue",costs = 0, colorindex = 64, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Mariner Blue",costs = 0, colorindex = 65, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Harbor Blue",costs = 0, colorindex = 66, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Diamond Blue",costs = 0, colorindex = 67, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Surf Blue",costs = 0, colorindex = 68, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Nautical Blue",costs = 0, colorindex = 69, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Racing Blue",costs = 0, colorindex = 73, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Ultra Blue",costs = 0, colorindex = 70, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Light Blue",costs = 0, colorindex = 74, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Chocolate Brown",costs = 0, colorindex = 96, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bison Brown",costs = 0, colorindex = 101, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Creeen Brown",costs = 0, colorindex = 95, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Feltzer Brown",costs = 0, colorindex = 94, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Maple Brown",costs = 0, colorindex = 97, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Beechwood Brown",costs = 0, colorindex = 103, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Sienna Brown",costs = 0, colorindex = 104, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Saddle Brown",costs = 0, colorindex = 98, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Moss Brown",costs = 0, colorindex = 100, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Woodbeech Brown",costs = 0, colorindex = 102, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Straw Brown",costs = 0, colorindex = 99, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Sandy Brown",costs = 0, colorindex = 105, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bleached Brown",costs = 0, colorindex = 106, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Schafter Purple",costs = 0, colorindex = 71, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Spinnaker Purple",costs = 0, colorindex = 72, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Midnight Purple",costs = 0, colorindex = 142, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bright Purple",costs = 0, colorindex = 145, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Cream",costs = 0, colorindex = 107, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Ice White",costs = 0, colorindex = 111, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Frost White",costs = 0, colorindex = 112, description = "", centre = 0, font = 0, scale = 0.4}
+				{name = "Black",costs = 500, colorindex = 0, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Carbon Black",costs = 500, colorindex = 147, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Hraphite",costs = 500, colorindex = 1, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Anhracite Black",costs = 500, colorindex = 11, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Black Steel",costs = 500, colorindex = 2, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Dark Steel",costs = 500, colorindex = 3, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Silver",costs = 500, colorindex = 4, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bluish Silver",costs = 500, colorindex = 5, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Rolled Steel",costs = 500, colorindex = 6, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Shadow Silver",costs = 500, colorindex = 7, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Stone Silver",costs = 500, colorindex = 8, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Midnight Silver",costs = 500, colorindex = 9, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Cast Iron Silver",costs = 500, colorindex = 10, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Red",costs = 500, colorindex = 27, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Torino Red",costs = 500, colorindex = 28, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Formula Red",costs = 500, colorindex = 29, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Lava Red",costs = 500, colorindex = 150, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Blaze Red",costs = 500, colorindex = 30, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Grace Red",costs = 500, colorindex = 31, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Garnet Red",costs = 500, colorindex = 32, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Sunset Red",costs = 500, colorindex = 33, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Cabernet Red",costs = 500, colorindex = 34, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Wine Red",costs = 500, colorindex = 143, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Candy Red",costs = 500, colorindex = 35, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Hot Pink",costs = 500, colorindex = 135, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Pfsiter Pink",costs = 500, colorindex = 137, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Salmon Pink",costs = 500, colorindex = 136, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Sunrise Orange",costs = 500, colorindex = 36, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Orange",costs = 500, colorindex = 38, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bright Orange",costs = 500, colorindex = 138, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Gold",costs = 500, colorindex = 99, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bronze",costs = 500, colorindex = 90, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Yellow",costs = 500, colorindex = 88, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Race Yellow",costs = 500, colorindex = 89, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Dew Yellow",costs = 500, colorindex = 91, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Dark Green",costs = 500, colorindex = 49, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Racing Green",costs = 500, colorindex = 50, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Sea Green",costs = 500, colorindex = 51, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Olive Green",costs = 500, colorindex = 52, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bright Green",costs = 500, colorindex = 53, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Gasoline Green",costs = 500, colorindex = 54, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Lime Green",costs = 500, colorindex = 92, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Midnight Blue",costs = 500, colorindex = 141, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Galaxy Blue",costs = 500, colorindex = 61, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Dark Blue",costs = 500, colorindex = 62, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Saxon Blue",costs = 500, colorindex = 63, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Blue",costs = 500, colorindex = 64, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Mariner Blue",costs = 500, colorindex = 65, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Harbor Blue",costs = 500, colorindex = 66, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Diamond Blue",costs = 500, colorindex = 67, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Surf Blue",costs = 500, colorindex = 68, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Nautical Blue",costs = 500, colorindex = 69, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Racing Blue",costs = 500, colorindex = 73, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Ultra Blue",costs = 500, colorindex = 70, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Light Blue",costs = 500, colorindex = 74, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Chocolate Brown",costs = 500, colorindex = 96, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bison Brown",costs = 500, colorindex = 101, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Creeen Brown",costs = 500, colorindex = 95, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Feltzer Brown",costs = 500, colorindex = 94, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Maple Brown",costs = 500, colorindex = 97, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Beechwood Brown",costs = 500, colorindex = 103, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Sienna Brown",costs = 500, colorindex = 104, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Saddle Brown",costs = 500, colorindex = 98, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Moss Brown",costs = 500, colorindex = 100, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Woodbeech Brown",costs = 500, colorindex = 102, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Straw Brown",costs = 500, colorindex = 99, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Sandy Brown",costs = 500, colorindex = 105, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bleached Brown",costs = 500, colorindex = 106, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Schafter Purple",costs = 500, colorindex = 71, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Spinnaker Purple",costs = 500, colorindex = 72, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Midnight Purple",costs = 500, colorindex = 142, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bright Purple",costs = 500, colorindex = 145, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Cream",costs = 500, colorindex = 107, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Ice White",costs = 500, colorindex = 111, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Frost White",costs = 500, colorindex = 112, description = "", centre = 0, font = 0, scale = 0.4}
 			}
 		},
 		["pearlescentmetallic"] = { 
 			title = "pearlescent colors", 
 			name = "pearlescentmetallic",
 			buttons = { 
-				{name = "Black",costs = 0, colorindex = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Carbon Black",costs = 0, colorindex = 147, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Hraphite",costs = 0, colorindex = 1, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Anhracite Black",costs = 0, colorindex = 11, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Black Steel",costs = 0, colorindex = 2, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Dark Steel",costs = 0, colorindex = 3, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Silver",costs = 0, colorindex = 4, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bluish Silver",costs = 0, colorindex = 5, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Rolled Steel",costs = 0, colorindex = 6, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Shadow Silver",costs = 0, colorindex = 7, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Stone Silver",costs = 0, colorindex = 8, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Midnight Silver",costs = 0, colorindex = 9, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Cast Iron Silver",costs = 0, colorindex = 10, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Red",costs = 0, colorindex = 27, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Torino Red",costs = 0, colorindex = 28, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Formula Red",costs = 0, colorindex = 29, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Lava Red",costs = 0, colorindex = 150, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Blaze Red",costs = 0, colorindex = 30, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Grace Red",costs = 0, colorindex = 31, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Garnet Red",costs = 0, colorindex = 32, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Sunset Red",costs = 0, colorindex = 33, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Cabernet Red",costs = 0, colorindex = 34, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Wine Red",costs = 0, colorindex = 143, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Candy Red",costs = 0, colorindex = 35, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Hot Pink",costs = 0, colorindex = 135, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Pfsiter Pink",costs = 0, colorindex = 137, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Salmon Pink",costs = 0, colorindex = 136, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Sunrise Orange",costs = 0, colorindex = 36, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Orange",costs = 0, colorindex = 38, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bright Orange",costs = 0, colorindex = 138, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Gold",costs = 0, colorindex = 99, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bronze",costs = 0, colorindex = 90, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Yellow",costs = 0, colorindex = 88, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Race Yellow",costs = 0, colorindex = 89, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Dew Yellow",costs = 0, colorindex = 91, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Dark Green",costs = 0, colorindex = 49, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Racing Green",costs = 0, colorindex = 50, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Sea Green",costs = 0, colorindex = 51, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Olive Green",costs = 0, colorindex = 52, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bright Green",costs = 0, colorindex = 53, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Gasoline Green",costs = 0, colorindex = 54, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Lime Green",costs = 0, colorindex = 92, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Midnight Blue",costs = 0, colorindex = 141, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Galaxy Blue",costs = 0, colorindex = 61, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Dark Blue",costs = 0, colorindex = 62, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Saxon Blue",costs = 0, colorindex = 63, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Blue",costs = 0, colorindex = 64, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Mariner Blue",costs = 0, colorindex = 65, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Harbor Blue",costs = 0, colorindex = 66, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Diamond Blue",costs = 0, colorindex = 67, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Surf Blue",costs = 0, colorindex = 68, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Nautical Blue",costs = 0, colorindex = 69, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Racing Blue",costs = 0, colorindex = 73, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Ultra Blue",costs = 0, colorindex = 70, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Light Blue",costs = 0, colorindex = 74, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Chocolate Brown",costs = 0, colorindex = 96, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bison Brown",costs = 0, colorindex = 101, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Creeen Brown",costs = 0, colorindex = 95, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Feltzer Brown",costs = 0, colorindex = 94, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Maple Brown",costs = 0, colorindex = 97, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Beechwood Brown",costs = 0, colorindex = 103, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Sienna Brown",costs = 0, colorindex = 104, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Saddle Brown",costs = 0, colorindex = 98, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Moss Brown",costs = 0, colorindex = 100, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Woodbeech Brown",costs = 0, colorindex = 102, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Straw Brown",costs = 0, colorindex = 99, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Sandy Brown",costs = 0, colorindex = 105, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bleached Brown",costs = 0, colorindex = 106, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Schafter Purple",costs = 0, colorindex = 71, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Spinnaker Purple",costs = 0, colorindex = 72, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Midnight Purple",costs = 0, colorindex = 142, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bright Purple",costs = 0, colorindex = 145, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Cream",costs = 0, colorindex = 107, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Ice White",costs = 0, colorindex = 111, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Frost White",costs = 0, colorindex = 112, description = "", centre = 0, font = 0, scale = 0.4}
+				{name = "Black",costs = 300, colorindex = 0, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Carbon Black",costs = 300, colorindex = 147, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Hraphite",costs = 300, colorindex = 1, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Anhracite Black",costs = 300, colorindex = 11, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Black Steel",costs = 300, colorindex = 2, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Dark Steel",costs = 300, colorindex = 3, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Silver",costs = 300, colorindex = 4, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bluish Silver",costs = 300, colorindex = 5, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Rolled Steel",costs = 300, colorindex = 6, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Shadow Silver",costs = 300, colorindex = 7, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Stone Silver",costs = 300, colorindex = 8, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Midnight Silver",costs = 300, colorindex = 9, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Cast Iron Silver",costs = 300, colorindex = 10, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Red",costs = 300, colorindex = 27, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Torino Red",costs = 300, colorindex = 28, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Formula Red",costs = 300, colorindex = 29, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Lava Red",costs = 300, colorindex = 150, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Blaze Red",costs = 300, colorindex = 30, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Grace Red",costs = 300, colorindex = 31, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Garnet Red",costs = 300, colorindex = 32, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Sunset Red",costs = 300, colorindex = 33, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Cabernet Red",costs = 300, colorindex = 34, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Wine Red",costs = 300, colorindex = 143, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Candy Red",costs = 300, colorindex = 35, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Hot Pink",costs = 300, colorindex = 135, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Pfsiter Pink",costs = 300, colorindex = 137, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Salmon Pink",costs = 300, colorindex = 136, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Sunrise Orange",costs = 300, colorindex = 36, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Orange",costs = 300, colorindex = 38, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bright Orange",costs = 300, colorindex = 138, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Gold",costs = 300, colorindex = 99, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bronze",costs = 300, colorindex = 90, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Yellow",costs = 300, colorindex = 88, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Race Yellow",costs = 300, colorindex = 89, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Dew Yellow",costs = 300, colorindex = 91, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Dark Green",costs = 300, colorindex = 49, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Racing Green",costs = 300, colorindex = 50, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Sea Green",costs = 300, colorindex = 51, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Olive Green",costs = 300, colorindex = 52, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bright Green",costs = 300, colorindex = 53, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Gasoline Green",costs = 300, colorindex = 54, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Lime Green",costs = 300, colorindex = 92, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Midnight Blue",costs = 300, colorindex = 141, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Galaxy Blue",costs = 300, colorindex = 61, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Dark Blue",costs = 300, colorindex = 62, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Saxon Blue",costs = 300, colorindex = 63, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Blue",costs = 300, colorindex = 64, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Mariner Blue",costs = 300, colorindex = 65, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Harbor Blue",costs = 300, colorindex = 66, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Diamond Blue",costs = 300, colorindex = 67, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Surf Blue",costs = 300, colorindex = 68, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Nautical Blue",costs = 300, colorindex = 69, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Racing Blue",costs = 300, colorindex = 73, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Ultra Blue",costs = 300, colorindex = 70, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Light Blue",costs = 300, colorindex = 74, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Chocolate Brown",costs = 300, colorindex = 96, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bison Brown",costs = 300, colorindex = 101, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Creeen Brown",costs = 300, colorindex = 95, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Feltzer Brown",costs = 300, colorindex = 94, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Maple Brown",costs = 300, colorindex = 97, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Beechwood Brown",costs = 300, colorindex = 103, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Sienna Brown",costs = 300, colorindex = 104, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Saddle Brown",costs = 300, colorindex = 98, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Moss Brown",costs = 300, colorindex = 100, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Woodbeech Brown",costs = 300, colorindex = 102, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Straw Brown",costs = 300, colorindex = 99, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Sandy Brown",costs = 300, colorindex = 105, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bleached Brown",costs = 300, colorindex = 106, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Schafter Purple",costs = 300, colorindex = 71, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Spinnaker Purple",costs = 300, colorindex = 72, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Midnight Purple",costs = 300, colorindex = 142, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bright Purple",costs = 300, colorindex = 145, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Cream",costs = 300, colorindex = 107, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Ice White",costs = 300, colorindex = 111, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Frost White",costs = 300, colorindex = 112, description = "", centre = 0, font = 0, scale = 0.4}
 			}
 		},
 		["primarymatte"] = { 
 				title = "primary colors", 
 				name = "primarymatte",
 				buttons = { 
-					{name = "Black", colorindex = 12,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Gray", colorindex = 13,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Light Gray", colorindex = 14,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Ice White", colorindex = 131,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Blue", colorindex = 83,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Dark Blue", colorindex = 82,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Midnight Blue", colorindex = 84,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Midnight Purple", colorindex = 149,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Schafter Purple", colorindex = 148,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Red", colorindex = 39,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Dark Red", colorindex = 40,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Orange", colorindex = 41,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Yellow", colorindex = 42,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Lime Green", colorindex = 55,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Green", colorindex = 128,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Frost Green", colorindex = 151,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Foliage Green", colorindex = 155,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Olive Darb", colorindex = 152,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Dark Earth", colorindex = 153,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Desert Tan", colorindex = 154,costs = 0, description = "", centre = 0, font = 0, scale = 0.4}
+					{name = "Black", colorindex = 12,costs = 650, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Gray", colorindex = 13,costs = 650, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Light Gray", colorindex = 14,costs = 650, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Ice White", colorindex = 131,costs = 650, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Blue", colorindex = 83,costs = 650, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Dark Blue", colorindex = 82,costs = 650, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Midnight Blue", colorindex = 84,costs = 650, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Midnight Purple", colorindex = 149,costs = 650, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Schafter Purple", colorindex = 148,costs = 650, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Red", colorindex = 39,costs = 650, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Dark Red", colorindex = 40,costs = 650, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Orange", colorindex = 41,costs = 650, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Yellow", colorindex = 42,costs = 650, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Lime Green", colorindex = 55,costs = 650, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Green", colorindex = 128,costs = 650, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Frost Green", colorindex = 151,costs = 650, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Foliage Green", colorindex = 155,costs = 650, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Olive Darb", colorindex = 152,costs = 650, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Dark Earth", colorindex = 153,costs = 650, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Desert Tan", colorindex = 154,costs = 650, description = "", centre = 0, font = 0, scale = 0.4}
 				}
 			},
 			["secondarymatte"] = { 
 				title = "secondary colors", 
 				name = "secondarymatte",
 				buttons = { 
-					{name = "Black", colorindex = 12,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Gray", colorindex = 13,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Light Gray", colorindex = 14,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Ice White", colorindex = 131,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Blue", colorindex = 83,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Dark Blue", colorindex = 82,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Midnight Blue", colorindex = 84,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Midnight Purple", colorindex = 149,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Schafter Purple", colorindex = 148,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Red", colorindex = 39,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Dark Red", colorindex = 40,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Orange", colorindex = 41,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Yellow", colorindex = 42,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Lime Green", colorindex = 55,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Green", colorindex = 128,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Frost Green", colorindex = 151,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Foliage Green", colorindex = 155,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Olive Darb", colorindex = 152,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Dark Earth", colorindex = 153,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Desert Tan", colorindex = 154,costs = 0, description = "", centre = 0, font = 0, scale = 0.4}
+					{name = "Black", colorindex = 12,costs = 500, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Gray", colorindex = 13,costs = 500, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Light Gray", colorindex = 14,costs = 500, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Ice White", colorindex = 131,costs = 500, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Blue", colorindex = 83,costs = 500, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Dark Blue", colorindex = 82,costs = 500, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Midnight Blue", colorindex = 84,costs = 500, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Midnight Purple", colorindex = 149,costs = 500, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Schafter Purple", colorindex = 148,costs = 500, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Red", colorindex = 39,costs = 500, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Dark Red", colorindex = 40,costs = 500, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Orange", colorindex = 41,costs = 500, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Yellow", colorindex = 42,costs = 500, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Lime Green", colorindex = 55,costs = 500, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Green", colorindex = 128,costs = 500, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Frost Green", colorindex = 151,costs = 500, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Foliage Green", colorindex = 155,costs = 500, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Olive Darb", colorindex = 152,costs = 500, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Dark Earth", colorindex = 153,costs = 500, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Desert Tan", colorindex = 154,costs = 500, description = "", centre = 0, font = 0, scale = 0.4}
 				}
 			},
 			["pearlescentmatte"] = { 
 				title = "pearlescent colors", 
 				name = "pearlescentmatte",
 				buttons = { 
-					{name = "Black", colorindex = 12,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Gray", colorindex = 13,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Light Gray", colorindex = 14,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Ice White", colorindex = 131,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Blue", colorindex = 83,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Dark Blue", colorindex = 82,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Midnight Blue", colorindex = 84,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Midnight Purple", colorindex = 149,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Schafter Purple", colorindex = 148,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Red", colorindex = 39,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Dark Red", colorindex = 40,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Orange", colorindex = 41,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Yellow", colorindex = 42,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Lime Green", colorindex = 55,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Green", colorindex = 128,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Frost Green", colorindex = 151,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Foliage Green", colorindex = 155,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Olive Darb", colorindex = 152,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Dark Earth", colorindex = 153,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Desert Tan", colorindex = 154,costs = 0, description = "", centre = 0, font = 0, scale = 0.4}
+					{name = "Black", colorindex = 12,costs = 300, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Gray", colorindex = 13,costs = 300, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Light Gray", colorindex = 14,costs = 300, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Ice White", colorindex = 131,costs = 300, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Blue", colorindex = 83,costs = 300, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Dark Blue", colorindex = 82,costs = 300, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Midnight Blue", colorindex = 84,costs = 300, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Midnight Purple", colorindex = 149,costs = 300, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Schafter Purple", colorindex = 148,costs = 300, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Red", colorindex = 39,costs = 300, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Dark Red", colorindex = 40,costs = 300, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Orange", colorindex = 41,costs = 300, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Yellow", colorindex = 42,costs = 300, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Lime Green", colorindex = 55,costs = 300, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Green", colorindex = 128,costs = 300, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Frost Green", colorindex = 151,costs = 300, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Foliage Green", colorindex = 155,costs = 300, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Olive Darb", colorindex = 152,costs = 300, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Dark Earth", colorindex = 153,costs = 300, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Desert Tan", colorindex = 154,costs = 300, description = "", centre = 0, font = 0, scale = 0.4}
 				}
 			},
 			["primarymetal"] = { 
 				title = "primary colors", 
 				name = "primarymetal",
 				buttons = { 
-					{name = "Brushed Steel",colorindex = 117,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Brushed Black Steel",colorindex = 118,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Brushed Aluminum",colorindex = 119,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Pure Gold",colorindex = 158,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Brushed Gold",colorindex = 159,costs = 0, description = "", centre = 0, font = 0, scale = 0.4}
+					{name = "Brushed Steel",colorindex = 117,costs = 650, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Brushed Black Steel",colorindex = 118,costs = 650, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Brushed Aluminum",colorindex = 119,costs = 650, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Pure Gold",colorindex = 158,costs = 650, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Brushed Gold",colorindex = 159,costs = 650, description = "", centre = 0, font = 0, scale = 0.4}
 				}
 			},
 			["secondarymetal"] = { 
 				title = "secondary colors", 
 				name = "secondarymetal",
 				buttons = { 
-					{name = "Brushed Steel",colorindex = 117,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Brushed Black Steel",colorindex = 118,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Brushed Aluminum",colorindex = 119,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Pure Gold",colorindex = 158,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Brushed Gold",colorindex = 159,costs = 0, description = "", centre = 0, font = 0, scale = 0.4}
+					{name = "Brushed Steel",colorindex = 117,costs = 500, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Brushed Black Steel",colorindex = 118,costs = 500, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Brushed Aluminum",colorindex = 119,costs = 500, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Pure Gold",colorindex = 158,costs = 500, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Brushed Gold",colorindex = 159,costs = 500, description = "", centre = 0, font = 0, scale = 0.4}
 				}
 			},
 			["pearlescentmetal"] = { 
 				title = "pearlescent colors", 
 				name = "pearlescentmetal",
 				buttons = { 
-					{name = "Brushed Steel",colorindex = 117,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Brushed Black Steel",colorindex = 118,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Brushed Aluminum",colorindex = 119,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Pure Gold",colorindex = 158,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-					{name = "Brushed Gold",colorindex = 159,costs = 0, description = "", centre = 0, font = 0, scale = 0.4}
+					{name = "Brushed Steel",colorindex = 117,costs = 300, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Brushed Black Steel",colorindex = 118,costs = 300, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Brushed Aluminum",colorindex = 119,costs = 300, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Pure Gold",colorindex = 158,costs = 300, description = "", centre = 0, font = 0, scale = 0.4},
+					{name = "Brushed Gold",colorindex = 159,costs = 300, description = "", centre = 0, font = 0, scale = 0.4}
 				}
 			},
 			["wheelcolor"] = { 
 			title = "wheel colors", 
 			name = "wheelcolor",
 			buttons = { 
-				{name = "Black",costs = 0, colorindex = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Carbon Black",costs = 0, colorindex = 147, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Hraphite",costs = 0, colorindex = 1, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Anhracite Black",costs = 0, colorindex = 11, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Black Steel",costs = 0, colorindex = 2, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Dark Steel",costs = 0, colorindex = 3, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Silver",costs = 0, colorindex = 4, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bluish Silver",costs = 0, colorindex = 5, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Rolled Steel",costs = 0, colorindex = 6, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Shadow Silver",costs = 0, colorindex = 7, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Stone Silver",costs = 0, colorindex = 8, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Midnight Silver",costs = 0, colorindex = 9, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Cast Iron Silver",costs = 0, colorindex = 10, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Red",costs = 0, colorindex = 27, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Torino Red",costs = 0, colorindex = 28, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Formula Red",costs = 0, colorindex = 29, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Lava Red",costs = 0, colorindex = 150, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Blaze Red",costs = 0, colorindex = 30, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Grace Red",costs = 0, colorindex = 31, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Garnet Red",costs = 0, colorindex = 32, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Sunset Red",costs = 0, colorindex = 33, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Cabernet Red",costs = 0, colorindex = 34, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Wine Red",costs = 0, colorindex = 143, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Candy Red",costs = 0, colorindex = 35, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Hot Pink",costs = 0, colorindex = 135, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Pfsiter Pink",costs = 0, colorindex = 137, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Salmon Pink",costs = 0, colorindex = 136, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Sunrise Orange",costs = 0, colorindex = 36, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Orange",costs = 0, colorindex = 38, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bright Orange",costs = 0, colorindex = 138, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Gold",costs = 0, colorindex = 99, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bronze",costs = 0, colorindex = 90, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Yellow",costs = 0, colorindex = 88, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Race Yellow",costs = 0, colorindex = 89, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Dew Yellow",costs = 0, colorindex = 91, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Dark Green",costs = 0, colorindex = 49, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Racing Green",costs = 0, colorindex = 50, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Sea Green",costs = 0, colorindex = 51, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Olive Green",costs = 0, colorindex = 52, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bright Green",costs = 0, colorindex = 53, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Gasoline Green",costs = 0, colorindex = 54, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Lime Green",costs = 0, colorindex = 92, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Midnight Blue",costs = 0, colorindex = 141, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Galaxy Blue",costs = 0, colorindex = 61, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Dark Blue",costs = 0, colorindex = 62, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Saxon Blue",costs = 0, colorindex = 63, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Blue",costs = 0, colorindex = 64, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Mariner Blue",costs = 0, colorindex = 65, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Harbor Blue",costs = 0, colorindex = 66, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Diamond Blue",costs = 0, colorindex = 67, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Surf Blue",costs = 0, colorindex = 68, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Nautical Blue",costs = 0, colorindex = 69, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Racing Blue",costs = 0, colorindex = 73, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Ultra Blue",costs = 0, colorindex = 70, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Light Blue",costs = 0, colorindex = 74, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Chocolate Brown",costs = 0, colorindex = 96, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bison Brown",costs = 0, colorindex = 101, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Creeen Brown",costs = 0, colorindex = 95, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Feltzer Brown",costs = 0, colorindex = 94, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Maple Brown",costs = 0, colorindex = 97, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Beechwood Brown",costs = 0, colorindex = 103, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Sienna Brown",costs = 0, colorindex = 104, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Saddle Brown",costs = 0, colorindex = 98, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Moss Brown",costs = 0, colorindex = 100, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Woodbeech Brown",costs = 0, colorindex = 102, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Straw Brown",costs = 0, colorindex = 99, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Sandy Brown",costs = 0, colorindex = 105, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bleached Brown",costs = 0, colorindex = 106, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Schafter Purple",costs = 0, colorindex = 71, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Spinnaker Purple",costs = 0, colorindex = 72, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Midnight Purple",costs = 0, colorindex = 142, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bright Purple",costs = 0, colorindex = 145, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Cream",costs = 0, colorindex = 107, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Ice White",costs = 0, colorindex = 111, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Frost White",costs = 0, colorindex = 112, description = "", centre = 0, font = 0, scale = 0.4}
+				{name = "Black",costs = 550, colorindex = 0, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Carbon Black",costs = 550, colorindex = 147, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Hraphite",costs = 550, colorindex = 1, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Anhracite Black",costs = 550, colorindex = 11, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Black Steel",costs = 550, colorindex = 2, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Dark Steel",costs = 550, colorindex = 3, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Silver",costs = 550, colorindex = 4, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bluish Silver",costs = 550, colorindex = 5, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Rolled Steel",costs = 550, colorindex = 6, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Shadow Silver",costs = 550, colorindex = 7, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Stone Silver",costs = 550, colorindex = 8, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Midnight Silver",costs = 550, colorindex = 9, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Cast Iron Silver",costs = 550, colorindex = 10, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Red",costs = 550, colorindex = 27, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Torino Red",costs = 550, colorindex = 28, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Formula Red",costs = 550, colorindex = 29, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Lava Red",costs = 550, colorindex = 150, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Blaze Red",costs = 550, colorindex = 30, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Grace Red",costs = 550, colorindex = 31, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Garnet Red",costs = 550, colorindex = 32, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Sunset Red",costs = 550, colorindex = 33, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Cabernet Red",costs = 550, colorindex = 34, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Wine Red",costs = 550, colorindex = 143, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Candy Red",costs = 550, colorindex = 35, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Hot Pink",costs = 550, colorindex = 135, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Pfsiter Pink",costs = 550, colorindex = 137, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Salmon Pink",costs = 550, colorindex = 136, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Sunrise Orange",costs = 550, colorindex = 36, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Orange",costs = 550, colorindex = 38, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bright Orange",costs = 550, colorindex = 138, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Gold",costs = 550, colorindex = 99, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bronze",costs = 550, colorindex = 90, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Yellow",costs = 550, colorindex = 88, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Race Yellow",costs = 550, colorindex = 89, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Dew Yellow",costs = 550, colorindex = 91, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Dark Green",costs = 550, colorindex = 49, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Racing Green",costs = 550, colorindex = 50, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Sea Green",costs = 550, colorindex = 51, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Olive Green",costs = 550, colorindex = 52, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bright Green",costs = 550, colorindex = 53, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Gasoline Green",costs = 550, colorindex = 54, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Lime Green",costs = 550, colorindex = 92, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Midnight Blue",costs = 550, colorindex = 141, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Galaxy Blue",costs = 550, colorindex = 61, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Dark Blue",costs = 550, colorindex = 62, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Saxon Blue",costs = 550, colorindex = 63, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Blue",costs = 550, colorindex = 64, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Mariner Blue",costs = 550, colorindex = 65, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Harbor Blue",costs = 550, colorindex = 66, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Diamond Blue",costs = 550, colorindex = 67, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Surf Blue",costs = 550, colorindex = 68, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Nautical Blue",costs = 550, colorindex = 69, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Racing Blue",costs = 550, colorindex = 73, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Ultra Blue",costs = 550, colorindex = 70, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Light Blue",costs = 550, colorindex = 74, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Chocolate Brown",costs = 550, colorindex = 96, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bison Brown",costs = 550, colorindex = 101, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Creeen Brown",costs = 550, colorindex = 95, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Feltzer Brown",costs = 550, colorindex = 94, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Maple Brown",costs = 550, colorindex = 97, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Beechwood Brown",costs = 550, colorindex = 103, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Sienna Brown",costs = 550, colorindex = 104, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Saddle Brown",costs = 550, colorindex = 98, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Moss Brown",costs = 550, colorindex = 100, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Woodbeech Brown",costs = 550, colorindex = 102, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Straw Brown",costs = 550, colorindex = 99, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Sandy Brown",costs = 550, colorindex = 105, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bleached Brown",costs = 550, colorindex = 106, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Schafter Purple",costs = 550, colorindex = 71, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Spinnaker Purple",costs = 550, colorindex = 72, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Midnight Purple",costs = 550, colorindex = 142, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bright Purple",costs = 550, colorindex = 145, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Cream",costs = 550, colorindex = 107, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Ice White",costs = 550, colorindex = 111, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Frost White",costs = 550, colorindex = 112, description = "", centre = 0, font = 0, scale = 0.4}
 			}
 		},
 		["windows"] = { 
 			title = "windows", 
 			name = "windows",
 			buttons = { 
-				{name = "None",tint = false, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Pure Black",tint = 1, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Darksmoke",tint = 2, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Lightsmoke",tint = 3, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Limo",tint = 4, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Green",tint = 5, costs = 0, description = "", centre = 0, font = 0, scale = 0.4}
+				{name = "None",tint = false, costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Pure Black",tint = 1, costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Darksmoke",tint = 2, costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Lightsmoke",tint = 3, costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Limo",tint = 4, costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Green",tint = 5, costs = 200, description = "", centre = 0, font = 0, scale = 0.4}
 			}
 		},
 		["wheelaccessories"] = { 
 			title = "wheel accessories", 
 			name = "wheelaccessories",
 			buttons = { 
-				{name = "Stock Tires", costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Custom Tires", costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bulletproof Tires", costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "White Tire Smoke", color = {254,254,254}, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Black Tire Smoke", color = {1,1,1}, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Blue Tire Smoke", color = {0,150,255}, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Yellow Tire Smoke", color = {255,255,50}, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Orange Tire Smoke", color = {255,153,51}, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Red Tire Smoke", color = {255,10,10}, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Green Tire Smoke", color = {10,255,10}, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Purple Tire Smoke", color = {153,10,153}, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Pink Tire Smoke", color = {255,102,178}, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Gray Tire Smoke", color = {128,128,128}, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Stock Tires", costs = 350, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Custom Tires", costs = 350, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bulletproof Tires", costs = 350, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "White Tire Smoke", color = {254,254,254}, costs = 350, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Black Tire Smoke", color = {1,1,1}, costs = 350, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Blue Tire Smoke", color = {0,150,255}, costs = 350, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Yellow Tire Smoke", color = {255,255,50}, costs = 350, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Orange Tire Smoke", color = {255,153,51}, costs = 350, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Red Tire Smoke", color = {255,10,10}, costs = 350, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Green Tire Smoke", color = {10,255,10}, costs = 350, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Purple Tire Smoke", color = {153,10,153}, costs = 350, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Pink Tire Smoke", color = {255,102,178}, costs = 350, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Gray Tire Smoke", color = {128,128,128}, costs = 350, description = "", centre = 0, font = 0, scale = 0.4},
 			}
 		},
 		["respray"] = { 
@@ -666,243 +689,243 @@ local lsc = {
 			title = "primary colors", 
 			name = "primaryclassic",
 			buttons = { 
-				{name = "Black",costs = 0, colorindex = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Carbon Black",costs = 0, colorindex = 147, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Hraphite",costs = 0, colorindex = 1, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Anhracite Black",costs = 0, colorindex = 11, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Black Steel",costs = 0, colorindex = 2, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Dark Steel",costs = 0, colorindex = 3, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Silver",costs = 0, colorindex = 4, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bluish Silver",costs = 0, colorindex = 5, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Rolled Steel",costs = 0, colorindex = 6, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Shadow Silver",costs = 0, colorindex = 7, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Stone Silver",costs = 0, colorindex = 8, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Midnight Silver",costs = 0, colorindex = 9, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Cast Iron Silver",costs = 0, colorindex = 10, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Red",costs = 0, colorindex = 27, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Torino Red",costs = 0, colorindex = 28, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Formula Red",costs = 0, colorindex = 29, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Lava Red",costs = 0, colorindex = 150, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Blaze Red",costs = 0, colorindex = 30, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Grace Red",costs = 0, colorindex = 31, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Garnet Red",costs = 0, colorindex = 32, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Sunset Red",costs = 0, colorindex = 33, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Cabernet Red",costs = 0, colorindex = 34, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Wine Red",costs = 0, colorindex = 143, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Candy Red",costs = 0, colorindex = 35, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Hot Pink",costs = 0, colorindex = 135, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Pfsiter Pink",costs = 0, colorindex = 137, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Salmon Pink",costs = 0, colorindex = 136, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Sunrise Orange",costs = 0, colorindex = 36, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Orange",costs = 0, colorindex = 38, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bright Orange",costs = 0, colorindex = 138, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Gold",costs = 0, colorindex = 99, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bronze",costs = 0, colorindex = 90, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Yellow",costs = 0, colorindex = 88, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Race Yellow",costs = 0, colorindex = 89, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Dew Yellow",costs = 0, colorindex = 91, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Dark Green",costs = 0, colorindex = 49, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Racing Green",costs = 0, colorindex = 50, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Sea Green",costs = 0, colorindex = 51, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Olive Green",costs = 0, colorindex = 52, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bright Green",costs = 0, colorindex = 53, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Gasoline Green",costs = 0, colorindex = 54, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Lime Green",costs = 0, colorindex = 92, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Midnight Blue",costs = 0, colorindex = 141, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Galaxy Blue",costs = 0, colorindex = 61, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Dark Blue",costs = 0, colorindex = 62, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Saxon Blue",costs = 0, colorindex = 63, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Blue",costs = 0, colorindex = 64, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Mariner Blue",costs = 0, colorindex = 65, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Harbor Blue",costs = 0, colorindex = 66, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Diamond Blue",costs = 0, colorindex = 67, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Surf Blue",costs = 0, colorindex = 68, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Nautical Blue",costs = 0, colorindex = 69, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Racing Blue",costs = 0, colorindex = 73, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Ultra Blue",costs = 0, colorindex = 70, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Light Blue",costs = 0, colorindex = 74, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Chocolate Brown",costs = 0, colorindex = 96, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bison Brown",costs = 0, colorindex = 101, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Creeen Brown",costs = 0, colorindex = 95, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Feltzer Brown",costs = 0, colorindex = 94, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Maple Brown",costs = 0, colorindex = 97, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Beechwood Brown",costs = 0, colorindex = 103, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Sienna Brown",costs = 0, colorindex = 104, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Saddle Brown",costs = 0, colorindex = 98, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Moss Brown",costs = 0, colorindex = 100, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Woodbeech Brown",costs = 0, colorindex = 102, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Straw Brown",costs = 0, colorindex = 99, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Sandy Brown",costs = 0, colorindex = 105, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bleached Brown",costs = 0, colorindex = 106, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Schafter Purple",costs = 0, colorindex = 71, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Spinnaker Purple",costs = 0, colorindex = 72, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Midnight Purple",costs = 0, colorindex = 142, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bright Purple",costs = 0, colorindex = 145, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Cream",costs = 0, colorindex = 107, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Ice White",costs = 0, colorindex = 111, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Frost White",costs = 0, colorindex = 112, description = "", centre = 0, font = 0, scale = 0.4}
+				{name = "Black",costs = 650, colorindex = 0, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Carbon Black",costs = 650, colorindex = 147, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Hraphite",costs = 650, colorindex = 1, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Anhracite Black",costs = 650, colorindex = 11, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Black Steel",costs = 650, colorindex = 2, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Dark Steel",costs = 650, colorindex = 3, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Silver",costs = 650, colorindex = 4, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bluish Silver",costs = 650, colorindex = 5, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Rolled Steel",costs = 650, colorindex = 6, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Shadow Silver",costs = 650, colorindex = 7, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Stone Silver",costs = 650, colorindex = 8, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Midnight Silver",costs = 650, colorindex = 9, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Cast Iron Silver",costs = 650, colorindex = 10, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Red",costs = 650, colorindex = 27, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Torino Red",costs = 650, colorindex = 28, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Formula Red",costs = 650, colorindex = 29, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Lava Red",costs = 650, colorindex = 150, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Blaze Red",costs = 650, colorindex = 30, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Grace Red",costs = 650, colorindex = 31, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Garnet Red",costs = 650, colorindex = 32, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Sunset Red",costs = 650, colorindex = 33, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Cabernet Red",costs = 650, colorindex = 34, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Wine Red",costs = 650, colorindex = 143, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Candy Red",costs = 650, colorindex = 35, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Hot Pink",costs = 650, colorindex = 135, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Pfsiter Pink",costs = 650, colorindex = 137, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Salmon Pink",costs = 650, colorindex = 136, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Sunrise Orange",costs = 650, colorindex = 36, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Orange",costs = 650, colorindex = 38, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bright Orange",costs = 650, colorindex = 138, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Gold",costs = 650, colorindex = 99, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bronze",costs = 650, colorindex = 90, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Yellow",costs = 650, colorindex = 88, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Race Yellow",costs = 650, colorindex = 89, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Dew Yellow",costs = 650, colorindex = 91, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Dark Green",costs = 650, colorindex = 49, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Racing Green",costs = 650, colorindex = 50, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Sea Green",costs = 650, colorindex = 51, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Olive Green",costs = 650, colorindex = 52, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bright Green",costs = 650, colorindex = 53, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Gasoline Green",costs = 650, colorindex = 54, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Lime Green",costs = 650, colorindex = 92, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Midnight Blue",costs = 650, colorindex = 141, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Galaxy Blue",costs = 650, colorindex = 61, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Dark Blue",costs = 650, colorindex = 62, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Saxon Blue",costs = 650, colorindex = 63, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Blue",costs = 650, colorindex = 64, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Mariner Blue",costs = 650, colorindex = 65, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Harbor Blue",costs = 650, colorindex = 66, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Diamond Blue",costs = 650, colorindex = 67, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Surf Blue",costs = 650, colorindex = 68, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Nautical Blue",costs = 650, colorindex = 69, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Racing Blue",costs = 650, colorindex = 73, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Ultra Blue",costs = 650, colorindex = 70, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Light Blue",costs = 650, colorindex = 74, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Chocolate Brown",costs = 650, colorindex = 96, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bison Brown",costs = 650, colorindex = 101, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Creeen Brown",costs = 650, colorindex = 95, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Feltzer Brown",costs = 650, colorindex = 94, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Maple Brown",costs = 650, colorindex = 97, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Beechwood Brown",costs = 650, colorindex = 103, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Sienna Brown",costs = 650, colorindex = 104, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Saddle Brown",costs = 650, colorindex = 98, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Moss Brown",costs = 650, colorindex = 100, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Woodbeech Brown",costs = 650, colorindex = 102, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Straw Brown",costs = 650, colorindex = 99, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Sandy Brown",costs = 650, colorindex = 105, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bleached Brown",costs = 650, colorindex = 106, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Schafter Purple",costs = 650, colorindex = 71, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Spinnaker Purple",costs = 650, colorindex = 72, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Midnight Purple",costs = 650, colorindex = 142, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bright Purple",costs = 650, colorindex = 145, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Cream",costs = 650, colorindex = 107, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Ice White",costs = 650, colorindex = 111, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Frost White",costs = 650, colorindex = 112, description = "", centre = 0, font = 0, scale = 0.4}
 			}
 		},
 		["secondaryclassic"] = { 
 			title = "secondary colors", 
 			name = "secondaryclassic",
 			buttons = { 
-				{name = "Black",costs = 0, colorindex = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Carbon Black",costs = 0, colorindex = 147, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Hraphite",costs = 0, colorindex = 1, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Anhracite Black",costs = 0, colorindex = 11, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Black Steel",costs = 0, colorindex = 2, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Dark Steel",costs = 0, colorindex = 3, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Silver",costs = 0, colorindex = 4, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bluish Silver",costs = 0, colorindex = 5, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Rolled Steel",costs = 0, colorindex = 6, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Shadow Silver",costs = 0, colorindex = 7, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Stone Silver",costs = 0, colorindex = 8, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Midnight Silver",costs = 0, colorindex = 9, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Cast Iron Silver",costs = 0, colorindex = 10, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Red",costs = 0, colorindex = 27, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Torino Red",costs = 0, colorindex = 28, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Formula Red",costs = 0, colorindex = 29, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Lava Red",costs = 0, colorindex = 150, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Blaze Red",costs = 0, colorindex = 30, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Grace Red",costs = 0, colorindex = 31, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Garnet Red",costs = 0, colorindex = 32, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Sunset Red",costs = 0, colorindex = 33, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Cabernet Red",costs = 0, colorindex = 34, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Wine Red",costs = 0, colorindex = 143, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Candy Red",costs = 0, colorindex = 35, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Hot Pink",costs = 0, colorindex = 135, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Pfsiter Pink",costs = 0, colorindex = 137, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Salmon Pink",costs = 0, colorindex = 136, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Sunrise Orange",costs = 0, colorindex = 36, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Orange",costs = 0, colorindex = 38, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bright Orange",costs = 0, colorindex = 138, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Gold",costs = 0, colorindex = 99, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bronze",costs = 0, colorindex = 90, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Yellow",costs = 0, colorindex = 88, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Race Yellow",costs = 0, colorindex = 89, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Dew Yellow",costs = 0, colorindex = 91, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Dark Green",costs = 0, colorindex = 49, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Racing Green",costs = 0, colorindex = 50, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Sea Green",costs = 0, colorindex = 51, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Olive Green",costs = 0, colorindex = 52, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bright Green",costs = 0, colorindex = 53, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Gasoline Green",costs = 0, colorindex = 54, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Lime Green",costs = 0, colorindex = 92, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Midnight Blue",costs = 0, colorindex = 141, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Galaxy Blue",costs = 0, colorindex = 61, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Dark Blue",costs = 0, colorindex = 62, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Saxon Blue",costs = 0, colorindex = 63, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Blue",costs = 0, colorindex = 64, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Mariner Blue",costs = 0, colorindex = 65, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Harbor Blue",costs = 0, colorindex = 66, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Diamond Blue",costs = 0, colorindex = 67, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Surf Blue",costs = 0, colorindex = 68, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Nautical Blue",costs = 0, colorindex = 69, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Racing Blue",costs = 0, colorindex = 73, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Ultra Blue",costs = 0, colorindex = 70, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Light Blue",costs = 0, colorindex = 74, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Chocolate Brown",costs = 0, colorindex = 96, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bison Brown",costs = 0, colorindex = 101, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Creeen Brown",costs = 0, colorindex = 95, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Feltzer Brown",costs = 0, colorindex = 94, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Maple Brown",costs = 0, colorindex = 97, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Beechwood Brown",costs = 0, colorindex = 103, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Sienna Brown",costs = 0, colorindex = 104, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Saddle Brown",costs = 0, colorindex = 98, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Moss Brown",costs = 0, colorindex = 100, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Woodbeech Brown",costs = 0, colorindex = 102, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Straw Brown",costs = 0, colorindex = 99, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Sandy Brown",costs = 0, colorindex = 105, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bleached Brown",costs = 0, colorindex = 106, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Schafter Purple",costs = 0, colorindex = 71, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Spinnaker Purple",costs = 0, colorindex = 72, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Midnight Purple",costs = 0, colorindex = 142, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bright Purple",costs = 0, colorindex = 145, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Cream",costs = 0, colorindex = 107, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Ice White",costs = 0, colorindex = 111, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Frost White",costs = 0, colorindex = 112, description = "", centre = 0, font = 0, scale = 0.4}
+				{name = "Black",costs = 500, colorindex = 0, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Carbon Black",costs = 500, colorindex = 147, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Hraphite",costs = 500, colorindex = 1, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Anhracite Black",costs = 500, colorindex = 11, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Black Steel",costs = 500, colorindex = 2, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Dark Steel",costs = 500, colorindex = 3, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Silver",costs = 500, colorindex = 4, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bluish Silver",costs = 500, colorindex = 5, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Rolled Steel",costs = 500, colorindex = 6, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Shadow Silver",costs = 500, colorindex = 7, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Stone Silver",costs = 500, colorindex = 8, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Midnight Silver",costs = 500, colorindex = 9, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Cast Iron Silver",costs = 500, colorindex = 10, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Red",costs = 500, colorindex = 27, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Torino Red",costs = 500, colorindex = 28, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Formula Red",costs = 500, colorindex = 29, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Lava Red",costs = 500, colorindex = 150, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Blaze Red",costs = 500, colorindex = 30, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Grace Red",costs = 500, colorindex = 31, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Garnet Red",costs = 500, colorindex = 32, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Sunset Red",costs = 500, colorindex = 33, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Cabernet Red",costs = 500, colorindex = 34, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Wine Red",costs = 500, colorindex = 143, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Candy Red",costs = 500, colorindex = 35, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Hot Pink",costs = 500, colorindex = 135, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Pfsiter Pink",costs = 500, colorindex = 137, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Salmon Pink",costs = 500, colorindex = 136, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Sunrise Orange",costs = 500, colorindex = 36, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Orange",costs = 500, colorindex = 38, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bright Orange",costs = 500, colorindex = 138, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Gold",costs = 500, colorindex = 99, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bronze",costs = 500, colorindex = 90, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Yellow",costs = 500, colorindex = 88, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Race Yellow",costs = 500, colorindex = 89, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Dew Yellow",costs = 500, colorindex = 91, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Dark Green",costs = 500, colorindex = 49, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Racing Green",costs = 500, colorindex = 50, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Sea Green",costs = 500, colorindex = 51, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Olive Green",costs = 500, colorindex = 52, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bright Green",costs = 500, colorindex = 53, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Gasoline Green",costs = 500, colorindex = 54, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Lime Green",costs = 500, colorindex = 92, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Midnight Blue",costs = 500, colorindex = 141, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Galaxy Blue",costs = 500, colorindex = 61, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Dark Blue",costs = 500, colorindex = 62, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Saxon Blue",costs = 500, colorindex = 63, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Blue",costs = 500, colorindex = 64, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Mariner Blue",costs = 500, colorindex = 65, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Harbor Blue",costs = 500, colorindex = 66, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Diamond Blue",costs = 500, colorindex = 67, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Surf Blue",costs = 500, colorindex = 68, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Nautical Blue",costs = 500, colorindex = 69, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Racing Blue",costs = 500, colorindex = 73, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Ultra Blue",costs = 500, colorindex = 70, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Light Blue",costs = 500, colorindex = 74, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Chocolate Brown",costs = 500, colorindex = 96, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bison Brown",costs = 500, colorindex = 101, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Creeen Brown",costs = 500, colorindex = 95, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Feltzer Brown",costs = 500, colorindex = 94, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Maple Brown",costs = 500, colorindex = 97, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Beechwood Brown",costs = 500, colorindex = 103, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Sienna Brown",costs = 500, colorindex = 104, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Saddle Brown",costs = 500, colorindex = 98, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Moss Brown",costs = 500, colorindex = 100, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Woodbeech Brown",costs = 500, colorindex = 102, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Straw Brown",costs = 500, colorindex = 99, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Sandy Brown",costs = 500, colorindex = 105, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bleached Brown",costs = 500, colorindex = 106, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Schafter Purple",costs = 500, colorindex = 71, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Spinnaker Purple",costs = 500, colorindex = 72, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Midnight Purple",costs = 500, colorindex = 142, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bright Purple",costs = 500, colorindex = 145, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Cream",costs = 500, colorindex = 107, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Ice White",costs = 500, colorindex = 111, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Frost White",costs = 500, colorindex = 112, description = "", centre = 0, font = 0, scale = 0.4}
 			}
 		},
 		["pearlescentclassic"] = { 
 			title = "pearlescent colors", 
 			name = "pearlescentclassic",
 			buttons = { 
-				{name = "Black",costs = 0, colorindex = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Carbon Black",costs = 0, colorindex = 147, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Hraphite",costs = 0, colorindex = 1, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Anhracite Black",costs = 0, colorindex = 11, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Black Steel",costs = 0, colorindex = 2, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Dark Steel",costs = 0, colorindex = 3, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Silver",costs = 0, colorindex = 4, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bluish Silver",costs = 0, colorindex = 5, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Rolled Steel",costs = 0, colorindex = 6, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Shadow Silver",costs = 0, colorindex = 7, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Stone Silver",costs = 0, colorindex = 8, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Midnight Silver",costs = 0, colorindex = 9, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Cast Iron Silver",costs = 0, colorindex = 10, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Red",costs = 0, colorindex = 27, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Torino Red",costs = 0, colorindex = 28, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Formula Red",costs = 0, colorindex = 29, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Lava Red",costs = 0, colorindex = 150, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Blaze Red",costs = 0, colorindex = 30, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Grace Red",costs = 0, colorindex = 31, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Garnet Red",costs = 0, colorindex = 32, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Sunset Red",costs = 0, colorindex = 33, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Cabernet Red",costs = 0, colorindex = 34, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Wine Red",costs = 0, colorindex = 143, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Candy Red",costs = 0, colorindex = 35, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Hot Pink",costs = 0, colorindex = 135, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Pfsiter Pink",costs = 0, colorindex = 137, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Salmon Pink",costs = 0, colorindex = 136, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Sunrise Orange",costs = 0, colorindex = 36, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Orange",costs = 0, colorindex = 38, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bright Orange",costs = 0, colorindex = 138, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Gold",costs = 0, colorindex = 99, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bronze",costs = 0, colorindex = 90, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Yellow",costs = 0, colorindex = 88, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Race Yellow",costs = 0, colorindex = 89, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Dew Yellow",costs = 0, colorindex = 91, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Dark Green",costs = 0, colorindex = 49, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Racing Green",costs = 0, colorindex = 50, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Sea Green",costs = 0, colorindex = 51, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Olive Green",costs = 0, colorindex = 52, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bright Green",costs = 0, colorindex = 53, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Gasoline Green",costs = 0, colorindex = 54, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Lime Green",costs = 0, colorindex = 92, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Midnight Blue",costs = 0, colorindex = 141, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Galaxy Blue",costs = 0, colorindex = 61, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Dark Blue",costs = 0, colorindex = 62, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Saxon Blue",costs = 0, colorindex = 63, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Blue",costs = 0, colorindex = 64, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Mariner Blue",costs = 0, colorindex = 65, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Harbor Blue",costs = 0, colorindex = 66, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Diamond Blue",costs = 0, colorindex = 67, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Surf Blue",costs = 0, colorindex = 68, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Nautical Blue",costs = 0, colorindex = 69, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Racing Blue",costs = 0, colorindex = 73, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Ultra Blue",costs = 0, colorindex = 70, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Light Blue",costs = 0, colorindex = 74, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Chocolate Brown",costs = 0, colorindex = 96, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bison Brown",costs = 0, colorindex = 101, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Creeen Brown",costs = 0, colorindex = 95, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Feltzer Brown",costs = 0, colorindex = 94, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Maple Brown",costs = 0, colorindex = 97, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Beechwood Brown",costs = 0, colorindex = 103, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Sienna Brown",costs = 0, colorindex = 104, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Saddle Brown",costs = 0, colorindex = 98, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Moss Brown",costs = 0, colorindex = 100, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Woodbeech Brown",costs = 0, colorindex = 102, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Straw Brown",costs = 0, colorindex = 99, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Sandy Brown",costs = 0, colorindex = 105, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bleached Brown",costs = 0, colorindex = 106, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Schafter Purple",costs = 0, colorindex = 71, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Spinnaker Purple",costs = 0, colorindex = 72, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Midnight Purple",costs = 0, colorindex = 142, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bright Purple",costs = 0, colorindex = 145, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Cream",costs = 0, colorindex = 107, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Ice White",costs = 0, colorindex = 111, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Frost White",costs = 0, colorindex = 112, description = "", centre = 0, font = 0, scale = 0.4}
+				{name = "Black",costs = 300, colorindex = 0, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Carbon Black",costs = 300, colorindex = 147, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Hraphite",costs = 300, colorindex = 1, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Anhracite Black",costs = 300, colorindex = 11, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Black Steel",costs = 300, colorindex = 2, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Dark Steel",costs = 300, colorindex = 3, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Silver",costs = 300, colorindex = 4, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bluish Silver",costs = 300, colorindex = 5, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Rolled Steel",costs = 300, colorindex = 6, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Shadow Silver",costs = 300, colorindex = 7, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Stone Silver",costs = 300, colorindex = 8, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Midnight Silver",costs = 300, colorindex = 9, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Cast Iron Silver",costs = 300, colorindex = 10, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Red",costs = 300, colorindex = 27, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Torino Red",costs = 300, colorindex = 28, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Formula Red",costs = 300, colorindex = 29, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Lava Red",costs = 300, colorindex = 150, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Blaze Red",costs = 300, colorindex = 30, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Grace Red",costs = 300, colorindex = 31, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Garnet Red",costs = 300, colorindex = 32, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Sunset Red",costs = 300, colorindex = 33, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Cabernet Red",costs = 300, colorindex = 34, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Wine Red",costs = 300, colorindex = 143, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Candy Red",costs = 300, colorindex = 35, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Hot Pink",costs = 300, colorindex = 135, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Pfsiter Pink",costs = 300, colorindex = 137, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Salmon Pink",costs = 300, colorindex = 136, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Sunrise Orange",costs = 300, colorindex = 36, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Orange",costs = 300, colorindex = 38, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bright Orange",costs = 300, colorindex = 138, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Gold",costs = 300, colorindex = 99, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bronze",costs = 300, colorindex = 90, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Yellow",costs = 300, colorindex = 88, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Race Yellow",costs = 300, colorindex = 89, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Dew Yellow",costs = 300, colorindex = 91, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Dark Green",costs = 300, colorindex = 49, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Racing Green",costs = 300, colorindex = 50, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Sea Green",costs = 300, colorindex = 51, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Olive Green",costs = 300, colorindex = 52, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bright Green",costs = 300, colorindex = 53, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Gasoline Green",costs = 300, colorindex = 54, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Lime Green",costs = 300, colorindex = 92, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Midnight Blue",costs = 300, colorindex = 141, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Galaxy Blue",costs = 300, colorindex = 61, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Dark Blue",costs = 300, colorindex = 62, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Saxon Blue",costs = 300, colorindex = 63, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Blue",costs = 300, colorindex = 64, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Mariner Blue",costs = 300, colorindex = 65, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Harbor Blue",costs = 300, colorindex = 66, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Diamond Blue",costs = 300, colorindex = 67, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Surf Blue",costs = 300, colorindex = 68, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Nautical Blue",costs = 300, colorindex = 69, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Racing Blue",costs = 300, colorindex = 73, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Ultra Blue",costs = 300, colorindex = 70, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Light Blue",costs = 300, colorindex = 74, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Chocolate Brown",costs = 300, colorindex = 96, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bison Brown",costs = 300, colorindex = 101, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Creeen Brown",costs = 300, colorindex = 95, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Feltzer Brown",costs = 300, colorindex = 94, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Maple Brown",costs = 300, colorindex = 97, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Beechwood Brown",costs = 300, colorindex = 103, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Sienna Brown",costs = 300, colorindex = 104, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Saddle Brown",costs = 300, colorindex = 98, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Moss Brown",costs = 300, colorindex = 100, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Woodbeech Brown",costs = 300, colorindex = 102, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Straw Brown",costs = 300, colorindex = 99, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Sandy Brown",costs = 300, colorindex = 105, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bleached Brown",costs = 300, colorindex = 106, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Schafter Purple",costs = 300, colorindex = 71, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Spinnaker Purple",costs = 300, colorindex = 72, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Midnight Purple",costs = 300, colorindex = 142, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bright Purple",costs = 300, colorindex = 145, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Cream",costs = 300, colorindex = 107, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Ice White",costs = 300, colorindex = 111, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Frost White",costs = 300, colorindex = 112, description = "", centre = 0, font = 0, scale = 0.4}
 			}
 		},
 		["suspension"] = { 
@@ -962,225 +985,225 @@ local lsc = {
 			title = "sport", 
 			name = "sport",
 			buttons = { 
-				{name = "Stock", wtype = false, modtype = 23, mod = -1, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Inferno", wtype = false, modtype = 23, mod = false, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Deepfive", wtype = false, modtype = 23, mod = 1, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Lozspeed", wtype = false, modtype = 23, mod = 2, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Diamondcut", wtype = false, modtype = 23, mod = 3, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Chrono", wtype = false, modtype = 23, mod = 4, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Feroccirr", wtype = false, modtype = 23, mod = 5, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Fiftynine", wtype = false, modtype = 23, mod = 6, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Mercie", wtype = false, modtype = 23, mod = 7, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Syntheticz", wtype = false, modtype = 23, mod = 8, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Organictyped", wtype = false, modtype = 23, mod = 9, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Endov1", wtype = false, modtype = 23, mod = 10, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Duper7", wtype = false, modtype = 23, mod = 11, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Uzer", wtype = false, modtype = 23, mod = 12, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Groundride", wtype = false, modtype = 23, mod = 13, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Spacer", wtype = false, modtype = 23, mod = 14, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Venum", wtype = false, modtype = 23, mod = 15, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Cosmo", wtype = false, modtype = 23, mod = 16, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Dashvip", wtype = false, modtype = 23, mod = 17, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Icekid", wtype = false, modtype = 23, mod = 18, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Ruffeld", wtype = false, modtype = 23, mod = 19, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Wangenmaster", wtype = false, modtype = 23, mod = 20, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Superfive", wtype = false, modtype = 23, mod = 21, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Endov2", wtype = false, modtype = 23, mod = 22, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Slitsix", wtype = false, modtype = 23, mod = 23, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Stock", wtype = false, modtype = 23, mod = -1, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Inferno", wtype = false, modtype = 23, mod = false, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Deepfive", wtype = false, modtype = 23, mod = 1, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Lozspeed", wtype = false, modtype = 23, mod = 2, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Diamondcut", wtype = false, modtype = 23, mod = 3, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Chrono", wtype = false, modtype = 23, mod = 4, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Feroccirr", wtype = false, modtype = 23, mod = 5, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Fiftynine", wtype = false, modtype = 23, mod = 6, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Mercie", wtype = false, modtype = 23, mod = 7, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Syntheticz", wtype = false, modtype = 23, mod = 8, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Organictyped", wtype = false, modtype = 23, mod = 9, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Endov1", wtype = false, modtype = 23, mod = 10, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Duper7", wtype = false, modtype = 23, mod = 11, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Uzer", wtype = false, modtype = 23, mod = 12, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Groundride", wtype = false, modtype = 23, mod = 13, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Spacer", wtype = false, modtype = 23, mod = 14, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Venum", wtype = false, modtype = 23, mod = 15, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Cosmo", wtype = false, modtype = 23, mod = 16, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Dashvip", wtype = false, modtype = 23, mod = 17, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Icekid", wtype = false, modtype = 23, mod = 18, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Ruffeld", wtype = false, modtype = 23, mod = 19, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Wangenmaster", wtype = false, modtype = 23, mod = 20, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Superfive", wtype = false, modtype = 23, mod = 21, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Endov2", wtype = false, modtype = 23, mod = 22, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Slitsix", wtype = false, modtype = 23, mod = 23, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
 			}
 		},
 		["suv"] = { 
 			title = "suv", 
 			name = "suv",
 			buttons = { 
-				{name = "Stock", wtype = 3, modtype = 23, mod = -1, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Vip", wtype = 3, modtype = 23, mod = false, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Benefactor", wtype = 3, modtype = 23, mod = 1, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Cosmo", wtype = 3, modtype = 23, mod = 2, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bippu", wtype = 3, modtype = 23, mod = 3, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Royalsix", wtype = 3, modtype = 23, mod = 4, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Fagorme", wtype = 3, modtype = 23, mod = 5, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Deluxe", wtype = 3, modtype = 23, mod = 6, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Icedout", wtype = 3, modtype = 23, mod = 7, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Cognscenti", wtype = 3, modtype = 23, mod = 8, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Lozspeedten", wtype = 3, modtype = 23, mod = 9, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Supernova", wtype = 3, modtype = 23, mod = 10, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Obeyrs", wtype = 3, modtype = 23, mod = 11, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Lozspeedballer", wtype = 3, modtype = 23, mod = 12, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Extra vaganzo", wtype = 3, modtype = 23, mod = 13, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Splitsix", wtype = 3, modtype = 23, mod = 14, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Empowered", wtype = 3, modtype = 23, mod = 15, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Sunrise", wtype = 3, modtype = 23, mod = 16, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Dashvip", wtype = 3, modtype = 23, mod = 17, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Cutter", wtype = 3, modtype = 23, mod = 18, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Stock", wtype = 3, modtype = 23, mod = -1, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Vip", wtype = 3, modtype = 23, mod = false, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Benefactor", wtype = 3, modtype = 23, mod = 1, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Cosmo", wtype = 3, modtype = 23, mod = 2, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bippu", wtype = 3, modtype = 23, mod = 3, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Royalsix", wtype = 3, modtype = 23, mod = 4, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Fagorme", wtype = 3, modtype = 23, mod = 5, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Deluxe", wtype = 3, modtype = 23, mod = 6, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Icedout", wtype = 3, modtype = 23, mod = 7, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Cognscenti", wtype = 3, modtype = 23, mod = 8, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Lozspeedten", wtype = 3, modtype = 23, mod = 9, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Supernova", wtype = 3, modtype = 23, mod = 10, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Obeyrs", wtype = 3, modtype = 23, mod = 11, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Lozspeedballer", wtype = 3, modtype = 23, mod = 12, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Extra vaganzo", wtype = 3, modtype = 23, mod = 13, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Splitsix", wtype = 3, modtype = 23, mod = 14, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Empowered", wtype = 3, modtype = 23, mod = 15, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Sunrise", wtype = 3, modtype = 23, mod = 16, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Dashvip", wtype = 3, modtype = 23, mod = 17, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Cutter", wtype = 3, modtype = 23, mod = 18, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
 			}
 		},
 		["offroad"] = { 
 			title = "offroad", 
 			name = "offroad",
 			buttons = { 
-				{name = "Stock", wtype = 4, modtype = 23, mod = -1, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Raider", wtype = 4, modtype = 23, mod = false, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Mudslinger", modtype = 23, mod = 1, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Nevis", wtype = 4, modtype = 23, mod = 2, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Cairngorm", wtype = 4, modtype = 23, mod = 3, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Amazon", wtype = 4, modtype = 23, mod = 4, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Challenger", wtype = 4, modtype = 23, mod = 5, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Dunebasher", wtype = 4, modtype = 23, mod = 6, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Fivestar", wtype = 4, modtype = 23, mod = 7, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Rockcrawler", wtype = 4, modtype = 23, mod = 8, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Milspecsteelie", wtype = 4, modtype = 23, mod = 9, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Stock", wtype = 4, modtype = 23, mod = -1, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Raider", wtype = 4, modtype = 23, mod = false, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Mudslinger", modtype = 23, mod = 1, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Nevis", wtype = 4, modtype = 23, mod = 2, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Cairngorm", wtype = 4, modtype = 23, mod = 3, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Amazon", wtype = 4, modtype = 23, mod = 4, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Challenger", wtype = 4, modtype = 23, mod = 5, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Dunebasher", wtype = 4, modtype = 23, mod = 6, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Fivestar", wtype = 4, modtype = 23, mod = 7, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Rockcrawler", wtype = 4, modtype = 23, mod = 8, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Milspecsteelie", wtype = 4, modtype = 23, mod = 9, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
 			}
 		},
 		["tuner"] = { 
 			title = "tuner", 
 			name = "tuner",
 			buttons = { 
-				{name = "Stock", wtype = 5, modtype = 23, mod = -1, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Cosmo", wtype = 5, modtype = 23, mod = false, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Supermesh", wtype = 5, modtype = 23, mod = 1, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Outsider", wtype = 5, modtype = 23, mod = 2, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Rollas", wtype = 5, modtype = 23, mod = 3, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Driffmeister", wtype = 5, modtype = 23, mod = 4, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Slicer", wtype = 5, modtype = 23, mod = 5, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Elquatro", wtype = 5, modtype = 23, mod = 6, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Dubbed", wtype = 5, modtype = 23, mod = 7, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Fivestar", wtype = 5, modtype = 23, mod = 8, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Slideways", wtype = 5, modtype = 23, mod = 9, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Apex", wtype = 5, modtype = 23, mod = 10, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Stancedeg", wtype = 5, modtype = 23, mod = 11, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Countersteer", wtype = 5, modtype = 23, mod = 12, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Endov1", wtype = 5, modtype = 23, mod = 13, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Endov2dish", wtype = 5, modtype = 23, mod = 14, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Guppez", wtype = 5, modtype = 23, mod = 15, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Chokadori", wtype = 5, modtype = 23, mod = 16, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Chicane", wtype = 5, modtype = 23, mod = 17, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Saisoku", wtype = 5, modtype = 23, mod = 18, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Dishedeight", wtype = 5, modtype = 23, mod = 19, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Fujiwara", wtype = 5, modtype = 23, mod = 20, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Zokusha", wtype = 5, modtype = 23, mod = 21, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Battlevill", wtype = 5, modtype = 23, mod = 22, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Rallymaster", wtype = 5, modtype = 23, mod = 23, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Stock", wtype = 5, modtype = 23, mod = -1, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Cosmo", wtype = 5, modtype = 23, mod = false, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Supermesh", wtype = 5, modtype = 23, mod = 1, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Outsider", wtype = 5, modtype = 23, mod = 2, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Rollas", wtype = 5, modtype = 23, mod = 3, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Driffmeister", wtype = 5, modtype = 23, mod = 4, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Slicer", wtype = 5, modtype = 23, mod = 5, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Elquatro", wtype = 5, modtype = 23, mod = 6, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Dubbed", wtype = 5, modtype = 23, mod = 7, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Fivestar", wtype = 5, modtype = 23, mod = 8, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Slideways", wtype = 5, modtype = 23, mod = 9, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Apex", wtype = 5, modtype = 23, mod = 10, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Stancedeg", wtype = 5, modtype = 23, mod = 11, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Countersteer", wtype = 5, modtype = 23, mod = 12, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Endov1", wtype = 5, modtype = 23, mod = 13, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Endov2dish", wtype = 5, modtype = 23, mod = 14, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Guppez", wtype = 5, modtype = 23, mod = 15, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Chokadori", wtype = 5, modtype = 23, mod = 16, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Chicane", wtype = 5, modtype = 23, mod = 17, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Saisoku", wtype = 5, modtype = 23, mod = 18, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Dishedeight", wtype = 5, modtype = 23, mod = 19, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Fujiwara", wtype = 5, modtype = 23, mod = 20, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Zokusha", wtype = 5, modtype = 23, mod = 21, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Battlevill", wtype = 5, modtype = 23, mod = 22, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Rallymaster", wtype = 5, modtype = 23, mod = 23, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
 			}
 		},
 		["highend"] = { 
 			title = "highend", 
 			name = "highend",
 			buttons = { 
-				{name = "Stock", wtype = 7, modtype = 23, mod = -1, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Shadow", wtype = 7, modtype = 23, mod = false, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Hyper", wtype = 7, modtype = 23, mod = 1, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Blade", wtype = 7, modtype = 23, mod = 2, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Diamond", wtype = 7, modtype = 23, mod = 3, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Supagee", wtype = 7, modtype = 23, mod = 4, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Chromaticz", wtype = 7, modtype = 23, mod = 5, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Merciechlip", wtype = 7, modtype = 23, mod = 6, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Obeyrs", wtype = 7, modtype = 23, mod = 7, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Gtchrome", wtype = 7, modtype = 23, mod = 8, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Cheetahr", wtype = 7, modtype = 23, mod = 9, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Solar", wtype = 7, modtype = 23, mod = 10, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Splitten", wtype = 7, modtype = 23, mod = 11, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Dashvip", wtype = 7, modtype = 23, mod = 12, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Lozspeedten", wtype = 7, modtype = 23, mod = 13, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Carboninferno", wtype = 7, modtype = 23, mod = 14, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Carbonshadow", wtype = 7, modtype = 23, mod = 15, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Carbonz", wtype = 7, modtype = 23, mod = 16, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Carbonsolar", wtype = 7, modtype = 23, mod = 17, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Carboncheetahr", wtype = 7, modtype = 23, mod = 18, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Carbonsracer", wtype = 7, modtype = 23, mod = 19, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Stock", wtype = 7, modtype = 23, mod = -1, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Shadow", wtype = 7, modtype = 23, mod = false, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Hyper", wtype = 7, modtype = 23, mod = 1, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Blade", wtype = 7, modtype = 23, mod = 2, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Diamond", wtype = 7, modtype = 23, mod = 3, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Supagee", wtype = 7, modtype = 23, mod = 4, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Chromaticz", wtype = 7, modtype = 23, mod = 5, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Merciechlip", wtype = 7, modtype = 23, mod = 6, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Obeyrs", wtype = 7, modtype = 23, mod = 7, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Gtchrome", wtype = 7, modtype = 23, mod = 8, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Cheetahr", wtype = 7, modtype = 23, mod = 9, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Solar", wtype = 7, modtype = 23, mod = 10, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Splitten", wtype = 7, modtype = 23, mod = 11, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Dashvip", wtype = 7, modtype = 23, mod = 12, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Lozspeedten", wtype = 7, modtype = 23, mod = 13, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Carboninferno", wtype = 7, modtype = 23, mod = 14, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Carbonshadow", wtype = 7, modtype = 23, mod = 15, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Carbonz", wtype = 7, modtype = 23, mod = 16, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Carbonsolar", wtype = 7, modtype = 23, mod = 17, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Carboncheetahr", wtype = 7, modtype = 23, mod = 18, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Carbonsracer", wtype = 7, modtype = 23, mod = 19, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
 			}
 		},
 		["lowrider"] = { 
 			title = "lowrider", 
 			name = "lowrider",
 			buttons = { 
-				{name = "Stock", wtype = 2, modtype = 23, mod = -1, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Flare", wtype = 2, modtype = 23, mod = false, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Wired", wtype = 2, modtype = 23, mod = 1, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Triplegolds", wtype = 2, modtype = 23, mod = 2, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bigworm", wtype = 2, modtype = 23, mod = 3, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Sevenfives", wtype = 2, modtype = 23, mod = 4, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Splitsix", wtype = 2, modtype = 23, mod = 5, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Freshmesh", wtype = 2, modtype = 23, mod = 6, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Leadsled", wtype = 2, modtype = 23, mod = 7, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Turbine", wtype = 2, modtype = 23, mod = 8, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Superfin", wtype = 2, modtype = 23, mod = 9, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Classicrod", wtype = 2, modtype = 23, mod = 10, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Dollar", wtype = 2, modtype = 23, mod = 11, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Dukes", wtype = 2, modtype = 23, mod = 12, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Lowfive", wtype = 2, modtype = 23, mod = 13, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Gooch", wtype = 2, modtype = 23, mod = 14, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Stock", wtype = 2, modtype = 23, mod = -1, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Flare", wtype = 2, modtype = 23, mod = false, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Wired", wtype = 2, modtype = 23, mod = 1, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Triplegolds", wtype = 2, modtype = 23, mod = 2, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bigworm", wtype = 2, modtype = 23, mod = 3, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Sevenfives", wtype = 2, modtype = 23, mod = 4, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Splitsix", wtype = 2, modtype = 23, mod = 5, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Freshmesh", wtype = 2, modtype = 23, mod = 6, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Leadsled", wtype = 2, modtype = 23, mod = 7, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Turbine", wtype = 2, modtype = 23, mod = 8, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Superfin", wtype = 2, modtype = 23, mod = 9, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Classicrod", wtype = 2, modtype = 23, mod = 10, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Dollar", wtype = 2, modtype = 23, mod = 11, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Dukes", wtype = 2, modtype = 23, mod = 12, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Lowfive", wtype = 2, modtype = 23, mod = 13, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Gooch", wtype = 2, modtype = 23, mod = 14, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
 			}
 		},
 		["muscle"] = { 
 			title = "muscle", 
 			name = "muscle",
 			buttons = { 
-				{name = "Stock", wtype = 1, modtype = 23, mod = -1, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Classicfive", wtype = 1, modtype = 23, mod = false, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Dukes", wtype = 1, modtype = 23, mod = 1, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Musclefreak", wtype = 1, modtype = 23, mod = 2, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Kracka", wtype = 1, modtype = 23, mod = 3, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Azrea", wtype = 1, modtype = 23, mod = 4, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Mecha", wtype = 1, modtype = 23, mod = 5, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Blacktop", wtype = 1, modtype = 23, mod = 6, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Dragspl", wtype = 1, modtype = 23, mod = 7, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Revolver", wtype = 1, modtype = 23, mod = 8, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Classicrod", wtype = 1, modtype = 23, mod = 9, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Spooner", wtype = 1, modtype = 23, mod = 10, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Fivestar", wtype = 1, modtype = 23, mod = 11, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Oldschool", wtype = 1, modtype = 23, mod = 12, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Eljefe", wtype = 1, modtype = 23, mod = 13, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Dodman", wtype = 1, modtype = 23, mod = 14, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Sixgun", wtype = 1, modtype = 23, mod = 15, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Mercenary", wtype = 1, modtype = 23, mod = 16, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Stock", wtype = 1, modtype = 23, mod = -1, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Classicfive", wtype = 1, modtype = 23, mod = false, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Dukes", wtype = 1, modtype = 23, mod = 1, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Musclefreak", wtype = 1, modtype = 23, mod = 2, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Kracka", wtype = 1, modtype = 23, mod = 3, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Azrea", wtype = 1, modtype = 23, mod = 4, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Mecha", wtype = 1, modtype = 23, mod = 5, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Blacktop", wtype = 1, modtype = 23, mod = 6, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Dragspl", wtype = 1, modtype = 23, mod = 7, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Revolver", wtype = 1, modtype = 23, mod = 8, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Classicrod", wtype = 1, modtype = 23, mod = 9, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Spooner", wtype = 1, modtype = 23, mod = 10, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Fivestar", wtype = 1, modtype = 23, mod = 11, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Oldschool", wtype = 1, modtype = 23, mod = 12, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Eljefe", wtype = 1, modtype = 23, mod = 13, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Dodman", wtype = 1, modtype = 23, mod = 14, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Sixgun", wtype = 1, modtype = 23, mod = 15, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Mercenary", wtype = 1, modtype = 23, mod = 16, costs = 440, description = "", centre = 0, font = 0, scale = 0.4},
 			}
 		},
 		["frontwheel"] = { 
 			title = "front wheel", 
 			name = "frontwheel",
 			buttons = { 
-				{name = "Stock", wtype = 6, modtype = 23, mod = -1, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Speedway", wtype = 6, modtype = 23, mod = false, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Streetspecial", wtype = 6, modtype = 23, mod = 1, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Racer", wtype = 6, modtype = 23, mod = 2, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Trackstar", wtype = 6, modtype = 23, mod = 3, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Overlord", wtype = 6, modtype = 23, mod = 4, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Trident", wtype = 6, modtype = 23, mod = 5, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Triplethreat", wtype = 6, modtype = 23, mod = 6, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Stilleto", wtype = 6, modtype = 23, mod = 7, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Wires", wtype = 6, modtype = 23, mod = 8, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bobber", wtype = 6, modtype = 23, mod = 9, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Solidus", wtype = 6, modtype = 23, mod = 10, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Iceshield", wtype = 6, modtype = 23, mod = 11, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Loops", wtype = 6, modtype = 23, mod = 12, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Stock", wtype = 6, modtype = 23, mod = -1, costs = 220, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Speedway", wtype = 6, modtype = 23, mod = false, costs = 220, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Streetspecial", wtype = 6, modtype = 23, mod = 1, costs = 220, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Racer", wtype = 6, modtype = 23, mod = 2, costs = 220, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Trackstar", wtype = 6, modtype = 23, mod = 3, costs = 220, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Overlord", wtype = 6, modtype = 23, mod = 4, costs = 220, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Trident", wtype = 6, modtype = 23, mod = 5, costs = 220, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Triplethreat", wtype = 6, modtype = 23, mod = 6, costs = 220, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Stilleto", wtype = 6, modtype = 23, mod = 7, costs = 220, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Wires", wtype = 6, modtype = 23, mod = 8, costs = 220, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bobber", wtype = 6, modtype = 23, mod = 9, costs = 220, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Solidus", wtype = 6, modtype = 23, mod = 10, costs = 220, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Iceshield", wtype = 6, modtype = 23, mod = 11, costs = 220, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Loops", wtype = 6, modtype = 23, mod = 12, costs = 220, description = "", centre = 0, font = 0, scale = 0.4},
 			}
 		},
 		["backwheel"] = { 
 			title = "back wheel", 
 			name = "backwheel",
 			buttons = { 
-				{name = "Stock", wtype = 6, modtype = 24, mod = -1, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Speedway", wtype = 6, modtype = 24, mod = false, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Streetspecial", wtype = 6, modtype = 24, mod = 1, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Racer", wtype = 6, modtype = 24, mod = 2, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Trackstar", wtype = 6, modtype = 24, mod = 3, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Overlord", wtype = 6, modtype = 24, mod = 4, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Trident", wtype = 6, modtype = 24, mod = 5, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Triplethreat", wtype = 6, modtype = 24, mod = 6, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Stilleto", wtype = 6, modtype = 24, mod = 7, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Wires", wtype = 6, modtype = 24, mod = 8, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bobber", wtype = 6, modtype = 24, mod = 9, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Solidus", wtype = 6, modtype = 24, mod = 10, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Iceshield", wtype = 6, modtype = 24, mod = 11, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Loops", wtype = 6, modtype = 24, mod = 12, costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Stock", wtype = 6, modtype = 24, mod = -1, costs = 220, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Speedway", wtype = 6, modtype = 24, mod = false, costs = 220, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Streetspecial", wtype = 6, modtype = 24, mod = 1, costs = 220, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Racer", wtype = 6, modtype = 24, mod = 2, costs = 220, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Trackstar", wtype = 6, modtype = 24, mod = 3, costs = 220, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Overlord", wtype = 6, modtype = 24, mod = 4, costs = 220, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Trident", wtype = 6, modtype = 24, mod = 5, costs = 220, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Triplethreat", wtype = 6, modtype = 24, mod = 6, costs = 220, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Stilleto", wtype = 6, modtype = 24, mod = 7, costs = 220, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Wires", wtype = 6, modtype = 24, mod = 8, costs = 220, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Bobber", wtype = 6, modtype = 24, mod = 9, costs = 220, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Solidus", wtype = 6, modtype = 24, mod = 10, costs = 220, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Iceshield", wtype = 6, modtype = 24, mod = 11, costs = 220, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Loops", wtype = 6, modtype = 24, mod = 12, costs = 220, description = "", centre = 0, font = 0, scale = 0.4},
 			}
 		},["lights"] = { 
 			title = "lights", 
 			name = "lights",
 			buttons = { 
 				{name = "Headlights", description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Neon Kits", description = "", centre = 0, font = 0, scale = 0.4}
+				--{name = "Neon Kits", description = "", centre = 0, font = 0, scale = 0.4}
 			}
 		},
 		["neonkits"] = { 
@@ -1222,39 +1245,40 @@ local lsc = {
 			name = "headlights",
 			buttons = { 
 				{name = "Stock Lights",mod = false, modtype = 22,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Xenon Lights",mod = true,modtype = 22,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				--[[{name = "White Lights",mod = 0,modtype = 22,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Blue Lights",mod = 1,modtype = 22,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Electric Blue Lights",mod = 2,modtype = 22,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Mint Green Lights",mod = 3,modtype = 22,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Lime Green Lights",mod = 4,modtype = 22,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Yellow Lights",mod = 5,modtype = 22,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Golden Shower Lights",mod = 6,modtype = 22,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Orange Lights",mod = 7,modtype = 22,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Red Lights",mod = 8,modtype = 22,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Pony Pink Lights",mod = 9,modtype = 22,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Hot Pink Lights",mod = 10,modtype = 22,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Purple Lights",mod = 11,modtype = 22,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Blacklight Lights",mod = 12,modtype = 22,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},]]--
+				{name = "Xenon Lights",mod = true,modtype = 22,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				--[[{name = "White Lights",mod = 0,modtype = 22,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Blue Lights",mod = 1,modtype = 22,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Electric Blue Lights",mod = 2,modtype = 22,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Mint Green Lights",mod = 3,modtype = 22,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Lime Green Lights",mod = 4,modtype = 22,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Yellow Lights",mod = 5,modtype = 22,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Golden Shower Lights",mod = 6,modtype = 22,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Orange Lights",mod = 7,modtype = 22,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Red Lights",mod = 8,modtype = 22,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Pony Pink Lights",mod = 9,modtype = 22,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Hot Pink Lights",mod = 10,modtype = 22,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Purple Lights",mod = 11,modtype = 22,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Blacklight Lights",mod = 12,modtype = 22,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},]]--
 			}
 		},
 		["plate"] = { 
 			title = "plates", 
 			name = "plate",
 			buttons = { 
-				{name = "Blue on White 1",plateindex = false,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Blue on White 2",plateindex = 3,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Blue on White 3",plateindex = 4,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Yellow on Blue",plateindex = 2,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Yellow on Black",plateindex = 1,costs = 0, description = "", centre = 0, font = 0, scale = 0.4}
+				{name = "Blue on White 1",plateindex = false,costs = 150, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Blue on White 2",plateindex = 3,costs = 150, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Blue on White 3",plateindex = 4,costs = 150, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Yellow on Blue",plateindex = 2,costs = 150, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Yellow on Black",plateindex = 1,costs = 150, description = "", centre = 0, font = 0, scale = 0.4}
 			}
-		},["repair"] = { 
-		title = "CATEGORIES", 
-		name = "repair",
-		buttons = { 
-			{name = "Repair vehicle", description = "Full body repair and engine service.", costs = 0, centre = 0, font = 0, scale = 0.4}
-			
-		}
+		},
+		["repair"] = { 
+			title = "CATEGORIES", 
+			name = "repair",
+			buttons = { 
+				{name = "Repair vehicle", description = "Repareer voertuig", costs = 0, centre = 0, font = 0, scale = 0.4}
+				
+			}
 	},
 	["armor"] = { 
 		title = "armor", 
@@ -1294,42 +1318,42 @@ local lsc = {
 			title = "horns", 
 			name = "horn",
 			buttons = { 
-				{name = "Stock Horn",modtype = 14, mod = -1,costs =0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Truck Horn",modtype = 14, mod = false,costs =0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Police Horn",modtype = 14, mod = 1,costs =0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Clown Horn",modtype = 14, mod = 2,costs =0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Musical Horn 1",modtype = 14, mod = 3,costs =0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Musical Horn 2",modtype = 14, mod = 4,costs =0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Musical Horn 3",modtype = 14, mod = 5,costs =0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Musical Horn 4",modtype = 14, mod = 6,costs =0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Musical Horn 5",modtype = 14, mod = 7,costs =0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Sadtrombone Horn",modtype = 14, mod = 8,costs =0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Calssical Horn 1",modtype = 14, mod = 9,costs =0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Calssical Horn 2",modtype = 14, mod = 10,costs =0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Calssical Horn 3",modtype = 14, mod = 11,costs =0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Calssical Horn 4",modtype = 14, mod = 12,costs =0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Calssical Horn 5",modtype = 14, mod = 13,costs =0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Calssical Horn 6",modtype = 14, mod = 14,costs =0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Calssical Horn 7",modtype = 14, mod = 15,costs =0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Scaledo Horn",modtype = 14, mod = 16,costs =0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Scalere Horn",modtype = 14, mod = 17,costs =0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Scalemi Horn",modtype = 14, mod = 18,costs =0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Scalefa Horn",modtype = 14, mod = 19,costs =0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Scalesol Horn",modtype = 14, mod = 20,costs =0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Scalela Horn",modtype = 14, mod = 21,costs =0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Scaleti Horn",modtype = 14, mod = 22,costs =0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Scaledo Horn High",modtype = 14, mod = 23,costs =0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Jazz Horn 1",modtype = 14, mod = 25,costs =0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Jazz Horn 2",modtype = 14, mod = 26,costs =0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Jazz Horn 3",modtype = 14, mod = 27,costs =0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Jazzloop Horn",modtype = 14, mod = 28,costs =0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Starspangban Horn 1",modtype = 14, mod = 29,costs =0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Starspangban Horn 2",modtype = 14, mod = 30,costs =0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Starspangban Horn 3",modtype = 14, mod = 31,costs =0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Starspangban Horn 4",modtype = 14, mod = 32,costs =0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Classicalloop Horn 1",modtype = 14, mod = 33,costs =0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Classical Horn 8",modtype = 14, mod = 34,costs =0, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Classicalloop Horn 2",modtype = 14, mod = 35,costs =0, description = "", centre = 0, font = 0, scale = 0.4}
+				{name = "Stock Horn",modtype = 14, mod = -1,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Truck Horn",modtype = 14, mod = false,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Police Horn",modtype = 14, mod = 1,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Clown Horn",modtype = 14, mod = 2,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Musical Horn 1",modtype = 14, mod = 3,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Musical Horn 2",modtype = 14, mod = 4,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Musical Horn 3",modtype = 14, mod = 5,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Musical Horn 4",modtype = 14, mod = 6,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Musical Horn 5",modtype = 14, mod = 7,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Sadtrombone Horn",modtype = 14, mod = 8,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Calssical Horn 1",modtype = 14, mod = 9,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Calssical Horn 2",modtype = 14, mod = 10,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Calssical Horn 3",modtype = 14, mod = 11,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Calssical Horn 4",modtype = 14, mod = 12,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Calssical Horn 5",modtype = 14, mod = 13,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Calssical Horn 6",modtype = 14, mod = 14,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Calssical Horn 7",modtype = 14, mod = 15,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Scaledo Horn",modtype = 14, mod = 16,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Scalere Horn",modtype = 14, mod = 17,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Scalemi Horn",modtype = 14, mod = 18,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Scalefa Horn",modtype = 14, mod = 19,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Scalesol Horn",modtype = 14, mod = 20,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Scalela Horn",modtype = 14, mod = 21,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Scaleti Horn",modtype = 14, mod = 22,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Scaledo Horn High",modtype = 14, mod = 23,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Jazz Horn 1",modtype = 14, mod = 25,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Jazz Horn 2",modtype = 14, mod = 26,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Jazz Horn 3",modtype = 14, mod = 27,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Jazzloop Horn",modtype = 14, mod = 28,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Starspangban Horn 1",modtype = 14, mod = 29,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Starspangban Horn 2",modtype = 14, mod = 30,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Starspangban Horn 3",modtype = 14, mod = 31,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Starspangban Horn 4",modtype = 14, mod = 32,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Classicalloop Horn 1",modtype = 14, mod = 33,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Classical Horn 8",modtype = 14, mod = 34,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "Classicalloop Horn 2",modtype = 14, mod = 35,costs = 200, description = "", centre = 0, font = 0, scale = 0.4}
 			}
 		},
 	}
@@ -1459,13 +1483,13 @@ function DriveInGarage()
 			local mod = 1
 			lsc.menu["frontbumper"].buttons = {}
 			if GetNumVehicleMods(veh,mod) ~= nil and GetNumVehicleMods(veh,mod) ~= false then
-				insrt(lsc.menu["frontbumper"].buttons , {name = "None",modtype = mod,costs = 0,mod = -1, description = "", centre = 0, font = 0, scale = 0.4})
+				insrt(lsc.menu["frontbumper"].buttons , {name = "Stock",modtype = mod,costs = 0,mod = -1, description = "", centre = 0, font = 0, scale = 0.4})
 				for i = 0, tonumber(GetNumVehicleMods(veh,mod)) -1 do
 					local lbl = GetModTextLabel(veh,mod,i)
 					if lbl ~= nil then
 						local name = tostring(GetLabelText(lbl))
 						if name ~= "NULL" then
-							insrt(lsc.menu["frontbumper"].buttons, {name = name,modtype = mod,costs = 0,mod = i, description = "", centre = 0, font = 0, scale = 0.4})
+							insrt(lsc.menu["frontbumper"].buttons, {name = name,modtype = mod,costs = 650,mod = i, description = "", centre = 0, font = 0, scale = 0.4})
 						end
 					end
 				end
@@ -1474,13 +1498,13 @@ function DriveInGarage()
 			mod = 2
 			lsc.menu["rearbumper"].buttons = {}
 			if GetNumVehicleMods(veh,mod) ~= nil and GetNumVehicleMods(veh,mod) ~= false then
-				insrt(lsc.menu["rearbumper"].buttons, {name = "None",modtype = mod,costs = 0,mod = -1, description = "", centre = 0, font = 0, scale = 0.4})
+				insrt(lsc.menu["rearbumper"].buttons, {name = "Stock",modtype = mod,costs = 0,mod = -1, description = "", centre = 0, font = 0, scale = 0.4})
 				for i = 0,  tonumber(GetNumVehicleMods(veh,mod)) -1 do
 					local lbl = GetModTextLabel(veh,mod,i)
 					if lbl ~= nil then
 						local name = tostring(GetLabelText(lbl))
 						if name ~= "NULL" then
-							insrt(lsc.menu["rearbumper"].buttons, {name = name,modtype = mod,costs = 0,mod = i, description = "", centre = 0, font = 0, scale = 0.4})
+							insrt(lsc.menu["rearbumper"].buttons, {name = name,modtype = mod,costs = 650,mod = i, description = "", centre = 0, font = 0, scale = 0.4})
 						end
 					end
 				end
@@ -1489,13 +1513,13 @@ function DriveInGarage()
 			SetVehicleModKit(veh,0)	
 			lsc.menu["exhaust"].buttons = {}
 			if GetNumVehicleMods(veh,mod) ~= nil and GetNumVehicleMods(veh,mod) ~= false then
-				insrt(lsc.menu["exhaust"].buttons, {name = "None",modtype = mod,costs = 0,mod = -1, description = "", centre = 0, font = 0, scale = 0.4})
+				insrt(lsc.menu["exhaust"].buttons, {name = "Stock",modtype = mod,costs = 0,mod = -1, description = "", centre = 0, font = 0, scale = 0.4})
 				for i = 0,   tonumber(GetNumVehicleMods(veh,mod)) -1 do
 					local lbl = GetModTextLabel(veh,mod,i)
 					if lbl ~= nil then
 						local name = tostring(GetLabelText(lbl))
 						if name ~= "NULL" then
-							insrt(lsc.menu["exhaust"].buttons, {name = name,modtype = mod,costs = 0,mod = i, description = "", centre = 0, font = 0, scale = 0.4})
+							insrt(lsc.menu["exhaust"].buttons, {name = name,modtype = mod,costs = 750,mod = i, description = "", centre = 0, font = 0, scale = 0.4})
 						end
 					end
 				end		
@@ -1504,13 +1528,13 @@ function DriveInGarage()
 			lsc.menu["fenders"].buttons = {}
 			SetVehicleModKit(veh,0)	
 			if GetNumVehicleMods(veh,mod) ~= nil and GetNumVehicleMods(veh,mod) ~= false then
-				insrt(lsc.menu["fenders"].buttons, {name = "None",modtype = mod,costs = 0,mod = -1, description = "", centre = 0, font = 0, scale = 0.4})
+				insrt(lsc.menu["fenders"].buttons, {name = "Stock",modtype = mod,costs = 0,mod = -1, description = "", centre = 0, font = 0, scale = 0.4})
 				for i = 0,   tonumber(GetNumVehicleMods(veh,mod)) -1 do
 					local lbl = GetModTextLabel(veh,mod,i)
 					if lbl ~= nil then
 						local name = tostring(GetLabelText(lbl))
 						if name ~= "NULL" then
-							insrt(lsc.menu["fenders"].buttons, {name = name,modtype = mod,costs = 0,mod = i, description = "", centre = 0, font = 0, scale = 0.4})
+							insrt(lsc.menu["fenders"].buttons, {name = name,modtype = mod,costs = 300,mod = i, description = "", centre = 0, font = 0, scale = 0.4})
 						end
 					end
 				end	
@@ -1523,7 +1547,7 @@ function DriveInGarage()
 					if lbl ~= nil then
 						local name = tostring(GetLabelText(lbl))
 						if name ~= "NULL" then
-							insrt(lsc.menu["fenders"].buttons, {name = name,modtype = mod,costs = 0,mod = i, description = "", centre = 0, font = 0, scale = 0.4})
+							insrt(lsc.menu["fenders"].buttons, {name = name,modtype = mod,costs = 300,mod = i, description = "", centre = 0, font = 0, scale = 0.4})
 						end
 					end
 				end	
@@ -1532,13 +1556,13 @@ function DriveInGarage()
 			lsc.menu["hood"].buttons = {}
 			SetVehicleModKit(veh,0)	
 			if GetNumVehicleMods(veh,mod) ~= nil and GetNumVehicleMods(veh,mod) ~= false then
-				insrt(lsc.menu["hood"].buttons, {name = "None",modtype = mod,costs = 0,mod = -1, description = "", centre = 0, font = 0, scale = 0.4})
+				insrt(lsc.menu["hood"].buttons, {name = "Stock",modtype = mod,costs = 0,mod = -1, description = "", centre = 0, font = 0, scale = 0.4})
 				for i = 0,    tonumber(GetNumVehicleMods(veh,mod)) -1 do
 					local lbl = GetModTextLabel(veh,mod,i)
 					if lbl ~= nil then
 						local name = tostring(GetLabelText(lbl))
 						if name ~= "NULL" then
-							insrt(lsc.menu["hood"].buttons, {name = name,modtype = mod,costs = 0,mod = i, description = "", centre = 0, font = 0, scale = 0.4})
+							insrt(lsc.menu["hood"].buttons, {name = name,modtype = mod,costs = 500,mod = i, description = "", centre = 0, font = 0, scale = 0.4})
 						end
 					end
 				end	
@@ -1548,13 +1572,13 @@ function DriveInGarage()
 			lsc.menu["rollcage"].buttons = {}
 			SetVehicleModKit(veh,0)	
 			if GetNumVehicleMods(veh,mod) ~= nil and GetNumVehicleMods(veh,mod) ~= false then
-				insrt(lsc.menu["rollcage"].buttons, {name = "None",modtype = mod,costs = 0,mod = -1, description = "", centre = 0, font = 0, scale = 0.4})
+				insrt(lsc.menu["rollcage"].buttons, {name = "Stock",modtype = mod,costs = 0,mod = -1, description = "", centre = 0, font = 0, scale = 0.4})
 				for i = 0,    tonumber(GetNumVehicleMods(veh,mod)) -1 do
 					local lbl = GetModTextLabel(veh,mod,i)
 					if lbl ~= nil then
 						local name = tostring(GetLabelText(lbl))
 						if name ~= "NULL" then
-							insrt(lsc.menu["rollcage"].buttons, {name = name,modtype = mod,costs = 0,mod = i, description = "", centre = 0, font = 0, scale = 0.4})
+							insrt(lsc.menu["rollcage"].buttons, {name = name,modtype = mod,costs = 400,mod = i, description = "", centre = 0, font = 0, scale = 0.4})
 						end
 					end
 				end	
@@ -1564,13 +1588,13 @@ function DriveInGarage()
 			lsc.menu["roof"].buttons = {}
 			SetVehicleModKit(veh,0)	
 			if GetNumVehicleMods(veh,mod) ~= nil and GetNumVehicleMods(veh,mod) ~= false then
-				insrt(lsc.menu["roof"].buttons, {name = "None",modtype = mod,costs = 0,mod = -1, description = "", centre = 0, font = 0, scale = 0.4})
+				insrt(lsc.menu["roof"].buttons, {name = "Stock",modtype = mod,costs = 0,mod = -1, description = "", centre = 0, font = 0, scale = 0.4})
 				for i = 0,    tonumber(GetNumVehicleMods(veh,mod)) -1 do
 					local lbl = GetModTextLabel(veh,mod,i)
 					if lbl ~= nil then
 						local name = tostring(GetLabelText(lbl))
 						if name ~= "NULL" then
-							insrt(lsc.menu["roof"].buttons, {name = name,modtype = mod,costs = 0,mod = i, description = "", centre = 0, font = 0, scale = 0.4})
+							insrt(lsc.menu["roof"].buttons, {name = name,modtype = mod,costs = 550,mod = i, description = "", centre = 0, font = 0, scale = 0.4})
 						end
 					end
 				end	
@@ -1580,13 +1604,13 @@ function DriveInGarage()
 			lsc.menu["skirts"].buttons = {}
 			SetVehicleModKit(veh,0)	
 			if GetNumVehicleMods(veh,mod) ~= nil and GetNumVehicleMods(veh,mod) ~= false then
-				insrt(lsc.menu["skirts"].buttons, {name = "None",modtype = mod,costs = 0,mod = -1, description = "", centre = 0, font = 0, scale = 0.4})
+				insrt(lsc.menu["skirts"].buttons, {name = "Stock",modtype = mod,costs = 0,mod = -1, description = "", centre = 0, font = 0, scale = 0.4})
 				for i = 0,   tonumber(GetNumVehicleMods(veh,mod)) -1 do
 					local lbl = GetModTextLabel(veh,mod,i)
 					if lbl ~= nil then
 						local name = tostring(GetLabelText(lbl))
 						if name ~= "NULL" then
-							insrt(lsc.menu["skirts"].buttons, {name = name,modtype = mod,costs = 0,mod = i, description = "", centre = 0, font = 0, scale = 0.4})
+							insrt(lsc.menu["skirts"].buttons, {name = name,modtype = mod,costs = 330,mod = i, description = "", centre = 0, font = 0, scale = 0.4})
 						end
 					end
 				end	
@@ -1596,13 +1620,13 @@ function DriveInGarage()
 			lsc.menu["spoiler"].buttons = {}
 			SetVehicleModKit(veh,0)	
 			if GetNumVehicleMods(veh,mod) ~= nil and GetNumVehicleMods(veh,mod) ~= false then
-				insrt(lsc.menu["spoiler"].buttons, {name = "None",modtype = mod,costs = 0,mod = -1, description = "", centre = 0, font = 0, scale = 0.4})
+				insrt(lsc.menu["spoiler"].buttons, {name = "Stock",modtype = mod,costs = 0,mod = -1, description = "", centre = 0, font = 0, scale = 0.4})
 				for i = 0,   tonumber(GetNumVehicleMods(veh,mod)) -1 do
 					local lbl = GetModTextLabel(veh,mod,i)
 					if lbl ~= nil then
 						local name = tostring(GetLabelText(lbl))
 						if name ~= "NULL" then
-							insrt(lsc.menu["spoiler"].buttons, {name = name,modtype = mod,costs = 0,mod = i, description = "", centre = 0, font = 0, scale = 0.4})
+							insrt(lsc.menu["spoiler"].buttons, {name = name,modtype = mod,costs = 600,mod = i, description = "", centre = 0, font = 0, scale = 0.4})
 						end
 					end
 				end	
@@ -1612,13 +1636,13 @@ function DriveInGarage()
 			lsc.menu["grille"].buttons = {}
 			SetVehicleModKit(veh,0)
 			if GetNumVehicleMods(veh,mod) ~= nil and GetNumVehicleMods(veh,mod) ~= false then
-				insrt(lsc.menu["grille"].buttons, {name = "None",modtype = mod,costs = 0,mod = -1, description = "", centre = 0, font = 0, scale = 0.4})
+				insrt(lsc.menu["grille"].buttons, {name = "Stock",modtype = mod,costs = 0,mod = -1, description = "", centre = 0, font = 0, scale = 0.4})
 				for i = 0,  tonumber(GetNumVehicleMods(veh,mod)) -1 do
 					local lbl = GetModTextLabel(veh,mod,i)
 					if lbl ~= nil then
 						local name = tostring(GetLabelText(lbl))
 						if name ~= "NULL" then
-							insrt(lsc.menu["grille"].buttons, {name = name,modtype = mod,costs = 0,mod = i, description = "", centre = 0, font = 0, scale = 0.4})
+							insrt(lsc.menu["grille"].buttons, {name = name,modtype = mod,costs = 250,mod = i, description = "", centre = 0, font = 0, scale = 0.4})
 						end
 					end
 				end	
@@ -1628,13 +1652,13 @@ function DriveInGarage()
 			lsc.menu["chassis"].buttons = {}
 			SetVehicleModKit(veh,0)
 			if GetNumVehicleMods(veh,mod) ~= nil and GetNumVehicleMods(veh,mod) ~= false then
-				insrt(lsc.menu["chassis"].buttons, {name = "None",modtype = mod,costs = 0,mod = -1, description = "", centre = 0, font = 0, scale = 0.4})
+				insrt(lsc.menu["chassis"].buttons, {name = "Stock",modtype = mod,costs = 0,mod = -1, description = "", centre = 0, font = 0, scale = 0.4})
 				for i = 0,  tonumber(GetNumVehicleMods(veh,mod)) -1 do
 					local lbl = GetModTextLabel(veh,mod,i)
 					if lbl ~= nil then
 						local name = tostring(GetLabelText(lbl))
 						if name ~= "NULL" then
-							insrt(lsc.menu["chassis"].buttons, {name = name,modtype = mod,costs = 0,mod = i, description = "", centre = 0, font = 0, scale = 0.4})
+							insrt(lsc.menu["chassis"].buttons, {name = name,modtype = mod,costs = 500,mod = i, description = "", centre = 0, font = 0, scale = 0.4})
 						end
 					end
 				end	
@@ -1661,12 +1685,6 @@ function DriveInGarage()
 end
 
 function DriveOutOfGarage(pos)
-	SetStreamedTextureDictAsNoLongerNeeded("mpmissmarkers256")
-	lsc.inside = false
-	local ped = LocalPed()
-	local veh = GetVehiclePedIsUsing(ped)
-	SetEntityCoords(veh,pos.x,pos.y,pos.z)
-	SetEntityHeading(veh,pos.heading)
 	lsc.menu["frontbumper"].buttons = {}
 	lsc.menu["rearbumper"].buttons = {}
 	lsc.menu["exhaust"].buttons = {}
@@ -1685,14 +1703,33 @@ function DriveOutOfGarage(pos)
 	lsc.menu.from = 1
 	lsc.menu.to = 10
 	lsc.selectedbutton = 1
-	SetVehicleOnGroundProperly(veh)
-	SetEntityCollision(veh,true,true)
-	FreezeEntityPosition(veh, false)
-	SetVehicleDoorsLocked(veh,0)
-	SetPlayerInvincible(GetPlayerIndex(),false)
-	SetEntityInvincible(veh,false)
-	--TriggerServerEvent('lockGarage',false,lsc.currentgarage)
 	lsc.currentgarage = 0
+	lsc.inside = false
+
+	isBusy = true
+
+	QBCore.Functions.Progressbar("vehicletune_editvehicle", "Bezig met voertuig..", (editCount * 500), false, true, {
+		disableMovement = true,
+		disableCarMovement = true,
+		disableMouse = false,
+		disableCombat = true,
+	}, {}, {}, {}, function() -- Done
+		SetStreamedTextureDictAsNoLongerNeeded("mpmissmarkers256")
+		isBusy = false
+		local ped = LocalPed()
+		local veh = GetVehiclePedIsUsing(ped)
+		SetEntityCoords(veh,pos.x,pos.y,pos.z)
+		SetEntityHeading(veh,pos.heading)
+		SetVehicleOnGroundProperly(veh)
+		SetEntityCollision(veh,true,true)
+		FreezeEntityPosition(veh, false)
+		SetVehicleDoorsLocked(veh,0)
+		SetPlayerInvincible(GetPlayerIndex(),false)
+		SetEntityInvincible(veh,false)
+
+		TriggerServerEvent("vehicletuning:server:SaveVehicleProps", QBCore.Functions.GetVehicleProperties(veh))
+		--TriggerServerEvent('lockGarage',false,lsc.currentgarage)
+	end)
 end
 
 function drawTxt(text,font,centre,x,y,scale,r,g,b,a)
@@ -1733,7 +1770,7 @@ end
 function drawMenuCost(button,x,y,selected)
 	SetTextFont(2)
 	SetTextProportional(0)
-	SetTextScale(0.35, 0.35)
+	SetTextScale(0.5, 0.5)
 	if selected then
 		SetTextColour(0, 0, 0, 255)
 	else
@@ -1745,21 +1782,21 @@ function drawMenuCost(button,x,y,selected)
 	else
 		AddTextComponentString(button.costs)
 	end
-	DrawText(x + lsc.menu.width/2 - 0.035, y - lsc.menu.height/2 + 0.0028)	
+	DrawText(x + lsc.menu.width/2 - 0.045, y - lsc.menu.height/2 + 0.0028)	
 end
 
 function drawMenuOwned(x,y,selected)
 	SetTextFont(2)
 	SetTextProportional(0)
-	SetTextScale(0.35, 0.35)
+	SetTextScale(0.5, 0.5)
 	if selected then
 		SetTextColour(0, 0, 0, 255)
 	else
 		SetTextColour(255, 255, 255, 255)
 	end
 	SetTextEntry("STRING")
-	AddTextComponentString("owned")
-	DrawText(x + lsc.menu.width/2 - 0.035, y - lsc.menu.height/2 + 0.0028)	
+	AddTextComponentString("gekocht")
+	DrawText(x + lsc.menu.width/2 - 0.045, y - lsc.menu.height/2 + 0.0028)	
 end
 
 function drawMenuTitle(txt,x,y)
@@ -1782,7 +1819,7 @@ local horn = ''
 Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(0)
-		if lsc ~= nil and lsc.inside == false then
+		if lsc ~= nil and lsc.inside == false and not isBusy then
 			local ped = LocalPed()
 			if IsPedSittingInAnyVehicle(ped) then
 				local veh = GetVehiclePedIsUsing(ped)
@@ -1800,6 +1837,8 @@ Citizen.CreateThread(function()
 									lsc.currentpos = pos
 									lsc.currentgarage = i
 									DriveInGarage()
+									LoadPrices()
+									editCount = 0
 								end
 							else
 								drawTxt("~r~Locked, please wait",4,1,0.5,0.8,1.0,255,255,255,255)
@@ -2065,7 +2104,27 @@ Citizen.CreateThread(function()
 							end
 							if selected and IsControlJustPressed(1,201) then
 								PlaySound(-1, "NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0, 0, 1)
-								ButtonSelected(button)
+								
+								if button.costs ~= nil then
+									if button.costs ~= 0 then
+										QBCore.Functions.GetPlayerData(function(PlayerData)
+											local cash = PlayerData.money["cash"]
+											local bank = PlayerData.money["bank"]
+											if cash >= button.costs or bank >= button.costs then
+												editCount = editCount + 1
+												TriggerServerEvent("vehicletuning:server:BuyUpgrade", button.costs)
+												TriggerServerEvent("InteractSound_SV:PlayOnSource", "airwrench", 0.1)
+												ButtonSelected(button)
+											else
+												QBCore.Functions.Notify("Je hebt niet genoeg geld!", "error")
+											end
+										end)
+									else
+										ButtonSelected(button)
+									end
+								else
+									ButtonSelected(button)
+								end
 							end
 						end
 					end
@@ -2434,7 +2493,6 @@ end
 
 
 function Back()
-	print(lsc.selectedbutton)
 	if backlock then
 		return
 	end
@@ -2523,6 +2581,7 @@ function Back()
 end
 
 Citizen.CreateThread(function() 
+	Citizen.Wait(5600)
 	for _, item in pairs(lsc.locations) do
 		item.blip = AddBlipForCoord(item.inside.x,item.inside.y,item.inside.z)
 		SetBlipSprite(item.blip, 72)
@@ -2628,6 +2687,52 @@ function RepairVehicle(vehicle)
 			SetVehicleDoorShut(vehicle, 4, false)
 		end
 	end)
+end
+
+function LoadPrices()
+	lsc.menu["engine"].buttons[1].costs = CalculateUpgradePrice(8620)
+	lsc.menu["engine"].buttons[2].costs = CalculateUpgradePrice(11050)
+	lsc.menu["engine"].buttons[3].costs = CalculateUpgradePrice(18600)
+	lsc.menu["engine"].buttons[4].costs = CalculateUpgradePrice(23550)
+
+	lsc.menu["suspension"].buttons[1].costs = 0
+	lsc.menu["suspension"].buttons[2].costs = CalculateUpgradePrice(1500)
+	lsc.menu["suspension"].buttons[3].costs = CalculateUpgradePrice(1500)
+	lsc.menu["suspension"].buttons[4].costs = CalculateUpgradePrice(1770)
+	lsc.menu["suspension"].buttons[5].costs = CalculateUpgradePrice(1900)
+
+	lsc.menu["brakes"].buttons[1].costs = 0
+	lsc.menu["brakes"].buttons[2].costs = CalculateUpgradePrice(3650)
+	lsc.menu["brakes"].buttons[3].costs = CalculateUpgradePrice(5500)
+	lsc.menu["brakes"].buttons[4].costs = CalculateUpgradePrice(6969)
+
+	lsc.menu["transmission"].buttons[1].costs = 0
+	lsc.menu["transmission"].buttons[2].costs = CalculateUpgradePrice(4550)
+	lsc.menu["transmission"].buttons[3].costs = CalculateUpgradePrice(5000)
+	lsc.menu["transmission"].buttons[4].costs = CalculateUpgradePrice(6780)
+
+	lsc.menu["armor"].buttons[1].costs = 0
+	lsc.menu["armor"].buttons[2].costs = CalculateUpgradePrice(1450)
+	lsc.menu["armor"].buttons[3].costs = CalculateUpgradePrice(1975)
+	lsc.menu["armor"].buttons[4].costs = CalculateUpgradePrice(2360)
+	lsc.menu["armor"].buttons[5].costs = CalculateUpgradePrice(3540)
+	lsc.menu["armor"].buttons[6].costs = CalculateUpgradePrice(5320)
+
+	lsc.menu["turbo"].buttons[1].costs = 0
+	lsc.menu["turbo"].buttons[2].costs = CalculateUpgradePrice(5580)
+	lsc.menu["repair"].buttons[1].costs = CalculateRepair()
+end
+
+function round(num, numDecimalPlaces)
+	return tonumber(string.format("%." .. (numDecimalPlaces or 0) .. "f", num))
+end
+
+function format_thousand(v)
+    local s = string.format("%d", math.floor(v))
+    local pos = string.len(s) % 3
+    if pos == 0 then pos = 3 end
+    return string.sub(s, 1, pos)
+            .. string.gsub(string.sub(s, pos+1), "(...)", ".%1")
 end
 
 function IsBackEngine(vehModel)

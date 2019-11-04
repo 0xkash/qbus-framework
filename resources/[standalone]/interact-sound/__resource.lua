@@ -22,4 +22,5 @@ files {
     'client/html/sounds/carunbuckle.ogg',
     'client/html/sounds/lock.ogg',
     'client/html/sounds/unlock.ogg',
+    'client/html/sounds/airwrench.ogg',
 }

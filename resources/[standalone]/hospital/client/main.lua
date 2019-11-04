@@ -187,7 +187,6 @@ Citizen.CreateThread(function()
             if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["checking"].x, Config.Locations["checking"].y, Config.Locations["checking"].z, true) < 7.5) then
                 if not doctorsSet then
                     QBCore.Functions.TriggerCallback('hospital:GetDoctors', function(result)
-                        print("Doctors: " .. result)
                         doctorCount = result
                         doctorsSet = true
                     end)
@@ -413,7 +412,6 @@ function DoLimbAlert()
             else
                 limbDamageMsg = "Je hebt pijn op veel plekken.."
             end
-            print(limbDamageMsg)
             QBCore.Functions.Notify(limbDamageMsg, "primary", 5000)
         end
     end
