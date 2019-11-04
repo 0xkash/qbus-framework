@@ -15,7 +15,7 @@ local closesthouse = nil
 local hasKey = false
 local isOwned = false
 
-local isLoggedIn = false
+local isLoggedIn = true
 local contractOpen = false
 
 local cam = nil
@@ -392,7 +392,7 @@ function enterOwnedHouse(house)
     Citizen.Wait(500)
     SetRainFxIntensity(0.0)
     TriggerEvent('qb-weathersync:client:DisableSync')
-    -- TriggerEvent('tb-weed:client:getHousePlants', closesthouse)
+    TriggerEvent('qb-weed:client:getHousePlants', house)
     Citizen.Wait(100)
     SetWeatherTypePersist('EXTRASUNNY')
     SetWeatherTypeNow('EXTRASUNNY')
@@ -419,6 +419,7 @@ function leaveOwnedHouse(house)
         SetEntityCoords(GetPlayerPed(-1), Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z + 0.5)
         SetEntityHeading(GetPlayerPed(-1), Config.Houses[closesthouse].coords.enter.h)
         inside = false
+        TriggerEvent('qb-weed:client:leaveHouse')
     end)
 end
 
@@ -437,7 +438,7 @@ function enterNonOwnedHouse(house)
     Citizen.Wait(500)
     SetRainFxIntensity(0.0)
     TriggerEvent('qb-weathersync:client:DisableSync')
-    -- TriggerEvent('tb-weed:client:getHousePlants', house)
+    TriggerEvent('qb-weed:client:getHousePlants', house)
     Citizen.Wait(100)
     SetWeatherTypePersist('EXTRASUNNY')
     SetWeatherTypeNow('EXTRASUNNY')
@@ -459,6 +460,7 @@ function leaveNonOwnedHouse(house)
         SetEntityCoords(GetPlayerPed(-1), Config.Houses[house].coords.enter.x, Config.Houses[house].coords.enter.y, Config.Houses[house].coords.enter.z + 0.5)
         SetEntityHeading(GetPlayerPed(-1), Config.Houses[house].coords.enter.h)
         inOwned = false
+        TriggerEvent('qb-weed:client:leaveHouse')
     end)
 end
 

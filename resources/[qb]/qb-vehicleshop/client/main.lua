@@ -10,7 +10,7 @@ Keys = {
 }
 
 QBCore = nil
-isLoggedIn = false
+isLoggedIn = true
 
 Citizen.CreateThread(function() 
     while true do
@@ -35,6 +35,11 @@ shopVehicles = {
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+    isLoggedIn = true
+end)
+
+Citizen.CreateThread(function()
+    Citizen.Wait(1000)
     for k, v in pairs(QBCore.Shared.Vehicles) do
         if QBCore.Shared.Vehicles[k]["category"] == "coupes" then
             -- if QBCore.Shared.Vehicles[k]["shop"] == "pdm" then
@@ -60,7 +65,6 @@ AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
             -- end
         end
     end
-    isLoggedIn = true
 end)
 
 function openVehicleShop(bool)
