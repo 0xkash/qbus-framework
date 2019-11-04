@@ -1,6 +1,17 @@
 QBCore = nil
 TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 
+RegisterServerEvent("clothes:server:PayClothes")
+AddEventHandler('clothes:server:PayClothes', function()
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    if Player.Functions.RemoveMoney("cash", 100) then
+        -- :)
+    elseif Player.Functions.RemoveMoney("bank", 100) then
+        -- :)
+    end
+end)
+
 RegisterServerEvent("clothes:saveSkin")
 AddEventHandler('clothes:saveSkin', function(model, skin)
     local src = source

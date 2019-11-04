@@ -153,12 +153,20 @@ Citizen.CreateThread(function()
 end)
 
 Citizen.CreateThread(function()
+    local blip = AddBlipForCoord(Config.Locations["checking"].x, Config.Locations["checking"].y, Config.Locations["checking"].z)
+    SetBlipSprite(blip, 61)
+    SetBlipAsShortRange(blip, true)
+    SetBlipScale(blip, 0.8)
+    SetBlipColour(blip, 25)
+    BeginTextCommandSetBlipName("STRING")
+    AddTextComponentString("Pillbox Ziekenhuis")
+    EndTextCommandSetBlipName(blip)
     while true do
         Citizen.Wait(7)
         if QBCore ~= nil then
             local pos = GetEntityCoords(GetPlayerPed(-1))
             if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["checking"].x, Config.Locations["checking"].y, Config.Locations["checking"].z, true) < 1.5) then
-                QBCore.Functions.DrawText3D(Config.Locations["checking"].x, Config.Locations["checking"].y, Config.Locations["checking"].z, "~g~E~w~ - Om in te checken")
+                QBCore.Functions.DrawText3D(Config.Locations["checking"].x, Config.Locations["checking"].y, Config.Locations["checking"].z, "~g~E~w~ - Inchecken")
                 if IsControlJustReleased(0, Keys["E"]) then
                     TriggerEvent('animations:client:EmoteCommandStart', {"notepad"})
                     QBCore.Functions.Progressbar("hospital_checkin", "Inchecken..", 2000, false, true, {
@@ -178,6 +186,30 @@ Citizen.CreateThread(function()
                 QBCore.Functions.DrawText3D(Config.Locations["checking"].x, Config.Locations["checking"].y, Config.Locations["checking"].z, "Inchecken")
             end
 
+            if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["clothing"].x, Config.Locations["clothing"].y, Config.Locations["clothing"].z, true) < 5) then
+                QBCore.Functions.GetPlayerData(function(PlayerData)
+                    if PlayerData.job.name == "doctor" or PlayerData.job.name == "ambulance" then
+                        if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["clothing"].x, Config.Locations["clothing"].y, Config.Locations["clothing"].z, true) < 1.5) then
+                            QBCore.Functions.DrawText3D(Config.Locations["clothing"].x, Config.Locations["clothing"].y, Config.Locations["clothing"].z, "~g~E~w~ - Omkleden | ~g~H~w~ - Outfit opslaan | ~g~G~w~ - Outfits")
+                            if IsControlJustReleased(0, Keys["E"]) then
+                                if PlayerData.charinfo.gender == 0 then
+                                    TriggerEvent("maleclothesstart", false)
+                                else
+                                    TriggerEvent("femaleclothesstart", false)
+                                end
+                                DoScreenFadeIn(50)
+                            elseif IsControlJustPressed(0, Keys["G"]) then
+                                MenuOutfits()
+                                Menu.hidden = not Menu.hidden
+                            end
+                            Menu.renderGUI()
+                        elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["clothing"].x, Config.Locations["clothing"].y, Config.Locations["clothing"].z, true) < 4.5) then
+                            QBCore.Functions.DrawText3D(Config.Locations["clothing"].x, Config.Locations["clothing"].y, Config.Locations["clothing"].z, "Omkleden")
+                        end  
+                    end
+                end)
+            end
+            
             if closestBed ~= nil and not isInHospitalBed then
                 if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["beds"][closestBed].x, Config.Locations["beds"][closestBed].y, Config.Locations["beds"][closestBed].z, true) < 1.5) then
                     QBCore.Functions.DrawText3D(Config.Locations["beds"][closestBed].x, Config.Locations["beds"][closestBed].y, Config.Locations["beds"][closestBed].z + 0.3, "~g~E~w~ - Om in bed te liggen")
@@ -471,6 +503,69 @@ function LeaveBed()
     bedObject = nil
     bedOccupyingData = nil
     isInHospitalBed = false
+end
+
+function MenuOutfits()
+    ped = GetPlayerPed(-1);
+    MenuTitle = "Outfits"
+    ClearMenu()
+    Menu.addButton("Mijn Outfits", "OutfitsLijst", nil)
+    Menu.addButton("Sluit Menu", "closeMenuFull", nil) 
+end
+
+function changeOutfit()
+	Wait(200)
+    loadAnimDict("clothingshirt")    	
+	TaskPlayAnim(GetPlayerPed(-1), "clothingshirt", "try_shirt_positive_d", 8.0, 1.0, -1, 49, 0, 0, 0, 0)
+	Wait(3100)
+	TaskPlayAnim(GetPlayerPed(-1), "clothingshirt", "exit", 8.0, 1.0, -1, 49, 0, 0, 0, 0)
+end
+
+function OutfitsLijst()
+    QBCore.Functions.TriggerCallback('apartments:GetOutfits', function(outfits)
+        ped = GetPlayerPed(-1);
+        MenuTitle = "My Outfits :"
+        ClearMenu()
+
+        if outfits == nil then
+            QBCore.Functions.Notify("Je hebt geen outfits opgeslagen...", "error", 3500)
+            closeMenuFull()
+        else
+            for k, v in pairs(outfits) do
+                Menu.addButton(outfits[k].outfitname, "optionMenu", outfits[k]) 
+            end
+        end
+        Menu.addButton("Terug", "MenuOutfits",nil)
+    end)
+end
+
+function optionMenu(outfitData)
+    ped = GetPlayerPed(-1);
+    MenuTitle = "What now?"
+    ClearMenu()
+
+    Menu.addButton("Kies Outfit", "selectOutfit", outfitData) 
+    Menu.addButton("Verwijder Outfit", "removeOutfit", outfitData) 
+    Menu.addButton("Terug", "OutfitsLijst",nil)
+end
+
+function selectOutfit(oData)
+    TriggerServerEvent('clothes:selectOutfit', oData.model, oData.skin)
+    QBCore.Functions.Notify(oData.outfitname.." gekozen", "success", 2500)
+    closeMenuFull()
+    changeOutfit()
+end
+
+function removeOutfit(oData)
+    TriggerServerEvent('clothes:removeOutfit', oData.outfitname)
+    QBCore.Functions.Notify(oData.outfitname.." is verwijderd", "success", 2500)
+    closeMenuFull()
+end
+
+function closeMenuFull()
+    Menu.hidden = true
+    currentGarage = nil
+    ClearMenu()
 end
 
 function loadAnimDict(dict)

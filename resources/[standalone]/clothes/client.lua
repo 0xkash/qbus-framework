@@ -71,13 +71,23 @@ isCop = false
 isEms = false
 isJudge = false
 
-function startClothes()
+function startClothes(hasToPay)
 	cmenu.show = 1
 	cmenu.row = 1
 	cmenu.field = 1
 	text_in = 0
 	if firstChar then
 		TriggerEvent("doIntroCam")
+	elseif hasToPay then
+		QBCore.Functions.GetPlayerData(function(PlayerData)
+			local cashBalance = PlayerData.money["cash"]
+			local cashBalance = PlayerData.money["bank"]
+			if cashBalance >= 100 or cashBalance >= 100 then
+				TriggerServerEvent("clothes:server:PayClothes")
+			else
+				QBCore.Functions.Notify("Je hebt niet genoeg geld! (€100,-)")
+			end
+		end)
 	end
 end
 
@@ -761,6 +771,11 @@ function invisCheck()
 	EndFindPed(handle)
 end
 
+RegisterNetEvent("clothes:client:OpenMenu")
+AddEventHandler("clothes:client:OpenMenu", function(hasToPay)
+	startClothes(hasToPay)
+end)
+
 RegisterNetEvent("doIntroCam")
 AddEventHandler("doIntroCam", function()
 	local spinning = true
@@ -836,9 +851,9 @@ AddEventHandler("clothes:loadSkin", function(new, model, data)
 			QBCore.Functions.GetPlayerData(function(PlayerData)
 				firstChar = true
 				if PlayerData.charinfo.gender == 0 then
-					TriggerEvent("maleclothesstart")
+					TriggerEvent("maleclothesstart", true)
 				else
-					TriggerEvent("femaleclothesstart")
+					TriggerEvent("femaleclothesstart", true)
 				end
 				DoScreenFadeIn(50)
 			end)
@@ -1133,15 +1148,15 @@ PedModels = {
 }
 
 RegisterNetEvent('femaleclothesstart')
-AddEventHandler('femaleclothesstart', function()
+AddEventHandler('femaleclothesstart', function(hasToPay)
 	selected_skins = frm_skins
-	startClothes()
+	startClothes(hasToPay)
 end)
 
 RegisterNetEvent('maleclothesstart')
-AddEventHandler('maleclothesstart', function()
+AddEventHandler('maleclothesstart', function(hasToPay)
 	selected_skins = fr_skins
-	startClothes()
+	startClothes(hasToPay)
 end)
 
 Citizen.CreateThread(function()
@@ -1166,9 +1181,9 @@ Citizen.CreateThread(function()
 				clothingbad()
 				QBCore.Functions.GetPlayerData(function(PlayerData)
 					if PlayerData.charinfo.gender == 0 then
-						TriggerEvent("maleclothesstart")
+						TriggerEvent("maleclothesstart", true)
 					else
-						TriggerEvent("femaleclothesstart")
+						TriggerEvent("femaleclothesstart", true)
 					end
 					DoScreenFadeIn(50)
 				end)
