@@ -20,4 +20,5 @@ client_scripts {
 	"client/recoil.lua",
 	"client/trunk.lua",
 	"client/removeentities.lua",
+	"client/crouchprone.lua",
 }
