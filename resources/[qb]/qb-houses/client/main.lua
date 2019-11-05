@@ -21,6 +21,9 @@ local contractOpen = false
 local cam = nil
 local viewCam = false
 
+local CurrentDoorBell = 0
+local rangDoorbell = nil
+
 QBCore = nil
 
 Citizen.CreateThread(function() 
@@ -156,6 +159,16 @@ Citizen.CreateThread(function()
                 end
             end
 
+
+            if CurrentDoorBell ~= 0 then
+                if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.enter.x + POIOffsets.exit.x, Config.Houses[closesthouse].coords.enter.y + POIOffsets.exit.y, Config.Houses[closesthouse].coords.enter.z - 25 + POIOffsets.exit.z, true) < 1.5)then
+                    DrawText3Ds(Config.Houses[closesthouse].coords.enter.x + POIOffsets.exit.x, Config.Houses[closesthouse].coords.enter.y + POIOffsets.exit.y, Config.Houses[closesthouse].coords.enter.z - 25 + POIOffsets.exit.z + 0.35, '~g~G~w~ - Om deur open te doen')
+                    if IsControlJustPressed(0, Keys["G"]) then
+                        TriggerServerEvent("qb-houses:server:OpenDoor", CurrentDoorBell, closesthouse)
+                        CurrentDoorBell = 0
+                    end
+                end
+            end
             -- EXIT HOUSE
             if inside then
                 if not entering then
@@ -243,7 +256,10 @@ Citizen.CreateThread(function()
                                     enterNonOwnedHouse(closesthouse)
                                 end
                             else
-                                DrawText3Ds(Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z + 1.2, 'De deur is ~r~vergrendeld')
+                                DrawText3Ds(Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z + 1.2, 'De deur is ~r~vergrendeld / ~g~G~w~ - Aanbellen')
+                                if IsControlJustPressed(0, Keys["G"]) then
+                                    TriggerServerEvent('qb-houses:server:RingDoor', closesthouse)
+                                end
                             end
                         end
                     elseif inOwned then
@@ -256,20 +272,14 @@ Citizen.CreateThread(function()
 
                         -- STASH
                         local StashObject = nil
-                        if(GetDistanceBetweenCoords(pos, 894.17, -617.66, 34.54, true) < 1.5)then
-                            DrawText3Ds(894.17, -617.66, 34.54, '[~g~E~w~] Stash')
+                        if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.enter.x - POIOffsets.stash.x, Config.Houses[closesthouse].coords.enter.y - POIOffsets.stash.y, Config.Houses[closesthouse].coords.enter.z - 25 + POIOffsets.stash.z, true) < 1.5)then
+                            DrawText3Ds(Config.Houses[closesthouse].coords.enter.x - POIOffsets.stash.x, Config.Houses[closesthouse].coords.enter.y - POIOffsets.stash.y, Config.Houses[closesthouse].coords.enter.z - 25 + POIOffsets.stash.z, '~g~E~w~ - Stash')
                             if IsControlJustPressed(0, Keys["E"]) then
                                 TriggerEvent("inventory:client:SetCurrentStash", closesthouse)
                                 TriggerServerEvent("inventory:server:OpenInventory", "stash", closesthouse)
                             end
-                        elseif(GetDistanceBetweenCoords(pos, 894.17, -617.66, 34.54, true) < 30)then
-                            if not DoesEntityExist(SafeObject) then
-                                local stashModel = GetHashKey("v_res_tre_bedsidetable")
-                                StashObject = CreateObject(stashModel, 349.4877, -1007.531, -100.1697, false, false, false)
-                                FreezeEntityPosition(StashObject, true)
-                                SetEntityHeading(StashObject, -90.0)
-                            end
-                            DrawText3Ds(894.17, -617.66, 34.54, 'Stash')
+                        elseif(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.enter.x - POIOffsets.stash.x, Config.Houses[closesthouse].coords.enter.y - POIOffsets.stash.y, Config.Houses[closesthouse].coords.enter.z - 25 + POIOffsets.stash.z, true) < 3)then
+                            DrawText3Ds(Config.Houses[closesthouse].coords.enter.x - POIOffsets.stash.x, Config.Houses[closesthouse].coords.enter.y - POIOffsets.stash.y, Config.Houses[closesthouse].coords.enter.z - 25 + POIOffsets.stash.z, 'Stash')
                         end
                     end
                 end
@@ -284,6 +294,28 @@ function openHouseAnim()
     Citizen.Wait(400)
     ClearPedTasks(GetPlayerPed(-1))
 end
+
+RegisterNetEvent('qb-houses:client:RingDoor')
+AddEventHandler('qb-houses:client:RingDoor', function(player, house)
+    if closesthouse == house and inside then
+        CurrentDoorBell = player
+        TriggerServerEvent("InteractSound_SV:PlayOnSource", "doorbell", 0.1)
+        QBCore.Functions.Notify("Iemand belt aan de deur!")
+    end
+end)
+
+RegisterNetEvent('qb-houses:client:SpawnInApartment')
+AddEventHandler('qb-houses:client:SpawnInApartment', function(house)
+    local pos = GetEntityCoords(GetPlayerPed(-1))
+    if rangDoorbell ~= nil then
+        if(GetDistanceBetweenCoords(pos, Config.Houses[house].coords.enter.x, Config.Houses[house].coords.enter.y, Config.Houses[house].coords.enter.z, true) > 5)then
+            return
+        end
+    end
+    closesthouse = house
+    enterNonOwnedHouse(house)
+    inOwned = false
+end)
 
 function loadAnimDict(dict)
     while (not HasAnimDictLoaded(dict)) do

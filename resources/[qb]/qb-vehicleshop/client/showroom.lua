@@ -63,8 +63,10 @@ vehshop = {
 	}
 }
 
+
 Citizen.CreateThread(function()
-    Citizen.Wait(1000)
+    Citizen.Wait(1500)
+
     for i = 1, #shopVehicles["coupes"], 1 do
         table.insert(vehshop.menu["coupes"].buttons, {
             name = shopVehicles["coupes"][i]["name"],

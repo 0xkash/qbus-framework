@@ -193,6 +193,8 @@ RadialMenu.prototype.getIndexOffset = function () {
 RadialMenu.prototype.createMenu = function (classValue, levelItems, nested) {
     var self = this;
 
+    var menuItems = 0;
+
     self.levelItems = levelItems;
 
     self.sectorCount = Math.max(self.levelItems.length, MIN_SECTORS);
@@ -205,9 +207,29 @@ RadialMenu.prototype.createMenu = function (classValue, levelItems, nested) {
     svg.setAttribute('height', self.size);
 
     var angleStep   = 360 / self.sectorCount;
-    var angleShift  = angleStep / 2 + 241;
+    var angleShift
 
-    console.log()
+    for(i = 1; i < self.levelItems.length; i++) {
+        menuItems = i
+    }
+
+    if (menuItems + 1 == 1) {
+        angleShift = angleStep / 2 + 241;
+    } else if (menuItems + 1 == 2) {
+        angleShift = angleStep / 2 + 241;
+    } else if (menuItems + 1 == 3) {
+        angleShift = angleStep / 2 + 241;
+    } else if (menuItems + 1 == 4) {
+        angleShift = angleStep / 2 + 135;
+    } else if (menuItems + 1 == 5) {
+        angleShift = angleStep / 2 + 145;
+    } else if (menuItems + 1 == 6) {
+        angleShift = angleStep / 2 + 241;
+    } else if (menuItems + 1 == 7) {
+        angleShift = angleStep / 2 + 241;
+    } else {
+        angleShift = angleStep / 2 + 241;
+    }
 
     var indexOffset = self.getIndexOffset();
 

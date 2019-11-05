@@ -33,6 +33,13 @@ shopVehicles = {
     ["sports"] = {},
 }
 
+vehicleCategorys = {
+    "coupes",
+    "sedans",
+    "super",
+    "sports",
+}
+
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     isLoggedIn = true
@@ -41,30 +48,14 @@ end)
 Citizen.CreateThread(function()
     Citizen.Wait(1000)
     for k, v in pairs(QBCore.Shared.Vehicles) do
-        if QBCore.Shared.Vehicles[k]["category"] == "coupes" then
-            -- if QBCore.Shared.Vehicles[k]["shop"] == "pdm" then
-                table.insert(shopVehicles["coupes"], QBCore.Shared.Vehicles[k])
-            -- end
-        end
-        
-        if QBCore.Shared.Vehicles[k]["category"] == "sedans" then
-            -- if QBCore.Shared.Vehicles[k]["shop"] == "pdm" then
-                table.insert(shopVehicles["sedans"], QBCore.Shared.Vehicles[k])
-            -- end
-        end
-        
-        if QBCore.Shared.Vehicles[k]["category"] == "super" then
-            -- if QBCore.Shared.Vehicles[k]["shop"] == "pdm" then
-                table.insert(shopVehicles["super"], QBCore.Shared.Vehicles[k])
-            -- end
-        end
-        
-        if QBCore.Shared.Vehicles[k]["category"] == "sports" then
-            -- if QBCore.Shared.Vehicles[k]["shop"] == "pdm" then
-                table.insert(shopVehicles["sports"], QBCore.Shared.Vehicles[k])
-            -- end
+        for _, category in pairs(vehicleCategorys) do
+            if QBCore.Shared.Vehicles[k]["category"] == category then
+                table.insert(shopVehicles[category], QBCore.Shared.Vehicles[k])
+            end
         end
     end
+    Citizen.Wait(1000)
+    setupShowroomVehicles()
 end)
 
 function openVehicleShop(bool)

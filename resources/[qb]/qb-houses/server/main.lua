@@ -126,6 +126,21 @@ Citizen.CreateThread(function()
 	end
 end)
 
+RegisterServerEvent('qb-houses:server:OpenDoor')
+AddEventHandler('qb-houses:server:OpenDoor', function(target, house)
+    local src = source
+    local OtherPlayer = QBCore.Functions.GetPlayer(target)
+    if OtherPlayer ~= nil then
+        TriggerClientEvent('qb-houses:client:SpawnInApartment', OtherPlayer.PlayerData.source, house)
+    end
+end)
+
+RegisterServerEvent('qb-houses:server:RingDoor')
+AddEventHandler('qb-houses:server:RingDoor', function(house)
+    local src = source
+    TriggerClientEvent('qb-houses:client:RingDoor', -1, src, house)
+end)
+
 QBCore.Functions.CreateCallback('qb-houses:server:getHouseKeys', function(source, cb)
 	local src = source
 	local pData = QBCore.Functions.GetPlayer(src)

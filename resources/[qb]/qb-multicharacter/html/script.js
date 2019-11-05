@@ -1,6 +1,6 @@
 var selectedChar = null;
 qbMultiCharacters = {}
-// $('.container').hide();
+$('.container').hide();
 
 $(document).ready(function (){
     window.addEventListener('message', function (event) {
