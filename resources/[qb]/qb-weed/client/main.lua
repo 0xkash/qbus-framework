@@ -109,20 +109,55 @@ Citizen.CreateThread(function()
                     local plyDistance = GetDistanceBetweenCoords(GetEntityCoords(ped), plantData["plantCoords"]["x"], plantData["plantCoords"]["y"], plantData["plantCoords"]["z"], false)
 
                     if plyDistance < 1.0 then
-                        if plantData["health"] > 0 then
+                        if plantData["plantStats"]["health"] > 0 then
                             if plantData["plantStage"] ~= plantData["plantStats"]["highestStage"] then
                                 QBWeed.DrawText3Ds(plantData["plantCoords"]["x"], plantData["plantCoords"]["y"], plantData["plantCoords"]["z"], 'Soort: '..plantData["plantSort"]["label"]..'~w~ ['..plantData["plantStats"]["gender"]..'] | Voeding: ~b~'..plantData["plantStats"]["food"]..'% ~w~ | Gezondheid: ~b~'..plantData["plantStats"]["health"]..'%')
                             else
                                 QBWeed.DrawText3Ds(plantData["plantCoords"]["x"], plantData["plantCoords"]["y"], plantData["plantCoords"]["z"] + 0.2, 'De plant is volgroeid ~g~E~w~ om te oogsten..')
                                 QBWeed.DrawText3Ds(plantData["plantCoords"]["x"], plantData["plantCoords"]["y"], plantData["plantCoords"]["z"], 'Soort: ~g~'..plantData["plantSort"]["label"]..'~w~ ['..plantData["plantStats"]["gender"]..'] | Voeding: ~b~'..plantData["plantStats"]["food"]..'% ~w~ | Gezondheid: ~b~'..plantData["plantStats"]["health"]..'%')
                                 if IsControlJustPressed(0, QBWeed.Keys["E"]) then
-                                    print('snorkel sletje')
+                                    QBCore.Functions.Progressbar("remove_weed_plant", "Plant aan het oogsten..", 8000, false, true, {
+                                        disableMovement = true,
+                                        disableCarMovement = true,
+                                        disableMouse = false,
+                                        disableCombat = true,
+                                    }, {
+                                        animDict = "amb@world_human_gardener_plant@male@base",
+                                        anim = "base",
+                                        flags = 16,
+                                    }, {}, {}, function() -- Done
+                                        ClearPedTasks(ped)
+                                        if plantData["plantStats"]["gender"] == "M" then
+                                            amount = math.random(1, 5)
+                                        else
+                                            amount = math.random(3, 8)
+                                        end
+                                        TriggerServerEvent('qb-weed:server:harvestPlant', currentHouse, amount, plantData["plantSort"]["name"], plantData["plantStats"]["plantId"])
+                                    end, function() -- Cancel
+                                        ClearPedTasks(ped)
+                                        QBCore.Functions.Notify("Proces geannuleerd..", "error")
+                                    end)
                                 end
                             end
-                        elseif plantData["health"] == 0 then
+                        elseif plantData["plantStats"]["health"] == 0 then
                             QBWeed.DrawText3Ds(plantData["plantCoords"]["x"], plantData["plantCoords"]["y"], plantData["plantCoords"]["z"], 'De plant is dood, ~r~E~w~ - Om plant weg te halen..')
                             if IsControlJustPressed(0, QBWeed.Keys["E"]) then
-                                TriggerServerEvent('qb-weed:server:removeDeathPlant', currentHouse, plantData["plantStats"]["plantId"])
+                                QBCore.Functions.Progressbar("remove_weed_plant", "Plant aan het weghalen..", 8000, false, true, {
+                                    disableMovement = true,
+                                    disableCarMovement = true,
+                                    disableMouse = false,
+                                    disableCombat = true,
+                                }, {
+                                    animDict = "amb@world_human_gardener_plant@male@base",
+                                    anim = "base",
+                                    flags = 16,
+                                }, {}, {}, function() -- Done
+                                    ClearPedTasks(ped)
+                                    TriggerServerEvent('qb-weed:server:removeDeathPlant', currentHouse, plantData["plantStats"]["plantId"])
+                                end, function() -- Cancel
+                                    ClearPedTasks(ped)
+                                    QBCore.Functions.Notify("Proces geannuleerd..", "error")
+                                end)
                             end
                         end
                     end
@@ -178,18 +213,92 @@ function loadAnimDict(dict)
 end
 
 RegisterNetEvent('qb-weed:client:placePlant')
-AddEventHandler('qb-weed:client:placePlant', function(type)
+AddEventHandler('qb-weed:client:placePlant', function(type, item)
     local ped = GetPlayerPed(-1)
     local plyCoords = GetOffsetFromEntityInWorldCoords(ped, 0, 0.75, 0)
     local plantData = {
         ["plantCoords"] = {["x"] = plyCoords.x, ["y"] = plyCoords.y, ["z"] = plyCoords.z},
         ["plantModel"] = QBWeed.Plants[type]["stages"]["stage-a"],
+        ["plantLabel"] = QBWeed.Plants[type]["label"]
     }
 
-    plantObject = CreateObject(plantData["plantModel"], plantData["plantCoords"]["x"], plantData["plantCoords"]["y"], plantData["plantCoords"]["z"], false, false, false)
-    FreezeEntityPosition(plantObject, true)
-    SetEntityAsMissionEntity(plantObject, false, false)
-    PlaceObjectOnGroundProperly(plantObject)
+    QBCore.Functions.Progressbar("plant_weed_plant", "Bezig met planten..", 8000, false, true, {
+        disableMovement = true,
+        disableCarMovement = true,
+        disableMouse = false,
+        disableCombat = true,
+    }, {
+        animDict = "amb@world_human_gardener_plant@male@base",
+        anim = "base",
+        flags = 16,
+    }, {}, {}, function() -- Done
+        ClearPedTasks(ped)
+        plantObject = CreateObject(plantData["plantModel"], plantData["plantCoords"]["x"], plantData["plantCoords"]["y"], plantData["plantCoords"]["z"], false, false, false)
+        FreezeEntityPosition(plantObject, true)
+        SetEntityAsMissionEntity(plantObject, false, false)
+        PlaceObjectOnGroundProperly(plantObject)
+    
+        TriggerServerEvent('qb-weed:server:placePlant', currentHouse, json.encode(plantData["plantCoords"]), type)
+        TriggerServerEvent('qb-weed:server:removeSeed', item.slot, type)
+    end, function() -- Cancel
+        ClearPedTasks(ped)
+        QBCore.Functions.Notify("Proces geannuleerd..", "error")
+    end)
+end)
 
-    TriggerServerEvent('qb-weed:server:placePlant', currentHouse, json.encode(plantData["plantCoords"]), type)
+RegisterNetEvent('qb-weed:client:foodPlant')
+AddEventHandler('qb-weed:client:foodPlant', function(item)
+    if currentHouse ~= nil then
+        for k, v in pairs(housePlants[currentHouse]) do
+            local ped = GetPlayerPed(-1)
+            local gender = "M"
+            if housePlants[currentHouse][k].gender == "woman" then gender = "V" end
+            local plantData = {
+                ["plantCoords"] = {["x"] = json.decode(housePlants[currentHouse][k].coords).x, ["y"] = json.decode(housePlants[currentHouse][k].coords).y, ["z"] = json.decode(housePlants[currentHouse][k].coords).z},
+                ["plantStage"] = housePlants[currentHouse][k].stage,
+                ["plantProp"] = GetHashKey(QBWeed.Plants[housePlants[currentHouse][k].sort]["stages"][housePlants[currentHouse][k].stage]),
+                ["plantSort"] = {
+                    ["name"] = housePlants[currentHouse][k].sort,
+                    ["label"] = QBWeed.Plants[housePlants[currentHouse][k].sort]["label"],
+                },
+                ["plantStats"] = {
+                    ["food"] = housePlants[currentHouse][k].food,
+                    ["health"] = housePlants[currentHouse][k].health,
+                    ["progress"] = housePlants[currentHouse][k].progress,
+                    ["stage"] = housePlants[currentHouse][k].stage,
+                    ["highestStage"] = QBWeed.Plants[housePlants[currentHouse][k].sort]["highestStage"],
+                    ["gender"] = gender,
+                    ["plantId"] = housePlants[currentHouse][k].plantid,
+                }
+            }
+
+            local plyDistance = GetDistanceBetweenCoords(GetEntityCoords(ped), plantData["plantCoords"]["x"], plantData["plantCoords"]["y"], plantData["plantCoords"]["z"], false)
+
+            if plyDistance < 1.2 then
+                if plantData["plantStats"]["food"] == 100 then
+                    QBCore.Functions.Notify('De plant heeft geen voeding nodig..', 'error', 3500)
+                else
+                    QBCore.Functions.Progressbar("plant_weed_plant", "Plant aan het voeden..", 8000, false, true, {
+                        disableMovement = true,
+                        disableCarMovement = true,
+                        disableMouse = false,
+                        disableCombat = true,
+                    }, {
+                        animDict = "timetable@gardener@filling_can",
+                        anim = "gar_ig_5_filling_can",
+                        flags = 16,
+                    }, {}, {}, function() -- Done
+                        ClearPedTasks(ped)
+                        local newFood = math.random(10, 25)
+                        TriggerServerEvent('qb-weed:server:foodPlant', currentHouse, newFood, plantData["plantSort"]["name"], plantData["plantStats"]["plantId"])
+                    end, function() -- Cancel
+                        ClearPedTasks(ped)
+                        QBCore.Functions.Notify("Proces geannuleerd..", "error")
+                    end)
+                end
+            else    
+                QBCore.Functions.Notify('Er is geen plant in de buurt..', 'error', 3500)
+            end
+        end
+    end
 end)
