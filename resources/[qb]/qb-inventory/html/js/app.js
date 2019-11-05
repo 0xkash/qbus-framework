@@ -15,30 +15,63 @@ $(document).on('keydown', function() {
 });
 
 var disableRightMouse = false;
+var selectedItem = null;
 
 $(document).on("contextmenu", ".item-slot", function(e){
     // $(".item-slot").css("border", "1px solid rgba(255, 255, 255, 0.1)")
     if (disableRightMouse == false) {
-        if ($(".ply-hotbar-inventory").css("display") === "block")  {
-            $(this).css("border", "1px solid rgba(177, 36, 36, 0.5)")
-            $(".ply-hotbar-inventory").fadeOut(250);
-            $(".ply-iteminfo-container").fadeIn(250);
-            disableRightMouse = true;
-            setTimeout(function(){
-                $(".ply-hotbar-inventory").css("display", "none");
-                $(".ply-iteminfo-container").css("display", "block");
-                disableRightMouse = false;
-            }, 500)
+        if (selectedItem == null) {
+            if ($(".ply-hotbar-inventory").css("display") === "block")  {
+                $(this).css("border", "1px solid rgba(177, 36, 36, 0.5)")
+                $(".ply-hotbar-inventory").fadeOut(250);
+                $(".ply-iteminfo-container").fadeIn(250);
+                disableRightMouse = true;
+                selectedItem = this;
+                setTimeout(function(){
+                    $(".ply-hotbar-inventory").css("display", "none");
+                    $(".ply-iteminfo-container").css("display", "block");
+                    disableRightMouse = false;
+                }, 500)
+            } else {
+                $(this).css("border", "1px solid rgba(255, 255, 255, 0.1)")
+                $(".ply-hotbar-inventory").fadeIn(250);
+                $(".ply-iteminfo-container").fadeOut(250);
+                disableRightMouse = true;
+                selectedItem = null;
+                setTimeout(function(){
+                    $(".ply-hotbar-inventory").css("display", "block");
+                    $(".ply-iteminfo-container").css("display", "none");
+                    disableRightMouse = false;
+                }, 500)
+            }
         } else {
-            $(this).css("border", "1px solid rgba(255, 255, 255, 0.1)")
-            $(".ply-hotbar-inventory").fadeIn(250);
-            $(".ply-iteminfo-container").fadeOut(250);
-            disableRightMouse = true;
-            setTimeout(function(){
-                $(".ply-hotbar-inventory").css("display", "block");
-                $(".ply-iteminfo-container").css("display", "none");
-                disableRightMouse = false;
-            }, 500)
+            $(selectedItem).css("border", "1px solid rgba(255, 255, 255, 0.1)")
+            $(this).css("border", "1px solid rgba(177, 36, 36, 0.5)")
+            if (selectedItem == this) {
+                if ($(".ply-iteminfo-container").css("display") === "block")  {
+                    $(this).css("border", "1px solid rgba(255, 255, 255, 0.1)")
+                    $(".ply-hotbar-inventory").fadeIn(250);
+                    $(".ply-iteminfo-container").fadeOut(250);
+                    disableRightMouse = true;
+                    selectedItem = null;
+                    setTimeout(function(){
+                        $(".ply-hotbar-inventory").css("display", "block");
+                        $(".ply-iteminfo-container").css("display", "none");
+                        disableRightMouse = false;
+                    }, 500)
+                }
+            } else {
+                $(this).css("border", "1px solid rgba(177, 36, 36, 0.5)")
+                $(".ply-hotbar-inventory").fadeOut(250);
+                $(".ply-iteminfo-container").fadeIn(250);
+                disableRightMouse = true;
+                selectedItem = this;
+                setTimeout(function(){
+                    $(".ply-hotbar-inventory").css("display", "none");
+                    $(".ply-iteminfo-container").css("display", "block");
+                    disableRightMouse = false;
+                }, 500)
+            }
         }
     }
 
@@ -52,6 +85,7 @@ $(document).on("contextmenu", ".item-slot", function(e){
             if (itemData.info.gender == 1) {
                 gender = "Vrouw";
             }
+            $(".item-info-title").html('<p>'+itemData.label+'</p>')
             $(".item-info-description").html('<p><strong>BSN: </strong><span>' + itemData.info.citizenid + '</span></p><p><strong>Voornaam: </strong><span>' + itemData.info.firstname + '</span></p><p><strong>Achternaam: </strong><span>' + itemData.info.lastname + '</span></p><p><strong>Geboortedatum: </strong><span>' + itemData.info.birthdate + '</span></p><p><strong>Geslacht: </strong><span>' + gender + '</span></p><p><strong>Nationaliteit: </strong><span>' + itemData.info.nationality + '</span></p>')
         }
     } else {
