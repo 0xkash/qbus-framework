@@ -7,9 +7,7 @@ AddEventHandler('police:server:CuffPlayer', function(playerId)
     local Player = QBCore.Functions.GetPlayer(source)
     local CuffedPlayer = QBCore.Functions.GetPlayer(playerId)
     if CuffedPlayer ~= nil then
-        if Player.Functions.GetItemByName("handcuffs") ~= nil then
-            TriggerClientEvent("police:server:GetCuffed", CuffedPlayer.PlayerData.source, Player.PlayerData.source, isSoftcuff)
-        end
+        TriggerClientEvent("police:server:GetCuffed", CuffedPlayer.PlayerData.source, Player.PlayerData.source, isSoftcuff)
     end
 end)
 
