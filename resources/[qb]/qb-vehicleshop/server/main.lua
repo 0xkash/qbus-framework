@@ -64,7 +64,7 @@ function GeneratePlate()
         end
         return plate
     end)
-    return plate
+    return plate:upper()
 end
 
 function GetRandomNumber(length)

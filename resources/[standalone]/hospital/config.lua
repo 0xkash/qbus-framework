@@ -3,6 +3,9 @@ Config = {}
 Config.Locations = {
     ["checking"] = { x = 308.474, y = -596.023, z = 43.291, h = 0.0},
     ["clothing"]= { x = 337.961, y = -588.181, z = 43.326, h = 0.0},
+    ["duty"]= { x = 339.277, y = -586.611, z = 43.322, h = 0.0},
+    ["vehicle"] = { x = 294.578, y = -574.761, z = 43.179, h = 35.792},
+    ["vehicledown"] = { x = 364.565, y = -591.97, z = 28.68, h = 336.130},
     ["beds"] = {
         [1] = { x = 356.73, y = -585.71, z = 43.11, h = -20.0, taken = false, model = 1631638868 },
         [2] = { x = 360.51, y = -586.66, z = 43.11, h = -20.0, taken = false, model = -1091386327 },
@@ -17,6 +20,11 @@ Config.Locations = {
         [11] = { x = 350.80, y = -591.72, z = 43.11, h = 160.0, taken = false, model = 2117668672 },
         [12] = { x = 346.89, y = -591.01, z = 42.58, h = 160.0, taken = false, model = 2117668672 },
     }
+}
+
+Config.Vehicles = {
+    ["ambulance"] = "Ambulance",
+    ["firetruck"] = "Brandweer",
 }
 
 Config.DeathTime = 300
@@ -43,8 +51,8 @@ Config.ArmorDamage = 5
     ForceInjury : Maximum amount of damage a player can take before limb damage & effects are forced to occur
 ]]
 Config.MaxInjuryChanceMulti = 3
-Config.ForceInjury = 45
-Config.AlwaysBleedChance = 35
+Config.ForceInjury = 35
+Config.AlwaysBleedChance = 100
 
 --[[
     Message Timer : How long it will take to display limb/bleed message
@@ -110,7 +118,7 @@ Config.MajorArmoredBleedChance = 45
 --[[
     DamgeMinorToMajor : How much damage would have to be applied for a minor weapon to be considered a major damage event. Put this at 100 if you want to disable it
 ]]
-Config.DamageMinorToMajor = 45
+Config.DamageMinorToMajor = 35
 
 --[[
     AlertShowInfo : 

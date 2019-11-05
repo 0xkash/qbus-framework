@@ -79,6 +79,8 @@ function setupSubItems()
     QBCore.Functions.GetPlayerData(function(PlayerData)
         if Config.JobInteractions[PlayerData.job.name] ~= nil then
             Config.MenuItems[4].items = Config.JobInteractions[PlayerData.job.name]
+        else 
+            Config.MenuItems[4].items = {}
         end
     end)
 end
