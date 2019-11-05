@@ -97,9 +97,6 @@ Citizen.CreateThread(function()
             model = shopVehicles["sports"][i]["model"]
         })
     end
-
-    Citizen.Wait(1000)
-    print(json.encode(vehshop.menu["sports"].buttons))
 end)
 
 function drawMenuButton(button,x,y,selected)

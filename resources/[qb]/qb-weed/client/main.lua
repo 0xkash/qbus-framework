@@ -102,19 +102,27 @@ Citizen.CreateThread(function()
                             ["stage"] = housePlants[currentHouse][k].stage,
                             ["highestStage"] = QBWeed.Plants[housePlants[currentHouse][k].sort]["highestStage"],
                             ["gender"] = gender,
+                            ["plantId"] = housePlants[currentHouse][k].plantid,
                         }
                     }
 
                     local plyDistance = GetDistanceBetweenCoords(GetEntityCoords(ped), plantData["plantCoords"]["x"], plantData["plantCoords"]["y"], plantData["plantCoords"]["z"], false)
 
                     if plyDistance < 1.0 then
-                        if plantData["plantStage"] ~= plantData["plantStats"]["highestStage"] then
-                            QBWeed.DrawText3Ds(plantData["plantCoords"]["x"], plantData["plantCoords"]["y"], plantData["plantCoords"]["z"], 'Soort: '..plantData["plantSort"]["label"]..'~w~ ['..plantData["plantStats"]["gender"]..'] | Voeding: ~b~'..plantData["plantStats"]["food"]..'% ~w~ | Gezondheid: ~b~'..plantData["plantStats"]["health"]..'%')
-                        else
-                            QBWeed.DrawText3Ds(plantData["plantCoords"]["x"], plantData["plantCoords"]["y"], plantData["plantCoords"]["z"] + 0.2, 'De plant is volgroeid ~g~E~w~ om te oogsten..')
-                            QBWeed.DrawText3Ds(plantData["plantCoords"]["x"], plantData["plantCoords"]["y"], plantData["plantCoords"]["z"], 'Soort: ~g~'..plantData["plantSort"]["label"]..'~w~ ['..plantData["plantStats"]["gender"]..'] | Voeding: ~b~'..plantData["plantStats"]["food"]..'% ~w~ | Gezondheid: ~b~'..plantData["plantStats"]["health"]..'%')
+                        if plantData["health"] > 0 then
+                            if plantData["plantStage"] ~= plantData["plantStats"]["highestStage"] then
+                                QBWeed.DrawText3Ds(plantData["plantCoords"]["x"], plantData["plantCoords"]["y"], plantData["plantCoords"]["z"], 'Soort: '..plantData["plantSort"]["label"]..'~w~ ['..plantData["plantStats"]["gender"]..'] | Voeding: ~b~'..plantData["plantStats"]["food"]..'% ~w~ | Gezondheid: ~b~'..plantData["plantStats"]["health"]..'%')
+                            else
+                                QBWeed.DrawText3Ds(plantData["plantCoords"]["x"], plantData["plantCoords"]["y"], plantData["plantCoords"]["z"] + 0.2, 'De plant is volgroeid ~g~E~w~ om te oogsten..')
+                                QBWeed.DrawText3Ds(plantData["plantCoords"]["x"], plantData["plantCoords"]["y"], plantData["plantCoords"]["z"], 'Soort: ~g~'..plantData["plantSort"]["label"]..'~w~ ['..plantData["plantStats"]["gender"]..'] | Voeding: ~b~'..plantData["plantStats"]["food"]..'% ~w~ | Gezondheid: ~b~'..plantData["plantStats"]["health"]..'%')
+                                if IsControlJustPressed(0, QBWeed.Keys["E"]) then
+                                    print('snorkel sletje')
+                                end
+                            end
+                        elseif plantData["health"] == 0 then
+                            QBWeed.DrawText3Ds(plantData["plantCoords"]["x"], plantData["plantCoords"]["y"], plantData["plantCoords"]["z"], 'De plant is dood, ~r~E~w~ - Om plant weg te halen..')
                             if IsControlJustPressed(0, QBWeed.Keys["E"]) then
-                                print('snorkel sletje')
+                                TriggerServerEvent('qb-weed:server:removeDeathPlant', currentHouse, plantData["plantStats"]["plantId"])
                             end
                         end
                     end
@@ -142,13 +150,11 @@ end)
 RegisterNetEvent('qb-weed:client:refreshHousePlants')
 AddEventHandler('qb-weed:client:refreshHousePlants', function(house)
     if currentHouse ~= nil and currentHouse == house then
+        despawnHousePlants()
         QBCore.Functions.TriggerCallback('qb-weed:server:getBuildingPlants', function(plants)
             currentHouse = house
             housePlants[currentHouse] = plants
-            despawnHousePlants()
-            SetTimeout(100, function()
-                spawnHousePlants()
-            end)
+            spawnHousePlants()
         end, house)
     end
 end)
@@ -156,12 +162,10 @@ end)
 RegisterNetEvent('qb-weed:client:refreshPlantStats')
 AddEventHandler('qb-weed:client:refreshPlantStats', function()
     if insideHouse then
+        despawnHousePlants()
         QBCore.Functions.TriggerCallback('qb-weed:server:getBuildingPlants', function(plants)
             housePlants[currentHouse] = plants
-            despawnHousePlants()
-            SetTimeout(100, function()
-                spawnHousePlants()
-            end)
+            spawnHousePlants()
         end, currentHouse)
     end
 end)
