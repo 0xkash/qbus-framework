@@ -167,7 +167,7 @@ QBCore.Functions.GetClosestVehicle = function(coords, radius)
 end
 
 QBCore.Functions.GetClosestPed = function(coords, ignoreList)
-	local ignoreList = ignoreList or {}
+	local ignoreList = ignoreList ~= nil and ignorList or {}
 	local peds = QBCore.Functions.GetPeds(ignoreList)
 	local closestDistance = -1
     local closestPed = -1
