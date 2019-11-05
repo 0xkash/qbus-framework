@@ -38,8 +38,11 @@ AddEventHandler('qb-weed:server:placePlant', function(currentHouse, coords, sort
     TriggerClientEvent('qb-weed:client:refreshHousePlants', -1, currentHouse)
 end)
 
-local minHp = 50
-local minFood = 50
+RegisterServerEvent('qb-weed:server:removeDeathPlant')
+AddEventHandler('qb-weed:server:removeDeathPlant', function(building, plantId)
+    QBCore.Functions.ExecuteSql("DELETE FROM `house_plants` WHERE plantid = '"..plantid.."' AND building = '"..building.."'")
+    TriggerClientEvent('qb-weed:client:refreshHousePlants', -1, building)
+end)
 
 Citizen.CreateThread(function()
     while true do
@@ -48,6 +51,9 @@ Citizen.CreateThread(function()
 
                 if housePlants[k].food >= 50 then
                     QBCore.Functions.ExecuteSql("UPDATE `house_plants` SET `food` = '"..(housePlants[k].food - 1).."'")
+                    if housePlants[k].health + 1 < 100 then
+                        QBCore.Functions.ExecuteSql("UPDATE `house_plants` SET `health` = '"..(housePlants[k].health + 1).."'")
+                    end
                 end
 
                 if housePlants[k].food < 50 then
@@ -90,26 +96,32 @@ Citizen.CreateThread(function()
     end
 end)
 
-QBCore.Functions.CreateUseableItem("og-kush", function(source, item)
+QBCore.Functions.CreateUseableItem("weed_whitewidow_seed", function(source, item)
     local Player = QBCore.Functions.GetPlayer(source)
+
 end)
 
-QBCore.Functions.CreateUseableItem("amnesia", function(source, item)
+QBCore.Functions.CreateUseableItem("weed_skunk_seed", function(source, item)
     local Player = QBCore.Functions.GetPlayer(source)
+
 end)
 
-QBCore.Functions.CreateUseableItem("skunk", function(source, item)
+QBCore.Functions.CreateUseableItem("weed_purplehaze_seed", function(source, item)
     local Player = QBCore.Functions.GetPlayer(source)
+
 end)
 
-QBCore.Functions.CreateUseableItem("ak47", function(source, item)
+QBCore.Functions.CreateUseableItem("weed_ogkush_seed", function(source, item)
     local Player = QBCore.Functions.GetPlayer(source)
+
 end)
 
-QBCore.Functions.CreateUseableItem("purple-haze", function(source, item)
+QBCore.Functions.CreateUseableItem("weed_amnesia_seed", function(source, item)
     local Player = QBCore.Functions.GetPlayer(source)
+
 end)
 
-QBCore.Functions.CreateUseableItem("white-widow", function(source, item)
+QBCore.Functions.CreateUseableItem("weed_ak47_seed", function(source, item)
     local Player = QBCore.Functions.GetPlayer(source)
+    
 end)
