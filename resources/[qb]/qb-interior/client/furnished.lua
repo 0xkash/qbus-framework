@@ -90,9 +90,9 @@ function CreateApartmentFurnished(spawn)
 
     local POIOffsets = {}
 	POIOffsets.exit = json.decode('{"z":2.5,"y":4.29636328125,"x":1.172736328125,"h":2.2633972168}')
-	POIOffsets.clothes = json.decode('{"z":2.5,"y":-3.9233189,"x":-7.84363671,"h":2.2633972168}')
-	POIOffsets.stash = json.decode('{"z":2.5,"y":1.33868212,"x":-9.084908691,"h":2.2633972168}')
-	POIOffsets.logout = json.decode('{"z":2.0,"y":-1.1463337,"x":-6.69117089,"h":2.2633972168}')
+	POIOffsets.clothes = json.decode('{"z":2.5,"y":-2.6444736328,"x":1.824350097,"h":2.2633972168}')
+	POIOffsets.stash = json.decode('{"z":2.5,"y":-1.3440585937501,"x":2.58997509763,"h":2.2633972168}')
+	POIOffsets.logout = json.decode('{"z":2.0,"y":0.0555111328,"x":-2.0689604492,"h":2.2633972168}')
 
 	local house = CreateObject(`playerhouse_appartment_motel`, spawn.x, spawn.y, spawn.z, false, false, false)
     FreezeEntityPosition(house, true)

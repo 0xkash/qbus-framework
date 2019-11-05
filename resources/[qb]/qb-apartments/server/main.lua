@@ -43,7 +43,6 @@ AddEventHandler('apartments:server:OpenDoor', function(target, apartmentId, apar
     local OtherPlayer = QBCore.Functions.GetPlayer(target)
     if OtherPlayer ~= nil then
         TriggerClientEvent('apartments:client:SpawnInApartment', OtherPlayer.PlayerData.source, apartmentId, apartment)
-        TriggerClientEvent('QBCore:Notify', src, "Hij is binnen!", "success")
     end
 end)
 
