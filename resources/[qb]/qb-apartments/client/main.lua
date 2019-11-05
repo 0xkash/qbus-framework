@@ -47,7 +47,7 @@ Citizen.CreateThread(function()
         Citizen.Wait(1)
         if isLoggedIn and ClosestHouse ~= nil then
             if InApartment then
-                local pos = GetEntityCoords(GetPlayerPed(-1))d
+                local pos = GetEntityCoords(GetPlayerPed(-1))
 
                 if CurrentDoorBell ~= 0 then
                     if(GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Apartments.Locations[ClosestHouse].coords.enter.x - POIOffsets.exit.x, Apartments.Locations[ClosestHouse].coords.enter.y - POIOffsets.exit.y, Apartments.Locations[ClosestHouse].coords.enter.z - CurrentOffset + POIOffsets.exit.z, true) < 1.2)then
