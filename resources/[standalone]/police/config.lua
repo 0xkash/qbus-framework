@@ -1,7 +1,8 @@
 Config = {}
 
 Config.Locations = {
-   
+   ["duty"] = {x = 440.085, y = -974.924, z = 30.689},
+   ["clothes"] = {x = 454.456, y = -988.743, z = 30.689},
 }
 
 Config.SecurityCameras = {

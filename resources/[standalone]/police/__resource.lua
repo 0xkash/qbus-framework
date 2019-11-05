@@ -6,6 +6,7 @@ client_scripts {
 	'config.lua',
 	'client/main.lua',
 	'client/camera.lua',
+	'client/interactions.lua',
 }
 
 server_scripts {
