@@ -205,16 +205,13 @@ QBCore.Player.CreatePlayer = function(PlayerData)
 				self.Functions.UpdatePlayerData()
 				--TriggerClientEvent('QBCore:Notify', self.PlayerData.source, itemInfo["label"].. " toegevoegd!", "success")
 				return true
-			elseif (slot == nil) or (itemInfo["type"] == "weapon") or (itemInfo["type"] == "unique") then
-					local newAmount = amount
-					if (itemInfo["type"] == "unique") then newAmount = 1 end
-					for i = 1, QBConfig.Player.MaxInvSlots, 1 do
-						if self.PlayerData.items[i] == nil then
-							self.PlayerData.items[i] = {name = itemInfo["name"], amount = newAmount, info = info ~= nil and info or "", label = itemInfo["label"], description = itemInfo["description"] ~= nil and itemInfo["description"] or "", weight = itemInfo["weight"], type = itemInfo["type"], unique = itemInfo["unique"], useable = itemInfo["useable"], image = itemInfo["image"], slot = i}
-							self.Functions.UpdatePlayerData()
-							--TriggerClientEvent('QBCore:Notify', self.PlayerData.source, itemInfo["label"].. " toegevoegd!", "success")
-							return true
-						end
+			elseif (slot == nil) or (itemInfo["type"] == "weapon") then
+				for i = 1, QBConfig.Player.MaxInvSlots, 1 do
+					if self.PlayerData.items[i] == nil then
+						self.PlayerData.items[i] = {name = itemInfo["name"], amount = amount, info = info ~= nil and info or "", label = itemInfo["label"], description = itemInfo["description"] ~= nil and itemInfo["description"] or "", weight = itemInfo["weight"], type = itemInfo["type"], unique = itemInfo["unique"], useable = itemInfo["useable"], image = itemInfo["image"], slot = i}
+						self.Functions.UpdatePlayerData()
+						--TriggerClientEvent('QBCore:Notify', self.PlayerData.source, itemInfo["label"].. " toegevoegd!", "success")
+						return true
 					end
 				end
 			end
