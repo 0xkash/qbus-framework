@@ -267,7 +267,7 @@ end)
 RegisterNetEvent('hospital:client:CheckStatus')
 AddEventHandler('hospital:client:CheckStatus', function()
     QBCore.Functions.GetPlayerData(function(PlayerData)
-        if PlayerData.job.name == "doctor" or PlayerData.job.name == "ambulance" then
+        if PlayerData.job.name == "doctor" or PlayerData.job.name == "ambulance" or PlayerData.job.name == "police" then
             local player, distance = GetClosestPlayer()
             if player ~= PlayerId() and distance < 5.0 then
                 local playerId = GetPlayerServerId(player)

@@ -10,6 +10,13 @@ Keys = {
 	["NENTER"] = 201, ["N4"] = 108, ["N5"] = 60, ["N6"] = 107, ["N+"] = 96, ["N-"] = 97, ["N7"] = 117, ["N8"] = 61, ["N9"] = 118
 }
 
+isLoggedIn = false
+
+isHandcuffed = false
+cuffType = 1
+isEscorted = false
+draggerId = 0
+
 QBCore = nil
 Citizen.CreateThread(function() 
     while true do
@@ -20,4 +27,44 @@ Citizen.CreateThread(function()
         end
     end
 end)
+
+RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
+AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+    isLoggedIn = true
+end)
+
+RegisterNetEvent('QBCore:Client:OnPlayerUnload')
+AddEventHandler('QBCore:Client:OnPlayerUnload', function()
+    TriggerServerEvent("police:server:SetHandcuffStatus", false)
+    isLoggedIn = false
+    isHandcuffed = false
+end)
+
+function GetClosestPlayer()
+    local closestPlayers = QBCore.Functions.GetPlayersFromCoords()
+    local closestDistance = -1
+    local closestPlayer = -1
+    local coords = GetEntityCoords(GetPlayerPed(-1))
+
+    for i=1, #closestPlayers, 1 do
+        if closestPlayers[i] ~= PlayerId() then
+            local pos = GetEntityCoords(GetPlayerPed(closestPlayers[i]))
+            local distance = GetDistanceBetweenCoords(pos.x, pos.y, pos.z, coords.x, coords.y, coords.z, true)
+
+            if closestDistance == -1 or closestDistance > distance then
+                closestPlayer = closestPlayers[i]
+                closestDistance = distance
+            end
+        end
+	end
+
+	return closestPlayer, closestDistance
+end
+
+function loadAnimDict(dict)
+    while (not HasAnimDictLoaded(dict)) do
+        RequestAnimDict( ict)
+        Citizen.Wait(10)
+    end
+end 
 

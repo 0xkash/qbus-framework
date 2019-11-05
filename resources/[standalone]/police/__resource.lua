@@ -18,5 +18,6 @@ ui_page "html/index.html"
 files {
     "html/index.html",
     "html/vue.min.js",
-    "html/script.js"
+	"html/script.js",
+	"html/vcr-ocd.ttf",
 }

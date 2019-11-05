@@ -5,59 +5,63 @@ local createdCamera = 0
 
 Citizen.CreateThread(function()
     while true do
-        for a = 1, #SecurityCamConfig.Locations do
-            local ped = GetPlayerPed(PlayerId())
-            local pedPos = GetEntityCoords(ped, false)
-            local pedHead = GetEntityRotation(ped, 2)
-            if createdCamera ~= 0 then
-                local instructions = CreateInstuctionScaleform("instructional_buttons")
-                DrawScaleformMovieFullscreen(instructions, 255, 255, 255, 255, 0)
-                SetTimecycleModifier("scanline_cam_cheap")
-                SetTimecycleModifierStrength(2.0)
+        local ped = GetPlayerPed(PlayerId())
+        local pedPos = GetEntityCoords(ped, false)
+        local pedHead = GetEntityRotation(ped, 2)
+        if IsControlJustReleased(0, Keys["H"]) then
+            print(GetEntityRotation(GetPlayerPed(-1)))
+        end
+        if createdCamera ~= 0 then
+            local instructions = CreateInstuctionScaleform("instructional_buttons")
+            DrawScaleformMovieFullscreen(instructions, 255, 255, 255, 255, 0)
+            SetTimecycleModifier("scanline_cam_cheap")
+            SetTimecycleModifierStrength(2.0)
 
-                if Config.SecurityCameras.hideradar then
-                    DisplayRadar(false)
-                else
-                    DisplayRadar(true)
+            if Config.SecurityCameras.hideradar then
+                DisplayRadar(false)
+            end
+
+            -- CLOSE CAMERAS
+            if IsControlJustPressed(1, Keys["BACKSPACE"]) then
+                DoScreenFadeOut(250)
+                while not IsScreenFadedOut() do
+                    Citizen.Wait(0)
+                end
+                CloseSecurityCamera()
+                SendNUIMessage({
+                    type = "disablecam",
+                })
+                DoScreenFadeIn(250)
+            end
+
+            ---------------------------------------------------------------------------
+            -- CAMERA ROTATION CONTROLS
+            ---------------------------------------------------------------------------
+            if Config.SecurityCameras.cameras[currentCameraIndexIndex].canRotate then
+                local getCameraRot = GetCamRot(createdCamera, 2)
+
+                -- ROTATE UP
+                if IsControlPressed(0, Keys["W"]) then
+                    if getCameraRot.x <= 0.0 then
+                        SetCamRot(createdCamera, getCameraRot.x + 0.7, 0.0, getCameraRot.z, 2)
+                    end
                 end
 
-                -- CLOSE CAMERAS
-                if IsControlJustPressed(1, Keys["BACKSPACE"]) then
-                    CloseSecurityCamera()
-                    SendNUIMessage({
-                        type = "disablecam",
-                    })
+                -- ROTATE DOWN
+                if IsControlPressed(0, Keys["S"]) then
+                    if getCameraRot.x >= -50.0 then
+                        SetCamRot(createdCamera, getCameraRot.x - 0.7, 0.0, getCameraRot.z, 2)
+                    end
                 end
 
-                ---------------------------------------------------------------------------
-                -- CAMERA ROTATION CONTROLS
-                ---------------------------------------------------------------------------
-                if SecurityCamConfig.Locations[currentCameraIndex].cameras[currentCameraIndexIndex].canRotate then
-                    local getCameraRot = GetCamRot(createdCamera, 2)
+                -- ROTATE LEFT
+                if IsControlPressed(0, Keys["A"]) then
+                    SetCamRot(createdCamera, getCameraRot.x, 0.0, getCameraRot.z + 0.7, 2)
+                end
 
-                    -- ROTATE UP
-                    if IsControlPressed(1, Keys["W"]) then
-                        if getCameraRot.x <= 0.0 then
-                            SetCamRot(createdCamera, getCameraRot.x + 0.7, 0.0, getCameraRot.z, 2)
-                        end
-                    end
-
-                    -- ROTATE DOWN
-                    if IsControlPressed(1, Keys["S"]) then
-                        if getCameraRot.x >= -50.0 then
-                            SetCamRot(createdCamera, getCameraRot.x - 0.7, 0.0, getCameraRot.z, 2)
-                        end
-                    end
-
-                    -- ROTATE LEFT
-                    if IsControlPressed(1, Keys["A"]) then
-                        SetCamRot(createdCamera, getCameraRot.x, 0.0, getCameraRot.z + 0.7, 2)
-                    end
-
-                    -- ROTATE RIGHT
-                    if IsControlPressed(1, Keys["D"]) then
-                        SetCamRot(createdCamera, getCameraRot.x, 0.0, getCameraRot.z - 0.7, 2)
-                    end
+                -- ROTATE RIGHT
+                if IsControlPressed(0, Keys["D"]) then
+                    SetCamRot(createdCamera, getCameraRot.x, 0.0, getCameraRot.z - 0.7, 2)
                 end
             end
         end
@@ -68,24 +72,36 @@ end)
 RegisterNetEvent('police:client:ActiveCamera')
 AddEventHandler('police:client:ActiveCamera', function(cameraId)
     if Config.SecurityCameras.cameras[cameraId] ~= nil then
+        DoScreenFadeOut(250)
+        while not IsScreenFadedOut() do
+            Citizen.Wait(0)
+        end
+        SendNUIMessage({
+            type = "enablecam",
+            label = Config.SecurityCameras.cameras[cameraId].label,
+            id = cameraId,
+            connected = Config.SecurityCameras.cameras[cameraId].isOnline,
+            time = GetCurrentTime(),
+        })
         local firstCamx = Config.SecurityCameras.cameras[cameraId].x
         local firstCamy = Config.SecurityCameras.cameras[cameraId].y
         local firstCamz = Config.SecurityCameras.cameras[cameraId].z
         local firstCamr = Config.SecurityCameras.cameras[cameraId].r
         SetFocusArea(firstCamx, firstCamy, firstCamz, firstCamx, firstCamy, firstCamz)
         ChangeSecurityCamera(firstCamx, firstCamy, firstCamz, firstCamr)
-        SendNUIMessage({
-            type = "enablecam",
-            label = SecurityCamConfig.Locations[a].cameras[cameraId].label,
-            box = "Security Cam",
-        })
         currentCameraIndex = a
         currentCameraIndexIndex = 1
+        DoScreenFadeIn(250)
     elseif cameraId == 0 then
+        DoScreenFadeOut(250)
+        while not IsScreenFadedOut() do
+            Citizen.Wait(0)
+        end
         CloseSecurityCamera()
         SendNUIMessage({
             type = "disablecam",
         })
+        DoScreenFadeIn(250)
     else
         QBCore.Functions.Notify("Camera bestaat niet..", "error")
     end
@@ -94,6 +110,18 @@ end)
 ---------------------------------------------------------------------------
 -- FUNCTIONS
 ---------------------------------------------------------------------------
+function GetCurrentTime()
+    local hours = GetClockHours()
+    local minutes = GetClockMinutes()
+    if hours < 10 then
+        hours = tostring(0 .. GetClockHours())
+    end
+    if minutes < 10 then
+        minutes = tostring(0 .. GetClockMinutes())
+    end
+    return tostring(hours .. ":" .. minutes)
+end
+
 function ChangeSecurityCamera(x, y, z, r)
     if createdCamera ~= 0 then
         DestroyCam(createdCamera, 0)
@@ -114,7 +142,7 @@ function CloseSecurityCamera()
     createdCamera = 0
     ClearTimecycleModifier("scanline_cam_cheap")
     SetFocusEntity(GetPlayerPed(PlayerId()))
-    if SecurityCamConfig.HideRadar then
+    if Config.SecurityCameras.hideradar then
         DisplayRadar(true)
     end
     FreezeEntityPosition(GetPlayerPed(PlayerId()), false)
