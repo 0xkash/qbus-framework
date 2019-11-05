@@ -14,14 +14,36 @@ $(document).on('keydown', function() {
     }
 });
 
+var disableRightMouse = false;
+
 $(document).on("contextmenu", ".item-slot", function(e){
-    $(".item-slot").css("border", "1px solid rgba(255, 255, 255, 0.05)")
-    $(this).css("border", "1px solid rgba(0, 118, 214, 1)")
-    $(".ply-hotbar-inventory").css("display", "none");
-    $(".ply-iteminfo-container").css("display", "block");
+    // $(".item-slot").css("border", "1px solid rgba(255, 255, 255, 0.1)")
+    if (disableRightMouse == false) {
+        if ($(".ply-hotbar-inventory").css("display") === "block")  {
+            $(this).css("border", "1px solid rgba(177, 36, 36, 0.5)")
+            $(".ply-hotbar-inventory").fadeOut(250);
+            $(".ply-iteminfo-container").fadeIn(250);
+            disableRightMouse = true;
+            setTimeout(function(){
+                $(".ply-hotbar-inventory").css("display", "none");
+                $(".ply-iteminfo-container").css("display", "block");
+                disableRightMouse = false;
+            }, 500)
+        } else {
+            $(this).css("border", "1px solid rgba(255, 255, 255, 0.1)")
+            $(".ply-hotbar-inventory").fadeIn(250);
+            $(".ply-iteminfo-container").fadeOut(250);
+            disableRightMouse = true;
+            setTimeout(function(){
+                $(".ply-hotbar-inventory").css("display", "block");
+                $(".ply-iteminfo-container").css("display", "none");
+                disableRightMouse = false;
+            }, 500)
+        }
+    }
 
     FormatItemInfo($(this).data("item"));
- });
+});
 
  function FormatItemInfo(itemData) {
     if (itemData != null && itemData.info != "") {
@@ -30,10 +52,11 @@ $(document).on("contextmenu", ".item-slot", function(e){
             if (itemData.info.gender == 1) {
                 gender = "Vrouw";
             }
-            $(".iteminfo-content").html('<p><strong>BSN: </strong><span>' + itemData.info.citizenid + '</span></p><p><strong>Voornaam: </strong><span>' + itemData.info.firstname + '</span></p><p><strong>Achternaam: </strong><span>' + itemData.info.lastname + '</span></p><p><strong>Geboortedatum: </strong><span>' + itemData.info.birthdate + '</span></p><p><strong>Geslacht: </strong><span>' + gender + '</span></p><p><strong>Nationaliteit: </strong><span>' + itemData.info.nationality + '</span></p>')
+            $(".item-info-description").html('<p><strong>BSN: </strong><span>' + itemData.info.citizenid + '</span></p><p><strong>Voornaam: </strong><span>' + itemData.info.firstname + '</span></p><p><strong>Achternaam: </strong><span>' + itemData.info.lastname + '</span></p><p><strong>Geboortedatum: </strong><span>' + itemData.info.birthdate + '</span></p><p><strong>Geslacht: </strong><span>' + gender + '</span></p><p><strong>Nationaliteit: </strong><span>' + itemData.info.nationality + '</span></p>')
         }
     } else {
-        $(".iteminfo-content").html('<p><strong>Omschrijving:</strong> ' + itemData.description + '</p>')
+        $(".item-info-title").html('<p>'+itemData.label+'</p>')
+        $(".item-info-description").html('<p>' + itemData.description + '</p>')
     }
  }
 
@@ -50,9 +73,7 @@ function handleDragDrop() {
            // $(this).css("background", "rgba(20,20,20,1.0)");
             $(this).find("img").css("filter", "brightness(50%)");
 
-            $(".item-slot").css("border", "1px solid rgba(255, 255, 255, 0.05)")
-            $(".ply-hotbar-inventory").css("display", "block");
-            $(".ply-iteminfo-container").css("display", "none");
+            $(".item-slot").css("border", "1px solid rgba(255, 255, 255, 0.1)")
 
             var itemData = $(this).data("item");
             var dragAmount = $("#item-amount").val();
@@ -87,13 +108,14 @@ function handleDragDrop() {
             }
         },
         stop: function() {
-            $(this).css("background", "rgba(20,20,20,0.5)");
+            $(this).css("background", "rgba(0, 0, 0, 0.2)");
             $(this).find("img").css("filter", "brightness(100%)");
             $("#item-use").css("background", "rgba(235, 235, 235, 0.08)");
         },
     });
 
     $(".item-slot").droppable({
+        hoverClass: 'item-slot-hoverClass',
         drop: function(event, ui) {
             fromSlot = ui.draggable.attr("data-slot");
             fromInventory = ui.draggable.parent();
@@ -130,6 +152,7 @@ function handleDragDrop() {
     });
 
     $("#item-drop").droppable({
+        hoverClass: 'item-slot-hoverClass',
         drop: function(event, ui) {
             fromData = ui.draggable.data("item");
             fromInventory = ui.draggable.parent().attr("data-inventory");
@@ -443,7 +466,7 @@ function InventoryError($elinv, $elslot) {
                     $(".player-inventory").find("[data-slot=" + item.slot + "]").data("item", item);
 
                     $(".ply-hotbar-inventory").find("[data-slot=" + item.slot + "]").addClass("item-drag");
-                    $(".ply-hotbar-inventory").find("[data-slot=" + item.slot + "]").html('<div class="item-slot-key"><p>[' + item.slot + ']</p></div><div class="item-slot-img"><img src="images/' + item.image + '" alt="' + item.name + '" /></div><div class="item-slot-amount"><p>' + item.amount + ' (' + ((item.weight * item.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + item.label + '</p></div>');
+                    $(".ply-hotbar-inventory").find("[data-slot=" + item.slot + "]").html('<div class="item-slot-img"><img src="images/' + item.image + '" alt="' + item.name + '" /></div><div class="item-slot-amount"><p>' + item.amount + ' (' + ((item.weight * item.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + item.label + '</p></div>');
                     $(".ply-hotbar-inventory").find("[data-slot=" + item.slot + "]").data("item", item);
                 }
                 
@@ -477,7 +500,7 @@ function InventoryError($elinv, $elslot) {
     };
 
     Inventory.Close = function() {
-        $(".item-slot").css("border", "1px solid rgba(255, 255, 255, 0.05)")
+        $(".item-slot").css("border", "1px solid rgba(255, 255, 255, 0.1)")
         $(".ply-hotbar-inventory").css("display", "block");
         $(".ply-iteminfo-container").css("display", "none");
         $("#qbus-inventory").fadeOut(300);
