@@ -7,7 +7,7 @@ RegisterServerEvent('qb-doorlock:server:updateState')
 AddEventHandler('qb-doorlock:server:updateState', function(doorID, state)
 	local src = source
 	local Player = QBCore.Functions.GetPlayer(src)
-
+	
 	doorInfo[doorID] = state
 
 	TriggerClientEvent('qb-doorlock:client:setState', -1, doorID, state)
