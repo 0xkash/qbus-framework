@@ -222,28 +222,32 @@ AddEventHandler('qb-weed:client:placePlant', function(type, item)
         ["plantLabel"] = QBWeed.Plants[type]["label"]
     }
 
-    QBCore.Functions.Progressbar("plant_weed_plant", "Bezig met planten..", 8000, false, true, {
-        disableMovement = true,
-        disableCarMovement = true,
-        disableMouse = false,
-        disableCombat = true,
-    }, {
-        animDict = "amb@world_human_gardener_plant@male@base",
-        anim = "base",
-        flags = 16,
-    }, {}, {}, function() -- Done
-        ClearPedTasks(ped)
-        plantObject = CreateObject(plantData["plantModel"], plantData["plantCoords"]["x"], plantData["plantCoords"]["y"], plantData["plantCoords"]["z"], false, false, false)
-        FreezeEntityPosition(plantObject, true)
-        SetEntityAsMissionEntity(plantObject, false, false)
-        PlaceObjectOnGroundProperly(plantObject)
-    
-        TriggerServerEvent('qb-weed:server:placePlant', currentHouse, json.encode(plantData["plantCoords"]), type)
-        TriggerServerEvent('qb-weed:server:removeSeed', item.slot, type)
-    end, function() -- Cancel
-        ClearPedTasks(ped)
-        QBCore.Functions.Notify("Proces geannuleerd..", "error")
-    end)
+    if currentHouse ~= nil then
+        QBCore.Functions.Progressbar("plant_weed_plant", "Bezig met planten..", 8000, false, true, {
+            disableMovement = true,
+            disableCarMovement = true,
+            disableMouse = false,
+            disableCombat = true,
+        }, {
+            animDict = "amb@world_human_gardener_plant@male@base",
+            anim = "base",
+            flags = 16,
+        }, {}, {}, function() -- Done
+            ClearPedTasks(ped)
+            plantObject = CreateObject(plantData["plantModel"], plantData["plantCoords"]["x"], plantData["plantCoords"]["y"], plantData["plantCoords"]["z"], false, false, false)
+            FreezeEntityPosition(plantObject, true)
+            SetEntityAsMissionEntity(plantObject, false, false)
+            PlaceObjectOnGroundProperly(plantObject)
+        
+            TriggerServerEvent('qb-weed:server:placePlant', currentHouse, json.encode(plantData["plantCoords"]), type)
+            TriggerServerEvent('qb-weed:server:removeSeed', item.slot, type)
+        end, function() -- Cancel
+            ClearPedTasks(ped)
+            QBCore.Functions.Notify("Proces geannuleerd..", "error")
+        end)
+    else
+        QBCore.Functions.Notify('Het is hier niet veilig..', 'error', 3500)
+    end
 end)
 
 RegisterNetEvent('qb-weed:client:foodPlant')

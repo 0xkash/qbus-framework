@@ -133,13 +133,13 @@ end)
 RegisterNetEvent('police:client:CuffPlayer')
 AddEventHandler('police:client:CuffPlayer', function()
     local player, distance = GetClosestPlayer()
-    if player ~= PlayerId() and distance < 2.5 then
+    if player ~= -1 and distance < 2.5 then
         local playerId = GetPlayerServerId(player)
         TriggerServerEvent("police:server:CuffPlayer", playerId, false)
         HandCuffAnimation()
     else
-        loadAnimDict("mp_arresting")
-        TaskPlayAnim(GetPlayerPed(-1), "mp_arresting", "idle", 8.0, -8, -1, 49, 0, 0, 0, 0)
+        -- loadAnimDict("mp_arresting")
+        -- TaskPlayAnim(GetPlayerPed(-1), "mp_arresting", "exit", 8.0, -8, -1, 49, 0, 0, 0, 0)
         QBCore.Functions.Notify("Niemand in de buurt!", "error")
     end
 end)

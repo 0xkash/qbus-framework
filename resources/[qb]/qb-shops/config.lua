@@ -37,6 +37,16 @@ Config.Locations = {
                 ["z"] = 29.6,
             }
         },
+    },
+    ["coffeeshop"] = {
+        ["label"] = "Superfly",
+        ["coords"] = {
+            [1] = {
+                ["x"] = -1172.43,
+                ["y"] = -1572.24,
+                ["z"] = 4.66,
+            }
+        },
     }
 }
 
@@ -45,7 +55,7 @@ Config.Products = {
         label = "Supermarktje :)",
         items = {
             [1] = {
-                name = "joint",
+                name = "tosti",
                 price = 50,
                 amount = 99,
                 info = {},
@@ -53,7 +63,28 @@ Config.Products = {
                 slot = 1,
             },
             [2] = {
-                name = "tosti",
+                name = "repairkit",
+                price = 50,
+                amount = 99,
+                info = {},
+                type = "item",
+                slot = 2,
+            },
+        }
+    },
+    ["coffeeshop"] = {
+        label = "Superfly",
+        items = {
+            [1] = {
+                name = "weed_skunk_seed",
+                price = 50,
+                amount = 99,
+                info = {},
+                type = "item",
+                slot = 1,
+            },
+            [2] = {
+                name = "weed_amnesia_seed",
                 price = 50,
                 amount = 99,
                 info = {},
@@ -61,12 +92,28 @@ Config.Products = {
                 slot = 2,
             },
             [3] = {
-                name = "repairkit",
+                name = "weed_white-widow_seed",
                 price = 50,
                 amount = 99,
                 info = {},
                 type = "item",
                 slot = 3,
+            },
+            [4] = {
+                name = "weed_ak47_seed",
+                price = 50,
+                amount = 99,
+                info = {},
+                type = "item",
+                slot = 4,
+            },
+            [5] = {
+                name = "joint",
+                price = 50,
+                amount = 99,
+                info = {},
+                type = "item",
+                slot = 5,
             },
         }
     }
