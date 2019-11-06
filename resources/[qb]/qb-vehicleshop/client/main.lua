@@ -54,8 +54,6 @@ Citizen.CreateThread(function()
             end
         end
     end
-    Citizen.Wait(1000)
-    setupShowroomVehicles()
 end)
 
 function openVehicleShop(bool)

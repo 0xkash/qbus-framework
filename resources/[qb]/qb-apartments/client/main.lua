@@ -222,7 +222,7 @@ AddEventHandler('apartments:client:SetHomeBlip', function(home)
 end)
 
 RegisterNetEvent('apartments:client:RingDoor')
-AddEventHandler('apartments:client:RingDoor', function(player)
+AddEventHandler('apartments:client:RingDoor', function(player, house)
     CurrentDoorBell = player
     TriggerServerEvent("InteractSound_SV:PlayOnSource", "doorbell", 0.1)
     QBCore.Functions.Notify("Iemand belt aan de deur!")
