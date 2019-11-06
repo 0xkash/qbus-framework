@@ -1,6 +1,7 @@
 QBCore = nil
 TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 
+local Plates = {}
 cuffedPlayers = {}
 
 RegisterServerEvent('police:server:CuffPlayer')
@@ -90,6 +91,32 @@ AddEventHandler('heli:spotlight', function(state)
 	TriggerClientEvent('heli:spotlight', -1, serverID, state)
 end)
 
+RegisterServerEvent('police:server:FlaggedPlateTriggered')
+AddEventHandler('police:server:FlaggedPlateTriggered', function(camId, plate, street1, street2, blipSettings)
+    local src = source
+    local players = QBCore.Functions.GetPlayers()
+
+	for k, Player in pairs(players) do
+		if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
+			if street2 ~= nil then
+				TriggerClientEvent("112:client:SendPoliceAlert", k, "flagged", "Flitser #"..camId.." - Gemarkeerd voertuig ("..plate..") gesignaleerd bij ".. street1 .. " | " .. street2, blipSettings)
+			else
+				TriggerClientEvent("112:client:SendPoliceAlert", k, "flagged", "Flitser #"..camId.." - Gemarkeerd voertuig ("..plate..") gesignaleerd bij ".. street1, blipSettings)
+			end
+		end
+	end
+end)
+
+QBCore.Functions.CreateCallback('police:IsPlateFlagged', function(source, cb, plate)
+    local retval = false
+    if Plates ~= nil and Plates[plate] ~= nil then
+        if Plates[plate].isflagged then
+            retval = true
+        end
+    end
+    cb(retval)
+end)
+
 QBCore.Commands.Add("cuff", "Boei een speler", {}, false, function(source, args)
 	local Player = QBCore.Functions.GetPlayer(source)
     if Player.PlayerData.job.name == "police" then
@@ -112,6 +139,58 @@ QBCore.Commands.Add("cam", "Bekijk beveiligings camera", {{name="camid", help="C
 	local Player = QBCore.Functions.GetPlayer(source)
     if Player.PlayerData.job.name == "police" then
         TriggerClientEvent("police:client:ActiveCamera", source, tonumber(args[1]))
+    else
+        TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Dit command is voor hulpdiensten!")
+    end
+end)
+
+QBCore.Commands.Add("flagplate", "Markeer een voertuig", {{name="plate", help="Kenteken"}, {name="reden", help="Reden voor markeren"}}, true, function(source, args)
+    local Player = QBCore.Functions.GetPlayer(source)
+    
+    if Player.PlayerData.job.name == "police" then
+        local reason = {}
+        for i = 2, #args, 1 do
+            table.insert(reason, args[i])
+        end
+        Plates[args[1]:upper()] = {
+            isflagged = true,
+            reason = table.concat(reason, " ")
+        }
+        TriggerClientEvent('QBCore:Notify', source, "Voertuig ("..args[1]:upper()..") is gemarkeerd voor: "..table.concat(reason, " "))
+    else
+        TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Dit command is voor hulpdiensten!")
+    end
+end)
+
+QBCore.Commands.Add("unflagplate", "Zet een voertuig ongemarkeerd", {{name="plate", help="Kenteken"}}, true, function(source, args)
+	local Player = QBCore.Functions.GetPlayer(source)
+    if Player.PlayerData.job.name == "police" then
+        if Plates ~= nil and Plates[args[1]:upper()] ~= nil then
+            if Plates[args[1]:upper()].isflagged then
+                Plates[args[1]:upper()].isflagged = false
+            else
+                TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Voertuig is niet gemarkeerd!")
+            end
+        else
+            TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Voertuig is niet gemarkeerd!")
+        end
+    else
+        TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Dit command is voor hulpdiensten!")
+    end
+end)
+
+QBCore.Commands.Add("plateinfo", "Markeer een voertuig", {{name="plate", help="Kenteken"}}, true, function(source, args)
+	local Player = QBCore.Functions.GetPlayer(source)
+    if Player.PlayerData.job.name == "police" then
+        if Plates ~= nil and Plates[args[1]:upper()] ~= nil then
+            if Plates[args[1]:upper()].isflagged then
+                TriggerClientEvent('chatMessage', source, "SYSTEM", "normal", "Voertuig ("..args[1]:upper()..") is gemarkeerd voor: "..Plates[args[1]:upper()].reason)
+            else
+                TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Voertuig is niet gemarkeerd!")
+            end
+        else
+            TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Voertuig is niet gemarkeerd!")
+        end
     else
         TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Dit command is voor hulpdiensten!")
     end

@@ -112,7 +112,7 @@ AddEventHandler('hospital:server:MakeDeadCall', function(blipSettings, gender, s
 	if gender == 1 then genderstr = "Vrouw" end
 
 	for k, Player in pairs(players) do
-		if ((Player.PlayerData.job.name == "doctor" or  Player.PlayerData.job.name == "ambulance") and Player.PlayerData.job.onduty) then
+		if ((Player.PlayerData.job.name == "doctor" or  Player.PlayerData.job.name == "ambulance" or Player.PlayerData.job.name == "police") and Player.PlayerData.job.onduty) then
 			if street2 ~= nil then
 				TriggerClientEvent("112:client:SendAlert", k, "Code 180 - Een ".. genderstr .." gewond bij " ..street1 .. " "..street2, blipSettings)
 			else
