@@ -20,8 +20,10 @@ AddEventHandler('police:server:CuffPlayer', function(playerId, isSoftcuff)
                 for k, v in pairs(cuffedPlayers) do
                     if cuffedPlayers[k].target == CuffedPlayer.PlayerData.citizenid and cuffedPlayers[k].cuffer == Player.PlayerData.citizenid then
                         TriggerClientEvent("police:client:GetCuffed", CuffedPlayer.PlayerData.source, Player.PlayerData.source, isSoftcuff)
+                        cuffedPlayers[k] = nil
                     elseif Player.PlayerData.job.name == "police" then
                         TriggerClientEvent("police:client:GetCuffed", CuffedPlayer.PlayerData.source, Player.PlayerData.source, isSoftcuff)
+                        cuffedPlayers[k] = nil
                     else
                         TriggerClientEvent('QBCore:Notify', src, 'Je hebt geen sleutels van de handboeien..', 'error', 3500)
                     end
