@@ -2,6 +2,7 @@ QBCore = nil
 TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 
 local Plates = {}
+cuffedPlayers = {}
 
 RegisterServerEvent('police:server:CuffPlayer')
 AddEventHandler('police:server:CuffPlayer', function(playerId, isSoftcuff)
@@ -10,7 +11,23 @@ AddEventHandler('police:server:CuffPlayer', function(playerId, isSoftcuff)
     local CuffedPlayer = QBCore.Functions.GetPlayer(playerId)
     if CuffedPlayer ~= nil then
         if Player.Functions.GetItemByName("handcuffs") ~= nil or Player.PlayerData.job.name == "police" then
-            TriggerClientEvent("police:client:GetCuffed", CuffedPlayer.PlayerData.source, Player.PlayerData.source, isSoftcuff)
+            if not CuffedPlayer.PlayerData.metadata["ishandcuffed"] then
+                TriggerClientEvent("police:client:GetCuffed", CuffedPlayer.PlayerData.source, Player.PlayerData.source, isSoftcuff)
+                table.insert(cuffedPlayers, {
+                    target = CuffedPlayer.PlayerData.citizenid,
+                    cuffer = Player.PlayerData.citizenid
+                })
+            else
+                for k, v in pairs(cuffedPlayers) do
+                    if cuffedPlayers[k].target == CuffedPlayer.PlayerData.citizenid and cuffedPlayers[k].cuffer == Player.PlayerData.citizenid then
+                        TriggerClientEvent("police:client:GetCuffed", CuffedPlayer.PlayerData.source, Player.PlayerData.source, isSoftcuff)
+                    elseif Player.PlayerData.job.name == "police" then
+                        TriggerClientEvent("police:client:GetCuffed", CuffedPlayer.PlayerData.source, Player.PlayerData.source, isSoftcuff)
+                    else
+                        TriggerClientEvent('QBCore:Notify', src, 'Je hebt geen sleutels van de handboeien..', 'error', 3500)
+                    end
+                end
+            end
         end
     end
 end)

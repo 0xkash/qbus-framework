@@ -149,6 +149,15 @@ Citizen.CreateThread(function()
     end
 end)
 
+RegisterNetEvent('inventory:client:ItemBox')
+AddEventHandler('inventory:client:ItemBox', function(itemData, type)
+    SendNUIMessage({
+        action = "itemBox",
+        item = itemData,
+        type = type
+    })
+end)
+
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(1)

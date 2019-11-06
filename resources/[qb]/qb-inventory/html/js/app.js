@@ -613,6 +613,40 @@ function InventoryError($elinv, $elslot) {
         
     };
 
+    Inventory.UseItem = function(data) {
+        $(".itembox-container").hide();
+        $(".itembox-container").fadeIn(250);
+        $("#itembox-action").html("<p>Gebruikt</p>");
+        $("#itembox-label").html("<p>"+data.item.label+"</p>");
+        $("#itembox-image").html('<div class="item-slot-img"><img src="images/' + data.item.image + '" alt="' + data.item.name + '" /></div>')
+        setTimeout(function(){
+            $(".itembox-container").fadeOut(250);
+        }, 2000)
+    };
+
+    var timer = null;
+
+    Inventory.itemBox = function(data) {
+        if (timer !== null) {
+            clearTimeout(timer)
+        }
+        if (data.type == "use") {
+            $("#itembox-action").html("<p>Gebruikt</p>");
+        } else if (data.type == "add") {
+            $("#itembox-action").html("<p>Ontvangen</p>");
+        } else if (data.type == "remove") { 
+            $("#itembox-action").html("<p>Verwijderd</p>");
+        }
+
+        $(".itembox-container").hide();
+        $(".itembox-container").fadeIn(250);
+        $("#itembox-label").html("<p>"+data.item.label+"</p>");
+        $("#itembox-image").html('<div class="item-slot-img"><img src="images/' + data.item.image + '" alt="' + data.item.name + '" /></div>')
+        timer = setTimeout(function(){
+            $(".itembox-container").fadeOut(250);
+        }, 2000)
+    };
+
     window.onload = function(e) {
         window.addEventListener('message', function(event) {
             switch(event.data.action) {
@@ -625,6 +659,9 @@ function InventoryError($elinv, $elslot) {
                 case "update":
                     Inventory.Update(event.data);
                     break;
+                case "itemBox":
+                    Inventory.itemBox(event.data);
+                    break
             }
         })
     }

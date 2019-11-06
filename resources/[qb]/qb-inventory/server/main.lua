@@ -118,11 +118,15 @@ AddEventHandler('inventory:server:UseItemSlot', function(slot)
 	local src = source
 	local Player = QBCore.Functions.GetPlayer(src)
 	local itemData = Player.Functions.GetItemBySlot(slot)
+
 	if itemData ~= nil then
+		local itemInfo = QBCore.Shared.Items[itemData.name]
 		if itemData.type == "weapon" then
 			TriggerClientEvent("inventory:client:UseWeapon", src, itemData.name)
+			TriggerClientEvent('inventory:client:ItemBox', src, itemInfo, "use")
 		elseif itemData.useable then
 			TriggerClientEvent("QBCore:Client:UseItem", src, itemData)
+			TriggerClientEvent('inventory:client:ItemBox', src, itemInfo, "use")
 		end
 	end
 end)
