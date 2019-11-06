@@ -6,6 +6,8 @@ TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 RegisterServerEvent('qb-houserobbery:server:enterHouse')
 AddEventHandler('qb-houserobbery:server:enterHouse', function(house)
     local src = source
+    local itemInfo = QBCore.Shared.Items["lockpick"]
+    local Player = QBCore.Functions.GetPlayer(src)
     TriggerClientEvent('qb-houserobbery:client:enterHouse', src, house)
     TriggerClientEvent('qb-houserobbery:client:setHouseState', -1, house, true)
     Config.Houses[house]["opened"] = true
@@ -37,8 +39,9 @@ AddEventHandler('qb-houserobbery:server:searchCabin', function(cabin, house)
                 TriggerClientEvent('QBCore:Notify', src, '+'..itemAmount..' '..itemInfo["label"], 'success', 3500)
             else
                 Player.Functions.AddItem(randomItem, 1)
-                TriggerClientEvent('QBCore:Notify', src, '+1 '..itemInfo["label"], 'success', 3500)
             end
+
+            TriggerClientEvent('inventory:client:ItemBox', src, itemInfo, "add")
         end
     else
         TriggerClientEvent('QBCore:Notify', src, 'Het kastje is leeg broooo', 'error', 3500)

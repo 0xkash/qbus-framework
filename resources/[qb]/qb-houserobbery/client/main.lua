@@ -194,6 +194,9 @@ function lockpickFinish(success)
         TriggerServerEvent('qb-houserobbery:server:enterHouse', closestHouse)
         QBCore.Functions.Notify('Het is gelukt!', 'success', 2500)
     else
+        local itemInfo = QBCore.Shared.Items["lockpick"]
+        TriggerServerEvent("QBCore:Server:RemoveItem", "lockpick", 1)
+        TriggerEvent('inventory:client:ItemBox', itemInfo, "remove")
         QBCore.Functions.Notify('Het is niet gelukt..', 'error', 2500)
     end
 end
@@ -202,25 +205,6 @@ end
 RegisterNetEvent('qb-houserobbery:client:setHouseState')
 AddEventHandler('qb-houserobbery:client:setHouseState', function(house, state)
     Config.Houses[house]["opened"] = state
-end)
-
-AddEventHandler('onResourceStop', function(resource)
-    if resource == GetCurrentResourceName() then
-        if houseObj ~= nil then
-            exports['qb-interior']:DespawnInterior(houseObj, function()
-                TriggerEvent('qb-weathersync:client:EnableSync')
-                DoScreenFadeIn(500)
-                while not IsScreenFadedOut() do
-                    Citizen.Wait(10)
-                end
-                SetEntityCoords(GetPlayerPed(-1), Config.Houses[currentHouse]["coords"]["x"], Config.Houses[currentHouse]["coords"]["x"], Config.Houses[currentHouse]["coords"]["x"] + 0.5)
-                Citizen.Wait(1000)
-                inside = false
-                DoScreenFadeIn(1000)
-                currentHouse = nil
-            end)
-        end
-    end
 end)
 
 function searchCabin(cabin)
