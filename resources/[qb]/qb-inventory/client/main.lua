@@ -185,8 +185,8 @@ Citizen.CreateThread(function()
     end
 end)
 
-RegisterServerEvent("QBCore:PlayerJoined")
-AddEventHandler('QBCore:PlayerJoined', function()
+RegisterNetEvent("QBCore:Client:OnPlayerLoaded")
+AddEventHandler("QBCore:Client:OnPlayerLoaded", function()
     TriggerServerEvent("inventory:server:LoadDrops")
 end)
 
