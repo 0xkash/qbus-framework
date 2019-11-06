@@ -1,3 +1,13 @@
+disabledVehicles = {
+    "PACKER",
+    "PHANTOM",
+    "MIXER",
+    "LAZER",
+    "RHINO",
+    "BENSON",
+    "POUNDER",
+}
+
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(7)
@@ -28,6 +38,17 @@ Citizen.CreateThread(function()
        RemoveAllPickupsOfType(0xB0769393) -- sns
     end
 end)
+
+Citizen.CreateThread(function()
+	while true do
+        Citizen.Wait(7)
+        
+        for i = 1, #disabledVehicles, 1 do
+            SetVehicleModelIsSuppressed(GetHashKey(disabledVehicles[i]), true)
+        end
+	end
+end)
+
 
 Citizen.CreateThread(function()
     while true do
