@@ -46,12 +46,6 @@ Citizen.CreateThread(function()
                             TriggerServerEvent("inventory:server:OpenInventory", "shop", shop, Config.Products[shop])
                         end
                     end
-
-                    -- if dist > 1 then
-                    --     if Config.Locations[shop]["menu"].opened then
-                    --         CloseCreator()
-                    --     end
-                    -- end
                 end
             end
         end
