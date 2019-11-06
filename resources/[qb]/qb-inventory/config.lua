@@ -9,38 +9,6 @@ Keys = {
     ["LEFT"] = 174, ["RIGHT"] = 175, ["TOP"] = 27, ["DOWN"] = 173,
 }
 
-ShopItems = {
-    ["normal"] = {
-        label = "Supermarktje :)",
-        items = {
-            [1] = {
-                name = "joint",
-                price = 100,
-                amount = 99,
-                info = {},
-                type = "item",
-                slot = 1,
-            },
-            [2] = {
-                name = "tosti",
-                price = 100,
-                amount = 99,
-                info = {},
-                type = "item",
-                slot = 2,
-            },
-            [3] = {
-                name = "repairkit",
-                price = 100,
-                amount = 99,
-                info = {},
-                type = "item",
-                slot = 3,
-            },
-        }
-    }
-}
-
 MaxInventorySlots = 40
 
 BackEngineVehicles = {

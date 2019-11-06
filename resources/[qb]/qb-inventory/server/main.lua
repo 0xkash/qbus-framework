@@ -5,6 +5,7 @@ Drops = {}
 Trunks = {}
 Gloveboxes = {}
 Stashes = {}
+ShopItems = {}
 
 RegisterServerEvent("inventory:server:OpenInventory")
 AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
@@ -60,9 +61,11 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 			end
 		elseif name == "shop" then
 			secondInv.name = "itemshop-"..id
-			secondInv.label = ShopItems[id].label
+			secondInv.label = other.label
 			secondInv.maxweight = 900000
-			secondInv.inventory = SetupShopItems(id)
+			secondInv.inventory = SetupShopItems(id, other.items)
+			ShopItems[id] = {}
+			ShopItems[id].items = other.items
 			secondInv.slots = 30
 		else
 			if Drops[id] ~= nil then
@@ -440,9 +443,8 @@ function IsVehicleOwned(plate)
 end
 
 -- Shop Items
-function SetupShopItems(shop)
+function SetupShopItems(shop, shopItems)
 	local items = {}
-	local shopItems = ShopItems[shop].items
 	if next(shopItems) ~= nil then
 		for k, item in pairs(shopItems) do
 			local itemInfo = QBCore.Shared.Items[item.name:lower()]

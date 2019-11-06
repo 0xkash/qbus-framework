@@ -173,10 +173,10 @@ AddEventHandler('QBCore:ToggleDuty', function()
 	local src = source
 	local Player = QBCore.Functions.GetPlayer(src)
 	if Player.PlayerData.job.onduty then
-		PlayerData.Functions.SetJobDuty(false)
+		Player.Functions.SetJobDuty(false)
 		TriggerClientEvent('QBCore:Notify', src, "Je bent nu uit dienst!")
 	else
-		PlayerData.Functions.SetJobDuty(true)
+		Player.Functions.SetJobDuty(true)
 		TriggerClientEvent('QBCore:Notify', src, "Je bent nu in dienst!")
 	end
 end)

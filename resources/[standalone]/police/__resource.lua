@@ -7,6 +7,8 @@ client_scripts {
 	'client/main.lua',
 	'client/camera.lua',
 	'client/interactions.lua',
+	'client/job.lua',
+	'client/gui.lua',
 }
 
 server_scripts {

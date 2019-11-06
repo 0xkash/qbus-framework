@@ -250,8 +250,8 @@ Citizen.CreateThread(function()
                     DrawMarker(2, loc["x"], loc["y"], loc["z"], 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.2, 0.1, 255, 255, 255, 155, 0, 0, 0, 1, 0, 0, 0)
                     if dist < 1 then
                         DrawText3Ds(loc["x"], loc["y"], loc["z"] + 0.15, '~g~E~w~ - Winkelen')
-                        if IsControlJustPressed(0, Config.Keys["E"]) then
-                            TriggerServerEvent("inventory:server:OpenInventory", "shop", shop)
+						if IsControlJustPressed(0, Config.Keys["E"]) then
+                            TriggerServerEvent("inventory:server:OpenInventory", "shop", shop, Config.Products[shop])
                         end
                     end
 

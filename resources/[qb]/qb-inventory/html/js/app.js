@@ -267,7 +267,7 @@ function updateweights($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
         }
     }
 
-    if (totalWeightOther > otherMaxWeight || totalWeight > playerMaxWeight) {
+    if (totalWeight > playerMaxWeight || (totalWeightOther > otherMaxWeight && $fromInv.attr("data-inventory").split("-")[0] != "itemshop")) {
         InventoryError($fromInv, $fromSlot);
         return false;
     }

@@ -43,22 +43,33 @@ Config.Locations = {
 }
 
 Config.Products = {
-    ["water_bottle"] = {
-        ["item"] = "water_bottle",
-        ["price"] = 50,
-        ["store"] = "normal",
-        ["type"] = "drink",
-    },
-    ["tosti"] = {
-        ["item"] = "tosti",
-        ["price"] = 50,
-        ["store"] = "normal",
-        ["type"] = "food",
-    },
-    ["repairkit"] = {
-        ["item"] = "repairkit",
-        ["price"] = 50,
-        ["store"] = "hardware",
-        ["type"] = "tools",
-    },
+    ["normal"] = {
+        label = "Supermarktje :)",
+        items = {
+            [1] = {
+                name = "joint",
+                price = 50,
+                amount = 99,
+                info = {},
+                type = "item",
+                slot = 1,
+            },
+            [2] = {
+                name = "tosti",
+                price = 50,
+                amount = 99,
+                info = {},
+                type = "item",
+                slot = 2,
+            },
+            [3] = {
+                name = "repairkit",
+                price = 50,
+                amount = 99,
+                info = {},
+                type = "item",
+                slot = 3,
+            },
+        }
+    }
 }
