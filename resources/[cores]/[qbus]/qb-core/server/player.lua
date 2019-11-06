@@ -78,7 +78,7 @@ QBCore.Player.CheckPlayerData = function(source, PlayerData)
 
 	PlayerData.position = PlayerData.position ~= nil and PlayerData.position or QBConfig.DefaultSpawn
 
-	PlayerData.items = QBCore.Player.LoadInventory(PlayerData)
+	PlayerData = QBCore.Player.LoadInventory(PlayerData)
 	QBCore.Player.CreatePlayer(PlayerData)
 end
 
@@ -294,14 +294,14 @@ end
 
 QBCore.Player.Save = function(source)
 	local PlayerData = QBCore.Players[source].PlayerData
+	QBCore.Player.SaveInventory(source)
 	if PlayerData ~= nil then
 		QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `citizenid` = '"..PlayerData.citizenid.."'", function(result)
 			if result[1] == nil then
 				QBCore.Functions.ExecuteSql("INSERT INTO `players` (`citizenid`, `cid`, `steam`, `license`, `name`, `money`, `permission`, `charinfo`, `job`, `gang`, `position`, `metadata`) VALUES ('"..PlayerData.citizenid.."', '"..tonumber(PlayerData.cid).."', '"..PlayerData.steam.."', '"..PlayerData.license.."', '"..PlayerData.name.."', '"..json.encode(PlayerData.money).."', '"..PlayerData.permission.."', '"..json.encode(PlayerData.charinfo).."', '"..json.encode(PlayerData.job).."', '"..json.encode(PlayerData.gang).."', '"..json.encode(PlayerData.position).."', '"..json.encode(PlayerData.metadata).."')")
 			else
 				QBCore.Functions.ExecuteSql("UPDATE `players` SET steam='"..PlayerData.steam.."',license='"..PlayerData.license.."',name='"..PlayerData.name.."',money='"..json.encode(PlayerData.money).."',permission='"..PlayerData.permission.."',charinfo='"..json.encode(PlayerData.charinfo).."',job='"..json.encode(PlayerData.job).."',gang='"..json.encode(PlayerData.gang).."',position='"..json.encode(PlayerData.position).."',metadata='"..json.encode(PlayerData.metadata).."' WHERE `citizenid` = '"..PlayerData.citizenid.."'")
-			end			
-			QBCore.Player.SaveInventory(PlayerData)
+			end
 	    end)
 		QBCore.ShowSuccess(GetCurrentResourceName(), PlayerData.name .." PLAYER SAVED!")
 	else
@@ -321,24 +321,29 @@ QBCore.Player.DeleteCharacter = function(source, citizenid)
 end
 
 QBCore.Player.LoadInventory = function(PlayerData)
-	local inventory = {}
+	PlayerData.items = {}
 	QBCore.Functions.ExecuteSql("SELECT * FROM `playeritems` WHERE `citizenid` = '"..PlayerData.citizenid.."'", function(result)
-		if result ~= nil then
+		if result[1] ~= nil then
 			for _, item in pairs(result) do
-				local itemInfo = QBCore.Shared.Items[item.name:lower()]
-				inventory[item.slot] = {name = itemInfo["name"], amount = item.amount, info = json.decode(item.info) ~= nil and json.decode(item.info) or "", label = itemInfo["label"], description = itemInfo["description"] ~= nil and itemInfo["description"] or "", weight = itemInfo["weight"], type = itemInfo["type"], unique = itemInfo["unique"], useable = itemInfo["useable"], image = itemInfo["image"], shouldClose = itemInfo["shouldClose"], slot = item.slot}
+				if item ~= nil then
+					local itemInfo = QBCore.Shared.Items[item.name:lower()]
+					PlayerData.items[item.slot] = {name = itemInfo["name"], amount = item.amount, info = json.decode(item.info) ~= nil and json.decode(item.info) or "", label = itemInfo["label"], description = itemInfo["description"] ~= nil and itemInfo["description"] or "", weight = itemInfo["weight"], type = itemInfo["type"], unique = itemInfo["unique"], useable = itemInfo["useable"], image = itemInfo["image"], shouldClose = itemInfo["shouldClose"], slot = item.slot}
+				end
 			end
 		end
 	end)
-	return inventory
+	return PlayerData
 end
 
-QBCore.Player.SaveInventory = function(PlayerData)
+QBCore.Player.SaveInventory = function(source)
+	local PlayerData = QBCore.Players[source].PlayerData
+	local items = PlayerData.items
 	QBCore.Functions.ExecuteSql("DELETE FROM `playeritems` WHERE `citizenid` = '"..PlayerData.citizenid.."'")
-	if PlayerData.items ~= nil then
-		for slot, item in pairs(PlayerData.items) do
-			if PlayerData.items[slot] ~= nil then
-				QBCore.Functions.ExecuteSql("INSERT INTO `playeritems` (`citizenid`, `name`, `amount`, `info`, `type`, `slot`) VALUES ('"..PlayerData.citizenid.."', '"..PlayerData.items[slot].name.."', '"..PlayerData.items[slot].amount.."', '"..json.encode(PlayerData.items[slot].info).."', '"..PlayerData.items[slot].type.."', '"..slot.."')")
+	if next(items) ~= nil then
+		for slot, item in pairs(items) do
+			Citizen.Wait(50)
+			if items[slot] ~= nil then
+				QBCore.Functions.ExecuteSql("INSERT INTO `playeritems` (`citizenid`, `name`, `amount`, `info`, `type`, `slot`) VALUES ('"..PlayerData.citizenid.."', '"..items[slot].name.."', '"..items[slot].amount.."', '"..json.encode(items[slot].info).."', '"..items[slot].type.."', '"..slot.."')")
 			end
 		end
 	end
