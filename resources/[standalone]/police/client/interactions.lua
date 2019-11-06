@@ -94,13 +94,23 @@ AddEventHandler('police:client:EscortPlayer', function()
     end
 end)
 
-RegisterNetEvent('police:client:CuffPlayer')
-AddEventHandler('police:client:CuffPlayer', function(isSoftcuff)
+RegisterNetEvent('police:client:CuffPlayerSoft')
+AddEventHandler('police:client:CuffPlayerSoft', function()
     local player, distance = GetClosestPlayer()
-    local softcuff = softcuff ~= nil and softcuff or false
     if player ~= PlayerId() and distance < 2.5 then
         local playerId = GetPlayerServerId(player)
-        TriggerServerEvent("police:server:CuffPlayer", playerId, softcuff)
+        TriggerServerEvent("police:server:CuffPlayer", playerId, true)
+    else
+        QBCore.Functions.Notify("Niemand in de buurt!", "error")
+    end
+end)
+
+RegisterNetEvent('police:client:CuffPlayer')
+AddEventHandler('police:client:CuffPlayer', function()
+    local player, distance = GetClosestPlayer()
+    if player ~= PlayerId() and distance < 2.5 then
+        local playerId = GetPlayerServerId(player)
+        TriggerServerEvent("police:server:CuffPlayer", playerId, false)
         HandCuffAnimation()
     else
         QBCore.Functions.Notify("Niemand in de buurt!", "error")
@@ -117,7 +127,7 @@ AddEventHandler('police:client:GetEscorted', function(playerId)
                 local dragger = GetPlayerPed(GetPlayerFromServerId(playerId))
                 local heading = GetEntityHeading(dragger)
                 SetEntityCoords(GetPlayerPed(-1), GetOffsetFromEntityInWorldCoords(dragger, 0.0, 0.45, 0.0))
-                AttachEntityToEntity(GetPlayerPed(-1), dragger, 11816, 0.0, 0.45, 0.0, 0.0, 0.0, 0.0, false, false, false, false, 2, true)
+                AttachEntityToEntity(GetPlayerPed(-1), dragger, 11816, 0.45, 0.45, 0.0, 0.0, 0.0, 0.0, false, false, false, false, 2, true)
             else
                 isEscorted = false
                 DetachEntity(GetPlayerPed(-1), true, false)
@@ -149,11 +159,10 @@ AddEventHandler('police:client:GetCuffed', function(playerId, isSoftcuff)
 end)
 
 function HandCuffAnimation()
-    loadAnimDict("mp_arrest_paired")
 	Citizen.Wait(100)
-	TaskPlayAnim(GetPlayerPed(-1), "mp_arrest_paired", "cop_p2_back_right", 3.0, 3.0, -1, 48, 0, 0, 0, 0)
+    TaskPlayAnim(GetPlayerPed(-1), "mp_arrest_paired", "cop_p2_back_right", 3.0, 3.0, -1, 48, 0, 0, 0, 0)
 	Citizen.Wait(3500)
-	TaskPlayAnim(GetPlayerPed(-1), "mp_arrest_paired", "exit", 3.0, 3.0, -1, 48, 0, 0, 0, 0)
+    TaskPlayAnim(GetPlayerPed(-1), "mp_arrest_paired", "exit", 3.0, 3.0, -1, 48, 0, 0, 0, 0)
 end
 
 function GetCuffedAnimation(playerId)

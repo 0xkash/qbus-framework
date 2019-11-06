@@ -29,6 +29,27 @@ Citizen.CreateThread(function()
     end
 end)
 
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(7)
+        local ped = GetPlayerPed( -1 )
+        local weapon = GetSelectedPedWeapon(ped)
+
+        if IsPedArmed(ped, 6) then
+            DisableControlAction(1, 140, true)
+            DisableControlAction(1, 141, true)
+            DisableControlAction(1, 142, true)
+        end
+
+        if weapon == GetHashKey("WEAPON_FIREEXTINGUISHER") or  weapon == GetHashKey("WEAPON_PETROLCAN") then
+            if IsPedShooting(ped) then
+                SetPedInfiniteAmmo(ped, true, GetHashKey("WEAPON_FIREEXTINGUISHER"))
+                SetPedInfiniteAmmo(ped, true, GetHashKey("WEAPON_PETROLCAN"))
+            end
+        end
+    end
+end)
+
 AddEventHandler("playerSpawned", function()
     NetworkSetFriendlyFireOption(true)
     SetCanAttackFriendly(PlayerPedId(), true, true)

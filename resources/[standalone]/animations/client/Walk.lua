@@ -1,6 +1,7 @@
 function WalkMenuStart(name)
   RequestWalking(name)
   SetPedMovementClipset(PlayerPedId(), name, 0.2)
+  TriggerEvent("crouchprone:client:SetWalkSet", name)
   RemoveAnimSet(name)
 end
 

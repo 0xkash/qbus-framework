@@ -123,7 +123,7 @@ Citizen.CreateThread(function()
 
 				if IsControlJustReleased(0, 38) then
 					if isAuthorized then
-						setDoorLocking(doorID)
+						setDoorLocking(doorID, k)
 					end
 				end
 			end
@@ -135,13 +135,13 @@ Citizen.CreateThread(function()
 	end
 end)
 
-function setDoorLocking(doorId)
+function setDoorLocking(doorId, key)
 	doorId.locking = true
 	openDoorAnim()
     SetTimeout(400, function()
 		doorId.locking = false
 		doorId.locked = not doorId.locked
-		TriggerServerEvent('qb-doorlock:server:updateState', k, doorId.locked)
+		TriggerServerEvent('qb-doorlock:server:updateState', key, doorId.locked)
 	end)
 end
 
@@ -166,7 +166,9 @@ end
 
 function openDoorAnim()
     loadAnimDict("anim@heists@keycard@") 
-    TaskPlayAnim(GetPlayerPed(-1), "anim@heists@keycard@", "exit", 8.0, 8.0, -1, 50, 0, false, false, false)
+    TaskPlayAnim( GetPlayerPed(-1), "anim@heists@keycard@", "exit", 5.0, 1.0, -1, 16, 0, 0, 0, 0 )
+    Citizen.Wait(400)
+    ClearPedTasks(GetPlayerPed(-1))
 end
 
 RegisterNetEvent('qb-doorlock:client:setState')

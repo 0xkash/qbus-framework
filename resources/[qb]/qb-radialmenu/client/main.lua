@@ -45,7 +45,6 @@ function setupSubItems()
                 event = 'qb-houses:client:giveVehicleKey',
                 shouldClose = true,
             })
-            print('inserted')
         end
     end
 

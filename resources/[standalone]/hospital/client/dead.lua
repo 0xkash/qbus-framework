@@ -42,13 +42,20 @@ Citizen.CreateThread(function()
                 end
             end
 
-            loadAnimDict(deadAnimDict)
-            if not IsEntityPlayingAnim(PlayerPedId(), deadAnimDict, deadAnim, 3) and not isInHospitalBed then
-                TaskPlayAnim(PlayerPedId(), deadAnimDict, deadAnim, 1.0, 1.0, -1, 1, 0, 0, 0, 0)
-            end
-            loadAnimDict(inBedDict)
-            if not IsEntityPlayingAnim(PlayerPedId(), inBedDict, inBedAnim, 3) and isInHospitalBed then
-                TaskPlayAnim(PlayerPedId(), inBedDict, inBedAnim, 1.0, 1.0, -1, 1, 0, 0, 0, 0)
+            if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
+                loadAnimDict("veh@low@front_ps@idle_duck")
+                if not IsEntityPlayingAnim(PlayerPedId(), "veh@low@front_ps@idle_duck", "sit", 3) then
+                    TaskPlayAnim(PlayerPedId(), "veh@low@front_ps@idle_duck", "sit", 1.0, 1.0, -1, 1, 0, 0, 0, 0)
+                end
+            else
+                loadAnimDict(deadAnimDict)
+                if not IsEntityPlayingAnim(PlayerPedId(), deadAnimDict, deadAnim, 3) and not isInHospitalBed then
+                    TaskPlayAnim(PlayerPedId(), deadAnimDict, deadAnim, 1.0, 1.0, -1, 1, 0, 0, 0, 0)
+                end
+                loadAnimDict(inBedDict)
+                if not IsEntityPlayingAnim(PlayerPedId(), inBedDict, inBedAnim, 3) and isInHospitalBed then
+                    TaskPlayAnim(PlayerPedId(), inBedDict, inBedAnim, 1.0, 1.0, -1, 1, 0, 0, 0, 0)
+                end
             end
 
             SetCurrentPedWeapon(GetPlayerPed(-1), GetHashKey("WEAPON_UNARMED"), true)
@@ -75,9 +82,13 @@ function OnDeath()
         NetworkResurrectLocalPlayer(pos.x, pos.y, pos.z, heading, true, false)
         SetEntityInvincible(player, true)
         SetEntityHealth(player, GetEntityMaxHealth(GetPlayerPed(-1)))
-
-        loadAnimDict(deadAnimDict)
-        TaskPlayAnim(player, deadAnimDict, deadAnim, 1.0, 1.0, -1, 1, 0, 0, 0, 0)
+        if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
+            loadAnimDict("veh@low@front_ps@idle_duck")
+            TaskPlayAnim(player, "veh@low@front_ps@idle_duck", "sit", 1.0, 1.0, -1, 1, 0, 0, 0, 0)
+        else
+            loadAnimDict(deadAnimDict)
+            TaskPlayAnim(player, deadAnimDict, deadAnim, 1.0, 1.0, -1, 1, 0, 0, 0, 0)
+        end
         TriggerEvent("hospital:client:AiCall")
     end
 end
