@@ -78,6 +78,30 @@ Config.MenuItems = {
                         event = 'qb-houses:client:toggleDoorlock',
                         shouldClose = true,
                     },
+                    {
+                        id    = 'escort',
+                        title = 'Escorteren',
+                        icon = '#general',
+                        type = 'client',
+                        event = 'police:client:EscortPlayer',
+                        shouldClose = true,
+                    },
+                    {
+                        id    = 'playerinvehicle',
+                        title = 'Zet in voertuig',
+                        icon = '#general',
+                        type = 'client',
+                        event = 'police:client:PutPlayerInVehicle',
+                        shouldClose = true,
+                    },
+                    {
+                        id    = 'playeroutvehicle',
+                        title = 'Haal out voertuig',
+                        icon = '#general',
+                        type = 'client',
+                        event = 'police:client:SetPlayerOutVehicle',
+                        shouldClose = true,
+                    },
                 }
             }
         }

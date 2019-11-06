@@ -10,6 +10,7 @@ client_scripts {
 	'client/job.lua',
 	'client/gui.lua',
 	'client/heli.lua',
+	'client/anpr.lua',
 }
 
 server_scripts {

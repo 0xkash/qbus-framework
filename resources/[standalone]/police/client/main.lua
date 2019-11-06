@@ -40,6 +40,41 @@ AddEventHandler('QBCore:Client:OnPlayerUnload', function()
     isHandcuffed = false
 end)
 
+RegisterNetEvent('112:client:SendPoliceAlert')
+AddEventHandler('112:client:SendPoliceAlert', function(msg, type, blipSettings)
+    if type == "flagged" then
+        PlaySoundFrontend(-1, "Beep_Green", "DLC_HEIST_HACKING_SNAKE_SOUNDS", 1)
+        TriggerEvent("chatMessage", "MELDING", "error", msg)
+    else
+        PlaySound(-1, "Event_Start_Text", "GTAO_FM_Events_Soundset", 0, 0, 1)
+        TriggerEvent("chatMessage", "112-MELDING", "error", msg)
+    end
+
+    if blipSettings ~= nil then
+        local transG = 250
+        local blip = AddBlipForCoord(blipSettings.x, blipSettings.y, blipSettings.z)
+        SetBlipSprite(blip, blipSettings.sprite)
+        SetBlipColour(blip, blipSettings.color)
+        SetBlipDisplay(blip, 4)
+        SetBlipAlpha(blip, transG)
+        SetBlipScale(blip, blipSettings.scale)
+        SetBlipAsShortRange(blip, false)
+        BeginTextCommandSetBlipName('STRING')
+        AddTextComponentString(blipSettings.text)
+        EndTextCommandSetBlipName(blip)
+        while transG ~= 0 do
+            Wait(180 * 4)
+            transG = transG - 1
+            SetBlipAlpha(blip, transG)
+            if transG == 0 then
+                SetBlipSprite(blip, 2)
+                RemoveBlip(blip)
+                return
+            end
+        end
+    end
+end)
+
 function GetClosestPlayer()
     local closestPlayers = QBCore.Functions.GetPlayersFromCoords()
     local closestDistance = -1
