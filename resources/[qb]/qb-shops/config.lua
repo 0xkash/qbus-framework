@@ -27,7 +27,6 @@ Config.Locations = {
                 ["z"] = 29.42,
             }
         },
-        ["menu"] = normalMenu
     },
     ["hardware"] = {
         ["label"] = "Hardware Store",
@@ -38,7 +37,6 @@ Config.Locations = {
                 ["z"] = 29.6,
             }
         },
-        ["menu"] = hardwareMenu
     }
 }
 
