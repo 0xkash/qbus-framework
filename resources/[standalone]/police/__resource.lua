@@ -9,6 +9,7 @@ client_scripts {
 	'client/interactions.lua',
 	'client/job.lua',
 	'client/gui.lua',
+	'client/heli.lua',
 }
 
 server_scripts {

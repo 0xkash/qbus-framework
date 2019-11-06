@@ -230,6 +230,14 @@ function updateweights($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
         return true;
     }
 
+    if ($fromInv.attr("data-inventory").split("-")[0] == "itemshop" && $toInv.attr("data-inventory").split("-")[0] == "itemshop") {
+        itemData = $fromInv.find("[data-slot=" + $fromSlot + "]").data("item");
+        $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-img"><img src="images/' + itemData.image + '" alt="' + itemData.name + '" /></div><div class="item-slot-amount"><p>€'+itemData.price+'</p></div><div class="item-slot-label"><p>' + itemData.label + '</p></div>');
+
+        InventoryError($fromInv, $fromSlot);
+        return false;
+    }
+
     if ($toAmount == 0 && $fromInv.attr("data-inventory").split("-")[0] == "itemshop") {
         itemData = $fromInv.find("[data-slot=" + $fromSlot + "]").data("item");
         $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-img"><img src="images/' + itemData.image + '" alt="' + itemData.name + '" /></div><div class="item-slot-amount"><p>€'+itemData.price+'</p></div><div class="item-slot-label"><p>' + itemData.label + '</p></div>');

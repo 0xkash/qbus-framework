@@ -27,7 +27,7 @@ Citizen.CreateThread(function()
                                 Menu.hidden = not Menu.hidden
                             end
                             Menu.renderGUI()
-                        elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["clothing"].x, Config.Locations["clothing"].y, Config.Locations["clothing"].z, true) < 4.5) then
+                        elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["clothing"].x, Config.Locations["clothing"].y, Config.Locations["clothing"].z, true) < 2.5) then
                             QBCore.Functions.DrawText3D(Config.Locations["clothing"].x, Config.Locations["clothing"].y, Config.Locations["clothing"].z, "Omkleden")
                         end  
                     end
@@ -46,7 +46,7 @@ Citizen.CreateThread(function()
                             if IsControlJustReleased(0, Keys["E"]) then
                                 TriggerServerEvent("QBCore:ToggleDuty")
                             end
-                        elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["duty"].x, Config.Locations["duty"].y, Config.Locations["duty"].z, true) < 4.5) then
+                        elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["duty"].x, Config.Locations["duty"].y, Config.Locations["duty"].z, true) < 2.5) then
                             QBCore.Functions.DrawText3D(Config.Locations["duty"].x, Config.Locations["duty"].y, Config.Locations["duty"].z, "In/Uit dienst")
                         end  
                     end
@@ -77,6 +77,37 @@ Citizen.CreateThread(function()
                 end)
             end
 
+            if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["helicopter"].x, Config.Locations["helicopter"].y, Config.Locations["helicopter"].z, true) < 4.5) then
+                QBCore.Functions.GetPlayerData(function(PlayerData)
+                    if PlayerData.job.name == "police" and PlayerData.job.onduty then
+                        DrawMarker(2, Config.Locations["helicopter"].x, Config.Locations["helicopter"].y, Config.Locations["helicopter"].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
+                        if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["helicopter"].x, Config.Locations["helicopter"].y, Config.Locations["helicopter"].z, true) < 1.5) then
+                            if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
+                                QBCore.Functions.DrawText3D(Config.Locations["helicopter"].x, Config.Locations["helicopter"].y, Config.Locations["helicopter"].z, "~g~E~w~ - Helikopter opbergen")
+                            else
+                                QBCore.Functions.DrawText3D(Config.Locations["helicopter"].x, Config.Locations["helicopter"].y, Config.Locations["helicopter"].z, "~g~E~w~ - Helikopter pakken")
+                            end
+                            if IsControlJustReleased(0, Keys["E"]) then
+                                if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
+                                    QBCore.Functions.DeleteVehicle(GetVehiclePedIsIn(GetPlayerPed(-1)))
+                                else
+                                    local coords = Config.Locations["helicopter"]
+                                    QBCore.Functions.SpawnVehicle(Config.Helicopter, function(veh)
+                                        SetVehicleNumberPlateText(veh, "ZULU"..tostring(math.random(1000, 9999)))
+                                        SetEntityHeading(veh, coords.h)
+                                        exports['LegacyFuel']:SetFuel(veh, 100.0)
+                                        closeMenuFull()
+                                        TaskWarpPedIntoVehicle(GetPlayerPed(-1), veh, -1)
+                                        TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
+                                        SetVehicleEngineOn(veh, true, true)
+                                    end, coords, true)
+                                end
+                            end
+                        end  
+                    end
+                end)
+            end
+
             if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["armory"].x, Config.Locations["armory"].y, Config.Locations["armory"].z, true) < 4.5) then
                 QBCore.Functions.GetPlayerData(function(PlayerData)
                     if PlayerData.job.name == "police" and PlayerData.job.onduty then
@@ -85,7 +116,7 @@ Citizen.CreateThread(function()
                             if IsControlJustReleased(0, Keys["E"]) then
                                 TriggerServerEvent("inventory:server:OpenInventory", "shop", "police", Config.Items)
                             end
-                        elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["armory"].x, Config.Locations["armory"].y, Config.Locations["armory"].z, true) < 3.5) then
+                        elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["armory"].x, Config.Locations["armory"].y, Config.Locations["armory"].z, true) < 2.5) then
                             QBCore.Functions.DrawText3D(Config.Locations["armory"].x, Config.Locations["armory"].y, Config.Locations["armory"].z, "Wapenkluis")
                         end  
                     end

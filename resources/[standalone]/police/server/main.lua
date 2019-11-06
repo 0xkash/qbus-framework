@@ -64,6 +64,12 @@ AddEventHandler('police:server:SetHandcuffStatus', function(isHandcuffed)
 	end
 end)
 
+RegisterServerEvent('heli:spotlight')
+AddEventHandler('heli:spotlight', function(state)
+	local serverID = source
+	TriggerClientEvent('heli:spotlight', -1, serverID, state)
+end)
+
 QBCore.Commands.Add("cuff", "Boei een speler", {}, false, function(source, args)
 	local Player = QBCore.Functions.GetPlayer(source)
     if Player.PlayerData.job.name == "police" then

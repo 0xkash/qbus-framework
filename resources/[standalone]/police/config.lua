@@ -4,8 +4,11 @@ Config.Locations = {
    ["duty"] = {x = 440.085, y = -974.924, z = 30.689, h = 90.654},
    ["clothing"] = {x = 454.456, y = -988.743, z = 30.689, h = 90.654},
    ["vehicle"] = {x = 448.159, y = -1017.41, z = 28.562, h = 90.654},
+   ["helicopter"] = {x = 449.168, y = -981.325, z = 43.691, h = 87.234},
    ["armory"] = {x = 453.075, y = -980.124, z = 30.889, h = 90.654},
 }
+
+Config.Helicopter = "polmav"
 
 Config.SecurityCameras = {
     hideradar = false,
@@ -37,7 +40,7 @@ Config.Items = {
             slot = 1,
         },
         [2] = {
-            name = "weapon_pumpshotgun",
+            name = "weapon_stungun",
             price = 0,
             amount = 99,
             info = {},
@@ -45,7 +48,7 @@ Config.Items = {
             slot = 2,
         },
         [3] = {
-            name = "weapon_smg",
+            name = "weapon_pumpshotgun",
             price = 0,
             amount = 99,
             info = {},
@@ -53,7 +56,7 @@ Config.Items = {
             slot = 3,
         },
         [4] = {
-            name = "weapon_carbinerifle",
+            name = "weapon_smg",
             price = 0,
             amount = 99,
             info = {},
@@ -61,7 +64,7 @@ Config.Items = {
             slot = 4,
         },
         [5] = {
-            name = "weapon_nightstick",
+            name = "weapon_carbinerifle",
             price = 0,
             amount = 99,
             info = {},
@@ -69,15 +72,15 @@ Config.Items = {
             slot = 5,
         },
         [6] = {
-            name = "pistol_ammo",
+            name = "weapon_nightstick",
             price = 0,
             amount = 99,
             info = {},
-            type = "item",
+            type = "weapon",
             slot = 6,
         },
         [7] = {
-            name = "smg_ammo",
+            name = "pistol_ammo",
             price = 0,
             amount = 99,
             info = {},
@@ -85,7 +88,7 @@ Config.Items = {
             slot = 7,
         },
         [8] = {
-            name = "shotgun_ammo",
+            name = "smg_ammo",
             price = 0,
             amount = 99,
             info = {},
@@ -93,7 +96,7 @@ Config.Items = {
             slot = 8,
         },
         [9] = {
-            name = "rifle_ammo",
+            name = "shotgun_ammo",
             price = 0,
             amount = 99,
             info = {},
@@ -101,12 +104,20 @@ Config.Items = {
             slot = 9,
         },
         [10] = {
-            name = "handcuffs",
+            name = "rifle_ammo",
             price = 0,
             amount = 99,
             info = {},
             type = "item",
             slot = 10,
+        },
+        [11] = {
+            name = "handcuffs",
+            price = 0,
+            amount = 99,
+            info = {},
+            type = "item",
+            slot = 11,
         },
     }
 }
