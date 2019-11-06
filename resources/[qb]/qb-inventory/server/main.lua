@@ -5,6 +5,7 @@ Drops = {}
 Trunks = {}
 Gloveboxes = {}
 Stashes = {}
+ShopItems = {}
 
 RegisterServerEvent("inventory:server:OpenInventory")
 AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
@@ -58,13 +59,21 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 				Gloveboxes[id] = {}
 				Gloveboxes[id].items = {}
 			end
+		elseif name == "shop" then
+			secondInv.name = "itemshop-"..id
+			secondInv.label = other.label
+			secondInv.maxweight = 900000
+			secondInv.inventory = SetupShopItems(id, other.items)
+			ShopItems[id] = {}
+			ShopItems[id].items = other.items
+			secondInv.slots = 30
 		else
 			if Drops[id] ~= nil then
 				secondInv.name = id
 				secondInv.label = "Dropped-"..tostring(id)
 				secondInv.maxweight = 900000
 				secondInv.inventory = Drops[id].items
-				secondInv.slots = 100
+				secondInv.slots = 30
 			end
 		end
 		TriggerClientEvent("inventory:client:OpenInventory", src, Player.PlayerData.items, secondInv)
@@ -122,11 +131,16 @@ AddEventHandler('inventory:server:UseItem', function(inventory, item)
 end)
 
 RegisterServerEvent("inventory:server:SetInventoryData")
-AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toInventory, fromSlot, toSlot, fromAmount, toAmount, fromType)
+AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toInventory, fromSlot, toSlot, fromAmount, toAmount)
 	local src = source
 	local Player = QBCore.Functions.GetPlayer(src)
 	local fromSlot = tonumber(fromSlot)
 	local toSlot = tonumber(toSlot)
+
+	if (fromInventory == "player" or fromInventory == "hotbar") and QBCore.Shared.SplitStr(toInventory, "-")[1] == "itemshop" then
+		return
+	end
+
 	if fromInventory == "player" or fromInventory == "hotbar" then
 		local fromItemData = Player.Functions.GetItemBySlot(fromSlot)
 		local fromAmount = tonumber(fromAmount) ~= nil and tonumber(fromAmount) or fromItemData.amount
@@ -353,6 +367,23 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 		else
 			TriggerClientEvent("QBCore:Notify", src, "Item bestaat niet??", "error")
 		end
+	elseif QBCore.Shared.SplitStr(fromInventory, "-")[1] == "itemshop" then
+		local shopType = QBCore.Shared.SplitStr(fromInventory, "-")[2]
+		local itemData = ShopItems[shopType].items[fromSlot]
+		local itemInfo = QBCore.Shared.Items[itemData.name:lower()]
+		local bankBalance = Player.PlayerData.money["bank"]
+		local price = tonumber((itemData.price*fromAmount))
+
+		if Player.Functions.RemoveMoney("cash", price) then
+			Player.Functions.AddItem(itemData.name, fromAmount, toSlot, itemData.info)
+			TriggerClientEvent('QBCore:Notify', src, itemInfo["label"] .. " gekocht!", "success")
+		elseif bankBalance >= price then
+			Player.Functions.RemoveMoney("bank", price)
+			Player.Functions.AddItem(itemData.name, fromAmount, toSlot, itemData.info)
+			TriggerClientEvent('QBCore:Notify', src, itemInfo["label"] .. " gekocht!", "success")
+		else
+			TriggerClientEvent('QBCore:Notify', src, "Je hebt niet genoeg geld!", "error")
+		end
 	else
 		-- drop
 		fromInventory = tonumber(fromInventory)
@@ -409,6 +440,31 @@ function IsVehicleOwned(plate)
 		end
 	end)
 	return val
+end
+
+-- Shop Items
+function SetupShopItems(shop, shopItems)
+	local items = {}
+	if next(shopItems) ~= nil then
+		for k, item in pairs(shopItems) do
+			local itemInfo = QBCore.Shared.Items[item.name:lower()]
+			items[item.slot] = {
+				name = itemInfo["name"],
+				amount = tonumber(item.amount),
+				info = item.info ~= nil and item.info or "",
+				label = itemInfo["label"],
+				description = itemInfo["description"] ~= nil and itemInfo["description"] or "",
+				weight = itemInfo["weight"], 
+				type = itemInfo["type"], 
+				unique = itemInfo["unique"], 
+				useable = itemInfo["useable"], 
+				price = item.price,
+				image = itemInfo["image"],
+				slot = item.slot,
+			}
+		end
+	end
+	return items
 end
 
 -- Stash Items

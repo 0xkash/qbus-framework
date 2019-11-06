@@ -116,22 +116,45 @@ function handleDragDrop() {
             }
 
             if ( dragAmount == 0) {
-                $(this).find(".item-slot-amount p").html('0 (0.0)');
-                $(".ui-draggable-dragging").find(".item-slot-amount p").html(itemData.amount + ' (' + ((itemData.weight * itemData.amount) / 1000).toFixed(1) + ')');
-                if ($(this).parent().attr("data-inventory") == "hotbar") {
-                    $(".ui-draggable-dragging").find(".item-slot-key").remove();
+                if (itemData.price != null) {
+                    $(this).find(".item-slot-amount p").html('0 (0.0)');
+                    $(".ui-draggable-dragging").find(".item-slot-amount p").html('€' + itemData.price);
+                    if ($(this).parent().attr("data-inventory") == "hotbar") {
+                        $(".ui-draggable-dragging").find(".item-slot-key").remove();
+                    }
+                } else {
+                    $(this).find(".item-slot-amount p").html('0 (0.0)');
+                    $(".ui-draggable-dragging").find(".item-slot-amount p").html(itemData.amount + ' (' + ((itemData.weight * itemData.amount) / 1000).toFixed(1) + ')');
+                    if ($(this).parent().attr("data-inventory") == "hotbar") {
+                        $(".ui-draggable-dragging").find(".item-slot-key").remove();
+                    }
                 }
             } else if(dragAmount > itemData.amount) {
-                $(this).find(".item-slot-amount p").html(itemData.amount + ' (' + ((itemData.weight * itemData.amount) / 1000).toFixed(1) + ')');
-                if ($(this).parent().attr("data-inventory") == "hotbar") {
-                    $(".ui-draggable-dragging").find(".item-slot-key").remove();
+                if (itemData.price != null) {
+                    $(this).find(".item-slot-amount p").html('€' + itemData.price);
+                    if ($(this).parent().attr("data-inventory") == "hotbar") {
+                        $(".ui-draggable-dragging").find(".item-slot-key").remove();
+                    }
+                } else {
+                    $(this).find(".item-slot-amount p").html(itemData.amount + ' (' + ((itemData.weight * itemData.amount) / 1000).toFixed(1) + ')');
+                    if ($(this).parent().attr("data-inventory") == "hotbar") {
+                        $(".ui-draggable-dragging").find(".item-slot-key").remove();
+                    }
                 }
                 InventoryError($(this).parent(), $(this).attr("data-slot"));
             } else if(dragAmount > 0) {
-                $(this).find(".item-slot-amount p").html((itemData.amount - dragAmount) + ' (' + ((itemData.weight * (itemData.amount - dragAmount)) / 1000).toFixed(1) + ')');
-                $(".ui-draggable-dragging").find(".item-slot-amount p").html(dragAmount + ' (' + ((itemData.weight * dragAmount) / 1000).toFixed(1) + ')');
-                if ($(this).parent().attr("data-inventory") == "hotbar") {
-                    $(".ui-draggable-dragging").find(".item-slot-key").remove();
+                if (itemData.price != null) {
+                    $(this).find(".item-slot-amount p").html('€' + itemData.price);
+                    $(".ui-draggable-dragging").find(".item-slot-amount p").html('€' + itemData.price);
+                    if ($(this).parent().attr("data-inventory") == "hotbar") {
+                        $(".ui-draggable-dragging").find(".item-slot-key").remove();
+                    }
+                } else {
+                    $(this).find(".item-slot-amount p").html((itemData.amount - dragAmount) + ' (' + ((itemData.weight * (itemData.amount - dragAmount)) / 1000).toFixed(1) + ')');
+                    $(".ui-draggable-dragging").find(".item-slot-amount p").html(dragAmount + ' (' + ((itemData.weight * dragAmount) / 1000).toFixed(1) + ')');
+                    if ($(this).parent().attr("data-inventory") == "hotbar") {
+                        $(".ui-draggable-dragging").find(".item-slot-key").remove();
+                    }
                 }
             } else {
                 if ($(this).parent().attr("data-inventory") == "hotbar") {
@@ -207,6 +230,22 @@ function updateweights($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
         return true;
     }
 
+    if ($fromInv.attr("data-inventory").split("-")[0] == "itemshop" && $toInv.attr("data-inventory").split("-")[0] == "itemshop") {
+        itemData = $fromInv.find("[data-slot=" + $fromSlot + "]").data("item");
+        $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-img"><img src="images/' + itemData.image + '" alt="' + itemData.name + '" /></div><div class="item-slot-amount"><p>€'+itemData.price+'</p></div><div class="item-slot-label"><p>' + itemData.label + '</p></div>');
+
+        InventoryError($fromInv, $fromSlot);
+        return false;
+    }
+
+    if ($toAmount == 0 && $fromInv.attr("data-inventory").split("-")[0] == "itemshop") {
+        itemData = $fromInv.find("[data-slot=" + $fromSlot + "]").data("item");
+        $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-img"><img src="images/' + itemData.image + '" alt="' + itemData.name + '" /></div><div class="item-slot-amount"><p>€'+itemData.price+'</p></div><div class="item-slot-label"><p>' + itemData.label + '</p></div>');
+ 
+        InventoryError($fromInv, $fromSlot);
+        return false;
+    }
+
     if ($fromInv.attr("data-inventory") != $toInv.attr("data-inventory")) {
         fromData = $fromInv.find("[data-slot=" + $fromSlot + "]").data("item");
         toData = $toInv.find("[data-slot=" + $toSlot + "]").data("item");
@@ -236,13 +275,15 @@ function updateweights($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
         }
     }
 
-    if (totalWeightOther > otherMaxWeight || totalWeight > playerMaxWeight) {
+    if (totalWeight > playerMaxWeight || (totalWeightOther > otherMaxWeight && $fromInv.attr("data-inventory").split("-")[0] != "itemshop")) {
         InventoryError($fromInv, $fromSlot);
         return false;
     }
 
     $(".player-inv-info p").html("Speler Inventaris " + (parseInt(totalWeight) / 1000).toFixed(2) + " / " + (playerMaxWeight / 1000).toFixed(2) + " KG");
-    $(".other-inv-info p").html(otherLabel + " " + (parseInt(totalWeightOther) / 1000).toFixed(2) + " / " + (otherMaxWeight / 1000).toFixed(2) + " KG");
+    if ($fromInv.attr("data-inventory").split("-")[0] != "itemshop" && $toInv.attr("data-inventory").split("-")[0] != "itemshop") {
+        $(".other-inv-info p").html(otherLabel + " " + (parseInt(totalWeightOther) / 1000).toFixed(2) + " / " + (otherMaxWeight / 1000).toFixed(2) + " KG");
+    }
 
     return true;
 }
@@ -251,7 +292,17 @@ function swap($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
     fromData = $fromInv.find("[data-slot=" + $fromSlot + "]").data("item");
     toData = $toInv.find("[data-slot=" + $toSlot + "]").data("item");
     if (fromData !== undefined && fromData.amount >= $toAmount) {
-        if ($toAmount == 0) {$toAmount=fromData.amount}
+        if (($fromInv.attr("data-inventory") == "player" || $fromInv.attr("data-inventory") == "hotbar") && $toInv.attr("data-inventory").split("-")[0] == "itemshop") {
+            InventoryError($fromInv, $fromSlot);
+            return;
+        }
+
+        if ($toAmount == 0 && $fromInv.attr("data-inventory").split("-")[0] == "itemshop") {
+            InventoryError($fromInv, $fromSlot);
+            return;
+        } else if ($toAmount == 0) {
+            $toAmount=fromData.amount
+        }
         if((toData != undefined || toData != null) && toData.name == fromData.name && !fromData.unique) {
             var newData = [];
             newData.name = toData.name;
@@ -292,6 +343,7 @@ function swap($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
                 newDataFrom.description = fromData.description;
                 newDataFrom.image = fromData.image;
                 newDataFrom.weight = fromData.weight;
+                newDataFrom.price = fromData.price;
                 newDataFrom.info = fromData.info;
                 newDataFrom.useable = fromData.useable;
                 newDataFrom.unique = fromData.unique;
@@ -316,6 +368,8 @@ function swap($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
 
                 if ($fromInv.attr("data-inventory") == "hotbar") {
                     $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-key"><p>[' + $fromSlot + ']</p></div><div class="item-slot-img"><img src="images/' + newDataFrom.image + '" alt="' + newDataFrom.name + '" /></div><div class="item-slot-amount"><p>' + newDataFrom.amount + ' (' + ((newDataFrom.weight * newDataFrom.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + newDataFrom.label + '</p></div>');
+                } else if ($fromInv.attr("data-inventory").split("-")[0] == "itemshop") {
+                    $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-img"><img src="images/' + newDataFrom.image + '" alt="' + newDataFrom.name + '" /></div><div class="item-slot-amount"><p>€'+newDataFrom.price+'</p></div><div class="item-slot-label"><p>' + newDataFrom.label + '</p></div>');
                 } else {
                     $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-img"><img src="images/' + newDataFrom.image + '" alt="' + newDataFrom.name + '" /></div><div class="item-slot-amount"><p>' + newDataFrom.amount + ' (' + ((newDataFrom.weight * newDataFrom.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + newDataFrom.label + '</p></div>');
                 }    
@@ -412,6 +466,7 @@ function swap($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
                 newDataFrom.description = fromData.description;
                 newDataFrom.image = fromData.image;
                 newDataFrom.weight = fromData.weight;
+                newDataFrom.price = fromData.price;
                 newDataFrom.info = fromData.info;
                 newDataFrom.useable = fromData.useable;
                 newDataFrom.unique = fromData.unique;
@@ -424,6 +479,8 @@ function swap($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
     
                 if ($fromInv.attr("data-inventory") == "hotbar") {
                     $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-key"><p>[' + $fromSlot + ']</p></div><div class="item-slot-img"><img src="images/' + newDataFrom.image + '" alt="' + newDataFrom.name + '" /></div><div class="item-slot-amount"><p>' + newDataFrom.amount + ' (' + ((newDataFrom.weight * newDataFrom.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + newDataFrom.label + '</p></div>');
+                }  else if ($fromInv.attr("data-inventory").split("-")[0] == "itemshop") {
+                    $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-img"><img src="images/' + newDataFrom.image + '" alt="' + newDataFrom.name + '" /></div><div class="item-slot-amount"><p>€'+newDataFrom.price+'</p></div><div class="item-slot-label"><p>' + newDataFrom.label + '</p></div>');
                 } else {
                     $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-img"><img src="images/' + newDataFrom.image + '" alt="' + newDataFrom.name + '" /></div><div class="item-slot-amount"><p>' + newDataFrom.amount + ' (' + ((newDataFrom.weight * newDataFrom.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + newDataFrom.label + '</p></div>');
                 }
@@ -500,7 +557,7 @@ function InventoryError($elinv, $elslot) {
                     $(".player-inventory").find("[data-slot=" + item.slot + "]").data("item", item);
 
                     $(".ply-hotbar-inventory").find("[data-slot=" + item.slot + "]").addClass("item-drag");
-                    $(".ply-hotbar-inventory").find("[data-slot=" + item.slot + "]").html('<div class="item-slot-img"><img src="images/' + item.image + '" alt="' + item.name + '" /></div><div class="item-slot-amount"><p>' + item.amount + ' (' + ((item.weight * item.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + item.label + '</p></div>');
+                    $(".ply-hotbar-inventory").find("[data-slot=" + item.slot + "]").html('<div class="item-slot-key"><p>[' + item.slot + ']</p></div><div class="item-slot-img"><img src="images/' + item.image + '" alt="' + item.name + '" /></div><div class="item-slot-amount"><p>' + item.amount + ' (' + ((item.weight * item.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + item.label + '</p></div>');
                     $(".ply-hotbar-inventory").find("[data-slot=" + item.slot + "]").data("item", item);
                 }
                 
@@ -512,7 +569,11 @@ function InventoryError($elinv, $elslot) {
                 if (item != null) {
                     totalWeightOther += (item.weight * item.amount);
                     $(".other-inventory").find("[data-slot=" + item.slot + "]").addClass("item-drag");
-                    $(".other-inventory").find("[data-slot=" + item.slot + "]").html('<div class="item-slot-img"><img src="images/' + item.image + '" alt="' + item.name + '" /></div><div class="item-slot-amount"><p>' + item.amount + ' (' + ((item.weight * item.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + item.label + '</p></div>');
+                    if (item.price != null) {
+                        $(".other-inventory").find("[data-slot=" + item.slot + "]").html('<div class="item-slot-img"><img src="images/' + item.image + '" alt="' + item.name + '" /></div><div class="item-slot-amount"><p>€'+item.price+'</p></div><div class="item-slot-label"><p>' + item.label + '</p></div>');
+                    } else {
+                        $(".other-inventory").find("[data-slot=" + item.slot + "]").html('<div class="item-slot-img"><img src="images/' + item.image + '" alt="' + item.name + '" /></div><div class="item-slot-amount"><p>' + item.amount + ' (' + ((item.weight * item.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + item.label + '</p></div>');
+                    }
                     $(".other-inventory").find("[data-slot=" + item.slot + "]").data("item", item);
                 }
             });
@@ -520,8 +581,14 @@ function InventoryError($elinv, $elslot) {
 
         $(".player-inv-info p").html("Speler Inventaris " + (totalWeight / 1000).toFixed(2) + " / " + (data.maxweight / 1000).toFixed(2) + " KG");
         playerMaxWeight = data.maxweight;
-        if (data.other != null) {
-            $(".other-inv-info p").html(data.other.label + " " + (totalWeightOther / 1000).toFixed(2) + " / " + (data.other.maxweight / 1000).toFixed(2) + " KG");
+        if (data.other != null) 
+        {
+            var name = data.other.name.toString()
+            if (name != null && name.split("-")[0] == "itemshop") {
+                $(".other-inv-info p").html(data.other.label);
+            } else {
+                $(".other-inv-info p").html(data.other.label + " " + (totalWeightOther / 1000).toFixed(2) + " / " + (data.other.maxweight / 1000).toFixed(2) + " KG");
+            }
             otherMaxWeight = data.other.maxweight;
             otherLabel = data.other.label;
         } else {
