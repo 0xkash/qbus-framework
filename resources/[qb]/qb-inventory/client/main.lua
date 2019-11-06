@@ -185,6 +185,11 @@ Citizen.CreateThread(function()
     end
 end)
 
+RegisterServerEvent("QBCore:PlayerJoined")
+AddEventHandler('QBCore:PlayerJoined', function()
+    TriggerServerEvent("inventory:server:LoadDrops")
+end)
+
 RegisterNetEvent("inventory:client:OpenInventory")
 AddEventHandler("inventory:client:OpenInventory", function(inventory, other)
     if not IsEntityDead(GetPlayerPed(-1)) then
@@ -247,6 +252,11 @@ AddEventHandler("inventory:client:AddDropItem", function(dropId, player)
             z = z - 0.3,
         },
     }
+end)
+
+RegisterNetEvent("inventory:client:AddDropItem")
+AddEventHandler("inventory:client:AddDropItem", function(dropList)
+    Drops = dropList
 end)
 
 RegisterNetEvent("inventory:client:RemoveDropItem")

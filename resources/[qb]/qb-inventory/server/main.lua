@@ -7,6 +7,12 @@ Gloveboxes = {}
 Stashes = {}
 ShopItems = {}
 
+RegisterServerEvent("inventory:server:LoadDrops")
+AddEventHandler('inventory:server:LoadDrops', function()
+	local src = source
+	TriggerClientEvent("inventory:client:AddDropItem", src, Drops)
+end)
+
 RegisterServerEvent("inventory:server:OpenInventory")
 AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 	local src = source

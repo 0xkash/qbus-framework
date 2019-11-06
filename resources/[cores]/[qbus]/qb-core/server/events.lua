@@ -105,7 +105,7 @@ AddEventHandler('QBCore:UpdatePlayer', function(data)
 		Player.Functions.SetMetaData("thirst", newThirst)
 		Player.Functions.SetMetaData("hunger", newHunger)
 
-		QBCore.Player.Save(src)
+		Player.Functions.Save()
 	end
 end)
 
