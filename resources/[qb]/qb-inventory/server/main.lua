@@ -10,7 +10,8 @@ ShopItems = {}
 RegisterServerEvent("inventory:server:LoadDrops")
 AddEventHandler('inventory:server:LoadDrops', function()
 	local src = source
-	if Drops ~= nil then
+	if next(Drops) ~= nil then
+		TriggerClientEvent("inventory:client:AddDropItem", -1, dropId, source)
 		TriggerClientEvent("inventory:client:AddDropItem", src, Drops)
 	end
 end)

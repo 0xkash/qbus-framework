@@ -187,7 +187,7 @@ end)
 
 RegisterNetEvent("QBCore:Client:OnPlayerLoaded")
 AddEventHandler("QBCore:Client:OnPlayerLoaded", function()
-    TriggerServerEvent("inventory:server:LoadDrops")
+    --TriggerServerEvent("inventory:server:LoadDrops")
 end)
 
 RegisterNetEvent("inventory:client:OpenInventory")
