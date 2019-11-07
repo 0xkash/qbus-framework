@@ -86,7 +86,22 @@ $(document).on("contextmenu", ".item-slot", function(e){
                 gender = "Vrouw";
             }
             $(".item-info-title").html('<p>'+itemData.label+'</p>')
-            $(".item-info-description").html('<p><strong>BSN: </strong><span>' + itemData.info.citizenid + '</span></p><p><strong>Voornaam: </strong><span>' + itemData.info.firstname + '</span></p><p><strong>Achternaam: </strong><span>' + itemData.info.lastname + '</span></p><p><strong>Geboortedatum: </strong><span>' + itemData.info.birthdate + '</span></p><p><strong>Geslacht: </strong><span>' + gender + '</span></p><p><strong>Nationaliteit: </strong><span>' + itemData.info.nationality + '</span></p>')
+            $(".item-info-description").html('<p><strong>BSN: </strong><span>' + itemData.info.citizenid + '</span></p><p><strong>Voornaam: </strong><span>' + itemData.info.firstname + '</span></p><p><strong>Achternaam: </strong><span>' + itemData.info.lastname + '</span></p><p><strong>Geboortedatum: </strong><span>' + itemData.info.birthdate + '</span></p><p><strong>Geslacht: </strong><span>' + gender + '</span></p><p><strong>Nationaliteit: </strong><span>' + itemData.info.nationality + '</span></p>');
+        } else if (itemData.type == "weapon") {
+            $(".item-info-title").html('<p>'+itemData.label+'</p>')
+            if (itemData.info.attachments != null) {
+                var attachmentString = "";
+                $.each(itemData.info.attachments, function (i, attachment) {
+                    if (i == (itemData.info.attachments.length - 1)) {
+                        attachmentString += attachment.label
+                    } else {
+                        attachmentString += attachment.label + ", "
+                    }
+                });
+                $(".item-info-description").html('<p><strong>Serienummer: </strong><span>' + itemData.info.serie + '</span></p><p><strong>Attachments: </strong><span>' + attachmentString + '</span></p><p>' + itemData.description + '</p>');
+            } else{
+                $(".item-info-description").html('<p><strong>Serienummer: </strong><span>' + itemData.info.serie + '</span></p><p>' + itemData.description + '</p>');
+            }
         }
     } else {
         $(".item-info-title").html('<p>'+itemData.label+'</p>')

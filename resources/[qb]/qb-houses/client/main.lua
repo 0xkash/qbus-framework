@@ -15,7 +15,7 @@ local closesthouse = nil
 local hasKey = false
 local isOwned = false
 
-local isLoggedIn = true
+local isLoggedIn = false
 local contractOpen = false
 
 local cam = nil

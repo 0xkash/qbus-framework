@@ -122,7 +122,7 @@ AddEventHandler('inventory:server:UseItemSlot', function(slot)
 	if itemData ~= nil then
 		local itemInfo = QBCore.Shared.Items[itemData.name]
 		if itemData.type == "weapon" then
-			TriggerClientEvent("inventory:client:UseWeapon", src, itemData.name)
+			TriggerClientEvent("inventory:client:UseWeapon", src, itemData)
 			TriggerClientEvent('inventory:client:ItemBox', src, itemInfo, "use")
 		elseif itemData.useable then
 			TriggerClientEvent("QBCore:Client:UseItem", src, itemData)
