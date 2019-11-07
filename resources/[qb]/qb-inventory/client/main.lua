@@ -158,6 +158,15 @@ AddEventHandler('inventory:client:ItemBox', function(itemData, type)
     })
 end)
 
+RegisterNetEvent('inventory:client:requiredItems')
+AddEventHandler('inventory:client:requiredItems', function(items, bool)
+    SendNUIMessage({
+        action = "requiredItem",
+        items = items,
+        toggle = bool
+    })
+end)
+
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(1)

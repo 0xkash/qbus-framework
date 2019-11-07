@@ -489,7 +489,13 @@ qbPhone.setGarageVehicles = function(vehicles) {
     console.log('yeet?')
     $(".garage-vehicles").html("");
     $.each(vehicles, function(index, vehicle){
-        var element = '<div class="garage-vehicle"><div class="garage-vehicle-name"><i class="fas fa-car" id="garage-car-icon"></i> <span id="vehicle-name">'+vehicle.name+' ('+vehicle.plate+')</span></div><div class="garage-vehicle-garage"><i class="fas fa-warehouse" id="garage-garage-icon"></i> <span id="vehicle-garage">'+vehicle.garage+' - '+vehicle.state+'</span></div></div>';
+        var element = '<div class="garage-vehicle"> '+
+        '<div class="garage-vehicle-image" style="background-image: url('+vehicle.image+');"></div>' +
+            '<div class="garage-vehicle-name"><p><i class="fas fa-car" id="car-icon"></i> '+vehicle.name+'</p></div>' +
+            '<div class="garage-vehicle-garage"><p><i class="fas fa-warehouse" id="warehouse-icon"></i> '+vehicle.garage+'</p></div>' +
+            '<div class="garage-vehicle-state"><p><i class="fas fa-parking" id="parking-icon"></i> '+vehicle.state+'</p></div>' +
+            '<div class="garage-vehicle-stats"><span id="vehicle-engine"><i class="fas fa-shield-alt" id="body-icon"></i> '+(vehicle.body / 10)+'%  |  </span><span id="vehicle-body"><i class="fas fa-car-battery" id="battery-icon"></i> '+(vehicle.engine / 10)+'%  |  </span><span id="vehicle-fuel"><i class="fas fa-gas-pump" id="fuel-icon"></i> '+(vehicle.fuel / 10)+'%</span></div>' +
+        '</div>';
 
         $(".garage-vehicles").append(element);
     });

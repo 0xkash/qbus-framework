@@ -35,37 +35,56 @@ function DrawText3Ds(x, y, z, text)
     ClearDrawOrigin()
 end
 
+local requiredItemsShowed = false
+
+local requiredItems = {}
+
 Citizen.CreateThread(function()
+    Citizen.Wait(500)
+    requiredItems = {
+        [1] = {name = QBCore.Shared.Items["lockpick"]["name"], image = QBCore.Shared.Items["lockpick"]["image"]},
+        [2] = {name = QBCore.Shared.Items["screwdriverset"]["name"], image = QBCore.Shared.Items["screwdriverset"]["image"]},
+    }
     while true do
         inRange = false
         local PlayerPed = GetPlayerPed(-1)
         local PlayerPos = GetEntityCoords(PlayerPed)
         closestHouse = nil
 
-        if not inside then
-            for k, v in pairs(Config.Houses) do
-                local dist = GetDistanceBetweenCoords(PlayerPos, Config.Houses[k]["coords"]["x"], Config.Houses[k]["coords"]["y"], Config.Houses[k]["coords"]["z"], true)
-                if dist <= 5 then
-                    inRange = true
-                    closestHouse = k
+        if QBCore ~= nil then
+            if not inside then
+                for k, v in pairs(Config.Houses) do
+                    local dist = GetDistanceBetweenCoords(PlayerPos, Config.Houses[k]["coords"]["x"], Config.Houses[k]["coords"]["y"], Config.Houses[k]["coords"]["z"], true)
+
                     if dist <= 1.5 then
+                        closestHouse = k
+                        inRange = true
                         if Config.Houses[k]["opened"] then
                             DrawText3Ds(Config.Houses[k]["coords"]["x"], Config.Houses[k]["coords"]["y"], Config.Houses[k]["coords"]["z"], '~g~E~w~ - Om naar binnen te gaan')
                             if IsControlJustPressed(0, Keys["E"]) then
                                 enterRobberyHouse(k)
                             end
+                        else
+                            if not requiredItemsShowed then
+                                requiredItemsShowed = true
+                                TriggerEvent('inventory:client:requiredItems', requiredItems, true)
+                            end
                         end
                     end
                 end
             end
-        end
 
-        if inside then
-            Citizen.Wait(1000)
-        end
+            if inside then
+                Citizen.Wait(1000)
+            end
 
-        if not inRange then
-            Citizen.Wait(5000)
+            if not inRange then
+                if requiredItemsShowed then
+                    requiredItemsShowed = false
+                    TriggerEvent('inventory:client:requiredItems', requiredItems, false)
+                end
+                Citizen.Wait(1000)
+            end
         end
 
         Citizen.Wait(5)

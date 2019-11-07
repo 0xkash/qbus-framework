@@ -9,124 +9,117 @@
     height: 103.5%;
     /* top: 3%; */
     top: 103.5%;
-    right: 0;
     border-radius: 10px;
-    background-image: url('../img/site-bg.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position-x: -180px;
+    background-color: #ffffff;
 }
 
 .garage-header {
     position: absolute;
+    top: 6%;
+    left: 6%;
     width: 100%;
-    height: 13%;
-    border-bottom: 3px solid rgba(124, 124, 124, 0.205);
+    height: 10%;
 }
 
 .garage-header > p {
+    font-size: 19px;
+    font-family: 'Lato';
+    font-weight: bold;
     color: rgb(0, 0, 0);
-    font-size: 15px;
-    font-family: 'Lato', sans-serif;
-    line-height: 90px;
-    margin-left: 10px;
-} 
+    overflow: visible;
+}
 
 .garage-vehicles {
     position: absolute;
-    height: 70%;
-    max-height: 62%;
+    height: 65%;
     width: 100%;
-    top: 13%;
+    top: 100px;
     overflow-y: scroll;
-}
-
-.garage-vehicles::-webkit-scrollbar-track
-{
-	background-color: #d3d3d365;
-}
-
-.garage-vehicles::-webkit-scrollbar
-{
-	width: 3px;
-	background-color: #e2e2e265;
-}
-
-.garage-vehicles::-webkit-scrollbar-thumb
-{
-	background-color: #00000060;
 }
 
 .garage-vehicle {
     position: relative;
-    top: 0%;
-    width: 100%;
-    height: 16.66%;
-    left: -2px;
-    background-color: rgba(255, 255, 255, 0.35);
-    box-shadow: inset 0px 0px 3px 0px rgba(0, 0, 0, 0.65);
-    overflow: visible !important;
-    margin-top: 7px;
+    width: 90%;
+    height: 22%;
+    left: 3%;
+    background-color: #f6f6f6;
+    margin-top: 10px;
+    transition: all 0.2s ease-in-out;
+}
+
+.garage-vehicle:hover {
+    background-color: #dfdede;
+}
+
+.garage-vehicle-image {
+    position: absolute;
+    width: 25%;
+    height: 100%;
+    background-size: 250%;
+    background-position-x: -30px;
+    background-position-y: 0;
+    background-repeat: no-repeat;
 }
 
 .garage-vehicle-name {
     position: absolute;
-    top: 5px;
-    left: 8px;
-    overflow: visible;
-    width: 100%;
-    overflow: visible !important;
+    left: 30%;
+    top: 10%;
+    font-family: 'Lato';
+    font-size: 14px;
 }
 
-#vehicle-name {
+.garage-vehicle-stats {
     position: absolute;
-    font-family: 'Lato', sans-serif;
-    font-size: 12px;
-    left: 25px;
-    top: 4px;
-    overflow: visible !important;
-}
-
-#garage-car-icon {
-    font-size: 18px;
-    overflow: visible !important;
+    left: 30%;
+    bottom: 10%;
+    font-family: 'Lato';
+    font-size: 11px;
+    margin-left: ;
 }
 
 .garage-vehicle-garage {
     position: absolute;
-    top: 32px;
-    left: 8px;
-    width: 100%;
-    overflow: visible !important;
-}
-
-#vehicle-garage {
-    position: absolute;
-    font-family: 'Lato', sans-serif;
+    left: 30%;
+    top: 33%;
+    font-family: 'Lato';
     font-size: 12px;
-    left: 25px;
-    top: 4px;
-    overflow: visible !important;
 }
 
-#garage-garage-icon {
-    font-size: 14px;
-    overflow: visible !important;
-}
-
-.garage-vehicle-status {
-    position: relative;
-    top: 32px;
-    right: 8px;
-    width: 100%;
-    overflow: visible !important;
-}
-
-#vehicle-status {
+.garage-vehicle-state {
     position: absolute;
-    font-family: 'Lato', sans-serif;
+    left: 30%;
+    top: 53.5%;
+    font-family: 'Lato';
     font-size: 15px;
-    left: 24px;
+}
+
+#parking-icon {
+    font-size: 14px;
+    color: rgb(0, 119, 255);
+}
+
+#body-icon {
+    color: rgb(0, 162, 255);
+}
+
+#battery-icon {
+    color: rgb(59, 148, 24);
+}
+
+#fuel-icon {
+    color: rgb(141, 5, 5);
+    font-size: 10px;
+}
+
+#warehouse-icon {
+    color: rgb(31, 31, 31);
+    font-size: 12px;
+}
+
+#car-icon {
+    position: relative;
     top: 2px;
-    overflow: visible !important;
+    color: rgb(31, 31, 31);
+    font-size: 14px;
 }
