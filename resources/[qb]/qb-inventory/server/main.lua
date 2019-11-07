@@ -80,7 +80,7 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 			if Drops[id] ~= nil then
 				secondInv.name = id
 				secondInv.label = "Dropped-"..tostring(id)
-				secondInv.maxweight = 900000
+				secondInv.maxweight = 100000
 				secondInv.inventory = Drops[id].items
 				secondInv.slots = 30
 			end
@@ -122,7 +122,7 @@ AddEventHandler('inventory:server:UseItemSlot', function(slot)
 	if itemData ~= nil then
 		local itemInfo = QBCore.Shared.Items[itemData.name]
 		if itemData.type == "weapon" then
-			TriggerClientEvent("inventory:client:UseWeapon", src, itemData.name)
+			TriggerClientEvent("inventory:client:UseWeapon", src, itemData)
 			TriggerClientEvent('inventory:client:ItemBox', src, itemInfo, "use")
 		elseif itemData.useable then
 			TriggerClientEvent("QBCore:Client:UseItem", src, itemData)

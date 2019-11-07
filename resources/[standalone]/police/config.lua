@@ -53,7 +53,12 @@ Config.Items = {
             name = "weapon_combatpistol",
             price = 0,
             amount = 99,
-            info = {},
+            info = {
+                serie = "P"..math.random(10,99).."LI"..math.random(100,999).."ZI"..math.random(1,9),
+                attachments = {
+                    {component = "COMPONENT_AT_PI_FLSH", label = "Flashlight"},
+                }
+            },
             type = "weapon",
             slot = 1,
         },
@@ -61,7 +66,9 @@ Config.Items = {
             name = "weapon_stungun",
             price = 0,
             amount = 99,
-            info = {},
+            info = {
+                serie = "P"..math.random(10,99).."LI"..math.random(100,999).."ZI"..math.random(1,9),
+            },
             type = "weapon",
             slot = 2,
         },
@@ -69,7 +76,12 @@ Config.Items = {
             name = "weapon_pumpshotgun",
             price = 0,
             amount = 99,
-            info = {},
+            info = {
+                serie = "P"..math.random(10,99).."LI"..math.random(100,999).."ZI"..math.random(1,9),
+                attachments = {
+                    {component = "COMPONENT_AT_AR_FLSH", label = "Flashlight"},
+                }
+            },
             type = "weapon",
             slot = 3,
         },
@@ -77,7 +89,13 @@ Config.Items = {
             name = "weapon_smg",
             price = 0,
             amount = 99,
-            info = {},
+            info = {
+                serie = "P"..math.random(10,99).."LI"..math.random(100,999).."ZI"..math.random(1,9),
+                attachments = {
+                    {component = "COMPONENT_AT_SCOPE_MACRO_02", label = "1x Scope"},
+                    {component = "COMPONENT_AT_AR_FLSH", label = "Flashlight"},
+                }
+            },
             type = "weapon",
             slot = 4,
         },
@@ -85,7 +103,13 @@ Config.Items = {
             name = "weapon_carbinerifle",
             price = 0,
             amount = 99,
-            info = {},
+            info = {
+                serie = "P"..math.random(10,99).."LI"..math.random(100,999).."ZI"..math.random(1,9),
+                attachments = {
+                    {component = "COMPONENT_AT_AR_FLSH", label = "Flashlight"},
+                    {component = "COMPONENT_AT_SCOPE_MEDIUM", label = "3x Scope"},
+                }
+            },
             type = "weapon",
             slot = 5,
         },

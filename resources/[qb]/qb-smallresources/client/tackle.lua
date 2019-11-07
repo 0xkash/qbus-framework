@@ -13,7 +13,7 @@ end)
 
 RegisterNetEvent('tackle:client:GetTackled')
 AddEventHandler('tackle:client:GetTackled', function()
-	SetPedToRagdoll(GetPlayerPed(-1), math.random(4500, 9000), math.random(4500, 9000), 0, 0, 0, 0) 
+	SetPedToRagdoll(GetPlayerPed(-1), math.random(1000, 6000), math.random(1000, 6000), 0, 0, 0, 0) 
 	TimerEnabled = true
 	Citizen.Wait(1500)
 	TimerEnabled = false

@@ -239,8 +239,8 @@ AddEventHandler("inventory:client:UpdatePlayerInventory", function(playerItems)
 end)
 
 RegisterNetEvent("inventory:client:UseWeapon")
-AddEventHandler("inventory:client:UseWeapon", function(weaponName)
-    local weaponName = tostring(weaponName)
+AddEventHandler("inventory:client:UseWeapon", function(weaponData)
+    local weaponName = tostring(weaponData.name)
     if currentWeapon == weaponName then
         SetCurrentPedWeapon(GetPlayerPed(-1), GetHashKey("WEAPON_UNARMED"), true)
         RemoveWeaponFromPed(GetPlayerPed(-1), GetHashKey(currentWeapon))
@@ -252,6 +252,11 @@ AddEventHandler("inventory:client:UseWeapon", function(weaponName)
             GiveWeaponToPed(GetPlayerPed(-1), GetHashKey(weaponName), ammo, false, false)
             SetPedAmmo(GetPlayerPed(-1), GetHashKey(weaponName), ammo)
             SetCurrentPedWeapon(GetPlayerPed(-1), GetHashKey(weaponName), true)
+            if weaponData.info.attachments ~= nil then
+                for _, attachment in pairs(weaponData.info.attachments) do
+                    GiveWeaponComponentToPed(GetPlayerPed(-1), GetHashKey(weaponName), GetHashKey(attachment.component))
+                end
+            end
             currentWeapon = weaponName
         end, QBCore.Shared.Items[weaponName]["ammotype"])
     end
@@ -270,11 +275,6 @@ AddEventHandler("inventory:client:AddDropItem", function(dropId, player)
             z = z - 0.3,
         },
     }
-end)
-
-RegisterNetEvent("inventory:client:AddDropItem")
-AddEventHandler("inventory:client:AddDropItem", function(dropList)
-    Drops = dropList
 end)
 
 RegisterNetEvent("inventory:client:RemoveDropItem")
