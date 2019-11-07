@@ -43,8 +43,8 @@ AddEventHandler('weapons:server:UpdateWeaponAmmo', function(type, amount)
     local Player = QBCore.Functions.GetPlayer(src)
     local type = tostring(type):upper()
     local amount = tonumber(amount)
-    if WeaponAmmo[Player.PlayerData.citizenid] ~= nil and WeaponAmmo[Player.PlayerData.citizenid].ammo ~= nil then
-        for ammotype, amount in pairs(WeaponAmmo[Player.PlayerData.citizenid]) do
+    if WeaponAmmo[Player.PlayerData.citizenid] ~= nil and next(WeaponAmmo[Player.PlayerData.citizenid]) ~= nil then
+        for ammotype, ammo in pairs(WeaponAmmo[Player.PlayerData.citizenid]) do
             if type == ammotype then
                 WeaponAmmo[Player.PlayerData.citizenid][ammotype] = amount
                 return
@@ -72,7 +72,7 @@ end)
 QBCore.Functions.CreateCallback("weapon:server:GetWeaponAmmo", function(source, cb, ammotype)
     local Player = QBCore.Functions.GetPlayer(source)
     local ammotype = tostring(ammotype):upper()
-    if next(WeaponAmmo[Player.PlayerData.citizenid]) ~= nil then
+    if WeaponAmmo[Player.PlayerData.citizenid] ~= nil and next(WeaponAmmo[Player.PlayerData.citizenid]) ~= nil then
         local amount = tonumber(WeaponAmmo[Player.PlayerData.citizenid][ammotype]) ~= 0 and tonumber(WeaponAmmo[Player.PlayerData.citizenid][ammotype]) or 0
         cb(amount)
     else
