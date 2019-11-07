@@ -28,6 +28,19 @@ Citizen.CreateThread(function()
     end
 end)
 
+Citizen.CreateThread(function()
+    for k, station in pairs(Config.Locations["stations"]) do
+        local blip = AddBlipForCoord(station.coords.x, station.coords.y, station.coords.z)
+        SetBlipSprite(blip, 60)
+        SetBlipAsShortRange(blip, true)
+        SetBlipScale(blip, 0.8)
+        SetBlipColour(blip, 29)
+        BeginTextCommandSetBlipName("STRING")
+        AddTextComponentString(station.label)
+        EndTextCommandSetBlipName(blip)
+    end
+end)
+
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     isLoggedIn = true

@@ -114,7 +114,7 @@ QBCore.Functions.EnumerateEntities = function(initFunc, moveFunc, disposeFunc)
 
 		enum.destructor, enum.handle = nil, nil
 		disposeFunc(iter)
-	end)
+    end)
 end
 
 QBCore.Functions.GetVehicles = function()
@@ -125,20 +125,23 @@ QBCore.Functions.GetVehicles = function()
 	return vehicles
 end
 
-QBCore.Functions.GetPeds = function(ignore)
-    local ignore = ignore ~= nil and ignore or {}
-	local peds = {}
+QBCore.Functions.GetPeds = function(ignoreList)
+    local ignoreList = ignoreList or {}
+	local peds       = {}
 	for ped in QBCore.Functions.EnumerateEntities(FindFirstPed, FindNextPed, EndFindPed) do
 		local found = false
-		for j=1, #ignore, 1 do
-			if ignore[j] == ped then
+
+        for j=1, #ignoreList, 1 do
+			if ignoreList[j] == ped then
 				found = true
 			end
 		end
+
 		if not found then
 			table.insert(peds, ped)
 		end
 	end
+
 	return peds
 end
 
@@ -167,21 +170,21 @@ QBCore.Functions.GetClosestVehicle = function(coords, radius)
 end
 
 QBCore.Functions.GetClosestPed = function(coords, ignoreList)
-	local ignoreList = ignoreList ~= nil and ignorList or {}
-	local peds = QBCore.Functions.GetPeds(ignoreList)
+	local ignoreList      = ignoreList or {}
+	local peds            = QBCore.Functions.GetPeds(ignoreList)
 	local closestDistance = -1
-    local closestPed = -1
-
-	if coords == nil then
-		coords = GetEntityCoords(GetPlayerPed(-1))
-	end
+    local closestPed      = -1
+    
+    if coords == nil then
+        coords = GetEntityCoords(GetPlayerPed(-1))
+    end
 
 	for i=1, #peds, 1 do
-		local pos = GetEntityCoords(peds[i])
-		local distance = GetDistanceBetweenCoords(pos.x, pos.y, pos.z, coords.x, coords.y, coords.z, true)
+		local pedCoords = GetEntityCoords(peds[i])
+		local distance  = GetDistanceBetweenCoords(pedCoords, coords.x, coords.y, coords.z, true)
 
 		if closestDistance == -1 or closestDistance > distance then
-			closestPed = peds[i]
+			closestPed      = peds[i]
 			closestDistance = distance
 		end
 	end
