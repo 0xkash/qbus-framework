@@ -51,6 +51,9 @@ end
 RegisterNetEvent('qb-admin:client:openMenu')
 AddEventHandler('qb-admin:client:openMenu', function()
     WarMenu.OpenMenu('admin')
+    for k, v in pairs(players) do
+        WarMenu.CreateSubMenu(v, 'playerMan', GetPlayerServerId(v).." | "..GetPlayerName(v))
+    end
 end)
 
 local currentPlayer = 0
@@ -70,10 +73,8 @@ Citizen.CreateThread(function()
     WarMenu.CreateMenu('admin', 'QBus Admin')
     WarMenu.CreateSubMenu('playerMan', 'admin')
     WarMenu.CreateSubMenu('serverMan', 'admin')
-    
-    for k, v in pairs(players) do
-        WarMenu.CreateSubMenu(v, 'playerMan', GetPlayerServerId(v).." | "..GetPlayerName(v))
-    end
+
+
     WarMenu.CreateSubMenu('playerOptions', currentPlayer)
     WarMenu.CreateSubMenu('teleportOptions', currentPlayer)
 
