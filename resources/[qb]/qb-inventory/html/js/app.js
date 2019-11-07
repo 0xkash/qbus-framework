@@ -295,9 +295,10 @@ function updateweights($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
         return false;
     }
 
-    $(".player-inv-info p").html("Speler Inventaris " + (parseInt(totalWeight) / 1000).toFixed(2) + " / " + (playerMaxWeight / 1000).toFixed(2) + " KG");
+    $("#player-inv-weight").html("Speler Inventaris " + (parseInt(totalWeight) / 1000).toFixed(2) + " / " + (playerMaxWeight / 1000).toFixed(2) + " KG");
     if ($fromInv.attr("data-inventory").split("-")[0] != "itemshop" && $toInv.attr("data-inventory").split("-")[0] != "itemshop") {
-        $(".other-inv-info p").html(otherLabel + " " + (parseInt(totalWeightOther) / 1000).toFixed(2) + " / " + (otherMaxWeight / 1000).toFixed(2) + " KG");
+        $("#other-inv-label").html(otherLabel)
+        $("#other-inv-weight").html((parseInt(totalWeightOther) / 1000).toFixed(2) + " / " + (otherMaxWeight / 1000).toFixed(2) + " kg")
     }
 
     return true;
@@ -533,7 +534,7 @@ var requiredItemOpen = false;
     Inventory.slots = 40;
 
     Inventory.dropslots = 30;
-    Inventory.droplabel = "Drop :)";
+    Inventory.droplabel = "Grond";
     Inventory.dropmaxweight = 100000
 
     Inventory.Open = function(data) {
@@ -601,20 +602,22 @@ var requiredItemOpen = false;
             });
         }
 
-        $(".player-inv-info p").html("Speler Inventaris " + (totalWeight / 1000).toFixed(2) + " / " + (data.maxweight / 1000).toFixed(2) + " KG");
+        $("#player-inv-weight").html((totalWeight / 1000).toFixed(2) + " / " + (data.maxweight / 1000).toFixed(2) + " kg");
         playerMaxWeight = data.maxweight;
         if (data.other != null) 
         {
             var name = data.other.name.toString()
             if (name != null && name.split("-")[0] == "itemshop") {
-                $(".other-inv-info p").html(data.other.label);
+                $("#other-inv-label").html(data.other.label);
             } else {
-                $(".other-inv-info p").html(data.other.label + " " + (totalWeightOther / 1000).toFixed(2) + " / " + (data.other.maxweight / 1000).toFixed(2) + " KG");
+                $("#other-inv-label").html(data.other.label)
+                $("#other-inv-weight").html((totalWeightOther / 1000).toFixed(2) + " / " + (data.other.maxweight / 1000).toFixed(2) + " kg")
             }
             otherMaxWeight = data.other.maxweight;
             otherLabel = data.other.label;
         } else {
-            $(".other-inv-info p").html(Inventory.droplabel + " " + (totalWeightOther / 1000).toFixed(2) + " / " + (Inventory.dropmaxweight / 1000).toFixed(2) + " KG");
+            $("#other-inv-label").html(Inventory.droplabel)
+            $("#other-inv-weight").html((totalWeightOther / 1000).toFixed(2) + " / " + (Inventory.dropmaxweight / 1000).toFixed(2) + " kg")
             otherMaxWeight = Inventory.dropmaxweight;
             otherLabel = Inventory.droplabel;
         }
