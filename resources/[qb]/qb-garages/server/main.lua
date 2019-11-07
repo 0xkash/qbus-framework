@@ -67,12 +67,29 @@ QBCore.Functions.CreateCallback("qb-garage:server:checkVehicleOwner", function(s
     end)
 end)
 
+RegisterServerEvent('qb-garage:server:PayDepotPrice')
+AddEventHandler('qb-garage:server:PayDepotPrice', function(vehicle, garage)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    local bankBalance = Player.PlayerData.money["bank"]
+    exports['ghmattimysql']:execute('SELECT * FROM player_vehicles WHERE plate = @plate', {['@plate'] = vehicle.plate}, function(result)
+        if result[1] ~= nil then
+            if Player.Functions.RemoveMoney("cash", result[1].depotprice) then
+                TriggerClientEvent("qb-garages:client:takeOutDepot", src, vehicle, garage)
+            elseif bankBalance >= result[1].depotprice then
+                Player.Functions.RemoveMoney("bank", result[1].depotprice)
+                TriggerClientEvent("qb-garages:client:takeOutDepot", src, vehicle, garage)
+            end
+        end
+    end)
+end)
+
 RegisterServerEvent('qb-garage:server:updateVehicleState')
 AddEventHandler('qb-garage:server:updateVehicleState', function(state, plate, garage)
     local src = source
     local pData = QBCore.Functions.GetPlayer(src)
 
-    exports['ghmattimysql']:execute('UPDATE player_vehicles SET state = @state, garage = @garage WHERE plate = @plate', {['@state'] = state, ['@plate'] = plate, ['@citizenid'] = pData.PlayerData.citizenid, ['@garage'] = garage})
+    exports['ghmattimysql']:execute('UPDATE player_vehicles SET state = @state, garage = @garage, depotprice = @depotprice WHERE plate = @plate', {['@state'] = state, ['@plate'] = plate, ['@depotprice'] = 0, ['@citizenid'] = pData.PlayerData.citizenid, ['@garage'] = garage})
 end)
 
 RegisterServerEvent('qb-garage:server:updateVehicleStatus')

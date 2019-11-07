@@ -54,12 +54,14 @@ AddEventHandler('QBCore:Client:OnPlayerUnload', function()
 end)
 
 RegisterNetEvent('112:client:SendPoliceAlert')
-AddEventHandler('112:client:SendPoliceAlert', function(type, msg, type, blipSettings)
-    if type == "flagged" then
-        PlaySoundFrontend(-1, "Beep_Green", "DLC_HEIST_HACKING_SNAKE_SOUNDS", 1)
+AddEventHandler('112:client:SendPoliceAlert', function(notifyType, msg, type, blipSettings)
+    if notifyType == "flagged" then
         TriggerEvent("chatMessage", "MELDING", "error", msg)
-    else
+        RadarSound()
+    elseif notifyType == "player" then
         PlaySound(-1, "Event_Start_Text", "GTAO_FM_Events_Soundset", 0, 0, 1)
+    else
+        PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
         TriggerEvent("chatMessage", "112-MELDING", "error", msg)
     end
 
@@ -87,6 +89,17 @@ AddEventHandler('112:client:SendPoliceAlert', function(type, msg, type, blipSett
         end
     end
 end)
+
+function RadarSound()
+    PlaySoundFrontend( -1, "Beep_Green", "DLC_HEIST_HACKING_SNAKE_SOUNDS", 1 )
+    Citizen.Wait(100)
+    PlaySoundFrontend( -1, "Beep_Red", "DLC_HEIST_HACKING_SNAKE_SOUNDS", 1 )
+    Citizen.Wait(100)
+    PlaySoundFrontend( -1, "Beep_Green", "DLC_HEIST_HACKING_SNAKE_SOUNDS", 1 )
+    Citizen.Wait(100)
+    PlaySoundFrontend( -1, "Beep_Red", "DLC_HEIST_HACKING_SNAKE_SOUNDS", 1 )
+    Citizen.Wait(100)   
+end
 
 function GetClosestPlayer()
     local closestPlayers = QBCore.Functions.GetPlayersFromCoords()
