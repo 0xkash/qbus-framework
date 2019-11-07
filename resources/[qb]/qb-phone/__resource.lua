@@ -5,11 +5,13 @@ ui_page "html/index.html"
 client_scripts {
     'client/animation.lua',
     'client/main.lua',
+    'phoneConfig/garages.lua',
     'phoneConfig/apps.lua',
 }
 
 server_scripts {
     'server/main.lua',
+    'phoneConfig/garages.lua',
     'phoneConfig/apps.lua',
 }
 
@@ -23,5 +25,6 @@ files {
 
     -- images 
     'html/img/*.png',
+    'html/img/*.jpg',
     'html/img/phone-frames/*.png',
 }

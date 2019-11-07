@@ -49,6 +49,13 @@ function FreezeElement(element)
     end
 end
 
+RegisterServerEvent('qb-weathersync:server:setWeather')
+AddEventHandler('qb-weathersync:server:setWeather', function(type)
+    print(type)
+    CurrentWeather = string.upper(type)
+    TriggerEvent('qb-weathersync:server:RequestStateSync')
+end)
+
 function SetWeather(type)
     CurrentWeather = string.upper(type)
     TriggerEvent('qb-weathersync:server:RequestStateSync')

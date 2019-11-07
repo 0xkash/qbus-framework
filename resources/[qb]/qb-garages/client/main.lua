@@ -152,7 +152,6 @@ function DepotLijst()
                 enginePercent = round(v.engine / 10, 0)
                 bodyPercent = round(v.body / 10, 0)
                 currentFuel = v.fuel
-                curGarage = Garages[v.garage].label
 
 
                 if v.state == 0 then

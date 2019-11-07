@@ -41,4 +41,12 @@ Config.PhoneApps = {
         tooltipText = "Maze Bank",
         slot = 5,
     },
+    ['garage'] = {
+        app = "garage",
+        color = "#ff8f1a",
+        icon = "fas fa-warehouse",
+        style = "padding-left: 8px !important;",
+        tooltipText = "Voertuigen",
+        slot = 6,
+    },
 }
