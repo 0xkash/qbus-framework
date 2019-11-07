@@ -532,9 +532,9 @@ var requiredItemOpen = false;
 
     Inventory.slots = 40;
 
-    Inventory.dropslots = 100;
+    Inventory.dropslots = 30;
     Inventory.droplabel = "Drop :)";
-    Inventory.dropmaxweight = 900000
+    Inventory.dropmaxweight = 100000
 
     Inventory.Open = function(data) {
         totalWeight = 0;

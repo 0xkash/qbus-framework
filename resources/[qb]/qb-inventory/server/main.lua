@@ -80,7 +80,7 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 			if Drops[id] ~= nil then
 				secondInv.name = id
 				secondInv.label = "Dropped-"..tostring(id)
-				secondInv.maxweight = 900000
+				secondInv.maxweight = 100000
 				secondInv.inventory = Drops[id].items
 				secondInv.slots = 30
 			end
