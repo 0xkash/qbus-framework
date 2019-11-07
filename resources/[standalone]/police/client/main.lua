@@ -41,7 +41,7 @@ AddEventHandler('QBCore:Client:OnPlayerUnload', function()
 end)
 
 RegisterNetEvent('112:client:SendPoliceAlert')
-AddEventHandler('112:client:SendPoliceAlert', function(msg, type, blipSettings)
+AddEventHandler('112:client:SendPoliceAlert', function(type, msg, type, blipSettings)
     if type == "flagged" then
         PlaySoundFrontend(-1, "Beep_Green", "DLC_HEIST_HACKING_SNAKE_SOUNDS", 1)
         TriggerEvent("chatMessage", "MELDING", "error", msg)
