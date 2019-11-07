@@ -624,11 +624,12 @@ function InventoryError($elinv, $elslot) {
         }, 2000)
     };
 
-    var timer = null;
+    var itemBoxtimer = null;
+    var requiredTimeout = null;
 
     Inventory.itemBox = function(data) {
-        if (timer !== null) {
-            clearTimeout(timer)
+        if (itemBoxtimer !== null) {
+            clearTimeout(itemBoxtimer)
         }
         if (data.type == "use") {
             $("#itembox-action").html("<p>Gebruikt</p>");
@@ -642,9 +643,29 @@ function InventoryError($elinv, $elslot) {
         $(".itembox-container").fadeIn(250);
         $("#itembox-label").html("<p>"+data.item.label+"</p>");
         $("#itembox-image").html('<div class="item-slot-img"><img src="images/' + data.item.image + '" alt="' + data.item.name + '" /></div>')
-        timer = setTimeout(function(){
+        itemBoxtimer = setTimeout(function(){
             $(".itembox-container").fadeOut(250);
         }, 2000)
+    };
+
+    Inventory.RequiredItem = function(data) {
+        if (requiredTimeout !== null) {
+            clearTimeout(requiredTimeout)
+        }
+        if (data.toggle) {
+            $(".requiredItem-container").html("");
+            $.each(data.items, function(index, item){
+                var element = '<div class="requiredItem-box"><div id="requiredItem-action">Nodig</div><div id="requiredItem-label"><p>'+item.name+'</p></div><div id="requiredItem-image"><div class="item-slot-img"><img src="images/' + item.image + '" alt="' + item.name + '" /></div></div></div>'
+                $(".requiredItem-container").hide();
+                $(".requiredItem-container").append(element);
+                $(".requiredItem-container").fadeIn(100);
+            });
+        } else {
+            $(".requiredItem-container").fadeOut(100);
+            requiredTimeout = setTimeout(function(){
+                $(".requiredItem-container").html("");
+            }, 100)
+        }
     };
 
     window.onload = function(e) {
@@ -661,6 +682,9 @@ function InventoryError($elinv, $elslot) {
                     break;
                 case "itemBox":
                     Inventory.itemBox(event.data);
+                    break
+                case "requiredItem":
+                    Inventory.RequiredItem(event.data);
                     break
             }
         })

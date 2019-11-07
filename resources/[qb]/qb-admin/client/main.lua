@@ -30,8 +30,6 @@ AvailableWeatherTypes = {
     {label = "Halloween (Scarry)",  weather = 'HALLOWEEN',},
 }
 
-local players
-
 function getPlayers()
     for i = 1, 1 do
         players = {}
@@ -53,12 +51,12 @@ end
 RegisterNetEvent('qb-admin:client:openMenu')
 AddEventHandler('qb-admin:client:openMenu', function()
     WarMenu.OpenMenu('admin')
-    players = getPlayers()
 end)
 
 local currentPlayer = 0
 
 Citizen.CreateThread(function()
+    local players = getPlayers()
     local menus = {
         "admin",
         "playerMan",
@@ -76,7 +74,7 @@ Citizen.CreateThread(function()
     for k, v in pairs(players) do
         WarMenu.CreateSubMenu(v, 'playerMan', GetPlayerServerId(v).." | "..GetPlayerName(v))
     end
-    
+
     WarMenu.CreateSubMenu('playerOptions', currentPlayer)
     WarMenu.CreateSubMenu('teleportOptions', currentPlayer)
 
@@ -85,18 +83,18 @@ Citizen.CreateThread(function()
     for i = 1, (#menus), 1 do
         WarMenu.SetMenuX(menus[i], 0.71)
         WarMenu.SetMenuY(menus[i], 0.15)
-        WarMenu.SetMenuWidth(menus[i], 0.27)
+        WarMenu.SetMenuWidth(menus[i], 0.23)
         WarMenu.SetTitleColor(menus[i], 255, 255, 255, 255)
         WarMenu.SetTitleBackgroundColor(menus[i], 0, 0, 0, 111)
     end
 
-	while true do
-		if WarMenu.IsMenuOpened('admin') then
-			WarMenu.MenuButton('Player Management', 'playerMan')
-			WarMenu.MenuButton('Server Management', 'serverMan')
+    while true do
+        if WarMenu.IsMenuOpened('admin') then
+            WarMenu.MenuButton('Player Management', 'playerMan')
+            WarMenu.MenuButton('Server Management', 'serverMan')
 
-			WarMenu.Display()
-		elseif WarMenu.IsMenuOpened('playerMan') then
+            WarMenu.Display()
+        elseif WarMenu.IsMenuOpened('playerMan') then
             for k, v in pairs(players) do
                 if WarMenu.MenuButton('#'..GetPlayerServerId(v).." | "..GetPlayerName(v), v) then
                     currentPlayer = v
@@ -104,7 +102,7 @@ Citizen.CreateThread(function()
             end
 
             WarMenu.Display()
-		elseif WarMenu.IsMenuOpened('serverMan') then
+        elseif WarMenu.IsMenuOpened('serverMan') then
             WarMenu.MenuButton('Weather Options', 'weatherOptions')
 
             WarMenu.Display()
@@ -118,6 +116,10 @@ Citizen.CreateThread(function()
                 local target = GetPlayerPed(currentPlayer)
                 local ply = GetPlayerPed(-1)
                 SetEntityHealth(target, 0)
+            end
+            if WarMenu.MenuButton('Revive', currentPlayer) then
+                local target = GetPlayerServerId(currentPlayer)
+                TriggerServerEvent('qb-admin:server:revivePlayer', target)
             end
             
             WarMenu.Display()
@@ -144,10 +146,10 @@ Citizen.CreateThread(function()
             end
             
             WarMenu.Display()
-		end
+        end
 
-		Citizen.Wait(0)
-	end
+        Citizen.Wait(0)
+    end
 end)
 
 
