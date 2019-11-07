@@ -53,6 +53,10 @@ $(document).ready(function(){
         if (eventData.task == "updateTime") {
             qbPhone.updateTime(eventData.time)
         }
+
+        if (eventData.task == "getVehicles") {
+            qbPhone.setGarageVehicles(eventData.vehicles)
+        }
     });
 
     $('.notify-btn').change(function() {
@@ -82,30 +86,20 @@ $(document).on('click', '.app', function(e){
     var appId = $(this).attr('id');
     var pressedApp = $('#'+appId).data('appData');
 
-    if (pressedApp.app == "settings") {
-        $(".settings-app").css({'display':'block'}).animate({
-            top: "3%",
-        }, 250);
-        currentApp = ".settings-app";
-    } else if (pressedApp.app == "contacts") {
-        $(".contacts-app").css({'display':'block'}).animate({
-            top: "3%",
-        }, 250);
+    $("."+pressedApp.app+"-app").css({'display':'block'}).animate({
+        top: "3%",
+    }, 250);
+
+    currentApp = "."+pressedApp.app+"-app";
+
+    if (pressedApp.app == "contacts") {
         $.post('http://qb-phone/setupContacts');
-        currentApp = ".contacts-app";
     } else if (pressedApp.app == "bank") {
-        $(".bank-app").css({'display':'block'}).animate({
-            top: "3%",
-        }, 250);
-        $.post('http://qb-phone/getBankData')
-        currentApp = ".bank-app";
-    } else if (pressedApp.app == "messages") {
-        $(".messages-app").css({'display':'block'}).animate({
-            top: "3%",
-        }, 250);
-        // $.post('http://qb-phone/getBankData')
-        currentApp = ".messages-app";
+        $.post('http://qb-phone/getBankData');
+    } else if (pressedApp.app == "garage") {
+        $.post('http://qb-phone/getVehicles');
     }
+
     qbPhone.succesSound();
 });
 
@@ -489,6 +483,16 @@ qbPhone.setBankData = function(playerData) {
     $("#balance").html(playerData.money.bank);
     $("#balance").val(playerData.money.bank);
     $("#iban").html(playerData.charinfo.account);
+}
+
+qbPhone.setGarageVehicles = function(vehicles) {
+    console.log('yeet?')
+    $(".garage-vehicles").html("");
+    $.each(vehicles, function(index, vehicle){
+        var element = '<div class="garage-vehicle"><div class="garage-vehicle-name"><i class="fas fa-car" id="garage-car-icon"></i> <span id="vehicle-name">'+vehicle.name+' ('+vehicle.plate+')</span></div><div class="garage-vehicle-garage"><i class="fas fa-warehouse" id="garage-garage-icon"></i> <span id="vehicle-garage">'+vehicle.garage+' - '+vehicle.state+'</span></div></div>';
+
+        $(".garage-vehicles").append(element);
+    });
 }
 
 qbPhone.loadUserMessages = function() {

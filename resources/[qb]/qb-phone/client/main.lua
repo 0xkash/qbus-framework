@@ -93,6 +93,25 @@ RegisterNUICallback('getBankData', function()
     })
 end)
 
+RegisterNUICallback('getVehicles', function()
+    QBCore.Functions.TriggerCallback('qb-phone:server:GetAllUserVehicles', function(vehicles)
+        local myVehicles = {}
+
+        for k, v in pairs(vehicles) do
+            local garage
+            local state = "Binnen"
+            if vehicles[k].garage ~= nil then garage = Config.Garages[vehicles[k].garage].label else garage = "Depot" end
+            if vehicles[k].state == 0 then state = "Uit" elseif vehicles[k].state == 1 then state = "Geïmporteerd" end
+            table.insert(myVehicles, {name = QBCore.Shared.Vehicles[vehicles[k].vehicle]["name"], plate = vehicles[k].plate, garage = garage, state = state })
+        end
+
+        SendNUIMessage({
+            task = "getVehicles",
+            vehicles = myVehicles,
+        })
+    end)
+end)
+
 RegisterNUICallback('addToContact', function(data)
     local contactName = data.contactName
     local contactNum = data.contactNum

@@ -77,3 +77,16 @@ AddEventHandler('qb-phone:server:editContact', function(oName, oNum, nName, nNum
 
     QBCore.Functions.ExecuteSql("UPDATE `player_contacts` SET `name` = '"..nName.."', `number` = '"..nNum.."' WHERE `name` = '"..oName.."' AND `number` = '"..oNum.."'")
 end)
+
+QBCore.Functions.CreateCallback("qb-phone:server:GetAllUserVehicles", function(source, cb, garage)
+    local src = source
+    local pData = QBCore.Functions.GetPlayer(src)
+
+    exports['ghmattimysql']:execute('SELECT * FROM player_vehicles WHERE citizenid = @citizenid', {['@citizenid'] = pData.PlayerData.citizenid}, function(result)
+        if result[1] ~= nil then
+            cb(result)
+        else
+            cb(nil)
+        end
+    end)
+end)
