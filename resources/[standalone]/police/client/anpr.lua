@@ -4,7 +4,7 @@ function HandlespeedCam(speedCam, hasBeenBusted)
 	local myPed = GetPlayerPed(-1)
 	local playerPos = GetEntityCoords(myPed)
 	local isInMarker  = false
-	if GetDistanceBetweenCoords(playerPos, speedCam.x, speedCam.y, speedCam.z, true) < Config.SpeedCamRange then
+	if GetDistanceBetweenCoords(playerPos, speedCam.x, speedCam.y, speedCam.z, true) < 20.0 then
 		isInMarker  = true
 	end
 
@@ -17,21 +17,23 @@ function HandlespeedCam(speedCam, hasBeenBusted)
 			if GetPedInVehicleSeat(vehicle, -1) == myPed then
 				if GetVehicleClass(vehicle) ~= 18 then
                     local plate = GetVehicleNumberPlateText(vehicle)
-                    QBCore.Functions.TriggerCallback('police:IsPlateFlagged', function(result)
-                        local coords = GetEntityCoords(GetPlayerPed(-1))
-                        local blipsettings = {
-                            x = coords.x,
-                            y = coords.y,
-                            z = coords.z,
-                            sprite = 488,
-                            color = 1,
-                            scale = 0.9,
-                            text = "Flits #"..hasBeenBusted.." - Gemarkeerd voertuig"
-                        }
-                        local s1, s2 = Citizen.InvokeNative(0x2EB41072B4C1E4C0, coords.x, coords.y, coords.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
-                        local street1 = GetStreetNameFromHashKey(s1)
-                        local street2 = GetStreetNameFromHashKey(s2)
-                        TriggerServerEvent("police:server:FlaggedPlateTriggered", hasBeenBusted, plate, street1, street2, blipsettings)
+					QBCore.Functions.TriggerCallback('police:IsPlateFlagged', function(result)
+						if result then
+							local coords = GetEntityCoords(GetPlayerPed(-1))
+							local blipsettings = {
+								x = coords.x,
+								y = coords.y,
+								z = coords.z,
+								sprite = 488,
+								color = 1,
+								scale = 0.9,
+								text = "Flits #"..hasBeenBusted.." - Gemarkeerd voertuig"
+							}
+							local s1, s2 = Citizen.InvokeNative(0x2EB41072B4C1E4C0, coords.x, coords.y, coords.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
+							local street1 = GetStreetNameFromHashKey(s1)
+							local street2 = GetStreetNameFromHashKey(s2)
+							TriggerServerEvent("police:server:FlaggedPlateTriggered", hasBeenBusted, plate, street1, street2, blipsettings)
+						end
                     end, plate)
 				end
 			end

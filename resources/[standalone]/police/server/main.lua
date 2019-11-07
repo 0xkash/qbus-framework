@@ -168,8 +168,9 @@ QBCore.Commands.Add("unflagplate", "Zet een voertuig ongemarkeerd", {{name="plat
         if Plates ~= nil and Plates[args[1]:upper()] ~= nil then
             if Plates[args[1]:upper()].isflagged then
                 Plates[args[1]:upper()].isflagged = false
+                TriggerClientEvent('QBCore:Notify', source, "Voertuig ("..args[1]:upper()..") is niet meer gemarkeerd")
             else
-                TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Voertuig is niet gemarkeerd!")
+                TriggerClientEvent('chatMessage', source, "MELDKAMER", "error", "Voertuig is niet gemarkeerd!")
             end
         else
             TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Voertuig is niet gemarkeerd!")
@@ -184,7 +185,7 @@ QBCore.Commands.Add("plateinfo", "Markeer een voertuig", {{name="plate", help="K
     if Player.PlayerData.job.name == "police" then
         if Plates ~= nil and Plates[args[1]:upper()] ~= nil then
             if Plates[args[1]:upper()].isflagged then
-                TriggerClientEvent('chatMessage', source, "SYSTEM", "normal", "Voertuig ("..args[1]:upper()..") is gemarkeerd voor: "..Plates[args[1]:upper()].reason)
+                TriggerClientEvent('chatMessage', source, "MELDKAMER", "normal", "Voertuig ("..args[1]:upper()..") is gemarkeerd voor: "..Plates[args[1]:upper()].reason)
             else
                 TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Voertuig is niet gemarkeerd!")
             end
