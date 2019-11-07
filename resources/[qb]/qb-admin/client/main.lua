@@ -30,6 +30,8 @@ AvailableWeatherTypes = {
     {label = "Halloween (Scarry)",  weather = 'HALLOWEEN',},
 }
 
+local players
+
 function getPlayers()
     for i = 1, 1 do
         players = {}
@@ -51,15 +53,12 @@ end
 RegisterNetEvent('qb-admin:client:openMenu')
 AddEventHandler('qb-admin:client:openMenu', function()
     WarMenu.OpenMenu('admin')
-    for k, v in pairs(players) do
-        WarMenu.CreateSubMenu(v, 'playerMan', GetPlayerServerId(v).." | "..GetPlayerName(v))
-    end
+    players = getPlayers()
 end)
 
 local currentPlayer = 0
 
 Citizen.CreateThread(function()
-    local players = getPlayers()
     local menus = {
         "admin",
         "playerMan",
@@ -73,8 +72,11 @@ Citizen.CreateThread(function()
     WarMenu.CreateMenu('admin', 'QBus Admin')
     WarMenu.CreateSubMenu('playerMan', 'admin')
     WarMenu.CreateSubMenu('serverMan', 'admin')
-
-
+    
+    for k, v in pairs(players) do
+        WarMenu.CreateSubMenu(v, 'playerMan', GetPlayerServerId(v).." | "..GetPlayerName(v))
+    end
+    
     WarMenu.CreateSubMenu('playerOptions', currentPlayer)
     WarMenu.CreateSubMenu('teleportOptions', currentPlayer)
 
