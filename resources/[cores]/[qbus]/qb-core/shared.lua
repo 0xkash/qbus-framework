@@ -150,6 +150,7 @@ QBShared.Items = {
 	["empty_weed_bag"] 				 = {["name"] = "empty_weed_bag", 			    ["label"] = "Leeg wietzakje", 			["weight"] = 0, 		["type"] = "item", 		["image"] = "weed-empty-bag.png", 	["unique"] = false, 	["useable"] = true, 	["shouldClose"] = true,			["description"] = "Een leeg zakje voor wiet toppen"},
 	["weed_nutrition"] 				 = {["name"] = "weed_nutrition", 			    ["label"] = "Planten voeding", 			["weight"] = 0, 		["type"] = "item", 		["image"] = "weed_nutrition.png", 	["unique"] = false, 	["useable"] = true, 	["shouldClose"] = true,			["description"] = "Planten voeding"},
 	["handcuffs"] 				 	 = {["name"] = "handcuffs", 			    	["label"] = "Handboeien", 				["weight"] = 1000, 		["type"] = "item", 		["image"] = "handcuffs.png", 		["unique"] = false, 	["useable"] = true, 	["shouldClose"] = true,			["description"] = "Altijd handig voor de mensen die zich misdragen. Misschien kan het ook ergens anders voor gebruikt worden?"},
+	["tunerlaptop"] 				 = {["name"] = "tunerlaptop", 			    	["label"] = "Tunerlaptop", 				["weight"] = 1000, 		["type"] = "item", 		["image"] = "tunerlaptop.png", 		["unique"] = false, 	["useable"] = true, 	["shouldClose"] = true,			["description"] = "Met deze tjoenertjip kan jij je auto flink wat tandjes sneller laten gaan... Als je weet wat je doet LMAO"},
 }
 
 -- // HASH WEAPON ITEMS, NEED SOMETIMES TO GET INFO FOR CLIENT

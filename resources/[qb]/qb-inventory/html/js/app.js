@@ -510,6 +510,8 @@ function InventoryError($elinv, $elslot) {
     $.post("http://qb-inventory/PlayDropFail", JSON.stringify({}));
 }
 
+var requiredItemOpen = false;
+
 (() => {
     Inventory = {};
 
@@ -522,6 +524,11 @@ function InventoryError($elinv, $elslot) {
     Inventory.Open = function(data) {
         totalWeight = 0;
         totalWeightOther = 0;
+
+        if (requiredItemOpen) {
+            $(".requiredItem-container").hide();
+            requiredItemOpen = false;
+        }
 
         $("#qbus-inventory").fadeIn(250);
         if(data.other != null && data.other != "") {
@@ -660,10 +667,12 @@ function InventoryError($elinv, $elslot) {
                 $(".requiredItem-container").append(element);
                 $(".requiredItem-container").fadeIn(100);
             });
+            requiredItemOpen = true;
         } else {
             $(".requiredItem-container").fadeOut(100);
             requiredTimeout = setTimeout(function(){
                 $(".requiredItem-container").html("");
+                requiredItemOpen = false;
             }, 100)
         }
     };

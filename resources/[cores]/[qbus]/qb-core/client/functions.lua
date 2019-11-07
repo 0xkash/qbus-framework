@@ -239,6 +239,17 @@ QBCore.Functions.GetPlayersFromCoords = function(coords, distance)
     return closePlayers
 end
 
+QBCore.Functions.HasItem = function(source, cb, item)
+	local retval = false
+	QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
+		if result then
+			retval = true
+		end
+		return retval
+	end, item)
+	return retval
+end
+
 QBCore.Functions.Progressbar = function(name, label, duration, useWhileDead, canCancel, disableControls, animation, prop, propTwo, onFinish, onCancel)
     exports['progressbar']:Progress({
         name = name:lower(),

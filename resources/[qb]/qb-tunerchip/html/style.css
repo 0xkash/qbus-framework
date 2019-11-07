@@ -1,0 +1,164 @@
+@import url('https://fonts.googleapis.com/css?family=Lato&display=swap');
+
+.container {
+    height: 100vh;
+}
+
+.tunerchip-block {
+    position: relative;
+    width: 71vh;
+    height: 45vh;
+    top: 26.3%;
+    background-color: rgb(51, 49, 49);
+    margin: 0 auto;
+    z-index: 100;
+}
+
+.screen-frame {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    top: 20%;
+    pointer-events: none;
+    z-index: 101;
+    height: 60%;
+}
+
+.tunerchip-header {
+    position: absolute;
+    width: 100%;
+    height: 7%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+#tunerchip-timeday {
+    position: relative;
+    top: 9px;
+    font-family: 'Lato';
+    font-size: 9px;
+    color: white;
+    margin: 0 auto;
+    left: 48%;
+}
+
+#tunerchip-software {
+    position: relative;
+    top: 9px;
+    font-family: 'Lato';
+    font-size: 9px;
+    color: white;
+    left: -1%;
+}
+
+.tunerchip-software {
+    position: relative;
+    width: 75%;
+    height: 85%;
+    background-color: rgb(241, 241, 241);
+    margin: 0 auto;
+    top: 10%;
+}
+
+.tunerchip-btn {
+    position: relative;
+    width: 6vh;
+    height: 9%;
+    top: 88%;
+    left: 1%;
+    border-radius: 6px;
+    background-color: #b12424;
+    float: left;
+    margin-left: 10px;
+    transition: all 0.2s ease-in-out;
+}
+
+.tunerchip-btn:hover {
+    background-color: #e23131;
+}
+
+.tunerchip-btn > p {
+    text-align: center;
+    line-height: 18px;
+    font-family: 'Lato';
+    color: rgb(246, 246, 246);
+    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: 1px;
+}
+
+.tunerchip-software-boost-slider {
+    position: absolute;
+    top: 1.5vh;
+    left: 4vh;
+}
+
+.tunerchip-software-acceleration-slider {
+    position: absolute;
+    top: 8.5vh;
+    left: 4vh;
+}
+
+.tunerchip-software-gear-slider {
+    position: absolute;
+    top: 15.5vh;
+    left: 4vh;
+}
+
+.tunerchip-software-breaking-slider {
+    position: absolute;
+    top: 22.5vh;
+    left: 4vh;
+}
+
+.tunerchip-software-drivetrain-slider {
+    position: absolute;
+    top: 29.5vh;
+    left: 4vh;
+}
+
+#slider-titel {
+    font-family: 'Lato';
+    font-weight: bold;
+    font-size: 13px;
+    letter-spacing: 0.15vh;
+}
+
+#normalhigh {
+    font-size: 12px;
+    font-weight: lighter;
+    margin-left: 8px;
+}
+
+.slider {
+    position: relative;
+    -webkit-appearance: none;
+    width: 45vh;
+    height: 10px;
+    border-radius: 5px;  
+    background: #d3d3d3;
+    outline: none;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+    margin-top: 2vh;
+}
+  
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%; 
+    background: #b12424;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.slider::-webkit-slider-thumb:hover {
+    background: #e42727;
+}
+
+.tunerchip-software-buttons {
+    position: absolute;
+    bottom: 1vh;
+}
