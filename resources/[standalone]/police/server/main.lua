@@ -252,6 +252,15 @@ QBCore.Commands.Add("beslag", "Neem een voertuig in beslag", {}, false, function
     end
 end)
 
+QBCore.Commands.Add("radar", "Toggle snelheidsradar :)", {}, false, function(source, args)
+	local Player = QBCore.Functions.GetPlayer(source)
+    if Player.PlayerData.job.name == "police" then
+        TriggerClientEvent("wk:toggleRadar", source)
+    else
+        TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Dit command is voor hulpdiensten!")
+    end
+end)
+
 QBCore.Functions.CreateUseableItem("handcuffs", function(source, item)
     local Player = QBCore.Functions.GetPlayer(source)
 	if Player.Functions.GetItemBySlot(item.slot) ~= nil then

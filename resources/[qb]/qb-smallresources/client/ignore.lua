@@ -6,6 +6,11 @@ disabledVehicles = {
     "RHINO",
     "BENSON",
     "POUNDER",
+    "POLICE",
+    "POLICE2",
+    "POLICE3",
+    "POLICET",
+    "AMBULANCE",
 }
 
 Citizen.CreateThread(function()
