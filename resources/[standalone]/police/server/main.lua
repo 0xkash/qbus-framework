@@ -107,6 +107,43 @@ AddEventHandler('police:server:FlaggedPlateTriggered', function(camId, plate, st
 	end
 end)
 
+RegisterServerEvent('police:server:Impound')
+AddEventHandler('police:server:Impound', function(plate, fullImpound, price)
+    local src = source
+    local price = price ~= nil and price or 0
+    if IsVehicleOwned(plate) then
+        if not fullImpound then
+            exports['ghmattimysql']:execute('UPDATE player_vehicles SET state = @state, depotprice = @depotprice WHERE plate = @plate', {['@state'] = 0, ['@depotprice'] = price, ['@plate'] = plate})
+            TriggerClientEvent('QBCore:Notify', src, "Voertuig opgenomen in depot voor €"..price.."!")
+        else
+            exports['ghmattimysql']:execute('UPDATE player_vehicles SET state = @state WHERE plate = @plate', {['@state'] = 2, ['@plate'] = plate})
+            TriggerClientEvent('QBCore:Notify', src, "Voertuig volledig in beslag genomen!")
+        end
+    end
+end)
+
+function IsVehicleOwned(plate)
+    local val = false
+	QBCore.Functions.ExecuteSql("SELECT * FROM `player_vehicles` WHERE `plate` = '"..plate.."'", function(result)
+		if (result[1] ~= nil) then
+			val = true
+		else
+			val = false
+		end
+	end)
+	return val
+end
+
+QBCore.Functions.CreateCallback('police:GetImpoundedVehicles', function(source, cb)
+    local vehicles = {}
+    exports['ghmattimysql']:execute('SELECT * FROM player_vehicles WHERE state = @state', {['@state'] = 2}, function(result)
+        if result[1] ~= nil then
+            vehicles = result
+        end
+        cb(vehicles)
+    end)
+end)
+
 QBCore.Functions.CreateCallback('police:IsPlateFlagged', function(source, cb, plate)
     local retval = false
     if Plates ~= nil and Plates[plate] ~= nil then
@@ -192,6 +229,33 @@ QBCore.Commands.Add("plateinfo", "Markeer een voertuig", {{name="plate", help="K
         else
             TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Voertuig is niet gemarkeerd!")
         end
+    else
+        TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Dit command is voor hulpdiensten!")
+    end
+end)
+
+QBCore.Commands.Add("depot", "Stuur een voertuig naar het depot", {{name="prijs", help="Prijs voor hoeveel degene moet betalen (mag leeg zijn)"}}, false, function(source, args)
+	local Player = QBCore.Functions.GetPlayer(source)
+    if Player.PlayerData.job.name == "police" then
+        TriggerClientEvent("police:client:ImpoundVehicle", source, false, tonumber(args[1]))
+    else
+        TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Dit command is voor hulpdiensten!")
+    end
+end)
+
+QBCore.Commands.Add("beslag", "Neem een voertuig in beslag", {}, false, function(source, args)
+	local Player = QBCore.Functions.GetPlayer(source)
+    if Player.PlayerData.job.name == "police" then
+        TriggerClientEvent("police:client:ImpoundVehicle", source, true)
+    else
+        TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Dit command is voor hulpdiensten!")
+    end
+end)
+
+QBCore.Commands.Add("radar", "Toggle snelheidsradar :)", {}, false, function(source, args)
+	local Player = QBCore.Functions.GetPlayer(source)
+    if Player.PlayerData.job.name == "police" then
+        TriggerClientEvent("wk:toggleRadar", source)
     else
         TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Dit command is voor hulpdiensten!")
     end

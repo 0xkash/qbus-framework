@@ -124,6 +124,7 @@ QBCore.Player.CreatePlayer = function(PlayerData)
 
 	self.Functions.SetJobDuty = function(onDuty)
 		self.PlayerData.job.onduty = onDuty
+		self.Functions.UpdatePlayerData()
 	end
 
 	self.Functions.SetGang = function(gang, grade)

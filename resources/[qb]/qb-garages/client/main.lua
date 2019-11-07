@@ -14,11 +14,36 @@ end)
 
 local currentHouseGarage = nil
 local hasGarageKey = nil
+local currentGarage = nil
 
 RegisterNetEvent('qb-garages:client:setHouseGarage')
 AddEventHandler('qb-garages:client:setHouseGarage', function(house, hasKey)
     currentHouseGarage = house
     hasGarageKey = hasKey
+end)
+
+RegisterNetEvent('qb-garages:client:takeOutDepot')
+AddEventHandler('qb-garages:client:takeOutDepot', function(vehicle)
+    QBCore.Functions.SpawnVehicle(vehicle.vehicle, function(veh)
+        QBCore.Functions.TriggerCallback('qb-garage:server:GetVehicleProperties', function(properties)
+            QBCore.Functions.SetVehicleProperties(veh, properties)
+            enginePercent = round(vehicle.engine / 10, 0)
+            bodyPercent = round(vehicle.body / 10, 0)
+            currentFuel = vehicle.fuel
+
+            SetVehicleNumberPlateText(veh, vehicle.plate)
+            SetEntityHeading(veh, Depots[currentGarage].takeVehicle.h)
+            print(Depots[currentGarage].takeVehicle.h)
+            TaskWarpPedIntoVehicle(GetPlayerPed(-1), veh, -1)
+            exports['LegacyFuel']:SetFuel(veh, vehicle.fuel)
+            doCarDamage(veh, vehicle)
+            TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, vehicle.garage)
+            QBCore.Functions.Notify("Voertuig Uit: Motor: " .. enginePercent .. "% Body: " .. bodyPercent.. "% Fuel: "..currentFuel.. "%", "primary", 4500)
+            closeMenuFull()
+            TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
+            SetVehicleEngineOn(veh, true, true)
+        end, vehicle.plate)
+    end, Depots[currentGarage].spawnPoint, true)
 end)
 
 DrawText3Ds = function(x, y, z, text)
@@ -35,8 +60,6 @@ DrawText3Ds = function(x, y, z, text)
     DrawRect(0.0, 0.0+0.0125, 0.017+ factor, 0.03, 0, 0, 0, 75)
     ClearDrawOrigin()
 end
-
-local currentGarage = nil
 
 Citizen.CreateThread(function()
     for k, v in pairs(Garages) do
@@ -158,7 +181,7 @@ function DepotLijst()
                     v.state = "Depot"
                 end
 
-                Menu.addButton(QBCore.Shared.Vehicles[v.vehicle]["name"], "TakeOutDepotVehicle", v, v.state, " Motor: " .. enginePercent.."%", " Body: " .. bodyPercent.."%", " Fuel: "..currentFuel.."%")
+                Menu.addButton(QBCore.Shared.Vehicles[v.vehicle]["name"], "TakeOutDepotVehicle", v, v.state .. " (€"..v.depotprice..",-)", " Motor: " .. enginePercent.."%", " Body: " .. bodyPercent.."%", " Fuel: "..currentFuel.."%")
             end
         end
             
@@ -233,26 +256,8 @@ end
 
 function TakeOutDepotVehicle(vehicle)
     if vehicle.state == "Depot" then
-        QBCore.Functions.SpawnVehicle(vehicle.vehicle, function(veh)
-            QBCore.Functions.TriggerCallback('qb-garage:server:GetVehicleProperties', function(properties)
-                QBCore.Functions.SetVehicleProperties(veh, properties)
-                enginePercent = round(vehicle.engine / 10, 0)
-                bodyPercent = round(vehicle.body / 10, 0)
-                currentFuel = vehicle.fuel
-
-                SetVehicleNumberPlateText(veh, vehicle.plate)
-                SetEntityHeading(veh, Depots[currentGarage].takeVehicle.h)
-                print(Depots[currentGarage].takeVehicle.h)
-                TaskWarpPedIntoVehicle(GetPlayerPed(-1), veh, -1)
-                exports['LegacyFuel']:SetFuel(veh, vehicle.fuel)
-                doCarDamage(veh, vehicle)
-                TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, vehicle.garage)
-                QBCore.Functions.Notify("Voertuig Uit: Motor: " .. enginePercent .. "% Body: " .. bodyPercent.. "% Fuel: "..currentFuel.. "%", "primary", 4500)
-                closeMenuFull()
-                TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
-                SetVehicleEngineOn(veh, true, true)
-            end, vehicle.plate)
-        end, Depots[currentGarage].spawnPoint, true)
+        print(currentGarage)
+        TriggerServerEvent("qb-garage:server:PayDepotPrice", vehicle)
     end
 end
 

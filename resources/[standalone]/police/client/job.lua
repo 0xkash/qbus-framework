@@ -77,6 +77,30 @@ Citizen.CreateThread(function()
                 end)
             end
 
+            if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["impound"].x, Config.Locations["impound"].y, Config.Locations["impound"].z, true) < 4.5) then
+                QBCore.Functions.GetPlayerData(function(PlayerData)
+                    if PlayerData.job.name == "police" and PlayerData.job.onduty then
+                        DrawMarker(2, Config.Locations["impound"].x, Config.Locations["impound"].y, Config.Locations["impound"].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
+                        if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["impound"].x, Config.Locations["impound"].y, Config.Locations["impound"].z, true) < 1.5) then
+                            if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
+                                QBCore.Functions.DrawText3D(Config.Locations["impound"].x, Config.Locations["impound"].y, Config.Locations["impound"].z, "~g~E~w~ - Voertuig opbergen")
+                            else
+                                QBCore.Functions.DrawText3D(Config.Locations["impound"].x, Config.Locations["impound"].y, Config.Locations["impound"].z, "~g~E~w~ - Voertuigen")
+                            end
+                            if IsControlJustReleased(0, Keys["E"]) then
+                                if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
+                                    QBCore.Functions.DeleteVehicle(GetVehiclePedIsIn(GetPlayerPed(-1)))
+                                else
+                                    MenuImpound()
+                                    Menu.hidden = not Menu.hidden
+                                end
+                            end
+                            Menu.renderGUI()
+                        end  
+                    end
+                end)
+            end
+
             if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["helicopter"].x, Config.Locations["helicopter"].y, Config.Locations["helicopter"].z, true) < 4.5) then
                 QBCore.Functions.GetPlayerData(function(PlayerData)
                     if PlayerData.job.name == "police" and PlayerData.job.onduty then
@@ -125,6 +149,72 @@ Citizen.CreateThread(function()
         end
     end
 end)
+
+RegisterNetEvent('police:client:ImpoundVehicle')
+AddEventHandler('police:client:ImpoundVehicle', function(fullImpound, price)
+    local vehicle = QBCore.Functions.GetClosestVehicle()
+    if vehicle ~= 0 and vehicle ~= nil then
+        local pos = GetEntityCoords(GetPlayerPed(-1))
+        local vehpos = GetEntityCoords(vehicle)
+        if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, vehpos.x, vehpos.y, vehpos.z, true) < 5.0) and not IsPedInAnyVehicle(GetPlayerPed(-1)) then
+            local plate = GetVehicleNumberPlateText(vehicle)
+            TriggerServerEvent("police:server:Impound", plate, fullImpound, price)
+            QBCore.Functions.DeleteVehicle(vehicle)
+        end
+    end
+end)
+
+function MenuImpound()
+    ped = GetPlayerPed(-1);
+    MenuTitle = "Inbeslag"
+    ClearMenu()
+    Menu.addButton("Voertuigen", "ImpoundVehicleList", nil)
+    Menu.addButton("Sluit Menu", "closeMenuFull", nil) 
+end
+
+function ImpoundVehicleList()
+    QBCore.Functions.TriggerCallback("police:GetImpoundedVehicles", function(result)
+        ped = GetPlayerPed(-1);
+        MenuTitle = "Voertuigen:"
+        ClearMenu()
+
+        if result == nil then
+            QBCore.Functions.Notify("Er zijn geen inbeslaggenomen voertuigen", "error", 5000)
+            closeMenuFull()
+        else
+            for k, v in pairs(result) do
+                enginePercent = round(v.engine / 10, 0)
+                bodyPercent = round(v.body / 10, 0)
+                currentFuel = v.fuel
+
+                Menu.addButton(QBCore.Shared.Vehicles[v.vehicle]["name"], "TakeOutImpound", v, "In beslag", " Motor: " .. enginePercent .. "%", " Body: " .. bodyPercent.. "%", " Fuel: "..currentFuel.. "%")
+            end
+        end
+            
+        Menu.addButton("Terug", "MenuImpound",nil)
+    end)
+end
+
+function TakeOutImpound(vehicle)
+    enginePercent = round(vehicle.engine / 10, 0)
+    bodyPercent = round(vehicle.body / 10, 0)
+    currentFuel = vehicle.fuel
+    local coords = Config.Locations["impound"]
+    QBCore.Functions.SpawnVehicle(vehicle.vehicle, function(veh)
+        QBCore.Functions.TriggerCallback('qb-garage:server:GetVehicleProperties', function(properties)
+            QBCore.Functions.SetVehicleProperties(veh, properties)
+            SetVehicleNumberPlateText(veh, vehicle.plate)
+            SetEntityHeading(veh, coords.h)
+            exports['LegacyFuel']:SetFuel(veh, vehicle.fuel)
+            doCarDamage(veh, vehicle)
+            closeMenuFull()
+            TaskWarpPedIntoVehicle(GetPlayerPed(-1), veh, -1)
+            TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
+            SetVehicleEngineOn(veh, true, true)
+        end, vehicle.plate)
+        
+    end, coords, true)
+end
 
 function MenuOutfits()
     ped = GetPlayerPed(-1);
@@ -219,4 +309,62 @@ function closeMenuFull()
     Menu.hidden = true
     currentGarage = nil
     ClearMenu()
+end
+
+function doCarDamage(currentVehicle, veh)
+	smash = false
+	damageOutside = false
+	damageOutside2 = false 
+	local engine = veh.engine + 0.0
+	local body = veh.body + 0.0
+	if engine < 200.0 then
+		engine = 200.0
+    end
+    
+    if engine  > 1000.0 then
+        engine = 950.0
+    end
+
+	if body < 150.0 then
+		body = 150.0
+	end
+	if body < 950.0 then
+		smash = true
+	end
+
+	if body < 920.0 then
+		damageOutside = true
+	end
+
+	if body < 920.0 then
+		damageOutside2 = true
+	end
+
+    Citizen.Wait(100)
+    SetVehicleEngineHealth(currentVehicle, engine)
+	if smash then
+		SmashVehicleWindow(currentVehicle, 0)
+		SmashVehicleWindow(currentVehicle, 1)
+		SmashVehicleWindow(currentVehicle, 2)
+		SmashVehicleWindow(currentVehicle, 3)
+		SmashVehicleWindow(currentVehicle, 4)
+	end
+	if damageOutside then
+		SetVehicleDoorBroken(currentVehicle, 1, true)
+		SetVehicleDoorBroken(currentVehicle, 6, true)
+		SetVehicleDoorBroken(currentVehicle, 4, true)
+	end
+	if damageOutside2 then
+		SetVehicleTyreBurst(currentVehicle, 1, false, 990.0)
+		SetVehicleTyreBurst(currentVehicle, 2, false, 990.0)
+		SetVehicleTyreBurst(currentVehicle, 3, false, 990.0)
+		SetVehicleTyreBurst(currentVehicle, 4, false, 990.0)
+	end
+	if body < 1000 then
+		SetVehicleBodyHealth(currentVehicle, 985.1)
+	end
+end
+
+function round(num, numDecimalPlaces)
+    return tonumber(string.format("%." .. (numDecimalPlaces or 0) .. "f", num))
 end

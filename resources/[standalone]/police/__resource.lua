@@ -24,5 +24,6 @@ files {
     "html/index.html",
     "html/vue.min.js",
 	"html/script.js",
+	"html/main.css",
 	"html/vcr-ocd.ttf",
 }
