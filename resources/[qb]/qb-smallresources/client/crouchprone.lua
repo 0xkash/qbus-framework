@@ -91,7 +91,7 @@ function ResetAnimSet()
         ResetPedStrafeClipset(GetPlayerPed(-1))
         Citizen.Wait(100)
         RequestWalking(walkSet)
-        SetPedMovementClipset(PlayerPedId(), walkSet, 0.2)
+        SetPedMovementClipset(PlayerPedId(), walkSet, 1)
         RemoveAnimSet(walkSet)
     end
 end

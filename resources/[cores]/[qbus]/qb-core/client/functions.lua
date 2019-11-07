@@ -194,13 +194,13 @@ end
 
 
 QBCore.Functions.GetClosestPlayer = function(coords)
-	local closestPlayers = QBCore.Functions.GetPlayersFromCoords()
+	if coords == nil then
+        coords = GetEntityCoords(GetPlayerPed(-1))
+	end
+	
+	local closestPlayers = QBCore.Functions.GetPlayersFromCoords(coords)
     local closestDistance = -1
     local closestPlayer = -1
-    
-    if coords == nil then
-        coords = GetEntityCoords(GetPlayerPed(-1))
-    end
 
     for i=1, #closestPlayers, 1 do
         if closestPlayers[i] ~= PlayerId() and closestPlayers[i] ~= -1 then
