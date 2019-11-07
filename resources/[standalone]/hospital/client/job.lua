@@ -157,20 +157,19 @@ end)
 
 RegisterNetEvent('hospital:client:AiCall')
 AddEventHandler('hospital:client:AiCall', function()
-    local players = QBCore.Functions.GetPlayers()
-    local PlayerPedList = {}
-    for i=1, #players, 1 do
-        table.insert(PlayerPedList, GetPlayerPed(i))
+    local PlayerPeds = {}
+    for _, player in ipairs(GetActivePlayers()) do
+        local ped = GetPlayerPed(player)
+        table.insert(PlayerPeds, ped)
     end
-    table.insert(PlayerPedList, GetPlayerPed(-1))
     local player = GetPlayerPed(-1)
     local coords = GetEntityCoords(player)
-    local closestPed, closestDistance = QBCore.Functions.GetClosestPed(coords, PlayerPedList)
+    local closestPed, closestDistance = QBCore.Functions.GetClosestPed(coords, PlayerPeds)
     local gender = QBCore.Functions.GetPlayerData().gender
     local s1, s2 = Citizen.InvokeNative(0x2EB41072B4C1E4C0, coords.x, coords.y, coords.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
     local street1 = GetStreetNameFromHashKey(s1)
     local street2 = GetStreetNameFromHashKey(s2)
-    if closestDistance < 50.0 then
+    if closestDistance < 50.0 and closestPed ~= 0 then
         MakeCall(closestPed, gender, street1, street2)
     end
 end)
