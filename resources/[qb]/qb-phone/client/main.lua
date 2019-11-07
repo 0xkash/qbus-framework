@@ -101,7 +101,7 @@ RegisterNUICallback('getVehicles', function()
             local garage
             local state = "Binnen"
             if vehicles[k].garage ~= nil then garage = Config.Garages[vehicles[k].garage].label else garage = "Depot" end
-            if vehicles[k].state == 0 then state = "Uit" elseif vehicles[k].state == 1 then state = "Geïmporteerd" end
+            if vehicles[k].state == 0 then state = "Uit" elseif vehicles[k].state == 2 then state = "In Beslag" end
             table.insert(myVehicles, {name = QBCore.Shared.Vehicles[vehicles[k].vehicle]["name"], plate = vehicles[k].plate, garage = garage, state = state })
         end
 
