@@ -26,14 +26,15 @@ end)
 local inTuner = false
 
 function setVehData(veh,data)
+    local multp = 0.12
     local dTrain = 0.0
     if tonumber(data.drivetrain) == 2 then dTrain = 0.5 elseif tonumber(data.drivetrain) == 3 then dTrain = 1.0 end
     if not DoesEntityExist(veh) or not data then return nil end
-    SetVehicleHandlingFloat(veh, "CHandlingData", "fInitialDriveForce", data.boost * 0.08)
-    SetVehicleHandlingFloat(veh, "CHandlingData", "fDriveInertia", data.acceleration * 0.08)
-    SetVehicleEnginePowerMultiplier(veh, data.gearchange * 0.08)
+    SetVehicleHandlingFloat(veh, "CHandlingData", "fInitialDriveForce", data.boost * multp)
+    SetVehicleHandlingFloat(veh, "CHandlingData", "fDriveInertia", data.acceleration * multp)
+    SetVehicleEnginePowerMultiplier(veh, data.gearchange * multp)
     SetVehicleHandlingFloat(veh, "CHandlingData", "fDriveBiasFront", dTrain*1.0)
-    SetVehicleHandlingFloat(veh, "CHandlingData", "fBrakeBiasFront", data.breaking * 0.08)
+    SetVehicleHandlingFloat(veh, "CHandlingData", "fBrakeBiasFront", data.breaking * multp)
 end
 
 RegisterNUICallback('save', function(data)
@@ -49,14 +50,20 @@ AddEventHandler('qb-tunerchip:client:openChip', function()
     local inVehicle = IsPedInAnyVehicle(ped)
 
     if inVehicle then
-        QBCore.Functions.Progressbar("connect_laptop", "Tjoenertjip aan het aansluiten..", 5000, false, true, {
+        QBCore.Functions.Progressbar("connect_laptop", "Tunerlaptop wordt aangesloten..", 3000, false, true, {
             disableMovement = true,
             disableCarMovement = true,
             disableMouse = false,
             disableCombat = true,
-        }, {}, {}, {}, function() -- Done
+        }, {
+            animDict = "anim@amb@clubhouse@tutorial@bkr_tut_ig3@",
+            anim = "machinic_loop_mechandplayer",
+            flags = 16,
+        }, {}, {}, function() -- Done
+            StopAnimTask(GetPlayerPed(-1), "anim@amb@clubhouse@tutorial@bkr_tut_ig3@", "machinic_loop_mechandplayer", 1.0)
             openTunerLaptop(true)
         end, function() -- Cancel
+            StopAnimTask(GetPlayerPed(-1), "anim@amb@clubhouse@tutorial@bkr_tut_ig3@", "machinic_loop_mechandplayer", 1.0)
             QBCore.Functions.Notify("Geannuleerd..", "error")
         end)
     else
