@@ -76,6 +76,11 @@ Citizen.CreateThread(function()
                             DrawText3Ds(vehPos.x, vehPos.y, vehPos.z + 1.25, QBCore.Shared.Vehicles[Config.OccasionSlots[i]["model"]]["name"]..', Prijs: €'..Config.OccasionSlots[i]["price"]..',-')
                             if IsControlJustPressed(0, Keys["E"]) then
                                 currentVehicle = i
+                                
+                                QBCore.Functions.TriggerCallback('qb-occasions:server:getSellerInformation', function(info)
+                                    info.charinfo = json.decode(info.charinfo)
+                                    openBuyContract(info, Config.OccasionSlots[currentVehicle])
+                                end, Config.OccasionSlots[currentVehicle]["owner"])
                             end
                         end
                     end
@@ -87,11 +92,11 @@ Citizen.CreateThread(function()
                     DrawText3Ds(Config.SellVehicle["x"], Config.SellVehicle["y"], Config.SellVehicle["z"], '~g~E~w~ - Voertuig te koop zetten')
                     if IsControlJustPressed(0, Keys["E"]) then
                         QBCore.Functions.TriggerCallback('qb-garage:server:checkVehicleOwner', function(owned)
-                            if owned then
+                            -- if owned then
                                 openSellContract(true)
-                            else
-                                QBCore.Functions.Notify('Dit is niet jou voertuig?', 'error', 3500)
-                            end
+                            -- else
+                                -- QBCore.Functions.Notify('Dit is niet jou voertuig?', 'error', 3500)
+                            -- end
                         end, GetVehicleNumberPlateText(GetVehiclePedIsUsing(GetPlayerPed(-1))))
                     end
                 end
@@ -127,8 +132,10 @@ function spawnOccasionsVehicles(vehicles)
             oSlot[i]["price"] = vehicles[i].price
             oSlot[i]["owner"] = vehicles[i].seller
             oSlot[i]["model"] = vehicles[i].model
+            oSlot[i]["plate"] = vehicles[i].plate
             oSlot[i]["oid"]   = vehicles[i].occasionId
             oSlot[i]["desc"]  = vehicles[i].description
+            oSlot[i]["mods"]  = vehicles[i].mods
 
             SetModelAsNoLongerNeeded(model)
             SetVehicleOnGroundProperly(oSlot[i]["occasionId"])
@@ -160,12 +167,42 @@ function openSellContract(bool)
     })
 end
 
+function openBuyContract(sellerData, vehicleData)
+    SetNuiFocus(true, true)
+    SendNUIMessage({
+        action = "buyVehicle",
+        sellerData = sellerData,
+        vehicleData = vehicleData
+    })
+end
+
 RegisterNUICallback('close', function()
     SetNuiFocus(false, false)
 end)
 
 RegisterNUICallback('error', function(data)
     QBCore.Functions.Notify(data.message, 'error')
+end)
+
+RegisterNUICallback('buyVehicle', function()
+    local vehData = Config.OccasionSlots[currentVehicle]
+    DoScreenFadeOut(250)
+    Citizen.Wait(500)
+    TriggerServerEvent('qb-occasions:server:buyVehicle', vehData)
+    QBCore.Functions.SpawnVehicle(vehData["model"], function(veh)
+
+        SetVehicleNumberPlateText(veh, vehData["plate"])
+        SetEntityHeading(veh, Config.BuyVehicle.h)
+        TaskWarpPedIntoVehicle(GetPlayerPed(-1), veh, -1)
+        exports['LegacyFuel']:SetFuel(veh, 100)
+        QBCore.Functions.Notify("Voertuig gekocht", "success", 2500)
+        TriggerEvent("vehiclekeys:client:SetOwner", vehData["plate"])
+        SetVehicleEngineOn(veh, true, true)
+        QBCore.Functions.SetVehicleProperties(veh, vehData["mods"])
+    end, Config.BuyVehicle, true)
+    Citizen.Wait(500)
+    DoScreenFadeIn(250)
+    currentVehicle = nil
 end)
 
 RegisterNUICallback('sellVehicle', function(data)
@@ -176,8 +213,6 @@ RegisterNUICallback('sellVehicle', function(data)
     vehicleData.plate = GetVehicleNumberPlateText(GetVehiclePedIsUsing(GetPlayerPed(-1)))
     vehicleData.mods = QBCore.Functions.GetVehicleProperties(vehicleData.ent)
     vehicleData.desc = data.desc
-
-    print(data.desc)
 
     TriggerServerEvent('qb-occasions:server:sellVehicle', data.price, vehicleData)
     sellVehicleWait(data.price)
