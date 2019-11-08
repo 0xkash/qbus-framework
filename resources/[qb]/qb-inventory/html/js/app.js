@@ -102,6 +102,11 @@ $(document).on("contextmenu", ".item-slot", function(e){
             } else{
                 $(".item-info-description").html('<p><strong>Serienummer: </strong><span>' + itemData.info.serie + '</span></p><p>' + itemData.description + '</p>');
             }
+        } else if (itemData.name == "filled_evidence_bag") {
+            $(".item-info-title").html('<p>'+itemData.label+'</p>')
+            if (itemData.info.type == "casing") {
+                $(".item-info-description").html('<p><strong>Bewijstuk: </strong><span>' + itemData.info.label + '</span></p><p><strong>Type nummer: </strong><span>' + itemData.info.ammotype + '</span></p><p><strong>Kaliber: </strong><span>' + itemData.info.ammolabel + '</span></p><p><strong>Plaats delict: </strong><span>' + itemData.info.street + '</span></p><br /><p>' + itemData.description + '</p>');
+            }
         }
     } else {
         $(".item-info-title").html('<p>'+itemData.label+'</p>')

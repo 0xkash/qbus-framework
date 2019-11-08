@@ -52,6 +52,22 @@ Citizen.CreateThread(function()
                     end
                 end)
             end
+
+            if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["evidence"].x, Config.Locations["evidence"].y, Config.Locations["evidence"].z, true) < 5) then
+                QBCore.Functions.GetPlayerData(function(PlayerData)
+                    if PlayerData.job.name == "police" then
+                        if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["evidence"].x, Config.Locations["evidence"].y, Config.Locations["evidence"].z, true) < 1.5) then
+                            QBCore.Functions.DrawText3D(Config.Locations["evidence"].x, Config.Locations["evidence"].y, Config.Locations["evidence"].z, "~g~E~w~ - Bewijskast")
+                            if IsControlJustReleased(0, Keys["E"]) then
+                                TriggerEvent("inventory:client:SetCurrentStash", "policeevidence")
+                                TriggerServerEvent("inventory:server:OpenInventory", "stash", "policeevidence")
+                            end
+                        elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["evidence"].x, Config.Locations["evidence"].y, Config.Locations["evidence"].z, true) < 2.5) then
+                            QBCore.Functions.DrawText3D(Config.Locations["evidence"].x, Config.Locations["evidence"].y, Config.Locations["evidence"].z, "Bewijskast")
+                        end  
+                    end
+                end)
+            end
             
             if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["vehicle"].x, Config.Locations["vehicle"].y, Config.Locations["vehicle"].z, true) < 4.5) then
                 QBCore.Functions.GetPlayerData(function(PlayerData)

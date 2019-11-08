@@ -52,6 +52,30 @@ AddEventHandler("evidence:client:RemoveCasing", function(casingId)
     CurrentCasing = 0
 end)
 
+RegisterNetEvent("evidence:client:ClearCasingsInArea")
+AddEventHandler("evidence:client:ClearCasingsInArea", function()
+	local pos = GetEntityCoords(GetPlayerPed(-1))
+	local casingList = {}
+	QBCore.Functions.Progressbar("clear_casings", "Kogelhulsen weghalen..", 5000, false, true, {
+        disableMovement = false,
+        disableCarMovement = false,
+		disableMouse = false,
+		disableCombat = true,
+	}, {}, {}, {}, function() -- Done
+		if Casings ~= nil and next(Casings) ~= nil then 
+			for casingId, v in pairs(Casings) do
+				if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Casings[casingId].coords.x, Casings[casingId].coords.y, Casings[casingId].coords.z, true) < 10.0 then
+					table.insert(casingList, casingId)
+				end
+			end
+			TriggerServerEvent("evidence:server:ClearCasings", casingList)
+			QBCore.Functions.Notify("Kogelhulsen weggehaald :)")
+		end
+    end, function() -- Cancel
+        QBCore.Functions.Notify("Kogelhulsen niet weggehaald", "error")
+    end)
+end)
+
 local shotAmount = 0
 
 --[[
@@ -102,11 +126,19 @@ Citizen.CreateThread(function()
 		if CurrentCasing ~= nil and CurrentCasing ~= 0 then 
 			local pos = GetEntityCoords(GetPlayerPed(-1))
 			if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Casings[CurrentCasing].coords.x, Casings[CurrentCasing].coords.y, Casings[CurrentCasing].coords.z, true) < 1.5 then
-				DrawText3D(Casings[CurrentCasing].coords.x, Casings[CurrentCasing].coords.y, Casings[CurrentCasing].coords.z, "~g~E~w~ - Kogelhuls")
+				DrawText3D(Casings[CurrentCasing].coords.x, Casings[CurrentCasing].coords.y, Casings[CurrentCasing].coords.z, "~g~E~w~ - Kogelhuls ~b~#"..Casings[CurrentCasing].type)
 				if IsControlJustReleased(0, Keys["E"]) then
+					local s1, s2 = Citizen.InvokeNative(0x2EB41072B4C1E4C0, Casings[CurrentCasing].coords.x, Casings[CurrentCasing].coords.y, Casings[CurrentCasing].coords.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
+					local street1 = GetStreetNameFromHashKey(s1)
+					local street2 = GetStreetNameFromHashKey(s2)
+					local streetLabel = street1
+					if street2 ~= nil then
+						streetLabel = streetLabel .. " | " .. street2
+					end
 					local info = {
 						label = "Kogelhuls",
 						type = "casing",
+						street = streetLabel,
 						ammolabel = Config.AmmoLabels[QBCore.Shared.Weapons[Casings[CurrentCasing].type]["ammotype"]],
 						ammotype = Casings[CurrentCasing].type,
 					}
@@ -129,7 +161,7 @@ Citizen.CreateThread(function()
 					if next(Casings) ~= nil then
 						local pos = GetEntityCoords(GetPlayerPed(-1), true)
 						for k, v in pairs(Casings) do
-							if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, v.coords.x, v.coords.y, v.coords.z, true) < 7.5 then
+							if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, v.coords.x, v.coords.y, v.coords.z, true) < 12.5 then
 								CasingsNear[k] = v
 								if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, v.coords.x, v.coords.y, v.coords.z, true) < 1.5 then
 									CurrentCasing = k
@@ -158,7 +190,7 @@ Citizen.CreateThread(function()
 				if QBCore.Functions.GetPlayerData().job.name == "police" then
 					for k, v in pairs(CasingsNear) do
 						if v ~= nil then
-							DrawMarker(27, v.coords.x, v.coords.y, v.coords.z - 0.05, 0.0, 0.0, 0.0, 180.0, 0.0, 0.0, 0.11, 0.11, 0.3, 209, 165, 33, 200, false, true, 2, false, false, false, false)
+							DrawMarker(27, v.coords.x, v.coords.y, v.coords.z - 0.05, 0.0, 0.0, 0.0, 180.0, 0.0, 0.0, 0.11, 0.11, 0.3, 50, 0, 250, 255, false, true, 2, false, false, false, false)
 						end
 					end
 				end
@@ -171,5 +203,5 @@ end)
 
 function DropBulletCasing(weapon)
 	TriggerServerEvent("evidence:server:CreateCasing", weapon)
-	Citizen.Wait(500)
+	Citizen.Wait(300)
 end

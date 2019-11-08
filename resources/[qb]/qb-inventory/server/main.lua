@@ -512,6 +512,7 @@ function SaveStashItems(stashId, items)
 	QBCore.Functions.ExecuteSql("DELETE FROM `stashitems` WHERE `stash` = '"..stashId.."'")
 	if items ~= nil then
 		for slot, item in pairs(items) do
+			Citizen.Wait(50)
 			if items[slot] ~= nil then
 				QBCore.Functions.ExecuteSql("INSERT INTO `stashitems` (`stash`, `name`, `amount`, `info`, `type`, `slot`) VALUES ('"..stashId.."', '"..items[slot].name.."', '"..items[slot].amount.."', '"..json.encode(items[slot].info).."', '"..items[slot].type.."', '"..slot.."')")
 			end
@@ -592,6 +593,7 @@ function SaveOwnedVehicleItems(plate, items)
 	QBCore.Functions.ExecuteSql("DELETE FROM `trunkitems` WHERE `plate` = '"..plate.."'")
 	if items ~= nil then
 		for slot, item in pairs(items) do
+			Citizen.Wait(50)
 			if items[slot] ~= nil then
 				QBCore.Functions.ExecuteSql("INSERT INTO `trunkitems` (`plate`, `name`, `amount`, `info`, `type`, `slot`) VALUES ('"..plate.."', '"..items[slot].name.."', '"..items[slot].amount.."', '"..json.encode(items[slot].info).."', '"..items[slot].type.."', '"..slot.."')")
 			end
@@ -671,6 +673,7 @@ function SaveOwnedGloveboxItems(plate, items)
 	QBCore.Functions.ExecuteSql("DELETE FROM `gloveboxitems` WHERE `plate` = '"..plate.."'")
 	if items ~= nil then
 		for slot, item in pairs(items) do
+			Citizen.Wait(50)
 			if items[slot] ~= nil then
 				QBCore.Functions.ExecuteSql("INSERT INTO `gloveboxitems` (`plate`, `name`, `amount`, `info`, `type`, `slot`) VALUES ('"..plate.."', '"..items[slot].name.."', '"..items[slot].amount.."', '"..json.encode(items[slot].info).."', '"..items[slot].type.."', '"..slot.."')")
 			end

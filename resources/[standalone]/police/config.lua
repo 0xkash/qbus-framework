@@ -7,6 +7,7 @@ Config.Locations = {
    ["impound"] = {x = 436.323, y = -998.388, z = 25.744, h = 179.657},
    ["helicopter"] = {x = 449.168, y = -981.325, z = 43.691, h = 87.234},
    ["armory"] = {x = 453.075, y = -980.124, z = 30.889, h = 90.654},
+   ["evidence"] = {x = 455.838, y = -978.573, z = 30.689, h = 90.654},
    ["stations"] = {
        [1] = {label = "Politie Hoofdbureau", coords = {x = 428.23, y = -984.28, z = 29.76, h = 3.5}}
    }

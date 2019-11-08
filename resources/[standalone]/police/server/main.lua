@@ -137,6 +137,16 @@ AddEventHandler('evidence:server:CreateCasing', function(weapon)
     TriggerClientEvent("evidence:client:AddCasing", -1, casingId, weapon, source)
 end)
 
+RegisterServerEvent('evidence:server:ClearCasings')
+AddEventHandler('evidence:server:ClearCasings', function(casingList)
+    if casingList ~= nil and next(casingList) ~= nil then 
+        for k, v in pairs(casingList) do
+            TriggerClientEvent("evidence:client:RemoveCasing", -1, v)
+            Casings[v] = nil
+        end
+    end
+end)
+
 RegisterServerEvent('evidence:server:AddCasingToInventory')
 AddEventHandler('evidence:server:AddCasingToInventory', function(casingId, casingInfo)
     local src = source
@@ -144,8 +154,8 @@ AddEventHandler('evidence:server:AddCasingToInventory', function(casingId, casin
     if Player.Functions.RemoveItem("empty_evidence_bag", 1) then
         if Player.Functions.AddItem("filled_evidence_bag", 1, false, casingInfo) then
             TriggerClientEvent("inventory:client:ItemBox", src, QBCore.Shared.Items["filled_evidence_bag"], "add")
-            print(casingId)
             TriggerClientEvent("evidence:client:RemoveCasing", -1, casingId)
+            Casings[casingId] = nil
         end
     else
         TriggerClientEvent('QBCore:Notify', src, "Je moet een leeg bewijszakje bij je hebben", "error")
@@ -214,6 +224,15 @@ QBCore.Commands.Add("cuff", "Boei een speler", {}, false, function(source, args)
 	local Player = QBCore.Functions.GetPlayer(source)
     if Player.PlayerData.job.name == "police" then
         TriggerClientEvent("police:client:CuffPlayer", source)
+    else
+        TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Dit command is voor hulpdiensten!")
+    end
+end)
+
+QBCore.Commands.Add("clearcasings", "Haal kogelhulsen in de buurt weg (zorg ervoor dat je wel wat heb opgepakt)", {}, false, function(source, args)
+	local Player = QBCore.Functions.GetPlayer(source)
+    if Player.PlayerData.job.name == "police" then
+        TriggerClientEvent("evidence:client:ClearCasingsInArea", source)
     else
         TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Dit command is voor hulpdiensten!")
     end
