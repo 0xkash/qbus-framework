@@ -138,6 +138,8 @@ Citizen.CreateThread(function()
                     end
                 end
             end
+
+            CheckWeaponDamage(ped)
         end
 
         playerHealth = health
@@ -506,6 +508,9 @@ function ResetAll()
         limbs = BodyParts,
         isBleeding = tonumber(isBleeding)
     })
+
+    CurrentDamageList = nil
+    TriggerServerEvent('hospital:server:SetWeaponDamage', CurrentDamageList)
 
     ProcessRunStuff(PlayerPedId())
     DoLimbAlert()

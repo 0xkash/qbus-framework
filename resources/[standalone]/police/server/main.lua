@@ -4,6 +4,8 @@ TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 local Plates = {}
 cuffedPlayers = {}
 
+PlayerStatus = {}
+
 RegisterServerEvent('police:server:CuffPlayer')
 AddEventHandler('police:server:CuffPlayer', function(playerId, isSoftcuff)
     local src = source
@@ -120,6 +122,25 @@ AddEventHandler('police:server:Impound', function(plate, fullImpound, price)
             TriggerClientEvent('QBCore:Notify', src, "Voertuig volledig in beslag genomen!")
         end
     end
+end)
+
+RegisterServerEvent('evidence:server:UpdateStatus')
+AddEventHandler('evidence:server:UpdateStatus', function(data)
+    local src = source
+    PlayerStatus[src] = data
+end)
+
+QBCore.Functions.CreateCallback('police:GetPlayerStatus', function(source, cb, playerId)
+    local Player = QBCore.Functions.GetPlayer(playerId)
+    local statList = {}
+	if Player ~= nil then
+        if PlayerStatus[Player.PlayerData.source] ~= nil and next(PlayerStatus[Player.PlayerData.source]) ~= nil then
+            for k, v in pairs(PlayerStatus[Player.PlayerData.source]) do
+                table.insert(statList, PlayerStatus[Player.PlayerData.source][k].text)
+            end
+        end
+	end
+    cb(statList)
 end)
 
 function IsVehicleOwned(plate)

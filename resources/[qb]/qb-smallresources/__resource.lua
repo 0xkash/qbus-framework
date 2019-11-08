@@ -5,6 +5,7 @@ description 'QB:Ignore'
 server_scripts {
 	"server/main.lua",
 	"server/trunk.lua",
+	"server/consumables.lua",
 	"config.lua",
 }
 
@@ -22,4 +23,5 @@ client_scripts {
 	"client/removeentities.lua",
 	"client/crouchprone.lua",
 	"client/tackle.lua",
+	"client/consumables.lua",
 }
