@@ -11,6 +11,16 @@ QBConfig.Money.DontAllowMinus = {'cash', 'crypto'} -- Money that is not allowed 
 QBConfig.Player = {}
 QBConfig.Player.MaxWeight = 120000 -- Max weight a player can carry (currently 120kg, written in grams)
 QBConfig.Player.MaxInvSlots = 40 -- Max inventory slots for a player
+QBConfig.Player.Bloodtypes = {
+    "A+",
+    "A-",
+    "B+",
+    "B-",
+    "AB+",
+    "AB-",
+    "O+",
+    "O-",
+}
 
 QBConfig.Server = {} -- General server config
 QBConfig.Server.closed = false -- Set server closed (no one can join except people with ace permission 'qbadmin.join')

@@ -5,6 +5,7 @@ local Plates = {}
 cuffedPlayers = {}
 PlayerStatus = {}
 Casings = {}
+BloodDrops = {}
 
 RegisterServerEvent('police:server:CuffPlayer')
 AddEventHandler('police:server:CuffPlayer', function(playerId, isSoftcuff)
@@ -130,11 +131,43 @@ AddEventHandler('evidence:server:UpdateStatus', function(data)
     PlayerStatus[src] = data
 end)
 
+RegisterServerEvent('evidence:server:CreateBloodDrop')
+AddEventHandler('evidence:server:CreateBloodDrop', function(citizenid, bloodtype, coords)
+    local src = source
+    local bloodId = CreateBloodId()
+    TriggerClientEvent("evidence:client:AddBlooddrop", -1, bloodId, citizenid, bloodtype, coords)
+end)
+
+RegisterServerEvent('evidence:server:ClearBlooddrops')
+AddEventHandler('evidence:server:ClearBlooddrops', function(blooddropList)
+    if blooddropList ~= nil and next(blooddropList) ~= nil then 
+        for k, v in pairs(blooddropList) do
+            TriggerClientEvent("evidence:client:RemoveBlooddrop", -1, v)
+            BloodDrops[v] = nil
+        end
+    end
+end)
+
+RegisterServerEvent('evidence:server:AddBlooddropToInventory')
+AddEventHandler('evidence:server:AddBlooddropToInventory', function(bloodId, bloodInfo)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    if Player.Functions.RemoveItem("empty_evidence_bag", 1) then
+        if Player.Functions.AddItem("filled_evidence_bag", 1, false, bloodInfo) then
+            TriggerClientEvent("inventory:client:ItemBox", src, QBCore.Shared.Items["filled_evidence_bag"], "add")
+            TriggerClientEvent("evidence:client:RemoveBlooddrop", -1, bloodId)
+            BloodDrops[bloodId] = nil
+        end
+    else
+        TriggerClientEvent('QBCore:Notify', src, "Je moet een leeg bewijszakje bij je hebben", "error")
+    end
+end)
+
 RegisterServerEvent('evidence:server:CreateCasing')
-AddEventHandler('evidence:server:CreateCasing', function(weapon)
+AddEventHandler('evidence:server:CreateCasing', function(weapon, coords)
     local src = source
     local casingId = CreateCasingId()
-    TriggerClientEvent("evidence:client:AddCasing", -1, casingId, weapon, source)
+    TriggerClientEvent("evidence:client:AddCasing", -1, casingId, weapon, coords)
 end)
 
 RegisterServerEvent('evidence:server:ClearCasings')
@@ -174,6 +207,19 @@ QBCore.Functions.CreateCallback('police:GetPlayerStatus', function(source, cb, p
 	end
     cb(statList)
 end)
+
+function CreateBloodId()
+    if BloodDrops ~= nil then
+		local bloodId = math.random(10000, 99999)
+		while BloodDrops[caseId] ~= nil do
+			bloodId = math.random(10000, 99999)
+		end
+		return bloodId
+	else
+		local bloodId = math.random(10000, 99999)
+		return bloodId
+	end
+end
 
 function CreateCasingId()
     if Casings ~= nil then
@@ -233,6 +279,15 @@ QBCore.Commands.Add("clearcasings", "Haal kogelhulsen in de buurt weg (zorg ervo
 	local Player = QBCore.Functions.GetPlayer(source)
     if Player.PlayerData.job.name == "police" then
         TriggerClientEvent("evidence:client:ClearCasingsInArea", source)
+    else
+        TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Dit command is voor hulpdiensten!")
+    end
+end)
+
+QBCore.Commands.Add("clearblood", "Haal bloed in de buurt weg (zorg ervoor dat je wel wat heb opgepakt)", {}, false, function(source, args)
+	local Player = QBCore.Functions.GetPlayer(source)
+    if Player.PlayerData.job.name == "police" then
+        TriggerClientEvent("evidence:client:ClearBlooddropsInArea", source)
     else
         TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Dit command is voor hulpdiensten!")
     end
