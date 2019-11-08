@@ -203,14 +203,46 @@ input[type=number]::-webkit-outer-spin-button {
 
 .player-inv-info {
     position: absolute;
-    left: 10%;
-    top: 12%;
+    left: 12.1%;
+    top: 10.5%;
 }
 
-.player-inv-info p {
+#player-inv-label {
+    position: relative;
     color: white;
-    font-size: 12px;
-    font-family: 'Roboto Mono', monospace;
+    font-size: 14px;
+    font-family: 'Lato', monospace;
+    font-weight: bold;
+    letter-spacing: 0.1vh;
+    bottom: 6px;
+    float: left;
+}
+
+#player-inv-weight {
+    color: white;
+    font-size: 11px;
+    font-family: 'Lato', monospace;
+    letter-spacing: 0.1vh;
+    float: left;
+}
+
+#other-inv-label {
+    position: relative;
+    color: white;
+    font-size: 14px;
+    font-family: 'Lato', monospace;
+    font-weight: bold;
+    letter-spacing: 0.1vh;
+    bottom: 6px;
+    float: right;
+}
+
+#other-inv-weight {
+    color: white;
+    font-size: 11px;
+    font-family: 'Lato', monospace;
+    letter-spacing: 0.1vh;
+    float: right;
 }
 
 .player-inv-weight {
@@ -227,14 +259,8 @@ input[type=number]::-webkit-outer-spin-button {
 
 .other-inv-info {
     position: absolute;
-    right: 10%;
-    top: 12%;
-}
-
-.other-inv-info p {
-    color: white;
-    font-size: 12px;
-    font-family: 'Roboto Mono', monospace;
+    right: 13.6%;
+    top: 10.5%;
 }
 
 .ply-iteminfo-container {
