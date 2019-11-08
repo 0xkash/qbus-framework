@@ -6,6 +6,7 @@ Config.SellVehicle = {
     ["z"] = 29.49,
 }
 
+Config.BuyVehicle = {x = -33.31, y = -1689.94, z = 28.36, h = 204.5}
 
 Config.OccasionSlots = {
     {

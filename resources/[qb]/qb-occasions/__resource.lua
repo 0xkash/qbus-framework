@@ -17,6 +17,7 @@ server_scripts {
 files {
 	'html/reset.css',
 	'html/sell-contract.png',
+	'html/buy-contract.png',
 	'html/ui.css',
 	'html/ui.html',
 	'html/ui.js',
