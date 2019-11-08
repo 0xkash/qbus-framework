@@ -50,87 +50,88 @@ Citizen.CreateThread(function()
 				TriggerServerEvent("heli:spotlight", spotlight_state)
 				PlaySoundFrontend(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)
 			end
-			
-		end
-		
-		if helicam then
-			SetTimecycleModifier("heliGunCam")
-			SetTimecycleModifierStrength(0.3)
-			local scaleform = RequestScaleformMovie("HELI_CAM")
-			while not HasScaleformMovieLoaded(scaleform) do
-				Citizen.Wait(0)
-			end
-			local lPed = GetPlayerPed(-1)
-			local heli = GetVehiclePedIsIn(lPed)
-			local cam = CreateCam("DEFAULT_SCRIPTED_FLY_CAMERA", true)
-			AttachCamToEntity(cam, heli, 0.0,0.0,-1.5, true)
-			SetCamRot(cam, 0.0,0.0,GetEntityHeading(heli))
-			SetCamFov(cam, fov)
-			RenderScriptCams(true, false, 0, 1, 0)
-			PushScaleformMovieFunction(scaleform, "SET_CAM_LOGO")
-			PushScaleformMovieFunctionParameterInt(1) -- 0 for nothing, 1 for LSPD logo
-			PopScaleformMovieFunctionVoid()
-			local locked_on_vehicle = nil
-			while helicam and not IsEntityDead(lPed) and (GetVehiclePedIsIn(lPed) == heli) and IsHeliHighEnough(heli) do
-				if IsControlJustPressed(0, toggle_helicam) then -- Toggle Helicam
-					PlaySoundFrontend(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)
-					helicam = false
-				end
-				if IsControlJustPressed(0, toggle_vision) then
-					PlaySoundFrontend(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)
-					ChangeVision()
-				end
 
-				if locked_on_vehicle then
-					if DoesEntityExist(locked_on_vehicle) then
-						PointCamAtEntity(cam, locked_on_vehicle, 0.0, 0.0, 0.0, true)
-						RenderVehicleInfo(locked_on_vehicle)
-						if IsControlJustPressed(0, toggle_lock_on) then
-							PlaySoundFrontend(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)
-							locked_on_vehicle = nil
-							local rot = GetCamRot(cam, 2) -- All this because I can't seem to get the camera unlocked from the entity
-							local fov = GetCamFov(cam)
-							local old cam = cam
-							DestroyCam(old_cam, false)
-							cam = CreateCam("DEFAULT_SCRIPTED_FLY_CAMERA", true)
-							AttachCamToEntity(cam, heli, 0.0,0.0,-1.5, true)
-							SetCamRot(cam, rot, 2)
-							SetCamFov(cam, fov)
-							RenderScriptCams(true, false, 0, 1, 0)
+			if helicam then
+				SetTimecycleModifier("heliGunCam")
+				SetTimecycleModifierStrength(0.3)
+				local scaleform = RequestScaleformMovie("HELI_CAM")
+				while not HasScaleformMovieLoaded(scaleform) do
+					Citizen.Wait(0)
+				end
+				local lPed = GetPlayerPed(-1)
+				local heli = GetVehiclePedIsIn(lPed)
+				local cam = CreateCam("DEFAULT_SCRIPTED_FLY_CAMERA", true)
+				AttachCamToEntity(cam, heli, 0.0,0.0,-1.5, true)
+				SetCamRot(cam, 0.0,0.0,GetEntityHeading(heli))
+				SetCamFov(cam, fov)
+				RenderScriptCams(true, false, 0, 1, 0)
+				PushScaleformMovieFunction(scaleform, "SET_CAM_LOGO")
+				PushScaleformMovieFunctionParameterInt(1) -- 0 for nothing, 1 for LSPD logo
+				PopScaleformMovieFunctionVoid()
+				local locked_on_vehicle = nil
+				while helicam and not IsEntityDead(lPed) and (GetVehiclePedIsIn(lPed) == heli) and IsHeliHighEnough(heli) do
+					if IsControlJustPressed(0, toggle_helicam) then -- Toggle Helicam
+						PlaySoundFrontend(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)
+						helicam = false
+					end
+					if IsControlJustPressed(0, toggle_vision) then
+						PlaySoundFrontend(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)
+						ChangeVision()
+					end
+	
+					if locked_on_vehicle then
+						if DoesEntityExist(locked_on_vehicle) then
+							PointCamAtEntity(cam, locked_on_vehicle, 0.0, 0.0, 0.0, true)
+							RenderVehicleInfo(locked_on_vehicle)
+							if IsControlJustPressed(0, toggle_lock_on) then
+								PlaySoundFrontend(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)
+								locked_on_vehicle = nil
+								local rot = GetCamRot(cam, 2) -- All this because I can't seem to get the camera unlocked from the entity
+								local fov = GetCamFov(cam)
+								local old cam = cam
+								DestroyCam(old_cam, false)
+								cam = CreateCam("DEFAULT_SCRIPTED_FLY_CAMERA", true)
+								AttachCamToEntity(cam, heli, 0.0,0.0,-1.5, true)
+								SetCamRot(cam, rot, 2)
+								SetCamFov(cam, fov)
+								RenderScriptCams(true, false, 0, 1, 0)
+							end
+						else
+							locked_on_vehicle = nil -- Cam will auto unlock when entity doesn't exist anyway
 						end
 					else
-						locked_on_vehicle = nil -- Cam will auto unlock when entity doesn't exist anyway
-					end
-				else
-					local zoomvalue = (1.0/(fov_max-fov_min))*(fov-fov_min)
-					CheckInputRotation(cam, zoomvalue)
-					local vehicle_detected = GetVehicleInView(cam)
-					if DoesEntityExist(vehicle_detected) then
-						RenderVehicleInfo(vehicle_detected)
-						if IsControlJustPressed(0, toggle_lock_on) then
-							PlaySoundFrontend(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)
-							locked_on_vehicle = vehicle_detected
+						local zoomvalue = (1.0/(fov_max-fov_min))*(fov-fov_min)
+						CheckInputRotation(cam, zoomvalue)
+						local vehicle_detected = GetVehicleInView(cam)
+						if DoesEntityExist(vehicle_detected) then
+							RenderVehicleInfo(vehicle_detected)
+							if IsControlJustPressed(0, toggle_lock_on) then
+								PlaySoundFrontend(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)
+								locked_on_vehicle = vehicle_detected
+							end
 						end
 					end
+					HandleZoom(cam)
+					HideHUDThisFrame()
+					PushScaleformMovieFunction(scaleform, "SET_ALT_FOV_HEADING")
+					PushScaleformMovieFunctionParameterFloat(GetEntityCoords(heli).z)
+					PushScaleformMovieFunctionParameterFloat(zoomvalue)
+					PushScaleformMovieFunctionParameterFloat(GetCamRot(cam, 2).z)
+					PopScaleformMovieFunctionVoid()
+					DrawScaleformMovieFullscreen(scaleform, 255, 255, 255, 255)
+					Citizen.Wait(0)
 				end
-				HandleZoom(cam)
-				HideHUDThisFrame()
-				PushScaleformMovieFunction(scaleform, "SET_ALT_FOV_HEADING")
-				PushScaleformMovieFunctionParameterFloat(GetEntityCoords(heli).z)
-				PushScaleformMovieFunctionParameterFloat(zoomvalue)
-				PushScaleformMovieFunctionParameterFloat(GetCamRot(cam, 2).z)
-				PopScaleformMovieFunctionVoid()
-				DrawScaleformMovieFullscreen(scaleform, 255, 255, 255, 255)
-				Citizen.Wait(0)
+				helicam = false
+				ClearTimecycleModifier()
+				fov = (fov_max+fov_min)*0.5 -- reset to starting zoom level
+				RenderScriptCams(false, false, 0, 1, 0) -- Return to gameplay camera
+				SetScaleformMovieAsNoLongerNeeded(scaleform) -- Cleanly release the scaleform
+				DestroyCam(cam, false)
+				SetNightvision(false)
+				SetSeethrough(false)
 			end
-			helicam = false
-			ClearTimecycleModifier()
-			fov = (fov_max+fov_min)*0.5 -- reset to starting zoom level
-			RenderScriptCams(false, false, 0, 1, 0) -- Return to gameplay camera
-			SetScaleformMovieAsNoLongerNeeded(scaleform) -- Cleanly release the scaleform
-			DestroyCam(cam, false)
-			SetNightvision(false)
-			SetSeethrough(false)
+		else
+			Citizen.Wait(2000)
 		end
 	end
 end)

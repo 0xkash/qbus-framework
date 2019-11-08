@@ -8,7 +8,8 @@ AddEventHandler("consumables:client:UseJoint", function()
     }, {}, {}, {}, function() -- Done
         TriggerEvent("inventory:client:ItemBox", QBCore.Shared.Items["joint"], "remove")
         TriggerEvent('animations:client:EmoteCommandStart', {"smokeweed"})
-        TriggerEvent("evidence:client:SetStatus", "weedsmell", 100)
+        
+        TriggerEvent("evidence:client:SetStatus", "weedsmell", 300)
     end, function() -- Cancel
         
     end)

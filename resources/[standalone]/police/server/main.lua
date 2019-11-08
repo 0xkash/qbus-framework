@@ -3,8 +3,8 @@ TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 
 local Plates = {}
 cuffedPlayers = {}
-
 PlayerStatus = {}
+Casings = {}
 
 RegisterServerEvent('police:server:CuffPlayer')
 AddEventHandler('police:server:CuffPlayer', function(playerId, isSoftcuff)
@@ -130,6 +130,28 @@ AddEventHandler('evidence:server:UpdateStatus', function(data)
     PlayerStatus[src] = data
 end)
 
+RegisterServerEvent('evidence:server:CreateCasing')
+AddEventHandler('evidence:server:CreateCasing', function(weapon)
+    local src = source
+    local casingId = CreateCasingId()
+    TriggerClientEvent("evidence:client:AddCasing", -1, casingId, weapon, source)
+end)
+
+RegisterServerEvent('evidence:server:AddCasingToInventory')
+AddEventHandler('evidence:server:AddCasingToInventory', function(casingId, casingInfo)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    if Player.Functions.RemoveItem("empty_evidence_bag", 1) then
+        if Player.Functions.AddItem("filled_evidence_bag", 1, false, casingInfo) then
+            TriggerClientEvent("inventory:client:ItemBox", src, QBCore.Shared.Items["filled_evidence_bag"], "add")
+            print(casingId)
+            TriggerClientEvent("evidence:client:RemoveCasing", -1, casingId)
+        end
+    else
+        TriggerClientEvent('QBCore:Notify', src, "Je moet een leeg bewijszakje bij je hebben", "error")
+    end
+end)
+
 QBCore.Functions.CreateCallback('police:GetPlayerStatus', function(source, cb, playerId)
     local Player = QBCore.Functions.GetPlayer(playerId)
     local statList = {}
@@ -142,6 +164,19 @@ QBCore.Functions.CreateCallback('police:GetPlayerStatus', function(source, cb, p
 	end
     cb(statList)
 end)
+
+function CreateCasingId()
+    if Casings ~= nil then
+		local caseId = math.random(10000, 99999)
+		while Casings[caseId] ~= nil do
+			caseId = math.random(10000, 99999)
+		end
+		return caseId
+	else
+		local caseId = math.random(10000, 99999)
+		return caseId
+	end
+end
 
 function IsVehicleOwned(plate)
     local val = false

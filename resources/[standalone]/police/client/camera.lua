@@ -64,6 +64,8 @@ Citizen.CreateThread(function()
                     SetCamRot(createdCamera, getCameraRot.x, 0.0, getCameraRot.z - 0.7, 2)
                 end
             end
+        else
+            Citizen.Wait(1000)
         end
         Citizen.Wait(0)
     end

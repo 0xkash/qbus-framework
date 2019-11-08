@@ -32,6 +32,15 @@ Config.Vehicles = {
     ["policeT"] = "Politie Bus",
 }
 
+Config.AmmoLabels = {
+    ["AMMO_PISTOL"] = "9x19mm Parabellum kogel",
+    ["AMMO_SMG"] = "9x19mm Parabellum kogel",
+    ["AMMO_RIFLE"] = "7.62x39mm kogel",
+    ["AMMO_MG"] = "7.92x57mm Mauser kogel",
+    ["AMMO_SHOTGUN"] = "12-gauge kogel",
+    ["AMMO_SNIPER"] = "Groot caliber kogel",
+}
+
 Config.Radars = {
 	{x = -623.44421386719, y = -823.08361816406, z = 25.25704574585, h = 145.0 },
 	{x = -652.44421386719, y = -854.08361816406, z = 24.55704574585, h = 325.0 },
@@ -160,6 +169,22 @@ Config.Items = {
             info = {},
             type = "item",
             slot = 11,
+        },
+        [12] = {
+            name = "weapon_flashlight",
+            price = 0,
+            amount = 99,
+            info = {},
+            type = "weapon",
+            slot = 12,
+        },
+        [13] = {
+            name = "empty_evidence_bag",
+            price = 0,
+            amount = 99,
+            info = {},
+            type = "item",
+            slot = 13,
         },
     }
 }

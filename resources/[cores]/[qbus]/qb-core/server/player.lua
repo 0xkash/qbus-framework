@@ -197,17 +197,17 @@ QBCore.Player.CreatePlayer = function(PlayerData)
 		local amount = tonumber(amount)
 		local slot = tonumber(slot) ~= nil and tonumber(slot) or QBCore.Player.GetFirstSlotByItem(self.PlayerData.items, item)
 		if (totalWeight + (itemInfo["weight"] * amount)) <= QBCore.Config.Player.MaxWeight then
-			if (slot ~= nil and self.PlayerData.items[slot] ~= nil) and (self.PlayerData.items[slot].name:lower() == item:lower()) and (itemInfo["type"] == "item") then
+			if (slot ~= nil and self.PlayerData.items[slot] ~= nil) and (self.PlayerData.items[slot].name:lower() == item:lower()) and (itemInfo["type"] == "item" and not itemInfo["unique"]) then
 				self.PlayerData.items[slot].amount = self.PlayerData.items[slot].amount + amount
 				self.Functions.UpdatePlayerData()
 				--TriggerClientEvent('QBCore:Notify', self.PlayerData.source, itemInfo["label"].. " toegevoegd!", "success")
 				return true
-			elseif (slot ~= nil and self.PlayerData.items[slot] == nil) then
+			elseif (not itemInfo["unique"] and slot or slot ~= nil and self.PlayerData.items[slot] == nil) then
 				self.PlayerData.items[slot] = {name = itemInfo["name"], amount = amount, info = info ~= nil and info or "", label = itemInfo["label"], description = itemInfo["description"] ~= nil and itemInfo["description"] or "", weight = itemInfo["weight"], type = itemInfo["type"], unique = itemInfo["unique"], useable = itemInfo["useable"], image = itemInfo["image"], shouldClose = itemInfo["shouldClose"], slot = slot}
 				self.Functions.UpdatePlayerData()
 				--TriggerClientEvent('QBCore:Notify', self.PlayerData.source, itemInfo["label"].. " toegevoegd!", "success")
 				return true
-			elseif (slot == nil) or (itemInfo["type"] == "weapon") then
+			elseif (itemInfo["unique"]) or (not slot or slot == nil) or (itemInfo["type"] == "weapon") then
 				for i = 1, QBConfig.Player.MaxInvSlots, 1 do
 					if self.PlayerData.items[i] == nil then
 						self.PlayerData.items[i] = {name = itemInfo["name"], amount = amount, info = info ~= nil and info or "", label = itemInfo["label"], description = itemInfo["description"] ~= nil and itemInfo["description"] or "", weight = itemInfo["weight"], type = itemInfo["type"], unique = itemInfo["unique"], useable = itemInfo["useable"], image = itemInfo["image"], slot = i}
@@ -257,6 +257,11 @@ QBCore.Player.CreatePlayer = function(PlayerData)
 			end
 		end
 		return false
+	end
+
+	self.Functions.ClearInventory = function()
+		self.PlayerData.items = {}
+		self.Functions.UpdatePlayerData()
 	end
 
 	self.Functions.GetItemByName = function(item)
