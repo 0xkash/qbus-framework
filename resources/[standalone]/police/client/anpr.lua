@@ -49,9 +49,12 @@ end
 Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(1)
-
-		for key, value in pairs(Config.Radars) do
-			HandlespeedCam(value, key)
+		if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
+			for key, value in pairs(Config.Radars) do
+				HandlespeedCam(value, key)
+			end
+		else
+			Citizen.Wait(2000)
 		end
 	end
 end)

@@ -113,4 +113,15 @@ end, "god")
 QBCore.Commands.Add("baan", "Kijk wat je baan is", {}, false, function(source, args)
 	local Player = QBCore.Functions.GetPlayer(source)
 	TriggerClientEvent('chatMessage', source, "SYSTEM", "warning", "Baan: "..Player.PlayerData.job.label.." Functie: "..Player.PlayerData.job.gradelabel)
+end)
+
+
+QBCore.Commands.Add("clearinv", "Leeg de inventory van jezelf of een speler", {{name="id", help="Speler ID"}}, false, function(source, args)
+	local playerId = args[1] ~= nil and args[1] or source 
+	local Player = QBCore.Functions.GetPlayer(tonumber(playerId))
+	if Player ~= nil then
+		Player.Functions.ClearInventory()
+	else
+		TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Speler is niet online!")
+	end
 end, "god")

@@ -41,6 +41,7 @@ end
 QBShared.Items = {
 	-- // WEAPONS
 	["weapon_unarmed"] 				 = {["name"] = "weapon_unarmed", 		 	  	["label"] = "Handen", 					["weight"] = 1000, 		["type"] = "weapon",	["ammotype"] = nil, 					["image"] = "placeholder.png", 		["unique"] = true, 		["useable"] = false, 	["description"] = "This is a placeholder description"},
+	["weapon_flashlight"] 			 = {["name"] = "weapon_flashlight", 		 	["label"] = "Zaklamp", 					["weight"] = 1000, 		["type"] = "weapon",	["ammotype"] = nil, 					["image"] = "flashlight.png", 		["unique"] = true, 		["useable"] = false, 	["description"] = "This is a placeholder description"},
 	["weapon_knife"] 				 = {["name"] = "weapon_knife", 			 	  	["label"] = "Mes", 						["weight"] = 1000, 		["type"] = "weapon", 	["ammotype"] = nil,						["image"] = "knife.png", 			["unique"] = true, 		["useable"] = false, 	["description"] = "This is a placeholder description"},
 	["weapon_nightstick"] 			 = {["name"] = "weapon_nightstick", 		 	["label"] = "Wapenstok", 				["weight"] = 1000, 		["type"] = "weapon", 	["ammotype"] = nil,						["image"] = "nightstick.png", 		["unique"] = true, 		["useable"] = false, 	["description"] = "This is a placeholder description"},
 	["weapon_hammer"] 				 = {["name"] = "weapon_hammer", 			 	["label"] = "Hamer", 					["weight"] = 1000, 		["type"] = "weapon", 	["ammotype"] = nil,						["image"] = "placeholder.png", 		["unique"] = true, 		["useable"] = false, 	["description"] = "This is a placeholder description"},
@@ -151,6 +152,8 @@ QBShared.Items = {
 	["weed_nutrition"] 				 = {["name"] = "weed_nutrition", 			    ["label"] = "Planten voeding", 			["weight"] = 0, 		["type"] = "item", 		["image"] = "weed_nutrition.png", 	["unique"] = false, 	["useable"] = true, 	["shouldClose"] = true,			["description"] = "Planten voeding"},
 	["handcuffs"] 				 	 = {["name"] = "handcuffs", 			    	["label"] = "Handboeien", 				["weight"] = 1000, 		["type"] = "item", 		["image"] = "handcuffs.png", 		["unique"] = false, 	["useable"] = true, 	["shouldClose"] = true,			["description"] = "Altijd handig voor de mensen die zich misdragen. Misschien kan het ook ergens anders voor gebruikt worden?"},
 	["tunerlaptop"] 				 = {["name"] = "tunerlaptop", 			    	["label"] = "Tunerlaptop", 				["weight"] = 1000, 		["type"] = "item", 		["image"] = "tunerlaptop.png", 		["unique"] = false, 	["useable"] = true, 	["shouldClose"] = true,			["description"] = "Met deze tjoenertjip kan jij je auto flink wat tandjes sneller laten gaan... Als je weet wat je doet LMAO"},
+	["empty_evidence_bag"] 			 = {["name"] = "empty_evidence_bag", 			["label"] = "Leeg bewijszakje", 		["weight"] = 1000, 		["type"] = "item", 		["image"] = "evidence.png", 		["unique"] = false, 	["useable"] = false, 	["shouldClose"] = false,		["description"] = "Wordt vaak gebruikt om bewijs materiaal in op te slaan. Denk aan DNA van bloed, kogelhulsen etc."},
+	["filled_evidence_bag"] 		 = {["name"] = "filled_evidence_bag", 			["label"] = "Bewijszakje", 				["weight"] = 1000, 		["type"] = "item", 		["image"] = "evidence.png", 		["unique"] = true, 		["useable"] = false, 	["shouldClose"] = false,		["description"] = "Een gevuld bewijs zakje om erachter te komen wie de misdaden heeft gedaan >:("},
 }
 
 -- // HASH WEAPON ITEMS, NEED SOMETIMES TO GET INFO FOR CLIENT
