@@ -274,9 +274,13 @@ AddEventHandler('hospital:client:CheckStatus', function()
                 QBCore.Functions.TriggerCallback('hospital:GetPlayerStatus', function(result)
                     if result ~= nil then
                         for k, v in pairs(result) do
-                            if k ~= "BLEED" then
+                            if k ~= "BLEED" and k ~= "WEAPONWOUNDS" then
                                 table.insert(statusChecks, {bone = Config.BoneIndexes[k], label = v.label .." (".. Config.WoundStates[v.severity] ..")"})
-                            elseif result[k] > 0 then
+                            elseif result["WEAPONWOUNDS"] ~= nil then 
+                                for k, v in pairs(result["WEAPONWOUNDS"]) do
+                                    TriggerEvent("chatMessage", "STATUS CHECK", "error", v)
+                                end
+                            elseif result["BLEED"] > 0 then
                                 TriggerEvent("chatMessage", "STATUS CHECK", "error", "Is "..Config.BleedingStates[v].label)
                             end
                         end

@@ -11,6 +11,7 @@ client_scripts {
 	'client/gui.lua',
 	'client/heli.lua',
 	'client/anpr.lua',
+	'client/evidence.lua',
 }
 
 server_scripts {

@@ -1,3 +1,63 @@
+WeaponDamageList = {
+	["WEAPON_UNARMED"] = "Vuist afdrukken",
+	["WEAPON_ANIMAL"] = "Bijtwond van een dier",
+	["WEAPON_COUGAR"] = "Bijtwond van een dier",
+	["WEAPON_KNIFE"] = "Steekwond",
+	["WEAPON_NIGHTSTICK"] = "Bult van een stok of iets dergelijks",
+	["WEAPON_HAMMER"] = "Bult van een stok of iets dergelijks",
+	["WEAPON_BAT"] = "Bult van een stok of iets dergelijks",
+	["WEAPON_GOLFCLUB"] = "Bult van een stok of iets dergelijks",
+	["WEAPON_CROWBAR"] = "Bult van een stok of iets dergelijks",
+	["WEAPON_PISTOL"] = "Pistol kogels in het lichaam",
+	["WEAPON_COMBATPISTOL"] = "Pistol kogels in het lichaam",
+	["WEAPON_APPISTOL"] = "Pistol kogels in het lichaam",
+	["WEAPON_PISTOL50"] = "50 Cal Pistol kogels in het lichaam",
+	["WEAPON_MICROSMG"] = "SMG kogels in het lichaam",
+	["WEAPON_SMG"] = "SMG kogels in het lichaam",
+	["WEAPON_ASSAULTSMG"] = "SMG kogels in het lichaam",
+	["WEAPON_ASSAULTRIFLE"] = "Rifle kogels in het lichaam",
+	["WEAPON_CARBINERIFLE"] = "Rifle kogels in het lichaam",
+	["WEAPON_ADVANCEDRIFLE"] = "Rifle kogels in het lichaam",
+	["WEAPON_MG"] = "Machine Gun kogels in het lichaam",
+	["WEAPON_COMBATMG"] = "Machine Gun kogels in het lichaam",
+	["WEAPON_PUMPSHOTGUN"] = "Shotgun kogels in het lichaam",
+	["WEAPON_SAWNOFFSHOTGUN"] = "Shotgun kogels in het lichaam",
+	["WEAPON_ASSAULTSHOTGUN"] = "Shotgun kogels in het lichaam",
+	["WEAPON_BULLPUPSHOTGUN"] = "Shotgun kogels in het lichaam",
+	["WEAPON_STUNGUN"] = "Taser afdrukken",
+	["WEAPON_SNIPERRIFLE"] = "Sniper kogel in het lichaam",
+	["WEAPON_HEAVYSNIPER"] = "Sniper kogel in het lichaam",
+	["WEAPON_REMOTESNIPER"] = "Sniper kogel in het lichaam",
+	["WEAPON_GRENADELAUNCHER"] = "Brandwonden en fragmenten",
+	["WEAPON_GRENADELAUNCHER_SMOKE"] = "Smoke Damage",
+	["WEAPON_RPG"] = "Brandwonden en fragmenten",
+	["WEAPON_STINGER"] = "Brandwonden en fragmenten",
+	["WEAPON_MINIGUN"] = "Heel veel kogels in het lichaam",
+	["WEAPON_GRENADE"] = "Brandwonden en fragmenten",
+	["WEAPON_STICKYBOMB"] = "Brandwonden en fragmenten",
+	["WEAPON_SMOKEGRENADE"] = "Smoke Damage",
+	["WEAPON_BZGAS"] = "Gas Damage",
+	["WEAPON_MOLOTOV"] = "Zware brandwonden",
+	["WEAPON_FIREEXTINGUISHER"] = "Ondergespoten :)",
+	["WEAPON_PETROLCAN"] = "Petrol Can Damage",
+	["WEAPON_FLARE"] = "Flare Damage",
+	["WEAPON_BARBED_WIRE"] = "Barbed Wire Damage",
+	["WEAPON_DROWNING"] = "Verdonken",
+	["WEAPON_DROWNING_IN_VEHICLE"] = "Verdronken",
+	["WEAPON_BLEEDING"] = "Veel bloed verloren",
+	["WEAPON_ELECTRIC_FENCE"] = "Electric Fence Wounds",
+	["WEAPON_EXPLOSION"] = "Veel brandwonden (van explosieve)",
+	["WEAPON_FALL"] = "Gebroken botten",
+	["WEAPON_EXHAUSTION"] = "Died of Exhaustion",
+	["WEAPON_HIT_BY_WATER_CANNON"] = "Water Cannon Pelts",
+	["WEAPON_RAMMED_BY_CAR"] = "Auto ongeluk",
+	["WEAPON_RUN_OVER_BY_CAR"] = "Aangereden door een voertuig",
+	["WEAPON_HELI_CRASH"] = "Helikopter crash",
+	["WEAPON_FIRE"] = "Veel brandwonden",
+}
+
+CurrentDamageList = {}
+
 Citizen.CreateThread(function()
 	while true do
 		if #injured > 0 then
@@ -192,6 +252,16 @@ function ProcessDamage(ped)
             end
         end
     end
+end
+
+function CheckWeaponDamage(ped)
+	for k, v in pairs(WeaponDamageList) do
+        if HasPedBeenDamagedByWeapon(ped, GetHashKey(k), 0) then
+            TriggerEvent("chatMessage", "STATUS:", "error", v)
+			table.insert(CurrentDamageList, WeaponDamageList[k][2])
+		end
+    end
+    TriggerServerEvent("hospital:server:SetWeaponDamage", CurrentDamageList)
 end
 
 function CheckDamage(ped, bone, weapon, damageDone)

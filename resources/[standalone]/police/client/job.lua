@@ -164,6 +164,25 @@ AddEventHandler('police:client:ImpoundVehicle', function(fullImpound, price)
     end
 end)
 
+RegisterNetEvent('police:client:CheckStatus')
+AddEventHandler('police:client:CheckStatus', function()
+    QBCore.Functions.GetPlayerData(function(PlayerData)
+        if PlayerData.job.name == "police" then
+            local player, distance = GetClosestPlayer()
+            if player ~= -1 and distance < 5.0 then
+                local playerId = GetPlayerServerId(player)
+                QBCore.Functions.TriggerCallback('police:GetPlayerStatus', function(result)
+                    if result ~= nil then
+                        for k, v in pairs(result) do
+                            TriggerEvent("chatMessage", "STATUS", "warning", v)
+                        end
+                    end
+                end, playerId)
+            end
+        end
+    end)
+end)
+
 function MenuImpound()
     ped = GetPlayerPed(-1);
     MenuTitle = "Inbeslag"

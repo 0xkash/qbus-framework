@@ -2,6 +2,7 @@ QBCore = nil
 TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 
 local PlayerInjuries = {}
+local PlayerWeaponWounds = {}
 
 local beds = {
     { x = 356.73, y = -585.71, z = 43.11, h = -20.0, taken = false, model = 1631638868 },
@@ -55,6 +56,13 @@ RegisterServerEvent('hospital:server:SyncInjuries')
 AddEventHandler('hospital:server:SyncInjuries', function(data)
     local src = source
     PlayerInjuries[src] = data
+end)
+
+
+RegisterServerEvent('hospital:server:SetWeaponDamage')
+AddEventHandler('hospital:server:SetWeaponDamage', function(data)
+	local src = source
+	PlayerWeaponWounds[src] = data
 end)
 
 RegisterServerEvent('hospital:server:SetDeathStatus')
@@ -155,6 +163,7 @@ end
 QBCore.Functions.CreateCallback('hospital:GetPlayerStatus', function(source, cb, playerId)
 	local Player = QBCore.Functions.GetPlayer(playerId)
 	local injuries = {}
+	injuries["WEAPONWOUNDS"] = {}
 	if Player ~= nil then
 		if PlayerInjuries[Player.PlayerData.source] ~= nil then
 			if (PlayerInjuries[Player.PlayerData.source].isBleeding > 0) then
@@ -164,6 +173,11 @@ QBCore.Functions.CreateCallback('hospital:GetPlayerStatus', function(source, cb,
 				if PlayerInjuries[Player.PlayerData.source].limbs[k].isDamaged then
 					injuries[k] = PlayerInjuries[Player.PlayerData.source].limbs[k]
 				end
+			end
+		end
+		if PlayerWeaponWounds[Player.PlayerData.source] ~= nil then 
+			for k, v in pairs(PlayerWeaponWounds[Player.PlayerData.source]) do
+				injuries["WEAPONWOUNDS"][k] = v
 			end
 		end
 	end

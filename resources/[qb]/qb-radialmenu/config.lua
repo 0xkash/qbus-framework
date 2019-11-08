@@ -197,7 +197,7 @@ Config.JobInteractions = {
     ["doctor"] = {
         {
             id    = 'statuscheck',
-            title = 'Check Status',
+            title = 'Onderzoek Persoon',
             icon = '#general',
             type = 'client',
             event = 'hospital:client:CheckStatus',
@@ -223,7 +223,7 @@ Config.JobInteractions = {
     ["ambulance"] = {
         {
             id    = 'statuscheck',
-            title = 'Check Status',
+            title = 'Onderzoek Persoon',
             icon = '#general',
             type = 'client',
             event = 'hospital:client:CheckStatus',
@@ -241,10 +241,18 @@ Config.JobInteractions = {
     ["police"] = {
         {
             id    = 'statuscheck',
-            title = 'Check Status',
+            title = 'Onderzoek Persoon',
             icon = '#general',
             type = 'client',
             event = 'hospital:client:CheckStatus',
+            shouldClose = true,
+        },
+        {
+            id    = 'checkstatus',
+            title = 'Status Check',
+            icon = '#general',
+            type = 'client',
+            event = 'police:client:CheckStatus',
             shouldClose = true,
         },
         {
