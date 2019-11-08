@@ -16,6 +16,9 @@ CurrentStatusList = {}
 Casings = {}
 CasingsNear = {}
 CurrentCasing = nil
+Blooddrops = {}
+BlooddropsNear = {}
+CurrentBlooddrop = nil
 
 RegisterNetEvent('evidence:client:SetStatus')
 AddEventHandler('evidence:client:SetStatus', function(statusId, time)
@@ -30,11 +33,52 @@ AddEventHandler('evidence:client:SetStatus', function(statusId, time)
 	TriggerServerEvent("evidence:server:UpdateStatus", CurrentStatusList)
 end)
 
+RegisterNetEvent('evidence:client:AddBlooddrop')
+AddEventHandler('evidence:client:AddBlooddrop', function(bloodId, citizenid, bloodtype, coords)
+    Blooddrops[bloodId] = {
+		citizenid = citizenid,
+		bloodtype = bloodtype,
+		coords = {
+			x = coords.x,
+			y = coords.y, 
+			z = coords.z - 0.9,
+		}
+	}
+end)
+
+RegisterNetEvent("evidence:client:RemoveBlooddrop")
+AddEventHandler("evidence:client:RemoveBlooddrop", function(bloodId)
+	Blooddrops[bloodId] = nil
+	BlooddropsNear[bloodId] = nil
+    CurrentBlooddrop = 0
+end)
+
+RegisterNetEvent("evidence:client:ClearBlooddropsInArea")
+AddEventHandler("evidence:client:ClearBlooddropsInArea", function()
+	local pos = GetEntityCoords(GetPlayerPed(-1))
+	local blooddropList = {}
+	QBCore.Functions.Progressbar("clear_blooddrops", "Bloed weghalen..", 5000, false, true, {
+        disableMovement = false,
+        disableCarMovement = false,
+		disableMouse = false,
+		disableCombat = true,
+	}, {}, {}, {}, function() -- Done
+		if Blooddrops ~= nil and next(Blooddrops) ~= nil then 
+			for bloodId, v in pairs(Blooddrops) do
+				if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Blooddrops[bloodId].coords.x, Blooddrops[bloodId].coords.y, Blooddrops[bloodId].coords.z, true) < 10.0 then
+					table.insert(blooddropList, bloodId)
+				end
+			end
+			TriggerServerEvent("evidence:server:ClearBlooddrops", blooddropList)
+			QBCore.Functions.Notify("Bloed weggehaald :)")
+		end
+    end, function() -- Cancel
+        QBCore.Functions.Notify("Bloed niet weggehaald", "error")
+    end)
+end)
+
 RegisterNetEvent('evidence:client:AddCasing')
-AddEventHandler('evidence:client:AddCasing', function(casingId, weapon, playerId)
-	local randX = math.random() + math.random(-1, 1)
-	local randY = math.random() + math.random(-1, 1)
-	local coords = GetOffsetFromEntityInWorldCoords(GetPlayerPed(GetPlayerFromServerId(playerId)), randX, randY, 0)
+AddEventHandler('evidence:client:AddCasing', function(casingId, weapon, coords)
     Casings[casingId] = {
 		type = weapon,
 		coords = {
@@ -146,6 +190,30 @@ Citizen.CreateThread(function()
 				end
 			end
 		end
+
+		if CurrentBlooddrop ~= nil and CurrentBlooddrop ~= 0 then 
+			local pos = GetEntityCoords(GetPlayerPed(-1))
+			if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Blooddrops[CurrentBlooddrop].coords.x, Blooddrops[CurrentBlooddrop].coords.y, Blooddrops[CurrentBlooddrop].coords.z, true) < 1.5 then
+				DrawText3D(Blooddrops[CurrentBlooddrop].coords.x, Blooddrops[CurrentBlooddrop].coords.y, Blooddrops[CurrentBlooddrop].coords.z, "~g~E~w~ - Bloed ~b~#"..DnaHash(Blooddrops[CurrentBlooddrop].citizenid))
+				if IsControlJustReleased(0, Keys["E"]) then
+					local s1, s2 = Citizen.InvokeNative(0x2EB41072B4C1E4C0, Blooddrops[CurrentBlooddrop].coords.x, Blooddrops[CurrentBlooddrop].coords.y, Blooddrops[CurrentBlooddrop].coords.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
+					local street1 = GetStreetNameFromHashKey(s1)
+					local street2 = GetStreetNameFromHashKey(s2)
+					local streetLabel = street1
+					if street2 ~= nil then
+						streetLabel = streetLabel .. " | " .. street2
+					end
+					local info = {
+						label = "Bloedmonster",
+						type = "blood",
+						street = streetLabel,
+						dnalabel = DnaHash(Blooddrops[CurrentBlooddrop].citizenid),
+						bloodtype = Blooddrops[CurrentBlooddrop].bloodtype,
+					}
+					TriggerServerEvent("evidence:server:AddBlooddropToInventory", CurrentBlooddrop, info)
+				end
+			end
+		end
 	end
 end)
 
@@ -173,12 +241,46 @@ Citizen.CreateThread(function()
 					else
 						CasingsNear = {}
 					end
+					if next(Blooddrops) ~= nil then
+						local pos = GetEntityCoords(GetPlayerPed(-1), true)
+						for k, v in pairs(Blooddrops) do
+							if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, v.coords.x, v.coords.y, v.coords.z, true) < 12.5 then
+								BlooddropsNear[k] = v
+								if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, v.coords.x, v.coords.y, v.coords.z, true) < 1.5 then
+									CurrentBlooddrop = k
+								end
+							else
+								BlooddropsNear[k] = nil
+							end
+						end
+					else
+						BlooddropsNear = {}
+					end
 				end
 				Citizen.Wait(1000)
 			else
 				Citizen.Wait(5000)
 			end
 		end
+    end
+end)
+
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(1)
+		if BlooddropsNear ~= nil then
+			if IsPlayerFreeAiming(PlayerId()) and GetSelectedPedWeapon(GetPlayerPed(-1)) == GetHashKey("WEAPON_FLASHLIGHT") then
+				if QBCore.Functions.GetPlayerData().job.name == "police" then
+					for k, v in pairs(BlooddropsNear) do
+						if v ~= nil then
+							DrawMarker(27, v.coords.x, v.coords.y, v.coords.z - 0.05, 0.0, 0.0, 0.0, 180.0, 0.0, 0.0, 0.11, 0.11, 0.3, 250, 0, 50, 255, false, true, 2, false, false, false, false)
+						end
+					end
+				end
+			end
+		else
+			Citizen.Wait(1000)
+        end
     end
 end)
 
@@ -202,6 +304,16 @@ Citizen.CreateThread(function()
 end)
 
 function DropBulletCasing(weapon)
-	TriggerServerEvent("evidence:server:CreateCasing", weapon)
+	local randX = math.random() + math.random(-1, 1)
+	local randY = math.random() + math.random(-1, 1)
+	local coords = GetOffsetFromEntityInWorldCoords(GetPlayerPed(GetPlayerFromServerId(playerId)), randX, randY, 0)
+	TriggerServerEvent("evidence:server:CreateCasing", weapon, coords)
 	Citizen.Wait(300)
+end
+
+function DnaHash(s)
+    local h = string.gsub(s, ".", function(c)
+                return string.format("%02x", string.byte(c))
+                end)
+    return h
 end
