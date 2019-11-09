@@ -14,7 +14,10 @@ function CalculateRepair()
 	local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1))
 	local model = GetEntityModel(vehicle)
 	local damage = (2000 - (GetVehicleBodyHealth(veh) + GetVehicleEngineHealth(veh)))
-	local vehiclePrice = QBCore.Shared.VehicleModels[model]["price"]
+	local vehiclePrice = 25000
+	if QBCore.Shared.VehicleModels[model] ~= nil then
+		vehiclePrice = QBCore.Shared.VehicleModels[model]["price"]
+	end
 	local addonprice = ((vehiclePrice / 100) * 0.1)
 	local price = (250+1.2*damage) + addonprice
 
@@ -24,7 +27,10 @@ end
 function CalculateUpgradePrice(standardPrice)
 	local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1))
 	local model = GetEntityModel(vehicle)
-	local vehiclePrice = QBCore.Shared.VehicleModels[model]["price"]
+	local vehiclePrice = 25000
+	if QBCore.Shared.VehicleModels[model] ~= nil then
+		vehiclePrice = QBCore.Shared.VehicleModels[model]["price"]
+	end
 	local price = ((vehiclePrice / 100) * 13.37) + standardPrice
 
 	return round(price)
