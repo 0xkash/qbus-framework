@@ -90,3 +90,46 @@ QBCore.Functions.CreateCallback("qb-phone:server:GetAllUserVehicles", function(s
         end
     end)
 end)
+
+QBCore.Functions.CreateCallback("qb-phone:server:GetUserMails", function(source, cb)
+    local src = source
+    local pData = QBCore.Functions.GetPlayer(src)
+
+    QBCore.Functions.ExecuteSql('SELECT * FROM `player_mails` WHERE `citizenid` = "'..pData.PlayerData.citizenid..'" ORDER BY `date` DESC', function(result)
+        if result[1] ~= nil then
+            cb(result)
+        else
+            cb(nil)
+        end
+    end)
+end)
+
+RegisterServerEvent('qb-phone:server:setEmailRead')
+AddEventHandler('qb-phone:server:setEmailRead', function(mailId)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+
+    print(mailId)
+
+    QBCore.Functions.ExecuteSql('UPDATE `player_mails` SET `read` = "1" WHERE `mailid` = "'..mailId..'" AND `citizenid` = "'..Player.PlayerData.citizenid..'"')
+end)
+
+RegisterServerEvent('qb-phone:server:sendNewMail')
+AddEventHandler('qb-phone:server:sendNewMail', function(mailData)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+
+    print('snorlex')
+
+    QBCore.Functions.ExecuteSql("INSERT INTO `player_mails` (`citizenid`, `sender`, `subject`, `message`, `mailid`, `read`) VALUES ('"..Player.PlayerData.citizenid.."', '"..mailData.sender.."', '"..mailData.subject.."', '"..mailData.message.."', '"..GenerateMailId().."', '0')")
+    TriggerClientEvent('qb-phone:client:newMailNotify', src)
+end)
+
+function GenerateMailId()
+    return math.random(111111, 999999)
+end
+
+function convertDate(vardate)
+    local y,m,d,h,i,s = string.match(vardate, '(%d+)-(%d+)-(%d+) (%d+):(%d+):(%d+)')
+    return string.format('%s/%s/%s %s:%s:%s', d,m,y,h,i,s)
+end

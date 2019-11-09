@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="./apps/bank.css">     <!-- Bank CSS -->
     <link rel="stylesheet" href="./apps/messages.css"> <!-- Messages CSS -->
     <link rel="stylesheet" href="./apps/garage.css">   <!-- Garage CSS -->
+    <link rel="stylesheet" href="./apps/mail.css">     <!-- Mail CSS -->
+    <link rel="stylesheet" href="./apps/phone-notify.css">     <!-- Mail CSS -->
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>  
@@ -27,6 +29,17 @@
     <title>QB Phone</title>
 </head>
     <body>
+
+        <div class="phone-notify-container">
+            <div class="new-mail-notify">
+                <div class="new-mail-notify-border-bottom"><p>Melding</p></div>
+
+                <div class="new-mail-notify-content">
+                    Je hebt een nieuwe mail ontvangen!
+                </div>
+            </div>
+        </div>
+
         <div class="container">
             <div class="phone-frame">
                 <img src="./img/phone-frames/s10.png" id="phone-frame">
@@ -228,9 +241,21 @@
                     </div>
                 </div>
 
+                <div class="mails-app">
+                    <div class="mails-header">
+                        <p>QBus Mail</p><br><p>Inbox</p>
+                    </div>
+
+                    <div class="mails-list">
+                    </div>
+
+                    <div class="opened-mail">
+                    </div>
+                </div>
+
                 <div class="phone-notify">
-                    <span id="notify-titel">Systeem</span>
-                    <span id="notify-message">Je hebt niet alles ingevuld</span>
+                    <span id="notify-titel"></span>
+                    <span id="notify-message"></span>
                 </div>
 
                 <div class="home-container">
@@ -238,6 +263,7 @@
                 </div>
             </div>
         </div>
+        
         <script src="./script.js"></script>
         <link href="tooltip.css" rel="stylesheet">
     </body>

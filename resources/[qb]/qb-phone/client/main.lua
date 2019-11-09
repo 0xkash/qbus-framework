@@ -151,6 +151,34 @@ RegisterNUICallback('transferMoney', function(data)
     TriggerServerEvent('qb-phone:server:transferBank', data.amount, data.iban)
 end)
 
+RegisterNUICallback('getUserMails', function()
+    QBCore.Functions.TriggerCallback('qb-phone:server:GetUserMails', function(mails)
+        SendNUIMessage({
+            task = "setupMail",
+            mails = mails
+        })
+    end)
+end)
+
+RegisterNUICallback('setEmailRead', function(data)
+    TriggerServerEvent('qb-phone:server:setEmailRead', data.mailId)
+    SetTimeout(500, function()
+        QBCore.Functions.TriggerCallback('qb-phone:server:GetUserMails', function(mails)
+            SendNUIMessage({
+                task = "setupMail",
+                mails = mails
+            })
+        end)
+    end)
+end)
+
+RegisterNetEvent('qb-phone:client:newMailNotify')
+AddEventHandler('qb-phone:client:newMailNotify', function()
+    SendNUIMessage({
+        task = "newMailNotify",
+    })
+end)
+
 --- CODE
 
 local inPhone = false

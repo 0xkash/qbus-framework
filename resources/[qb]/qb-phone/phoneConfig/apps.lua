@@ -3,7 +3,7 @@ Config = Config or {}
 Config.PhoneApps = {
     ['settings'] = {
         app = "settings",
-        color = "#e01509",
+        color = "#e24233",
         icon = "fa fa-cog",
         style = "padding-left: 11px !important;",
         tooltipText = "Instellingen",
@@ -35,7 +35,7 @@ Config.PhoneApps = {
     },
     ['bank'] = {
         app = "bank",
-        color = "#4f00cd",
+        color = "#e2c833",
         icon = "fas fa-university",
         style = "padding-left: 11px !important;",
         tooltipText = "Maze Bank",
@@ -48,5 +48,13 @@ Config.PhoneApps = {
         style = "padding-left: 8px !important;",
         tooltipText = "Voertuigen",
         slot = 6,
+    },
+    ['mails'] = {
+        app = "mails",
+        color = "#e24233",
+        icon = "fas fa-envelope",
+        style = "padding-left: 12px !important;",
+        tooltipText = "Mail",
+        slot = 7,
     },
 }

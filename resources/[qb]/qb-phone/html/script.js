@@ -6,6 +6,7 @@ var allowNotifys = null;
 var myNotify = false;
 var currentApp = ".phone-home-page";
 var homePage = ".phone-home-page";
+var lastPage = null;
 var choosingBg = false;
 var curBg = "bg-1";
 var selectedContact = null;
@@ -57,6 +58,15 @@ $(document).ready(function(){
         if (eventData.task == "getVehicles") {
             qbPhone.setGarageVehicles(eventData.vehicles)
         }
+
+        if (eventData.task == "setupMail") {
+            qbPhone.setupUserMails(eventData.mails)
+        }
+
+        if (eventData.task == "newMailNotify") {
+            console.log('dsgsdgds')
+            qbPhone.MailNotify()
+        }
     });
 
     $('.notify-btn').change(function() {
@@ -98,6 +108,8 @@ $(document).on('click', '.app', function(e){
         $.post('http://qb-phone/getBankData');
     } else if (pressedApp.app == "garage") {
         $.post('http://qb-phone/getVehicles');
+    } else if (pressedApp.app == "mails") {
+        $.post('http://qb-phone/getUserMails');
     }
 
     qbPhone.succesSound();
@@ -237,17 +249,31 @@ $(document).on('click', '.background-option', function(e){
 $(document).on('click', '.home-container', function(e){
     e.preventDefault();
 
-    if (currentApp != homePage) {
+    console.log(currentApp)
+
+    if (lastPage == null) {
+        if (currentApp != homePage) {
+            $(currentApp).animate({top: "100%",}
+            , 250, function() {
+                $(currentApp).css({'display':'none'});
+                $(homePage).css({'display':'block'});
+                currentApp = homePage;
+            });
+    
+            qbPhone.succesSound();
+        } else {
+            qbPhone.Close();
+        }
+    } else {
         $(currentApp).animate({top: "100%",}
         , 250, function() {
             $(currentApp).css({'display':'none'});
-            $(homePage).css({'display':'block'});
-            currentApp = homePage;
+            $(lastPage).css({'display':'block'});
+            currentApp = lastPage;
+            lastPage = null;
         });
-
+    
         qbPhone.succesSound();
-    } else {
-        qbPhone.Close();
     }
 });
 
@@ -270,7 +296,27 @@ qbPhone.Close = function() {
     }, 300);
     $('.phone-frame').css({'display':'block'}).animate({
         top: "100%",
-    }, 300);
+    }, 300, function(){
+        if (currentApp == ".opened-mail") {
+            $(currentApp).animate({top: "100%",}, 250, function() {
+                $(currentApp).css({'display':'none'});
+            });
+            $(".mails-app").animate({top: "100%",}, 250, function() {
+                $(".mails-app").css({'display':'none'});
+                $(homePage).css({'display':'block'});
+                currentApp = homePage;
+            });
+        } else {
+            if (currentApp != homePage) {
+                $(currentApp).animate({top: "100%",}
+                , 250, function() {
+                    $(currentApp).css({'display':'none'});
+                    $(homePage).css({'display':'block'});
+                    currentApp = homePage;
+                });
+            } 
+        }
+    });
     $.post('http://qb-phone/closePhone');
     qbPhone.Log('Phone closed');
 }
@@ -505,6 +551,65 @@ qbPhone.loadUserMessages = function() {
     var messageScreen = $('.messages');
     var height = messageScreen[0].scrollHeight;
     messageScreen.scrollTop(height);
+}
+
+qbPhone.setupUserMails = function(mails) {
+    $('.mails-list').html("");
+    if (mails != undefined) {
+        $.each(mails, function(i, mail){
+            console.log(mail.date)
+            if (mail.read == 0) {
+                var element = '<div class="mail" id="mail-'+i+'"><div class="mail-sender-dot"></div><span id="mail-sender-name">'+mail.sender+'</span><span id="mail-id">#'+mail.mailid+'</span><span id="mail-subject">'+mail.subject+'</span><span id="mail-message">'+mail.message+'</span></div>';
+            } else {
+                var element = '<div class="mail" id="mail-'+i+'"><span id="mail-sender-name">'+mail.sender+'</span><span id="mail-id">#'+mail.mailid+'</span><span id="mail-subject">'+mail.subject+'</span><span id="mail-message">'+mail.message+'</span></div>';
+            }
+            $('.mails-list').append(element);
+    
+            $('#mail-'+i).data('mailData', mail)
+        });
+    } else {
+        $(".mails-list").html('<span id="no-emails-error">Je hebt geen mails in je inbox</span>')
+    }
+}
+
+$(document).on('click', '.mail', function(){
+    var currentMailId = $(this).attr('id');
+    var mailData = $('#'+currentMailId).data('mailData');
+    qbPhone.openMail(mailData)
+});
+
+qbPhone.openMail = function(mailData) {
+
+    var element = '<div class="opened-mail-header"><p>Zender: '+mailData.sender+'</p><p> <span id="opened-mail-subject">Onderwerp: '+mailData.subject+'</span></p><i class="material-icons" id="opened-mail-delete-icon">delete</i></div>' +
+                '<div class="opened-mail-content">' +
+                '    <p>'+mailData.message+'</p>' +
+                '</div>'
+
+    $(".opened-mail").html(element);
+
+    if (mailData.read == 0) {
+        $.post('http://qb-phone/setEmailRead', JSON.stringify({
+            mailId: mailData.mailid
+        }));
+    }
+
+    $(".opened-mail").css({'display':'block'}).animate({
+        top: "3%",
+    }, 250);
+
+    currentApp = ".opened-mail";
+    lastPage = ".mails-app";
+}
+
+qbPhone.MailNotify = function() {
+    $(".new-mail-notify").css({'display':'block'}).animate({
+        top: "0%",
+    }, 500);
+    setTimeout(function(){
+        $(".new-mail-notify").css({'display':'block'}).animate({
+            top: "-10%",
+        }, 250)
+    }, 2500)
 }
 
 updateNewBalance = function() {
