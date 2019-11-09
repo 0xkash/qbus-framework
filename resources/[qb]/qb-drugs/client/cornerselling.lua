@@ -67,13 +67,13 @@ end
 
 Citizen.CreateThread(function()
     while true do 
-        Citizen.Wait(7)
+        Citizen.Wait(4)
         if stealingPed ~= nil and stealData ~= nil then
             if IsEntityDead(stealingPed) then
                 local pos = GetEntityCoords(GetPlayerPed(-1))
                 local pedpos = GetEntityCoords(stealingPed)
                 if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, pedpos.x, pedpos.y, pedpos.z, true) < 1.5) then
-                    QBCore.Functions.DrawText3D(pedpos.x, pedpos.y, pedpos.z, "~g~E~w~ - Spullen terug pakken")
+                    DrawText3D(pedpos.x, pedpos.y, pedpos.z, "[E] Spullen terug pakken")
                     if IsControlJustReleased(0, Keys["E"]) then
                         RequestAnimDict("pickup_object")
                         while not HasAnimDictLoaded("pickup_object") do
@@ -147,6 +147,8 @@ function SellToPed(ped)
 
     local succesChance = math.random(1, 20)
 
+    local scamChance = math.random(1, 3)
+
     local getRobbed = math.random(1, 20)
 
     if succesChance <= 7 then
@@ -163,8 +165,11 @@ function SellToPed(ped)
     if bagAmount > 7 then
         bagAmount = math.random(1, 7)
     end
-
+    
     local randomPrice = math.random(150, 239) * bagAmount
+    if scamChance == 3 then
+       randomPrice = math.random(27, 77) * bagAmount
+    end
 
     currentOfferDrug = availableDrugs[drugType]
 

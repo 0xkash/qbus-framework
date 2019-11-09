@@ -3,7 +3,7 @@
 
 .garage-app {
     display: none;
-    display: block;
+    /* display: block; */
     position: relative;
     width: 103.5%;
     height: 103.5%;

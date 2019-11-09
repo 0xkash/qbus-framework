@@ -37,34 +37,38 @@
 
 .home-container {
     position: absolute;
-    width: 50px;
-    height: 20px;
+    width: 4vh;
+    height: 2vh;
     top: 92%;
     margin: 0 auto;
     left: 0;
     right: 0;
     border-radius: 5px;
-    background-color: rgba(255, 255, 255, 0.0);
-    transition: all 0.3s ease-in-out;
+    background-color: rgba(148, 148, 148, 0);
+    transition: all 0.1s ease-in-out;
     z-index: 121;
 }
 
 .home-container:hover {
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgb(129, 129, 129);
 }
 
 .home-btn {
     position: absolute;
     height: 35%;
-    width: 70%;
+    width: 3vh;
     margin: 0 auto;
     left: 0;
     right: 0;
     top: 6px;
     border-radius: 5px;
-    background-color: rgba(32, 32, 32, 0.8);
+    background-color: rgba(0, 0, 0, 0.8);
     z-index: 101;
     transition: all 0.3s ease-in-out;
+}
+
+.home-btn:hover {
+    background-color: rgba(255, 255, 255, 0.8);
 }
 
 .top-bar {

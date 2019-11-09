@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css?family=Lato&display=swap');
+
+.phone-notify-container {
+    position: relative;
+    height: 100vh;
+    margin: 0 auto; 
+}
+
+.new-mail-notify {
+    position: absolute;
+    width: 22vh;
+    height: 8vh;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    background-color: white;
+    border-radius: 0px 0px 8px 8px;
+    top: -10%;
+}
+
+.new-mail-notify-border-bottom {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 2.5vh;
+    background-color: rgb(50, 180, 240);
+    color: rgb(255, 255, 255);
+    font-family: 'Lato';
+    font-weight: 500;
+    letter-spacing: 0.2vh;
+    font-size: 13px;
+    text-align: center;
+    line-height: 2.5vh;
+}
+
+.new-mail-notify-content {
+    font-family: 'Lato';
+    font-weight: 500;
+    letter-spacing: 0.2vh;
+    font-size: 12px;
+    text-align: center;
+    padding-top: 17px;
+}

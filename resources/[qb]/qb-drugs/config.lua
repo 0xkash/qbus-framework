@@ -45,3 +45,14 @@ Config.CornerSellingDrugsList = {
     "weed_amnesia",
     "weed_ak47",
 }
+
+Config.DeliveryLocations = {
+    [1] = {
+        ["label"] = "Stripclub",
+        ["coords"] = {
+            ["x"] = 106.24,
+            ["y"] = -1280.32,
+            ["z"] = 29.24,
+        }
+    },
+}
