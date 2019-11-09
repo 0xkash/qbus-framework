@@ -5,7 +5,8 @@ files {
     'carvariations.meta',
     'carcols.meta',
     'handling.meta',
-    'vehiclelayouts.meta'
+    'vehiclelayouts.meta',
+    'stream/[police]/ptouran/PTOURAN.xml',
 }
  
 data_file 'HANDLING_FILE' 'handling.meta'
@@ -15,3 +16,5 @@ data_file 'VEHICLE_VARIATION_FILE' 'carvariations.meta'
 data_file 'VEHICLE_LAYOUTS_FILE' 'vehiclelayouts.meta'
  
 client_script 'vehicle_names.lua'
+
+is_els 'true'
