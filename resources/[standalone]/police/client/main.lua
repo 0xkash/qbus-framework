@@ -91,9 +91,30 @@ AddEventHandler('112:client:SendPoliceAlert', function(notifyType, msg, type, bl
 end)
 
 RegisterNetEvent('police:client:PoliceAlertMessage')
-AddEventHandler('police:client:PoliceAlertMessage', function(msg)
+AddEventHandler('police:client:PoliceAlertMessage', function(msg, coords)
     PlaySound(-1, "Event_Start_Text", "GTAO_FM_Events_Soundset", 0, 0, 1)
     TriggerEvent("chatMessage", "112-MELDING", "error", msg)
+    local transG = 100
+    local blip = AddBlipForRadius(coords.x, coords.y, coords.z, 25.0)
+    SetBlipSprite(blip, 9)
+    SetBlipColour(blip, 1)
+    SetBlipDisplay(blip, 4)
+    SetBlipAlpha(blip, transG)
+    SetBlipScale(blip, 5.0)
+    SetBlipAsShortRange(blip, false)
+    BeginTextCommandSetBlipName('STRING')
+    AddTextComponentString("112 - Verdachte situatie (drugs)")
+    EndTextCommandSetBlipName(blip)
+    while transG ~= 0 do
+        Wait(180 * 4)
+        transG = transG - 1
+        SetBlipAlpha(blip, transG)
+        if transG == 0 then
+            SetBlipSprite(blip, 2)
+            RemoveBlip(blip)
+            return
+        end
+    end
 end)
 
 function RadarSound()

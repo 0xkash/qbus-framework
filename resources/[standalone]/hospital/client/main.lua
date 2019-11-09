@@ -367,6 +367,7 @@ AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     isLoggedIn = true
     QBCore.Functions.GetPlayerData(function(PlayerData)
         isDead = PlayerData.metadata["isdead"]
+        SetPedArmour(GetPlayerPed(-1), PlayerData.metadata["armor"])
     end)
 end)
 
@@ -374,9 +375,11 @@ RegisterNetEvent('QBCore:Client:OnPlayerUnload')
 AddEventHandler('QBCore:Client:OnPlayerUnload', function()
     isLoggedIn = false
     TriggerServerEvent("hospital:server:SetDeathStatus", false)
+    TriggerServerEvent("hospital:server:SetArmor", GetPedArmour(GetPlayerPed(-1)))
     isDead = false
     deathTime = 0
     SetEntityInvincible(GetPlayerPed(-1), false)
+    SetPedArmour(GetPlayerPed(-1), 0)
     ResetAll()
 end)
 

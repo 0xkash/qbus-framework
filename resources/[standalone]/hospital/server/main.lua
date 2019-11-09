@@ -74,6 +74,15 @@ AddEventHandler('hospital:server:SetDeathStatus', function(isDead)
 	end
 end)
 
+RegisterServerEvent('hospital:server:SetArmor')
+AddEventHandler('hospital:server:SetArmor', function(amount)
+	local src = source
+	local Player = QBCore.Functions.GetPlayer(src)
+	if Player ~= nil then
+		Player.Functions.SetMetaData("armor", amount)
+	end
+end)
+
 RegisterServerEvent('hospital:server:TreatWounds')
 AddEventHandler('hospital:server:TreatWounds', function(playerId)
 	local src = source

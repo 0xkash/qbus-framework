@@ -12,7 +12,7 @@ availableDrugs = {}
 
 local policeMessage = {
     "Verdachte situtie op ",
-    "Mogelijk cornerselling op ",
+    "Mogelijk drugsverkoop bij ",
 }
 
 RegisterNetEvent('qb-drugs:client:cornerselling')
@@ -49,7 +49,7 @@ function toFarAway()
 end
 
 function callPolice()
-    local msg = math.random(1, #policeMessage)
+    local msg = policeMessage[math.random(1, #policeMessage)]
     local pCoords = GetEntityCoords(GetPlayerPed(-1))
     local s1, s2 = Citizen.InvokeNative(0x2EB41072B4C1E4C0, pCoords.x, pCoords.y, pCoords.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
     local street1 = GetStreetNameFromHashKey(s1)
@@ -57,7 +57,7 @@ function callPolice()
     local streetLabel = street1
     if street2 ~= nil then streetLabel = street1..' '..street2 end
 
-    TriggerServerEvent('police:server:PoliceAlertMessage', "Verdachte situtie op "..streetLabel)
+    TriggerServerEvent('police:server:PoliceAlertMessage', msg .. " " .. streetLabel, pCoords)
     hasTarget = false
     Citizen.Wait(5000)
 end
@@ -133,7 +133,7 @@ function SellToPed(ped)
         bagAmount = math.random(1, 7)
     end
 
-    local randomPrice = math.random(100, 200) * bagAmount
+    local randomPrice = math.random(125, 239) * bagAmount
 
     currentOfferDrug = availableDrugs[drugType]
 

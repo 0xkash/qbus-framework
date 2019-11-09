@@ -111,15 +111,13 @@ AddEventHandler('police:server:FlaggedPlateTriggered', function(camId, plate, st
 end)
 
 RegisterServerEvent('police:server:PoliceAlertMessage')
-AddEventHandler('police:server:PoliceAlertMessage', function(msg)
+AddEventHandler('police:server:PoliceAlertMessage', function(msg, coords)
     local src = source
     local players = QBCore.Functions.GetPlayers()
 
-    print(msg)
-
 	for k, Player in pairs(players) do
 		if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
-            TriggerClientEvent("police:client:PoliceAlertMessage", k, msg)
+            TriggerClientEvent("police:client:PoliceAlertMessage", k, msg, coords)
 		end
     end
 end)
