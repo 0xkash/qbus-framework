@@ -36,3 +36,12 @@ Config.Dealers = {
         }
     }
 }
+
+Config.CornerSellingDrugsList = {
+    "weed_white-widow",
+    "weed_skunk",
+    "weed_purple-haze",
+    "weed_og-kush",
+    "weed_amnesia",
+    "weed_ak47",
+}

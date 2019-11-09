@@ -45,8 +45,6 @@ knockDealerDoor = function()
     -- end
 end
 
-local myRep = 100
-
 function knockDoorAnim(home)
     local knockAnimLib = "timetable@jimmy@doorknock@"
     local knockAnim = "knockdoor_idle"
@@ -70,11 +68,9 @@ function knockDoorAnim(home)
         repItems.items = {}
 
         for k, v in pairs(Config.Dealers[currentDealer]["products"]) do
-            if myRep >= Config.Dealers[currentDealer]["products"][k].minrep then
+            if QBCore.Functions.GetPlayerData().metadata["dealerrep"] >= Config.Dealers[currentDealer]["products"][k].minrep then
                 repItems.items[k] = Config.Dealers[currentDealer]["products"][k]
             end
-
-            print(Config.Dealers[currentDealer]["products"][k].amount)
         end
 
         TriggerServerEvent("inventory:server:OpenInventory", "shop", "Dealer_"..Config.Dealers[currentDealer]["name"], repItems)
@@ -103,6 +99,4 @@ end)
 RegisterNetEvent('qb-drugs:client:setDealerItems')
 AddEventHandler('qb-drugs:client:setDealerItems', function(itemData, amount, dealer)
     Config.Dealers[dealer]["products"][itemData.slot].amount = Config.Dealers[dealer]["products"][itemData.slot].amount - amount
-
-    print(Config.Dealers[dealer]["products"][itemData.slot].amount)
 end)
