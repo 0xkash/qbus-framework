@@ -8,6 +8,9 @@ currentPed = nil
 
 lastPed = {}
 
+stealingPed = nil
+stealData = {}
+
 availableDrugs = {}
 
 local policeMessage = {
@@ -48,7 +51,7 @@ function toFarAway()
     Citizen.Wait(5000)
 end
 
-function callPolice()
+function callPolice(coords)
     local msg = policeMessage[math.random(1, #policeMessage)]
     local pCoords = GetEntityCoords(GetPlayerPed(-1))
     local s1, s2 = Citizen.InvokeNative(0x2EB41072B4C1E4C0, pCoords.x, pCoords.y, pCoords.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
@@ -57,10 +60,40 @@ function callPolice()
     local streetLabel = street1
     if street2 ~= nil then streetLabel = street1..' '..street2 end
 
-    TriggerServerEvent('police:server:PoliceAlertMessage', msg .. " " .. streetLabel, pCoords)
+    TriggerServerEvent('police:server:PoliceAlertMessage', msg .. " " .. streetLabel, coords)
     hasTarget = false
     Citizen.Wait(5000)
 end
+
+Citizen.CreateThread(function()
+    while true do 
+        Citizen.Wait(7)
+        if stealingPed ~= nil and stealData ~= nil then
+            if IsEntityDead(stealingPed) then
+                local pos = GetEntityCoords(GetPlayerPed(-1))
+                local pedpos = GetEntityCoords(stealingPed)
+                if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, pedpos.x, pedpos.y, pedpos.z, true) < 1.5) then
+                    QBCore.Functions.DrawText3D(pedpos.x, pedpos.y, pedpos.z, "~g~E~w~ - Spullen terug pakken")
+                    if IsControlJustReleased(0, Keys["E"]) then
+                        RequestAnimDict("pickup_object")
+                        while not HasAnimDictLoaded("pickup_object") do
+                            Citizen.Wait(7)
+                        end
+                        TaskPlayAnim(GetPlayerPed(-1), "pickup_object" ,"pickup_low" ,8.0, -8.0, -1, 1, 0, false, false, false )
+                        Citizen.Wait(2000)
+                        ClearPedTasks(GetPlayerPed(-1))
+                        TriggerServerEvent("QBCore:Server:AddItem", stealData.item, stealData.amount)
+                        TriggerEvent('inventory:client:ItemBox', QBCore.Shared.Items[stealData.item], "add")
+                        stealingPed = nil
+                        stealData = {}
+                    end
+                end
+            end
+        else
+            Citizen.Wait(1000)
+        end
+    end
+end)
 
 Citizen.CreateThread(function()
     while true do
@@ -116,13 +149,11 @@ function SellToPed(ped)
 
     local getRobbed = math.random(1, 20)
 
-    print(succesChance)
-
     if succesChance <= 7 then
         hasTarget = false
         return
-    elseif succesChance >= 17 then
-        callPolice()
+    elseif succesChance >= 19 then
+        callPolice(GetEntityCoords(ped))
         return
     end
 
@@ -133,7 +164,7 @@ function SellToPed(ped)
         bagAmount = math.random(1, 7)
     end
 
-    local randomPrice = math.random(125, 239) * bagAmount
+    local randomPrice = math.random(150, 239) * bagAmount
 
     currentOfferDrug = availableDrugs[drugType]
 
@@ -175,9 +206,14 @@ function SellToPed(ped)
             pedCoords = GetEntityCoords(ped)
             pedDist = GetDistanceBetweenCoords(coords, pedCoords)
 
-            if getRobbed >= 17 then
+            if getRobbed >= 18 then
                 TriggerServerEvent('qb-drugs:server:robCornerDrugs', availableDrugs[drugType].item, bagAmount)
                 QBCore.Functions.Notify('Je bent beroofd van '..bagAmount..' zakje(\'s) '..availableDrugs[drugType].label, 'error')
+                stealingPed = ped
+                stealData = {
+                    item = availableDrugs[drugType].item,
+                    amount = bagAmount,
+                }
 
                 hasTarget = false
 
