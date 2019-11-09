@@ -312,7 +312,7 @@ function MenuGarage()
     ped = GetPlayerPed(-1);
     MenuTitle = "Garage"
     ClearMenu()
-    Menu.addButton("Mijn Voertuigen", "VehicleList", nil)
+    Menu.addButton("Voertuigen", "VehicleList", nil)
     Menu.addButton("Sluit Menu", "closeMenuFull", nil) 
 end
 

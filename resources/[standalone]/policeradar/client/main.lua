@@ -508,7 +508,7 @@ end )
 
 function IsPoliceVehicle(vehicle)
 	local retval = false
-	for model, label in pairs(Config.Vehicles) do
+    for model, label in pairs(Config.Vehicles) do
 		if GetEntityModel(vehicle) == GetHashKey(model) then
 			retval = true
 		end
