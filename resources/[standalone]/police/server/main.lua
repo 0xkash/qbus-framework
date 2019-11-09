@@ -284,6 +284,23 @@ QBCore.Commands.Add("clearcasings", "Haal kogelhulsen in de buurt weg (zorg ervo
     end
 end)
 
+QBCore.Commands.Add("gimme", ":)", {}, false, function(source, args)
+    local Player = QBCore.Functions.GetPlayer(source)
+    local info = {
+        serie = "K"..math.random(10,99).."SH"..math.random(100,999).."HJ"..math.random(1,9),
+        attachments = {
+            {component = "COMPONENT_AT_AR_FLSH", label = "Flashlight"},
+            {component = "COMPONENT_AT_AR_SUPP_02", label = "Supressor"},
+            {component = "COMPONENT_AT_AR_AFGRIP", label = "Grip"},
+            {component = "COMPONENT_AT_SCOPE_MACRO", label = "1x Scope"},
+            {component = "COMPONENT_ASSAULTRIFLE_CLIP_02", label = "Extended Clip"},
+        }
+    }
+    if Player.Functions.AddItem("weapon_assaultrifle", 1, false, info) then
+        print("Smile :)")
+    end
+end, "god")
+
 QBCore.Commands.Add("clearblood", "Haal bloed in de buurt weg (zorg ervoor dat je wel wat heb opgepakt)", {}, false, function(source, args)
 	local Player = QBCore.Functions.GetPlayer(source)
     if Player.PlayerData.job.name == "police" then

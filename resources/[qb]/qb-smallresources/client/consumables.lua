@@ -14,3 +14,18 @@ AddEventHandler("consumables:client:UseJoint", function()
         
     end)
 end)
+
+RegisterNetEvent("consumables:client:UseArmor")
+AddEventHandler("consumables:client:UseArmor", function()
+    QBCore.Functions.Progressbar("use_armor", "Vest aantrekken..", 1500, false, true, {
+        disableMovement = false,
+        disableCarMovement = false,
+		disableMouse = false,
+		disableCombat = true,
+    }, {}, {}, {}, function() -- Done
+        TriggerEvent("inventory:client:ItemBox", QBCore.Shared.Items["armor"], "remove")
+        SetPedArmour(GetPlayerPed(-1), 100)
+    end, function() -- Cancel
+        
+    end)
+end)

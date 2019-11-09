@@ -154,6 +154,7 @@ QBShared.Items = {
 	["tunerlaptop"] 				 = {["name"] = "tunerlaptop", 			    	["label"] = "Tunerlaptop", 				["weight"] = 1000, 		["type"] = "item", 		["image"] = "tunerlaptop.png", 		["unique"] = false, 	["useable"] = true, 	["shouldClose"] = true,			["description"] = "Met deze tjoenertjip kan jij je auto flink wat tandjes sneller laten gaan... Als je weet wat je doet LMAO"},
 	["empty_evidence_bag"] 			 = {["name"] = "empty_evidence_bag", 			["label"] = "Leeg bewijszakje", 		["weight"] = 1000, 		["type"] = "item", 		["image"] = "evidence.png", 		["unique"] = false, 	["useable"] = false, 	["shouldClose"] = false,		["description"] = "Wordt vaak gebruikt om bewijs materiaal in op te slaan. Denk aan DNA van bloed, kogelhulsen etc."},
 	["filled_evidence_bag"] 		 = {["name"] = "filled_evidence_bag", 			["label"] = "Bewijszakje", 				["weight"] = 1000, 		["type"] = "item", 		["image"] = "evidence.png", 		["unique"] = true, 		["useable"] = false, 	["shouldClose"] = false,		["description"] = "Een gevuld bewijs zakje om erachter te komen wie de misdaden heeft gedaan >:("},
+	["armor"] 		 				 = {["name"] = "armor", 						["label"] = "Vest", 					["weight"] = 1000, 		["type"] = "item", 		["image"] = "armor.png", 			["unique"] = false, 		["useable"] = true, 	["shouldClose"] = true,			["description"] = "Wat bescherming kan nooit kwaad.. toch?"},
 }
 
 -- // HASH WEAPON ITEMS, NEED SOMETIMES TO GET INFO FOR CLIENT

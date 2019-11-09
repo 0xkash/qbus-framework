@@ -130,7 +130,6 @@ Citizen.CreateThread(function()
                         local randX = math.random() + math.random(-1, 1)
                         local randY = math.random() + math.random(-1, 1)
                         local coords = GetOffsetFromEntityInWorldCoords(GetPlayerPed(GetPlayerFromServerId(playerId)), randX, randY, 0)
-                        print("DROP BLOOD PLS")
                         TriggerServerEvent("evidence:server:CreateBloodDrop", QBCore.Functions.GetPlayerData().citizenid, QBCore.Functions.GetPlayerData().metadata["bloodtype"], coords)
 
                         if advanceBleedTimer >= Config.AdvanceBleedTimer then
