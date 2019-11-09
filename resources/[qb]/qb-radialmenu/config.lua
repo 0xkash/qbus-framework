@@ -48,6 +48,21 @@ Config.MenuItems = {
                 type = 'client',
                 event = 'qb-radialmenu:client:giveidkaart',
                 shouldClose = true,
+            },
+            {
+                id = 'illegalactions',
+                title = 'Illegale Actie\'s',
+                icon = '#illegal',
+                items = {
+                    {
+                        id    = 'cornerselling',
+                        title = 'Corner Selling',
+                        icon = '#cornerselling',
+                        type = 'client',
+                        event = 'qb-drugs:client:cornerselling',
+                        shouldClose = true,
+                    }
+                }
             }
         }
     },
@@ -103,7 +118,7 @@ Config.MenuItems = {
                         shouldClose = true,
                     },
                 }
-            }
+            },
         }
     },
     {

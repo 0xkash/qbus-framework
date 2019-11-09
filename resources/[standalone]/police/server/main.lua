@@ -110,6 +110,20 @@ AddEventHandler('police:server:FlaggedPlateTriggered', function(camId, plate, st
 	end
 end)
 
+RegisterServerEvent('police:server:PoliceAlertMessage')
+AddEventHandler('police:server:PoliceAlertMessage', function(msg)
+    local src = source
+    local players = QBCore.Functions.GetPlayers()
+
+    print(msg)
+
+	for k, Player in pairs(players) do
+		if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
+            TriggerClientEvent("police:client:PoliceAlertMessage", k, msg)
+		end
+    end
+end)
+
 RegisterServerEvent('police:server:Impound')
 AddEventHandler('police:server:Impound', function(plate, fullImpound, price)
     local src = source

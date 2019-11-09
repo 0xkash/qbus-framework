@@ -387,15 +387,25 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 		local bankBalance = Player.PlayerData.money["bank"]
 		local price = tonumber((itemData.price*fromAmount))
 
-		if Player.Functions.RemoveMoney("cash", price) then
-			Player.Functions.AddItem(itemData.name, fromAmount, toSlot, itemData.info)
-			TriggerClientEvent('QBCore:Notify', src, itemInfo["label"] .. " gekocht!", "success")
-		elseif bankBalance >= price then
-			Player.Functions.RemoveMoney("bank", price)
-			Player.Functions.AddItem(itemData.name, fromAmount, toSlot, itemData.info)
-			TriggerClientEvent('QBCore:Notify', src, itemInfo["label"] .. " gekocht!", "success")
+		if QBCore.Shared.SplitStr(shopType, "_")[1] == "Dealer" then
+			if Player.Functions.RemoveMoney("cash", price) then
+				Player.Functions.AddItem(itemData.name, fromAmount, toSlot, itemData.info)
+				TriggerClientEvent('qb-drugs:client:updateDealerItems', src, itemData, fromAmount)
+				TriggerClientEvent('QBCore:Notify', src, itemInfo["label"] .. " ingekocht!", "success")
+			else
+				TriggerClientEvent('QBCore:Notify', src, "Je hebt niet genoeg cash..", "error")
+			end
 		else
-			TriggerClientEvent('QBCore:Notify', src, "Je hebt niet genoeg geld!", "error")
+			if Player.Functions.RemoveMoney("cash", price) then
+				Player.Functions.AddItem(itemData.name, fromAmount, toSlot, itemData.info)
+				TriggerClientEvent('QBCore:Notify', src, itemInfo["label"] .. " gekocht!", "success")
+			elseif bankBalance >= price then
+				Player.Functions.RemoveMoney("bank", price)
+				Player.Functions.AddItem(itemData.name, fromAmount, toSlot, itemData.info)
+				TriggerClientEvent('QBCore:Notify', src, itemInfo["label"] .. " gekocht!", "success")
+			else
+				TriggerClientEvent('QBCore:Notify', src, "Je hebt niet genoeg geld..", "error")
+			end
 		end
 	else
 		-- drop
@@ -458,7 +468,7 @@ end
 -- Shop Items
 function SetupShopItems(shop, shopItems)
 	local items = {}
-	if next(shopItems) ~= nil then
+	if shopItems ~= nil and next(shopItems) ~= nil then
 		for k, item in pairs(shopItems) do
 			local itemInfo = QBCore.Shared.Items[item.name:lower()]
 			items[item.slot] = {

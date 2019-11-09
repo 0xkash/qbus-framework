@@ -90,6 +90,12 @@ AddEventHandler('112:client:SendPoliceAlert', function(notifyType, msg, type, bl
     end
 end)
 
+RegisterNetEvent('police:client:PoliceAlertMessage')
+AddEventHandler('police:client:PoliceAlertMessage', function(msg)
+    PlaySound(-1, "Event_Start_Text", "GTAO_FM_Events_Soundset", 0, 0, 1)
+    TriggerEvent("chatMessage", "112-MELDING", "error", msg)
+end)
+
 function RadarSound()
     PlaySoundFrontend( -1, "Beep_Green", "DLC_HEIST_HACKING_SNAKE_SOUNDS", 1 )
     Citizen.Wait(100)

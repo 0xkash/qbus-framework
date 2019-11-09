@@ -13,9 +13,9 @@ function RadialMenu(params) {
     self.onClick   = params.onClick || null;
     self.menuItems = params.menuItems ? params.menuItems : [{id: 'one', title: 'One'}, {id: 'two', title: 'Two'}];
 
-    self.radius      = 70;
-    self.innerRadius = self.radius * 0.3;
-    self.sectorSpace = self.radius * 0.05;
+    self.radius      = 65;
+    self.innerRadius = self.radius * 0.35;
+    self.sectorSpace = self.radius * 0.08;
     self.sectorCount = Math.max(self.menuItems.length, MIN_SECTORS);
     self.closeOnClick = params.closeOnClick !== undefined ? !!params.closeOnClick : false;
 
@@ -220,7 +220,7 @@ RadialMenu.prototype.createMenu = function (classValue, levelItems, nested) {
     } else if (menuItems + 1 == 3) {
         angleShift = angleStep / 2 + 241;
     } else if (menuItems + 1 == 4) {
-        angleShift = angleStep / 2 + 135;
+        angleShift = angleStep / 2 + 136;
     } else if (menuItems + 1 == 5) {
         angleShift = angleStep / 2 + 145;
     } else if (menuItems + 1 == 6) {

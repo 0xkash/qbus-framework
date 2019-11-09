@@ -51,7 +51,7 @@ svg.menu > g.sector > use {
 }
 
 svg.menu > g.sector:hover > path {
-    fill: rgba(54, 117, 168, 0.739);
+    fill: rgba(177, 36, 36, 0.739);
 
 }
 
@@ -59,7 +59,7 @@ svg.menu > g.sector.selected > path {
 }
 
 svg.menu > g.center:hover > circle {
-    fill: rgba(54, 117, 168, 0.739);
+    fill: rgba(177, 36, 36, 0.739);
 }
 
 svg.menu > g.center > circle {
