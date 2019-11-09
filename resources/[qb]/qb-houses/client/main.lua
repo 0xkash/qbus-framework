@@ -10,12 +10,12 @@ local Keys = {
     ["NENTER"] = 201, ["N4"] = 108, ["N5"] = 60, ["N6"] = 107, ["N+"] = 96, ["N-"] = 97, ["N7"] = 117, ["N8"] = 61, ["N9"] = 118
 }
 
-local inside = false
-local closesthouse = nil
-local hasKey = false
-local isOwned = false
+inside = false
+closesthouse = nil
+hasKey = false
+isOwned = false
 
-local isLoggedIn = false
+isLoggedIn = true
 local contractOpen = false
 
 local cam = nil
@@ -413,6 +413,7 @@ function enterOwnedHouse(house)
     openHouseAnim()
     Citizen.Wait(250)
     local coords = { x = Config.Houses[house].coords.enter.x, y = Config.Houses[house].coords.enter.y, z= Config.Houses[house].coords.enter.z - 35}
+    LoadDecorations(house)
     if Config.Houses[house].tier == 1 then
         data = exports['qb-interior']:CreateTier1House(coords)
     end
@@ -445,6 +446,7 @@ function leaveOwnedHouse(house)
     DoScreenFadeOut(250)
     Citizen.Wait(500)
     exports['qb-interior']:DespawnInterior(houseObj, function()
+        UnloadDecorations()
         TriggerEvent('qb-weathersync:client:EnableSync')
         Citizen.Wait(250)
         DoScreenFadeIn(250)
@@ -460,6 +462,7 @@ function enterNonOwnedHouse(house)
     openHouseAnim()
     Citizen.Wait(250)
     local coords = { x = Config.Houses[closesthouse].coords.enter.x, y = Config.Houses[closesthouse].coords.enter.y, z= Config.Houses[closesthouse].coords.enter.z - 35}
+    LoadDecorations(house)
     if Config.Houses[house].tier == 1 then
         data = exports['qb-interior']:CreateTier1House(coords, false)
     end
@@ -486,6 +489,7 @@ function leaveNonOwnedHouse(house)
     DoScreenFadeOut(250)
     Citizen.Wait(500)
     exports['qb-interior']:DespawnInterior(houseObj, function()
+        UnloadDecorations()
         TriggerEvent('qb-weathersync:client:EnableSync')
         Citizen.Wait(250)
         DoScreenFadeIn(250)
@@ -536,10 +540,12 @@ function setViewCam(coords, heading, yaw)
 end
 
 function disableViewCam()
-    RenderScriptCams(false, true, 500, true, true)
-    SetCamActive(cam, false)
-    DestroyCam(cam, true)
-    viewCam = false
+    if viewCam then
+        RenderScriptCams(false, true, 500, true, true)
+        SetCamActive(cam, false)
+        DestroyCam(cam, true)
+        viewCam = false
+    end
 end
 
 RegisterNUICallback('buy', function()

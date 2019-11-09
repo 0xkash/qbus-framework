@@ -8,6 +8,7 @@ ui_page "html/index.html"
 client_scripts {
 	'client/main.lua',
 	'client/gui.lua',
+	'client/decorate.lua',
 	'config.lua',
 }
 

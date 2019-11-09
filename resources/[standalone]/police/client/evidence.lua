@@ -161,7 +161,7 @@ Citizen.CreateThread(function()
 						TriggerEvent("evidence:client:SetStatus", "gunpowder", 200)
 					end
 				end
-				if QBCore.Functions.GetPlayerData().job.name == "police" then
+				if QBCore.Functions.GetPlayerData().job.name ~= "police" then
 					DropBulletCasing(weapon)
 				end
 			end

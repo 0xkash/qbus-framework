@@ -141,6 +141,23 @@ AddEventHandler('qb-houses:server:RingDoor', function(house)
     TriggerClientEvent('qb-houses:client:RingDoor', -1, src, house)
 end)
 
+RegisterServerEvent('qb-houses:server:savedecorations')
+AddEventHandler('qb-houses:server:savedecorations', function(house, decorations)
+	local src = source
+	QBCore.Functions.ExecuteSql("UPDATE `player_houses` SET `decorations` = '"..json.encode(decorations).."' WHERE `house` = '"..house.."'")
+	TriggerClientEvent("qb-houses:server:sethousedecorations", -1, house, decorations)
+end)
+
+QBCore.Functions.CreateCallback('qb-houses:server:getHouseDecorations', function(source, cb, house)
+	local retval = nil
+	QBCore.Functions.ExecuteSql("SELECT * FROM `player_houses` WHERE `house` = '"..house.."'", function(result)
+		if result[1] ~= nil then
+			retval = json.decode(result[1].decorations)
+		end
+	end)
+	cb(retval)
+end)
+
 QBCore.Functions.CreateCallback('qb-houses:server:getHouseKeys', function(source, cb)
 	local src = source
 	local pData = QBCore.Functions.GetPlayer(src)
@@ -192,6 +209,10 @@ QBCore.Functions.CreateCallback('qb-houses:server:getSavedOutfits', function(sou
 			end
 		end)
 	end
+end)
+
+QBCore.Commands.Add("decorate", "Decoreer je huisie :)", {}, false, function(source, args)
+	TriggerClientEvent("qb-houses:client:decorate", source)
 end)
 
 RegisterServerEvent('qb-houses:server:logOut')
