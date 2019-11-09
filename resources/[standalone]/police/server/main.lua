@@ -122,6 +122,17 @@ AddEventHandler('police:server:PoliceAlertMessage', function(msg, coords)
     end
 end)
 
+
+RegisterServerEvent('police:server:SearchPlayer')
+AddEventHandler('police:server:SearchPlayer', function(playerId)
+    local src = source
+    local SearchedPlayer = QBCore.Functions.GetPlayer(playerId)
+    if SearchedPlayer ~= nil then 
+        TriggerClientEvent('chatMessage', source, "SYSTEM", "warning", "Persoon heeft €"..SearchedPlayer.PlayerData.money["cash"]..",- op zak..")
+        TriggerClientEvent('QBCore:Notify', SearchedPlayer.PlayerData.source, "Je wordt gefouilleerd..")
+    end
+end)
+
 RegisterServerEvent('police:server:Impound')
 AddEventHandler('police:server:Impound', function(plate, fullImpound, price)
     local src = source

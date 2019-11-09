@@ -513,5 +513,66 @@
 			<lightSettings value="1" />
 			<sirenSettings value="1" />
 		</Item>
+    <Item>
+      <modelName>pbklasse</modelName>
+			<colors>
+				<Item>
+					<indices content="char_array">
+						111
+					  111
+					  122
+					  156
+					</indices>
+					<liveries />
+				</Item>
+			</colors>
+			<kits>
+				<Item>0_default_modkit</Item>
+			</kits>
+			<windowsWithExposedEdges />
+			<plateProbabilities>
+				<Probabilities>
+					<Item>
+						<Name>police guv plate</Name>
+						<Value value="100" />
+					</Item>
+				</Probabilities>
+			</plateProbabilities>
+			<lightSettings value="72"/>
+			<sirenSettings value="2"/>
+		</Item>
+    <Item>
+			<modelName>paudi</modelName>
+			<colors>
+				<Item>
+					<!-- nobel white -->
+					<indices content="char_array">
+            134
+            134
+            134
+            156
+            7
+            111
+					</indices>
+					<liveries>
+					</liveries>
+				</Item>
+			</colors>
+			<windowsWithExposedEdges />
+			<plateProbabilities>
+				<Probabilities>
+					<Item>
+						<Name>Standard White</Name>
+						<Value value="80"/>
+					</Item>
+					<Item>
+						<Name>White Plate 2</Name>
+						<Value value="20"/>
+					</Item>
+				</Probabilities>
+			</plateProbabilities>
+			<lightSettings value="1" />
+			<sirenSettings value="1" />
+		</Item>
   </variationData>
 </CVehicleModelInfoVariation>

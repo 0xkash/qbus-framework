@@ -80,6 +80,18 @@ AddEventHandler('police:client:PutInVehicle', function()
     end
 end)
 
+RegisterNetEvent('police:client:SearchPlayer')
+AddEventHandler('police:client:SearchPlayer', function()
+    local player, distance = GetClosestPlayer()
+    if player ~= -1 and distance < 2.5 then
+        local playerId = GetPlayerServerId(player)
+        TriggerServerEvent("inventory:server:OpenInventory", "otherplayer", playerId)
+        TriggerServerEvent("police:server:SearchPlayer", playerId)
+    else
+        QBCore.Functions.Notify("Niemand in de buurt!", "error")
+    end
+end)
+
 RegisterNetEvent('police:client:PutPlayerInVehicle')
 AddEventHandler('police:client:PutPlayerInVehicle', function()
     local player, distance = GetClosestPlayer()

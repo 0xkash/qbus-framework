@@ -7,6 +7,8 @@ files {
     'handling.meta',
     'vehiclelayouts.meta',
     'stream/[police]/ptouran/PTOURAN.xml',
+    'stream/[police]/pbklasse/PBKLASSE.xml',
+    'stream/[police]/paudi/PAUDI.xml',
 }
  
 data_file 'HANDLING_FILE' 'handling.meta'

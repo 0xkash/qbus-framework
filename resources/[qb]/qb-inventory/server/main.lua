@@ -76,6 +76,16 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 			ShopItems[id] = {}
 			ShopItems[id].items = other.items
 			secondInv.slots = 30
+		elseif name == "otherplayer" then
+			local OtherPlayer = QBCore.Functions.GetPlayer(tonumber(id))
+			if OtherPlayer ~= nil then
+				secondInv.name = "otherplayer-"..id
+				secondInv.label = "Player-"..id
+				secondInv.maxweight = QBCore.Config.Player.MaxWeight
+				secondInv.inventory = OtherPlayer.PlayerData.items
+				secondInv.slots = QBCore.Config.Player.MaxInvSlots
+				Citizen.Wait(250)
+			end
 		else
 			if Drops[id] ~= nil then
 				secondInv.name = id
@@ -173,6 +183,25 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 					--Player.PlayerData.items[fromSlot] = nil
 				end
 				Player.Functions.AddItem(fromItemData.name, fromAmount, toSlot, fromItemData.info)
+			elseif QBCore.Shared.SplitStr(toInventory, "-")[1] == "otherplayer" then
+				local playerId = tonumber(QBCore.Shared.SplitStr(toInventory, "-")[2])
+				local OtherPlayer = QBCore.Functions.GetPlayer(playerId)
+				local toItemData = OtherPlayer.PlayerData.items[toSlot]
+				Player.Functions.RemoveItem(fromItemData.name, fromAmount, fromSlot)
+				--Player.PlayerData.items[toSlot] = fromItemData
+				if toItemData ~= nil then
+					--Player.PlayerData.items[fromSlot] = toItemData
+					local itemInfo = QBCore.Shared.Items[toItemData.name:lower()]
+					local toAmount = tonumber(toAmount) ~= nil and tonumber(toAmount) or toItemData.amount
+					if toItemData.name ~= fromItemData.name then
+						OtherPlayer.Functions.RemoveItem(itemInfo["name"], toAmount, fromSlot)
+						Player.Functions.AddItem(toItemData.name, toAmount, fromSlot, toItemData.info)
+					end
+				else
+					--Player.PlayerData.items[fromSlot] = nil
+				end
+				local itemInfo = QBCore.Shared.Items[fromItemData.name:lower()]
+				OtherPlayer.Functions.AddItem(itemInfo["name"], fromAmount, toSlot, fromItemData.info)
 			elseif QBCore.Shared.SplitStr(toInventory, "-")[1] == "trunk" then
 				local plate = QBCore.Shared.SplitStr(toInventory, "-")[2]
 				local toItemData = Trunks[plate].items[toSlot]
@@ -253,6 +282,49 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 			end
 		else
 			TriggerClientEvent("QBCore:Notify", src, "Je hebt dit item niet!", "error")
+		end
+	elseif QBCore.Shared.SplitStr(fromInventory, "-")[1] == "otherplayer" then
+		local playerId = tonumber(QBCore.Shared.SplitStr(fromInventory, "-")[2])
+		local OtherPlayer = QBCore.Functions.GetPlayer(playerId)
+		local fromItemData = OtherPlayer.PlayerData.items[fromSlot]
+		local fromAmount = tonumber(fromAmount) ~= nil and tonumber(fromAmount) or fromItemData.amount
+		if fromItemData ~= nil and fromItemData.amount >= fromAmount then
+			local itemInfo = QBCore.Shared.Items[fromItemData.name:lower()]
+			if toInventory == "player" or toInventory == "hotbar" then
+				local toItemData = Player.Functions.GetItemBySlot(toSlot)
+				OtherPlayer.Functions.RemoveItem(itemInfo["name"], fromAmount, fromSlot)
+				if toItemData ~= nil then
+					local itemInfo = QBCore.Shared.Items[toItemData.name:lower()]
+					local toAmount = tonumber(toAmount) ~= nil and tonumber(toAmount) or toItemData.amount
+					if toItemData.name ~= fromItemData.name then
+						Player.Functions.RemoveItem(toItemData.name, toAmount, toSlot)
+						OtherPlayer.Functions.AddItem(itemInfo["name"], toAmount, fromSlot, toItemData.info)
+					end
+				else
+					--Player.PlayerData.items[fromSlot] = nil
+				end
+				Player.Functions.AddItem(fromItemData.name, fromAmount, toSlot, fromItemData.info)
+			else
+				local toItemData = OtherPlayer.PlayerData.items[toSlot]
+				OtherPlayer.Functions.RemoveItem(itemInfo["name"], fromAmount, fromSlot)
+				--Player.PlayerData.items[toSlot] = fromItemData
+				if toItemData ~= nil then
+					local itemInfo = QBCore.Shared.Items[toItemData.name:lower()]
+					--Player.PlayerData.items[fromSlot] = toItemData
+					local toAmount = tonumber(toAmount) ~= nil and tonumber(toAmount) or toItemData.amount
+					if toItemData.name ~= fromItemData.name then
+						local itemInfo = QBCore.Shared.Items[toItemData.name:lower()]
+						OtherPlayer.Functions.RemoveItem(itemInfo["name"], toAmount, toSlot)
+						OtherPlayer.Functions.AddItem(itemInfo["name"], toAmount, fromSlot, toItemData.info)
+					end
+				else
+					--Player.PlayerData.items[fromSlot] = nil
+				end
+				local itemInfo = QBCore.Shared.Items[fromItemData.name:lower()]
+				OtherPlayer.Functions.AddItem(itemInfo["name"], fromAmount, toSlot, fromItemData.info)
+			end
+		else
+			TriggerClientEvent("QBCore:Notify", src, "Item bestaat niet??", "error")
 		end
 	elseif QBCore.Shared.SplitStr(fromInventory, "-")[1] == "trunk" then
 		local plate = QBCore.Shared.SplitStr(fromInventory, "-")[2]
