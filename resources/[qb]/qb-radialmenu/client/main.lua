@@ -27,25 +27,23 @@ function setupSubItems()
     local closestVehiclePlayers = {}
 
     for k, v in pairs(closestPlayers) do
-        if v ~= 0 then
-            table.insert(closestHousePlayers, {
-                id = GetPlayerServerId(v),
-                title = GetPlayerName(PlayerId(v)),
-                icon = '#citizen',
-                type = 'client',
-                event = 'qb-houses:client:giveHouseKey',
-                shouldClose = true,
-            })
+        table.insert(closestHousePlayers, {
+            id = GetPlayerServerId(v),
+            title = GetPlayerName(PlayerId(v)),
+            icon = '#citizen',
+            type = 'client',
+            event = 'qb-houses:client:giveHouseKey',
+            shouldClose = true,
+        })
 
-            table.insert(closestVehiclePlayers, {
-                id = GetPlayerServerId(v),
-                title = GetPlayerName(PlayerId(v)),
-                icon = '#citizen',
-                type = 'client',
-                event = 'qb-houses:client:giveVehicleKey',
-                shouldClose = true,
-            })
-        end
+        table.insert(closestVehiclePlayers, {
+            id = GetPlayerServerId(v),
+            title = GetPlayerName(PlayerId(v)),
+            icon = '#citizen',
+            type = 'client',
+            event = 'qb-houses:client:giveVehicleKey',
+            shouldClose = true,
+        })
     end
 
     if next(closestVehiclePlayers) ~= nil then
