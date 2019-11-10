@@ -179,6 +179,10 @@ AddEventHandler('qb-phone:client:newMailNotify', function()
     })
 end)
 
+RegisterNUICallback('removeMail', function(data)
+    TriggerServerEvent('qb-phone:server:removeMail', data.mailId)
+end)
+
 --- CODE
 
 local inPhone = false
@@ -273,4 +277,10 @@ end)
 
 RegisterNUICallback("errorSound", function(data, cb)
     PlaySound(-1, "Place_Prop_Fail", "DLC_Dmod_Prop_Editor_Sounds", 0, 0, 1)
+end)
+
+RegisterNUICallback('clickMailButton', function(data)
+    TriggerEvent(data.buttonEvent, data.buttonData)
+
+    TriggerServerEvent('qb-phone:server:clearButtonData', data.mailId)
 end)

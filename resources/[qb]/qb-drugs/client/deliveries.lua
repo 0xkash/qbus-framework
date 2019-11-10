@@ -3,10 +3,13 @@ knockingDoor = false
 
 local dealerIsHome = false
 
-local activeDelivery = false
+local waitingDelivery = nil
+local activeDelivery = nil
 
 local interacting = false
 local lastDealer = nil
+
+local deliveryTimeout = 0
 
 Citizen.CreateThread(function()
     while true do
@@ -38,8 +41,9 @@ Citizen.CreateThread(function()
                             end
 
                             if IsControlJustPressed(0, Keys["G"]) then
-                                if not activeDelivery then
-                                    TriggerEvent("chatMessage", "Dealer Tony", "normal", 'Kijk je mail, daar heb je alle informatie over je bestelling.')
+                                if waitingDelivery == nil then
+                                    TriggerEvent("chatMessage", "Dealer Tony", "normal", 'Hier heb je de producten, houd je mail in de gaten betreft de bestelling!')
+                                    requestDelivery()
                                     interacting = false
                                     dealerIsHome = false
                                 else
@@ -53,7 +57,6 @@ Citizen.CreateThread(function()
         end
 
         if not nearDealer then
-            currentDealer = nil
             Citizen.Wait(2000)
         end
 
@@ -64,13 +67,11 @@ end)
 knockDealerDoor = function()
     local hours = GetClockHours()
 
-    knockDoorAnim(true)
-
-    -- if hours > Config.Dealers[currentDealer]["time"]["min"] and hours < 24 or hours < Config.Dealers[currentDealer]["time"]["max"] and hours > 0 then
-    --     knockDoorAnim(true)
-    -- else
-    --     knockDoorAnim(false)
-    -- end
+    if hours > Config.Dealers[currentDealer]["time"]["min"] and hours < 24 or hours < Config.Dealers[currentDealer]["time"]["max"] and hours > 0 then
+        knockDoorAnim(true)
+    else
+        knockDoorAnim(false)
+    end
 end
 
 function buyDealerStuff()
@@ -106,13 +107,9 @@ function knockDoorAnim(home)
         TaskPlayAnim(PlayerPed, knockAnimLib, "exit", 3.0, 3.0, -1, 1, 0, false, false, false)
         knockingDoor = false
         Citizen.Wait(1000)
-        if lastDealer ~= currentDealer then
-            TriggerEvent("chatMessage", "Dealer Tony", "normal", 'Yow '..myData.charinfo.firstname..', wat kan ik voor je betekenen?')
-            knockTimeout()
-            dealerIsHome = true
-        else
-            TriggerEvent("chatMessage", "Dealer Tony", "error", 'Alweer jij? Ga aan het werk!')
-        end
+        TriggerEvent("chatMessage", "Dealer Tony", "normal", 'Yow '..myData.charinfo.firstname..', wat kan ik voor je betekenen?')
+        -- knockTimeout()
+        dealerIsHome = true
     else
         TriggerServerEvent("InteractSound_SV:PlayOnSource", "knock_door", 0.2)
         Citizen.Wait(100)
@@ -140,8 +137,131 @@ AddEventHandler('qb-drugs:client:setDealerItems', function(itemData, amount, dea
     Config.Dealers[dealer]["products"][itemData.slot].amount = Config.Dealers[dealer]["products"][itemData.slot].amount - amount
 end)
 
-function knockTimeout()
-    SetTimeout(300 * 60, function()
-        lastDealer = nil
+function requestDelivery()
+    local location = math.random(1, #Config.DeliveryLocations)
+    local amount = math.random(1, 3)
+    waitingDelivery = {
+        ["coords"] = Config.DeliveryLocations[location]["coords"],
+        ["locationLabel"] = Config.DeliveryLocations[location]["label"],
+        ["amount"] = amount,
+        ["dealer"] = currentDealer
+    }
+    TriggerServerEvent('qb-drugs:server:giveDeliveryItems', amount)
+    SetTimeout(1000, function()
+        TriggerServerEvent('qb-phone:server:sendNewMail', {
+            sender = Config.Dealers[currentDealer]["name"],
+            subject = "Aflever Locatie",
+            message = "Hier is alle informatie op je bezorging, <br>Locatie: "..waitingDelivery["locationLabel"].."<br>Spullen: <br> "..amount.."x Wiet Brick 1kg<br><br> Zorg dat je optijd bent!",
+            button = {
+                enabled = true,
+                buttonEvent = "qb-drugs:client:setLocation",
+                buttonData = waitingDelivery
+            }
+        })
     end)
 end
+
+function setMapBlip(x, y)
+    SetNewWaypoint(x, y)
+    QBCore.Functions.Notify('De route naar aflever locatie staat aangegeven op je kaart.', 'success');
+end
+
+RegisterNetEvent('qb-drugs:client:setLocation')
+AddEventHandler('qb-drugs:client:setLocation', function(locationData)
+    if activeDelivery == nil then
+        activeDelivery = locationData
+    else
+        setMapBlip(activeDelivery["coords"]["x"], activeDelivery["coords"]["y"])
+        QBCore.Functions.Notify('Je hebt nog een levering open staan...')
+        return
+    end
+
+    deliveryTimeout = 300
+
+    deliveryTimer()
+
+    setMapBlip(activeDelivery["coords"]["x"], activeDelivery["coords"]["y"])
+
+    Citizen.CreateThread(function()
+        while true do
+
+            local ped = GetPlayerPed(-1)
+            local pos = GetEntityCoords(ped)
+            local inDeliveryRange = false
+
+            if activeDelivery ~= nil then
+                local dist = GetDistanceBetweenCoords(pos, activeDelivery["coords"]["x"], activeDelivery["coords"]["y"], activeDelivery["coords"]["z"])
+
+                if dist < 15 then
+                    inDeliveryRange = true
+                    if dist < 1.5 then
+                        DrawText3D(activeDelivery["coords"]["x"], activeDelivery["coords"]["y"], activeDelivery["coords"]["z"], '[E] '..activeDelivery["amount"]..'x Wiet Brick 1kg afleveren')
+
+                        if IsControlJustPressed(0, Keys["E"]) then
+                            deliverStuff(activeDelivery)
+                            activeDelivery = nil
+                            waitingDelivery = nil
+                            break
+                        end
+                    end
+                end
+
+                if not inDeliveryRange then
+                    Citizen.Wait(1500)
+                end
+            else
+                break
+            end
+
+            Citizen.Wait(3)
+        end
+    end)
+end)
+
+function deliveryTimer()
+    Citizen.CreateThread(function()
+        while true do
+
+            if deliveryTimeout - 1 > 0 then
+                deliveryTimeout = deliveryTimeout - 1
+            else
+                deliveryTimeout = 0
+                break
+            end
+
+            Citizen.Wait(1000)
+        end
+    end)
+end
+
+function deliverStuff(activeDelivery)
+    if deliveryTimeout > 0 then
+        TriggerServerEvent('qb-drugs:server:succesDelivery', activeDelivery, true)
+    else
+        TriggerServerEvent('qb-drugs:server:succesDelivery', activeDelivery, false)
+    end
+    deliveryTimeout = 0
+end
+
+RegisterNetEvent('qb-drugs:client:sendDeliveryMail')
+AddEventHandler('qb-drugs:client:sendDeliveryMail', function(type, deliveryData)
+    if type == 'perfect' then
+        TriggerServerEvent('qb-phone:server:sendNewMail', {
+            sender = Config.Dealers[deliveryData["dealer"]]["name"],
+            subject = "Levering",
+            message = "Je hebt goed werk geleverd! Ik hoop snel weer zaken te kunnen doen ;)<br><br>Groeten, "..deliveryData["dealer"]
+        })
+    elseif type == 'bad' then
+        TriggerServerEvent('qb-phone:server:sendNewMail', {
+            sender = Config.Dealers[deliveryData["dealer"]]["name"],
+            subject = "Levering",
+            message = "Ik krijg klachten over je bezorging, laat dit mij niet vaker overkomen..."
+        })
+    elseif type == 'late' then
+        TriggerServerEvent('qb-phone:server:sendNewMail', {
+            sender = Config.Dealers[deliveryData["dealer"]]["name"],
+            subject = "Levering",
+            message = "Je was niet optijd.. Had je belangrijkere dingen te doen dan zaken?"
+        })
+    end
+end)

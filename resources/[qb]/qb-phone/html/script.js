@@ -11,6 +11,10 @@ var choosingBg = false;
 var curBg = "bg-1";
 var selectedContact = null;
 
+var currentMailEvent = null;
+var currentMailData = null;
+var mailId = null;
+
 $(document).on('keydown', function() {
     switch(event.keyCode) {
         case 27:
@@ -272,6 +276,10 @@ $(document).on('click', '.home-container', function(e){
             currentApp = lastPage;
             lastPage = null;
         });
+
+        buttonEvent = null
+        buttonData = null
+        mailId = null
     
         qbPhone.succesSound();
     }
@@ -557,33 +565,87 @@ qbPhone.setupUserMails = function(mails) {
     $('.mails-list').html("");
     if (mails != undefined) {
         $.each(mails, function(i, mail){
-            console.log(mail.date)
             if (mail.read == 0) {
                 var element = '<div class="mail" id="mail-'+i+'"><div class="mail-sender-dot"></div><span id="mail-sender-name">'+mail.sender+'</span><span id="mail-id">#'+mail.mailid+'</span><span id="mail-subject">'+mail.subject+'</span><span id="mail-message">'+mail.message+'</span></div>';
             } else {
                 var element = '<div class="mail" id="mail-'+i+'"><span id="mail-sender-name">'+mail.sender+'</span><span id="mail-id">#'+mail.mailid+'</span><span id="mail-subject">'+mail.subject+'</span><span id="mail-message">'+mail.message+'</span></div>';
             }
+
             $('.mails-list').append(element);
     
             $('#mail-'+i).data('mailData', mail)
         });
     } else {
-        $(".mails-list").html('<span id="no-emails-error">Je hebt geen mails in je inbox</span>')
+        $(".mails-list").html('<span id="no-emails-error">Je inbox is leeg</span>')
     }
 }
 
 $(document).on('click', '.mail', function(){
-    var currentMailId = $(this).attr('id');
-    var mailData = $('#'+currentMailId).data('mailData');
+    var curMid = $(this).attr('id');
+    var mailData = $('#'+curMid).data('mailData');
     qbPhone.openMail(mailData)
+});
+
+$(document).on('click', '.mail-button', function(){
+    $.post('http://qb-phone/clickMailButton', JSON.stringify({
+        buttonEvent: currentMailEvent,
+        buttonData: currentMailData,
+        mailId: currentMailId,
+    }))
+
+    buttonEvent = null
+    buttonData = null
+    mailId = null
+
+    qbPhone.Close();
+});
+
+$(document).on('click', '#opened-mail-delete-icon', function(){
+    $.post('http://qb-phone/removeMail', JSON.stringify({
+        mailId: currentMailId
+    }))
+
+    $(currentApp).animate({top: "100%",}
+    , 250, function() {
+        $(currentApp).css({'display':'none'});
+        $(lastPage).css({'display':'block'});
+        currentApp = lastPage;
+        lastPage = null;
+    });
+
+    buttonEvent = null
+    buttonData = null
+    mailId = null
+
+    $.post('http://qb-phone/getUserMails');
 });
 
 qbPhone.openMail = function(mailData) {
 
-    var element = '<div class="opened-mail-header"><p>Zender: '+mailData.sender+'</p><p> <span id="opened-mail-subject">Onderwerp: '+mailData.subject+'</span></p><i class="material-icons" id="opened-mail-delete-icon">delete</i></div>' +
-                '<div class="opened-mail-content">' +
-                '    <p>'+mailData.message+'</p>' +
-                '</div>'
+    var element
+
+    if (mailData.button != undefined) {
+        if (mailData.button.enabled) {
+            currentMailEvent = mailData.button.buttonEvent;
+            currentMailData = mailData.button.buttonData;
+            element = '<div class="opened-mail-header"><p>Zender: '+mailData.sender+'</p><p> <span id="opened-mail-subject">Onderwerp: '+mailData.subject+'</span></p><i class="material-icons" id="opened-mail-delete-icon">delete</i></div>' +
+            '<div class="opened-mail-content">' +
+            '    <p>'+mailData.message+'</p><div class="mail-button"><p>Accepteren</p></div>' +
+            '</div>';
+        } else {
+            element = '<div class="opened-mail-header"><p>Zender: '+mailData.sender+'</p><p> <span id="opened-mail-subject">Onderwerp: '+mailData.subject+'</span></p><i class="material-icons" id="opened-mail-delete-icon">delete</i></div>' +
+            '<div class="opened-mail-content">' +
+            '    <p>'+mailData.message+'</p>' +
+            '</div>';
+        }
+    } else {
+        element = '<div class="opened-mail-header"><p>Zender: '+mailData.sender+'</p><p> <span id="opened-mail-subject">Onderwerp: '+mailData.subject+'</span></p><i class="material-icons" id="opened-mail-delete-icon">delete</i></div>' +
+        '<div class="opened-mail-content">' +
+        '    <p>'+mailData.message+'</p>' +
+        '</div>';
+    }
+
+    currentMailId = mailData.mailid;
 
     $(".opened-mail").html(element);
 

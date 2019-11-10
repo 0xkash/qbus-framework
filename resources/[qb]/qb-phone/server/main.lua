@@ -97,6 +97,11 @@ QBCore.Functions.CreateCallback("qb-phone:server:GetUserMails", function(source,
 
     QBCore.Functions.ExecuteSql('SELECT * FROM `player_mails` WHERE `citizenid` = "'..pData.PlayerData.citizenid..'" ORDER BY `date` DESC', function(result)
         if result[1] ~= nil then
+            for k, v in pairs(result) do
+                if result[k].button ~= nil then
+                    result[k].button = json.decode(result[k].button)
+                end
+            end
             cb(result)
         else
             cb(nil)
@@ -114,6 +119,22 @@ AddEventHandler('qb-phone:server:setEmailRead', function(mailId)
     QBCore.Functions.ExecuteSql('UPDATE `player_mails` SET `read` = "1" WHERE `mailid` = "'..mailId..'" AND `citizenid` = "'..Player.PlayerData.citizenid..'"')
 end)
 
+RegisterServerEvent('qb-phone:server:clearButtonData')
+AddEventHandler('qb-phone:server:clearButtonData', function(mailId)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+
+    QBCore.Functions.ExecuteSql('UPDATE `player_mails` SET `button` = "" WHERE `mailid` = "'..mailId..'" AND `citizenid` = "'..Player.PlayerData.citizenid..'"')
+end)
+
+RegisterServerEvent('qb-phone:server:removeMail')
+AddEventHandler('qb-phone:server:removeMail', function(mailId)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+
+    QBCore.Functions.ExecuteSql('DELETE FROM `player_mails` WHERE `mailid` = "'..mailId..'" AND `citizenid` = "'..Player.PlayerData.citizenid..'"')
+end)
+
 RegisterServerEvent('qb-phone:server:sendNewMail')
 AddEventHandler('qb-phone:server:sendNewMail', function(mailData)
     local src = source
@@ -121,8 +142,13 @@ AddEventHandler('qb-phone:server:sendNewMail', function(mailData)
 
     print('snorlex')
 
-    QBCore.Functions.ExecuteSql("INSERT INTO `player_mails` (`citizenid`, `sender`, `subject`, `message`, `mailid`, `read`) VALUES ('"..Player.PlayerData.citizenid.."', '"..mailData.sender.."', '"..mailData.subject.."', '"..mailData.message.."', '"..GenerateMailId().."', '0')")
-    TriggerClientEvent('qb-phone:client:newMailNotify', src)
+    if mailData.button == nil then
+        QBCore.Functions.ExecuteSql("INSERT INTO `player_mails` (`citizenid`, `sender`, `subject`, `message`, `mailid`, `read`) VALUES ('"..Player.PlayerData.citizenid.."', '"..mailData.sender.."', '"..mailData.subject.."', '"..mailData.message.."', '"..GenerateMailId().."', '0')")
+        TriggerClientEvent('qb-phone:client:newMailNotify', src)
+    else
+        QBCore.Functions.ExecuteSql("INSERT INTO `player_mails` (`citizenid`, `sender`, `subject`, `message`, `mailid`, `read`, `button`) VALUES ('"..Player.PlayerData.citizenid.."', '"..mailData.sender.."', '"..mailData.subject.."', '"..mailData.message.."', '"..GenerateMailId().."', '0', '"..json.encode(mailData.button).."')")
+        TriggerClientEvent('qb-phone:client:newMailNotify', src)
+    end
 end)
 
 function GenerateMailId()

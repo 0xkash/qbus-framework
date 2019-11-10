@@ -198,3 +198,25 @@
     width: 20vh;
     color: rgba(0, 0, 0, 0.685);
 }
+
+.mail-button {
+    position: absolute;
+    bottom: 0;
+    margin: 0 auto;
+    left: 0;
+    right: 2vh;
+    width: 7.2vh;
+    height: 2vh;
+    background-color: rgb(31, 31, 46);
+    border-radius: 5px;
+    overflow: visible !important;
+}
+
+.mail-button > p {
+    line-height: 2vh;
+    font-size: 11px;
+    font-family: 'Lato';
+    color: white;
+    overflow: visible !important;
+    text-align: center;
+}
