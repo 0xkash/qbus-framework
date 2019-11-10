@@ -178,7 +178,7 @@ AddEventHandler('prison:client:Enter', function(time)
 	inJail = true
 	jailTime = time
 	TriggerServerEvent("prison:server:SetJailStatus", jailTime)
-	TriggerServerEvent("prison:server:SaveJailItems")
+	TriggerServerEvent("prison:server:SaveJailItems", jailTime)
 	QBCore.Functions.Notify("Je zit in de gevangenis voor "..jailTime.." maanden..", "error")
 	TriggerEvent("chatMessage", "SYSTEM", "warning", "Je bezit is in beslag genomen, je krijgt alles terug wanneer je tijd erop zit..")
 	DoScreenFadeOut(500)
