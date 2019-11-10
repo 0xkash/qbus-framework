@@ -230,7 +230,7 @@ AddEventHandler('qb-houses:server:giveHouseKey', function(target, house)
 
 	table.insert(housekeyholders[house], tPlayer.PlayerData.citizenid)
 	Wait(100)
-	QBCore.Functions.ExecuteSql('UPDATE `player_houses` SET keyholders = "'..housekeyholders[house]..'" WHERE `house` = "'..house..'"')
+	QBCore.Functions.ExecuteSql('UPDATE `player_houses` SET `keyholders` = "'..json.encode(housekeyholders[house])..'" WHERE `house` = "'..house..'"')
 	TriggerClientEvent('qb-houses:client:refreshHouse', tPlayer.PlayerData.source)
 	TriggerClientEvent('QBCore:Notify', tPlayer.PlayerData.source, 'Je hebt de sleuteltjes van '..Config.Houses[house].adress..' ontvagen', 'success', 2500)
 end)
