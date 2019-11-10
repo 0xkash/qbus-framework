@@ -710,26 +710,30 @@ $(document).on('click', '.cancel-new-tweet', function(){
 });
 
 qbPhone.MailNotify = function() {
-    $(".new-mail-notify").css({'display':'block'}).animate({
-        top: "0%",
-    }, 500);
-    setTimeout(function(){
+    if (allowNotifys) {
         $(".new-mail-notify").css({'display':'block'}).animate({
-            top: "-10%",
-        }, 250)
-    }, 2500)
+            top: "0%",
+        }, 500);
+        setTimeout(function(){
+            $(".new-mail-notify").css({'display':'block'}).animate({
+                top: "-10%",
+            }, 250)
+        }, 2500)
+    }
 }
 
 qbPhone.TwitterNotify = function(sender) {
-    $('.new-twitter-notify-content'),html("@" + sender + " heeft een nieuwe tweet geplaatst!");
-    $(".new-twitter-notify").css({'display':'block'}).animate({
-        top: "0%",
-    }, 500);
-    setTimeout(function(){
+    if (allowNotifys) {
+        $('.new-twitter-notify-content'),html("@" + sender + " heeft een nieuwe tweet geplaatst!");
         $(".new-twitter-notify").css({'display':'block'}).animate({
-            top: "-10%",
-        }, 250)
-    }, 2500)
+            top: "0%",
+        }, 500);
+        setTimeout(function(){
+            $(".new-twitter-notify").css({'display':'block'}).animate({
+                top: "-10%",
+            }, 250)
+        }, 2500)
+    }
 }
 
 qbPhone.SetupTweets = function(tweets) {
