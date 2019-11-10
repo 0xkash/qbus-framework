@@ -26,13 +26,13 @@ AddEventHandler('qb-drugs:server:succesDelivery', function(deliveryData, inTime)
 
             if curRep < 10 then
                 Player.Functions.AddMoney('cash', (deliveryData["amount"] * 6000 / 100 * 8))
-            elseif curRep => 10 then
+            elseif curRep >= 10 then
                 Player.Functions.AddMoney('cash', (deliveryData["amount"] * 6000 / 100 * 10))
-            elseif curRep => 20 then
+            elseif curRep >= 20 then
                 Player.Functions.AddMoney('cash', (deliveryData["amount"] * 6000 / 100 * 12))
-            elseif curRep => 30 then
+            elseif curRep >= 30 then
                 Player.Functions.AddMoney('cash', (deliveryData["amount"] * 6000 / 100 * 15))
-            elseif curRep => 40 then
+            elseif curRep >= 40 then
                 Player.Functions.AddMoney('cash', (deliveryData["amount"] * 6000 / 100 * 18))
             end
 
