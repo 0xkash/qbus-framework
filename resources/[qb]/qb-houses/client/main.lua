@@ -306,7 +306,13 @@ end)
 
 RegisterNetEvent('qb-houses:client:giveHouseKey')
 AddEventHandler('qb-houses:client:giveHouseKey', function(data)
-    TriggerServerEvent('qb-houses:server:giveHouseKey', data.id, closesthouse)
+    local player, distance = GetClosestPlayer()
+    if player ~= -1 and distance < 2.5 then
+        local playerId = GetPlayerServerId(player)
+        TriggerServerEvent('qb-houses:server:giveHouseKey', playerId, closesthouse)
+    else
+        QBCore.Functions.Notify("Niemand in de buurt!", "error")
+    end
 end)
 
 RegisterNetEvent('qb-houses:client:refreshHouse')
