@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="./apps/garage.css">   <!-- Garage CSS -->
     <link rel="stylesheet" href="./apps/mail.css">     <!-- Mail CSS -->
     <link rel="stylesheet" href="./apps/phone-notify.css">     <!-- Mail CSS -->
+    <link rel="stylesheet" href="./apps/twitter.css">     <!-- Mail CSS -->
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>  
@@ -32,10 +33,17 @@
 
         <div class="phone-notify-container">
             <div class="new-mail-notify">
-                <div class="new-mail-notify-border-bottom"><p>Melding</p></div>
+                <div class="new-mail-notify-border-bottom"><p>Mail</p></div>
 
                 <div class="new-mail-notify-content">
                     Je hebt een nieuwe mail ontvangen!
+                </div>
+            </div>
+            <div class="new-twitter-notify">
+                <div class="new-twitter-notify-border-bottom"><p>Twitter</p></div>
+
+                <div class="new-twitter-notify-content">
+                    
                 </div>
             </div>
         </div>
@@ -251,6 +259,30 @@
 
                     <div class="opened-mail">
                     </div>
+                </div>
+
+                <div class="twitter-app">
+                    <div class="twitter-header">
+                        <p>Twitter</p>
+                    </div>
+
+                    <div class="twitter-tweets">
+                    </div>
+
+                    <div class="twitter-app-new-tweet">
+                        <div class="twitter-new-tweet-header">
+                            <p>Nieuwe Tweet</p>
+                        </div>
+
+                        <textarea name="" id="new-tweet-message" placeholder="Twitter bericht" id="" cols="30" rows="10" spellcheck="false"></textarea>
+
+                        <div class="send-new-tweet"><p>Verzend</p></div>
+                        <div class="cancel-new-tweet"><p>Annuleer</p></div>
+
+                        <!-- <input type="text" > -->
+                    </div>
+
+                    <div class="twitter-new-tweet"><i class="fas fa-pen" id="twitter-new-tweet-icon"></i></div>
                 </div>
 
                 <div class="phone-notify">

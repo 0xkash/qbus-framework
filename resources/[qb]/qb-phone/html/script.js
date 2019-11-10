@@ -71,6 +71,19 @@ $(document).ready(function(){
             console.log('dsgsdgds')
             qbPhone.MailNotify()
         }
+
+        if (eventData.task == "setupTweets") {
+            qbPhone.SetupTweets(eventData.tweets);
+        }
+
+        if (eventData.task == "newTweetNotify") {
+            qbPhone.TwitterNotify(eventData.sender)
+        }
+
+        if (eventData.task == "newTweet") {
+            qbPhone.SetupTweets(eventData.tweets);
+            qbPhone.Notify('<i class="fab fa-twitter" style="position: relative; padding-top: 3px;"></i> Twitter', 'tweet', '@'+eventData.sender + ' heeft een tweet geplaatst!')
+        }
     });
 
     $('.notify-btn').change(function() {
@@ -114,6 +127,8 @@ $(document).on('click', '.app', function(e){
         $.post('http://qb-phone/getVehicles');
     } else if (pressedApp.app == "mails") {
         $.post('http://qb-phone/getUserMails');
+    } else if (pressedApp.app == "twitter") {
+        $.post('http://qb-phone/getTweets');
     }
 
     qbPhone.succesSound();
@@ -499,36 +514,40 @@ qbPhone.setupPlayerContacts = function(contacts) {
 var timeout = null;
 
 qbPhone.Notify = function(title, type, message, wait) {
-    if (timeout != undefined) {
-        clearTimeout(timeout);
-    }
-    $('.phone-notify').css({'display':'block', 'top':'-10%'})
-    if (type == 'error') {
-        $("#notify-titel").css("color", "rgb(126, 9, 9);");
-    } else if (type == 'success') {
-        $("#notify-titel").css("color", "rgb(9, 126, 9);");
-    }
-    $("#notify-titel").html(title);
-    $("#notify-message").html(message);
-    $('.phone-notify').css({'display':'block'}).animate({
-        top: "5%",
-    }, 300);
-    if (wait == null) {
-        timeout = setTimeout(function(){
-            $('.phone-notify').css({'display':'block'}).animate({
-                top: "-10%",
-            }, 300, function(){
-                $('.phone-notify').css({'display':'none'})
-            });
-        }, 3500)
-    } else {
-        timeout = setTimeout(function(){
-            $('.phone-notify').css({'display':'block'}).animate({
-                top: "-10%",
-            }, 300, function(){
-                $('.phone-notify').css({'display':'none'})
-            });
-        }, wait)
+    if (allowNotifys) {
+        if (timeout != undefined) {
+            clearTimeout(timeout);
+        }
+        $('.phone-notify').css({'display':'block', 'top':'-10%'})
+        if (type == 'error') {
+            $("#notify-titel").css("color", "rgb(126, 9, 9);");
+        } else if (type == 'success') {
+            $("#notify-titel").css("color", "rgb(9, 126, 9);");
+        } else if (type == 'tweet') {
+            $("#notify-titel").css("color", "rgb(29, 161, 242);");
+        }
+        $("#notify-titel").html(title);
+        $("#notify-message").html(message);
+        $('.phone-notify').css({'display':'block'}).animate({
+            top: "5%",
+        }, 300);
+        if (wait == null) {
+            timeout = setTimeout(function(){
+                $('.phone-notify').css({'display':'block'}).animate({
+                    top: "-10%",
+                }, 300, function(){
+                    $('.phone-notify').css({'display':'none'})
+                });
+            }, 3500)
+        } else {
+            timeout = setTimeout(function(){
+                $('.phone-notify').css({'display':'block'}).animate({
+                    top: "-10%",
+                }, 300, function(){
+                    $('.phone-notify').css({'display':'none'})
+                });
+            }, wait)
+        }
     }
 }
 
@@ -663,6 +682,33 @@ qbPhone.openMail = function(mailData) {
     lastPage = ".mails-app";
 }
 
+$(document).on('click', '.twitter-new-tweet', function(){
+    $('.twitter-app-new-tweet').css({'display':'block'}).animate({
+        bottom: "17vh"
+    }, 200);
+});
+
+$(document).on('click', '.send-new-tweet', function(){
+    var tweetMessage = $('#new-tweet-message').val();
+
+    if (tweetMessage != "") {
+        $('.twitter-app-new-tweet').css({'display':'block'}).animate({
+            bottom: "-27vh"
+        }, 200);
+        $.post('http://qb-phone/postTweet', JSON.stringify({
+            message: tweetMessage
+        }))
+    } else {
+        qbPhone.Notify('Twitter', 'error', 'Je kan geen legen tweet versturen...')
+    }
+});
+
+$(document).on('click', '.cancel-new-tweet', function(){
+    $('.twitter-app-new-tweet').css({'display':'block'}).animate({
+        bottom: "-27vh"
+    }, 200);
+});
+
 qbPhone.MailNotify = function() {
     $(".new-mail-notify").css({'display':'block'}).animate({
         top: "0%",
@@ -674,9 +720,36 @@ qbPhone.MailNotify = function() {
     }, 2500)
 }
 
+qbPhone.TwitterNotify = function(sender) {
+    $('.new-twitter-notify-content'),html("@" + sender + " heeft een nieuwe tweet geplaatst!");
+    $(".new-twitter-notify").css({'display':'block'}).animate({
+        top: "0%",
+    }, 500);
+    setTimeout(function(){
+        $(".new-twitter-notify").css({'display':'block'}).animate({
+            top: "-10%",
+        }, 250)
+    }, 2500)
+}
+
+qbPhone.SetupTweets = function(tweets) {
+    $('.twitter-tweets').html("");
+    if (tweets != undefined) {
+        $.each(tweets, function(i, tweet){
+            var elem = '<div class="twitter-app-tweet"><img src="./img/anonymous-person-icon-0.jpg" alt="anonymous-person-icon-0" class="tweeter-image"><div class="tweet-name"><span id="tweeter-name">'+tweet.sender+'</span> <span id="tweeter-ad">@'+tweet.sender+'</span></div><div class="tweeter-message"><p>'+tweet.message+'</p></div></div>';
+    
+            $('.twitter-tweets').append(elem);
+        });
+    } else {
+        $(".twitter-tweets").html('<span id="no-emails-error">Er zijn nog<br> geen Tweets geplaatst :(</span>')
+    }
+}
+
 updateNewBalance = function() {
     var balance = $("#balance").val();
     var minAmount = $(".euro-amount-input").val();
     $("#new-balance").html(balance - minAmount);
     console.log(balance)
 }
+
+// qbPhone.Open();

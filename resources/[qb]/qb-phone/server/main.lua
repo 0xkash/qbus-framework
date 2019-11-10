@@ -109,6 +109,19 @@ QBCore.Functions.CreateCallback("qb-phone:server:GetUserMails", function(source,
     end)
 end)
 
+QBCore.Functions.CreateCallback("qb-phone:server:getPhoneTweets", function(source, cb)
+    local src = source
+    local pData = QBCore.Functions.GetPlayer(src)
+
+    QBCore.Functions.ExecuteSql('SELECT * FROM `phone_tweets` ORDER BY `date` DESC', function(result)
+        if result[1] ~= nil then
+            cb(result)
+        else
+            cb(nil)
+        end
+    end)
+end)
+
 RegisterServerEvent('qb-phone:server:setEmailRead')
 AddEventHandler('qb-phone:server:setEmailRead', function(mailId)
     local src = source
@@ -149,6 +162,15 @@ AddEventHandler('qb-phone:server:sendNewMail', function(mailData)
         QBCore.Functions.ExecuteSql("INSERT INTO `player_mails` (`citizenid`, `sender`, `subject`, `message`, `mailid`, `read`, `button`) VALUES ('"..Player.PlayerData.citizenid.."', '"..mailData.sender.."', '"..mailData.subject.."', '"..mailData.message.."', '"..GenerateMailId().."', '0', '"..json.encode(mailData.button).."')")
         TriggerClientEvent('qb-phone:client:newMailNotify', src)
     end
+end)
+
+RegisterServerEvent('qb-phone:server:postTweet')
+AddEventHandler('qb-phone:server:postTweet', function(message)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    
+    QBCore.Functions.ExecuteSql("INSERT INTO `phone_tweets` (`citizenid`, `sender`, `message`) VALUES ('"..Player.PlayerData.citizenid.."', '"..Player.PlayerData.charinfo.firstname.." "..string.sub(Player.PlayerData.charinfo.lastname, 1, 1):upper()..".', '"..message.."')")
+    TriggerClientEvent('qb-phone:client:newTweet', -1, Player.PlayerData.charinfo.firstname.." "..string.sub(Player.PlayerData.charinfo.lastname, 1, 1):upper()..".")
 end)
 
 function GenerateMailId()

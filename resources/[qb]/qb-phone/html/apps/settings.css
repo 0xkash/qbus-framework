@@ -181,9 +181,9 @@
     position: absolute;
     top: -10%;
     margin: 0 auto;
-    left: 1%;
+    left: 0;
     right: 0;
-    width: 95%;
+    width: 85%;
     height: 60px;
     background-color: rgb(238, 238, 238);
     box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.493);

@@ -22,6 +22,9 @@ local defaultPhoneMeta = {
     }
 }
 
+local inPhone = false
+local allowNotifys = true
+
 local playerContacts = {}
 
 Citizen.CreateThread(function() 
@@ -183,10 +186,40 @@ RegisterNUICallback('removeMail', function(data)
     TriggerServerEvent('qb-phone:server:removeMail', data.mailId)
 end)
 
---- CODE
+RegisterNUICallback('getTweets', function()
+    QBCore.Functions.TriggerCallback('qb-phone:server:getPhoneTweets', function(tweets)
+        SendNUIMessage({
+            task = "setupTweets",
+            tweets = tweets
+        })
+    end)
+end)
 
-local inPhone = false
-local allowNotifys = true
+RegisterNUICallback('postTweet', function(data)
+    TriggerServerEvent('qb-phone:server:postTweet', data.message)
+end)
+
+RegisterNetEvent('qb-phone:client:newTweet')
+AddEventHandler('qb-phone:client:newTweet', function(sender)
+    if inPhone then
+        QBCore.Functions.TriggerCallback('qb-phone:server:getPhoneTweets', function(tweets)
+            SendNUIMessage({
+                task = "newTweet",
+                tweets = tweets,
+                sender = sender
+            })
+        end)
+    end
+
+    if not inPhone then
+        SendNUIMessage({
+            task = "newTweetNotify",
+            sender = sender
+        })
+    end
+end)
+
+--- CODE
 
 function openPhone(bool)
     SetNuiFocus(bool, bool)
