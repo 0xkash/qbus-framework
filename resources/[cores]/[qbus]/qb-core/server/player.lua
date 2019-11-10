@@ -214,7 +214,7 @@ QBCore.Player.CreatePlayer = function(PlayerData)
 			elseif (itemInfo["unique"]) or (not slot or slot == nil) or (itemInfo["type"] == "weapon") then
 				for i = 1, QBConfig.Player.MaxInvSlots, 1 do
 					if self.PlayerData.items[i] == nil then
-						self.PlayerData.items[i] = {name = itemInfo["name"], amount = amount, info = info ~= nil and info or "", label = itemInfo["label"], description = itemInfo["description"] ~= nil and itemInfo["description"] or "", weight = itemInfo["weight"], type = itemInfo["type"], unique = itemInfo["unique"], useable = itemInfo["useable"], image = itemInfo["image"], slot = i}
+						self.PlayerData.items[i] = {name = itemInfo["name"], amount = amount, info = info ~= nil and info or "", label = itemInfo["label"], description = itemInfo["description"] ~= nil and itemInfo["description"] or "", weight = itemInfo["weight"], type = itemInfo["type"], unique = itemInfo["unique"], useable = itemInfo["useable"], image = itemInfo["image"], shouldClose = itemInfo["shouldClose"], slot = i}
 						self.Functions.UpdatePlayerData()
 						--TriggerClientEvent('QBCore:Notify', self.PlayerData.source, itemInfo["label"].. " toegevoegd!", "success")
 						return true
@@ -277,14 +277,6 @@ QBCore.Player.CreatePlayer = function(PlayerData)
 		local item = tostring(item):lower()
 		local slot = QBCore.Player.GetFirstSlotByItem(self.PlayerData.items, item)
 		if slot ~= nil then
-			return self.PlayerData.items[slot]
-		end
-		return nil
-	end
-
-	self.Functions.GetItemBySlot = function(slot)
-		local slot = tonumber(slot)
-		if self.PlayerData.items[slot] ~= nil then
 			return self.PlayerData.items[slot]
 		end
 		return nil

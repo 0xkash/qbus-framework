@@ -219,6 +219,7 @@ function handleDragDrop() {
             fromData = ui.draggable.data("item");
             fromInventory = ui.draggable.parent().attr("data-inventory");
             if(fromData.useable) {
+                console.log(fromData)
                 if (fromData.shouldClose) {
                     Inventory.Close();
                 }

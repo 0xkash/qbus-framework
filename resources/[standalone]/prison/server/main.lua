@@ -27,3 +27,10 @@ AddEventHandler('prison:server:GiveJailItems', function()
     Player.Functions.SetInventory(Player.PlayerData.metadata["jailitems"])
     Player.Functions.SetMetaData("jailitems", {})
 end)
+
+QBCore.Functions.CreateUseableItem("electronickit", function(source, item)
+    local Player = QBCore.Functions.GetPlayer(source)
+	if Player.Functions.GetItemByName(item.name) then
+        TriggerClientEvent("electronickit:UseElectronickit", source)
+    end
+end)
