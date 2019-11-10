@@ -56,3 +56,17 @@ Config.DeliveryLocations = {
         }
     },
 }
+
+Config.CornerSellingZones = {
+    [1] = {
+        ["coords"] = {
+            ["x"] = -1415.53,
+            ["y"] = -1041.51,
+            ["z"] = 4.62,
+        },
+        ["time"] = {
+            ["min"] = 12,
+            ["max"] = 18,
+        },
+    },
+}

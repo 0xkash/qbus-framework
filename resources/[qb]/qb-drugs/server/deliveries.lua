@@ -39,7 +39,7 @@ AddEventHandler('qb-drugs:server:succesDelivery', function(deliveryData, inTime)
             TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items["weed_brick"], "remove")
             TriggerClientEvent('QBCore:Notify', src, 'De bestelling is compleet afgeleverd', 'success')
 
-            SetTimeout(math.random(2000, 8000), function()
+            SetTimeout(math.random(5000, 10000), function()
                 TriggerClientEvent('qb-drugs:client:sendDeliveryMail', src, 'perfect', deliveryData)
 
                 Player.Functions.SetMetaData('dealerrep', (curRep + 1))
@@ -52,7 +52,7 @@ AddEventHandler('qb-drugs:server:succesDelivery', function(deliveryData, inTime)
 
             TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items["weed_brick"], "remove")
 
-            SetTimeout(math.random(2000, 8000), function()
+            SetTimeout(math.random(5000, 10000), function()
                 TriggerClientEvent('qb-drugs:client:sendDeliveryMail', src, 'bad', deliveryData)
 
                 if curRep - 1 > 0 then
@@ -70,7 +70,7 @@ AddEventHandler('qb-drugs:server:succesDelivery', function(deliveryData, inTime)
 
         TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items["weed_brick"], "remove")
 
-        SetTimeout(math.random(2000, 8000), function()
+        SetTimeout(math.random(5000, 10000), function()
             TriggerClientEvent('qb-drugs:client:sendDeliveryMail', src, 'late', deliveryData)
 
             if curRep - 1 > 0 then
