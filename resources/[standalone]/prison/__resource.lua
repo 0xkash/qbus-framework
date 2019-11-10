@@ -5,6 +5,7 @@ description 'QBCore:Prison'
 client_scripts {
 	'config.lua',
 	'client/main.lua',
+	'client/jobs.lua',
 }
 
 server_scripts {

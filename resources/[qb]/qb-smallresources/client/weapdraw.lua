@@ -116,10 +116,10 @@ Citizen.CreateThread(function()
 						else
 							canFire = false
 							TaskPlayAnimAdvanced(PlayerPedId(), "reaction@intimidation@1h", "intro", GetEntityCoords(PlayerPedId(), true), 0, 0, rot, 8.0, 3.0, -1, 50, 0, 0, 0)
-							Citizen.Wait(700)
+							Citizen.Wait(1000)
 							SetCurrentPedWeapon(PlayerPedId(), newWeap, true)
 							currWeapon = newWeap
-							Citizen.Wait(1700)
+							Citizen.Wait(1400)
 							ClearPedTasks(PlayerPedId())
 							holstered = false
 							canFire = true
@@ -141,13 +141,13 @@ Citizen.CreateThread(function()
 						else
 							canFire = false
 							TaskPlayAnimAdvanced(PlayerPedId(), "reaction@intimidation@1h", "outro", GetEntityCoords(PlayerPedId(), true), 0, 0, rot, 8.0, 3.0, -1, 50, 0, 0, 0)
-							Citizen.Wait(1300)
+							Citizen.Wait(1600)
 							SetCurrentPedWeapon(PlayerPedId(), GetHashKey('WEAPON_UNARMED'), true)
 							TaskPlayAnimAdvanced(PlayerPedId(), "reaction@intimidation@1h", "intro", GetEntityCoords(PlayerPedId(), true), 0, 0, rot, 8.0, 3.0, -1, 50, 0, 0, 0)
-							Citizen.Wait(700)
+							Citizen.Wait(1000)
 							SetCurrentPedWeapon(PlayerPedId(), newWeap, true)
 							currWeapon = newWeap
-							Citizen.Wait(1700)
+							Citizen.Wait(1400)
 							ClearPedTasks(PlayerPedId())
 							holstered = false
 							canFire = true
@@ -166,10 +166,10 @@ Citizen.CreateThread(function()
 						else
 							SetCurrentPedWeapon(PlayerPedId(), GetHashKey('WEAPON_UNARMED'), true)
 							TaskPlayAnimAdvanced(PlayerPedId(), "reaction@intimidation@1h", "intro", GetEntityCoords(PlayerPedId(), true), 0, 0, rot, 8.0, 3.0, -1, 50, 0, 0, 0)
-							Citizen.Wait(700)
+							Citizen.Wait(1000)
 							SetCurrentPedWeapon(PlayerPedId(), newWeap, true)
 							currWeapon = newWeap
-							Citizen.Wait(1700)
+							Citizen.Wait(1400)
 							ClearPedTasks(PlayerPedId())
 							holstered = false
 							canFire = true
@@ -190,7 +190,7 @@ Citizen.CreateThread(function()
 						else
 							canFire = false
 							TaskPlayAnimAdvanced(PlayerPedId(), "reaction@intimidation@1h", "outro", GetEntityCoords(PlayerPedId(), true), 0, 0, rot, 8.0, 3.0, -1, 50, 0, 0, 0)
-							Citizen.Wait(1300)
+							Citizen.Wait(1400)
 							SetCurrentPedWeapon(PlayerPedId(), GetHashKey('WEAPON_UNARMED'), true)
 							ClearPedTasks(PlayerPedId())
 							SetCurrentPedWeapon(PlayerPedId(), newWeap, true)
