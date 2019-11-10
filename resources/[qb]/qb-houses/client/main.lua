@@ -304,6 +304,18 @@ AddEventHandler('qb-houses:client:RingDoor', function(player, house)
     end
 end)
 
+RegisterNetEvent('qb-houses:client:giveHouseKey')
+AddEventHandler('qb-houses:client:giveHouseKey', function(data)
+    TriggerServerEvent('qb-houses:server:giveHouseKey', data.id, closesthouse)
+end)
+
+RegisterNetEvent('qb-houses:client:refreshHouse')
+AddEventHandler('qb-houses:client:refreshHouse', function(data)
+    SetClosestHouse()
+    Citizen.Wait(100)
+    TriggerEvent('qb-garages:client:setHouseGarage', closesthouse, hasKey)
+end)
+
 RegisterNetEvent('qb-houses:client:SpawnInApartment')
 AddEventHandler('qb-houses:client:SpawnInApartment', function(house)
     local pos = GetEntityCoords(GetPlayerPed(-1))
@@ -340,10 +352,10 @@ function changeOutfit()
 	TaskPlayAnim(GetPlayerPed(-1), "clothingshirt", "exit", 8.0, 1.0, -1, 49, 0, 0, 0, 0)
 end
 
-RegisterNetEvent('qb-houses:client:giveHouseKey')
-AddEventHandler('qb-houses:client:giveHouseKey', function(data)
-    TriggerServerEvent('qb-houses:server:giveKey', closesthouse, data.id)
-end)
+-- RegisterNetEvent('qb-houses:client:giveHouseKey')
+-- AddEventHandler('qb-houses:client:giveHouseKey', function(data)
+--     TriggerServerEvent('qb-houses:server:giveKey', closesthouse, data.id)
+-- end)
 
 function OutfitsLijst()
     QBCore.Functions.TriggerCallback('qb-houses:server:getSavedOutfits', function(outfits)

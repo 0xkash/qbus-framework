@@ -81,8 +81,8 @@ Config.MenuItems = {
                         title = 'Geef Huis Sleutel',
                         icon = '#vehiclekey',
                         type = 'client',
-                        event = 'qb-radialmenu:client:playerCheck',
-                        shouldClose = false,
+                        event = 'qb-houses:client:giveHouseKey',
+                        shouldClose = true,
                         items = {},
                     },
                     {

@@ -99,27 +99,37 @@ Citizen.CreateThread(function()
     while true do
 
         if cornerselling then
-            if not hasTarget then
-                local PlayerPeds = {}
-                if next(PlayerPeds) == nil then
-                    for _, player in ipairs(GetActivePlayers()) do
-                        local ped = GetPlayerPed(player)
-                        table.insert(PlayerPeds, ped)
+            local player = GetPlayerPed(-1)
+            local coords = GetEntityCoords(player)
+            for _, zone in pairs(Config.CornerSellingZones) do
+                local zoneDist = GetDistanceBetweenCoords(coords, zone["coords"]["x"], zone["coords"]["y"], zone["coords"]["z"], true)
+                if zoneDist < 150 then
+                    local hours = GetClockHours()
+
+                    if hours > zone["time"]["min"] and hours < 24 or hours < zone["time"]["max"] and hours > 0 then
+                        if not hasTarget then
+                            local PlayerPeds = {}
+                            if next(PlayerPeds) == nil then
+                                for _, player in ipairs(GetActivePlayers()) do
+                                    local ped = GetPlayerPed(player)
+                                    table.insert(PlayerPeds, ped)
+                                end
+                            end
+                            
+                            local closestPed, closestDistance = QBCore.Functions.GetClosestPed(coords, PlayerPeds)
+
+                            if closestDistance < 15.0 and closestPed ~= 0 then
+                                SellToPed(closestPed)
+                            end
+                        end
+
+                        local startDist = GetDistanceBetweenCoords(startLocation, GetEntityCoords(GetPlayerPed(-1)))
+
+                        if startDist > 10 then
+                            toFarAway()
+                        end
                     end
                 end
-                local player = GetPlayerPed(-1)
-                local coords = GetEntityCoords(player)
-                local closestPed, closestDistance = QBCore.Functions.GetClosestPed(coords, PlayerPeds)
-
-                if closestDistance < 15.0 and closestPed ~= 0 then
-                    SellToPed(closestPed)
-                end
-            end
-
-            local startDist = GetDistanceBetweenCoords(startLocation, GetEntityCoords(GetPlayerPed(-1)))
-
-            if startDist > 10 then
-                toFarAway()
             end
         end
 

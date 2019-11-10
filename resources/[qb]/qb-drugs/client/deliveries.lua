@@ -147,7 +147,7 @@ function requestDelivery()
         ["dealer"] = currentDealer
     }
     TriggerServerEvent('qb-drugs:server:giveDeliveryItems', amount)
-    SetTimeout(1000, function()
+    SetTimeout(math.random(20000, 30000), function()
         TriggerServerEvent('qb-phone:server:sendNewMail', {
             sender = Config.Dealers[currentDealer]["name"],
             subject = "Aflever Locatie",
@@ -249,7 +249,7 @@ AddEventHandler('qb-drugs:client:sendDeliveryMail', function(type, deliveryData)
         TriggerServerEvent('qb-phone:server:sendNewMail', {
             sender = Config.Dealers[deliveryData["dealer"]]["name"],
             subject = "Levering",
-            message = "Je hebt goed werk geleverd! Ik hoop snel weer zaken te kunnen doen ;)<br><br>Groeten, "..deliveryData["dealer"]
+            message = "Je hebt goed werk geleverd! Ik hoop snel weer zaken te kunnen doen ;)<br><br>Groeten, "..Config.Dealers[deliveryData["dealer"]]["name"]
         })
     elseif type == 'bad' then
         TriggerServerEvent('qb-phone:server:sendNewMail', {
