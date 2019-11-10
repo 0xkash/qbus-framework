@@ -79,6 +79,33 @@ AddEventHandler('police:server:PutPlayerInVehicle', function(playerId)
     end
 end)
 
+RegisterServerEvent('police:server:BillPlayer')
+AddEventHandler('police:server:BillPlayer', function(playerId, price)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    local OtherPlayer = QBCore.Functions.GetPlayer(playerId)
+    if Player.PlayerData.job.name == "police" then
+        if OtherPlayer ~= nil then
+            OtherPlayer.Functions.RemoveMoney("bank", price)
+            TriggerClientEvent('QBCore:Notify', OtherPlayer.PlayerData.source, "Je hebt een boete ontvangen van €"..price)
+        end
+    end
+end)
+
+RegisterServerEvent('police:server:JailPlayer')
+AddEventHandler('police:server:JailPlayer', function(playerId, time)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    local OtherPlayer = QBCore.Functions.GetPlayer(playerId)
+    if Player.PlayerData.job.name == "police" then
+        if OtherPlayer ~= nil then
+            OtherPlayer.Functions.SetMetaData("injail", time)
+            TriggerClientEvent("police:client:SendToJail", OtherPlayer.PlayerData.source, time)
+            TriggerClientEvent('QBCore:Notify', src, "Je hebt de persoon naar de gevangenis gestuurd voor "..time.." maanden")
+        end
+    end
+end)
+
 RegisterServerEvent('police:server:SetHandcuffStatus')
 AddEventHandler('police:server:SetHandcuffStatus', function(isHandcuffed)
 	local src = source
@@ -302,6 +329,36 @@ QBCore.Commands.Add("clearcasings", "Haal kogelhulsen in de buurt weg (zorg ervo
 	local Player = QBCore.Functions.GetPlayer(source)
     if Player.PlayerData.job.name == "police" then
         TriggerClientEvent("evidence:client:ClearCasingsInArea", source)
+    else
+        TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Dit command is voor hulpdiensten!")
+    end
+end)
+
+QBCore.Commands.Add("boete", "Schrijf een boete uit voor een persoon", {{name="id", help="Speler ID"},{name="prijs", help="Prijs van de boete"}}, true, function(source, args)
+    local Player = QBCore.Functions.GetPlayer(source)
+    if Player.PlayerData.job.name == "police" then
+        local playerId = tonumber(args[1])
+        local price = tonumber(args[2])
+        if price > 0 then
+            TriggerClientEvent("police:client:BillCommand", source, playerId, price)
+        else
+            TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Prijs moet hoger zijn dan 0")
+        end
+    else
+        TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Dit command is voor hulpdiensten!")
+    end
+end)
+
+QBCore.Commands.Add("jail", "Stuur een persoon naar de gevangenis", {{name="id", help="Speler ID"},{name="tijd", help="Tijd hoelang hij moet rotten >:)"}}, true, function(source, args)
+	local Player = QBCore.Functions.GetPlayer(source)
+    if Player.PlayerData.job.name == "police" then
+        local playerId = tonumber(args[1])
+        local time = tonumber(args[2])
+        if time > 0 then
+            TriggerClientEvent("police:client:JailCommand", source, playerId, time)
+        else
+            TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Tijd moet hoger zijn dan 0")
+        end
     else
         TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Dit command is voor hulpdiensten!")
     end

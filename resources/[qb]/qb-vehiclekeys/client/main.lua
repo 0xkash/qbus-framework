@@ -151,7 +151,9 @@ end)
 RegisterNetEvent('lockpicks:UseLockpick')
 AddEventHandler('lockpicks:UseLockpick', function()
     if (IsPedInAnyVehicle(GetPlayerPed(-1))) then
-        LockpickIgnition()
+        if not HasKey then
+            LockpickIgnition()
+        end
     else
         LockpickDoor()
     end

@@ -51,6 +51,9 @@ AddEventHandler('QBCore:Client:OnPlayerUnload', function()
     TriggerServerEvent("police:server:SetHandcuffStatus", false)
     isLoggedIn = false
     isHandcuffed = false
+    isEscorted = false
+    ClearPedTasks(GetPlayerPed(-1))
+    DetachEntity(GetPlayerPed(-1), true, false)
 end)
 
 RegisterNetEvent('112:client:SendPoliceAlert')
@@ -113,6 +116,16 @@ AddEventHandler('police:client:PoliceAlertMessage', function(msg, coords)
             return
         end
     end
+end)
+
+RegisterNetEvent('police:client:SendToJail')
+AddEventHandler('police:client:SendToJail', function(time)
+    TriggerServerEvent("police:server:SetHandcuffStatus", false)
+    isHandcuffed = false
+    isEscorted = false
+    ClearPedTasks(GetPlayerPed(-1))
+    DetachEntity(GetPlayerPed(-1), true, false)
+    TriggerEvent("prison:client:Enter", time)
 end)
 
 function RadarSound()

@@ -1,5 +1,7 @@
 Config = {}
 
 Config.Vehicles = {
-    ["ptouran"] = "VW Touran 2016",
+    ["ptouran"] = "Volkswagen Touran",
+    ["pbklasse"] = "Mercedes B-Klasse",
+    ["paudi"] = "Audi A6",
 }

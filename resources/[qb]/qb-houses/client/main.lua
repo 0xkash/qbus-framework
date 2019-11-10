@@ -436,7 +436,11 @@ end
 
 RegisterNetEvent('qb-houses:client:enterOwnedHouse')
 AddEventHandler('qb-houses:client:enterOwnedHouse', function(house)
-    enterOwnedHouse(house)
+    QBCore.Functions.GetPlayerData(function(PlayerData)
+		if PlayerData.metadata["injail"] == 0 then
+			enterOwnedHouse(house)
+		end
+	end)
 end)
 
 function leaveOwnedHouse(house)
