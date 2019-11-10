@@ -92,6 +92,56 @@ AddEventHandler('police:client:SearchPlayer', function()
     end
 end)
 
+RegisterNetEvent('police:client:JailCommand')
+AddEventHandler('police:client:JailCommand', function(playerId, time)
+    TriggerServerEvent("police:server:JailPlayer", playerId, tonumber(time))
+end)
+
+RegisterNetEvent('police:client:BillCommand')
+AddEventHandler('police:client:BillCommand', function(playerId, price)
+    TriggerServerEvent("police:server:BillPlayer", playerId, tonumber(price))
+end)
+
+RegisterNetEvent('police:client:JailPlayer')
+AddEventHandler('police:client:JailPlayer', function()
+    local player, distance = GetClosestPlayer()
+    if player ~= -1 and distance < 2.5 then
+        local playerId = GetPlayerServerId(player)
+        DisplayOnscreenKeyboard(1, "", "", "", "", "", "", 20)
+        while UpdateOnscreenKeyboard() ~= 1 and UpdateOnscreenKeyboard() ~= 2 do
+            Citizen.Wait(7)
+        end
+        local time = GetOnscreenKeyboardResult()
+        if tonumber(time) > 0 then
+            TriggerServerEvent("police:server:JailPlayer", playerId, tonumber(time))
+        else
+            QBCore.Functions.Notify("Tijd moet hoger zijn dan 0..", "error")
+        end
+    else
+        QBCore.Functions.Notify("Niemand in de buurt!", "error")
+    end
+end)
+
+RegisterNetEvent('police:client:BillPlayer')
+AddEventHandler('police:client:BillPlayer', function()
+    local player, distance = GetClosestPlayer()
+    if player ~= -1 and distance < 2.5 then
+        local playerId = GetPlayerServerId(player)
+        DisplayOnscreenKeyboard(1, "", "", "", "", "", "", 20)
+        while UpdateOnscreenKeyboard() ~= 1 and UpdateOnscreenKeyboard() ~= 2 do
+            Citizen.Wait(7)
+        end
+        local price = GetOnscreenKeyboardResult()
+        if tonumber(price) > 0 then
+            TriggerServerEvent("police:server:BillPlayer", playerId, tonumber(price))
+        else
+            QBCore.Functions.Notify("Prijs moet hoger zijn dan 0..", "error")
+        end
+    else
+        QBCore.Functions.Notify("Niemand in de buurt!", "error")
+    end
+end)
+
 RegisterNetEvent('police:client:PutPlayerInVehicle')
 AddEventHandler('police:client:PutPlayerInVehicle', function()
     local player, distance = GetClosestPlayer()

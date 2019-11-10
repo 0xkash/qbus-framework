@@ -115,11 +115,11 @@ Citizen.CreateThread(function()
 							canFire = true
 						else
 							canFire = false
-							TaskPlayAnimAdvanced(PlayerPedId(), "reaction@intimidation@1h", "intro", GetEntityCoords(PlayerPedId(), true), 0, 0, rot, 3.0, 3.0, -1, 50, 0, 0, 0)
+							TaskPlayAnimAdvanced(PlayerPedId(), "reaction@intimidation@1h", "intro", GetEntityCoords(PlayerPedId(), true), 0, 0, rot, 8.0, 3.0, -1, 50, 0, 0, 0)
 							Citizen.Wait(1000)
 							SetCurrentPedWeapon(PlayerPedId(), newWeap, true)
 							currWeapon = newWeap
-							Citizen.Wait(2000)
+							Citizen.Wait(1400)
 							ClearPedTasks(PlayerPedId())
 							holstered = false
 							canFire = true
@@ -140,14 +140,14 @@ Citizen.CreateThread(function()
 							canFire = true
 						else
 							canFire = false
-							TaskPlayAnimAdvanced(PlayerPedId(), "reaction@intimidation@1h", "outro", GetEntityCoords(PlayerPedId(), true), 0, 0, rot, 3.0, 3.0, -1, 50, 0, 0, 0)
+							TaskPlayAnimAdvanced(PlayerPedId(), "reaction@intimidation@1h", "outro", GetEntityCoords(PlayerPedId(), true), 0, 0, rot, 8.0, 3.0, -1, 50, 0, 0, 0)
 							Citizen.Wait(1600)
 							SetCurrentPedWeapon(PlayerPedId(), GetHashKey('WEAPON_UNARMED'), true)
-							TaskPlayAnimAdvanced(PlayerPedId(), "reaction@intimidation@1h", "intro", GetEntityCoords(PlayerPedId(), true), 0, 0, rot, 3.0, 3.0, -1, 50, 0, 0, 0)
+							TaskPlayAnimAdvanced(PlayerPedId(), "reaction@intimidation@1h", "intro", GetEntityCoords(PlayerPedId(), true), 0, 0, rot, 8.0, 3.0, -1, 50, 0, 0, 0)
 							Citizen.Wait(1000)
 							SetCurrentPedWeapon(PlayerPedId(), newWeap, true)
 							currWeapon = newWeap
-							Citizen.Wait(2000)
+							Citizen.Wait(1400)
 							ClearPedTasks(PlayerPedId())
 							holstered = false
 							canFire = true
@@ -165,11 +165,11 @@ Citizen.CreateThread(function()
 							canFire = true
 						else
 							SetCurrentPedWeapon(PlayerPedId(), GetHashKey('WEAPON_UNARMED'), true)
-							TaskPlayAnimAdvanced(PlayerPedId(), "reaction@intimidation@1h", "intro", GetEntityCoords(PlayerPedId(), true), 0, 0, rot, 3.0, 3.0, -1, 50, 0, 0, 0)
+							TaskPlayAnimAdvanced(PlayerPedId(), "reaction@intimidation@1h", "intro", GetEntityCoords(PlayerPedId(), true), 0, 0, rot, 8.0, 3.0, -1, 50, 0, 0, 0)
 							Citizen.Wait(1000)
 							SetCurrentPedWeapon(PlayerPedId(), newWeap, true)
 							currWeapon = newWeap
-							Citizen.Wait(2000)
+							Citizen.Wait(1400)
 							ClearPedTasks(PlayerPedId())
 							holstered = false
 							canFire = true
@@ -189,8 +189,8 @@ Citizen.CreateThread(function()
 							currWeapon = newWeap
 						else
 							canFire = false
-							TaskPlayAnimAdvanced(PlayerPedId(), "reaction@intimidation@1h", "outro", GetEntityCoords(PlayerPedId(), true), 0, 0, rot, 3.0, 3.0, -1, 50, 0, 0, 0)
-							Citizen.Wait(1600)
+							TaskPlayAnimAdvanced(PlayerPedId(), "reaction@intimidation@1h", "outro", GetEntityCoords(PlayerPedId(), true), 0, 0, rot, 8.0, 3.0, -1, 50, 0, 0, 0)
+							Citizen.Wait(1400)
 							SetCurrentPedWeapon(PlayerPedId(), GetHashKey('WEAPON_UNARMED'), true)
 							ClearPedTasks(PlayerPedId())
 							SetCurrentPedWeapon(PlayerPedId(), newWeap, true)

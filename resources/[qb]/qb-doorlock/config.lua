@@ -251,4 +251,146 @@ QB.Doors = {
 		distance = 12,
 		size = 2
 	},
+	{
+		objName = 'prop_gate_prison_01',
+		objCoords  = vector3(1799.237, 2616.303, 44.6),
+		textCoords = vector3(1795.941, 2616.969, 48.0),
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		distance = 12,
+		size = 2
+	},
+	--outside doors
+	{
+		objName = 'prop_fnclink_03gate5',
+		objCoords  = vector3(1796.322, 2596.574, 45.565),
+		textCoords = vector3(1796.322, 2596.574, 45.965),
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		distance = 2.5,
+		size = 2
+	},
+	{
+		objName = 'v_ilev_gtdoor',
+		objCoords  = vector3(1821.677, 2477.265, 45.945),
+		textCoords = vector3(1821.677, 2477.265, 45.945),
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		distance = 2.5,
+		size = 2
+	},
+	{
+		objName = 'v_ilev_gtdoor',
+		objCoords  = vector3(1760.692, 2413.251, 45.945),
+		textCoords = vector3(1760.692, 2413.251, 45.945),
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		distance = 2.5,
+		size = 2
+	},
+	{
+		objName = 'v_ilev_gtdoor',
+		objCoords  = vector3(1543.58, 2470.252, 45.945),
+		textCoords = vector3(1543.58, 2470.25, 45.945),
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		distance = 2.5,
+		size = 2
+	},
+	{
+		objName = 'v_ilev_gtdoor',
+		objCoords  = vector3(1659.733, 2397.475, 45.945),
+		textCoords = vector3(1659.733, 2397.475, 45.945),
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		distance = 2.5,
+		size = 2
+	},
+	{
+		objName = 'v_ilev_gtdoor',
+		objCoords  = vector3(1537.731, 2584.842, 45.945),
+		textCoords = vector3(1537.731, 2584.842, 45.945),
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		distance = 2.5,
+		size = 2
+	},
+	{
+		objName = 'v_ilev_gtdoor',
+		objCoords  = vector3(1571.964, 2678.354, 45.945),
+		textCoords = vector3(1571.964, 2678.354, 45.945),
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		distance = 2.5,
+		size = 2
+	},
+	{
+		objName = 'v_ilev_gtdoor',
+		objCoords  = vector3(1650.18, 2755.104, 45.945),
+		textCoords = vector3(1650.18, 2755.104, 45.945),
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		distance = 2.5,
+		size = 2
+	},
+	{
+		objName = 'v_ilev_gtdoor',
+		objCoords  = vector3(1771.98, 2759.98, 45.945),
+		textCoords = vector3(1771.98, 2759.98, 45.945),
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		distance = 2.5,
+		size = 2
+	},
+	{
+		objName = 'v_ilev_gtdoor',
+		objCoords  = vector3(1845.7, 2699.79, 45.945),
+		textCoords = vector3(1845.7, 2699.79, 45.945),
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		distance = 2.5,
+		size = 2
+	},
+	{
+		objName = 'v_ilev_gtdoor',
+		objCoords  = vector3(1820.68, 2621.95, 45.945),
+		textCoords = vector3(1820.68, 2621.95, 45.945),
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		distance = 2.5,
+		size = 2
+	},
+	-- Indoor Visitor
+	{
+		objName = 'v_ilev_cd_entrydoor',
+		objCoords  = vector3(1703.749, 2577.101, -69.4),
+		textCoords = vector3(1703.749, 2577.101, -69.4),
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		distance = 2.5,
+		size = 2
+	},
+	{--2
+		objName = 'v_ilev_cd_entrydoor',
+		objCoords  = vector3(1693.135, 2578.432, -69.4),
+		textCoords = vector3(1693.135, 2578.432, -69.4),
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		distance = 2.5,
+		size = 2
+	},
 }

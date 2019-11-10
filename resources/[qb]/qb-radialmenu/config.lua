@@ -286,5 +286,21 @@ Config.JobInteractions = {
             event = 'police:client:SearchPlayer',
             shouldClose = true,
         },
+        {
+            id    = 'jailplayer',
+            title = 'Gevangenis',
+            icon = '#general',
+            type = 'client',
+            event = 'police:client:JailPlayer',
+            shouldClose = true,
+        },
+        {
+            id    = 'billplayer',
+            title = 'Boete',
+            icon = '#general',
+            type = 'client',
+            event = 'police:client:BillPlayer',
+            shouldClose = true,
+        },
     },
 }
