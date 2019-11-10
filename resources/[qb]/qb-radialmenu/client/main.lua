@@ -22,57 +22,57 @@ end)
 local inRadialMenu = false
 
 function setupSubItems()
-    local closestPlayers = QBCore.Functions.GetPlayersFromCoords()
-    local closestHousePlayers = {}
-    local closestVehiclePlayers = {}
+    -- local closestPlayers = QBCore.Functions.GetPlayersFromCoords()
+    -- local closestHousePlayers = {}
+    -- local closestVehiclePlayers = {}
 
-    for k, v in pairs(closestPlayers) do
-        table.insert(closestHousePlayers, {
-            id = GetPlayerServerId(v),
-            title = GetPlayerName(PlayerId(v)),
-            icon = '#citizen',
-            type = 'client',
-            event = 'qb-houses:client:giveHouseKey',
-            shouldClose = true,
-        })
+    -- for k, v in pairs(closestPlayers) do
+    --     table.insert(closestHousePlayers, {
+    --         id = GetPlayerServerId(v),
+    --         title = GetPlayerName(PlayerId(v)),
+    --         icon = '#citizen',
+    --         type = 'client',
+    --         event = 'qb-houses:client:giveHouseKey',
+    --         shouldClose = true,
+    --     })
 
-        table.insert(closestVehiclePlayers, {
-            id = GetPlayerServerId(v),
-            title = GetPlayerName(PlayerId(v)),
-            icon = '#citizen',
-            type = 'client',
-            event = 'qb-houses:client:giveVehicleKey',
-            shouldClose = true,
-        })
-    end
+    --     table.insert(closestVehiclePlayers, {
+    --         id = GetPlayerServerId(v),
+    --         title = GetPlayerName(PlayerId(v)),
+    --         icon = '#citizen',
+    --         type = 'client',
+    --         event = 'qb-houses:client:giveVehicleKey',
+    --         shouldClose = true,
+    --     })
+    -- end
 
-    if next(closestVehiclePlayers) ~= nil then
-        Config.MenuItems[3].items[1].items = closestVehiclePlayers
-    else
-        Config.MenuItems[3].items[1] = 
-        {
-            id    = 'givekey',
-            title = 'Geef Voertuig Sleutel',
-            icon = '#vehiclekey',
-            type = 'client',
-            event = 'qb-radialmenu:client:noPlayers',
-            shouldClose = true,
-        }
-    end
+    -- if next(closestVehiclePlayers) ~= nil then
+    --     Config.MenuItems[3].items[1].items = closestVehiclePlayers
+    -- else
+    --     Config.MenuItems[3].items[1] = 
+    --     {
+    --         id    = 'givekey',
+    --         title = 'Geef Voertuig Sleutel',
+    --         icon = '#vehiclekey',
+    --         type = 'client',
+    --         event = 'qb-radialmenu:client:noPlayers',
+    --         shouldClose = true,
+    --     }
+    -- end
 
-    if next(closestHousePlayers) ~= nil then
-        Config.MenuItems[2].items[1].items[1].items = closestHousePlayers
-    else
-        Config.MenuItems[2].items[1].items[1] = 
-        {
-            id    = 'givehousekey',
-            title = 'Geef Huis Sleutel',
-            icon = '#vehiclekey',
-            type = 'client',
-            event = 'qb-radialmenu:client:noPlayers',
-            shouldClose = true,
-        }
-    end
+    -- if next(closestHousePlayers) ~= nil then
+    --     Config.MenuItems[2].items[1].items[1].items = closestHousePlayers
+    -- else
+    --     Config.MenuItems[2].items[1].items[1] = 
+    --     {
+    --         id    = 'givehousekey',
+    --         title = 'Geef Huis Sleutel',
+    --         icon = '#vehiclekey',
+    --         type = 'client',
+    --         event = 'qb-radialmenu:client:noPlayers',
+    --         shouldClose = true,
+    --     }
+    -- end
     QBCore.Functions.GetPlayerData(function(PlayerData)
         if Config.JobInteractions[PlayerData.job.name] ~= nil then
             Config.MenuItems[4].items = Config.JobInteractions[PlayerData.job.name]
