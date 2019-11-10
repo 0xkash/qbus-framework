@@ -9,13 +9,14 @@ AddEventHandler('prison:server:SetJailStatus', function(jailTime)
 end)
 
 RegisterServerEvent('prison:server:SaveJailItems')
-AddEventHandler('prison:server:SaveJailItems', function()
+AddEventHandler('prison:server:SaveJailItems', function(jailTime)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    if Player.PlayerData.metadata["jailitems"] ~= nil and next(Player.PlayerData.metadata["jailitems"]) ~= nil then 
+    if next(Player.PlayerData.metadata["jailitems"]) == nil then 
         Player.Functions.SetMetaData("jailitems", Player.PlayerData.items)
         Player.Functions.ClearInventory()
-        
+        Player.Functions.AddItem("water_bottle", jailTime)
+        Player.Functions.AddItem("sandwich", jailTime)
     end
 end)
 

@@ -8,3 +8,9 @@ Keys = {
     ["HOME"] = 213, ["PAGEUP"] = 10, ["PAGEDOWN"] = 11, ["DELETE"] = 178,
     ["LEFT"] = 174, ["RIGHT"] = 175, ["TOP"] = 27, ["DOWN"] = 173,
 }
+
+Consumeables = {
+    ["sandwich"] = math.random(35, 54),
+    ["water_bottle"] = math.random(35, 54),
+    ["tosti"] = math.random(40, 50),
+}

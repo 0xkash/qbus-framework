@@ -142,6 +142,13 @@ AddEventHandler('QBCore:Server:AddItem', function(itemName, amount, slot, info)
 	Player.Functions.AddItem(itemName, amount, slot, info)
 end)
 
+RegisterServerEvent('QBCore:Server:SetMetaData')
+AddEventHandler('QBCore:Server:SetMetaData', function(meta, data)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    Player.Functions.SetMetaData(meta, data)
+end)
+
 AddEventHandler('chatMessage', function(source, n, message)
 	if string.sub(message, 1, 1) == "/" then
 		local args = QBCore.Shared.SplitStr(message, " ")
