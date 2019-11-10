@@ -228,7 +228,7 @@ AddEventHandler('qb-houses:server:giveHouseKey', function(target, house)
 	local src = source
 	local tPlayer = QBCore.Functions.GetPlayer(target)
 
-	table.insert(housekeyholders[house], target.PlayerData.citizenid)
+	table.insert(housekeyholders[house], tPlayer.PlayerData.citizenid)
 	Wait(100)
 	QBCore.Functions.ExecuteSql('UPDATE `player_houses` SET keyholders = "'..housekeyholders[house]..'" WHERE `house` = "'..house..'"')
 	TriggerClientEvent('qb-houses:client:refreshHouse', tPlayer.PlayerData.source)
