@@ -6,6 +6,7 @@ client_scripts {
 	'config.lua',
 	'client/main.lua',
 	'client/jobs.lua',
+	'client/prisonbreak.lua',
 }
 
 server_scripts {

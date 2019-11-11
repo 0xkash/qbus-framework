@@ -27,6 +27,7 @@ end
 function CalculateUpgradePrice(standardPrice)
 	local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1))
 	local model = GetEntityModel(vehicle)
+	print("num mods: "..GetNumVehicleMods(vehicle,48))
 	local vehiclePrice = 25000
 	if QBCore.Shared.VehicleModels[model] ~= nil then
 		vehiclePrice = QBCore.Shared.VehicleModels[model]["price"]
@@ -148,7 +149,15 @@ local lsc = {
 			buttons = { 
 				
 			}
-		},["wheeliebar"] = { 
+		},
+		["livery"] = { 
+			title = "livery", 
+			name = "livery",
+			buttons = { 
+				
+			}
+		},
+		["wheeliebar"] = { 
 			title = "wheeliebar", 
 			name = "wheeliebar",
 			buttons = { 
@@ -1391,6 +1400,7 @@ local mods = {
 [16] = { mod = nil },
 [23] = { mod = nil },
 [24] = { mod = nil },
+[48] = { mod = nil },
 }
 
 function f(n)
@@ -1429,7 +1439,7 @@ function DriveInGarage()
 			local insrt = table.insert
 			lsc.menu["main"].buttons = {}
 			lsc.menu["bumpers"].buttons = {}
-			for i = 0,16 do
+			for i = 0,48 do
 				if GetNumVehicleMods(veh,i) ~= nil and GetNumVehicleMods(veh,i) ~= false then
 						if i == 16 then
 							insrt(lsc.menu["main"].buttons, {name = "Armor", description = "", centre = 0, font = 0, scale = 0.4})
@@ -1445,6 +1455,8 @@ function DriveInGarage()
 							insrt(lsc.menu["main"].buttons, {name = "Engine", description = "", centre = 0, font = 0, scale = 0.4})
 						elseif i == 0 then
 							insrt(lsc.menu["main"].buttons, {name = "Spoiler", description = "", centre = 0, font = 0, scale = 0.4})
+						elseif i == 48 then
+							insrt(lsc.menu["main"].buttons, {name = "Livery", description = "", centre = 0, font = 0, scale = 0.4})
 						elseif i == 1 then
 							bumper = true
 							insrt(lsc.menu["bumpers"].buttons, {name = "Front Bumpers", description = "", centre = 0, font = 0, scale = 0.4})
@@ -1637,6 +1649,22 @@ function DriveInGarage()
 					end
 				end	
 			end
+
+			mod = 48
+			lsc.menu["livery"].buttons = {}
+			SetVehicleModKit(veh,0)	
+			if GetNumVehicleMods(veh,mod) ~= nil and GetNumVehicleMods(veh,mod) ~= false then
+				insrt(lsc.menu["livery"].buttons, {name = "Stock",modtype = mod,costs = 0,mod = -1, description = "", centre = 0, font = 0, scale = 0.4})
+				for i = 0,   tonumber(GetNumVehicleMods(veh,mod)) -1 do
+					local lbl = GetModTextLabel(veh,mod,i)
+					if lbl ~= nil then
+						local name = tostring(GetLabelText(lbl))
+						if name ~= "NULL" then
+							insrt(lsc.menu["livery"].buttons, {name = name,modtype = mod,costs = 600,mod = i, description = "", centre = 0, font = 0, scale = 0.4})
+						end
+					end
+				end	
+			end
 			
 			mod = 6
 			lsc.menu["grille"].buttons = {}
@@ -1700,6 +1728,7 @@ function DriveOutOfGarage(pos)
 	lsc.menu["roof"].buttons = {}
 	lsc.menu["skirts"].buttons = {}
 	lsc.menu["spoiler"].buttons = {}
+	lsc.menu["livery"].buttons = {}
 	lsc.menu["grille"].buttons = {}
 	lsc.menu["main"].buttons = {}
 	lsc.menu["bumpers"].buttons = {}
@@ -1911,7 +1940,7 @@ Citizen.CreateThread(function()
 									else
 										drawMenuCost(button,lsc.menu.x,y,selected)
 									end
-								elseif lsc.currentmenu == "chassis" or lsc.currentmenu == "armor" or lsc.currentmenu == "brakes" or lsc.currentmenu == "exhaust" or lsc.currentmenu == "frontbumper" or lsc.currentmenu == "rearbumper" or lsc.currentmenu == "engine" or lsc.currentmenu == "fenders" or lsc.currentmenu == "hood" or lsc.currentmenu == "transmission" or lsc.currentmenu == "suspension" or lsc.currentmenu == "spoiler" or lsc.currentmenu == "skirts" or lsc.currentmenu == "roof" or lsc.currentmenu == "rollcage" or lsc.currentmenu == "horn" or lsc.currentmenu == "grille" then
+								elseif lsc.currentmenu == "chassis" or lsc.currentmenu == "armor" or lsc.currentmenu == "brakes" or lsc.currentmenu == "exhaust" or lsc.currentmenu == "frontbumper" or lsc.currentmenu == "rearbumper" or lsc.currentmenu == "engine" or lsc.currentmenu == "fenders" or lsc.currentmenu == "hood" or lsc.currentmenu == "transmission" or lsc.currentmenu == "suspension" or lsc.currentmenu == "spoiler" or lsc.currentmenu == "livery" or lsc.currentmenu == "skirts" or lsc.currentmenu == "roof" or lsc.currentmenu == "rollcage" or lsc.currentmenu == "horn" or lsc.currentmenu == "grille" then
 									if button.mod == -1  then
 										if mods[button.modtype].mod == -1 then
 											drawMenuOwned(lsc.menu.x,y,selected)
@@ -2076,7 +2105,7 @@ Citizen.CreateThread(function()
 										SetVehicleExtraColours(veh, extracol[1], button.colorindex)
 									end
 								end
-								if lsc.currentmenu == "horn" or lsc.currentmenu == "roof" or lsc.currentmenu == "suspension" or lsc.currentmenu == "horns" or lsc.currentmenu == "hood" or lsc.currentmenu == "grille" or lsc.currentmenu == "rollcage" or lsc.currentmenu == "exhaust" or lsc.currentmenu == "skirts" or lsc.currentmenu == "rearbumper" or lsc.currentmenu == "frontbumper" or lsc.currentmenu == "spoiler"  then
+								if lsc.currentmenu == "horn" or lsc.currentmenu == "roof" or lsc.currentmenu == "suspension" or lsc.currentmenu == "horns" or lsc.currentmenu == "hood" or lsc.currentmenu == "grille" or lsc.currentmenu == "rollcage" or lsc.currentmenu == "exhaust" or lsc.currentmenu == "skirts" or lsc.currentmenu == "rearbumper" or lsc.currentmenu == "frontbumper" or lsc.currentmenu == "spoiler" or lsc.currentmenu == "livery"  then
 									SetVehicleMod(veh, button.modtype, button.mod)
 									
 								end
@@ -2221,6 +2250,9 @@ function ButtonSelected(button)
 		elseif button.name == "Spoiler" then
 			SetVehicleModKit(car,0)
 			OpenMenu("spoiler")
+		elseif button.name == "Livery" then
+			SetVehicleModKit(car,0)
+			OpenMenu("livery")
 		elseif button.name == "Suspension" then
 			SetVehicleModKit(car,0)
 			OpenMenu("suspension")
@@ -2356,7 +2388,7 @@ function ButtonSelected(button)
 		end 
 	elseif lsc.currentmenu == "plate" then
 		plateindex = button.plateindex
-	elseif lsc.currentmenu == "chassis" or lsc.currentmenu == "armor" or lsc.currentmenu == "brakes" or lsc.currentmenu == "frontbumper" or lsc.currentmenu == "rearbumper" or lsc.currentmenu == "engine" or lsc.currentmenu == "exhaust" or lsc.currentmenu == "hood" or lsc.currentmenu == "horn" or lsc.currentmenu == "rollcage" or lsc.currentmenu == "roof" or lsc.currentmenu == "skirts" or lsc.currentmenu == "spoiler" or lsc.currentmenu == "suspension" or lsc.currentmenu == "transmission" or lsc.currentmenu == "grille" or lsc.currentmenu == "horn" then
+	elseif lsc.currentmenu == "chassis" or lsc.currentmenu == "armor" or lsc.currentmenu == "brakes" or lsc.currentmenu == "frontbumper" or lsc.currentmenu == "rearbumper" or lsc.currentmenu == "engine" or lsc.currentmenu == "exhaust" or lsc.currentmenu == "hood" or lsc.currentmenu == "horn" or lsc.currentmenu == "rollcage" or lsc.currentmenu == "roof" or lsc.currentmenu == "skirts" or lsc.currentmenu == "spoiler" or lsc.currentmenu == "livery" or lsc.currentmenu == "suspension" or lsc.currentmenu == "transmission" or lsc.currentmenu == "grille" or lsc.currentmenu == "horn" then
 		mods[button.modtype].mod = button.mod
 		SetVehicleMod(car,button.modtype,button.mod)
 	elseif lsc.currentmenu == "fenders" then
@@ -2534,6 +2566,9 @@ function Back()
 		OpenMenu(lsc.lastmenu)
 	elseif lsc.currentmenu == "spoiler" then
 		SetVehicleMod(car,0,mods[0].mod)
+		OpenMenu(lsc.lastmenu)
+	elseif lsc.currentmenu == "livery" then
+		SetVehicleMod(car,0,mods[48].mod)
 		OpenMenu(lsc.lastmenu)
 	elseif lsc.currentmenu == "frontbumper" then
 		SetVehicleMod(car,1,mods[1].mod)

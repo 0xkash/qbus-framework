@@ -30,6 +30,7 @@ Citizen.CreateThread(function()
                             JobDone()
                         end, function() -- Cancel
                             isWorking = false
+                            StopAnimTask(GetPlayerPed(-1), "anim@gangops@facility@servers@", "hotwire", 1.0)
                             QBCore.Functions.Notify("Geannuleerd..", "error")
                         end)
                     end

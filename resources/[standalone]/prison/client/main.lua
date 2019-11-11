@@ -175,11 +175,7 @@ end)
 
 RegisterNetEvent('prison:client:Enter')
 AddEventHandler('prison:client:Enter', function(time)
-	inJail = true
-	jailTime = time
-	TriggerServerEvent("prison:server:SetJailStatus", jailTime)
-	TriggerServerEvent("prison:server:SaveJailItems", jailTime)
-	QBCore.Functions.Notify("Je zit in de gevangenis voor "..jailTime.." maanden..", "error")
+	QBCore.Functions.Notify("Je zit in de gevangenis voor "..time.." maanden..", "error")
 	TriggerEvent("chatMessage", "SYSTEM", "warning", "Je bezit is in beslag genomen, je krijgt alles terug wanneer je tijd erop zit..")
 	DoScreenFadeOut(500)
 	while not IsScreenFadedOut() do
@@ -191,7 +187,13 @@ AddEventHandler('prison:client:Enter', function(time)
 	Citizen.Wait(500)
 	TriggerEvent('animations:client:EmoteCommandStart', {RandomStartPosition.animation})
 
+	inJail = true
+	jailTime = time
+	TriggerServerEvent("prison:server:SetJailStatus", jailTime)
+	TriggerServerEvent("prison:server:SaveJailItems", jailTime)
+
 	TriggerServerEvent("InteractSound_SV:PlayOnSource", "jail", 0.5)
+	
 	Citizen.Wait(2000)
 
 	DoScreenFadeIn(1000)

@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap');
+
+body {
+    padding-top: 5rem;
+    font-family: 'Roboto Mono', monospace!important;
+}
+
+.bg-custom {
+    background: #004682;
+}
+
+.navbar-custom {
+    position: absolute!important;
+    top:0!important;
+    width: 100%!important;
+    padding: 0!important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.navbar-custom .nav-link {
+    color: #ffffff!important;
+}
+
+.navbar-custom .nav-label {
+    color: #ffffff!important;
+    display: block;
+    text-decoration: none;
+}
+
+.navbar-custom .nav-link:hover {
+    background: rgba(0, 0, 0, 0.2)!important;
+}
+
+.navbar-custom span {
+    color: #ffffff!important;
+}
+
+.navbar-custom .nav-link-report {
+    display: block;
+    text-decoration: none;
+    color: #000000!important;
+    background: #fbfbfb!important;
+}
+
+.navbar-custom .nav-link-report:hover {
+    color: #015ba8!important;
+}
+
+.navbar-nav .nav-link, .navbar-nav .nav-link-report, .navbar-nav .nav-label {
+    padding: 3vh 2vw!important;
+}
+
+.dropdown-menu {
+    background: #004682!important;
+    border-radius: 0!important;
+}
+
+.dropdown-menu .dropdown-item {
+    color: #ffffff!important;
+}
+
+.dropdown-menu a:hover{
+    background: rgba(0, 0, 0, 0.2)!important;
+}
+
+.starter-template {
+    padding: 3rem 1.5rem;
+    text-align: center;
+}
+  

@@ -42,45 +42,6 @@
       <sirenSettings value="0" />
     </Item> 
     <Item>
-      <modelName>sgrx</modelName>
-      <colors>
-        <Item>
-          <indices content="char_array">
-            52
-            151
-            11
-            0 
-			2
-			156
-          </indices>
-          <liveries>
-            <Item value="false" />
-            <Item value="false" />
-            <Item value="false" />
-            <Item value="false" />
-            <Item value="false" />
-            <Item value="false" />
-            <Item value="false" />
-            <Item value="false" />
-          </liveries>
-        </Item>
-      </colors>
-      <kits>
-        <Item>400_sgrx_modkit</Item>
-      </kits>
-      <windowsWithExposedEdges />
-      <plateProbabilities>
-        <Probabilities>
-          <Item>
-            <Name>Standard White</Name>
-            <Value value="100" />
-          </Item>
-        </Probabilities>
-      </plateProbabilities>
-      <lightSettings value="9021" />
-      <sirenSettings value="0" />
-    </Item> 
-    <Item>
       <modelName>schwarzer2</modelName>
       <colors>
         <Item>
@@ -441,45 +402,6 @@
       <lightSettings value="108" />
       <sirenSettings value="0" />
     </Item>
-    <Item>
-      <modelName>sentinelc1</modelName>
-      <colors>
-        <Item>
-          <indices content="char_array">
-            52
-            151
-            11
-            0 
-			2
-			156
-          </indices>
-          <liveries>
-            <Item value="false" />
-            <Item value="false" />
-            <Item value="false" />
-            <Item value="false" />
-            <Item value="false" />
-            <Item value="false" />
-            <Item value="false" />
-            <Item value="false" />
-          </liveries>
-        </Item>
-      </colors>
-      <kits>
-        <Item>400_sentinelc1_modkit</Item>
-      </kits>
-      <windowsWithExposedEdges />
-      <plateProbabilities>
-        <Probabilities>
-          <Item>
-            <Name>Standard White</Name>
-            <Value value="100" />
-          </Item>
-        </Probabilities>
-      </plateProbabilities>
-      <lightSettings value="9021" />
-      <sirenSettings value="0" />
-    </Item> 
     <Item>
 			<modelName>ptouran</modelName>
 			<colors>
@@ -1189,6 +1111,115 @@
         <Probabilities />
       </plateProbabilities>
       <lightSettings value="1" />
+      <sirenSettings value="0" />
+    </Item>
+    <Item>
+      <modelName>mustang19</modelName>
+      <colors>
+        <Item>
+          <indices content="char_array">
+            29 
+            89 
+            27
+            156 
+          </indices>
+          <liveries>
+            <Item value="false" />
+            <Item value="false" />
+			<Item value="false" />
+			<Item value="true" />
+			<Item value="false" />
+          </liveries>
+        </Item>
+		<Item>
+          <indices content="char_array">
+            64
+            89 
+            73
+            156 
+          </indices>
+          <liveries>
+            <Item value="false" />
+            <Item value="false" />
+			<Item value="false" />
+			<Item value="true" />
+			<Item value="false" />
+          </liveries>
+        </Item>
+		<Item>
+          <indices content="char_array">
+            89 
+            27 
+            89
+            0 
+          </indices>
+          <liveries>
+            <Item value="false" />
+            <Item value="false" />
+			<Item value="false" />
+			<Item value="true" />
+			<Item value="false" />
+          </liveries>
+        </Item>
+		<Item>
+          <indices content="char_array">
+            112 
+            27 
+            112
+            0 
+          </indices>
+          <liveries>
+            <Item value="false" />
+            <Item value="false" />
+			<Item value="false" />
+			<Item value="true" />
+			<Item value="false" />
+          </liveries>
+        </Item>
+		<Item>
+          <indices content="char_array">
+            0 
+            89 
+            3
+            156 
+          </indices>
+          <liveries>
+            <Item value="false" />
+            <Item value="false" />
+			<Item value="false" />
+			<Item value="true" />
+			<Item value="false" />
+          </liveries>
+        </Item>
+		<Item>
+          <indices content="char_array">
+            4 
+            27 
+            5
+            0 
+          </indices>
+          <liveries>
+            <Item value="false" />
+            <Item value="false" />
+			<Item value="false" />
+			<Item value="true" />
+			<Item value="false" />
+          </liveries>
+        </Item>
+      </colors>
+      <kits>
+        <Item>478_mustang19_modkit</Item>
+      </kits>
+      <windowsWithExposedEdges />
+      <plateProbabilities>
+        <Probabilities>
+          <Item>
+            <Name>Standard White</Name>
+            <Value value="100" />
+          </Item>
+        </Probabilities>
+      </plateProbabilities>
+      <lightSettings value="478" />
       <sirenSettings value="0" />
     </Item>
   </variationData>

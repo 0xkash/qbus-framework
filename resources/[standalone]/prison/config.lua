@@ -48,6 +48,9 @@ Config.Locations = {
     ["yard"] = {
         coords = {x = 1669.301, y = 2566.183, z = 45.564, h = 179.685},
     },
+    ["middle"] = {
+        coords = {x = 1693.33, y = 2569.51, z = 45.55, h = 123.5},
+    },
     spawns = {
         [1] = {
             animation = "bumsleep",
