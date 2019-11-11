@@ -4,6 +4,8 @@ local curPos
 local speeds = {0.05, 0.1, 0.2, 0.4, 0.5}
 local curSpeed = 1
 
+local cursorEnabled = true
+
 local SelectedObj = nil
 local SelObjHash = {}
 local SelObjPos = {}
@@ -46,7 +48,6 @@ Citizen.CreateThread(function()
             CheckMovementInput()
             
             if SelectedObj ~= nil and peanut then
-                ShowHelpNotification("~g~F3~w~ - Toggle Rotation/Move | ~g~LEFTALT~w~ - Place on ground| ~g~ENTER~w~ - Plaats Object")
                 DrawMarker(21, SelObjPos.x, SelObjPos.y, SelObjPos.z + 1.28, 0.0, 0.0, 0.0, 180.0, 0.0, 0.0, 0.6, 0.6, 0.6, 28, 149, 255, 100, true, true, 2, false, false, false, false)
                 if rotateActive then 
                     CheckObjRotationInput()
@@ -66,20 +67,13 @@ Citizen.CreateThread(function()
                     FreezeEntityPosition(SelectedObj, true)
                     SelectedObj = nil
                     peanut = false
-                end
-            else
-                ShowHelpNotification("~g~F2~w~ - Spawn Object | ~g~BACKSPACE~w~ - Stop")
-                if IsControlJustReleased(0, Keys["F2"]) then
-                    SetNuiFocus(true, true)
-                    SendNUIMessage({
-                        type = "openObjects",
-                        furniture = Config.Furniture,
-                    })
-                end
-
-                if IsControlJustReleased(0, Keys["BACKSPACE"]) then
-                    TriggerEvent("qb-houses:client:decorate")
-                end
+				end
+			else
+				if IsControlJustPressed(0, Keys["F5"]) then
+					if not cursorEnabled then
+						SetNuiFocus(true, true)
+					end
+				end
             end
 		end
 	end
@@ -106,8 +100,7 @@ AddEventHandler("qb-houses:client:decorate", function()
 		if hasKey then 
 			if not DecoMode then
 				EnableEditMode()
-			else
-				DisableEditMode()
+				openDecorateUI()
 			end
 		else
 			QBCore.Functions.Notify("Je moet de sleutels van het huis hebben!", "error")
@@ -116,6 +109,16 @@ AddEventHandler("qb-houses:client:decorate", function()
 		QBCore.Functions.Notify("Je bent niet in een huis!", "error")
 	end
 end)
+
+function openDecorateUI()
+	SetNuiFocus(true, true)
+	SendNUIMessage({
+		type = "openObjects",
+		furniture = Config.Furniture,
+	})
+	SetCursorLocation(0.5, 0.5)
+	print(json.encode(ObjectList))
+end
 
 RegisterNetEvent("qb-houses:server:sethousedecorations")
 AddEventHandler("qb-houses:server:sethousedecorations", function(house, decorations)
@@ -129,10 +132,32 @@ RegisterNUICallback("closedecorations", function(data, cb)
 	if previewObj ~= nil then 
 		DeleteObject(previewObj)
 	end
+	DisableEditMode()
     SetNuiFocus(false, false)
 end)
 
+RegisterNUICallback('setupMyObjects', function(data, cb)
+	local myObjects = {}
+	cb(ObjectList)
+end)
+
+RegisterNUICallback('removeObject', function()
+	if previewObj ~= nil then 
+		DeleteObject(previewObj)
+	end
+end)
+
+RegisterNUICallback('toggleCursor', function()
+	if cursorEnabled then
+		SetNuiFocus(false, false)
+	end
+
+	cursorEnabled = not cursorEnabled
+end)
+
 RegisterNUICallback("spawnobject", function(data, cb)
+	SetNuiFocus(false, false)
+	cursorEnabled = not cursorEnabled
 	if previewObj ~= nil then 
 		DeleteObject(previewObj)
 	end
@@ -358,8 +383,7 @@ function CheckMovementInput()
     	curPos.x = curPos.x - xVect
         curPos.y = curPos.y - yVect
         curPos.z = curPos.z - zVect
-    end
-
+	end
 
 	SetCamCoord(MainCamera, curPos.x, curPos.y, curPos.z)
 end

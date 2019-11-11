@@ -103,6 +103,21 @@ function CreateApartmentFurnished(spawn)
     return { objects, POIOffsets }
 end
 
+function CreateMichaelShell(spawn)
+	local objects = {}
+
+    local POIOffsets = {}
+	POIOffsets.exit = json.decode('{"z":2.5,"y":4.29636328125,"x":1.172736328125,"h":2.2633972168}')
+
+	local house = CreateObject(`micheal_shell`, spawn.x, spawn.y, spawn.z, false, false, false)
+    FreezeEntityPosition(house, true)
+	table.insert(objects, house)
+
+	TeleportToInterior(spawn.x - 1.52089355468, spawn.y - 4.00144140625, spawn.z + 1.5, POIOffsets.exit.h)
+
+    return { objects, POIOffsets }
+end
+
 -- Thanks Stroudy <3
 function CreateTier1HouseFurnished(spawn, isBackdoor)
     local objects = {}

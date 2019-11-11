@@ -27,7 +27,7 @@ exports {
 	'CreateTier1House',
 	'CreateTier2House',
 	'CreateTier3House',
-	'CreateMichaelVilla',
+	'CreateMichaelShell',
 
 	'CreateTier1HouseFurnished',
 	'CreateHotelFurnished',

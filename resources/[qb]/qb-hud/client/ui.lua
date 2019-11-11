@@ -2,6 +2,8 @@ local speed = 0.0
 local seatbeltOn = false
 local cruiseOn = false
 
+local bleedingPercentage = 0
+
 function CalculateTimeToDisplay()
 	hour = GetClockHours()
     minute = GetClockMinutes()
@@ -31,11 +33,11 @@ Citizen.CreateThread(function()
                 SendNUIMessage({
                     action = "hudtick",
                     show = IsPauseMenuActive(),
-                    health = (GetEntityHealth(GetPlayerPed(-1)) / 2),
+                    health = GetEntityHealth(GetPlayerPed(-1)),
                     armor = GetPedArmour(GetPlayerPed(-1)),
                     thirst = PlayerData.metadata["thirst"],
                     hunger = PlayerData.metadata["hunger"],
-                    stamina = (100 - GetPlayerSprintStaminaRemaining(PlayerId())),
+                    bleeding = bleedingPercentage,
                     direction = GetDirectionText(GetEntityHeading(GetPlayerPed(-1))),
                     street1 = GetStreetNameFromHashKey(street1),
                     street2 = GetStreetNameFromHashKey(street2),
@@ -98,6 +100,28 @@ AddEventHandler("seatbelt:client:ToggleCruise", function()
         action = "cruise",
         cruise = cruiseOn,
     })
+end)
+
+Citizen.CreateThread(function()
+    while true do
+        if QBHud.Show and QBCore ~= nil then
+            QBCore.Functions.TriggerCallback('hospital:GetPlayerBleeding', function(playerBleeding)
+                if playerBleeding == 0 then
+                    bleedingPercentage = 0
+                elseif playerBleeding == 1 then
+                    bleedingPercentage = 25
+                elseif playerBleeding == 2 then
+                    bleedingPercentage = 50
+                elseif playerBleeding == 3 then
+                    bleedingPercentage = 75
+                elseif playerBleeding == 4 then
+                    bleedingPercentage = 100
+                end
+            end)
+        end
+
+        Citizen.Wait(2500)
+    end
 end)
 
 function GetDirectionText(heading)

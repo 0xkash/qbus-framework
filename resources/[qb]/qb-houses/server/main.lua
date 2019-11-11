@@ -158,6 +158,16 @@ QBCore.Functions.CreateCallback('qb-houses:server:getHouseDecorations', function
 	cb(retval)
 end)
 
+QBCore.Functions.CreateCallback('qb-houses:server:getHouseLocations', function(source, cb, house)
+	local retval = nil
+	QBCore.Functions.ExecuteSql("SELECT * FROM `player_houses` WHERE `house` = '"..house.."'", function(result)
+		if result[1] ~= nil then
+			retval = result[1]
+		end
+	end)
+	cb(retval)
+end)
+
 QBCore.Functions.CreateCallback('qb-houses:server:getHouseKeys', function(source, cb)
 	local src = source
 	local pData = QBCore.Functions.GetPlayer(src)
@@ -233,4 +243,20 @@ AddEventHandler('qb-houses:server:giveHouseKey', function(target, house)
 	QBCore.Functions.ExecuteSql("UPDATE `player_houses` SET `keyholders` = '"..json.encode(housekeyholders[house]).."' WHERE `house` = '"..house.."'")
 	TriggerClientEvent('qb-houses:client:refreshHouse', tPlayer.PlayerData.source)
 	TriggerClientEvent('QBCore:Notify', tPlayer.PlayerData.source, 'Je hebt de sleuteltjes van '..Config.Houses[house].adress..' ontvagen', 'success', 2500)
+end)
+
+RegisterServerEvent('qb-houses:server:setLocation')
+AddEventHandler('qb-houses:server:setLocation', function(coords, house, type)
+	local src = source
+	local Player = QBCore.Functions.GetPlayer(src)
+
+	if type == 1 then
+		QBCore.Functions.ExecuteSql("UPDATE `player_houses` SET `stash` = '"..json.encode(coords).."' WHERE `house` = '"..house.."'")
+	elseif type == 2 then
+		QBCore.Functions.ExecuteSql("UPDATE `player_houses` SET `outfit` = '"..json.encode(coords).."' WHERE `house` = '"..house.."'")
+	elseif type == 3 then
+		QBCore.Functions.ExecuteSql("UPDATE `player_houses` SET `logout` = '"..json.encode(coords).."' WHERE `house` = '"..house.."'")
+	end
+
+	TriggerClientEvent('qb-houses:client:refreshLocations', -1, house, json.encode(coords), type)
 end)

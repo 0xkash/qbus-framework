@@ -121,20 +121,20 @@ p {
 }
 
 .healthBar {
-    background: #4e9f5a;
+    background: #41af3e;
 }
 
 .armorBar {
-    background: #70badf;
+    background: #7172ef;
 }
 
-.hunger, .thirst, .stamina, .oxygen, .voice {
+.hunger, .thirst, .bleeding, .oxygen, .voice {
     background: rgba(155, 155, 155, 0.7);
     position: absolute;
-    border: 2px solid rgba(77, 77, 77, 0.75);
+    border: 3px solid rgba(77, 77, 77, 0.75);
     bottom: 0.35vh;
-    width: 3.55vw;
-    height: 1.3vh;
+    width: 3.65vw;
+    height: 1.55vh;
     padding: 0;
     float:left;
 }
@@ -147,12 +147,12 @@ p {
     left: 5vw;
 }
 
-.stamina {
-    left: 8.5vw;
+.bleeding {
+    left: 8.4vw;
 }
 
 .voice {
-    left: 12vw;
+    left: 11.9vw;
 }
 
 .oxygen {
@@ -160,21 +160,21 @@ p {
 }
 
 
-.hungerBar, .thirstBar, .staminaBar, .oxygenBar, .voiceBar {
+.hungerBar, .thirstBar, .bleedingBar, .oxygenBar, .voiceBar {
     width: 100%;
     height: 100%;
     transition: 0.2s ease-in-out;
 }
 
 .hungerBar {
-    background: rgba(240, 200, 80, 1.0);
+    background: #3da83b;
 } 
 
 .thirstBar {
-    background:rgba(71, 99, 173, 1.0)
+    background: #6767dd;
 }
 
-.staminaBar {
+.bleedingBar {
     background: rgba(199, 88, 74, 1.0);
 }
 

@@ -100,6 +100,37 @@ Config.MenuItems = {
                         type = 'client',
                         event = 'qb-houses:client:decorate',
                         shouldClose = true,
+                    },            
+                    {
+                        id = 'houseLocations',
+                        title = 'Interactie Locaties',
+                        icon = '#house',
+                        items = {
+                            {
+                                id    = 'setstash',
+                                title = 'Stash Instellen',
+                                icon = '#vehiclekey',
+                                type = 'client',
+                                event = 'qb-houses:client:setLocation',
+                                shouldClose = true,
+                            },
+                            {
+                                id    = 'setoutift',
+                                title = 'Outfit Instellen',
+                                icon = '#vehiclekey',
+                                type = 'client',
+                                event = 'qb-houses:client:setLocation',
+                                shouldClose = true,
+                            },
+                            {
+                                id    = 'setlogout',
+                                title = 'Logout Instellen',
+                                icon = '#vehiclekey',
+                                type = 'client',
+                                event = 'qb-houses:client:setLocation',
+                                shouldClose = true,
+                            },
+                        }
                     },
                 }
             },

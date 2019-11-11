@@ -65,11 +65,11 @@ $(document).on('keydown', function() {
     QBHud.UpdateHud = function(data) {
         $(".ui-container").css("display", data.show ? "none" : "block");
 
-        $(".healthBar").css("width", data.health + "%");
+        $(".healthBar").css("width", (data.health - 100) + "%");
         $(".armorBar").css("width", data.armor + "%");
         $(".thirstBar").css("width", data.thirst + "%");
         $(".hungerBar").css("width", data.hunger + "%");
-        $(".staminaBar").css("width", data.stamina + "%");
+        $(".bleedingBar").css("width", data.bleeding + "%");
 
         $('.time-text').html(data.time.hour + ':' + data.time.minute);
         $(".fuel-text").html((data.fuel).toFixed(0));

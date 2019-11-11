@@ -193,6 +193,15 @@ QBCore.Functions.CreateCallback('hospital:GetPlayerStatus', function(source, cb,
     cb(injuries)
 end)
 
+QBCore.Functions.CreateCallback('hospital:GetPlayerBleeding', function(source, cb)
+	local src = source
+	if PlayerInjuries[src].isBleeding ~= nil then
+		cb(PlayerInjuries[src].isBleeding)
+	else
+		cb(nil)
+	end
+end)
+
 QBCore.Commands.Add("status", "Check gezondheid van een persoon", {}, false, function(source, args)
 	local Player = QBCore.Functions.GetPlayer(source)
 	if Player.PlayerData.job.name == "doctor" or Player.PlayerData.job.name == "ambulance" then

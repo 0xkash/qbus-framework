@@ -10,6 +10,7 @@ Keys = {
     ["HOME"] = 213, ["PAGEUP"] = 10, ["PAGEDOWN"] = 11, ["DELETE"] = 178,
     ["LEFT"] = 174, ["RIGHT"] = 175, ["TOP"] = 27, ["DOWN"] = 173,
 }
+QBHud.Show = true
 
 Citizen.CreateThread(function() 
     while true do
