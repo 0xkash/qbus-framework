@@ -48,21 +48,6 @@ function CreateTier1House(spawn, isBackdoor)
     return { objects, POIOffsets }
 end
 
-function CreateTier1House(spawn)
-    local objects = {}
-
-    local POIOffsets = {}
-    POIOffsets.exit = json.decode('{"z":2.5,"y":-15.901171875,"x":4.251012802124,"h":2.2633972168}')
-
-    local shell = CreateObject(`micheal_shell`, spawn.x, spawn.y, spawn.z, false, false, false)
-    FreezeEntityPosition(shell, true)
-    table.insert(objects, shell)
-    
-    TeleportToInterior(spawn.x + POIOffsets.exit.x, spawn.y + POIOffsets.exit.y, spawn.z + 1.5, POIOffsets.exit.h)
-
-    return { objects, POIOffsets }
-end
-
 function CreateTier2House(spawn, isBackdoor)
     local objects = {}
 
