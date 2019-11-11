@@ -9,8 +9,9 @@ Config.Locations = {
    ["armory"] = {x = 453.075, y = -980.124, z = 30.889, h = 90.654},
    ["evidence"] = {x = 455.838, y = -978.573, z = 30.689, h = 90.654},
    ["stations"] = {
-       [1] = {label = "Politie Hoofdbureau", coords = {x = 428.23, y = -984.28, z = 29.76, h = 3.5}}
-   }
+       [1] = {label = "Politie Hoofdbureau", coords = {x = 428.23, y = -984.28, z = 29.76, h = 3.5}},
+       [2] = {label = "Gevangenis", coords = {x = 1693.33, y = 2569.51, z = 45.55, h = 123.5}},
+   },
 }
 
 Config.Helicopter = "polmav"
