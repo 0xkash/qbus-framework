@@ -247,6 +247,18 @@ QBShared.Weapons = {
 
 -- // VEHICLES
 QBShared.Vehicles = {
+	["revolter"] = {
+		["name"] = "Revolter",
+		["brand"] = "Ubermacht",
+		["model"] = "revolter",
+		["price"] = 195000,
+		["category"] = "sports",
+		["hash"] = "-410205223",
+		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/e/e8/Revolter-GTAO-front.png/revision/latest?cb=20171218203456",
+		["trunkspace"] = 100000,
+		["trunkslots"] = 80,
+		["shop"] = "pdm",
+	},
 	["blade"] = {
 		["name"] = "Blade",
 		["brand"] = "Vapid",

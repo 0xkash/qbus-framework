@@ -27,7 +27,6 @@ end
 function CalculateUpgradePrice(standardPrice)
 	local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1))
 	local model = GetEntityModel(vehicle)
-	print("num mods: "..GetNumVehicleMods(vehicle,48))
 	local vehiclePrice = 25000
 	if QBCore.Shared.VehicleModels[model] ~= nil then
 		vehiclePrice = QBCore.Shared.VehicleModels[model]["price"]
@@ -624,7 +623,7 @@ local lsc = {
 			buttons = { 
 				{name = "Stock Tires", costs = 350, description = "", centre = 0, font = 0, scale = 0.4},
 				{name = "Custom Tires", costs = 350, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Bulletproof Tires", costs = 350, description = "", centre = 0, font = 0, scale = 0.4},
+				--{name = "Bulletproof Tires", costs = 350, description = "", centre = 0, font = 0, scale = 0.4},
 				{name = "White Tire Smoke", color = {254,254,254}, costs = 350, description = "", centre = 0, font = 0, scale = 0.4},
 				{name = "Black Tire Smoke", color = {1,1,1}, costs = 350, description = "", centre = 0, font = 0, scale = 0.4},
 				{name = "Blue Tire Smoke", color = {0,150,255}, costs = 350, description = "", centre = 0, font = 0, scale = 0.4},
@@ -1261,7 +1260,7 @@ local lsc = {
 			buttons = { 
 				{name = "Stock Lights",mod = false, modtype = 22,costs = 0, description = "", centre = 0, font = 0, scale = 0.4},
 				{name = "Xenon Lights",mod = true,modtype = 22,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
-				--[[{name = "White Lights",mod = 0,modtype = 22,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
+				{name = "White Lights",mod = 0,modtype = 22,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
 				{name = "Blue Lights",mod = 1,modtype = 22,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
 				{name = "Electric Blue Lights",mod = 2,modtype = 22,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
 				{name = "Mint Green Lights",mod = 3,modtype = 22,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
@@ -1273,7 +1272,7 @@ local lsc = {
 				{name = "Pony Pink Lights",mod = 9,modtype = 22,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
 				{name = "Hot Pink Lights",mod = 10,modtype = 22,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
 				{name = "Purple Lights",mod = 11,modtype = 22,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
-				{name = "Blacklight Lights",mod = 12,modtype = 22,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},]]--
+				{name = "Blacklight Lights",mod = 12,modtype = 22,costs = 200, description = "", centre = 0, font = 0, scale = 0.4},
 			}
 		},
 		["plate"] = { 
@@ -1607,12 +1606,14 @@ function DriveInGarage()
 			SetVehicleModKit(veh,0)	
 			if GetNumVehicleMods(veh,mod) ~= nil and GetNumVehicleMods(veh,mod) ~= false then
 				insrt(lsc.menu["roof"].buttons, {name = "Stock",modtype = mod,costs = 0,mod = -1, description = "", centre = 0, font = 0, scale = 0.4})
-				for i = 0,    tonumber(GetNumVehicleMods(veh,mod)) -1 do
-					local lbl = GetModTextLabel(veh,mod,i)
-					if lbl ~= nil then
-						local name = tostring(GetLabelText(lbl))
-						if name ~= "NULL" then
-							insrt(lsc.menu["roof"].buttons, {name = name,modtype = mod,costs = 550,mod = i, description = "", centre = 0, font = 0, scale = 0.4})
+				if GetEntityModel(veh) ~= GetHashKey("revolter") then
+					for i = 0,    tonumber(GetNumVehicleMods(veh,mod)) -1 do
+						local lbl = GetModTextLabel(veh,mod,i)
+						if lbl ~= nil then
+							local name = tostring(GetLabelText(lbl))
+							if name ~= "NULL" then
+								insrt(lsc.menu["roof"].buttons, {name = name,modtype = mod,costs = 550,mod = i, description = "", centre = 0, font = 0, scale = 0.4})
+							end
 						end
 					end
 				end	
@@ -1914,11 +1915,11 @@ Citizen.CreateThread(function()
 											drawMenuCost(button,lsc.menu.x,y,selected)
 										end
 									else
-										--[[if GetVehicleHeadlightsColour(veh) ~= nil and GetVehicleHeadlightsColour(veh) == button.mod then
+										if GetVehicleXenonLightsColour(veh) ~= nil and GetVehicleXenonLightsColour(veh) == button.mod then
 											drawMenuOwned(lsc.menu.x,y,selected)
 										else
 											drawMenuCost(button,lsc.menu.x,y,selected)
-										end]]--
+										end
 									end
 
 								elseif lsc.currentmenu == "turbo" then
@@ -2384,7 +2385,7 @@ function ButtonSelected(button)
 			ToggleVehicleMod(car, 22, true)
 		else
 			ToggleVehicleMod(car, 22, true) -- toggle xenon
-			--SetVehicleHeadlightsColour(car, button.mod)
+			SetVehicleXenonLightsColour(car, button.mod)
 		end 
 	elseif lsc.currentmenu == "plate" then
 		plateindex = button.plateindex

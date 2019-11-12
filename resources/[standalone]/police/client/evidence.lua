@@ -182,7 +182,7 @@ Citizen.CreateThread(function()
 					local info = {
 						label = "Kogelhuls",
 						type = "casing",
-						street = streetLabel,
+						street = streetLabel:gsub("%'", ""),
 						ammolabel = Config.AmmoLabels[QBCore.Shared.Weapons[Casings[CurrentCasing].type]["ammotype"]],
 						ammotype = Casings[CurrentCasing].type,
 					}
@@ -206,7 +206,7 @@ Citizen.CreateThread(function()
 					local info = {
 						label = "Bloedmonster",
 						type = "blood",
-						street = streetLabel,
+						street = streetLabel:gsub("%'", ""),
 						dnalabel = DnaHash(Blooddrops[CurrentBlooddrop].citizenid),
 						bloodtype = Blooddrops[CurrentBlooddrop].bloodtype,
 					}

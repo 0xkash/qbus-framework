@@ -90,9 +90,18 @@ Citizen.CreateThread(function()
                     end
 
                     if CurrentVehicle ~= nil then
+                        local maxweight = 0
+                        local slots = 0
+                        if QBCore.Shared.VehicleModels[GetEntityModel(curVeh)] ~= nil then
+                            maxweight = QBCore.Shared.VehicleModels[GetEntityModel(curVeh)]["trunkspace"]
+                            slots = QBCore.Shared.VehicleModels[GetEntityModel(curVeh)]["trunkslots"]
+                        else
+                            maxweight = 60000
+                            slots = 40
+                        end
                         local other = {
-                            maxweight = QBCore.Shared.VehicleModels[GetEntityModel(curVeh)]["trunkspace"],
-                            slots = QBCore.Shared.VehicleModels[GetEntityModel(curVeh)]["trunkslots"],
+                            maxweight = maxweight,
+                            slots = slots,
                         }
                         TriggerServerEvent("inventory:server:OpenInventory", "trunk", CurrentVehicle, other)
                         OpenTrunk()

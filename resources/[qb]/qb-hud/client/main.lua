@@ -10,6 +10,8 @@ Keys = {
     ["HOME"] = 213, ["PAGEUP"] = 10, ["PAGEDOWN"] = 11, ["DELETE"] = 178,
     ["LEFT"] = 174, ["RIGHT"] = 175, ["TOP"] = 27, ["DOWN"] = 173,
 }
+QBHud.Show = true
+isLoggedIn = false
 
 Citizen.CreateThread(function() 
     while true do
@@ -27,10 +29,12 @@ end)
 
 RegisterNetEvent("QBCore:Client:OnPlayerUnload")
 AddEventHandler("QBCore:Client:OnPlayerUnload", function()
+    isLoggedIn = false
     QBHud.Show = false
 end)
 
 RegisterNetEvent("QBCore:Client:OnPlayerLoaded")
 AddEventHandler("QBCore:Client:OnPlayerLoaded", function()
+    isLoggedIn = true
     QBHud.Show = true
 end)

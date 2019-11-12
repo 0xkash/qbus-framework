@@ -22,7 +22,7 @@ end
 
 Citizen.CreateThread(function()
     while true do 
-        if QBHud.Show and QBCore ~= nil then
+        if isLoggedIn and QBHud.Show then
             speed = GetEntitySpeed(GetVehiclePedIsIn(GetPlayerPed(-1), false)) * 3.6
             local pos = GetEntityCoords(player)
             local time = CalculateTimeToDisplay()
@@ -56,7 +56,7 @@ end)
 Citizen.CreateThread(function() 
     while true do
         Citizen.Wait(1000)
-        if IsPedInAnyVehicle(PlayerPedId()) and QBHud.Show then
+        if IsPedInAnyVehicle(PlayerPedId()) and isLoggedIn and QBHud.Show then
             DisplayRadar(true)
             SendNUIMessage({
                 action = "car",
@@ -104,7 +104,7 @@ end)
 
 Citizen.CreateThread(function()
     while true do
-        if QBHud.Show and QBCore ~= nil then
+        if isLoggedIn and QBHud.Show and QBCore ~= nil then
             QBCore.Functions.TriggerCallback('hospital:GetPlayerBleeding', function(playerBleeding)
                 if playerBleeding == 0 then
                     bleedingPercentage = 0
