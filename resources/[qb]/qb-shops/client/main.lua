@@ -42,8 +42,11 @@ Citizen.CreateThread(function()
                     DrawMarker(2, loc["x"], loc["y"], loc["z"], 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.2, 0.1, 255, 255, 255, 155, 0, 0, 0, 1, 0, 0, 0)
                     if dist < 1 then
                         DrawText3Ds(loc["x"], loc["y"], loc["z"] + 0.15, '~g~E~w~ - Winkelen')
-						if IsControlJustPressed(0, Config.Keys["E"]) then
-                            TriggerServerEvent("inventory:server:OpenInventory", "shop", shop, Config.Products[shop])
+                        if IsControlJustPressed(0, Config.Keys["E"]) then
+                            local ShopItems = {}
+                            ShopItems.label = Config.Locations[shop]["label"]
+                            ShopItems.items = Config.Locations[shop]["products"]
+                            TriggerServerEvent("inventory:server:OpenInventory", "shop", "Itemshop_"..shop, ShopItems)
                         end
                     end
                 end
@@ -57,6 +60,16 @@ Citizen.CreateThread(function()
     end
 end)
 
+RegisterNetEvent('qb-shops:client:UpdateShop')
+AddEventHandler('qb-shops:client:UpdateShop', function(shop, itemData, amount)
+    TriggerServerEvent('qb-shops:server:UpdateShopItems', shop, itemData, amount)
+end)
+
+RegisterNetEvent('qb-shops:client:SetShopItems')
+AddEventHandler('qb-shops:client:SetShopItems', function(shop, itemData, amount)
+    Config.Locations[shop]["products"][itemData.slot].amount = Config.Locations[shop]["products"][itemData.slot].amount - amount
+end)
+
 Citizen.CreateThread(function()
     for store,_ in pairs(Config.Locations) do
         StoreBlip = AddBlipForCoord(Config.Locations[store]["coords"][1]["x"], Config.Locations[store]["coords"][1]["y"], Config.Locations[store]["coords"][1]["z"])
@@ -65,7 +78,11 @@ Citizen.CreateThread(function()
         SetBlipDisplay(StoreBlip, 4)
         SetBlipScale(StoreBlip, 0.65)
         SetBlipAsShortRange(StoreBlip, true)
-        SetBlipColour(StoreBlip, 3)
+        if Config.Locations[store]["type"] == "normal" then 
+            SetBlipColour(StoreBlip, 2)
+        else
+            SetBlipColour(StoreBlip, 3)
+        end
 
         BeginTextCommandSetBlipName("STRING")
         AddTextComponentSubstringPlayerName(Config.Locations[store]["label"])
