@@ -195,7 +195,7 @@ end)
 
 QBCore.Functions.CreateCallback('hospital:GetPlayerBleeding', function(source, cb)
 	local src = source
-	if PlayerInjuries[src].isBleeding ~= nil then
+	if PlayerInjuries[src] ~= nil and PlayerInjuries[src].isBleeding ~= nil then
 		cb(PlayerInjuries[src].isBleeding)
 	else
 		cb(nil)
