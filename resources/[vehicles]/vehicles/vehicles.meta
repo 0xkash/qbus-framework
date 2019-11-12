@@ -824,9 +824,13 @@
 		<child>pbklasse</child>
 	</Item>
   <Item>
-      <parent>vehicles_race_generic</parent>
-      <child>mustang19</child>
-    </Item>
+    <parent>vehicles_race_generic</parent>
+    <child>mustang19</child>
+  </Item>
+  <Item>
+    <parent>vehicles_race_generic</parent>
+    <child>lwgtr</child>
+  </Item>
   </txdRelationships>
 </CVehicleModelInfo__InitDataList>
   

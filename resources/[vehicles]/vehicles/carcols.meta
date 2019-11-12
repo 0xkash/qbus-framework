@@ -985,214 +985,7 @@
       </liveryNames>
     </Item>
  </Kits>
-  <Lights>
-    <Item>
-      <id value="478" />	
-      <indicator>
-        <intensity value="1.375000" />
-        <falloffMax value="2.500000" />
-        <falloffExponent value="8.000000" />
-        <innerConeAngle value="30.000000" />
-        <outerConeAngle value="80.000000" />
-        <emmissiveBoost value="false" />
-        <color value="0xFFFF8000" />
-      </indicator>
-      <rearIndicatorCorona>
-        <size value="0.000000" />
-        <size_far value="0.000000" />
-        <intensity value="0.000000" />
-        <intensity_far value="0.000000" />
-        <color value="0x00000000" />
-        <numCoronas value="0" />
-        <distBetweenCoronas value="128" />
-        <distBetweenCoronas_far value="255" />
-        <xRotation value="0.000000" />
-        <yRotation value="0.000000" />
-        <zRotation value="0.000000" />
-        <zBias value="0.250000" />
-        <pullCoronaIn value="false" />
-      </rearIndicatorCorona>
-      <frontIndicatorCorona>
-        <size value="0.000000" />
-        <size_far value="0.000000" />
-        <intensity value="0.000000" />
-        <intensity_far value="0.000000" />
-        <color value="0x00000000" />
-        <numCoronas value="0" />
-        <distBetweenCoronas value="128" />
-        <distBetweenCoronas_far value="255" />
-        <xRotation value="0.000000" />
-        <yRotation value="0.000000" />
-        <zRotation value="0.000000" />
-        <zBias value="0.250000" />
-        <pullCoronaIn value="false" />
-      </frontIndicatorCorona>
-      <tailLight>
-        <intensity value="1.250000" />
-        <falloffMax value="4.000000" />
-        <falloffExponent value="16.000000" />
-        <innerConeAngle value="45.000000" />
-        <outerConeAngle value="90.000000" />
-        <emmissiveBoost value="false" />
-        <color value="0xFFFF0000" />
-      </tailLight>
-      <tailLightCorona>
-        <size value="0.200000" />
-        <size_far value="5.300000" />
-        <intensity value="4.000000" />
-        <intensity_far value="1.000000" />
-        <color value="0xFFFF1E05" />
-        <numCoronas value="0" />
-        <distBetweenCoronas value="12" />
-        <distBetweenCoronas_far value="1" />
-        <xRotation value="0.000000" />
-        <yRotation value="0.000000" />
-        <zRotation value="5.667000" />
-        <zBias value="0.250000" />
-        <pullCoronaIn value="false" />
-      </tailLightCorona>
-      <tailLightMiddleCorona>
-        <size value="0.100000" />
-        <size_far value="3.300000" />
-        <intensity value="2.000000" />
-        <intensity_far value="1.000000" />
-        <color value="0xFFFF1E05" />
-        <numCoronas value="0" />
-        <distBetweenCoronas value="128" />
-        <distBetweenCoronas_far value="255" />
-        <xRotation value="0.000000" />
-        <yRotation value="0.000000" />
-        <zRotation value="0.000000" />
-        <zBias value="0.250000" />
-        <pullCoronaIn value="false" />
-      </tailLightMiddleCorona>
-      <headLight>
-        <intensity value="2.000000" />
-        <falloffMax value="35.000000" />
-        <falloffExponent value="16.000000" />
-        <innerConeAngle value="0.000000" />
-        <outerConeAngle value="60.209999" />
-        <emmissiveBoost value="false" />
-        <color value="0xFFFFFFCC" />
-        <textureName>VehicleLight_car_standardmodern</textureName>
-        <mirrorTexture value="false" />
-      </headLight>
-      <headLightCorona>
-        <size value="0.100000" />
-        <size_far value="10.000000" />
-        <intensity value="5.000000" />
-        <intensity_far value="1.000000" />
-        <color value="0xFFFFFFFF" />
-        <numCoronas value="1" />
-        <distBetweenCoronas value="128" />
-        <distBetweenCoronas_far value="255" />
-        <xRotation value="0.000000" />
-        <yRotation value="0.000000" />
-        <zRotation value="0.000000" />
-        <zBias value="0.250000" />
-        <pullCoronaIn value="false" />
-      </headLightCorona>
-      <reversingLight>
-        <intensity value="4.500000" />
-        <falloffMax value="4.000000" />
-        <falloffExponent value="32.000000" />
-        <innerConeAngle value="45.000000" />
-        <outerConeAngle value="90.000000" />
-        <emmissiveBoost value="false" />
-        <color value="0xFFFFFFFF" />
-      </reversingLight>
-      <reversingLightCorona>
-        <size value="0.800000" />
-        <size_far value="2.000000" />
-        <intensity value="1.500000" />
-        <intensity_far value="1.000000" />
-        <color value="0x00F7F7F7" />
-        <numCoronas value="0" />
-        <distBetweenCoronas value="128" />
-        <distBetweenCoronas_far value="255" />
-        <xRotation value="0.000000" />
-        <yRotation value="0.000000" />
-        <zRotation value="0.000000" />
-        <zBias value="0.250000" />
-        <pullCoronaIn value="false" />
-      </reversingLightCorona>
-      <name>mustang19</name>
-    </Item>
-  </Lights>
-    <Wheels>
-    <Item/> <!-- VWT_SPORT -->
-    <Item> <!-- VWT_MUSCLE -->
-	  <Item>
-        <wheelName>wheel_m19_1</wheelName> 
-        <wheelVariation />
-        <modShopLabel>M19_RIM_1</modShopLabel>
-        <rimRadius value="0.295000"/>
-        <rear value="false"/>
-      </Item>
-	  <Item>
-        <wheelName>wheel_m19_2</wheelName> 
-        <wheelVariation />
-        <modShopLabel>M19_RIM_2</modShopLabel>
-        <rimRadius value="0.295000"/>
-        <rear value="false"/>
-      </Item>
-	  <Item>
-        <wheelName>wheel_m19_3</wheelName> 
-        <wheelVariation />
-        <modShopLabel>M19_RIM_3</modShopLabel>
-        <rimRadius value="0.295000"/>
-        <rear value="false"/>
-      </Item>
-	  <Item>
-        <wheelName>wheel_m19_5</wheelName> 
-        <wheelVariation />
-        <modShopLabel>M19_RIM_5</modShopLabel>
-        <rimRadius value="0.295000"/>
-        <rear value="false"/>
-      </Item>
-	  <Item>
-        <wheelName>wheel_m19_6</wheelName> 
-        <wheelVariation />
-        <modShopLabel>M19_RIM_6</modShopLabel>
-        <rimRadius value="0.295000"/>
-        <rear value="false"/>
-      </Item>
-	  <Item>
-        <wheelName>wheel_m19_7</wheelName> 
-        <wheelVariation />
-        <modShopLabel>M19_RIM_7</modShopLabel>
-        <rimRadius value="0.295000"/>
-        <rear value="false"/>
-      </Item>
-	  <Item>
-        <wheelName>wheel_m19_8</wheelName> 
-        <wheelVariation />
-        <modShopLabel>M19_RIM_8</modShopLabel>
-        <rimRadius value="0.295000"/>
-        <rear value="false"/>
-      </Item>
-	  <Item>
-        <wheelName>wheel_m19_9</wheelName> 
-        <wheelVariation />
-        <modShopLabel>M19_RIM_9</modShopLabel>
-        <rimRadius value="0.295000"/>
-        <rear value="false"/>
-      </Item>
-	  <Item>
-        <wheelName>wheel_m19_10</wheelName> 
-        <wheelVariation />
-        <modShopLabel>M19_RIM_10</modShopLabel>
-        <rimRadius value="0.295000"/>
-        <rear value="false"/>
-      </Item>
-	</Item>
-    <Item/> <!-- VWT_BIKE -->
-    <Item/> <!-- VWT_HIEND -->
-    <Item/> <!-- VWT_SUPERMOD1 -->
-    <Item/> <!-- VWT_SUPERMOD2 -->
-    <Item/>
-  </Wheels>
-  <Kits>
+ <Kits>
     <Item>
       <kitName>940_lwgtr_modkit</kitName>
       <id value="940" />   
@@ -2116,12 +1909,9 @@
           <type>VMT_SUSPENSION</type>
         </Item>
       </statMods>
-      <slotNames />
-      <liveryNames />
     </Item>
   </Kits>
-<Lights />
-<Kits>
+ <Kits>
     <Item>
       <kitName>3757_schwarzer2_modkit</kitName>
       <id value="3757"/>
@@ -3145,147 +2935,7 @@
       <livery2Names/>
     </Item>
    </Kits>
-   <Lights>
-    <Item>
-      <id value="3781"/>
-      <indicator>
-        <intensity value="0.37500000"/>
-        <falloffMax value="2.50000000"/>
-        <falloffExponent value="8.00000000"/>
-        <innerConeAngle value="20.00000000"/>
-        <outerConeAngle value="50.00000000"/>
-        <emmissiveBoost value="false"/>
-        <color value="0xFFFF7300"/>
-        <textureName/>
-        <mirrorTexture value="true"/>
-      </indicator>
-      <rearIndicatorCorona>
-        <size value="0.00000000"/>
-        <size_far value="0.00000000"/>
-        <intensity value="0.00000000"/>
-        <intensity_far value="0.00000000"/>
-        <color value="0x00000000"/>
-        <numCoronas value="1"/>
-        <distBetweenCoronas value="128"/>
-        <distBetweenCoronas_far value="255"/>
-        <xRotation value="0.00000000"/>
-        <yRotation value="0.00000000"/>
-        <zRotation value="0.00000000"/>
-        <zBias value="0.25000000"/>
-        <pullCoronaIn value="false"/>
-      </rearIndicatorCorona>
-      <frontIndicatorCorona>
-        <size value="0.00000000"/>
-        <size_far value="0.00000000"/>
-        <intensity value="0.00000000"/>
-        <intensity_far value="0.00000000"/>
-        <color value="0x00000000"/>
-        <numCoronas value="1"/>
-        <distBetweenCoronas value="128"/>
-        <distBetweenCoronas_far value="255"/>
-        <xRotation value="0.00000000"/>
-        <yRotation value="0.00000000"/>
-        <zRotation value="0.00000000"/>
-        <zBias value="0.25000000"/>
-        <pullCoronaIn value="false"/>
-      </frontIndicatorCorona>
-      <tailLight>
-        <intensity value="0.25000000"/>
-        <falloffMax value="4.00000000"/>
-        <falloffExponent value="16.00000000"/>
-        <innerConeAngle value="45.00000000"/>
-        <outerConeAngle value="90.00000000"/>
-        <emmissiveBoost value="false"/>
-        <color value="0xFFFF0000"/>
-        <textureName/>
-        <mirrorTexture value="true"/>
-      </tailLight>
-      <tailLightCorona>
-        <size value="1.20000000"/>
-        <size_far value="2.50000000"/>
-        <intensity value="5.00000000"/>
-        <intensity_far value="1.00000000"/>
-        <color value="0xFFFF0F05"/>
-        <numCoronas value="1"/>
-        <distBetweenCoronas value="128"/>
-        <distBetweenCoronas_far value="255"/>
-        <xRotation value="0.00000000"/>
-        <yRotation value="0.00000000"/>
-        <zRotation value="0.00000000"/>
-        <zBias value="0.25000000"/>
-        <pullCoronaIn value="false"/>
-      </tailLightCorona>
-      <tailLightMiddleCorona>
-        <size value="0.00000000"/>
-        <size_far value="0.00000000"/>
-        <intensity value="0.00000000"/>
-        <intensity_far value="0.00000000"/>
-        <color value="0x00000000"/>
-        <numCoronas value="1"/>
-        <distBetweenCoronas value="128"/>
-        <distBetweenCoronas_far value="255"/>
-        <xRotation value="0.00000000"/>
-        <yRotation value="0.00000000"/>
-        <zRotation value="0.00000000"/>
-        <zBias value="0.25000000"/>
-        <pullCoronaIn value="false"/>
-      </tailLightMiddleCorona>
-      <headLight>
-        <intensity value="1.50000000"/>
-        <falloffMax value="35.00000000"/>
-        <falloffExponent value="16.00000000"/>
-        <innerConeAngle value="0.00000000"/>
-        <outerConeAngle value="60.00000000"/>
-        <emmissiveBoost value="false"/>
-        <color value="0xFF7FA7E3"/>
-        <textureName>VehicleLight_car_LED2</textureName>
-        <mirrorTexture value="false"/>
-      </headLight>
-      <headLightCorona>
-        <size value="0.10000000"/>
-        <size_far value="7.00000000"/>
-        <intensity value="7.00000000"/>
-        <intensity_far value="5.00000000"/>
-        <color value="0xFF61A5FF"/>
-        <numCoronas value="2"/>
-        <distBetweenCoronas value="18"/>
-        <distBetweenCoronas_far value="115"/>
-        <xRotation value="0.00000000"/>
-        <yRotation value="0.40840700"/>
-        <zRotation value="0.59690300"/>
-        <zBias value="0.25000000"/>
-        <pullCoronaIn value="false"/>
-      </headLightCorona>
-      <reversingLight>
-        <intensity value="0.50000000"/>
-        <falloffMax value="7.20000000"/>
-        <falloffExponent value="32.00000000"/>
-        <innerConeAngle value="20.00000000"/>
-        <outerConeAngle value="78.00000000"/>
-        <emmissiveBoost value="false"/>
-        <color value="0xFFFFFFFF"/>
-        <textureName/>
-        <mirrorTexture value="true"/>
-      </reversingLight>
-      <reversingLightCorona>
-        <size value="0.80000000"/>
-        <size_far value="2.00000000"/>
-        <intensity value="1.50000000"/>
-        <intensity_far value="1.00000000"/>
-        <color value="0x00F7F7F7"/>
-        <numCoronas value="1"/>
-        <distBetweenCoronas value="128"/>
-        <distBetweenCoronas_far value="255"/>
-        <xRotation value="0.00000000"/>
-        <yRotation value="0.00000000"/>
-        <zRotation value="0.00000000"/>
-        <zBias value="0.25000000"/>
-        <pullCoronaIn value="false"/>
-      </reversingLightCorona>
-      <name>schwarzer2</name>
-    </Item>
-	</Lights>
-  <Kits>
+   <Kits>
     <Item>
       <kitName>400_zr3806str_modkit</kitName>
       <id value="400"/> 
@@ -4001,9 +3651,143 @@
       <liveryNames />
     </Item>
    </Kits>
-   <Lights>
+  <Lights>
     <Item>
-      <id value="9021"/>
+      <id value="478" />	
+      <indicator>
+        <intensity value="1.375000" />
+        <falloffMax value="2.500000" />
+        <falloffExponent value="8.000000" />
+        <innerConeAngle value="30.000000" />
+        <outerConeAngle value="80.000000" />
+        <emmissiveBoost value="false" />
+        <color value="0xFFFF8000" />
+      </indicator>
+      <rearIndicatorCorona>
+        <size value="0.000000" />
+        <size_far value="0.000000" />
+        <intensity value="0.000000" />
+        <intensity_far value="0.000000" />
+        <color value="0x00000000" />
+        <numCoronas value="0" />
+        <distBetweenCoronas value="128" />
+        <distBetweenCoronas_far value="255" />
+        <xRotation value="0.000000" />
+        <yRotation value="0.000000" />
+        <zRotation value="0.000000" />
+        <zBias value="0.250000" />
+        <pullCoronaIn value="false" />
+      </rearIndicatorCorona>
+      <frontIndicatorCorona>
+        <size value="0.000000" />
+        <size_far value="0.000000" />
+        <intensity value="0.000000" />
+        <intensity_far value="0.000000" />
+        <color value="0x00000000" />
+        <numCoronas value="0" />
+        <distBetweenCoronas value="128" />
+        <distBetweenCoronas_far value="255" />
+        <xRotation value="0.000000" />
+        <yRotation value="0.000000" />
+        <zRotation value="0.000000" />
+        <zBias value="0.250000" />
+        <pullCoronaIn value="false" />
+      </frontIndicatorCorona>
+      <tailLight>
+        <intensity value="1.250000" />
+        <falloffMax value="4.000000" />
+        <falloffExponent value="16.000000" />
+        <innerConeAngle value="45.000000" />
+        <outerConeAngle value="90.000000" />
+        <emmissiveBoost value="false" />
+        <color value="0xFFFF0000" />
+      </tailLight>
+      <tailLightCorona>
+        <size value="0.200000" />
+        <size_far value="5.300000" />
+        <intensity value="4.000000" />
+        <intensity_far value="1.000000" />
+        <color value="0xFFFF1E05" />
+        <numCoronas value="0" />
+        <distBetweenCoronas value="12" />
+        <distBetweenCoronas_far value="1" />
+        <xRotation value="0.000000" />
+        <yRotation value="0.000000" />
+        <zRotation value="5.667000" />
+        <zBias value="0.250000" />
+        <pullCoronaIn value="false" />
+      </tailLightCorona>
+      <tailLightMiddleCorona>
+        <size value="0.100000" />
+        <size_far value="3.300000" />
+        <intensity value="2.000000" />
+        <intensity_far value="1.000000" />
+        <color value="0xFFFF1E05" />
+        <numCoronas value="0" />
+        <distBetweenCoronas value="128" />
+        <distBetweenCoronas_far value="255" />
+        <xRotation value="0.000000" />
+        <yRotation value="0.000000" />
+        <zRotation value="0.000000" />
+        <zBias value="0.250000" />
+        <pullCoronaIn value="false" />
+      </tailLightMiddleCorona>
+      <headLight>
+        <intensity value="2.000000" />
+        <falloffMax value="35.000000" />
+        <falloffExponent value="16.000000" />
+        <innerConeAngle value="0.000000" />
+        <outerConeAngle value="60.209999" />
+        <emmissiveBoost value="false" />
+        <color value="0xFFFFFFCC" />
+        <textureName>VehicleLight_car_standardmodern</textureName>
+        <mirrorTexture value="false" />
+      </headLight>
+      <headLightCorona>
+        <size value="0.100000" />
+        <size_far value="10.000000" />
+        <intensity value="5.000000" />
+        <intensity_far value="1.000000" />
+        <color value="0xFFFFFFFF" />
+        <numCoronas value="1" />
+        <distBetweenCoronas value="128" />
+        <distBetweenCoronas_far value="255" />
+        <xRotation value="0.000000" />
+        <yRotation value="0.000000" />
+        <zRotation value="0.000000" />
+        <zBias value="0.250000" />
+        <pullCoronaIn value="false" />
+      </headLightCorona>
+      <reversingLight>
+        <intensity value="4.500000" />
+        <falloffMax value="4.000000" />
+        <falloffExponent value="32.000000" />
+        <innerConeAngle value="45.000000" />
+        <outerConeAngle value="90.000000" />
+        <emmissiveBoost value="false" />
+        <color value="0xFFFFFFFF" />
+      </reversingLight>
+      <reversingLightCorona>
+        <size value="0.800000" />
+        <size_far value="2.000000" />
+        <intensity value="1.500000" />
+        <intensity_far value="1.000000" />
+        <color value="0x00F7F7F7" />
+        <numCoronas value="0" />
+        <distBetweenCoronas value="128" />
+        <distBetweenCoronas_far value="255" />
+        <xRotation value="0.000000" />
+        <yRotation value="0.000000" />
+        <zRotation value="0.000000" />
+        <zBias value="0.250000" />
+        <pullCoronaIn value="false" />
+      </reversingLightCorona>
+      <name>mustang19</name>
+    </Item>
+  </Lights>
+  <Lights>
+    <Item>
+      <id value="3781"/>
       <indicator>
         <intensity value="0.37500000"/>
         <falloffMax value="2.50000000"/>
@@ -4063,8 +3847,8 @@
         <intensity_far value="1.00000000"/>
         <color value="0xFFFF0F05"/>
         <numCoronas value="1"/>
-        <distBetweenCoronas value="10"/>
-        <distBetweenCoronas_far value="22"/>
+        <distBetweenCoronas value="128"/>
+        <distBetweenCoronas_far value="255"/>
         <xRotation value="0.00000000"/>
         <yRotation value="0.00000000"/>
         <zRotation value="0.00000000"/>
@@ -4093,31 +3877,31 @@
         <innerConeAngle value="0.00000000"/>
         <outerConeAngle value="60.00000000"/>
         <emmissiveBoost value="false"/>
-        <color value="0xFFFFD859"/>
-        <textureName>VehicleLight_car_standard70s</textureName>
+        <color value="0xFF7FA7E3"/>
+        <textureName>VehicleLight_car_LED2</textureName>
         <mirrorTexture value="false"/>
       </headLight>
       <headLightCorona>
         <size value="0.10000000"/>
-        <size_far value="10.00000000"/>
-        <intensity value="5.00000000"/>
-        <intensity_far value="1.00000000"/>
-        <color value="0xFFFCBB42"/>
-        <numCoronas value="1"/>
-        <distBetweenCoronas value="128"/>
-        <distBetweenCoronas_far value="255"/>
+        <size_far value="7.00000000"/>
+        <intensity value="7.00000000"/>
+        <intensity_far value="5.00000000"/>
+        <color value="0xFF61A5FF"/>
+        <numCoronas value="2"/>
+        <distBetweenCoronas value="18"/>
+        <distBetweenCoronas_far value="115"/>
         <xRotation value="0.00000000"/>
-        <yRotation value="0.00000000"/>
-        <zRotation value="0.00000000"/>
+        <yRotation value="0.40840700"/>
+        <zRotation value="0.59690300"/>
         <zBias value="0.25000000"/>
         <pullCoronaIn value="false"/>
       </headLightCorona>
       <reversingLight>
-        <intensity value="0.35000000"/>
-        <falloffMax value="20.00000000"/>
+        <intensity value="0.50000000"/>
+        <falloffMax value="7.20000000"/>
         <falloffExponent value="32.00000000"/>
         <innerConeAngle value="20.00000000"/>
-        <outerConeAngle value="90.00000000"/>
+        <outerConeAngle value="78.00000000"/>
         <emmissiveBoost value="false"/>
         <color value="0xFFFFFFFF"/>
         <textureName/>
@@ -4138,7 +3922,9 @@
         <zBias value="0.25000000"/>
         <pullCoronaIn value="false"/>
       </reversingLightCorona>
-      <name>zr3806str</name>
+      <name>schwarzer2</name>
     </Item>
-   </Lights>
+	</Lights>
+  <Wheels>
+  </Wheels>
 </CVehicleModelInfoVarGlobal>
