@@ -18,120 +18,182 @@ local helicam = false
 local polmav_hash = GetHashKey("polmav")
 local fov = (fov_max+fov_min)*0.5
 local vision_state = 0 -- 0 is normal, 1 is nightmode, 2 is thermal vision
+
+local isScanning = false
+local isScanned = false
+local scanValue = 0
+
+local vehicle_detected = nil
+local locked_on_vehicle = nil
+
 Citizen.CreateThread(function()
 	while true do
-        Citizen.Wait(0)
-		if IsPlayerInPolmav() then
-			local lPed = GetPlayerPed(-1)
-			local heli = GetVehiclePedIsIn(lPed)
-			
-			if IsHeliHighEnough(heli) then
-				if IsControlJustPressed(0, toggle_helicam) then -- Toggle Helicam
-					PlaySoundFrontend(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)
-					helicam = true
-				end
-				
-				if IsControlJustPressed(0, toggle_rappel) then -- Initiate rappel
-					Citizen.Trace("try to rappel")
-					if GetPedInVehicleSeat(heli, 1) == lPed or GetPedInVehicleSeat(heli, 2) == lPed then
-						PlaySoundFrontend(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)
-						TaskRappelFromHeli(GetPlayerPed(-1), 1)
-					else
-						SetNotificationTextEntry( "STRING" )
-						AddTextComponentString("~r~Can't rappel from this seat")
-						DrawNotification(false, false )
-						PlaySoundFrontend(-1, "5_Second_Timer", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS", false) 
+		Citizen.Wait(0)
+		if isLoggedIn then
+			if QBCore.Functions.GetPlayerData().job.name == "police" and QBCore.Functions.GetPlayerData().job.onduty then
+				if IsPlayerInPolmav() then
+					local lPed = GetPlayerPed(-1)
+					local heli = GetVehiclePedIsIn(lPed)
+					
+					if IsHeliHighEnough(heli) then
+						if IsControlJustPressed(0, toggle_helicam) then -- Toggle Helicam
+							PlaySoundFrontend(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)
+							helicam = true
+							SendNUIMessage({
+								type = "heliopen",
+							})
+						end
+						
+						if IsControlJustPressed(0, toggle_rappel) then -- Initiate rappel
+							Citizen.Trace("try to rappel")
+							if GetPedInVehicleSeat(heli, 1) == lPed or GetPedInVehicleSeat(heli, 2) == lPed then
+								PlaySoundFrontend(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)
+								TaskRappelFromHeli(GetPlayerPed(-1), 1)
+							else
+								SetNotificationTextEntry( "STRING" )
+								AddTextComponentString("~r~Can't rappel from this seat")
+								DrawNotification(false, false )
+								PlaySoundFrontend(-1, "5_Second_Timer", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS", false) 
+							end
+						end
 					end
-				end
-			end
-			
-			if IsControlJustPressed(0, toggle_spotlight)  and GetPedInVehicleSeat(heli, -1) == lPed then
-				spotlight_state = not spotlight_state
-				TriggerServerEvent("heli:spotlight", spotlight_state)
-				PlaySoundFrontend(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)
-			end
-
-			if helicam then
-				SetTimecycleModifier("heliGunCam")
-				SetTimecycleModifierStrength(0.3)
-				local scaleform = RequestScaleformMovie("HELI_CAM")
-				while not HasScaleformMovieLoaded(scaleform) do
-					Citizen.Wait(0)
-				end
-				local lPed = GetPlayerPed(-1)
-				local heli = GetVehiclePedIsIn(lPed)
-				local cam = CreateCam("DEFAULT_SCRIPTED_FLY_CAMERA", true)
-				AttachCamToEntity(cam, heli, 0.0,0.0,-1.5, true)
-				SetCamRot(cam, 0.0,0.0,GetEntityHeading(heli))
-				SetCamFov(cam, fov)
-				RenderScriptCams(true, false, 0, 1, 0)
-				PushScaleformMovieFunction(scaleform, "SET_CAM_LOGO")
-				PushScaleformMovieFunctionParameterInt(1) -- 0 for nothing, 1 for LSPD logo
-				PopScaleformMovieFunctionVoid()
-				local locked_on_vehicle = nil
-				while helicam and not IsEntityDead(lPed) and (GetVehiclePedIsIn(lPed) == heli) and IsHeliHighEnough(heli) do
-					if IsControlJustPressed(0, toggle_helicam) then -- Toggle Helicam
+					
+					if IsControlJustPressed(0, toggle_spotlight)  and GetPedInVehicleSeat(heli, -1) == lPed then
+						spotlight_state = not spotlight_state
+						TriggerServerEvent("heli:spotlight", spotlight_state)
 						PlaySoundFrontend(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)
+					end
+		
+					if helicam then
+						SetTimecycleModifier("heliGunCam")
+						SetTimecycleModifierStrength(0.3)
+						local scaleform = RequestScaleformMovie("HELI_CAM")
+						while not HasScaleformMovieLoaded(scaleform) do
+							Citizen.Wait(0)
+						end
+						local lPed = GetPlayerPed(-1)
+						local heli = GetVehiclePedIsIn(lPed)
+						local cam = CreateCam("DEFAULT_SCRIPTED_FLY_CAMERA", true)
+						AttachCamToEntity(cam, heli, 0.0,0.0,-1.5, true)
+						SetCamRot(cam, 0.0,0.0,GetEntityHeading(heli))
+						SetCamFov(cam, fov)
+						RenderScriptCams(true, false, 0, 1, 0)
+						PushScaleformMovieFunction(scaleform, "SET_CAM_LOGO")
+						PushScaleformMovieFunctionParameterInt(1) -- 0 for nothing, 1 for LSPD logo
+						PopScaleformMovieFunctionVoid()
+						locked_on_vehicle = nil
+						while helicam and not IsEntityDead(lPed) and (GetVehiclePedIsIn(lPed) == heli) and IsHeliHighEnough(heli) do
+							if IsControlJustPressed(0, toggle_helicam) then -- Toggle Helicam
+								PlaySoundFrontend(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)
+								helicam = false
+								SendNUIMessage({
+									type = "heliclose",
+								})
+							end
+							if IsControlJustPressed(0, toggle_vision) then
+								PlaySoundFrontend(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)
+								ChangeVision()
+							end
+			
+							if locked_on_vehicle then
+								if DoesEntityExist(locked_on_vehicle) then
+									PointCamAtEntity(cam, locked_on_vehicle, 0.0, 0.0, 0.0, true)
+									if IsControlJustPressed(0, toggle_lock_on) then
+										PlaySoundFrontend(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)
+										locked_on_vehicle = nil
+										local rot = GetCamRot(cam, 2) -- All this because I can't seem to get the camera unlocked from the entity
+										local fov = GetCamFov(cam)
+										local old cam = cam
+										DestroyCam(old_cam, false)
+										cam = CreateCam("DEFAULT_SCRIPTED_FLY_CAMERA", true)
+										AttachCamToEntity(cam, heli, 0.0,0.0,-1.5, true)
+										SetCamRot(cam, rot, 2)
+										SetCamFov(cam, fov)
+										RenderScriptCams(true, false, 0, 1, 0)
+										isScanned = false
+										scanValue = 0
+										SendNUIMessage({
+											type = "disablescan",
+										})
+									end
+								else
+									isScanned = false
+									SendNUIMessage({
+										type = "disablescan",
+									})
+									locked_on_vehicle = nil -- Cam will auto unlock when entity doesn't exist anyway
+								end
+							else
+								local zoomvalue = (1.0/(fov_max-fov_min))*(fov-fov_min)
+								CheckInputRotation(cam, zoomvalue)
+								vehicle_detected = GetVehicleInView(cam)
+								if DoesEntityExist(vehicle_detected) then
+									isScanning = true
+								else
+									isScanning = false
+								end
+							end
+							HandleZoom(cam)
+							HideHUDThisFrame()
+							PushScaleformMovieFunction(scaleform, "SET_ALT_FOV_HEADING")
+							PushScaleformMovieFunctionParameterFloat(GetEntityCoords(heli).z)
+							PushScaleformMovieFunctionParameterFloat(zoomvalue)
+							PushScaleformMovieFunctionParameterFloat(GetCamRot(cam, 2).z)
+							PopScaleformMovieFunctionVoid()
+							DrawScaleformMovieFullscreen(scaleform, 255, 255, 255, 255)
+							Citizen.Wait(0)
+						end
 						helicam = false
+						ClearTimecycleModifier()
+						fov = (fov_max+fov_min)*0.5 -- reset to starting zoom level
+						RenderScriptCams(false, false, 0, 1, 0) -- Return to gameplay camera
+						SetScaleformMovieAsNoLongerNeeded(scaleform) -- Cleanly release the scaleform
+						DestroyCam(cam, false)
+						SetNightvision(false)
+						SetSeethrough(false)
 					end
-					if IsControlJustPressed(0, toggle_vision) then
-						PlaySoundFrontend(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)
-						ChangeVision()
-					end
-	
-					if locked_on_vehicle then
-						if DoesEntityExist(locked_on_vehicle) then
-							PointCamAtEntity(cam, locked_on_vehicle, 0.0, 0.0, 0.0, true)
-							RenderVehicleInfo(locked_on_vehicle)
-							if IsControlJustPressed(0, toggle_lock_on) then
-								PlaySoundFrontend(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)
-								locked_on_vehicle = nil
-								local rot = GetCamRot(cam, 2) -- All this because I can't seem to get the camera unlocked from the entity
-								local fov = GetCamFov(cam)
-								local old cam = cam
-								DestroyCam(old_cam, false)
-								cam = CreateCam("DEFAULT_SCRIPTED_FLY_CAMERA", true)
-								AttachCamToEntity(cam, heli, 0.0,0.0,-1.5, true)
-								SetCamRot(cam, rot, 2)
-								SetCamFov(cam, fov)
-								RenderScriptCams(true, false, 0, 1, 0)
-							end
-						else
-							locked_on_vehicle = nil -- Cam will auto unlock when entity doesn't exist anyway
-						end
-					else
-						local zoomvalue = (1.0/(fov_max-fov_min))*(fov-fov_min)
-						CheckInputRotation(cam, zoomvalue)
-						local vehicle_detected = GetVehicleInView(cam)
-						if DoesEntityExist(vehicle_detected) then
-							RenderVehicleInfo(vehicle_detected)
-							if IsControlJustPressed(0, toggle_lock_on) then
-								PlaySoundFrontend(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)
-								locked_on_vehicle = vehicle_detected
-							end
-						end
-					end
-					HandleZoom(cam)
-					HideHUDThisFrame()
-					PushScaleformMovieFunction(scaleform, "SET_ALT_FOV_HEADING")
-					PushScaleformMovieFunctionParameterFloat(GetEntityCoords(heli).z)
-					PushScaleformMovieFunctionParameterFloat(zoomvalue)
-					PushScaleformMovieFunctionParameterFloat(GetCamRot(cam, 2).z)
-					PopScaleformMovieFunctionVoid()
-					DrawScaleformMovieFullscreen(scaleform, 255, 255, 255, 255)
-					Citizen.Wait(0)
+				else
+					Citizen.Wait(2000)
 				end
-				helicam = false
-				ClearTimecycleModifier()
-				fov = (fov_max+fov_min)*0.5 -- reset to starting zoom level
-				RenderScriptCams(false, false, 0, 1, 0) -- Return to gameplay camera
-				SetScaleformMovieAsNoLongerNeeded(scaleform) -- Cleanly release the scaleform
-				DestroyCam(cam, false)
-				SetNightvision(false)
-				SetSeethrough(false)
+			else
+				Citizen.Wait(2000)
 			end
 		else
 			Citizen.Wait(2000)
+		end
+	end
+end)
+
+Citizen.CreateThread(function()
+	while true do 
+		Citizen.Wait(1)
+		if helicam then
+			if isScanning and not isScanned then
+				if scanValue < 100 then
+					scanValue = scanValue + 1
+					SendNUIMessage({
+						type = "heliscan",
+						scanvalue = scanValue,
+					})
+					if scanValue == 100 then
+						PlaySoundFrontend(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)
+						locked_on_vehicle = vehicle_detected
+						isScanning = false
+						isScanned = true
+					end
+					Citizen.Wait(10)
+				end
+			elseif isScanned and not isScanning and locked_on_vehicle ~= nil then
+				scanValue = 100
+				RenderVehicleInfo(locked_on_vehicle)
+				isScanning = false
+				Citizen.Wait(100)
+			else
+				scanValue = 0
+				Citizen.Wait(500)
+			end
+		else
+			Citizen.Wait(1000)
 		end
 	end
 end)
@@ -211,7 +273,7 @@ function GetVehicleInView(cam)
 	local coords = GetCamCoord(cam)
 	local forward_vector = RotAnglesToVec(GetCamRot(cam, 2))
 	--DrawLine(coords, coords+(forward_vector*100.0), 255,0,0,255) -- debug line to show LOS of cam
-	local rayhandle = CastRayPointToPoint(coords, coords+(forward_vector*200.0), 10, GetVehiclePedIsIn(GetPlayerPed(-1)), 0)
+	local rayhandle = CastRayPointToPoint(coords, coords+(forward_vector*400.0), 10, GetVehiclePedIsIn(GetPlayerPed(-1)), 0)
 	local _, _, _, _, entityHit = GetRaycastResult(rayhandle)
 	if entityHit>0 and IsEntityAVehicle(entityHit) then
 		return entityHit
@@ -221,20 +283,23 @@ function GetVehicleInView(cam)
 end
 
 function RenderVehicleInfo(vehicle)
+	local pos = GetEntityCoords(vehicle)
 	local model = GetEntityModel(vehicle)
 	local vehname = GetLabelText(GetDisplayNameFromVehicleModel(model))
 	local licenseplate = GetVehicleNumberPlateText(vehicle)
-	SetTextFont(0)
-	SetTextProportional(1)
-	SetTextScale(0.0, 0.55)
-	SetTextColour(255, 255, 255, 255)
-	SetTextDropshadow(0, 0, 0, 0, 255)
-	SetTextEdge(1, 0, 0, 0, 255)
-	SetTextDropShadow()
-	SetTextOutline()
-	SetTextEntry("STRING")
-	AddTextComponentString("Model: "..vehname.."\nPlate: "..licenseplate)
-	DrawText(0.45, 0.9)
+	local speed = math.ceil(GetEntitySpeed(vehicle) * 3.6)
+	local street1, street2 = GetStreetNameAtCoord(pos.x, pos.y, pos.z, Citizen.ResultAsInteger(), Citizen.ResultAsInteger())
+	local streetLabel = GetStreetNameFromHashKey(street1)
+	if street2 ~= 0 then 
+		streetLabel = streetLabel .. " | " .. GetStreetNameFromHashKey(street2)
+	end
+	SendNUIMessage({
+		type = "heliupdateinfo",
+		model = vehname,
+		plate = licenseplate,
+		speed = speed,
+		street = streetLabel,
+	})
 end
 
 -- function HandleSpotlight(cam)

@@ -70,6 +70,15 @@ AddEventHandler('qb-shops:client:SetShopItems', function(shop, itemData, amount)
     Config.Locations[shop]["products"][itemData.slot].amount = Config.Locations[shop]["products"][itemData.slot].amount - amount
 end)
 
+RegisterNetEvent('qb-shops:client:RestockShopItems')
+AddEventHandler('qb-shops:client:RestockShopItems', function(shop, amount)
+    if Config.Locations[shop]["products"] ~= nil then 
+        for k, v in pairs(Config.Locations[shop]["products"]) do 
+            Config.Locations[shop]["products"][v].amount = Config.Locations[shop]["products"][v].amount + amount
+        end
+    end
+end)
+
 Citizen.CreateThread(function()
     for store,_ in pairs(Config.Locations) do
         StoreBlip = AddBlipForCoord(Config.Locations[store]["coords"][1]["x"], Config.Locations[store]["coords"][1]["y"], Config.Locations[store]["coords"][1]["z"])

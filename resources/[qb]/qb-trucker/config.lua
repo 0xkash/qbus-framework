@@ -22,34 +22,92 @@ Config.Locations = {
     },
     ["stores"] ={
         [1] = {
+            name = "ltdgasoline",
             coords = {x = -41.07, y = -1747.91, z = 29.4, h = 137.5},
         },
         [2] = {
-            coords = {x = 94.98, y = -1809.98, z = 27.08, h = 53.5},
+            name = "247supermarket",
+            coords = {x = 31.62, y = -1315.87, z = 29.52, h = 179.5},
         },
         [3] = {
-            coords = {x = 31.78, y = -1315.87, z = 29.52, h = 182.5},
+            name = "robsliquor",
+            coords = {x = -1226.48, y = -907.58, z = 12.32, h = 119.5},
         },
         [4] = {
-            coords = {x = -717.08, y = -909.13, z = 19.21, h = 12.5},
+            name = "ltdgasoline2",
+            coords = {x = -714.13, y = -909.13, z = 19.21, h = 0.5},
         },
         [5] = {
-            coords = {x = -1226.44, y = -907.54, z = 12.32, h = 122.5},
+            name = "robsliquor2",
+            coords = {x = -1469.78, y = -366.72, z = 40.2, h = 138.5},
         },
         [6] = {
-            coords = {x = -1469.71, y = -366.65, z = 40.2, h = 138.5},
+            name = "ltdgasoline3",
+            coords = {x = -41.07, y = -1747.91, z = 29.4, h = 137.5},
         },
         [7] = {
-            coords = {x = -2959.91, y = 396.63, z = 15.02, h = 179.5},
+            name = "robsliquor3",
+            coords = {x = -41.07, y = -1747.91, z = 29.4, h = 137.5},
         },
         [8] = {
-            coords = {x = -3047.55, y = 589.99, z = 7.78, h = 207.5},
+            name = "247supermarket2",
+            coords = {x = -41.07, y = -1747.91, z = 29.4, h = 137.5},
         },
         [9] = {
-            coords = {x = -3245.83, y = 1008.28, z = 12.83, h = 89.5},
+            name = "247supermarket3",
+            coords = {x = -41.07, y = -1747.91, z = 29.4, h = 137.5},
+        },
+        [8] = {
+            name = "247supermarket4",
+            coords = {x = -41.07, y = -1747.91, z = 29.4, h = 137.5},
+        },
+        [9] = {
+            name = "247supermarket5",
+            coords = {x = -41.07, y = -1747.91, z = 29.4, h = 137.5},
         },
         [10] = {
-            coords = {x = -1830.48, y = 787.63, z = 138.32, h = 132.5},
+            name = "247supermarket6",
+            coords = {x = -41.07, y = -1747.91, z = 29.4, h = 137.5},
+        },
+        [11] = {
+            name = "robsliquor4",
+            coords = {x = -41.07, y = -1747.91, z = 29.4, h = 137.5},
+        },
+        [12] = {
+            name = "247supermarket7",
+            coords = {x = -41.07, y = -1747.91, z = 29.4, h = 137.5},
+        },
+        [13] = {
+            name = "247supermarket8",
+            coords = {x = -41.07, y = -1747.91, z = 29.4, h = 137.5},
+        },
+        [14] = {
+            name = "247supermarket9",
+            coords = {x = -41.07, y = -1747.91, z = 29.4, h = 137.5},
+        },
+        [15] = {
+            name = "ltdgasoline4",
+            coords = {x = -41.07, y = -1747.91, z = 29.4, h = 137.5},
+        },
+        [16] = {
+            name = "robsliquor5",
+            coords = {x = -41.07, y = -1747.91, z = 29.4, h = 137.5},
+        },
+        [17] = {
+            name = "247supermarket9",
+            coords = {x = -41.07, y = -1747.91, z = 29.4, h = 137.5},
+        },
+        [18] = {
+            name = "hardware",
+            coords = {x = -41.07, y = -1747.91, z = 29.4, h = 137.5},
+        },
+        [19] = {
+            name = "hardware2",
+            coords = {x = -41.07, y = -1747.91, z = 29.4, h = 137.5},
+        },
+        [20] = {
+            name = "coffeeshop",
+            coords = {x = -41.07, y = -1747.91, z = 29.4, h = 137.5},
         },
     },
 }

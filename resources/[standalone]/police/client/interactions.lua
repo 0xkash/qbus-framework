@@ -49,6 +49,9 @@ Citizen.CreateThread(function()
                 TaskPlayAnim(GetPlayerPed(-1), "mp_arresting", "idle", 8.0, -8, -1, cuffType, 0, 0, 0, 0)
             end
         end
+        if not isHandcuffed and not isEscorted then
+            Citizen.Wait(2000)
+        end
     end
 end)
 

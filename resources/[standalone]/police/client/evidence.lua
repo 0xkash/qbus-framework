@@ -152,7 +152,7 @@ end)
 Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(1)
-		if IsPedShooting(GetPlayerPed(-1)) then
+		if IsPedShooting(GetPlayerPed(-1)) and QBCore.Functions.GetPlayerData().job.name ~= "police" then
 			local weapon = GetSelectedPedWeapon(GetPlayerPed(-1))
 			if weapon ~= GetHashKey("WEAPON_STUNGUN") and weapon ~= GetHashKey("WEAPON_PETROLCAN") and weapon ~= GetHashKey("WEAPON_FIREEXTINGUISHER") then
 				shotAmount = shotAmount + 1
@@ -161,12 +161,17 @@ Citizen.CreateThread(function()
 						TriggerEvent("evidence:client:SetStatus", "gunpowder", 200)
 					end
 				end
-				if QBCore.Functions.GetPlayerData().job.name ~= "police" then
-					DropBulletCasing(weapon)
-				end
+				DropBulletCasing(weapon)
 			end
+		else
+			Citizen.Wait(1000)
 		end
+	end
+end)
 
+Citizen.CreateThread(function()
+	while true do 
+		Citizen.Wait(1)
 		if CurrentCasing ~= nil and CurrentCasing ~= 0 then 
 			local pos = GetEntityCoords(GetPlayerPed(-1))
 			if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Casings[CurrentCasing].coords.x, Casings[CurrentCasing].coords.y, Casings[CurrentCasing].coords.z, true) < 1.5 then
@@ -256,8 +261,9 @@ Citizen.CreateThread(function()
 					else
 						BlooddropsNear = {}
 					end
+				else
+					Citizen.Wait(1000)
 				end
-				Citizen.Wait(1000)
 			else
 				Citizen.Wait(5000)
 			end
@@ -268,7 +274,7 @@ end)
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(1)
-		if BlooddropsNear ~= nil then
+		if isLoggedIn and BlooddropsNear ~= nil then
 			if IsPlayerFreeAiming(PlayerId()) and GetSelectedPedWeapon(GetPlayerPed(-1)) == GetHashKey("WEAPON_FLASHLIGHT") then
 				if QBCore.Functions.GetPlayerData().job.name == "police" then
 					for k, v in pairs(BlooddropsNear) do
@@ -277,6 +283,8 @@ Citizen.CreateThread(function()
 						end
 					end
 				end
+			else
+				Citizen.Wait(1000)
 			end
 		else
 			Citizen.Wait(1000)
@@ -287,7 +295,7 @@ end)
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(1)
-		if CasingsNear ~= nil then
+		if isLoggedIn and CasingsNear ~= nil then
 			if IsPlayerFreeAiming(PlayerId()) and GetSelectedPedWeapon(GetPlayerPed(-1)) == GetHashKey("WEAPON_FLASHLIGHT") then
 				if QBCore.Functions.GetPlayerData().job.name == "police" then
 					for k, v in pairs(CasingsNear) do
@@ -296,6 +304,8 @@ Citizen.CreateThread(function()
 						end
 					end
 				end
+			else
+				Citizen.Wait(1000)
 			end
 		else
 			Citizen.Wait(1000)
@@ -313,7 +323,7 @@ end
 
 function DnaHash(s)
     local h = string.gsub(s, ".", function(c)
-                return string.format("%02x", string.byte(c))
-                end)
+		return string.format("%02x", string.byte(c))
+	end)
     return h
 end

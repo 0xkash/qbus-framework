@@ -123,6 +123,7 @@ Citizen.CreateThread(function()
                                         currentCount = currentCount + 1
                                         if currentCount == CurrentLocation.dropcount then
                                             table.insert(LocationsDone, CurrentLocation.id)
+                                            TriggerServerEvent("qb-shops:server:RestockShopItems", CurrentLocation.name)
                                             QBCore.Functions.Notify("Je hebt alle producten afgeleverd, op naar het volgende punt")
                                             CurrentLocation = nil
                                             currentCount = 0
@@ -158,6 +159,7 @@ function getNewLocation()
     CurrentLocation = {}
     CurrentLocation.id = randomLocation
     CurrentLocation.dropcount = math.random(1, 3)
+    CurrentLocation.store = Config.Locations["stores"][randomLocation].name
     CurrentLocation.x = Config.Locations["stores"][randomLocation].coords.x
     CurrentLocation.y = Config.Locations["stores"][randomLocation].coords.y
     CurrentLocation.z = Config.Locations["stores"][randomLocation].coords.z
