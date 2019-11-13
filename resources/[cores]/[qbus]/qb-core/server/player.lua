@@ -121,6 +121,8 @@ QBCore.Player.CreatePlayer = function(PlayerData)
 			self.PlayerData.job.gradelabel = JobInfo.gradelabel
 			self.PlayerData.job.onduty = JobInfo.onduty
 			self.Functions.UpdatePlayerData()
+			TriggerClientEvent("QBCore:Client:OnJobUpdate", self.PlayerData.source, self.PlayerData.job)
+			TriggerEvent("QBCore:Server:OnJobUpdate", self.PlayerData.job)
 		else
 			-- Job does not exist
 		end

@@ -10,7 +10,8 @@ Citizen.CreateThread(function()
     end
 end)
 
-isLoggedIn = true
+isLoggedIn = false
+local PlayerJob = {}
 local JobsDone = 0
 local LocationsDone = {}
 local CurrentLocation = nil
@@ -18,6 +19,27 @@ local CurrentBlip = nil
 local hasBox = false
 local isWorking = false
 local currentCount = 0
+
+
+RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
+AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+    isLoggedIn = true
+    PlayerJob = QBCore.Functions.GetPlayerData().job
+end)
+
+RegisterNetEvent('QBCore:Client:OnPlayerUnload')
+AddEventHandler('QBCore:Client:OnPlayerUnload', function()
+    local CurrentLocation = nil
+    local CurrentBlip = nil
+    local hasBox = false
+    local isWorking = false
+end)
+
+RegisterNetEvent('QBCore:Client:OnJobUpdate"')
+AddEventHandler('QBCore:Client:OnJobUpdate"', function(JobInfo)
+    PlayerJob = JobInfo
+end)
+
 Citizen.CreateThread(function()
     local TruckerBlip = AddBlipForCoord(Config.Locations["main"].coords.x, Config.Locations["main"].coords.y, Config.Locations["main"].coords.z)
     SetBlipSprite(TruckerBlip, 477)
@@ -33,8 +55,8 @@ Citizen.CreateThread(function()
     while true do 
         Citizen.Wait(1)
         if isLoggedIn and QBCore ~= nil then
-            if QBCore.Functions.GetPlayerData().job.name == "trucker" then
-                if IsControlJustReleased(0, Keys["H"]) then
+            if PlayerJob.name == "trucker" then
+                if IsControlJustReleased(0, Keys["DEL"]) then
                     getNewLocation()
                 end
                 local pos = GetEntityCoords(GetPlayerPed(-1))
@@ -57,12 +79,13 @@ Citizen.CreateThread(function()
                         Menu.renderGUI()
                     end 
                 end
-
+    
                 if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["main"].coords.x, Config.Locations["main"].coords.y, Config.Locations["main"].coords.z, true) < 4.5) then
                     if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["main"].coords.x, Config.Locations["main"].coords.y, Config.Locations["main"].coords.z, true) < 1.5) then
                         DrawText3D(Config.Locations["main"].coords.x, Config.Locations["main"].coords.y, Config.Locations["main"].coords.z, "~g~E~w~ - Loonstrook")
                         if IsControlJustReleased(0, Keys["E"]) then
                             if JobsDone > 0 then
+                                TriggerServerEvent("qb-trucker:server:01101110", JobsDone)
                                 RemoveBlip(CurrentBlip)
                             else
                                 QBCore.Functions.Notify("Je hebt nog geen werk gericht..", "error")
@@ -72,9 +95,9 @@ Citizen.CreateThread(function()
                         DrawText3D(Config.Locations["main"].coords.x, Config.Locations["main"].coords.y, Config.Locations["main"].coords.z, "Loonstrook")
                     end  
                 end
-
+    
                 if CurrentLocation ~= nil  and currentCount < CurrentLocation.dropcount then
-                    if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, CurrentLocation.x, CurrentLocation.y, CurrentLocation.z, true) < 20.0 then
+                    if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, CurrentLocation.x, CurrentLocation.y, CurrentLocation.z, true) < 40.0 then
                         if not IsPedInAnyVehicle(GetPlayerPed(-1)) then
                             if not hasBox then
                                 local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1), true)
@@ -83,7 +106,7 @@ Citizen.CreateThread(function()
                                     DrawText3D(trunkpos.x, trunkpos.y, trunkpos.z, "Producten pakken")
                                     if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, trunkpos.x, trunkpos.y, trunkpos.z, true) < 1.5 and not isWorking then
                                         isWorking = true
-                                        QBCore.Functions.Progressbar("work_carrybox", "Doos producten pakken..", math.random(2500, 5000), false, true, {
+                                        QBCore.Functions.Progressbar("work_carrybox", "Doos producten pakken..", 2000, false, true, {
                                             disableMovement = true,
                                             disableCarMovement = true,
                                             disableMouse = false,
@@ -111,7 +134,7 @@ Citizen.CreateThread(function()
                                     TriggerEvent('animations:client:EmoteCommandStart', {"c"})
                                     Citizen.Wait(500)
                                     TriggerEvent('animations:client:EmoteCommandStart', {"bumbin"})
-                                    QBCore.Functions.Progressbar("work_dropbox", "Doos producten afleveren..", math.random(2500, 5000), false, true, {
+                                    QBCore.Functions.Progressbar("work_dropbox", "Doos producten afleveren..", 2000, false, true, {
                                         disableMovement = true,
                                         disableCarMovement = true,
                                         disableMouse = false,
@@ -123,7 +146,7 @@ Citizen.CreateThread(function()
                                         currentCount = currentCount + 1
                                         if currentCount == CurrentLocation.dropcount then
                                             table.insert(LocationsDone, CurrentLocation.id)
-                                            TriggerServerEvent("qb-shops:server:RestockShopItems", CurrentLocation.name)
+                                            TriggerServerEvent("qb-shops:server:RestockShopItems", CurrentLocation.store)
                                             QBCore.Functions.Notify("Je hebt alle producten afgeleverd, op naar het volgende punt")
                                             CurrentLocation = nil
                                             currentCount = 0
@@ -151,20 +174,47 @@ Citizen.CreateThread(function()
 end)
 
 function getNewLocation()
-    local randomLocation = math.random(1, #Config.Locations["stores"])
-    while (hasDoneLocation(randomLocation)) do
-        Citizen.Wait(10)
-        randomLocation = math.random(1, #Config.Locations["stores"])
+    local location = getNextClosestLocation()
+    if location ~= 0 then
+        CurrentLocation = {}
+        CurrentLocation.id = location
+        CurrentLocation.dropcount = math.random(1, 3)
+        CurrentLocation.store = Config.Locations["stores"][location].name
+        CurrentLocation.x = Config.Locations["stores"][location].coords.x
+        CurrentLocation.y = Config.Locations["stores"][location].coords.y
+        CurrentLocation.z = Config.Locations["stores"][location].coords.z
+
+        CurrentBlip = AddBlipForCoord(CurrentLocation.x, CurrentLocation.y, CurrentLocation.z)
+        SetBlipColour(CurrentBlip, 3)
+        SetBlipRoute(CurrentBlip, true)
+        SetBlipRouteColour(CurrentBlip, 3)
+    else
+        QBCore.Functions.Notify("Je bent alle winkels langs gegaan.. Tijd voor je loonstrook!")
     end
-    CurrentLocation = {}
-    CurrentLocation.id = randomLocation
-    CurrentLocation.dropcount = math.random(1, 3)
-    CurrentLocation.store = Config.Locations["stores"][randomLocation].name
-    CurrentLocation.x = Config.Locations["stores"][randomLocation].coords.x
-    CurrentLocation.y = Config.Locations["stores"][randomLocation].coords.y
-    CurrentLocation.z = Config.Locations["stores"][randomLocation].coords.z
-    CurrentBlip = AddBlipForCoord(CurrentLocation.x, CurrentLocation.y, CurrentLocation.z)
-    SetBlipRoute(CurrentBlip, true)
+end
+
+function getNextClosestLocation()
+    local pos = GetEntityCoords(GetPlayerPed(-1), true)
+    local current = 0
+    local dist = nil
+
+    for k, _ in pairs(Config.Locations["stores"]) do
+        if current ~= 0 then
+            if(GetDistanceBetweenCoords(pos, Config.Locations["stores"][k].coords.x, Config.Locations["stores"][k].coords.y, Config.Locations["stores"][k].coords.z, true) < dist)then
+                if not hasDoneLocation(k) then
+                    current = k
+                    dist = GetDistanceBetweenCoords(pos, Config.Locations["stores"][k].coords.x, Config.Locations["stores"][k].coords.y, Config.Locations["stores"][k].coords.z, true)    
+                end
+            end
+        else
+            if not hasDoneLocation(k) then
+                current = k
+                dist = GetDistanceBetweenCoords(pos, Config.Locations["stores"][k].coords.x, Config.Locations["stores"][k].coords.y, Config.Locations["stores"][k].coords.z, true)    
+            end
+        end
+    end
+
+    return current
 end
 
 function hasDoneLocation(locationId)

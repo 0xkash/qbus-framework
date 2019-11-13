@@ -74,7 +74,7 @@ RegisterNetEvent('qb-shops:client:RestockShopItems')
 AddEventHandler('qb-shops:client:RestockShopItems', function(shop, amount)
     if Config.Locations[shop]["products"] ~= nil then 
         for k, v in pairs(Config.Locations[shop]["products"]) do 
-            Config.Locations[shop]["products"][v].amount = Config.Locations[shop]["products"][v].amount + amount
+            Config.Locations[shop]["products"][k].amount = Config.Locations[shop]["products"][k].amount + amount
         end
     end
 end)
