@@ -64,8 +64,7 @@ $(document).on('keydown', function() {
 
     QBHud.UpdateHud = function(data) {
         $(".ui-container").css("display", data.show ? "none" : "block");
-
-        $(".healthBar").css("width", (data.health - 100) + "%");
+        $(".healthBar").css("width", data.health - 100 + "%");
         $(".armorBar").css("width", data.armor + "%");
         $(".thirstBar").css("width", data.thirst + "%");
         $(".hungerBar").css("width", data.hunger + "%");

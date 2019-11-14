@@ -96,6 +96,7 @@ end)
 
 RegisterNetEvent("qb-houses:client:decorate")
 AddEventHandler("qb-houses:client:decorate", function()
+	Citizen.Wait(500)
 	if inside then 
 		if hasKey then 
 			if not DecoMode then
@@ -117,7 +118,6 @@ function openDecorateUI()
 		furniture = Config.Furniture,
 	})
 	SetCursorLocation(0.5, 0.5)
-	print(json.encode(ObjectList))
 end
 
 RegisterNetEvent("qb-houses:server:sethousedecorations")
@@ -153,6 +153,24 @@ RegisterNUICallback('toggleCursor', function()
 	end
 
 	cursorEnabled = not cursorEnabled
+end)
+
+RegisterNUICallback('selectOwnedObject', function(data)
+	local objectData = data.objectData
+
+	local ownedObject = GetClosestObjectOfType(objectData.x, objectData.y, objectData.z, 1.5, GetHashKey(objectData.hashname), false, 6, 7)
+	local pos = GetEntityCoords(ownedObject, true)
+    local rot = GetEntityRotation(ownedObject)
+    SelObjRot = {x = rot.x, y = rot.y, z = rot.z}
+	SelObjPos = {x = pos.x, y = pos.y, z = pos.z}
+	SelObjHash = GetHashKey(objectData.hashname)
+	SelectedObj = ownedObject
+    peanut = true
+end)
+
+RegisterNUICallback('deselectOwnedObject', function()
+	SelectedObj = nil
+	peanut = false
 end)
 
 RegisterNUICallback("spawnobject", function(data, cb)

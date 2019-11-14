@@ -10,6 +10,7 @@ QB.Doors = {
 		authorizedJobs = { 'police' },
 		locking = false,
 		locked = false,
+		pickable = false,
 		distance = 2.5,
 		doors = {
 			{
@@ -34,6 +35,7 @@ QB.Doors = {
 		authorizedJobs = { 'police' },
 		locking = false,
 		locked = true
+		pickable = false,
 	},
 	-- Rooftop
 	{
@@ -44,6 +46,7 @@ QB.Doors = {
 		authorizedJobs = { 'police' },
 		locking = false,
 		locked = true
+		pickable = false,
 	},
 	-- Hallway to roof
 	{
@@ -54,6 +57,7 @@ QB.Doors = {
 		authorizedJobs = { 'police' },
 		locking = false,
 		locked = true
+		pickable = false,
 	},
 	-- Armory
 	{
@@ -64,6 +68,7 @@ QB.Doors = {
 		authorizedJobs = { 'police' },
 		locking = false,
 		locked = true
+		pickable = false,
 	},
 	-- Captain Office
 	{
@@ -74,6 +79,7 @@ QB.Doors = {
 		authorizedJobs = { 'police' },
 		locking = false,
 		locked = true
+		pickable = false,
 	},
 	-- To downstairs (double doors)
 	{
@@ -81,6 +87,7 @@ QB.Doors = {
 		authorizedJobs = { 'police' },
 		locking = false,
 		locked = true,
+		pickable = false,
 		distance = 3.0,
 		doors = {
 			{
@@ -108,6 +115,7 @@ QB.Doors = {
 		authorizedJobs = { 'police' },
 		locking = false,
 		locked = true,
+		pickable = false,
 		distance = 1.0,
 	},
 	-- Cell 1
@@ -119,6 +127,7 @@ QB.Doors = {
 		authorizedJobs = { 'police' },
 		locking = false,
 		locked = true,
+		pickable = false,
 		distance = 1.0,
 	},
 	-- Cell 2
@@ -130,6 +139,7 @@ QB.Doors = {
 		authorizedJobs = { 'police' },
 		locking = false,
 		locked = true,
+		pickable = false,
 		distance = 1.0,
 	},
 	-- Cell 3
@@ -141,6 +151,7 @@ QB.Doors = {
 		authorizedJobs = { 'police' },
 		locking = false,
 		locked = true,
+		pickable = false,
 		distance = 1.0,
 	},
 	-- To Back
@@ -152,6 +163,7 @@ QB.Doors = {
 		authorizedJobs = { 'police' },
 		locking = false,
 		locked = true,
+		pickable = false,
 		distance = 1.0,
 	},
 	--
@@ -163,6 +175,7 @@ QB.Doors = {
 		authorizedJobs = { 'police' },
 		locking = false,
 		locked = true,
+		pickable = false,
 		distance = 4,
 		doors = {
 			{
@@ -187,6 +200,7 @@ QB.Doors = {
 		authorizedJobs = { 'police' },
 		locking = false,
 		locked = true,
+		pickable = false,
 		distance = 14,
 		size = 2
 	},
@@ -202,6 +216,7 @@ QB.Doors = {
 		authorizedJobs = { 'police' },
 		locking = false,
 		locked = false
+		pickable = false,
 	},
 	--
 	-- Paleto Bay
@@ -212,6 +227,7 @@ QB.Doors = {
 		authorizedJobs = { 'police' },
 		locking = false,
 		locked = false,
+		pickable = false,
 		distance = 2.5,
 		doors = {
 			{
@@ -238,6 +254,7 @@ QB.Doors = {
 		authorizedJobs = { 'police' },
 		locking = false,
 		locked = true,
+		pickable = false,
 		distance = 12,
 		size = 2
 	},
@@ -248,6 +265,7 @@ QB.Doors = {
 		authorizedJobs = { 'police' },
 		locking = false,
 		locked = true,
+		pickable = false,
 		distance = 12,
 		size = 2
 	},
@@ -258,6 +276,7 @@ QB.Doors = {
 		authorizedJobs = { 'police' },
 		locking = false,
 		locked = true,
+		pickable = false,
 		distance = 12,
 		size = 2
 	},
@@ -269,6 +288,7 @@ QB.Doors = {
 		authorizedJobs = { 'police' },
 		locking = false,
 		locked = true,
+		pickable = false,
 		distance = 2.5,
 		size = 2
 	},
@@ -279,6 +299,7 @@ QB.Doors = {
 		authorizedJobs = { 'police' },
 		locking = false,
 		locked = true,
+		pickable = false,
 		distance = 2.5,
 		size = 2
 	},
@@ -289,6 +310,7 @@ QB.Doors = {
 		authorizedJobs = { 'police' },
 		locking = false,
 		locked = true,
+		pickable = false,
 		distance = 2.5,
 		size = 2
 	},
@@ -299,6 +321,7 @@ QB.Doors = {
 		authorizedJobs = { 'police' },
 		locking = false,
 		locked = true,
+		pickable = false,
 		distance = 2.5,
 		size = 2
 	},
@@ -309,6 +332,7 @@ QB.Doors = {
 		authorizedJobs = { 'police' },
 		locking = false,
 		locked = true,
+		pickable = false,
 		distance = 2.5,
 		size = 2
 	},
@@ -319,6 +343,7 @@ QB.Doors = {
 		authorizedJobs = { 'police' },
 		locking = false,
 		locked = true,
+		pickable = false,
 		distance = 2.5,
 		size = 2
 	},
@@ -329,6 +354,7 @@ QB.Doors = {
 		authorizedJobs = { 'police' },
 		locking = false,
 		locked = true,
+		pickable = false,
 		distance = 2.5,
 		size = 2
 	},
@@ -339,6 +365,7 @@ QB.Doors = {
 		authorizedJobs = { 'police' },
 		locking = false,
 		locked = true,
+		pickable = false,
 		distance = 2.5,
 		size = 2
 	},
@@ -349,6 +376,7 @@ QB.Doors = {
 		authorizedJobs = { 'police' },
 		locking = false,
 		locked = true,
+		pickable = false,
 		distance = 2.5,
 		size = 2
 	},
@@ -359,6 +387,7 @@ QB.Doors = {
 		authorizedJobs = { 'police' },
 		locking = false,
 		locked = true,
+		pickable = false,
 		distance = 2.5,
 		size = 2
 	},
@@ -369,6 +398,7 @@ QB.Doors = {
 		authorizedJobs = { 'police' },
 		locking = false,
 		locked = true,
+		pickable = false,
 		distance = 2.5,
 		size = 2
 	},
@@ -380,6 +410,7 @@ QB.Doors = {
 		authorizedJobs = { 'police' },
 		locking = false,
 		locked = true,
+		pickable = false,
 		distance = 2.5,
 		size = 2
 	},
@@ -390,6 +421,7 @@ QB.Doors = {
 		authorizedJobs = { 'police' },
 		locking = false,
 		locked = true,
+		pickable = false,
 		distance = 2.5,
 		size = 2
 	},

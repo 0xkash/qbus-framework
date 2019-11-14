@@ -3,6 +3,11 @@ TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 
 --CODE
 
+Citizen.CreateThread(function()
+    QBCore.Functions.ExecuteSql('DELETE FROM `phone_tweets`')
+    print('Tweets have been cleared')
+end)
+
 RegisterServerEvent('qb-phone:server:setPhoneMeta')
 AddEventHandler('qb-phone:server:setPhoneMeta', function(phoneMeta)
     local src = source

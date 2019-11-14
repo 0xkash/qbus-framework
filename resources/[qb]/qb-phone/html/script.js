@@ -723,17 +723,15 @@ qbPhone.MailNotify = function() {
 }
 
 qbPhone.TwitterNotify = function(sender) {
-    if (allowNotifys) {
-        $('.new-twitter-notify-content'),html("@" + sender + " heeft een nieuwe tweet geplaatst!");
+    $('.new-twitter-notify-content').html("@" + sender + " heeft een nieuwe tweet geplaatst!");
+    $(".new-twitter-notify").css({'display':'block'}).animate({
+        top: "0%",
+    }, 500);
+    setTimeout(function(){
         $(".new-twitter-notify").css({'display':'block'}).animate({
-            top: "0%",
-        }, 500);
-        setTimeout(function(){
-            $(".new-twitter-notify").css({'display':'block'}).animate({
-                top: "-10%",
-            }, 250)
-        }, 2500)
-    }
+            top: "-10%",
+        }, 250)
+    }, 2500)
 }
 
 qbPhone.SetupTweets = function(tweets) {

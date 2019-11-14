@@ -94,7 +94,7 @@ AddEventHandler('112:client:SendPoliceAlert', function(notifyType, msg, type, bl
 end)
 
 RegisterNetEvent('police:client:PoliceAlertMessage')
-AddEventHandler('police:client:PoliceAlertMessage', function(msg, coords)
+AddEventHandler('police:client:PoliceAlertMessage', function(msg, coords, blipType)
     PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
     TriggerEvent("chatMessage", "112-MELDING", "error", msg)
     local transG = 100
@@ -104,7 +104,7 @@ AddEventHandler('police:client:PoliceAlertMessage', function(msg, coords)
     SetBlipAlpha(blip, transG)
     SetBlipAsShortRange(blip, false)
     BeginTextCommandSetBlipName('STRING')
-    AddTextComponentString("112 - Verdachte situatie (drugs)")
+    AddTextComponentString("112 - Verdachte situatie "..blipType)
     EndTextCommandSetBlipName(blip)
     while transG ~= 0 do
         Wait(180 * 4)

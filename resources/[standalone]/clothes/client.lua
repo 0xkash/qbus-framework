@@ -1154,13 +1154,13 @@ end)
 
 RegisterNetEvent('femaleclothesstart')
 AddEventHandler('femaleclothesstart', function(hasToPay)
-	selected_skins = frm_skins
+	selected_skins = fr_skins
 	startClothes(hasToPay)
 end)
 
 RegisterNetEvent('maleclothesstart')
 AddEventHandler('maleclothesstart', function(hasToPay)
-	selected_skins = fr_skins
+	selected_skins = frm_skins
 	startClothes(hasToPay)
 end)
 

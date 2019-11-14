@@ -9,8 +9,10 @@ $(document).ready(function (){
         if (item.action == "openUI") {
             if (item.toggle == true) {
                 $('.container').fadeIn(250);
+                qbMultiCharacters.resetAll();
             } else {
                 $('.container').fadeOut(250);
+                qbMultiCharacters.resetAll();
             }
         }
 
@@ -160,13 +162,14 @@ $(document).on('click', '#accept-delete', function(e){
 });
 
 function refreshCharacters() {
-    $('.characters-list').html('<div class="character" id="char-1" data-cid=""><span id="slot-name">Empty Slot<span id="cid"></span></span></div><div class="character" id="char-2" data-cid=""><span id="slot-name">Empty Slot<span id="cid"></span></span></div><div class="character" id="char-3" data-cid=""><span id="slot-name">Empty Slot<span id="cid"></span></span></div><div class="character" id="char-4" data-cid=""><span id="slot-name">Empty Slot<span id="cid"></span></span></div><div class="character" id="char-5" data-cid=""><span id="slot-name">Empty Slot<span id="cid"></span></span></div>')
+    $('.characters-list').html('<div class="character" id="char-1" data-cid=""><span id="slot-name">Empty Slot<span id="cid"></span></span></div><div class="character" id="char-2" data-cid=""><span id="slot-name">Empty Slot<span id="cid"></span></span></div><div class="character" id="char-3" data-cid=""><span id="slot-name">Empty Slot<span id="cid"></span></span></div><div class="character" id="char-4" data-cid=""><span id="slot-name">Empty Slot<span id="cid"></span></span></div><div class="character" id="char-5" data-cid=""><span id="slot-name">Empty Slot<span id="cid"></span></span></div><div class="character-btn" id="play"><p id="play-text">Select a character</p></div><div class="character-btn" id="delete"><p id="delete-text">Select a character</p></div>')
     setTimeout(function(){
         $(selectedChar).removeClass("char-selected");
         selectedChar = null;
         $.post('http://qb-multicharacter/setupCharacters');
-        $("#play-text").html("Select a character");
-        $("#delete-text").html("Select a character");
+        $("#delete").css({"display":"none"});
+        $("#play").css({"display":"none"});
+        qbMultiCharacters.resetAll();
     }, 100)
 }
 
@@ -183,8 +186,7 @@ $("#close-del").click(function (e) {
     $('.character-delete').fadeOut(150);
 })
 
-
-$("#play").click(function (e) {
+$(document).on('click', '#play', function(e) {
     e.preventDefault();
     var charData = $(selectedChar).data('cid');
 
@@ -199,17 +201,16 @@ $("#play").click(function (e) {
                 qbMultiCharacters.fadeOutDown('.characters-list', "-40%", 400);
                 qbMultiCharacters.fadeOutDown('.character-info', "-40%", 400);
             }, 300);
+            qbMultiCharacters.resetAll();
         } else {
             $('.characters-list').css("filter", "blur(2px)")
             $('.character-info').css("filter", "blur(2px)")
             qbMultiCharacters.fadeInDown('.character-register', '25%', 400);
         }
-    } else {
-        console.log('Select a character')
     }
 });
 
-$("#delete").click(function (e) {
+$(document).on('click', '#delete', function(e) {
     e.preventDefault();
     var charData = $(selectedChar).data('cid');
 
@@ -242,4 +243,15 @@ qbMultiCharacters.fadeOutDown = function(element, percent, time) {
 
 qbMultiCharacters.fadeInDown = function(element, percent, time) {
     $(element).css({"display":"block"}).animate({top: percent,}, time);
+}
+
+qbMultiCharacters.resetAll = function() {
+    $('.characters-list').hide();
+    $('.characters-list').css("top", "-40");
+    $('.character-info').hide();
+    $('.character-info').css("top", "-40");
+    $('.welcomescreen').show();
+    $('.welcomescreen').css("top", "15%");
+    $('.server-log').show();
+    $('.server-log').css("top", "25%");
 }

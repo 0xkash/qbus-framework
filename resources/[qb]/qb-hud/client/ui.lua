@@ -21,6 +21,7 @@ function CalculateTimeToDisplay()
 end
 
 Citizen.CreateThread(function()
+    Citizen.Wait(500)
     while true do 
         if isLoggedIn and QBHud.Show then
             speed = GetEntitySpeed(GetVehiclePedIsIn(GetPlayerPed(-1), false)) * 3.6
