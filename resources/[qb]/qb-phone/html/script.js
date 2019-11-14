@@ -26,8 +26,6 @@ $(document).on('keydown', function() {
 $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();
 
-    console.log('QB Phone\'s javascript has succesfully loaded, no errors occured..')
-
     window.addEventListener('message', function(event){
         var eventData = event.data;
 
@@ -68,7 +66,6 @@ $(document).ready(function(){
         }
 
         if (eventData.task == "newMailNotify") {
-            console.log('dsgsdgds')
             qbPhone.MailNotify()
         }
 
@@ -283,8 +280,6 @@ $(document).on('click', '.background-option', function(e){
 $(document).on('click', '.home-container', function(e){
     e.preventDefault();
 
-    console.log(currentApp)
-
     if (lastPage == null) {
         if (currentApp != homePage) {
             $(currentApp).animate({top: "100%",}
@@ -324,7 +319,6 @@ qbPhone.Open = function() {
     $('.phone-frame').css({'display':'block'}).animate({
         top: "40%",
     }, 300);
-    qbPhone.Log('Phone opened');
 }
 
 qbPhone.Close = function() {
@@ -356,7 +350,6 @@ qbPhone.Close = function() {
         }
     });
     $.post('http://qb-phone/closePhone');
-    qbPhone.Log('Phone closed');
 }
 
 qbPhone.setupPhoneApps = function(apps) {
@@ -368,7 +361,6 @@ qbPhone.setupPhoneApps = function(apps) {
             $('.slot-'+app.slot).removeClass("empty-slot");
             $('#slot-'+app.slot).data('appData', app);
         });
-        qbPhone.Log('Phone apps have been generated');
         $('[data-toggle="tooltip"]').tooltip();
     }
     phoneApps = apps
@@ -520,7 +512,6 @@ qbPhone.setupPlayerContacts = function(contacts) {
             $("#contact-"+index).addClass("offline");
         }
 
-        console.log(contact.status)
         $("#contact-"+index).data("contactData", contact);
         $("#cData-"+index).data("cData", contact);
     });
@@ -576,7 +567,6 @@ qbPhone.setBankData = function(playerData) {
 }
 
 qbPhone.setGarageVehicles = function(vehicles) {
-    console.log('yeet?')
     $(".garage-vehicles").html("");
     $.each(vehicles, function(index, vehicle){
         var element = '<div class="garage-vehicle"> '+
@@ -822,7 +812,6 @@ updateNewBalance = function() {
     var balance = $("#balance").val();
     var minAmount = $(".euro-amount-input").val();
     $("#new-balance").html(balance - minAmount);
-    console.log(balance)
 }
 
 // qbPhone.Open();

@@ -25,6 +25,11 @@ RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     isLoggedIn = true
     PlayerJob = QBCore.Functions.GetPlayerData().job
+    CurrentLocation = nil
+    CurrentBlip = nil
+    hasBox = false
+    isWorking = false
+    JobsDone = 0
 end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerUnload')
@@ -33,6 +38,7 @@ AddEventHandler('QBCore:Client:OnPlayerUnload', function()
     CurrentBlip = nil
     hasBox = false
     isWorking = false
+    JobsDone = 0
 end)
 
 RegisterNetEvent('QBCore:Client:OnJobUpdate')
@@ -55,7 +61,10 @@ Citizen.CreateThread(function()
         if isLoggedIn and QBCore ~= nil then
             if PlayerJob.name == "trucker" then
                 if IsControlJustReleased(0, Keys["DEL"]) then
-                    getNewLocation()
+                    if IsPedInAnyVehicle(GetPlayerPed(-1)) and isTruckerVehicle(GetVehiclePedIsIn(GetPlayerPed(-1), false)) then
+                        getNewLocation()
+                        CurrentPlate = GetVehicleNumberPlateText(GetVehiclePedIsIn(GetPlayerPed(-1), false))
+                    end
                 end
                 local pos = GetEntityCoords(GetPlayerPed(-1))
                 if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["vehicle"].coords.x, Config.Locations["vehicle"].coords.y, Config.Locations["vehicle"].coords.z, true) < 10.0) then

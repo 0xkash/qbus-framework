@@ -54,6 +54,12 @@ Config.VitrineRewards = {
             ["max"] = 5
         },
     },
+    [3] = {
+        ["item"] = "goldchain",
+        ["amount"] = {
+            ["max"] = 5
+        },
+    },
 }
 
 Config.Locations = {

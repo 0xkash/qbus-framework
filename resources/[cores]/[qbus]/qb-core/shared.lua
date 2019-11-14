@@ -161,6 +161,7 @@ QBShared.Items = {
 	["gatecrack"] 				 	 = {["name"] = "gatecrack", 			  	  	["label"] = "Gatecrack", 				["weight"] = 1000, 		["type"] = "item", 		["image"] = "usb_device.png", 		["unique"] = false, 	["useable"] = false, 	["shouldClose"] = true,			["description"] = "This is a placeholder description"},
 	["rolex"] 				 	 	 = {["name"] = "rolex", 			  	  		["label"] = "Rolex", 					["weight"] = 1500, 		["type"] = "item", 		["image"] = "rolex_watch.png", 		["unique"] = false, 	["useable"] = false, 	["shouldClose"] = true,			["description"] = "This is a placeholder description"},
 	["diamond_ring"] 				 = {["name"] = "diamond_ring", 			  	  	["label"] = "Diamanten Ring", 			["weight"] = 1500, 		["type"] = "item", 		["image"] = "diamond_ring.png", 	["unique"] = false, 	["useable"] = false, 	["shouldClose"] = true,			["description"] = "This is a placeholder description"},
+	["goldchain"] 				 	 = {["name"] = "goldchain", 			  	  	["label"] = "Gouden Ketting", 			["weight"] = 1500, 		["type"] = "item", 		["image"] = "goldchain.png", 		["unique"] = false, 	["useable"] = false, 	["shouldClose"] = true,			["description"] = "This is a placeholder description"},
 }
 
 -- // HASH WEAPON ITEMS, NEED SOMETIMES TO GET INFO FOR CLIENT

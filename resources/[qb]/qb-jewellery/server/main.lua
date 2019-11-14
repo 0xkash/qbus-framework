@@ -21,9 +21,13 @@ AddEventHandler('qb-jewellery:server:vitrineReward', function()
     local item = math.random(1, #Config.VitrineRewards)
     local amount = math.random(1, Config.VitrineRewards[item]["amount"]["max"])
 
-    Player.Functions.AddItem(Config.VitrineRewards[item]["item"], amount)
-    TriggerClientEvent('QBCore:Notify', src, 'Je hebt '..amount..'x '..QBCore.Shared.Items[Config.VitrineRewards[item]["item"]]["label"]..' ontvangen', 'success')
-    TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[Config.VitrineRewards[item]["item"]], 'add')
+    if Player.Functions.AddItem(Config.VitrineRewards[item]["item"], amount) then
+        TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[Config.VitrineRewards[item]["item"]], 'add')
+    else
+        TriggerClientEvent('QBCore:Notify', src, 'Je hebt teveel op zak..', 'error')
+    end
+    --TriggerClientEvent('QBCore:Notify', src, 'Je hebt '..amount..'x '..QBCore.Shared.Items[Config.VitrineRewards[item]["item"]]["label"]..' ontvangen', 'success')
+    
 end)
 
 RegisterServerEvent('qb-jewellery:server:setTimeout')
