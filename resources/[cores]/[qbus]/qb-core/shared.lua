@@ -159,6 +159,8 @@ QBShared.Items = {
 	["sandwich"] 				 	 = {["name"] = "sandwich", 			  	  		["label"] = "Sandwich", 				["weight"] = 1000, 		["type"] = "item", 		["image"] = "sandwich.png", 		["unique"] = false, 	["useable"] = true, 	["shouldClose"] = true,			["description"] = "This is a placeholder description"},
 	["electronickit"] 				 = {["name"] = "electronickit", 			  	["label"] = "Electronic Kit", 			["weight"] = 1000, 		["type"] = "item", 		["image"] = "electronickit.png", 	["unique"] = false, 	["useable"] = true, 	["shouldClose"] = true,			["description"] = "This is a placeholder description"},
 	["gatecrack"] 				 	 = {["name"] = "gatecrack", 			  	  	["label"] = "Gatecrack", 				["weight"] = 1000, 		["type"] = "item", 		["image"] = "usb_device.png", 		["unique"] = false, 	["useable"] = false, 	["shouldClose"] = true,			["description"] = "This is a placeholder description"},
+	["rolex"] 				 	 	 = {["name"] = "rolex", 			  	  		["label"] = "Rolex", 					["weight"] = 1500, 		["type"] = "item", 		["image"] = "rolex_watch.png", 		["unique"] = false, 	["useable"] = false, 	["shouldClose"] = true,			["description"] = "This is a placeholder description"},
+	["diamond_ring"] 				 = {["name"] = "diamond_ring", 			  	  	["label"] = "Diamanten Ring", 			["weight"] = 1500, 		["type"] = "item", 		["image"] = "diamond_ring.png", 	["unique"] = false, 	["useable"] = false, 	["shouldClose"] = true,			["description"] = "This is a placeholder description"},
 }
 
 -- // HASH WEAPON ITEMS, NEED SOMETIMES TO GET INFO FOR CLIENT

@@ -211,12 +211,12 @@ AddEventHandler('qb-phone:client:newTweet', function(sender)
         end)
     end
 
-    if not inPhone then
+    -- if not inPhone then
         SendNUIMessage({
             task = "newTweetNotify",
             sender = sender
         })
-    end
+    -- end
 end)
 
 --- CODE

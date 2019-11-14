@@ -101,7 +101,9 @@ $(document).on('click', '.header-btn', function(){
             $(selectedHeaderButton).removeClass('header-btn-selected');
             $(".decorate-footer-buttons").fadeOut(150);
         } else {
+            $(selectedHeaderButton).removeClass('header-btn-selected');
             $(this).addClass('header-btn-selected');
+            $('.decorate-items').fadeOut(150);
             Decorations.SetupCategorys();
         }
     }
@@ -111,17 +113,23 @@ $(document).on('click', '.header-btn', function(){
     }
 
     if ($(this).attr('id') == "my-objects") {
-        $.post('http://qb-houses/setupMyObjects', JSON.stringify({
-
-        }), function(myObjects){
-            $('.decorate-items').html("");
-            $.each(myObjects, function(i, object){
-                var elem = '<div class="decorate-item" id="myobject-'+i+'"><span id="decorate-item-name"><b>Object: </b>'+object.hashname+'</span><span id="decorate-item-category"><strong>Prijs: </strong><span id="item-price" style="color: green;">OWNED</span></span></div>';
-                $('.decorate-items').append(elem);
-                $('#myobject-'+i).data('myObjectData', object);
+        if ($(this).hasClass('header-btn-selected')) {
+            $(selectedHeaderButton).removeClass('header-btn-selected');
+            $('.decorate-items').fadeOut(150);
+        } else {
+            $(selectedHeaderButton).removeClass('header-btn-selected');
+            $(this).addClass('header-btn-selected');
+            $(".decorate-footer-buttons").fadeOut(150);
+            $.post('http://qb-houses/setupMyObjects', JSON.stringify({}), function(myObjects){
+                $('.decorate-items').html("");
+                $.each(myObjects, function(i, object){
+                    var elem = '<div class="decorate-item" id="myobject-'+i+'" data-type="myObject"><span id="decorate-item-name"><b>Object: </b>'+object.hashname+'</span><span id="decorate-item-category"><strong>Prijs: </strong><span id="item-price" style="color: green;">OWNED</span></span></div>';
+                    $('.decorate-items').append(elem);
+                    $('#myobject-'+i).data('myObjectData', object);
+                });
+                $(".decorate-items").fadeIn(150);
             });
-            $(".decorate-items").fadeIn(150);
-        });
+        }
     }
 
     selectedHeaderButton = this;
@@ -131,7 +139,7 @@ $(document).on('click', '.footer-btn', function(){
     var selectedCategory = $(this).attr('id');
     $('.decorate-items').html("");
     $.each(houseCategorys[selectedCategory].items, function(i, item){
-        var elem = '<div class="decorate-item" id="object-'+i+'"><span id="decorate-item-name"><b>Object: </b>'+item.label+'</span><span id="decorate-item-category"><strong>Prijs: </strong><span id="item-price" style="color: green;">€'+item.price+'</span></span></div>';
+        var elem = '<div class="decorate-item" id="object-'+i+'" data-type="newObject"><span id="decorate-item-name"><b>Object: </b>'+item.label+'</span><span id="decorate-item-category"><strong>Prijs: </strong><span id="item-price" style="color: green;">€'+item.price+'</span></span></div>';
         $('.decorate-items').append(elem);
         $('#object-'+i).data('objectData', item);
     });
@@ -141,20 +149,35 @@ $(document).on('click', '.footer-btn', function(){
 $(document).on('click', '.decorate-item', function(){
     var objId = $(this).attr('id');
     var objData = $('#'+objId).data('objectData');
+    var myObjectData = $('#'+objId).data('myObjectData');
     if (selectedObject != null) {
         $(selectedObject).removeClass('selected-object');
     }
 
-    if (selectedObject == this) {
-        $(this).removeClass('selected-object');
-        selectedObject = null;
-        $.post('http://qb-houses/removeObject');
-    } else {
-        $(this).addClass('selected-object');
-        selectedObject = this;
-        $.post("http://qb-houses/chooseobject", JSON.stringify({
-            object: objData.object,
-        }));
+    if ($("#"+objId).data('type') == "newObject") {
+        if (selectedObject == this) {
+            $(this).removeClass('selected-object');
+            selectedObject = null;
+            $.post('http://qb-houses/removeObject');
+        } else {
+            $(this).addClass('selected-object');
+            selectedObject = this;
+            $.post("http://qb-houses/chooseobject", JSON.stringify({
+                object: objData.object,
+            }));
+        }
+    } else if ($("#"+objId).data('type') == "myObject") {
+        if (selectedObject == this) {
+            $(this).removeClass('selected-object');
+            $.post('http://qb-houses/deselectOwnedObject')
+            selectedObject = null;
+        } else {
+            $(this).addClass('selected-object');
+            selectedObject = this;
+            $.post('http://qb-houses/selectOwnedObject', JSON.stringify({
+                objectData: myObjectData
+            }))
+        }
     }
 });
 
