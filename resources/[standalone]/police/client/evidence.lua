@@ -152,7 +152,7 @@ end)
 Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(1)
-		if IsPedShooting(GetPlayerPed(-1)) and QBCore.Functions.GetPlayerData().job.name ~= "police" then
+		if IsPedShooting(GetPlayerPed(-1)) then
 			local weapon = GetSelectedPedWeapon(GetPlayerPed(-1))
 			if weapon ~= GetHashKey("WEAPON_STUNGUN") and weapon ~= GetHashKey("WEAPON_PETROLCAN") and weapon ~= GetHashKey("WEAPON_FIREEXTINGUISHER") then
 				shotAmount = shotAmount + 1
@@ -163,8 +163,6 @@ Citizen.CreateThread(function()
 				end
 				DropBulletCasing(weapon)
 			end
-		else
-			Citizen.Wait(1000)
 		end
 	end
 end)
@@ -228,8 +226,8 @@ end)
 Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(10)
-		if QBCore ~= nil and isLoggedIn then 
-			if QBCore.Functions.GetPlayerData().job.name == "police" then
+		if isLoggedIn then 
+			if PlayerJob.name == "police" and onDuty then
 				if IsPlayerFreeAiming(PlayerId()) and GetSelectedPedWeapon(GetPlayerPed(-1)) == GetHashKey("WEAPON_FLASHLIGHT") then
 					if next(Casings) ~= nil then
 						local pos = GetEntityCoords(GetPlayerPed(-1), true)
@@ -276,7 +274,7 @@ Citizen.CreateThread(function()
         Citizen.Wait(1)
 		if isLoggedIn and BlooddropsNear ~= nil then
 			if IsPlayerFreeAiming(PlayerId()) and GetSelectedPedWeapon(GetPlayerPed(-1)) == GetHashKey("WEAPON_FLASHLIGHT") then
-				if QBCore.Functions.GetPlayerData().job.name == "police" then
+				if PlayerJob.name == "police" and onDuty then
 					for k, v in pairs(BlooddropsNear) do
 						if v ~= nil then
 							DrawMarker(27, v.coords.x, v.coords.y, v.coords.z - 0.05, 0.0, 0.0, 0.0, 180.0, 0.0, 0.0, 0.11, 0.11, 0.3, 250, 0, 50, 255, false, true, 2, false, false, false, false)
@@ -297,7 +295,7 @@ Citizen.CreateThread(function()
         Citizen.Wait(1)
 		if isLoggedIn and CasingsNear ~= nil then
 			if IsPlayerFreeAiming(PlayerId()) and GetSelectedPedWeapon(GetPlayerPed(-1)) == GetHashKey("WEAPON_FLASHLIGHT") then
-				if QBCore.Functions.GetPlayerData().job.name == "police" then
+				if PlayerJob.name == "police" and onDuty then
 					for k, v in pairs(CasingsNear) do
 						if v ~= nil then
 							DrawMarker(27, v.coords.x, v.coords.y, v.coords.z - 0.05, 0.0, 0.0, 0.0, 180.0, 0.0, 0.0, 0.11, 0.11, 0.3, 50, 0, 250, 255, false, true, 2, false, false, false, false)

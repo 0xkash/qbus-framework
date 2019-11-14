@@ -16,6 +16,8 @@ isHandcuffed = false
 cuffType = 1
 isEscorted = false
 draggerId = 0
+PlayerJob = {}
+onDuty = false
 
 QBCore = nil
 Citizen.CreateThread(function() 
@@ -41,9 +43,16 @@ Citizen.CreateThread(function()
     end
 end)
 
+RegisterNetEvent('QBCore:Client:OnJobUpdate')
+AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
+    PlayerJob = JobInfo
+end)
+
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     isLoggedIn = true
+    PlayerJob = QBCore.Functions.GetPlayerData().job
+    onDuty = QBCore.Functions.GetPlayerData().job.onduty
 end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerUnload')

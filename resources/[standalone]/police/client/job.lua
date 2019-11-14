@@ -2,7 +2,7 @@ Citizen.CreateThread(function()
     while true do
         Citizen.Wait(1)
         if isLoggedIn then
-            if QBCore.Functions.GetPlayerData().job.name == "police" then
+            if PlayerJob.name == "police" then
                 local pos = GetEntityCoords(GetPlayerPed(-1))
                 if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["clothing"].x, Config.Locations["clothing"].y, Config.Locations["clothing"].z, true) < 5) then
                     if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["clothing"].x, Config.Locations["clothing"].y, Config.Locations["clothing"].z, true) < 1.5) then
@@ -28,56 +28,25 @@ Citizen.CreateThread(function()
                         Menu.renderGUI()
                     elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["clothing"].x, Config.Locations["clothing"].y, Config.Locations["clothing"].z, true) < 2.5) then
                         QBCore.Functions.DrawText3D(Config.Locations["clothing"].x, Config.Locations["clothing"].y, Config.Locations["clothing"].z, "Omkleden")
-                    end  
-                else
-                    Citizen.Wait(2500)
+                    end
                 end
-            else
-                Citizen.Wait(2500)
-            end
-        else
-            Citizen.Wait(2000)
-        end
-    end
-end)
 
-Citizen.CreateThread(function()
-    while true do 
-        Citizen.Wait(1)
-        if isLoggedIn then
-            if QBCore.Functions.GetPlayerData().job.name == "police" then
-                local pos = GetEntityCoords(GetPlayerPed(-1))
                 if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["duty"].x, Config.Locations["duty"].y, Config.Locations["duty"].z, true) < 5) then
                     if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["duty"].x, Config.Locations["duty"].y, Config.Locations["duty"].z, true) < 1.5) then
-                        if not QBCore.Functions.GetPlayerData().job.onduty then
+                        if not onDuty then
                             QBCore.Functions.DrawText3D(Config.Locations["duty"].x, Config.Locations["duty"].y, Config.Locations["duty"].z, "~g~E~w~ - In dienst gaan")
                         else
                             QBCore.Functions.DrawText3D(Config.Locations["duty"].x, Config.Locations["duty"].y, Config.Locations["duty"].z, "~r~E~w~ - Uit dienst gaan")
                         end
                         if IsControlJustReleased(0, Keys["E"]) then
+                            onDuty = not onDuty
                             TriggerServerEvent("QBCore:ToggleDuty")
                         end
                     elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["duty"].x, Config.Locations["duty"].y, Config.Locations["duty"].z, true) < 2.5) then
                         QBCore.Functions.DrawText3D(Config.Locations["duty"].x, Config.Locations["duty"].y, Config.Locations["duty"].z, "In/Uit dienst")
-                    end  
-                else
-                    Citizen.Wait(2500)
+                    end
                 end
-            else
-                Citizen.Wait(2500)
-            end
-        else
-            Citizen.Wait(2500)
-        end
-    end
-end)
 
-Citizen.CreateThread(function()
-    while true do 
-        Citizen.Wait(1)
-        if isLoggedIn then
-            if QBCore.Functions.GetPlayerData().job.name == "police" then
-                local pos = GetEntityCoords(GetPlayerPed(-1))
                 if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["evidence"].x, Config.Locations["evidence"].y, Config.Locations["evidence"].z, true) < 5) then
                     if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["evidence"].x, Config.Locations["evidence"].y, Config.Locations["evidence"].z, true) < 1.5) then
                         QBCore.Functions.DrawText3D(Config.Locations["evidence"].x, Config.Locations["evidence"].y, Config.Locations["evidence"].z, "~g~E~w~ - Bewijskast")
@@ -87,26 +56,11 @@ Citizen.CreateThread(function()
                         end
                     elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["evidence"].x, Config.Locations["evidence"].y, Config.Locations["evidence"].z, true) < 2.5) then
                         QBCore.Functions.DrawText3D(Config.Locations["evidence"].x, Config.Locations["evidence"].y, Config.Locations["evidence"].z, "Bewijskast")
-                    end  
-                else
-                    Citizen.Wait(2500)
+                    end
                 end
-            else
-                Citizen.Wait(2500)
-            end
-        else
-            Citizen.Wait(2500)
-        end
-    end
-end)
-Citizen.CreateThread(function()
-    while true do 
-        Citizen.Wait(1)
-        if isLoggedIn then
-            if QBCore.Functions.GetPlayerData().job.name == "police" then
-                local pos = GetEntityCoords(GetPlayerPed(-1))
+
                 if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["vehicle"].x, Config.Locations["vehicle"].y, Config.Locations["vehicle"].z, true) < 7.5) then
-                    if QBCore.Functions.GetPlayerData().job.onduty then
+                    if onDuty then
                         DrawMarker(2, Config.Locations["vehicle"].x, Config.Locations["vehicle"].y, Config.Locations["vehicle"].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
                         if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["vehicle"].x, Config.Locations["vehicle"].y, Config.Locations["vehicle"].z, true) < 1.5) then
                             if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
@@ -125,25 +79,10 @@ Citizen.CreateThread(function()
                             Menu.renderGUI()
                         end  
                     end
-                else
-                    Citizen.Wait(2500)
                 end
-            else
-                Citizen.Wait(2500)
-            end
-        else
-            Citizen.Wait(2500)
-        end
-    end
-end)
-Citizen.CreateThread(function()
-    while true do 
-        Citizen.Wait(1)
-        if isLoggedIn then
-            if QBCore.Functions.GetPlayerData().job.name == "police" then
-                local pos = GetEntityCoords(GetPlayerPed(-1))
+
                 if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["impound"].x, Config.Locations["impound"].y, Config.Locations["impound"].z, true) < 7.5) then
-                    if QBCore.Functions.GetPlayerData().job.onduty then
+                    if onDuty then
                         DrawMarker(2, Config.Locations["impound"].x, Config.Locations["impound"].y, Config.Locations["impound"].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
                         if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["impound"].x, Config.Locations["impound"].y, Config.Locations["impound"].z, true) < 1.5) then
                             if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
@@ -162,25 +101,10 @@ Citizen.CreateThread(function()
                             Menu.renderGUI()
                         end  
                     end
-                else
-                    Citizen.Wait(2500)
                 end
-            else
-                Citizen.Wait(2500)
-            end
-        else
-            Citizen.Wait(2500)
-        end
-    end
-end)
-Citizen.CreateThread(function()
-    while true do 
-        Citizen.Wait(1)
-        if isLoggedIn then
-            if QBCore.Functions.GetPlayerData().job.name == "police" then
-                local pos = GetEntityCoords(GetPlayerPed(-1))
+
                 if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["helicopter"].x, Config.Locations["helicopter"].y, Config.Locations["helicopter"].z, true) < 7.5) then
-                    if QBCore.Functions.GetPlayerData().job.onduty then
+                    if onDuty then
                         DrawMarker(2, Config.Locations["helicopter"].x, Config.Locations["helicopter"].y, Config.Locations["helicopter"].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
                         if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["helicopter"].x, Config.Locations["helicopter"].y, Config.Locations["helicopter"].z, true) < 1.5) then
                             if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
@@ -206,25 +130,39 @@ Citizen.CreateThread(function()
                             end
                         end  
                     end
-                else
-                    Citizen.Wait(2500)
                 end
-            else
-                Citizen.Wait(2500)
-            end
-        else
-            Citizen.Wait(2500)
-        end
-    end
-end)
-Citizen.CreateThread(function()
-    while true do 
-        Citizen.Wait(1)
-        if isLoggedIn then
-            if QBCore.Functions.GetPlayerData().job.name == "police" then
-                local pos = GetEntityCoords(GetPlayerPed(-1))
+
+                if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["helicopter"].x, Config.Locations["helicopter"].y, Config.Locations["helicopter"].z, true) < 7.5) then
+                    if onDuty then
+                        DrawMarker(2, Config.Locations["helicopter"].x, Config.Locations["helicopter"].y, Config.Locations["helicopter"].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
+                        if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["helicopter"].x, Config.Locations["helicopter"].y, Config.Locations["helicopter"].z, true) < 1.5) then
+                            if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
+                                QBCore.Functions.DrawText3D(Config.Locations["helicopter"].x, Config.Locations["helicopter"].y, Config.Locations["helicopter"].z, "~g~E~w~ - Helikopter opbergen")
+                            else
+                                QBCore.Functions.DrawText3D(Config.Locations["helicopter"].x, Config.Locations["helicopter"].y, Config.Locations["helicopter"].z, "~g~E~w~ - Helikopter pakken")
+                            end
+                            if IsControlJustReleased(0, Keys["E"]) then
+                                if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
+                                    QBCore.Functions.DeleteVehicle(GetVehiclePedIsIn(GetPlayerPed(-1)))
+                                else
+                                    local coords = Config.Locations["helicopter"]
+                                    QBCore.Functions.SpawnVehicle(Config.Helicopter, function(veh)
+                                        SetVehicleNumberPlateText(veh, "ZULU"..tostring(math.random(1000, 9999)))
+                                        SetEntityHeading(veh, coords.h)
+                                        exports['LegacyFuel']:SetFuel(veh, 100.0)
+                                        closeMenuFull()
+                                        TaskWarpPedIntoVehicle(GetPlayerPed(-1), veh, -1)
+                                        TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
+                                        SetVehicleEngineOn(veh, true, true)
+                                    end, coords, true)
+                                end
+                            end
+                        end  
+                    end
+                end
+
                 if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["armory"].x, Config.Locations["armory"].y, Config.Locations["armory"].z, true) < 4.5) then
-                    if QBCore.Functions.GetPlayerData().job.onduty then
+                    if onDuty then
                         if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["armory"].x, Config.Locations["armory"].y, Config.Locations["armory"].z, true) < 1.5) then
                             QBCore.Functions.DrawText3D(Config.Locations["armory"].x, Config.Locations["armory"].y, Config.Locations["armory"].z, "~g~E~w~ - Wapenkluis")
                             if IsControlJustReleased(0, Keys["E"]) then
@@ -234,14 +172,12 @@ Citizen.CreateThread(function()
                             QBCore.Functions.DrawText3D(Config.Locations["armory"].x, Config.Locations["armory"].y, Config.Locations["armory"].z, "Wapenkluis")
                         end  
                     end
-                else
-                    Citizen.Wait(2500)
                 end
             else
                 Citizen.Wait(2500)
             end
         else
-            Citizen.Wait(2500)
+            Citizen.Wait(2000)
         end
     end
 end)

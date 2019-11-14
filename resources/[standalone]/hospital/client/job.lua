@@ -4,101 +4,94 @@ Citizen.CreateThread(function()
         if QBCore ~= nil then
             local pos = GetEntityCoords(GetPlayerPed(-1))
             if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["clothing"].x, Config.Locations["clothing"].y, Config.Locations["clothing"].z, true) < 5) then
-                QBCore.Functions.GetPlayerData(function(PlayerData)
-                    if PlayerData.job.name == "doctor" or PlayerData.job.name == "ambulance" then
-                        if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["clothing"].x, Config.Locations["clothing"].y, Config.Locations["clothing"].z, true) < 1.5) then
-                            QBCore.Functions.DrawText3D(Config.Locations["clothing"].x, Config.Locations["clothing"].y, Config.Locations["clothing"].z, "~g~E~w~ - Omkleden | ~g~H~w~ - Outfit opslaan | ~g~G~w~ - Outfits")
-                            if IsControlJustReleased(0, Keys["E"]) then
-                                if PlayerData.charinfo.gender == 0 then
-                                    TriggerEvent("maleclothesstart", false)
-                                else
-                                    TriggerEvent("femaleclothesstart", false)
-                                end
-                                DoScreenFadeIn(50)
-                            elseif IsControlJustReleased(0, Keys["H"]) then
-                                DisplayOnscreenKeyboard(1, "FMMC_KEY_TIP9N", "", "", "", "", "", 20)
-                                while UpdateOnscreenKeyboard() ~= 1 and UpdateOnscreenKeyboard() ~= 2 do
-                                    Citizen.Wait(7)
-                                end
-                                local outfitName = GetOnscreenKeyboardResult()
-                                TriggerEvent("clothes:client:SaveOutfit", false, outfitName)
-                            elseif IsControlJustPressed(0, Keys["G"]) then
-                                MenuOutfits()
-                                Menu.hidden = not Menu.hidden
+                if PlayerJob.name == "doctor" or PlayerJob.name == "ambulance" then
+                    if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["clothing"].x, Config.Locations["clothing"].y, Config.Locations["clothing"].z, true) < 1.5) then
+                        QBCore.Functions.DrawText3D(Config.Locations["clothing"].x, Config.Locations["clothing"].y, Config.Locations["clothing"].z, "~g~E~w~ - Omkleden | ~g~H~w~ - Outfit opslaan | ~g~G~w~ - Outfits")
+                        if IsControlJustReleased(0, Keys["E"]) then
+                            if PlayerData.charinfo.gender == 0 then
+                                TriggerEvent("maleclothesstart", false)
+                            else
+                                TriggerEvent("femaleclothesstart", false)
                             end
-                            Menu.renderGUI()
-                        elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["clothing"].x, Config.Locations["clothing"].y, Config.Locations["clothing"].z, true) < 4.5) then
-                            QBCore.Functions.DrawText3D(Config.Locations["clothing"].x, Config.Locations["clothing"].y, Config.Locations["clothing"].z, "Omkleden")
-                        end  
-                    end
-                end)
+                            DoScreenFadeIn(50)
+                        elseif IsControlJustReleased(0, Keys["H"]) then
+                            DisplayOnscreenKeyboard(1, "FMMC_KEY_TIP9N", "", "", "", "", "", 20)
+                            while UpdateOnscreenKeyboard() ~= 1 and UpdateOnscreenKeyboard() ~= 2 do
+                                Citizen.Wait(7)
+                            end
+                            local outfitName = GetOnscreenKeyboardResult()
+                            TriggerEvent("clothes:client:SaveOutfit", false, outfitName)
+                        elseif IsControlJustPressed(0, Keys["G"]) then
+                            MenuOutfits()
+                            Menu.hidden = not Menu.hidden
+                        end
+                        Menu.renderGUI()
+                    elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["clothing"].x, Config.Locations["clothing"].y, Config.Locations["clothing"].z, true) < 4.5) then
+                        QBCore.Functions.DrawText3D(Config.Locations["clothing"].x, Config.Locations["clothing"].y, Config.Locations["clothing"].z, "Omkleden")
+                    end  
+                end
             end
     
             if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["duty"].x, Config.Locations["duty"].y, Config.Locations["duty"].z, true) < 5) then
-                QBCore.Functions.GetPlayerData(function(PlayerData)
-                    if PlayerData.job.name == "doctor" or PlayerData.job.name == "ambulance" then
-                        if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["duty"].x, Config.Locations["duty"].y, Config.Locations["duty"].z, true) < 1.5) then
-                            if not PlayerData.job.onduty then
-                                QBCore.Functions.DrawText3D(Config.Locations["duty"].x, Config.Locations["duty"].y, Config.Locations["duty"].z, "~g~E~w~ - In dienst gaan")
-                            else
-                                QBCore.Functions.DrawText3D(Config.Locations["duty"].x, Config.Locations["duty"].y, Config.Locations["duty"].z, "~r~E~w~ - Uit dienst gaan")
-                            end
-                            if IsControlJustReleased(0, Keys["E"]) then
-                                TriggerServerEvent("QBCore:ToggleDuty")
-                            end
-                        elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["duty"].x, Config.Locations["duty"].y, Config.Locations["duty"].z, true) < 4.5) then
-                            QBCore.Functions.DrawText3D(Config.Locations["duty"].x, Config.Locations["duty"].y, Config.Locations["duty"].z, "In/Uit dienst")
-                        end  
-                    end
-                end)
+                if PlayerJob.name == "doctor" or PlayerJob.name == "ambulance" then
+                    if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["duty"].x, Config.Locations["duty"].y, Config.Locations["duty"].z, true) < 1.5) then
+                        if onDuty then
+                            QBCore.Functions.DrawText3D(Config.Locations["duty"].x, Config.Locations["duty"].y, Config.Locations["duty"].z, "~g~E~w~ - In dienst gaan")
+                        else
+                            QBCore.Functions.DrawText3D(Config.Locations["duty"].x, Config.Locations["duty"].y, Config.Locations["duty"].z, "~r~E~w~ - Uit dienst gaan")
+                        end
+                        if IsControlJustReleased(0, Keys["E"]) then
+                            onDuty = not onDuty
+                            TriggerServerEvent("QBCore:ToggleDuty")
+                        end
+                    elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["duty"].x, Config.Locations["duty"].y, Config.Locations["duty"].z, true) < 4.5) then
+                        QBCore.Functions.DrawText3D(Config.Locations["duty"].x, Config.Locations["duty"].y, Config.Locations["duty"].z, "In/Uit dienst")
+                    end  
+                end
             end
     
             if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["vehicle"].x, Config.Locations["vehicle"].y, Config.Locations["vehicle"].z, true) < 4.5) then
-                QBCore.Functions.GetPlayerData(function(PlayerData)
-                    if PlayerData.job.name == "doctor" or PlayerData.job.name == "ambulance" and PlayerData.job.onduty then
-                        DrawMarker(2, Config.Locations["vehicle"].x, Config.Locations["vehicle"].y, Config.Locations["vehicle"].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
-                        if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["vehicle"].x, Config.Locations["vehicle"].y, Config.Locations["vehicle"].z, true) < 1.5) then
+                if PlayerJob.name == "doctor" or PlayerJob.name == "ambulance" and onDuty then
+                    DrawMarker(2, Config.Locations["vehicle"].x, Config.Locations["vehicle"].y, Config.Locations["vehicle"].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
+                    if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["vehicle"].x, Config.Locations["vehicle"].y, Config.Locations["vehicle"].z, true) < 1.5) then
+                        if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
+                            QBCore.Functions.DrawText3D(Config.Locations["vehicle"].x, Config.Locations["vehicle"].y, Config.Locations["vehicle"].z, "~g~E~w~ - Voertuig opbergen")
+                        else
+                            QBCore.Functions.DrawText3D(Config.Locations["vehicle"].x, Config.Locations["vehicle"].y, Config.Locations["vehicle"].z, "~g~E~w~ - Voertuigen")
+                        end
+                        if IsControlJustReleased(0, Keys["E"]) then
                             if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
-                                QBCore.Functions.DrawText3D(Config.Locations["vehicle"].x, Config.Locations["vehicle"].y, Config.Locations["vehicle"].z, "~g~E~w~ - Voertuig opbergen")
+                                QBCore.Functions.DeleteVehicle(GetVehiclePedIsIn(GetPlayerPed(-1)))
                             else
-                                QBCore.Functions.DrawText3D(Config.Locations["vehicle"].x, Config.Locations["vehicle"].y, Config.Locations["vehicle"].z, "~g~E~w~ - Voertuigen")
+                                MenuGarage()
+                                Menu.hidden = not Menu.hidden
                             end
-                            if IsControlJustReleased(0, Keys["E"]) then
-                                if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
-                                    QBCore.Functions.DeleteVehicle(GetVehiclePedIsIn(GetPlayerPed(-1)))
-                                else
-                                    MenuGarage()
-                                    Menu.hidden = not Menu.hidden
-                                end
-                            end
-                            Menu.renderGUI()
-                        end  
-                    end
-                end)
+                        end
+                        Menu.renderGUI()
+                    end  
+                end
             end
     
             if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["vehicledown"].x, Config.Locations["vehicledown"].y, Config.Locations["vehicledown"].z, true) < 4.5) then
-                QBCore.Functions.GetPlayerData(function(PlayerData)
-                    if PlayerData.job.name == "doctor" or PlayerData.job.name == "ambulance" and PlayerData.job.onduty then
-                        DrawMarker(2, Config.Locations["vehicledown"].x, Config.Locations["vehicledown"].y, Config.Locations["vehicledown"].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
-                        if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["vehicledown"].x, Config.Locations["vehicledown"].y, Config.Locations["vehicledown"].z, true) < 1.5) then
+                if PlayerJob.name == "doctor" or PlayerJob.name == "ambulance" and onDuty then
+                    DrawMarker(2, Config.Locations["vehicledown"].x, Config.Locations["vehicledown"].y, Config.Locations["vehicledown"].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
+                    if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["vehicledown"].x, Config.Locations["vehicledown"].y, Config.Locations["vehicledown"].z, true) < 1.5) then
+                        if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
+                            QBCore.Functions.DrawText3D(Config.Locations["vehicledown"].x, Config.Locations["vehicledown"].y, Config.Locations["vehicledown"].z, "~g~E~w~ - Voertuig opbergen")
+                        else
+                            QBCore.Functions.DrawText3D(Config.Locations["vehicledown"].x, Config.Locations["vehicledown"].y, Config.Locations["vehicledown"].z, "~g~E~w~ - Voertuigen")
+                        end
+                        if IsControlJustReleased(0, Keys["E"]) then
                             if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
-                                QBCore.Functions.DrawText3D(Config.Locations["vehicledown"].x, Config.Locations["vehicledown"].y, Config.Locations["vehicledown"].z, "~g~E~w~ - Voertuig opbergen")
+                                QBCore.Functions.DeleteVehicle(GetVehiclePedIsIn(GetPlayerPed(-1)))
                             else
-                                QBCore.Functions.DrawText3D(Config.Locations["vehicledown"].x, Config.Locations["vehicledown"].y, Config.Locations["vehicledown"].z, "~g~E~w~ - Voertuigen")
+                                MenuGarage(true)
+                                Menu.hidden = not Menu.hidden
                             end
-                            if IsControlJustReleased(0, Keys["E"]) then
-                                if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
-                                    QBCore.Functions.DeleteVehicle(GetVehiclePedIsIn(GetPlayerPed(-1)))
-                                else
-                                    MenuGarage(true)
-                                    Menu.hidden = not Menu.hidden
-                                end
-                            end
-                            Menu.renderGUI()
-                        end  
-                    end
-                end)
+                        end
+                        Menu.renderGUI()
+                    end  
+                end
             end
     
             if isStatusChecking then
@@ -234,7 +227,7 @@ end
 RegisterNetEvent('hospital:client:RevivePlayer')
 AddEventHandler('hospital:client:RevivePlayer', function()
     QBCore.Functions.GetPlayerData(function(PlayerData)
-        if PlayerData.job.name == "doctor" then
+        if PlayerJob.name == "doctor" then
             local player, distance = GetClosestPlayer()
             if player ~= -1 and distance < 5.0 then
                 local playerId = GetPlayerServerId(player)
@@ -266,7 +259,7 @@ end)
 RegisterNetEvent('hospital:client:CheckStatus')
 AddEventHandler('hospital:client:CheckStatus', function()
     QBCore.Functions.GetPlayerData(function(PlayerData)
-        if PlayerData.job.name == "doctor" or PlayerData.job.name == "ambulance" or PlayerData.job.name == "police" then
+        if PlayerJob.name == "doctor" or PlayerJob.name == "ambulance" or PlayerJob.name == "police" then
             local player, distance = GetClosestPlayer()
             if player ~= -1 and distance < 5.0 then
                 local playerId = GetPlayerServerId(player)
@@ -296,7 +289,7 @@ end)
 RegisterNetEvent('hospital:client:TreatWounds')
 AddEventHandler('hospital:client:TreatWounds', function()
     QBCore.Functions.GetPlayerData(function(PlayerData)
-        if PlayerData.job.name == "doctor" or PlayerData.job.name == "ambulance" then
+        if PlayerJob.name == "doctor" or PlayerJob.name == "ambulance" then
             local player, distance = GetClosestPlayer()
             if player ~= -1 and distance < 5.0 then
                 local playerId = GetPlayerServerId(player)

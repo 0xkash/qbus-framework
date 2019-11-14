@@ -33,12 +33,6 @@ isBleeding = 0
 bleedTickTimer, advanceBleedTimer = 0, 0
 fadeOutTimer, blackoutTimer = 0, 0
 
-onPainKiller = 0
-wasOnPainKillers = false
-
-onDrugs = 0
-wasOnDrugs = false
-
 legCount = 0
 armcount = 0
 headCount = 0
@@ -61,6 +55,9 @@ healAnim = "cpr_pumpchest"
 
 doctorsSet = false
 doctorCount = 0
+
+PlayerJob = {}
+onDuty = false
 
 BodyParts = {
     ['HEAD'] = { label = 'Hoofd', causeLimp = false, isDamaged = false, severity = 0 },
@@ -361,10 +358,17 @@ AddEventHandler('hospital:client:RespawnAtHospital', function()
     TriggerServerEvent("hospital:server:SendToBed")
 end)
 
+RegisterNetEvent('QBCore:Client:OnJobUpdate')
+AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
+    PlayerJob = JobInfo
+end)
+
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     exports.spawnmanager:setAutoSpawn(false)
     isLoggedIn = true
+    PlayerJob = QBCore.Functions.GetPlayerData().job
+    onDuty = QBCore.Functions.GetPlayerData().job.onduty
     QBCore.Functions.GetPlayerData(function(PlayerData)
         isDead = PlayerData.metadata["isdead"]
         SetPedArmour(GetPlayerPed(-1), PlayerData.metadata["armor"])

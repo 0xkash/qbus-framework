@@ -35,8 +35,8 @@ AddEventHandler('QBCore:Client:OnPlayerUnload', function()
     local isWorking = false
 end)
 
-RegisterNetEvent('QBCore:Client:OnJobUpdate"')
-AddEventHandler('QBCore:Client:OnJobUpdate"', function(JobInfo)
+RegisterNetEvent('QBCore:Client:OnJobUpdate')
+AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
     PlayerJob = JobInfo
 end)
 
@@ -45,10 +45,8 @@ Citizen.CreateThread(function()
     SetBlipSprite(TruckerBlip, 477)
     SetBlipDisplay(TruckerBlip, 4)
     SetBlipScale(TruckerBlip, 0.65)
-    SetBlipAsShortRange(StoreBlip, true)
-    SetBlipColour(TruckerBlip, 2)
-    SetBlipColour(TruckerBlip, 3)
-
+    SetBlipAsShortRange(TruckerBlip, true)
+    SetBlipColour(TruckerBlip, 5)
     BeginTextCommandSetBlipName("STRING")
     AddTextComponentSubstringPlayerName(Config.Locations["main"].label)
     EndTextCommandSetBlipName(TruckerBlip)
