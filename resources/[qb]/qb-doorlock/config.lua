@@ -34,7 +34,7 @@ QB.Doors = {
 		textCoords = vector3(450.09, -986.92, 30.68),
 		authorizedJobs = { 'police' },
 		locking = false,
-		locked = true
+		locked = true,
 		pickable = false,
 	},
 	-- Rooftop
@@ -45,7 +45,7 @@ QB.Doors = {
 		textCoords = vector3(464.38, -983.64, 43.8),
 		authorizedJobs = { 'police' },
 		locking = false,
-		locked = true
+		locked = true,
 		pickable = false,
 	},
 	-- Hallway to roof
@@ -56,7 +56,7 @@ QB.Doors = {
 		textCoords = vector3(461.34, -986.283, 30.8),
 		authorizedJobs = { 'police' },
 		locking = false,
-		locked = true
+		locked = true,
 		pickable = false,
 	},
 	-- Armory
@@ -67,7 +67,7 @@ QB.Doors = {
 		textCoords = vector3(452.95, -982.16, 30.99),
 		authorizedJobs = { 'police' },
 		locking = false,
-		locked = true
+		locked = true,
 		pickable = false,
 	},
 	-- Captain Office
@@ -78,7 +78,7 @@ QB.Doors = {
 		textCoords = vector3(447.61, -979.9, 30.7),
 		authorizedJobs = { 'police' },
 		locking = false,
-		locked = true
+		locked = true,
 		pickable = false,
 	},
 	-- To downstairs (double doors)
@@ -215,7 +215,7 @@ QB.Doors = {
 		textCoords = vector3(1855.1, 3683.5, 35.0),
 		authorizedJobs = { 'police' },
 		locking = false,
-		locked = false
+		locked = false,
 		pickable = false,
 	},
 	--

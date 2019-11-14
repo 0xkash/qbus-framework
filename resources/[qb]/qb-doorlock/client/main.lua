@@ -135,6 +135,29 @@ Citizen.CreateThread(function()
 	end
 end)
 
+RegisterNetEvent('lockpicks:UseLockpick')
+AddEventHandler('lockpicks:UseLockpick', function()
+	local ped = GetPlayerPed(-1)
+	local pos = GetEntityCoords(ped)
+
+	QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
+		for k, v in pairs(QB.Doors) do
+			local dist = GetDistanceBetweenCoords(pos, QB.Doors[k].objCoords)
+			if dist < 1.5 then
+				print(v)
+			end
+		end
+    end, "screwdriverset")
+end)
+
+function lockpickFinish(success)
+    if success then
+        QBCore.Functions.Notify('Het is gelukt!', 'success', 2500)
+    else
+        QBCore.Functions.Notify('Het is niet gelukt..', 'error', 2500)
+    end
+end
+
 function setDoorLocking(doorId, key)
 	doorId.locking = true
 	openDoorAnim()

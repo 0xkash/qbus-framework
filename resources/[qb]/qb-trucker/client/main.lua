@@ -29,10 +29,10 @@ end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerUnload')
 AddEventHandler('QBCore:Client:OnPlayerUnload', function()
-    local CurrentLocation = nil
-    local CurrentBlip = nil
-    local hasBox = false
-    local isWorking = false
+    CurrentLocation = nil
+    CurrentBlip = nil
+    hasBox = false
+    isWorking = false
 end)
 
 RegisterNetEvent('QBCore:Client:OnJobUpdate')
