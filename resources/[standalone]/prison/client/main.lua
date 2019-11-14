@@ -24,7 +24,6 @@ end)
 isLoggedIn = false
 inJail = false
 jailTime = 0
-
 currentJob = "electrician"
 
 --[[
@@ -189,6 +188,7 @@ AddEventHandler('prison:client:Enter', function(time)
 
 	inJail = true
 	jailTime = time
+	currentJob = "electrician"
 	TriggerServerEvent("prison:server:SetJailStatus", jailTime)
 	TriggerServerEvent("prison:server:SaveJailItems", jailTime)
 

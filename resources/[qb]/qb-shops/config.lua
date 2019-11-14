@@ -12,9 +12,43 @@ Config.Keys = {
     ["NENTER"] = 201, ["N4"] = 108, ["N5"] = 60, ["N6"] = 107, ["N+"] = 96, ["N-"] = 97, ["N7"] = 117, ["N8"] = 61, ["N9"] = 118
 }
 
-Config.Locations = {
+Config.Products = {
     ["normal"] = {
+        [1] = {
+            name = "tosti",
+            price = 2,
+            amount = 50,
+            info = {},
+            type = "item",
+            slot = 1,
+        },
+    },
+    ["hardware"] = {
+        [1] = {
+            name = "lockpick",
+            price = 100,
+            amount = 50,
+            info = {},
+            type = "item",
+            slot = 1,
+        },
+    },
+    ["coffeeshop"] = {
+        [1] = {
+            name = "joint",
+            price = 10,
+            amount = 50,
+            info = {},
+            type = "item",
+            slot = 1,
+        },
+    },
+}
+
+Config.Locations = {
+    ["ltdgasoline"] = {
         ["label"] = "LTD Gasoline",
+        ["type"] = "normal",
         ["coords"] = {
             [1] = {
                 ["x"] = -48.44,
@@ -27,9 +61,292 @@ Config.Locations = {
                 ["z"] = 29.42,
             }
         },
+        ["products"] = Config.Products["normal"],
+    },
+    ["247supermarket"] = {
+        ["label"] = "24/7 Supermarket",
+        ["type"] = "normal",
+        ["coords"] = {
+            [1] = {
+                ["x"] = 25.7,
+                ["y"] = -1347.3,
+                ["z"] = 29.49,
+            },
+            [2] = {
+                ["x"] = 25.7,
+                ["y"] = -1344.99,
+                ["z"] = 29.49,
+            }
+        },
+        ["products"] = Config.Products["normal"],
+    },
+    ["robsliquor"] = {
+        ["label"] = "Rob's Liqour",
+        ["type"] = "normal",
+        ["coords"] = {
+            [1] = {
+                ["x"] = -1222.77,
+                ["y"] = -907.19,
+                ["z"] = 12.32,
+            },
+        },
+        ["products"] = Config.Products["normal"],
+    },
+    ["ltdgasoline2"] = {
+        ["label"] = "LTD Gasoline",
+        ["type"] = "normal",
+        ["coords"] = {
+            [1] = {
+                ["x"] = -707.41,
+                ["y"] = -912.83,
+                ["z"] = 19.21,
+            },
+            [2] = {
+                ["x"] = -707.32,
+                ["y"] = -914.65,
+                ["z"] = 19.21,
+            }
+        },
+        ["products"] = Config.Products["normal"],
+    },
+    ["robsliquor2"] = {
+        ["label"] = "Rob's Liqour",
+        ["type"] = "normal",
+        ["coords"] = {
+            [1] = {
+                ["x"] = -1487.7,
+                ["y"] = -378.53,
+                ["z"] = 40.16,
+            },
+        },
+        ["products"] = Config.Products["normal"],
+    },
+    ["ltdgasoline3"] = {
+        ["label"] = "LTD Gasoline",
+        ["type"] = "normal",
+        ["coords"] = {
+            [1] = {
+                ["x"] = -1820.33,
+                ["y"] = 792.66,
+                ["z"] = 138.1,
+            },
+            [2] = {
+                ["x"] = -1821.55,
+                ["y"] = 793.98,
+                ["z"] = 138.1,
+            }
+        },
+        ["products"] = Config.Products["normal"],
+    },
+    ["robsliquor3"] = {
+        ["label"] = "Rob's Liqour",
+        ["type"] = "normal",
+        ["coords"] = {
+            [1] = {
+                ["x"] = -2967.79,
+                ["y"] = 391.64,
+                ["z"] = 15.04,
+            },
+        },
+        ["products"] = Config.Products["normal"],
+    },
+    ["247supermarket2"] = {
+        ["label"] = "24/7 Supermarket",
+        ["type"] = "normal",
+        ["coords"] = {
+            [1] = {
+                ["x"] = -3038.71,
+                ["y"] = 585.9,
+                ["z"] = 7.9,
+            },
+            [2] = {
+                ["x"] = -3041.04,
+                ["y"] = 585.11,
+                ["z"] = 7.9,
+            }
+        },
+        ["products"] = Config.Products["normal"],
+    },
+    ["247supermarket3"] = {
+        ["label"] = "24/7 Supermarket",
+        ["type"] = "normal",
+        ["coords"] = {
+            [1] = {
+                ["x"] = -3241.47,
+                ["y"] = 1001.14,
+                ["z"] = 12.83,
+            },
+            [2] = {
+                ["x"] = -3243.98,
+                ["y"] = 1001.35,
+                ["z"] = 12.83,
+            }
+        },
+        ["products"] = Config.Products["normal"],
+    },
+    ["247supermarket4"] = {
+        ["label"] = "24/7 Supermarket",
+        ["type"] = "normal",
+        ["coords"] = {
+            [1] = {
+                ["x"] = 1728.66,
+                ["y"] = 6414.16,
+                ["z"] = 35.03,
+            },
+            [2] = {
+                ["x"] = 1729.72,
+                ["y"] = 6416.27,
+                ["z"] = 35.03,
+            }
+        },
+        ["products"] = Config.Products["normal"],
+    },
+    ["247supermarket5"] = {
+        ["label"] = "24/7 Supermarket",
+        ["type"] = "normal",
+        ["coords"] = {
+            [1] = {
+                ["x"] = 1697.99,
+                ["y"] = 4924.4,
+                ["z"] = 42.06,
+            },
+            [2] = {
+                ["x"] = 1699.44,
+                ["y"] = 4923.47,
+                ["z"] = 42.06,
+            }
+        },
+        ["products"] = Config.Products["normal"],
+    },
+    ["247supermarket6"] = {
+        ["label"] = "24/7 Supermarket",
+        ["type"] = "normal",
+        ["coords"] = {
+            [1] = {
+                ["x"] = 1961.48,
+                ["y"] = 3739.96,
+                ["z"] = 32.34,
+            },
+            [2] = {
+                ["x"] = 1960.22,
+                ["y"] = 3742.12,
+                ["z"] = 32.34,
+            }
+        },
+        ["products"] = Config.Products["normal"],
+    },
+    ["robsliquor4"] = {
+        ["label"] = "Rob's Liqour",
+        ["type"] = "normal",
+        ["coords"] = {
+            [1] = {
+                ["x"] = 1165.28,
+                ["y"] = 2709.4,
+                ["z"] = 38.15,
+            },
+        },
+        ["products"] = Config.Products["normal"],
+    },
+    ["247supermarket7"] = {
+        ["label"] = "24/7 Supermarket",
+        ["type"] = "normal",
+        ["coords"] = {
+            [1] = {
+                ["x"] = 547.79,
+                ["y"] = 2671.79,
+                ["z"] = 42.15,
+            },
+            [2] = {
+                ["x"] = 548.1,
+                ["y"] = 2669.38,
+                ["z"] = 42.15,
+            }
+        },
+        ["products"] = Config.Products["normal"],
+    },
+    ["247supermarket8"] = {
+        ["label"] = "24/7 Supermarket",
+        ["type"] = "normal",
+        ["coords"] = {
+            [1] = {
+                ["x"] = 2679.25,
+                ["y"] = 3280.12,
+                ["z"] = 55.24,
+            },
+            [2] = {
+                ["x"] = 2677.13,
+                ["y"] = 3281.38,
+                ["z"] = 55.24,
+            }
+        },
+        ["products"] = Config.Products["normal"],
+    },
+    ["247supermarket9"] = {
+        ["label"] = "24/7 Supermarket",
+        ["type"] = "normal",
+        ["coords"] = {
+            [1] = {
+                ["x"] = 2557.94,
+                ["y"] = 382.05,
+                ["z"] = 108.62,
+            },
+            [2] = {
+                ["x"] = 2555.53,
+                ["y"] = 382.18,
+                ["z"] = 108.62,
+            }
+        },
+        ["products"] = Config.Products["normal"],
+    },
+    ["ltdgasoline4"] = {
+        ["label"] = "LTD Gasoline",
+        ["type"] = "normal",
+        ["coords"] = {
+            [1] = {
+                ["x"] = 1163.7,
+                ["y"] = -323.92,
+                ["z"] = 69.2,
+            },
+            [2] = {
+                ["x"] = 1163.4,
+                ["y"] = -322.24,
+                ["z"] = 69.2,
+            }
+        },
+        ["products"] = Config.Products["normal"],
+    },
+    ["robsliquor5"] = {
+        ["label"] = "Rob's Liqour",
+        ["type"] = "normal",
+        ["coords"] = {
+            [1] = {
+                ["x"] = 1135.66,
+                ["y"] = -982.76,
+                ["z"] = 46.41,
+            },
+        },
+        ["products"] = Config.Products["normal"],
+    },
+    ["247supermarket9"] = {
+        ["label"] = "24/7 Supermarket",
+        ["type"] = "normal",
+        ["coords"] = {
+            [1] = {
+                ["x"] = 373.55,
+                ["y"] = 325.56,
+                ["z"] = 103.56,
+            },
+            [2] = {
+                ["x"] = 374.29,
+                ["y"] = 327.9,
+                ["z"] = 103.56,
+            }
+        },
+        ["products"] = Config.Products["normal"],
     },
     ["hardware"] = {
         ["label"] = "Hardware Store",
+        ["type"] = "hardware",
         ["coords"] = {
             [1] = {
                 ["x"] = 45.55,
@@ -37,9 +354,23 @@ Config.Locations = {
                 ["z"] = 29.6,
             }
         },
+        ["products"] = Config.Products["hardware"],
+    },
+    ["hardware2"] = {
+        ["label"] = "Hardware Store",
+        ["type"] = "hardware",
+        ["coords"] = {
+            [1] = {
+                ["x"] = 2747.8,
+                ["y"] = 3472.86,
+                ["z"] = 55.67,
+            },
+        },
+        ["products"] = Config.Products["hardware"],
     },
     ["coffeeshop"] = {
         ["label"] = "Superfly",
+        ["type"] = "hardware",
         ["coords"] = {
             [1] = {
                 ["x"] = -1172.43,
@@ -47,74 +378,6 @@ Config.Locations = {
                 ["z"] = 4.66,
             }
         },
-    }
-}
-
-Config.Products = {
-    ["normal"] = {
-        label = "Supermarktje :)",
-        items = {
-            [1] = {
-                name = "tosti",
-                price = 50,
-                amount = 99,
-                info = {},
-                type = "item",
-                slot = 1,
-            },
-            [2] = {
-                name = "repairkit",
-                price = 50,
-                amount = 99,
-                info = {},
-                type = "item",
-                slot = 2,
-            },
-        }
+        ["products"] = Config.Products["coffeeshop"],
     },
-    ["coffeeshop"] = {
-        label = "Superfly",
-        items = {
-            [1] = {
-                name = "weed_skunk_seed",
-                price = 50,
-                amount = 99,
-                info = {},
-                type = "item",
-                slot = 1,
-            },
-            [2] = {
-                name = "weed_amnesia_seed",
-                price = 50,
-                amount = 99,
-                info = {},
-                type = "item",
-                slot = 2,
-            },
-            [3] = {
-                name = "weed_white-widow_seed",
-                price = 50,
-                amount = 99,
-                info = {},
-                type = "item",
-                slot = 3,
-            },
-            [4] = {
-                name = "weed_ak47_seed",
-                price = 50,
-                amount = 99,
-                info = {},
-                type = "item",
-                slot = 4,
-            },
-            [5] = {
-                name = "joint",
-                price = 50,
-                amount = 99,
-                info = {},
-                type = "item",
-                slot = 5,
-            },
-        }
-    }
 }

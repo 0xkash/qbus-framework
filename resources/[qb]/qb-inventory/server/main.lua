@@ -467,6 +467,19 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 			else
 				TriggerClientEvent('QBCore:Notify', src, "Je hebt niet genoeg cash..", "error")
 			end
+		elseif QBCore.Shared.SplitStr(shopType, "_")[1] == "Itemshop" then
+			if Player.Functions.RemoveMoney("cash", price) then
+				Player.Functions.AddItem(itemData.name, fromAmount, toSlot, itemData.info)
+				TriggerClientEvent('qb-shops:client:UpdateShop', src, QBCore.Shared.SplitStr(shopType, "_")[2], itemData, fromAmount)
+				TriggerClientEvent('QBCore:Notify', src, itemInfo["label"] .. " ingekocht!", "success")
+			elseif bankBalance >= price then
+				Player.Functions.RemoveMoney("bank", price)
+				Player.Functions.AddItem(itemData.name, fromAmount, toSlot, itemData.info)
+				TriggerClientEvent('qb-shops:client:UpdateShop', src, QBCore.Shared.SplitStr(shopType, "_")[2], itemData, fromAmount)
+				TriggerClientEvent('QBCore:Notify', src, itemInfo["label"] .. " ingekocht!", "success")
+			else
+				TriggerClientEvent('QBCore:Notify', src, "Je hebt niet genoeg cash..", "error")
+			end
 		else
 			if Player.Functions.RemoveMoney("cash", price) then
 				Player.Functions.AddItem(itemData.name, fromAmount, toSlot, itemData.info)

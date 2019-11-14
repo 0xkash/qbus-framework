@@ -53,8 +53,9 @@ Citizen.CreateThread(function()
 			for key, value in pairs(Config.Radars) do
 				HandlespeedCam(value, key)
 			end
+			Citizen.Wait(200)
 		else
-			Citizen.Wait(2000)
+			Citizen.Wait(2500)
 		end
 	end
 end)

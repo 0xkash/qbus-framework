@@ -10,7 +10,7 @@ Config.Locations = {
    ["evidence"] = {x = 455.838, y = -978.573, z = 30.689, h = 90.654},
    ["stations"] = {
        [1] = {label = "Politie Hoofdbureau", coords = {x = 428.23, y = -984.28, z = 29.76, h = 3.5}},
-       [2] = {label = "Gevangenis", coords = {x = 1693.33, y = 2569.51, z = 45.55, h = 123.5}},
+       [2] = {label = "Gevangenis", coords = {x = 1845.903, y = 2585.873, z = 45.672, h = 272.249}},
    },
 }
 
