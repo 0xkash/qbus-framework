@@ -57,6 +57,7 @@ local lsc = {
 		[4] = { locked = false, outside = { x = 1174.811, y = 2649.954, z = 37.37151, heading = 0.450}, inside = {x = 1175.04,y = 2640.216,z = 37.32177, heading = 0.450}},
 		[5] = { locked = false, outside = { x = -211.0,  y = -1325.0, z = 31.0, heading = 322.97}, inside = {x = -211.0,  y = -1325.0, z = 31.0, heading = 322.97}},
 		[6] = { locked = false, outside = { x = 110.22,  y = 6626.86, z = 31.78, heading = 226.34}, inside = {x = 110.22,  y = 6626.86, z = 31.78, heading = 226.34}},
+		[7] = { locked = false, outside = { x = -89.69, y = -1811.97, z = 26.95, heading = 229.5}, inside = {x = -89.69, y = -1811.97, z = 26.95, heading = 229.5}},
 	},
 	menu = {
 		x = 0.8,
