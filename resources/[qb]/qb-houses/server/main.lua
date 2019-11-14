@@ -7,6 +7,7 @@ TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 local houseprices = {
 	["mirrorpark01"] = 200000,
 	["mirrorpark02"] = 250000,
+	["spanishave01"] = 750000,
 }
 
 local houseowneridentifier = {}

@@ -14,7 +14,7 @@ end)
 
 local robberyAlert = false
 
-local isLoggedIn = false
+local isLoggedIn = true
 
 local firstAlarm = false
 
@@ -53,7 +53,7 @@ Citizen.CreateThread(function()
             if isLoggedIn then
                 PlayerData = QBCore.Functions.GetPlayerData()
                 for case,_ in pairs(Config.Locations) do
-                    if PlayerData.job.name ~= "police" then
+                    -- if PlayerData.job.name ~= "police" then
                         local dist = GetDistanceBetweenCoords(pos, Config.Locations[case]["coords"]["x"], Config.Locations[case]["coords"]["y"], Config.Locations[case]["coords"]["z"])
                         local storeDist = GetDistanceBetweenCoords(pos, Config.JewelleryLocation["coords"]["x"], Config.JewelleryLocation["coords"]["y"], Config.JewelleryLocation["coords"]["z"])
                         if dist < 30 then
@@ -64,15 +64,15 @@ Citizen.CreateThread(function()
                                     DrawText3Ds(Config.Locations[case]["coords"]["x"], Config.Locations[case]["coords"]["y"], Config.Locations[case]["coords"]["z"], '[E] Vitrine in slaan')
                                     if IsControlJustPressed(0, Keys["E"]) then
                                         QBCore.Functions.TriggerCallback('qb-jewellery:server:getCops', function(cops)
-                                            if cops >= Config.RequiredCops then
+                                            -- if cops >= Config.RequiredCops then
                                                 if validWeapon() then
                                                     smashVitrine(case)
                                                 else
                                                     QBCore.Functions.Notify('Je wapen lijkt niet sterk genoeg..', 'error')
                                                 end
-                                            else
-                                                QBCore.Functions.Notify('Er zijn niet genoeg agenten...', 'error')
-                                            end                
+                                            -- else
+                                                -- QBCore.Functions.Notify('Er zijn niet genoeg agenten...', 'error')
+                                            -- end                
                                         end)
                                     end
                                 end
@@ -87,7 +87,7 @@ Citizen.CreateThread(function()
                                 end
                             end
                         end
-                    end
+                    -- end
                 end
             end
         end

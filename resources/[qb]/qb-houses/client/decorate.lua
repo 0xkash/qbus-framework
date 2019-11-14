@@ -137,7 +137,6 @@ RegisterNUICallback("closedecorations", function(data, cb)
 end)
 
 RegisterNUICallback('setupMyObjects', function(data, cb)
-	local myObjects = {}
 	cb(ObjectList)
 end)
 
