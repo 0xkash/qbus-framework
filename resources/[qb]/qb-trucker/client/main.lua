@@ -19,7 +19,7 @@ local CurrentBlip = nil
 local hasBox = false
 local isWorking = false
 local currentCount = 0
-
+local CurrentPlate = nil
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
@@ -86,6 +86,10 @@ Citizen.CreateThread(function()
                         if IsControlJustReleased(0, Keys["E"]) then
                             if JobsDone > 0 then
                                 TriggerServerEvent("qb-trucker:server:01101110", JobsDone)
+                                JobsDone = 0
+                                if #LocationsDone == #Config.Locations["stores"] then
+                                    LocationsDone = {}
+                                end
                                 RemoveBlip(CurrentBlip)
                             else
                                 QBCore.Functions.Notify("Je hebt nog geen werk gericht..", "error")
@@ -101,7 +105,7 @@ Citizen.CreateThread(function()
                         if not IsPedInAnyVehicle(GetPlayerPed(-1)) then
                             if not hasBox then
                                 local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1), true)
-                                if isTruckerVehicle(vehicle) then
+                                if isTruckerVehicle(vehicle) and CurrentPlate == GetVehicleNumberPlateText(vehicle) then
                                     local trunkpos = GetOffsetFromEntityInWorldCoords(vehicle, 0, -8.5, 0)
                                     DrawText3D(trunkpos.x, trunkpos.y, trunkpos.z, "Producten pakken")
                                     if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, trunkpos.x, trunkpos.y, trunkpos.z, true) < 1.5 and not isWorking then
@@ -268,6 +272,7 @@ function TakeOutVehicle(vehicleInfo)
         TaskWarpPedIntoVehicle(GetPlayerPed(-1), veh, -1)
         TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
         SetVehicleEngineOn(veh, true, true)
+        CurrentPlate = GetVehicleNumberPlateText(veh)
         getNewLocation()
     end, coords, true)
 end
