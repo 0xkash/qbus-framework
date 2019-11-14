@@ -76,13 +76,26 @@ $(document).ready(function(){
             qbPhone.SetupTweets(eventData.tweets);
         }
 
+        if (eventData.task == "setupAds") {
+            qbPhone.SetupAdverts(eventData.ads);
+        }
+
         if (eventData.task == "newTweetNotify") {
             qbPhone.TwitterNotify(eventData.sender)
+        }
+
+        if (eventData.task == "newAdNotify") {
+            qbPhone.AdvertNotify(eventData.sender)
         }
 
         if (eventData.task == "newTweet") {
             qbPhone.SetupTweets(eventData.tweets);
             qbPhone.Notify('<i class="fab fa-twitter" style="position: relative; padding-top: 3px;"></i> Twitter', 'tweet', '@'+eventData.sender + ' heeft een tweet geplaatst!')
+        }
+
+        if (eventData.task == "newAd") {
+            qbPhone.SetupAdverts(eventData.ads);
+            qbPhone.Notify('<i class="fas fa-ad" style="position: relative; padding-top: 3px;"></i> Advertentie', 'advert', eventData.sender + ' heeft een advertentie geplaatst!')
         }
     });
 
@@ -129,6 +142,8 @@ $(document).on('click', '.app', function(e){
         $.post('http://qb-phone/getUserMails');
     } else if (pressedApp.app == "twitter") {
         $.post('http://qb-phone/getTweets');
+    } else if (pressedApp.app == "advert") {
+        $.post('http://qb-phone/getAds');
     }
 
     qbPhone.succesSound();
@@ -525,6 +540,8 @@ qbPhone.Notify = function(title, type, message, wait) {
             $("#notify-titel").css("color", "rgb(9, 126, 9);");
         } else if (type == 'tweet') {
             $("#notify-titel").css("color", "rgb(29, 161, 242);");
+        } else if (type == 'advert') {
+            $("#notify-titel").css("color", "rgb(255, 143, 26);");
         }
         $("#notify-titel").html(title);
         $("#notify-message").html(message);
@@ -688,6 +705,7 @@ $(document).on('click', '.twitter-new-tweet', function(){
     }, 200);
 });
 
+
 $(document).on('click', '.send-new-tweet', function(){
     var tweetMessage = $('#new-tweet-message').val();
 
@@ -705,6 +723,34 @@ $(document).on('click', '.send-new-tweet', function(){
 
 $(document).on('click', '.cancel-new-tweet', function(){
     $('.twitter-app-new-tweet').css({'display':'block'}).animate({
+        bottom: "-27vh"
+    }, 200);
+});
+
+$(document).on('click', '.advert-new-ad', function(){
+    $('.advert-app-new-ad').css({'display':'block'}).animate({
+        bottom: "17vh"
+    }, 200);
+});
+
+
+$(document).on('click', '.send-new-ad', function(){
+    var advertMessage = $('#new-advert-message').val();
+
+    if (advertMessage != "") {
+        $('.advert-app-new-ad').css({'display':'block'}).animate({
+            bottom: "-27vh"
+        }, 200);
+        $.post('http://qb-phone/postAdvert', JSON.stringify({
+            message: advertMessage
+        }))
+    } else {
+        qbPhone.Notify('Advertenties', 'error', 'Je kan geen legen tweet versturen...')
+    }
+});
+
+$(document).on('click', '.cancel-new-ad', function(){
+    $('.advert-app-new-ad').css({'display':'block'}).animate({
         bottom: "-27vh"
     }, 200);
 });
@@ -734,6 +780,18 @@ qbPhone.TwitterNotify = function(sender) {
     }, 2500)
 }
 
+qbPhone.AdvertNotify = function(sender) {
+    $('.new-advert-notify-content').html(sender + " heeft een nieuwe advertentie geplaatst!");
+    $(".new-advert-notify").css({'display':'block'}).animate({
+        top: "0%",
+    }, 500);
+    setTimeout(function(){
+        $(".new-advert-notify").css({'display':'block'}).animate({
+            top: "-10%",
+        }, 250)
+    }, 2500)
+}
+
 qbPhone.SetupTweets = function(tweets) {
     $('.twitter-tweets').html("");
     if (tweets != undefined) {
@@ -744,6 +802,19 @@ qbPhone.SetupTweets = function(tweets) {
         });
     } else {
         $(".twitter-tweets").html('<span id="no-emails-error">Er zijn nog<br> geen Tweets geplaatst :(</span>')
+    }
+}
+
+qbPhone.SetupAdverts = function(ads) {
+    $('.advert-ads').html("");
+    if (ads != undefined) {
+        $.each(ads, function(i, ad){
+            var elem = '<div class="advert-app-ad"><div class="advert-poster"><span class="poster-name">'+ad.name+'</span> | <span class="poster-phone">'+ad.phone+'</span></div><hr><div class="advert-message"><p>'+ad.message+'</p></div></div>';
+    
+            $('.advert-ads').append(elem);
+        });
+    } else {
+        $(".advert-ads").html('<span id="no-emails-error">Er zijn nog<br> geen Advertenties geplaatst :(</span>')
     }
 }
 

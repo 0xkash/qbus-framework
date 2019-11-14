@@ -65,4 +65,12 @@ Config.PhoneApps = {
         tooltipText = "Twitter",
         slot = 8,
     },
+    ['advert'] = {
+        app = "advert",
+        color = "#ff8f1a",
+        icon = "fas fa-ad",
+        style = "padding-left: 12px !important;",
+        tooltipText = "Advertenties",
+        slot = 9,
+    },
 }

@@ -195,8 +195,21 @@ RegisterNUICallback('getTweets', function()
     end)
 end)
 
+RegisterNUICallback('getAds', function()
+    QBCore.Functions.TriggerCallback('qb-phone:server:getPhoneAds', function(ads)
+        SendNUIMessage({
+            task = "setupAds",
+            ads = ads
+        })
+    end)
+end)
+
 RegisterNUICallback('postTweet', function(data)
     TriggerServerEvent('qb-phone:server:postTweet', data.message)
+end)
+
+RegisterNUICallback('postAdvert', function(data)
+    TriggerServerEvent('qb-phone:server:postAdvert', data.message)
 end)
 
 RegisterNetEvent('qb-phone:client:newTweet')
@@ -209,14 +222,30 @@ AddEventHandler('qb-phone:client:newTweet', function(sender)
                 sender = sender
             })
         end)
-    end
-
-    -- if not inPhone then
+    else
         SendNUIMessage({
             task = "newTweetNotify",
             sender = sender
         })
-    -- end
+    end
+end)
+
+RegisterNetEvent('qb-phone:client:newAd')
+AddEventHandler('qb-phone:client:newAd', function(sender)
+    if inPhone then
+        QBCore.Functions.TriggerCallback('qb-phone:server:getPhoneAds', function(ads)
+            SendNUIMessage({
+                task = "newAd",
+                ads = ads,
+                sender = sender
+            })
+        end)
+    else
+        SendNUIMessage({
+            task = "newAdNotify",
+            sender = sender
+        })
+    end
 end)
 
 --- CODE

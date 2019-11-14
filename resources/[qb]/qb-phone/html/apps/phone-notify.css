@@ -78,3 +78,40 @@
     text-align: center;
     padding-top: 17px;
 }
+
+.new-advert-notify {
+    position: absolute;
+    width: 22vh;
+    height: 8vh;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    background-color: white;
+    border-radius: 0px 0px 8px 8px;
+    top: -10%;
+}
+
+.new-advert-notify-border-bottom {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 2.5vh;
+    background-color: rgb(31, 31, 46);
+    color: rgb(255, 255, 255);
+    font-family: sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-align: center;
+    line-height: 2.5vh;
+    border-radius: 0px 0px 5px 5px;
+}
+
+.new-advert-notify-content {
+    font-family: 'Lato';
+    font-weight: 500;
+    letter-spacing: 0.2vh;
+    font-size: 12px;
+    text-align: center;
+    padding-top: 17px;
+}

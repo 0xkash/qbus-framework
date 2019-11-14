@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="./apps/mail.css">     <!-- Mail CSS -->
     <link rel="stylesheet" href="./apps/phone-notify.css">     <!-- Mail CSS -->
     <link rel="stylesheet" href="./apps/twitter.css">     <!-- Mail CSS -->
+    <link rel="stylesheet" href="./apps/advert.css">     <!-- Mail CSS -->
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>  
@@ -46,6 +47,14 @@
                     
                 </div>
             </div>
+
+            <div class="new-advert-notify">
+                    <div class="new-advert-notify-border-bottom"><p>Advertentie</p></div>
+    
+                    <div class="new-advert-notify-content">
+                        
+                    </div>
+                </div>
         </div>
 
         <div class="container">
@@ -283,6 +292,31 @@
                     </div>
 
                     <div class="twitter-new-tweet"><i class="fas fa-pen" id="twitter-new-tweet-icon"></i></div>
+                </div>
+
+                <div class="advert-app">
+                    <div class="advert-header">
+                        <p>Advertenties</p>
+                    </div>
+
+                    <div class="advert-ads">
+                        <div class="advert-app-ad"><div class="advert-poster"><span class="poster-name">Austin Kash</span> | <span class="poster-phone">0612345678</span></div><hr><div class="advert-message"><p>Dit is een coole advertentie yo!</p></div></div>
+                    </div>
+
+                    <div class="advert-app-new-ad">
+                        <div class="advert-new-ad-header">
+                            <p>Nieuwe Advertentie</p>
+                        </div>
+
+                        <textarea name="" id="new-advert-message" placeholder="Advertentie bericht" id="" cols="30" rows="10" spellcheck="false"></textarea>
+
+                        <div class="send-new-ad"><p>Verzend</p></div>
+                        <div class="cancel-new-ad"><p>Annuleer</p></div>
+
+                        <!-- <input type="text" > -->
+                    </div>
+
+                    <div class="advert-new-ad"><i class="fas fa-pen" id="advert-new-ad-icon"></i></div>
                 </div>
 
                 <div class="phone-notify">

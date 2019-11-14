@@ -3,6 +3,8 @@ TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 
 --CODE
 
+local Adverts = {}
+
 Citizen.CreateThread(function()
     QBCore.Functions.ExecuteSql('DELETE FROM `phone_tweets`')
     print('Tweets have been cleared')
@@ -114,6 +116,17 @@ QBCore.Functions.CreateCallback("qb-phone:server:GetUserMails", function(source,
     end)
 end)
 
+QBCore.Functions.CreateCallback("qb-phone:server:getPhoneAds", function(source, cb)
+    local src = source
+    local pData = QBCore.Functions.GetPlayer(src)
+
+    if Adverts ~= nil and next(Adverts) then
+        cb(Adverts)
+    else
+        cb(nil)
+    end
+end)
+
 QBCore.Functions.CreateCallback("qb-phone:server:getPhoneTweets", function(source, cb)
     local src = source
     local pData = QBCore.Functions.GetPlayer(src)
@@ -176,6 +189,18 @@ AddEventHandler('qb-phone:server:postTweet', function(message)
     
     QBCore.Functions.ExecuteSql("INSERT INTO `phone_tweets` (`citizenid`, `sender`, `message`) VALUES ('"..Player.PlayerData.citizenid.."', '"..Player.PlayerData.charinfo.firstname.." "..string.sub(Player.PlayerData.charinfo.lastname, 1, 1):upper()..".', '"..message.."')")
     TriggerClientEvent('qb-phone:client:newTweet', -1, Player.PlayerData.charinfo.firstname.." "..string.sub(Player.PlayerData.charinfo.lastname, 1, 1):upper()..".")
+end)
+
+RegisterServerEvent('qb-phone:server:postAdvert')
+AddEventHandler('qb-phone:server:postAdvert', function(message)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    Adverts[Player.PlayerData.citizenid] = {
+        message = message,
+        phone = Player.PlayerData.charinfo.phone,
+        name = Player.PlayerData.charinfo.firstname .." "..Player.PlayerData.charinfo.lastname,
+    }
+    TriggerClientEvent('qb-phone:client:newAd', -1, Player.PlayerData.charinfo.firstname .." "..Player.PlayerData.charinfo.lastname)
 end)
 
 function GenerateMailId()
