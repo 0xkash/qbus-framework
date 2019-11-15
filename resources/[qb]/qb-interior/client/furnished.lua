@@ -94,6 +94,10 @@ function CreateApartmentFurnished(spawn)
 	POIOffsets.stash = json.decode('{"z":2.5,"y":-1.3440585937501,"x":2.58997509763,"h":2.2633972168}')
 	POIOffsets.logout = json.decode('{"z":2.0,"y":0.0555111328,"x":-2.0689604492,"h":2.2633972168}')
 
+	RequestModel(`playerhouse_appartment_motel`)
+	while not HasModelLoaded(`playerhouse_appartment_motel`) do
+	    Citizen.Wait(1000)
+	end
 	local house = CreateObject(`playerhouse_appartment_motel`, spawn.x, spawn.y, spawn.z, false, false, false)
     FreezeEntityPosition(house, true)
 	table.insert(objects, house)
