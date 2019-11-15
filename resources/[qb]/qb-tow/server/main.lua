@@ -1,11 +1,11 @@
 QBCore = nil
 TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 
-local DropPrice = math.random(200, 400)
+local DropPrice = math.random(250, 500)
 local PaymentTax = 18
 
-RegisterNetEvent('qb-trucker:server:01101110')
-AddEventHandler('qb-trucker:server:01101110', function(drops)
+RegisterNetEvent('qb-tow:server:11101110')
+AddEventHandler('qb-tow:server:11101110', function(drops)
     local src = source 
     local Player = QBCore.Functions.GetPlayer(src)
     local drops = tonumber(drops)
@@ -25,5 +25,16 @@ AddEventHandler('qb-trucker:server:01101110', function(drops)
 
     Player.Functions.AddMoney("bank", payment)
     TriggerClientEvent('chatMessage', source, "BAAN", "warning", "Je hebt je salaris ontvangen van: €"..payment..", bruto: €"..price.." (waarvan €"..bonus.." bonus) en €"..taxAmount.." belasting ("..PaymentTax.."%)")
+end)
+
+QBCore.Commands.Add("npc", "Toggle npc baan optie", {}, false, function(source, args)
+	TriggerClientEvent("jobs:client:ToggleNpc", source)
+end)
+
+QBCore.Commands.Add("tow", "Zet een wagen op de achterkant van je flatbed", {}, false, function(source, args)
+    local Player = QBCore.Functions.GetPlayer(source)
+    if Player.PlayerData.job.name == "tow" then
+        TriggerClientEvent("qb-tow:client:TowVehicle", source)
+    end
 end)
 

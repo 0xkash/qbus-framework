@@ -20,6 +20,7 @@ local hasBox = false
 local isWorking = false
 local currentCount = 0
 local CurrentPlate = nil
+local CurrentTow = nil
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
@@ -30,6 +31,18 @@ AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     hasBox = false
     isWorking = false
     JobsDone = 0
+
+    if PlayerJob.name == "trucker" then
+        local TruckVehBlip = AddBlipForCoord(Config.Locations["vehicle"].coords.x, Config.Locations["vehicle"].coords.y, Config.Locations["vehicle"].coords.z)
+        SetBlipSprite(TruckVehBlip, 326)
+        SetBlipDisplay(TruckVehBlip, 4)
+        SetBlipScale(TruckVehBlip, 0.6)
+        SetBlipAsShortRange(TruckVehBlip, true)
+        SetBlipColour(TruckVehBlip, 5)
+        BeginTextCommandSetBlipName("STRING")
+        AddTextComponentSubstringPlayerName(Config.Locations["vehicle"].label)
+        EndTextCommandSetBlipName(TruckVehBlip)
+    end
 end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerUnload')
@@ -44,13 +57,25 @@ end)
 RegisterNetEvent('QBCore:Client:OnJobUpdate')
 AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
     PlayerJob = JobInfo
+
+    if PlayerJob.name == "trucker" then
+        local TruckVehBlip = AddBlipForCoord(Config.Locations["vehicle"].coords.x, Config.Locations["vehicle"].coords.y, Config.Locations["vehicle"].coords.z)
+        SetBlipSprite(TruckVehBlip, 326)
+        SetBlipDisplay(TruckVehBlip, 4)
+        SetBlipScale(TruckVehBlip, 0.6)
+        SetBlipAsShortRange(TruckVehBlip, true)
+        SetBlipColour(TruckVehBlip, 5)
+        BeginTextCommandSetBlipName("STRING")
+        AddTextComponentSubstringPlayerName(Config.Locations["vehicle"].label)
+        EndTextCommandSetBlipName(TruckVehBlip)
+    end
 end)
 
 Citizen.CreateThread(function()
     local TruckerBlip = AddBlipForCoord(Config.Locations["main"].coords.x, Config.Locations["main"].coords.y, Config.Locations["main"].coords.z)
-    SetBlipSprite(TruckerBlip, 477)
+    SetBlipSprite(TruckerBlip, 479)
     SetBlipDisplay(TruckerBlip, 4)
-    SetBlipScale(TruckerBlip, 0.65)
+    SetBlipScale(TruckerBlip, 0.6)
     SetBlipAsShortRange(TruckerBlip, true)
     SetBlipColour(TruckerBlip, 5)
     BeginTextCommandSetBlipName("STRING")
@@ -68,7 +93,7 @@ Citizen.CreateThread(function()
                 end
                 local pos = GetEntityCoords(GetPlayerPed(-1))
                 if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["vehicle"].coords.x, Config.Locations["vehicle"].coords.y, Config.Locations["vehicle"].coords.z, true) < 10.0) then
-                    DrawMarker(2, Config.Locations["vehicle"].coords.x, Config.Locations["vehicle"].coords.y, Config.Locations["vehicle"].coords.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
+                    DrawMarker(2, Config.Locations["vehicle"].coords.x, Config.Locations["vehicle"].coords.y, Config.Locations["vehicle"].coords.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 200, 200, 222, false, false, false, true, false, false, false)
                     if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["vehicle"].coords.x, Config.Locations["vehicle"].coords.y, Config.Locations["vehicle"].coords.z, true) < 1.5) then
                         if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
                             DrawText3D(Config.Locations["vehicle"].coords.x, Config.Locations["vehicle"].coords.y, Config.Locations["vehicle"].coords.z, "~g~E~w~ - Voertuig opbergen")

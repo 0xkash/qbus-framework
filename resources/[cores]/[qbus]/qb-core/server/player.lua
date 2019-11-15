@@ -69,8 +69,6 @@ QBCore.Player.CheckPlayerData = function(source, PlayerData)
 	PlayerData.job = PlayerData.job ~= nil and PlayerData.job or {}
 	PlayerData.job.name = PlayerData.job.name ~= nil and PlayerData.job.name or "unemployed"
 	PlayerData.job.label = PlayerData.job.label ~= nil and PlayerData.job.label or "Werkloos"
-	PlayerData.job.grade = PlayerData.job.grade ~= nil and PlayerData.job.grade or 1
-	PlayerData.job.gradelabel = PlayerData.job.gradelabel ~= nil and PlayerData.job.gradelabel or "Uitkering"
 	PlayerData.job.payment = PlayerData.job.payment ~= nil and PlayerData.job.payment or 10
 	PlayerData.job.onduty = PlayerData.job.onduty ~= nil and PlayerData.job.onduty or true
 	
@@ -110,15 +108,14 @@ QBCore.Player.CreatePlayer = function(PlayerData)
 		self.UpdatePlayerData()
 	end
 
-	self.Functions.SetJob = function(job, grade)
+	self.Functions.SetJob = function(job)
 		local job = job:lower()
 		local grade = tonumber(grade)
-		local JobInfo = QBCore.Player.GetJobInfo(job, grade)
+		local JobInfo = QBCore.Player.GetJobInfo(job)
 		if JobInfo ~= nil then
 			self.PlayerData.job.name = JobInfo.name
 			self.PlayerData.job.label = JobInfo.label
-			self.PlayerData.job.grade = JobInfo.grade
-			self.PlayerData.job.gradelabel = JobInfo.gradelabel
+			self.PlayerData.job.payment = JobInfo.payment
 			self.PlayerData.job.onduty = JobInfo.onduty
 			self.Functions.UpdatePlayerData()
 			TriggerClientEvent("QBCore:Client:OnJobUpdate", self.PlayerData.source, self.PlayerData.job)
@@ -406,22 +403,16 @@ QBCore.Player.CreateCitizenId = function()
 	return CitizenId
 end
 
-QBCore.Player.GetJobInfo = function(job, grade)
+QBCore.Player.GetJobInfo = function(job)
 	local job = job:lower()
-	local grade = tonumber(grade)
 	local JobInfo = {}
 	QBCore.Functions.ExecuteSql("SELECT * FROM `jobs`", function(result)
 		for _, info in pairs(result) do
 			if tostring(info.name) == tostring(job) then
-				info.grades = json.decode(info.grades)
-				for _, gradeinfo in pairs(info.grades) do
-					JobInfo.name = info.name
-					JobInfo.label = info.label
-					JobInfo.grade = gradeinfo.grade
-					JobInfo.gradelabel = gradeinfo.gradelabel
-					JobInfo.payment = info.payment
-					JobInfo.onduty = true
-				end
+				JobInfo.name = info.name
+				JobInfo.label = info.label
+				JobInfo.payment = info.payment
+				JobInfo.onduty = true
 			end
 		end
 	end)
