@@ -10,7 +10,7 @@ local speed_ud = 3.0 -- speed by which the camera pans up-down
 local toggle_helicam = 51 -- control id of the button by which to toggle the helicam mode. Default: INPUT_CONTEXT (E)
 local toggle_vision = 25 -- control id to toggle vision mode. Default: INPUT_AIM (Right mouse btn)
 local toggle_rappel = 154 -- control id to rappel out of the heli. Default: INPUT_DUCK (X)
-local toggle_spotlight = 183 -- control id to toggle the front spotlight Default: INPUT_PhoneCameraGrid (G)
+local toggle_spotlight = Keys["H"] -- control id to toggle the front spotlight Default: INPUT_PhoneCameraGrid (G)
 local toggle_lock_on = 22 -- control id to lock onto a vehicle with the camera. Default is INPUT_SPRINT (spacebar)
 
 -- Script starts here
@@ -49,11 +49,6 @@ Citizen.CreateThread(function()
 							if GetPedInVehicleSeat(heli, 1) == lPed or GetPedInVehicleSeat(heli, 2) == lPed then
 								PlaySoundFrontend(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)
 								TaskRappelFromHeli(GetPlayerPed(-1), 1)
-							else
-								SetNotificationTextEntry( "STRING" )
-								AddTextComponentString("~r~Can't rappel from this seat")
-								DrawNotification(false, false )
-								PlaySoundFrontend(-1, "5_Second_Timer", "DLC_HEISTS_GENERAL_FRONTEND_SOUNDS", false) 
 							end
 						end
 					end
@@ -79,7 +74,7 @@ Citizen.CreateThread(function()
 						SetCamFov(cam, fov)
 						RenderScriptCams(true, false, 0, 1, 0)
 						PushScaleformMovieFunction(scaleform, "SET_CAM_LOGO")
-						PushScaleformMovieFunctionParameterInt(1) -- 0 for nothing, 1 for LSPD logo
+						PushScaleformMovieFunctionParameterInt(0) -- 0 for nothing, 1 for LSPD logo
 						PopScaleformMovieFunctionVoid()
 						locked_on_vehicle = nil
 						while helicam and not IsEntityDead(lPed) and (GetVehiclePedIsIn(lPed) == heli) and IsHeliHighEnough(heli) do
