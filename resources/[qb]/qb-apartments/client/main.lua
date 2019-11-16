@@ -266,11 +266,11 @@ function EnterApartment(house, apartmentId)
                 --TriggerEvent('instances:client:JoinInstance', apartmentId, house)
                 
 
-                TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_close", 1.0)
+                TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_close", 0.1)
             end, house)
         else
             CurrentOffset = offset
-            TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_open", 1.0)
+            TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_open", 0.1)
             TriggerServerEvent("apartments:server:AddObject", apartmentId, house, CurrentOffset)
             local coords = { x = Apartments.Locations[ClosestHouse].coords.enter.x, y = Apartments.Locations[ClosestHouse].coords.enter.y, z = Apartments.Locations[ClosestHouse].coords.enter.z - CurrentOffset}
             data = exports['qb-interior']:CreateApartmentFurnished(coords)
@@ -294,14 +294,14 @@ function EnterApartment(house, apartmentId)
             --TriggerEvent('instances:client:JoinInstance', apartmentId, house)
             
 
-            TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_close", 1.0)
+            TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_close", 0.1)
         end
     end, apartmentId)
 end
 
 function LeaveApartment(house)
     --TriggerEvent('instances:client:LeaveInstance')
-    TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_open", 1.0)
+    TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_open", 0.1)
     openHouseAnim()
     DoScreenFadeOut(500)
     while not IsScreenFadedOut() do
