@@ -11,3 +11,19 @@ Keys = {
 
 Config = Config or {}
 
+Config.AllowedVehicles = {
+   [1] = {model = "taxi", label = "Taxi"}
+}
+
+Config.Meter = {
+    ["defaultPrice"] = 5
+}
+
+Config.Locations = {
+    ["vehicle"] = {
+        ["x"] = 909.5,
+        ["y"] = -177.35,
+        ["z"] = 74.22,
+        ["h"] = 238.5,
+    }
+}
