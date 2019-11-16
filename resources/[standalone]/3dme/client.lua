@@ -1,4 +1,4 @@
-local nbrDisplaying = 1
+local nbrDisplaying = 0
 
 QBCore = nil
 
@@ -15,11 +15,11 @@ end)
 
 RegisterNetEvent('3dme:triggerDisplay')
 AddEventHandler('3dme:triggerDisplay', function(text, source)
-    local offset = 1 + (nbrDisplaying*0.14)
-    Display(GetPlayerFromServerId(source), text, offset)
+    --local offset = 1 + (nbrDisplaying*0.14)
+    Display(GetPlayerFromServerId(source), text)
 end)
 
-function Display(mePlayer, text, offset)
+function Display(mePlayer, text)
     local displaying = true
 
     Citizen.CreateThread(function()
@@ -27,6 +27,7 @@ function Display(mePlayer, text, offset)
         displaying = false
     end)
     Citizen.CreateThread(function()
+        local offset = 0 + (nbrDisplaying*0.14)
         nbrDisplaying = nbrDisplaying + 1
         while displaying do
             Wait(0)
@@ -34,7 +35,7 @@ function Display(mePlayer, text, offset)
             local coords = GetEntityCoords(PlayerPedId(), false)
             local dist = Vdist2(coordsMe, coords)
             if dist < 2500 then
-                DrawText3Ds(coordsMe['x'], coordsMe['y'], coordsMe['z'] + 0.3, text)
+                DrawText3Ds(coordsMe['x'], coordsMe['y'], coordsMe['z'] + offset, text, 1)
             end
         end
         nbrDisplaying = nbrDisplaying - 1

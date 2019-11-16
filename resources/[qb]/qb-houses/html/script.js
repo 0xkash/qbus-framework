@@ -43,11 +43,12 @@ $('document').ready(function() {
             if (selectedObject !== null) {
                 var objId = $(selectedObject).attr('id');
                 var objData = $('#'+objId).data('objectData');
-
-                $.post("http://qb-houses/spawnobject", JSON.stringify({
-                    object: objData.object,
-                }));
-                $(".decorate-items").fadeOut(150);
+                if (objData != null) {
+                    $.post("http://qb-houses/spawnobject", JSON.stringify({
+                        object: objData.object,
+                    }));
+                    $(".decorate-items").fadeOut(150);
+                }
             }
         }
     };

@@ -6,7 +6,7 @@ Citizen.CreateThread(function()
         if not IsPedSittingInAnyVehicle(GetPlayerPed(-1)) then
             if IsControlJustReleased(0, Keys["LEFTCTRL"]) then
                 stage = stage + 1
-                if stage == 1 then
+                if stage == 2 then
                     -- Crouch stuff
                     ClearPedTasks(GetPlayerPed(-1))
                     RequestAnimSet("move_ped_crouched")
@@ -17,21 +17,21 @@ Citizen.CreateThread(function()
                     SetPedMovementClipset(GetPlayerPed(-1), "move_ped_crouched",1.0)    
                     SetPedWeaponMovementClipset(GetPlayerPed(-1), "move_ped_crouched",1.0)
                     SetPedStrafeClipset(GetPlayerPed(-1), "move_ped_crouched_strafing",1.0)
-                elseif stage == 2 then
+                elseif stage == 3 then
                     ClearPedTasks(GetPlayerPed(-1))
                     RequestAnimSet("move_crawl")
                     while not HasAnimSetLoaded("move_crawl") do
                         Citizen.Wait(0)
                     end
-                elseif stage > 2 then
+                elseif stage > 3 then
                     stage = 0
-                    ClearPedTasks(GetPlayerPed(-1))
+                    ClearPedTasksImmediately(GetPlayerPed(-1))
                     ResetAnimSet()
                     SetPedStealthMovement(GetPlayerPed(-1),0,0)
                 end
             end
 
-            if stage == 1 then
+            if stage == 2 then
                 if GetEntitySpeed(GetPlayerPed(-1)) > 1.0 then
                     SetPedWeaponMovementClipset(GetPlayerPed(-1), "move_ped_crouched",1.0)
                     SetPedStrafeClipset(GetPlayerPed(-1), "move_ped_crouched_strafing",1.0)
@@ -39,7 +39,7 @@ Citizen.CreateThread(function()
                     ResetPedWeaponMovementClipset(GetPlayerPed(-1))
                     ResetPedStrafeClipset(GetPlayerPed(-1))
                 end
-            elseif stage == 2 then
+            elseif stage == 3 then
                 DisableControlAction( 0, 21, true ) -- sprint
                 DisableControlAction(1, 140, true)
                 DisableControlAction(1, 141, true)

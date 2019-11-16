@@ -952,7 +952,7 @@ function ChangeToSkin(skin)
 	local overlaycolors = {}
 
 	for i = 0, 11 do
-		if (i == 1) then
+		if (i == 0) then
 			local drawable = headblend
 			drawables[i] = drawable
 		elseif (i == 3) then
