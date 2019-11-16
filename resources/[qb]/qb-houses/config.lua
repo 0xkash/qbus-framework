@@ -362,6 +362,7 @@ Config.Furniture = {
 			[25] = { ["object"] = "prop_mil_crate_01", ["price"] = 100, ["label"] = "Mil Crate 1" },
 			[26] = { ["object"] = "prop_mil_crate_02", ["price"] = 100, ["label"] = "Mil Crate 2" },
 			[27] = { ["object"] = "prop_ld_int_safe_01", ["price"] = 1100, ["label"] = "Safe" },
+			[28] = { ["object"] = "prop_toolchest_05", ["price"] = 5000, ["label"] = "Crafting Bench" },
 		},
 	},
 	["electronics"] = {
