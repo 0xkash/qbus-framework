@@ -52,15 +52,14 @@ function setupCharInfo(cData) {
         $('.character-info-valid').html('<span id="no-char">Het geselecteerde karakter slot is nog niet in gebruik.<br><br>Dit karakter heeft dus nog geen informatie.</span>');
     } else {
         $('.character-info-valid').html(
-        '<div class="character-info-box"><span id="info-label">Name: </span><span class="char-info-js">'+cData.charinfo.firstname+' '+cData.charinfo.lastname+'</span></div>' +
-        '<div class="character-info-box"><span id="info-label">DOB: </span><span class="char-info-js">'+cData.charinfo.birthdate+'</span></div>' +
-        '<div class="character-info-box"><span id="info-label">Nationality: </span><span class="char-info-js">'+cData.charinfo.nationality+'</span></div>' +
-        '<div class="character-info-box"><span id="info-label">Job: </span><span class="char-info-js">'+cData.job.label+'</span></div>' +
-        '<div class="character-info-box"><span id="info-label">Function: </span><span class="char-info-js">'+cData.job.gradelabel+'</span></div><br>' +
+        '<div class="character-info-box"><span id="info-label">Naam: </span><span class="char-info-js">'+cData.charinfo.firstname+' '+cData.charinfo.lastname+'</span></div>' +
+        '<div class="character-info-box"><span id="info-label">Geboortedatum: </span><span class="char-info-js">'+cData.charinfo.birthdate+'</span></div>' +
+        '<div class="character-info-box"><span id="info-label">Nationaliteit: </span><span class="char-info-js">'+cData.charinfo.nationality+'</span></div>' +
+        '<div class="character-info-box"><span id="info-label">Baan: </span><span class="char-info-js">'+cData.job.label+'</span></div>' +
         '<div class="character-info-box"><span id="info-label">Cash: </span><span class="char-info-js">&euro; '+cData.money.cash+'</span></div>' +
         '<div class="character-info-box"><span id="info-label">Bank: </span><span class="char-info-js">&euro; '+cData.money.bank+'</span></div><br>' +
-        '<div class="character-info-box"><span id="info-label">Phone Number: </span><span class="char-info-js">'+cData.charinfo.phone+'</span></div>' +
-        '<div class="character-info-box"><span id="info-label">Account: </span><span class="char-info-js">'+cData.charinfo.account+'</span></div>');
+        '<div class="character-info-box"><span id="info-label">Telefoonnummer: </span><span class="char-info-js">'+cData.charinfo.phone+'</span></div>' +
+        '<div class="character-info-box"><span id="info-label">Rekeningnummer: </span><span class="char-info-js">'+cData.charinfo.account+'</span></div>');
     }
 }
 

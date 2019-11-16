@@ -92,6 +92,11 @@ Citizen.CreateThread(function()
                 if(GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Apartments.Locations[ClosestHouse].coords.enter.x - POIOffsets.logout.x, Apartments.Locations[ClosestHouse].coords.enter.y + POIOffsets.logout.y, Apartments.Locations[ClosestHouse].coords.enter.z - CurrentOffset + POIOffsets.logout.z, true) < 1.5)then
                     QBCore.Functions.DrawText3D(Apartments.Locations[ClosestHouse].coords.enter.x - POIOffsets.logout.x, Apartments.Locations[ClosestHouse].coords.enter.y + POIOffsets.logout.y, Apartments.Locations[ClosestHouse].coords.enter.z - CurrentOffset + POIOffsets.logout.z, '~g~E~w~ - Uitloggen')
                     if IsControlJustPressed(0, Keys["E"]) then
+                        DoScreenFadeIn(500)
+                        while not IsScreenFadedOut() do
+                            Citizen.Wait(10)
+                        end
+                        TriggerEvent('qb-weathersync:client:EnableSync')
                         TriggerServerEvent('qb-houses:server:logOut')
                     end
                 elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Apartments.Locations[ClosestHouse].coords.enter.x - POIOffsets.logout.x, Apartments.Locations[ClosestHouse].coords.enter.y + POIOffsets.logout.y, Apartments.Locations[ClosestHouse].coords.enter.z - CurrentOffset + POIOffsets.logout.z, true) < 3)then
@@ -229,7 +234,7 @@ AddEventHandler('apartments:client:RingDoor', function(player, house)
 end)
 
 function EnterApartment(house, apartmentId)
-    TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_open", 1.0)
+    TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_open", 0.1)
     openHouseAnim()
     Citizen.Wait(250)
     QBCore.Functions.TriggerCallback('apartments:GetApartmentOffset', function(offset)
@@ -312,7 +317,7 @@ function LeaveApartment(house)
         InApartment = false
         CurrentOffset = 0
         DoScreenFadeIn(1000)
-        TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_close", 1.0)
+        TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_close", 0.1)
     end)
 end
 

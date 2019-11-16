@@ -64,7 +64,6 @@ QBCore.Functions.CreateCallback("test:yeet", function(source, cb)
             result[i].charinfo = json.decode(result[i].charinfo)
             result[i].money = json.decode(result[i].money)
             result[i].job = json.decode(result[i].job)
-            result[i].gang = json.decode(result[i].gang)
 
             table.insert(plyChars, result[i])
         end
@@ -83,7 +82,6 @@ end)
 
 QBCore.Functions.CreateCallback("qb-multicharacter:server:getSkin", function(source, cb, cid)
     local src = source
-    local Player = QBCore.Functions.GetPlayer(src)
 
     QBCore.Functions.ExecuteSql("SELECT * FROM `playerskins` WHERE `citizenid` = '"..cid.."' AND `active` = 1", function(result)
         if result[1] ~= nil then

@@ -9,7 +9,6 @@ QBCore.Player.Login = function(source, citizenid, newData)
 				if PlayerData ~= nil then
 					PlayerData.money = json.decode(PlayerData.money)
 					PlayerData.job = json.decode(PlayerData.job)
-					PlayerData.gang = json.decode(PlayerData.gang)
 					PlayerData.position = json.decode(PlayerData.position)
 					PlayerData.metadata = json.decode(PlayerData.metadata)
 					PlayerData.charinfo = json.decode(PlayerData.charinfo)
@@ -71,12 +70,6 @@ QBCore.Player.CheckPlayerData = function(source, PlayerData)
 	PlayerData.job.label = PlayerData.job.label ~= nil and PlayerData.job.label or "Werkloos"
 	PlayerData.job.payment = PlayerData.job.payment ~= nil and PlayerData.job.payment or 10
 	PlayerData.job.onduty = PlayerData.job.onduty ~= nil and PlayerData.job.onduty or true
-	
-	PlayerData.gang = PlayerData.gang ~= nil and PlayerData.gang or {}
-	PlayerData.gang.name = PlayerData.gang.name ~= nil and PlayerData.gang.name or "nogang"
-	PlayerData.gang.label = PlayerData.gang.label ~= nil and PlayerData.gang.label or "Geen gang"
-	PlayerData.gang.grade = PlayerData.gang.grade ~= nil and PlayerData.gang.grade or 1
-	PlayerData.gang.gradelabel = PlayerData.gang.gradelabel ~= nil and PlayerData.gang.gradelabel or "gang"
 
 	PlayerData.position = PlayerData.position ~= nil and PlayerData.position or QBConfig.DefaultSpawn
 
@@ -128,21 +121,6 @@ QBCore.Player.CreatePlayer = function(PlayerData)
 	self.Functions.SetJobDuty = function(onDuty)
 		self.PlayerData.job.onduty = onDuty
 		self.Functions.UpdatePlayerData()
-	end
-
-	self.Functions.SetGang = function(gang, grade)
-		local gang = gang:lower()
-		local grade = tonumber(grade)
-		local GangInfo = QBCore.Player.GetGangInfo(gang, grade)
-		if GangInfo ~= nil then
-			self.PlayerData.gang.name = JobInfo.name
-			self.PlayerData.gang.label = JobInfo.label
-			self.PlayerData.gang.grade = JobInfo.grade
-			self.PlayerData.gang.gradelabel = JobInfo.gradelabel
-			self.Functions.UpdatePlayerData()
-		else
-			-- gang does not exist
-		end
 	end
 
 	self.Functions.SetMetaData = function(meta, val)
@@ -304,9 +282,9 @@ QBCore.Player.Save = function(source)
 	if PlayerData ~= nil then
 		QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `citizenid` = '"..PlayerData.citizenid.."'", function(result)
 			if result[1] == nil then
-				QBCore.Functions.ExecuteSql("INSERT INTO `players` (`citizenid`, `cid`, `steam`, `license`, `name`, `money`, `permission`, `charinfo`, `job`, `gang`, `position`, `metadata`) VALUES ('"..PlayerData.citizenid.."', '"..tonumber(PlayerData.cid).."', '"..PlayerData.steam.."', '"..PlayerData.license.."', '"..PlayerData.name.."', '"..json.encode(PlayerData.money).."', '"..PlayerData.permission.."', '"..json.encode(PlayerData.charinfo).."', '"..json.encode(PlayerData.job).."', '"..json.encode(PlayerData.gang).."', '"..json.encode(PlayerData.position).."', '"..json.encode(PlayerData.metadata).."')")
+				QBCore.Functions.ExecuteSql("INSERT INTO `players` (`citizenid`, `cid`, `steam`, `license`, `name`, `money`, `permission`, `charinfo`, `job`, `position`, `metadata`) VALUES ('"..PlayerData.citizenid.."', '"..tonumber(PlayerData.cid).."', '"..PlayerData.steam.."', '"..PlayerData.license.."', '"..PlayerData.name.."', '"..json.encode(PlayerData.money).."', '"..PlayerData.permission.."', '"..json.encode(PlayerData.charinfo).."', '"..json.encode(PlayerData.job).."', '"..json.encode(PlayerData.position).."', '"..json.encode(PlayerData.metadata).."')")
 			else
-				QBCore.Functions.ExecuteSql("UPDATE `players` SET steam='"..PlayerData.steam.."',license='"..PlayerData.license.."',name='"..PlayerData.name.."',money='"..json.encode(PlayerData.money).."',permission='"..PlayerData.permission.."',charinfo='"..json.encode(PlayerData.charinfo).."',job='"..json.encode(PlayerData.job).."',gang='"..json.encode(PlayerData.gang).."',position='"..json.encode(PlayerData.position).."',metadata='"..json.encode(PlayerData.metadata).."' WHERE `citizenid` = '"..PlayerData.citizenid.."'")
+				QBCore.Functions.ExecuteSql("UPDATE `players` SET steam='"..PlayerData.steam.."',license='"..PlayerData.license.."',name='"..PlayerData.name.."',money='"..json.encode(PlayerData.money).."',permission='"..PlayerData.permission.."',charinfo='"..json.encode(PlayerData.charinfo).."',job='"..json.encode(PlayerData.job).."',position='"..json.encode(PlayerData.position).."',metadata='"..json.encode(PlayerData.metadata).."' WHERE `citizenid` = '"..PlayerData.citizenid.."'")
 			end
 	    end)
 		QBCore.ShowSuccess(GetCurrentResourceName(), PlayerData.name .." PLAYER SAVED!")
@@ -417,23 +395,4 @@ QBCore.Player.GetJobInfo = function(job)
 		end
 	end)
 	return JobInfo
-end
-
-QBCore.Player.GetGangInfo = function(gang, grade)
-	local gang = gang:lower()
-	local grade = tonumber(grade)
-	local GangInfo = {}
-	QBCore.Functions.ExecuteSql("SELECT * FROM `gangs`", function(result)
-		for _, info in pairs(result) do
-			if tostring(info.name) == tostring(gang) then
-				for _, gradeinfo in pairs(info.grades) do
-					GangInfo.name = info.name
-					GangInfo.label = info.label
-					GangInfo.grade = gradeinfo.grade
-					GangInfo.gradelabel = gradeinfo.gradelabel
-				end
-			end
-		end
-	end)
-	return GangInfo
 end
