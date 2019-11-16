@@ -253,17 +253,38 @@ function updateweights($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
         return true;
     }
 
-    if ($fromInv.attr("data-inventory").split("-")[0] == "itemshop" && $toInv.attr("data-inventory").split("-")[0] == "itemshop") {
+    if (($fromInv.attr("data-inventory").split("-")[0] == "itemshop" && $toInv.attr("data-inventory").split("-")[0] == "itemshop") || ($fromInv.attr("data-inventory") == "crafting" && $toInv.attr("data-inventory") == "crafting")) {
         itemData = $fromInv.find("[data-slot=" + $fromSlot + "]").data("item");
-        $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-img"><img src="images/' + itemData.image + '" alt="' + itemData.name + '" /></div><div class="item-slot-amount"><p>('+itemData.amount+') €'+itemData.price+'</p></div><div class="item-slot-label"><p>' + itemData.label + '</p></div>');
+        if ($fromInv.attr("data-inventory").split("-")[0] == "itemshop") {
+            $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-img"><img src="images/' + itemData.image + '" alt="' + itemData.name + '" /></div><div class="item-slot-amount"><p>('+itemData.amount+') €'+itemData.price+'</p></div><div class="item-slot-label"><p>' + itemData.label + '</p></div>');
+        } else {
+            $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-img"><img src="images/' + itemData.image + '" alt="' + itemData.name + '" /></div><div class="item-slot-amount"><p>'+itemData.amount + ' (' + ((itemData.weight * itemData.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + itemData.label + '</p></div>');
+
+        }
 
         InventoryError($fromInv, $fromSlot);
         return false;
     }
 
-    if ($toAmount == 0 && $fromInv.attr("data-inventory").split("-")[0] == "itemshop") {
+    if ($toAmount == 0 && ($fromInv.attr("data-inventory").split("-")[0] == "itemshop" || $fromInv.attr("data-inventory") == "crafting")) {
         itemData = $fromInv.find("[data-slot=" + $fromSlot + "]").data("item");
-        $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-img"><img src="images/' + itemData.image + '" alt="' + itemData.name + '" /></div><div class="item-slot-amount"><p>('+itemData.amount+') €'+itemData.price+'</p></div><div class="item-slot-label"><p>' + itemData.label + '</p></div>');
+        if ($fromInv.attr("data-inventory").split("-")[0] == "itemshop") {
+            $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-img"><img src="images/' + itemData.image + '" alt="' + itemData.name + '" /></div><div class="item-slot-amount"><p>('+itemData.amount+') €'+itemData.price+'</p></div><div class="item-slot-label"><p>' + itemData.label + '</p></div>');
+        } else {
+            $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-img"><img src="images/' + itemData.image + '" alt="' + itemData.name + '" /></div><div class="item-slot-amount"><p>'+itemData.amount + ' (' + ((itemData.weight * itemData.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + itemData.label + '</p></div>');
+        }
+ 
+        InventoryError($fromInv, $fromSlot);
+        return false;
+    }
+
+    if ($toInv.attr("data-inventory").split("-")[0] == "itemshop" || $toInv.attr("data-inventory") == "crafting") {
+        itemData = $toInv.find("[data-slot=" + $toSlot + "]").data("item");
+        if ($toInv.attr("data-inventory").split("-")[0] == "itemshop") {
+            $toInv.find("[data-slot=" + $toSlot + "]").html('<div class="item-slot-img"><img src="images/' + itemData.image + '" alt="' + itemData.name + '" /></div><div class="item-slot-amount"><p>('+itemData.amount+') €'+itemData.price+'</p></div><div class="item-slot-label"><p>' + itemData.label + '</p></div>');
+        } else {
+            $toInv.find("[data-slot=" + $toSlot + "]").html('<div class="item-slot-img"><img src="images/' + itemData.image + '" alt="' + itemData.name + '" /></div><div class="item-slot-amount"><p>'+itemData.amount + ' (' + ((itemData.weight * itemData.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + itemData.label + '</p></div>');
+        }
  
         InventoryError($fromInv, $fromSlot);
         return false;
@@ -298,13 +319,13 @@ function updateweights($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
         }
     }
 
-    if (totalWeight > playerMaxWeight || (totalWeightOther > otherMaxWeight && $fromInv.attr("data-inventory").split("-")[0] != "itemshop")) {
+    if (totalWeight > playerMaxWeight || (totalWeightOther > otherMaxWeight && $fromInv.attr("data-inventory").split("-")[0] != "itemshop" && $fromInv.attr("data-inventory") != "crafting")) {
         InventoryError($fromInv, $fromSlot);
         return false;
     }
 
     $("#player-inv-weight").html((parseInt(totalWeight) / 1000).toFixed(2) + " / " + (playerMaxWeight / 1000).toFixed(2) + " kg");
-    if ($fromInv.attr("data-inventory").split("-")[0] != "itemshop" && $toInv.attr("data-inventory").split("-")[0] != "itemshop") {
+    if ($fromInv.attr("data-inventory").split("-")[0] != "itemshop" && $toInv.attr("data-inventory").split("-")[0] != "itemshop" && $fromInv.attr("data-inventory") != "crafting" && $toInv.attr("data-inventory") != "crafting") {
         $("#other-inv-label").html(otherLabel)
         $("#other-inv-weight").html((parseInt(totalWeightOther) / 1000).toFixed(2) + " / " + (otherMaxWeight / 1000).toFixed(2) + " kg")
     }
@@ -316,12 +337,12 @@ function swap($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
     fromData = $fromInv.find("[data-slot=" + $fromSlot + "]").data("item");
     toData = $toInv.find("[data-slot=" + $toSlot + "]").data("item");
     if (fromData !== undefined && fromData.amount >= $toAmount) {
-        if (($fromInv.attr("data-inventory") == "player" || $fromInv.attr("data-inventory") == "hotbar") && $toInv.attr("data-inventory").split("-")[0] == "itemshop") {
+        if (($fromInv.attr("data-inventory") == "player" || $fromInv.attr("data-inventory") == "hotbar") && $toInv.attr("data-inventory").split("-")[0] == "itemshop" && $toInv.attr("data-inventory") == "crafting") {
             InventoryError($fromInv, $fromSlot);
             return;
         }
 
-        if ($toAmount == 0 && $fromInv.attr("data-inventory").split("-")[0] == "itemshop") {
+        if ($toAmount == 0 && $fromInv.attr("data-inventory").split("-")[0] == "itemshop" && $fromInv.attr("data-inventory") == "crafting") {
             InventoryError($fromInv, $fromSlot);
             return;
         } else if ($toAmount == 0) {
@@ -615,7 +636,7 @@ var requiredItemOpen = false;
         if (data.other != null) 
         {
             var name = data.other.name.toString()
-            if (name != null && name.split("-")[0] == "itemshop") {
+            if (name != null && (name.split("-")[0] == "itemshop" || name == "crafting")) {
                 $("#other-inv-label").html(data.other.label);
             } else {
                 $("#other-inv-label").html(data.other.label)
