@@ -1,12 +1,12 @@
 local Keys = {
-    ["ESC"] = 322, ["F1"] = 288, ["F2"] = 289, ["F3"] = 170, ["F5"] = 166, ["F6"] = 167, ["F7"] = 168, ["F8"] = 169, ["F9"] = 56, ["F10"] = 57,
-    ["~"] = 243, ["1"] = 157, ["2"] = 158, ["3"] = 160, ["4"] = 164, ["5"] = 165, ["6"] = 159, ["7"] = 161, ["8"] = 162, ["9"] = 163, ["-"] = 84, ["="] = 83, ["BACKSPACE"] = 177,
-    ["TAB"] = 37, ["Q"] = 44, ["W"] = 32, ["E"] = 38, ["R"] = 45, ["T"] = 245, ["Y"] = 246, ["U"] = 303, ["P"] = 199, ["["] = 39, ["]"] = 40, ["ENTER"] = 18,
-    ["CAPS"] = 137, ["A"] = 34, ["S"] = 8, ["D"] = 9, ["F"] = 23, ["G"] = 47, ["H"] = 74, ["K"] = 311, ["L"] = 182,
-    ["LEFTSHIFT"] = 21, ["Z"] = 20, ["X"] = 73, ["C"] = 26, ["V"] = 0, ["B"] = 29, ["N"] = 249, ["M"] = 244, [","] = 82, ["."] = 81,
-    ["LEFTCTRL"] = 36, ["LEFTALT"] = 19, ["SPACE"] = 22, ["RIGHTCTRL"] = 70,
-    ["HOME"] = 213, ["PAGEUP"] = 10, ["PAGEDOWN"] = 11, ["DELETE"] = 178,
-    ["LEFT"] = 174, ["RIGHT"] = 175, ["TOP"] = 27, ["DOWN"] = 173,
+	['ESC'] = 322, ['F1'] = 288, ['F2'] = 289, ['F3'] = 170, ['F5'] = 166, ['F6'] = 167, ['F7'] = 168, ['F8'] = 169, ['F9'] = 56, ['F10'] = 57,
+	['~'] = 243, ['1'] = 157, ['2'] = 158, ['3'] = 160, ['4'] = 164, ['5'] = 165, ['6'] = 159, ['7'] = 161, ['8'] = 162, ['9'] = 163, ['-'] = 84, ['='] = 83, ['BACKSPACE'] = 177,
+	['TAB'] = 37, ['Q'] = 44, ['W'] = 32, ['E'] = 38, ['R'] = 45, ['T'] = 245, ['Y'] = 246, ['U'] = 303, ['P'] = 199, ['['] = 39, [']'] = 40, ['ENTER'] = 18,
+	['CAPS'] = 137, ['A'] = 34, ['S'] = 8, ['D'] = 9, ['F'] = 23, ['G'] = 47, ['H'] = 74, ['K'] = 311, ['L'] = 182,
+	['LEFTSHIFT'] = 21, ['Z'] = 20, ['X'] = 73, ['C'] = 26, ['V'] = 0, ['B'] = 29, ['N'] = 249, ['M'] = 244, [','] = 82, ['.'] = 81,
+	['LEFTCTRL'] = 36, ['LEFTALT'] = 19, ['SPACE'] = 22, ['RIGHTCTRL'] = 70,
+	['HOME'] = 213, ['PAGEUP'] = 10, ['PAGEDOWN'] = 11, ['DELETE'] = 178,
+	['LEFT'] = 174, ['RIGHT'] = 175, ['TOP'] = 27, ['DOWN'] = 173,
 }
 
 QBCore = nil
@@ -33,6 +33,16 @@ overlay = {0,0,0}
 model_id = 1
 bar = {x=0.628, y=0.142, x1=0.037,y1=0.014}
 pedType = ""
+
+local faceProps = {
+	[1] = { ["Prop"] = -1, ["Texture"] = -1 },
+	[2] = { ["Prop"] = -1, ["Texture"] = -1 },
+	[3] = { ["Prop"] = -1, ["Texture"] = -1 },
+	[4] = { ["Prop"] = -1, ["Palette"] = -1, ["Texture"] = -1 }, -- this is actually a pedtexture variations, not a prop
+	[5] = { ["Prop"] = -1, ["Palette"] = -1, ["Texture"] = -1 }, -- this is actually a pedtexture variations, not a prop
+	[6] = { ["Prop"] = -1, ["Palette"] = -1, ["Texture"] = -1 }, -- this is actually a pedtexture variations, not a prop
+}
+
 function DisplayHelpText(str)
 	SetTextComponentFormat("STRING")
 	AddTextComponentString(str)
@@ -791,40 +801,28 @@ AddEventHandler("doIntroCam", function()
 	end
 
 	SetEntityInvincible(GetPlayerPed(-1), true)
-
+	Citizen.Wait(2000)
+	FreezeEntityPosition(GetPlayerPed(-1),true)
 	while cmenu.show ~= 0 do
-
-		FreezeEntityPosition(GetPlayerPed(-1),true)
 		Citizen.Wait(1)
 		NetworkSetTalkerProximity(0.1)
 		invisCheck()
 
-		if spinning then
-			if GetEntityHeading(GetPlayerPed(-1)) > 359 then
-				SetEntityHeading(GetPlayerPed(-1),0.0)
-			else
-				SetEntityHeading(GetPlayerPed(-1),GetEntityHeading(GetPlayerPed(-1))+1.0)
-			end
+		if IsDisabledControlPressed(0, Keys["A"]) or IsControlPressed(0, Keys["A"]) then
+			SetEntityHeading(GetPlayerPed(-1),GetEntityHeading(GetPlayerPed(-1))-1.0)
 		end
 
-		if IsDisabledControlJustReleased(0,47) or IsControlJustReleased(0,47) then
-			spinning = not spinning
+		if IsDisabledControlPressed(0, Keys["D"]) or IsControlPressed(0, Keys["D"]) then
+			SetEntityHeading(GetPlayerPed(-1),GetEntityHeading(GetPlayerPed(-1))+1.0)
 		end
 
-        DisablePlayerFiring(GetPlayerPed(-1), true) -- Disable weapon firing
-        DisableControlAction(1, 23, true)  -- F
-        DisableControlAction(1, 106, true) -- VehicleMouseControlOverride
-        DisableControlAction(1, 140, true) --Disables Melee Actions
-        DisableControlAction(1, 141, true) --Disables Melee Actions
-        DisableControlAction(1, 142, true) --Disables Melee Actions 
-        DisableControlAction(2, 32, true)
-        DisableControlAction(1, 33, true)
-        DisableControlAction(1, 34, true)
-        DisableControlAction(1, 35, true)
-        DisableControlAction(1, 37, true) --Disables INPUT_SELECT_WEAPON (tab) Actions
-        DisableControlAction(0, 59)
-        DisableControlAction(0, 60) 
-        DisableControlAction(2, 31, true)
+		DisableAllControlActions(0)
+		EnableControlAction(0, Keys["UP"], true)
+		EnableControlAction(0, Keys["DOWN"], true)
+		EnableControlAction(0, Keys["LEFT"], true)
+		EnableControlAction(0, Keys["RIGHT"], true)
+		EnableControlAction(0, Keys["ENTER"], true)
+		EnableControlAction(0, Keys["BACKSPACE"], true)
 		local x,y,z = table.unpack(GetEntityCoords(GetPlayerPed(-1)))
 		SetCamCoord(cam, x+1.7, y+1.5, z+0.4)
 		SetCamRot(cam, 0.0, 0.0, 124.9)
@@ -885,7 +883,7 @@ AddEventHandler("clothes:loadSkin", function(new, model, data)
 
 		for i = 0, 11 do
 			local idx = tostring(i)
-			if (i == 1) then
+			if (i == 0) then
 				SetPedHeadBlendData(GetPlayerPed(-1), data.drawables[idx], data.drawables[idx], data.drawables[idx], data.drawables[idx], data.drawables[idx], data.drawables[idx], 1.0, 1.0, 1.0, true)
 			elseif (i == 3) then
 				SetPedComponentVariation(GetPlayerPed(-1), i, tonumber(data.drawables[idx]), 0, 0)
@@ -907,7 +905,7 @@ AddEventHandler("clothes:loadSkin", function(new, model, data)
 			SetPedHeadOverlayColor(GetPlayerPed(-1), i, 1, tonumber(data.overlaycolors[idx]), 0)
 		end
 	end)
-
+	ChangeToSkin()
 	SetEntityInvincible(GetPlayerPed(-1),false)
 end)
 
@@ -1032,7 +1030,7 @@ function SaveOutfit(skin, outfitName)
 	local overlaycolors = {}
 
 	for i = 0, 11 do
-		if (i == 1) then
+		if (i == 0) then
 			local drawable = headblend
 			drawables[i] = drawable
 		elseif (i == 3) then
@@ -1152,6 +1150,11 @@ AddEventHandler('clothes:client:SaveOutfit', function(skin, name)
 	SaveOutfit(skin, name)
 end)
 
+RegisterNetEvent('clothes:client:ChangeToSkin')
+AddEventHandler('clothes:client:ChangeToSkin', function()
+	ChangeToSkin()
+end)
+
 RegisterNetEvent('femaleclothesstart')
 AddEventHandler('femaleclothesstart', function(hasToPay)
 	selected_skins = fr_skins
@@ -1228,7 +1231,7 @@ Citizen.CreateThread(function()
 				PlaySound(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0, 0, 1)
 				cmenu = {show = 0, row = 0, field = 1}
 				ChangeToSkin(lastmodel)
-			elseif IsControlJustPressed(1,201) or IsControlJustPressed(1,38) then -- Enter
+			elseif IsControlJustPressed(1,201) or IsControlJustPressed(1,38) or IsControlJustPressed(0,18) then -- Enter
 				PlaySound(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0, 0, 1)
 				if cmenu.row == 1 then
 					cmenu.show = 2
@@ -1317,4 +1320,149 @@ Citizen.CreateThread(function()
 			Citizen.Wait(1000)
 		end
 	end
+end)
+local removeWear = false
+RegisterNetEvent("clothes:client:updatefacewear")
+AddEventHandler("clothes:client:updatefacewear",function()
+	for i = 0, 3 do
+		if GetPedPropIndex(GetPlayerPed(-1), i) ~= -1 then
+			faceProps[i+1]["Prop"] = GetPedPropIndex(GetPlayerPed(-1), i)
+		end
+		if GetPedPropTextureIndex(GetPlayerPed(-1), i) ~= -1 then
+			faceProps[i+1]["Texture"] = GetPedPropTextureIndex(GetPlayerPed(-1), i)
+		end
+	end
+
+	if GetPedDrawableVariation(GetPlayerPed(-1), 1) ~= -1 then
+		faceProps[4]["Prop"] = GetPedDrawableVariation(GetPlayerPed(-1), 1)
+		faceProps[4]["Palette"] = GetPedPaletteVariation(GetPlayerPed(-1), 1)
+		faceProps[4]["Texture"] = GetPedTextureVariation(GetPlayerPed(-1), 1)
+	end
+
+	if GetPedDrawableVariation(GetPlayerPed(-1), 11) ~= -1 then
+		faceProps[5]["Prop"] = GetPedDrawableVariation(GetPlayerPed(-1), 11)
+		faceProps[5]["Palette"] = GetPedPaletteVariation(GetPlayerPed(-1), 11)
+		faceProps[5]["Texture"] = GetPedTextureVariation(GetPlayerPed(-1), 11)
+	end
+end)
+
+RegisterNetEvent("clothes:client::adjustfacewear")
+AddEventHandler("clothes:client::adjustfacewear",function(type)
+	if QBCore.Functions.GetPlayerData().metadata["ishandcuffed"] then return end
+	removeWear = not removeWear
+	local AnimSet = "none"
+	local AnimationOn = "none"
+	local AnimationOff = "none"
+	local PropIndex = 0
+
+	local AnimSet = "mp_masks@on_foot"
+	local AnimationOn = "put_on_mask"
+	local AnimationOff = "put_on_mask"
+
+	faceProps[6]["Prop"] = GetPedDrawableVariation(GetPlayerPed(-1), 0)
+	faceProps[6]["Palette"] = GetPedPaletteVariation(GetPlayerPed(-1), 0)
+	faceProps[6]["Texture"] = GetPedTextureVariation(GetPlayerPed(-1), 0)
+
+	for i = 0, 3 do
+		if GetPedPropIndex(GetPlayerPed(-1), i) ~= -1 then
+			faceProps[i+1]["Prop"] = GetPedPropIndex(GetPlayerPed(-1), i)
+		end
+		if GetPedPropTextureIndex(GetPlayerPed(-1), i) ~= -1 then
+			faceProps[i+1]["Texture"] = GetPedPropTextureIndex(GetPlayerPed(-1), i)
+		end
+	end
+
+	if GetPedDrawableVariation(GetPlayerPed(-1), 1) ~= -1 then
+		faceProps[4]["Prop"] = GetPedDrawableVariation(GetPlayerPed(-1), 1)
+		faceProps[4]["Palette"] = GetPedPaletteVariation(GetPlayerPed(-1), 1)
+		faceProps[4]["Texture"] = GetPedTextureVariation(GetPlayerPed(-1), 1)
+	end
+
+	if GetPedDrawableVariation(GetPlayerPed(-1), 11) ~= -1 then
+		faceProps[5]["Prop"] = GetPedDrawableVariation(GetPlayerPed(-1), 11)
+		faceProps[5]["Palette"] = GetPedPaletteVariation(GetPlayerPed(-1), 11)
+		faceProps[5]["Texture"] = GetPedTextureVariation(GetPlayerPed(-1), 11)
+	end
+
+	if type == 1 then
+		PropIndex = 0
+	elseif type == 2 then
+		PropIndex = 1
+
+		AnimSet = "clothingspecs"
+		AnimationOn = "take_off"
+		AnimationOff = "take_off"
+
+	elseif type == 3 then
+		PropIndex = 2
+	elseif type == 4 then
+		PropIndex = 1
+		if removeWear then
+			AnimSet = "missfbi4"
+			AnimationOn = "takeoff_mask"
+			AnimationOff = "takeoff_mask"
+		end
+	elseif type == 5 then
+		PropIndex = 11
+		AnimSet = "oddjobs@basejump@ig_15"
+		AnimationOn = "puton_parachute"
+		AnimationOff = "puton_parachute"	
+		--mp_safehouseshower@male@ male_shower_idle_d_towel
+		--mp_character_creation@customise@male_a drop_clothes_a
+		--oddjobs@basejump@ig_15 puton_parachute_bag
+	end
+
+	loadAnimDict( AnimSet )
+	if type == 5 then
+		if removeWear then
+			SetPedComponentVariation(GetPlayerPed(-1), 3, 2, faceProps[6]["Texture"], faceProps[6]["Palette"])
+		end
+	end
+	if removeWear then
+		TaskPlayAnim( GetPlayerPed(-1), AnimSet, AnimationOff, 4.0, 3.0, -1, 49, 1.0, 0, 0, 0 )
+		Citizen.Wait(500)
+		if type ~= 5 then
+			if type == 4 then
+				SetPedComponentVariation(GetPlayerPed(-1), PropIndex, -1, -1, -1)
+			else
+				if type ~= 2 then
+					ClearPedProp(GetPlayerPed(-1), tonumber(PropIndex))
+				end
+			end
+		end
+	else
+		TaskPlayAnim( GetPlayerPed(-1), AnimSet, AnimationOn, 4.0, 3.0, -1, 49, 1.0, 0, 0, 0 )
+		Citizen.Wait(500)
+		if type ~= 5 and type ~= 2 then
+			if type == 4 then
+				SetPedComponentVariation(GetPlayerPed(-1), PropIndex, faceProps[type]["Prop"], faceProps[type]["Texture"], faceProps[type]["Palette"])
+			else
+				SetPedPropIndex( GetPlayerPed(-1), tonumber(PropIndex), tonumber(faceProps[PropIndex+1]["Prop"]), tonumber(faceProps[PropIndex+1]["Texture"]), false)
+			end
+		end
+	end
+	if type == 5 then
+		if not removeWear then
+			SetPedComponentVariation(GetPlayerPed(-1), 3, 1, faceProps[6]["Texture"], faceProps[6]["Palette"])
+			SetPedComponentVariation(GetPlayerPed(-1), PropIndex, faceProps[type]["Prop"], faceProps[type]["Texture"], faceProps[type]["Palette"])
+		else
+			SetPedComponentVariation(GetPlayerPed(-1), PropIndex, -1, -1, -1)
+		end
+		Citizen.Wait(1800)
+	end
+	if type == 2 then
+		Citizen.Wait(600)
+		if removeWear then
+			ClearPedProp(GetPlayerPed(-1), tonumber(PropIndex))
+		end
+
+		if not removeWear then
+			Citizen.Wait(140)
+			SetPedPropIndex( GetPlayerPed(-1), tonumber(PropIndex), tonumber(faceProps[PropIndex+1]["Prop"]), tonumber(faceProps[PropIndex+1]["Texture"]), false)
+		end
+	end
+	if type == 4 and removeWear then
+		Citizen.Wait(1200)
+	end
+	ClearPedTasks(GetPlayerPed(-1))
 end)
