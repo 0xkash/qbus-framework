@@ -62,7 +62,15 @@ end)
 RegisterServerEvent('hospital:server:SetWeaponDamage')
 AddEventHandler('hospital:server:SetWeaponDamage', function(data)
 	local src = source
-	PlayerWeaponWounds[src] = data
+	local Player = QBCore.Functions.GetPlayer(src)
+	PlayerWeaponWounds[Player.PlayerData.source] = data
+end)
+
+RegisterServerEvent('hospital:server:RestoreWeaponDamage')
+AddEventHandler('hospital:server:RestoreWeaponDamage', function()
+	local src = source
+	local Player = QBCore.Functions.GetPlayer(src)
+	PlayerWeaponWounds[Player.PlayerData.source] = nil
 end)
 
 RegisterServerEvent('hospital:server:SetDeathStatus')
