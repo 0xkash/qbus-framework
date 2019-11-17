@@ -336,6 +336,10 @@ AddEventHandler("inventory:client:SetCurrentStash", function(stash)
     CurrentStash = stash
 end)
 
+RegisterNUICallback('getCombineItem', function(data, cb)
+    cb(QBCore.Shared.Items[data.item])
+end)
+
 RegisterNUICallback("CloseInventory", function(data, cb)
     if CurrentVehicle ~= nil then
         CloseTrunk()
@@ -358,6 +362,42 @@ end)
 
 RegisterNUICallback("UseItem", function(data, cb)
     TriggerServerEvent("inventory:server:UseItem", data.inventory, data.item)
+end)
+
+RegisterNUICallback("combineItem", function(data)
+    TriggerServerEvent('inventory:server:combineItem', data.reward, data.fromItem, data.toItem)
+    Citizen.Wait(100)
+    SendNUIMessage({
+        action = "update",
+        inventory = QBCore.Functions.GetPlayerData().items,
+        maxweight = QBCore.Config.Player.MaxWeight,
+    })
+end)
+
+RegisterNUICallback('combineWithAnim', function(data)
+    local combineData = data.combineData
+    local aDict = combineData.anim.dict
+    local aLib = combineData.anim.lib
+    local animText = combineData.anim.text
+    local animTimeout = combineData.anim.timeOut
+
+    QBCore.Functions.Progressbar("combine_anim", animText, animTimeout, false, true, {
+        disableMovement = false,
+        disableCarMovement = true,
+        disableMouse = false,
+        disableCombat = true,
+    }, {
+        animDict = aDict,
+        anim = aLib,
+        flags = 16,
+    }, {}, {}, function() -- Done
+        StopAnimTask(GetPlayerPed(-1), aDict, aLib, 1.0)
+        TriggerServerEvent('inventory:server:combineItem', combineData.reward, data.requiredItem, data.usedItem)
+        TriggerEvent('inventory:client:ItemBox', QBCore.Shared.Items[combineData.reward], 'add')
+    end, function() -- Cancel
+        StopAnimTask(GetPlayerPed(-1), aDict, aLib, 1.0)
+        QBCore.Functions.Notify("Mislukt!", "error")
+    end)
 end)
 
 RegisterNUICallback("SetInventoryData", function(data, cb)

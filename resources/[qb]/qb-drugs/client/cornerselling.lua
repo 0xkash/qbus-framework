@@ -172,13 +172,13 @@ function SellToPed(ped)
     local drugType = math.random(1, #availableDrugs)
     local bagAmount = math.random(1, availableDrugs[drugType].amount)
 
-    if bagAmount > 7 then
-        bagAmount = math.random(1, 7)
+    if bagAmount > 15 then
+        bagAmount = math.random(9, 15)
     end
     
-    local randomPrice = math.random(150, 239) * bagAmount
+    local randomPrice = math.random(11, 20) * bagAmount
     if scamChance == 3 then
-       randomPrice = math.random(27, 77) * bagAmount
+       randomPrice = math.random(3, 11) * bagAmount
     end
 
     currentOfferDrug = availableDrugs[drugType]

@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:600&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Lato&display=swap');
 
 
 p {
@@ -151,6 +152,56 @@ input[type=number]::-webkit-outer-spin-button {
     height: 50px;
     background-color: rgba(235, 235, 235, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.01);
+}
+
+.combine-option-container {
+    display: none;
+    position: absolute;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    width: 9%;
+    top: 45vh;
+}
+
+.combine-option-container-header {
+    text-align: center;
+    font-size: 18px;
+    font-family: sans-serif;
+    font-weight: bold;
+    letter-spacing: 0.1vh;
+    color: white;
+    padding-top: 1vh;
+}
+.btn-combine {
+    width: 100%;
+    height: 50px;
+    background-color: rgba(235, 235, 235, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.01);
+    margin-top: 1.5vh;
+}
+
+.btn-combine:hover {
+    background-color: rgba(235, 235, 235, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-combine > p {
+    color: white;
+    text-align: center;
+    line-height: 48px;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-family: 'Roboto Mono', monospace;
+}
+
+.combine-option-text {
+    position: relative;
+    text-align: center;
+    font-size: 14px;
+    letter-spacing: 0.1vh;
+    color: white;
+    top: 20%;
 }
 
 .item-slot-amount {

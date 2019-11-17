@@ -109,6 +109,13 @@ local atms = {
 
 }
 
+ATMObjects = {
+  -870868698,
+  -1126237515,
+  -1364697528,
+  506770882,
+}
+
 -- Banks
 local banks = {
   {name="Bank", id=108, x=150.266, y=-1040.203, z=29.374},
@@ -122,29 +129,29 @@ local banks = {
 
 -- Display Map Blips
 Citizen.CreateThread(function()
-    if (displayBankBlips == true) then
-      for _, item in pairs(banks) do
-          item.blip = AddBlipForCoord(item.x, item.y, item.z)
-          SetBlipSprite(item.blip, item.id)
-          SetBlipScale(item.bip, 0.55)
-          SetBlipAsShortRange(item.blip, true)
-          BeginTextCommandSetBlipName("STRING")
-          AddTextComponentString(item.name)
-          EndTextCommandSetBlipName(item.blip)
-      end
+  if (displayBankBlips == true) then
+    for _, item in pairs(banks) do
+        item.blip = AddBlipForCoord(item.x, item.y, item.z)
+        SetBlipSprite(item.blip, item.id)
+        SetBlipScale(item.blip, 0.65)
+        SetBlipAsShortRange(item.blip, true)
+        BeginTextCommandSetBlipName("STRING")
+        AddTextComponentString(item.name)
+        EndTextCommandSetBlipName(item.blip)
     end
+  end
 
-    if (displayAtmBlips == true) then
-        for _, item in pairs(atms) do
-              item.blip = AddBlipForCoord(item.x, item.y, item.z)
-              SetBlipSprite(item.blip, item.id)
-              SetBlipScale(item.bip, 0.55)
-              SetBlipAsShortRange(item.blip, true)
-              BeginTextCommandSetBlipName("STRING")
-              AddTextComponentString(item.name)
-              EndTextCommandSetBlipName(item.blip)
-        end
+  if (displayAtmBlips == true) then
+    for _, item in pairs(atms) do
+      item.blip = AddBlipForCoord(item.x, item.y, item.z)
+      SetBlipSprite(item.blip, item.id)
+      SetBlipScale(item.blip, 0.65)
+      SetBlipAsShortRange(item.blip, true)
+      BeginTextCommandSetBlipName("STRING")
+      AddTextComponentString(item.name)
+      EndTextCommandSetBlipName(item.blip)
     end
+  end
 end)
 
 -- NUI Variables
@@ -159,7 +166,7 @@ function openGui()
   local playerPed = GetPlayerPed(-1)
   local PlayerData = QBCore.Functions.GetPlayerData()
   TaskStartScenarioInPlace(playerPed, "PROP_HUMAN_ATM", 0, true)
-  QBCore.Functions.Progressbar("use_bank", "Kaart wordt gelezen..", 250, false, true, {}, {}, {}, {}, function() -- Done
+  QBCore.Functions.Progressbar("use_bank", "Kaart wordt gelezen..", 2500, false, true, {}, {}, {}, {}, function() -- Done
       ClearPedTasksImmediately(ped)
       SetNuiFocus(true, true)
       SendNUIMessage({
@@ -197,13 +204,16 @@ end
 
 Citizen.CreateThread(function()
     while true do
-        Citizen.Wait(0)
+        Citizen.Wait(3)
+
+        inRange = false
 
         local pos = GetEntityCoords(GetPlayerPed(-1))
         
         if(IsNearBank() or IsNearATM()) then
             atBank = true
-            DrawText3Ds(pos.x, pos.y, pos.z, '[E] Bank gebruiken')
+            inRange = true
+            DrawText3Ds(pos.x, pos.y, pos.z, '[E] Kaart valideren')
             if IsControlJustPressed(1, Keys["E"])  then
                 if (IsInVehicle()) then
                     QBCore.Functions.Notify('Actie momenteel niet mogelijk..', 'error')
@@ -217,6 +227,10 @@ Citizen.CreateThread(function()
                     end
                 end
             end
+        end
+
+        if not inRange then
+          Citizen.Wait(1500)
         end
     end
 end)
@@ -279,12 +293,17 @@ end)
 function IsNearATM()
   local ply = GetPlayerPed(-1)
   local plyCoords = GetEntityCoords(ply, 0)
-  for _, item in pairs(atms) do
-    local distance = GetDistanceBetweenCoords(item.x, item.y, item.z,  plyCoords["x"], plyCoords["y"], plyCoords["z"], true)
-    if(distance <= 2) then
-      return true
+  for k, v in pairs(ATMObjects) do
+    local closestObj = GetClosestObjectOfType(plyCoords.x, plyCoords.y, plyCoords.z, 3.0, v, false, 0, 0)
+    local objCoords = GetEntityCoords(closestObj)
+    if closestObj ~= 0 then
+      local dist = GetDistanceBetweenCoords(plyCoords.x, plyCoords.y, plyCoords.z, objCoords.x, objCoords.y, objCoords.z)
+      if dist <= 2 then
+        return true
+      end
     end
   end
+  return false
 end
 
 -- Check if player is in a vehicle
