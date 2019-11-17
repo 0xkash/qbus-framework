@@ -6,6 +6,10 @@ AddEventHandler('prison:server:SetJailStatus', function(jailTime)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     Player.Functions.SetMetaData("injail", jailTime)
+    if jailTime > 0 then
+        Player.Functions.SetJob("unemployed")
+        TriggerClientEvent('QBCore:Notify', src, "Je bent werkloos..")
+    end
 end)
 
 RegisterServerEvent('prison:server:SaveJailItems')

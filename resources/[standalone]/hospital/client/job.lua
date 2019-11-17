@@ -1,10 +1,10 @@
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(1)
-        if QBCore ~= nil then
-            local pos = GetEntityCoords(GetPlayerPed(-1))
-            if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["clothing"].x, Config.Locations["clothing"].y, Config.Locations["clothing"].z, true) < 5) then
-                if PlayerJob.name == "doctor" or PlayerJob.name == "ambulance" then
+        if isLoggedIn then
+            if PlayerJob.name == "doctor" or PlayerJob.name == "ambulance" then
+                local pos = GetEntityCoords(GetPlayerPed(-1))
+                if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["clothing"].x, Config.Locations["clothing"].y, Config.Locations["clothing"].z, true) < 5) then
                     if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["clothing"].x, Config.Locations["clothing"].y, Config.Locations["clothing"].z, true) < 1.5) then
                         QBCore.Functions.DrawText3D(Config.Locations["clothing"].x, Config.Locations["clothing"].y, Config.Locations["clothing"].z, "~g~E~w~ - Omkleden | ~g~H~w~ - Outfit opslaan | ~g~G~w~ - Outfits")
                         if IsControlJustReleased(0, Keys["E"]) then
@@ -28,12 +28,10 @@ Citizen.CreateThread(function()
                         Menu.renderGUI()
                     elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["clothing"].x, Config.Locations["clothing"].y, Config.Locations["clothing"].z, true) < 4.5) then
                         QBCore.Functions.DrawText3D(Config.Locations["clothing"].x, Config.Locations["clothing"].y, Config.Locations["clothing"].z, "Omkleden")
-                    end  
+                    end
                 end
-            end
-    
-            if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["duty"].x, Config.Locations["duty"].y, Config.Locations["duty"].z, true) < 5) then
-                if PlayerJob.name == "doctor" or PlayerJob.name == "ambulance" then
+        
+                if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["duty"].x, Config.Locations["duty"].y, Config.Locations["duty"].z, true) < 5) then
                     if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["duty"].x, Config.Locations["duty"].y, Config.Locations["duty"].z, true) < 1.5) then
                         if onDuty then
                             QBCore.Functions.DrawText3D(Config.Locations["duty"].x, Config.Locations["duty"].y, Config.Locations["duty"].z, "~g~E~w~ - In dienst gaan")
@@ -48,10 +46,8 @@ Citizen.CreateThread(function()
                         QBCore.Functions.DrawText3D(Config.Locations["duty"].x, Config.Locations["duty"].y, Config.Locations["duty"].z, "In/Uit dienst")
                     end  
                 end
-            end
-    
-            if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["vehicle"].x, Config.Locations["vehicle"].y, Config.Locations["vehicle"].z, true) < 4.5) then
-                if PlayerJob.name == "doctor" or PlayerJob.name == "ambulance" and onDuty then
+        
+                if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["vehicle"].x, Config.Locations["vehicle"].y, Config.Locations["vehicle"].z, true) < 4.5) then
                     DrawMarker(2, Config.Locations["vehicle"].x, Config.Locations["vehicle"].y, Config.Locations["vehicle"].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
                     if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["vehicle"].x, Config.Locations["vehicle"].y, Config.Locations["vehicle"].z, true) < 1.5) then
                         if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
@@ -68,12 +64,10 @@ Citizen.CreateThread(function()
                             end
                         end
                         Menu.renderGUI()
-                    end  
+                    end
                 end
-            end
-    
-            if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["vehicledown"].x, Config.Locations["vehicledown"].y, Config.Locations["vehicledown"].z, true) < 4.5) then
-                if PlayerJob.name == "doctor" or PlayerJob.name == "ambulance" and onDuty then
+        
+                if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["vehicledown"].x, Config.Locations["vehicledown"].y, Config.Locations["vehicledown"].z, true) < 4.5) then
                     DrawMarker(2, Config.Locations["vehicledown"].x, Config.Locations["vehicledown"].y, Config.Locations["vehicledown"].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
                     if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["vehicledown"].x, Config.Locations["vehicledown"].y, Config.Locations["vehicledown"].z, true) < 1.5) then
                         if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
@@ -90,22 +84,31 @@ Citizen.CreateThread(function()
                             end
                         end
                         Menu.renderGUI()
-                    end  
+                    end
                 end
+            else
+                Citizen.Wait(1000)
             end
-    
-            if isStatusChecking then
-                for k, v in pairs(statusChecks) do
-                    local x,y,z = table.unpack(GetPedBoneCoords(statusCheckPed, v.bone))
-                    DrawText3D(x, y, z, v.label)
-                end
+        else
+            Citizen.Wait(1000)
+        end
+    end
+end)
+
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(1)
+        if isStatusChecking then
+            for k, v in pairs(statusChecks) do
+                local x,y,z = table.unpack(GetPedBoneCoords(statusCheckPed, v.bone))
+                DrawText3D(x, y, z, v.label)
             end
-    
-            if isHealingPerson then
-                if not IsEntityPlayingAnim(GetPlayerPed(-1), healAnimDict, healAnim, 3) then
-                    loadAnimDict(healAnimDict)	
-                    TaskPlayAnim(GetPlayerPed(-1), healAnimDict, healAnim, 3.0, 3.0, -1, 49, 0, 0, 0, 0)
-                end
+        end
+
+        if isHealingPerson then
+            if not IsEntityPlayingAnim(GetPlayerPed(-1), healAnimDict, healAnim, 3) then
+                loadAnimDict(healAnimDict)	
+                TaskPlayAnim(GetPlayerPed(-1), healAnimDict, healAnim, 3.0, 3.0, -1, 49, 0, 0, 0, 0)
             end
         end
     end
@@ -146,7 +149,6 @@ AddEventHandler('112:client:SendAlert', function(msg, blipSettings)
         end
     end
 end)
-
 
 RegisterNetEvent('hospital:client:AiCall')
 AddEventHandler('hospital:client:AiCall', function()

@@ -126,8 +126,6 @@ RegisterNUICallback('chooseAppa', function(data)
     SetCamActive(cam2, false)
     DestroyCam(cam2, true)
     SetEntityVisible(GetPlayerPed(-1), true)
-    Citizen.Wait(500)
-    DoScreenFadeIn(250)
 end)
 
 RegisterNUICallback('spawnplayer', function(data)

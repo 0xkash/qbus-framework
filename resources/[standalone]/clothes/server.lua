@@ -60,3 +60,20 @@ AddEventHandler('clothes:loadPlayerSkin', function()
         end
     end)
 end)
+
+QBCore.Commands.Add("h", "Zet je helm/pet/hoed op of af..", {}, false, function(source, args)
+    TriggerClientEvent("clothes:client::adjustfacewear", source, 1) -- Hat
+	--TriggerClientEvent("clothes:client::adjustfacewear", source, 3)
+	--TriggerClientEvent("clothes:client::adjustfacewear", source, 4)
+	--TriggerEvent("facewear:adjust", 5, true)
+	--TriggerClientEvent("clothes:client::adjustfacewear", source, 2)
+end)
+
+QBCore.Commands.Add("b", "Zet je bril op of af..", {}, false, function(source, args)
+	TriggerClientEvent("clothes:client::adjustfacewear", source, 2) -- Glasses
+end)
+
+QBCore.Commands.Add("m", "Zet je masker op of af..", {}, false, function(source, args)
+	--TriggerClientEvent("clothes:client::adjustfacewear", source, 3)
+	TriggerClientEvent("clothes:client::adjustfacewear", source, 4) -- Mask
+end)

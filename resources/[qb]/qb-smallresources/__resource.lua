@@ -24,4 +24,5 @@ client_scripts {
 	"client/crouchprone.lua",
 	"client/tackle.lua",
 	"client/consumables.lua",
+	"client/discord.lua",
 }

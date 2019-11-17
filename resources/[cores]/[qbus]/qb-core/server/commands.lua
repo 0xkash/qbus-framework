@@ -79,10 +79,10 @@ QBCore.Commands.Add("setmoney", "Zet het geld voor een speler", {{name="id", hel
 	end
 end, "admin")
 
-QBCore.Commands.Add("setjob", "Geef een baan aan een speler", {{name="id", help="Speler ID"}, {name="job", help="Naam van een baan"}, {name="grade", help="Baan grade (start vanaf 1)"}}, true, function(source, args)
+QBCore.Commands.Add("setjob", "Geef een baan aan een speler", {{name="id", help="Speler ID"}, {name="job", help="Naam van een baan"}}, true, function(source, args)
 	local Player = QBCore.Functions.GetPlayer(tonumber(args[1]))
 	if Player ~= nil then
-		Player.Functions.SetJob(tostring(args[2]), tonumber(args[3]))
+		Player.Functions.SetJob(tostring(args[2]))
 	else
 		TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Speler is niet online!")
 	end
@@ -112,7 +112,7 @@ end, "god")
 
 QBCore.Commands.Add("baan", "Kijk wat je baan is", {}, false, function(source, args)
 	local Player = QBCore.Functions.GetPlayer(source)
-	TriggerClientEvent('chatMessage', source, "SYSTEM", "warning", "Baan: "..Player.PlayerData.job.label.." Functie: "..Player.PlayerData.job.gradelabel)
+	TriggerClientEvent('chatMessage', source, "SYSTEM", "warning", "Baan: "..Player.PlayerData.job.label)
 end)
 
 

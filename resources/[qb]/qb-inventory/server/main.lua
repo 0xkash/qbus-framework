@@ -76,6 +76,12 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 			ShopItems[id] = {}
 			ShopItems[id].items = other.items
 			secondInv.slots = 30
+		elseif name == "crafting" then
+			secondInv.name = "crafting"
+			secondInv.label = other.label
+			secondInv.maxweight = 900000
+			secondInv.inventory = other.items
+			secondInv.slots = #other.items
 		elseif name == "otherplayer" then
 			local OtherPlayer = QBCore.Functions.GetPlayer(tonumber(id))
 			if OtherPlayer ~= nil then
