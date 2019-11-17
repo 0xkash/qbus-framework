@@ -271,18 +271,18 @@ Config.JobInteractions = {
     ["taxi"] = {
         {
             id    = 'togglemeter',
-            title = 'Meter Oppoppen',
+            title = 'Show/Hide Meter',
             icon = '#general',
             type = 'client',
             event = 'qb-taxi:client:toggleMeter',
-            shouldClose = true,
+            shouldClose = false,
         },
         {
             id    = 'togglemouse',
-            title = 'Meter Bedienen',
+            title = 'Start/Stop Meter',
             icon = '#general',
             type = 'client',
-            event = 'qb-taxi:client:toggleMuis',
+            event = 'qb-taxi:client:enableMeter',
             shouldClose = true,
         },
     },

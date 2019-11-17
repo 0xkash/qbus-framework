@@ -12,14 +12,21 @@ end)
 
 -- Code
 
-local isLoggedIn = true
+local isLoggedIn = false
 local PlayerData = {}
 
 local meterIsOpen = false
 
-local mouseActive = false
 local meterActive = false
 local currentTaxi = nil
+
+local lastLocation = nil
+
+local meterData = {
+    fareAmount = 3,
+    currentFare = 0,
+    distanceTraveled = 0,
+}
 
 local dutyPlate = nil
 
@@ -41,12 +48,40 @@ end)
 
 Citizen.CreateThread(function()
     while true do
+  
+        Citizen.Wait(2000)
+        calculateFareAmount()
+    end
+end)
+
+function calculateFareAmount()
+    if meterIsOpen and meterActive then
+        start = lastLocation
+  
+        if start then
+            current = GetEntityCoords(GetPlayerPed(-1))
+            distance = CalculateTravelDistanceBetweenPoints(start, current)
+            meterData['distanceTraveled'] = distance
+    
+            fareAmount = (meterData['distanceTraveled'] / 400.00) * meterData['fareAmount']
+    
+            meterData['currentFare'] = math.ceil(fareAmount)
+
+            SendNUIMessage({
+                action = "updateMeter",
+                meterData = meterData
+            })
+        end
+    end
+end
+
+Citizen.CreateThread(function()
+    while true do
 
         inRange = false
 
         if QBCore ~= nil then
             if isLoggedIn then
-                PlayerData = QBCore.Functions.GetPlayerData()
 
                 if PlayerData.job.name == "taxi" then
                     local ped = GetPlayerPed(-1)
@@ -117,8 +152,28 @@ AddEventHandler('qb-taxi:client:toggleMeter', function()
     end
 end)
 
-RegisterNUICallback('toggleMeter', function(data)
+RegisterNetEvent('qb-taxi:client:enableMeter')
+AddEventHandler('qb-taxi:client:enableMeter', function()
+    local ped = GetPlayerPed(-1)
+
+    if meterIsOpen then
+        SendNUIMessage({
+            action = "toggleMeter"
+        })
+    else
+        QBCore.Functions.Notify('De Taxi Meter is niet actief..', 'error')
+    end
+end)
+
+RegisterNUICallback('enableMeter', function(data)
     meterActive = data.enabled
+
+    if not data.enabled then
+        SendNUIMessage({
+            action = "resetMeter"
+        })
+    end
+    lastLocation = GetEntityCoords(GetPlayerPed(-1))
 end)
 
 RegisterNetEvent('qb-taxi:client:toggleMuis')
@@ -137,13 +192,6 @@ end)
 RegisterNUICallback('hideMouse', function()
     SetNuiFocus(false, false)
     mouseActive = false
-end)
-
-RegisterNUICallback('toggleMeter', function(data)
-    local plate = data.plate
-    local enabled = data.enabled
-
-    TriggerServerEvent('qb-taxi:server:toggleMeter', data)
 end)
 
 function whitelistedVehicle()

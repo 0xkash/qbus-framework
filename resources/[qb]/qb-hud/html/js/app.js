@@ -6,14 +6,16 @@ $(document).on('keydown', function() {
     }
 });
 
+var moneyTimeout = null;
+
 (() => {
     QBHud = {};
 
     QBHud.Open = function(data) {
         $(".money-cash").css("display", "block");
-        $(".money-bank").css("display", "block");
+        // $(".money-bank").css("display", "block");
         $("#cash").html(data.cash);
-        $("#bank").html(data.bank);
+        // $("#bank").html(data.bank);
     };
 
     QBHud.Close = function() {
@@ -28,14 +30,14 @@ $(document).on('keydown', function() {
             setTimeout(function() {
                 $(".money-cash").fadeOut(750);
             }, 3500)
-        } else if(data.type == "bank") {
-            $(".money-bank").fadeIn(150);
-            $(".money-bank").css("display", "block");
-            $("#bank").html(data.bank);
-            setTimeout(function() {
-                $(".money-bank").fadeOut(750);
-            }, 3500)
-        }
+        } //else if(data.type == "bank") {
+            // $(".money-bank").fadeIn(150);
+            // $(".money-bank").css("display", "block");
+            // $("#bank").html(data.bank);
+            // setTimeout(function() {
+            //     $(".money-bank").fadeOut(750);
+            // }, 3500)
+        //}
     };
 
     QBHud.ToggleSeatbelt = function(data) {
@@ -82,51 +84,51 @@ $(document).on('keydown', function() {
     };
 
     QBHud.Update = function(data) {
+        clearTimeout(moneyTimeout)
         if(data.type == "cash") {
             $(".money-cash").css("display", "block");
             $("#cash").html(data.cash);
             if (data.minus) {
-                $(".money-cash").append('<p class="minus">-<span id="cash-symbol">&euro;</span><span><span id="minus-changeamount">' + data.amount + '</span></span></p>')
+                $(".money-cash").append('<p class="minus">-<span id="cash-symbol">&euro;&nbsp;</span><span><span id="minus-changeamount">' + data.amount + '</span></span></p>')
                 $(".minus").css("display", "block");
-                setTimeout(function() {
+                moneyTimeout = setTimeout(function() {
                     $(".minus").fadeOut(750, function() {
                         $(".minus").remove();
                         $(".money-cash").fadeOut(750);
                     });
                 }, 3500)
             } else {
-                $(".money-cash").append('<p class="plus">+<span id="cash-symbol">&euro;</span><span><span id="plus-changeamount">' + data.amount + '</span></span></p>')
+                $(".money-cash").append('<p class="plus">+<span id="cash-symbol">&euro;&nbsp;</span><span><span id="plus-changeamount">' + data.amount + '</span></span></p>')
                 $(".plus").css("display", "block");
-                setTimeout(function() {
+                moneyTimeout = setTimeout(function() {
                     $(".plus").fadeOut(750, function() {
                         $(".plus").remove();
                         $(".money-cash").fadeOut(750);
-                    });
-                }, 3500)
-            }
-        } else {
-            $(".money-bank").css("display", "block");
-            $("#bank").html(data.bank);
-            if (data.minus) {
-                $(".money-bank").append('<p class="minus">-<span id="minus-symbol">&euro;</span><span><span id="minus-changeamount">' + data.amount + '</span></span></p>')
-                $(".minus").css("display", "block");
-                setTimeout(function() {
-                    $(".minus").fadeOut(750, function() {
-                        $(".minus").remove();
-                        $(".money-bank").fadeOut(750);
-                    });
-                }, 3500)
-            } else {
-                $(".money-bank").append('<p class="plus">+<span id="plus-symbol">&euro;</span><span><span id="plus-changeamount">' + data.amount + '</span></span></p>')
-                $(".plus").css("display", "block");
-                setTimeout(function() {
-                    $(".plus").fadeOut(750, function() {
-                        $(".plus").remove();
-                        $(".money-bank").fadeOut(750);
                     });
                 }, 3500)
             }
         }
+            // $(".money-bank").css("display", "block");
+            // $("#bank").html(data.bank);
+            // if (data.minus) {
+            //     $(".money-bank").append('<p class="minus">-<span id="minus-symbol">&euro;</span><span><span id="minus-changeamount">' + data.amount + '</span></span></p>')
+            //     $(".minus").css("display", "block");
+            //     setTimeout(function() {
+            //         $(".minus").fadeOut(750, function() {
+            //             $(".minus").remove();
+            //             $(".money-bank").fadeOut(750);
+            //         });
+            //     }, 3500)
+            // } else {
+            //     $(".money-bank").append('<p class="plus">+<span id="plus-symbol">&euro;</span><span><span id="plus-changeamount">' + data.amount + '</span></span></p>')
+            //     $(".plus").css("display", "block");
+            //     setTimeout(function() {
+            //         $(".plus").fadeOut(750, function() {
+            //             $(".plus").remove();
+            //             $(".money-bank").fadeOut(750);
+            //         });
+            //     }, 3500)
+            // }
     };
 
     window.onload = function(e) {

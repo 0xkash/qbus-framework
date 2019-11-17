@@ -35,6 +35,7 @@ AddEventHandler("hud:client:OnMoneyChange", function(type, amount, isMinus)
         cashAmount = PlayerData.money["cash"]
         bankAmount = PlayerData.money["bank"]
     end)
+    
     if QBHud.Money.ShowConstant then
         SendNUIMessage({
             action = "open",

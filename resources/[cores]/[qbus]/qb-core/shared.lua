@@ -165,6 +165,7 @@ QBShared.Items = {
 	["trojan_usb"] 				 	 = {["name"] = "trojan_usb", 			  	  	["label"] = "Trojan USB", 				["weight"] = 1000, 		["type"] = "item", 		["image"] = "usb_device.png", 		["unique"] = false, 	["useable"] = false, 	["shouldClose"] = true,			["description"] = "This is a placeholder description"},
 	["security_card_01"] 			 = {["name"] = "security_card_01", 			  	["label"] = "Security Card A", 			["weight"] = 1000, 		["type"] = "item", 		["image"] = "security_card_01.png", ["unique"] = false, 	["useable"] = false, 	["shouldClose"] = true,			["description"] = "This is a placeholder description"},
 	["security_card_02"] 			 = {["name"] = "security_card_02", 			  	["label"] = "Security Card B", 			["weight"] = 1000, 		["type"] = "item", 		["image"] = "security_card_02.png", ["unique"] = false, 	["useable"] = false, 	["shouldClose"] = true,			["description"] = "This is a placeholder description"},
+	["police_stormram"] 			 = {["name"] = "police_stormram", 			  	["label"] = "Stormram", 				["weight"] = 1000, 		["type"] = "item", 		["image"] = "police_stormram.png", 	["unique"] = false, 	["useable"] = false, 	["shouldClose"] = true,			["description"] = "This is a placeholder description"},
 }
 
 -- // HASH WEAPON ITEMS, NEED SOMETIMES TO GET INFO FOR CLIENT

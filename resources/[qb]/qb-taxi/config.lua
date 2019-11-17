@@ -16,7 +16,7 @@ Config.AllowedVehicles = {
 }
 
 Config.Meter = {
-    ["defaultPrice"] = 5
+    ["defaultPrice"] = 1.60
 }
 
 Config.Locations = {

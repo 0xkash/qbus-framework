@@ -37,52 +37,60 @@ p {
     padding: 3%;
 }
 
+#cash {
+    color: white;
+}
+
 .money-cash,.money-bank {
-    position: absolute;
-    color: #ffffff;
-    font-size: 32px;
-    font-family: 'pdown';
     display: none;
-    right: 10px;
+    float:right;
+    font-family: 'pdown';
+    font-weight: 400;
+    font-size: 29px;
+    color: white;
+    padding: 4px;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    margin: 0;
+    margin-right: 6px;
+    margin-top: 6px;
+    padding: 0;
 }
 
 .money-cash {
     color: rgb(210, 210, 210);
-    text-shadow: 2px 2px #00000096;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
     text-align: right;
 }
 
 .money-bank {
     color: rgb(167, 167, 167);
-    text-shadow: 2px 2px #00000096;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
     text-align: right;
     top: 55px;
 }
 
 #plus-changeamount {
-    text-shadow: 1px 1px #00000083;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
     text-align: right;
-    color: #1a530f;
+    color: #f0f0f0;
 }
 
 #minus-changeamount {
-    text-shadow: 1px 1px #00000083;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
     text-align: right;
-    color: #c75f60;
+    color: #f0f0f0;
 }
 
 .minus {
-    text-shadow: 1px 1px #00000083;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
     text-align: right;
-    margin-top: 10px;
-    color: #c75f60;
+    color: #801e1f;
 }
 
 .plus {
-    text-shadow: 1px 1px #00000083;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
     text-align: right;
-    margin-top: 10px;
-    color: #1a530f;
+    color: #277418;
 }
 
 .ui-container {

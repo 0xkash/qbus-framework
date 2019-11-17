@@ -186,5 +186,13 @@ Config.Items = {
             type = "item",
             slot = 13,
         },
+        [14] = {
+            name = "police_stormram",
+            price = 0,
+            amount = 50,
+            info = {},
+            type = "item",
+            slot = 14,
+        },
     }
 }

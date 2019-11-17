@@ -31,21 +31,12 @@ AvailableWeatherTypes = {
 }
 
 function getPlayers()
-    for i = 1, 1 do
-        players = {}
-        local localplayers = {}
-        for i = 0, 255 do
-            if NetworkIsPlayerActive( i ) then
-                table.insert( localplayers, GetPlayerServerId(i) )
-            end
-        end
-        
-        table.sort(localplayers)
-        for i,thePlayer in ipairs(localplayers) do
-            table.insert(players, GetPlayerFromServerId(thePlayer))
-        end
-        return players
+    players = {}
+    for _, player in ipairs(GetActivePlayers()) do
+        table.insert(players, player)
     end
+
+    return players
 end
 
 RegisterNetEvent('qb-admin:client:openMenu')
@@ -53,6 +44,7 @@ AddEventHandler('qb-admin:client:openMenu', function()
     WarMenu.OpenMenu('admin')
 end)
 
+local currentPlayerMenu = nil
 local currentPlayer = 0
 
 Citizen.CreateThread(function()
@@ -70,22 +62,22 @@ Citizen.CreateThread(function()
     WarMenu.CreateMenu('admin', 'QBus Admin')
     WarMenu.CreateSubMenu('playerMan', 'admin')
     WarMenu.CreateSubMenu('serverMan', 'admin')
+
+    WarMenu.CreateSubMenu('playerOptions', currentPlayer)
+    WarMenu.CreateSubMenu('teleportOptions', currentPlayer)
+
+    WarMenu.CreateSubMenu('weatherOptions', 'serverMan')
     
     for k, v in pairs(players) do
         WarMenu.CreateSubMenu(v, 'playerMan', GetPlayerServerId(v).." | "..GetPlayerName(v))
     end
 
-    WarMenu.CreateSubMenu('playerOptions', currentPlayer)
-    WarMenu.CreateSubMenu('teleportOptions', currentPlayer)
-
-    WarMenu.CreateSubMenu('weatherOptions', currentPlayer)
-
-    for i = 1, (#menus), 1 do
-        WarMenu.SetMenuX(menus[i], 0.71)
-        WarMenu.SetMenuY(menus[i], 0.15)
-        WarMenu.SetMenuWidth(menus[i], 0.23)
-        WarMenu.SetTitleColor(menus[i], 255, 255, 255, 255)
-        WarMenu.SetTitleBackgroundColor(menus[i], 0, 0, 0, 111)
+    for k, v in pairs(menus) do
+        WarMenu.SetMenuX(v, 0.71)
+        WarMenu.SetMenuY(v, 0.15)
+        WarMenu.SetMenuWidth(v, 0.23)
+        WarMenu.SetTitleColor(v, 255, 255, 255, 255)
+        WarMenu.SetTitleBackgroundColor(v, 0, 0, 0, 111)
     end
 
     while true do
@@ -96,10 +88,18 @@ Citizen.CreateThread(function()
             WarMenu.Display()
         elseif WarMenu.IsMenuOpened('playerMan') then
             for k, v in pairs(players) do
-                if WarMenu.MenuButton('#'..GetPlayerServerId(v).." | "..GetPlayerName(v), v) then
-                    currentPlayer = v
-                end
+                WarMenu.CreateSubMenu(v, 'playerMan', GetPlayerServerId(v).." | "..GetPlayerName(v))
             end
+            -- for k, v in pairs(players) do
+            --     if WarMenu.MenuButton('#'..GetPlayerServerId(v).." | "..GetPlayerName(v), v) then
+            --         currentPlayer = v
+            --         if WarMenu.CreateSubMenu('playerOptions', currentPlayer) then
+            --             currentPlayerMenu = 'playerOptions'
+            --         elseif WarMenu.CreateSubMenu('teleportOptions', currentPlayer) then
+            --             currentPlayerMenu = 'teleportOptions'
+            --         end
+            --     end
+            -- end
 
             WarMenu.Display()
         elseif WarMenu.IsMenuOpened('serverMan') then
