@@ -425,4 +425,37 @@ QB.Doors = {
 		distance = 2.5,
 		size = 2
 	},
+	{
+		objName = 'v_ilev_bk_gate',
+		objCoords  = vector3(1693.135, 2578.432, -69.4),
+		textCoords = vector3(1693.135, 2578.432, -69.4),
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		pickable = true,
+		distance = 1.5,
+		size = 2
+	},
+	{
+		objName = 'hei_v_ilev_bk_gate_pris',
+		objCoords  = vector3(256.3116, 220.6579, 107.4296),
+		textCoords = vector3(256.3116, 220.6579, 106.4296),
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		pickable = true,
+		distance = 1.5,
+		size = 2
+	},
+	{
+		objName = 'hei_v_ilev_bk_gate2_pris',
+		objCoords  = vector3(262.1981, 222.5188, 107.4296),
+		textCoords = vector3(262.1981, 222.5188, 106.4296),
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		pickable = true,
+		distance = 1.5,
+		size = 2
+	},
 }

@@ -110,8 +110,6 @@ AddEventHandler('electronickit:UseElectronickit', function()
                 QBCore.Functions.Notify("Je mist een item..", "error")
             end
         end, "gatecrack")
-    else
-        QBCore.Functions.Notify("Actie niet mogenlijk..", "error")
     end
 end)
 

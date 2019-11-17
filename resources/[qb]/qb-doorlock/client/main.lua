@@ -13,6 +13,8 @@ Citizen.CreateThread(function()
 	end)
 end)
 
+local closestDoorKey, closestDoorValue = nil, nil
+
 function DrawText3Ds(x, y, z, text)
 	SetTextScale(0.35, 0.35)
     SetTextFont(4)
@@ -142,9 +144,20 @@ AddEventHandler('lockpicks:UseLockpick', function()
 
 	QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
 		for k, v in pairs(QB.Doors) do
-			local dist = GetDistanceBetweenCoords(pos, QB.Doors[k].objCoords)
+			local dist = GetDistanceBetweenCoords(pos, QB.Doors[k].textCoords.x, QB.Doors[k].textCoords.y, QB.Doors[k].textCoords.z)
+
 			if dist < 1.5 then
-				print(v)
+				if QB.Doors[k].pickable then
+					if QB.Doors[k].locked then
+						closestDoorKey, closestDoorValue = k, v
+
+						TriggerEvent('qb-lockpick:client:openLockpick', lockpickFinish)
+					else
+						QBCore.Functions.Notify('De deur is al ontgrendeld??', 'error', 2500)
+					end
+				else
+					QBCore.Functions.Notify('De deur heeft een te sterk slot', 'error', 2500)
+				end
 			end
 		end
     end, "screwdriverset")
@@ -152,7 +165,8 @@ end)
 
 function lockpickFinish(success)
     if success then
-        QBCore.Functions.Notify('Het is gelukt!', 'success', 2500)
+		QBCore.Functions.Notify('Het is gelukt!', 'success', 2500)
+		setDoorLocking(closestDoorValue, closestDoorKey)
     else
         QBCore.Functions.Notify('Het is niet gelukt..', 'error', 2500)
     end

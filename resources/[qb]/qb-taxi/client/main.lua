@@ -18,6 +18,7 @@ local PlayerData = {}
 local meterIsOpen = false
 
 local mouseActive = false
+local meterActive = false
 local currentTaxi = nil
 
 local dutyPlate = nil
@@ -88,33 +89,36 @@ Citizen.CreateThread(function()
     end
 end)
 
-Citizen.CreateThread(function()
-    while true do
-        local ped = GetPlayerPed(-1)
-
-        if IsPedInAnyVehicle(ped, false) then
-            if whitelistedVehicle() then
-                if not meterIsOpen then
-                    SendNUIMessage({
-                        action = "openMeter",
-                        toggle = true,
-                        meterData = Config.Meter
-                    })
-                    meterIsOpen = true
-                end
-            end
-        else
-            if meterIsOpen then
+RegisterNetEvent('qb-taxi:client:toggleMeter')
+AddEventHandler('qb-taxi:client:toggleMeter', function()
+    local ped = GetPlayerPed(-1)
+    
+    if IsPedInAnyVehicle(ped, false) then
+        if whitelistedVehicle() then
+            if not meterIsOpen then
+                SendNUIMessage({
+                    action = "openMeter",
+                    toggle = true,
+                    meterData = Config.Meter
+                })
+                meterIsOpen = true
+            else
                 SendNUIMessage({
                     action = "openMeter",
                     toggle = false
                 })
                 meterIsOpen = false
             end
+        else
+            QBCore.Functions.Notify('Dit voertuig heeft geen Taxi Meter..', 'error')
         end
-
-        Citizen.Wait(1000)
+    else
+        QBCore.Functions.Notify('Je zit niet in een voertuig..', 'error')
     end
+end)
+
+RegisterNUICallback('toggleMeter', function(data)
+    meterActive = data.enabled
 end)
 
 RegisterNetEvent('qb-taxi:client:toggleMuis')
@@ -140,22 +144,6 @@ RegisterNUICallback('toggleMeter', function(data)
     local enabled = data.enabled
 
     TriggerServerEvent('qb-taxi:server:toggleMeter', data)
-end)
-
-RegisterNetEvent('qb-taxi:client:toggleMeter')
-AddEventHandler('qb-taxi:client:toggleMeter', function(enabled, plate)
-    local ped = GetPlayerPed(-1)
-    local inVeh = IsPedInAnyVehicle(ped)
-
-    if inVeh then
-        local vehPlate = GetVehicleNumberPlateText(GetVehiclePedIsIn(ped))
-        if vehPlate == plate then
-            SendNUIMessage({
-                action = "toggleMeter",
-                enabled = enabled
-            })
-        end
-    end
 end)
 
 function whitelistedVehicle()
@@ -224,3 +212,17 @@ function DrawText3D(x, y, z, text)
     DrawRect(0.0, 0.0+0.0125, 0.017+ factor, 0.03, 0, 0, 0, 75)
     ClearDrawOrigin()
 end
+
+Citizen.CreateThread(function()
+    TaxiBlip = AddBlipForCoord(Config.Locations["vehicle"]["x"], Config.Locations["vehicle"]["y"], Config.Locations["vehicle"]["z"])
+
+    SetBlipSprite (TaxiBlip, 198)
+    SetBlipDisplay(TaxiBlip, 4)
+    SetBlipScale  (TaxiBlip, 0.75)
+    SetBlipAsShortRange(TaxiBlip, true)
+    SetBlipColour(TaxiBlip, 47)
+
+    BeginTextCommandSetBlipName("STRING")
+    AddTextComponentSubstringPlayerName("Downtown Cab")
+    EndTextCommandSetBlipName(TaxiBlip)
+end)

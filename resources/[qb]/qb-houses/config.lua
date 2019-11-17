@@ -1,6 +1,6 @@
 Config = Config or {}
 
-Config.MinZOffset = -30
+Config.MinZOffset = 30
 
 Config.Houses = {
 	["mirrorpark01"] = {
@@ -24,7 +24,7 @@ Config.Houses = {
 		price = 250000,
 		locked = true,
 		adress = "02 Mirror Park",
-		tier = 1,
+		tier = 2,
 		decorations = {},
 	},
 	["spanishave01"] = {
@@ -36,7 +36,7 @@ Config.Houses = {
 		price = 750000,
 		locked = true,
 		adress = "01 Spanish Ave",
-		tier = 2,
+		tier = 3,
 		decorations = {},
 	},
 }

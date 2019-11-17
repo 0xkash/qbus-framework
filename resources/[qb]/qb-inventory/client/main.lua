@@ -169,9 +169,17 @@ end)
 
 RegisterNetEvent('inventory:client:requiredItems')
 AddEventHandler('inventory:client:requiredItems', function(items, bool)
+    local itemTable = {}
+    for k, v in pairs(items) do
+        table.insert(itemTable, {
+            item = items[k].name,
+            label = QBCore.Shared.Items[items[k].name]["label"],
+            image = items[k].image,
+        })
+    end
     SendNUIMessage({
         action = "requiredItem",
-        items = items,
+        items = itemTable,
         toggle = bool
     })
 end)

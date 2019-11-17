@@ -303,7 +303,7 @@ function updateweights($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
         return false;
     }
 
-    $("#player-inv-weight").html("Speler Inventaris " + (parseInt(totalWeight) / 1000).toFixed(2) + " / " + (playerMaxWeight / 1000).toFixed(2) + " KG");
+    $("#player-inv-weight").html((parseInt(totalWeight) / 1000).toFixed(2) + " / " + (playerMaxWeight / 1000).toFixed(2) + " kg");
     if ($fromInv.attr("data-inventory").split("-")[0] != "itemshop" && $toInv.attr("data-inventory").split("-")[0] != "itemshop") {
         $("#other-inv-label").html(otherLabel)
         $("#other-inv-weight").html((parseInt(totalWeightOther) / 1000).toFixed(2) + " / " + (otherMaxWeight / 1000).toFixed(2) + " kg")
@@ -688,7 +688,7 @@ var requiredItemOpen = false;
         if (data.toggle) {
             $(".requiredItem-container").html("");
             $.each(data.items, function(index, item){
-                var element = '<div class="requiredItem-box"><div id="requiredItem-action">Nodig</div><div id="requiredItem-label"><p>'+item.name+'</p></div><div id="requiredItem-image"><div class="item-slot-img"><img src="images/' + item.image + '" alt="' + item.name + '" /></div></div></div>'
+                var element = '<div class="requiredItem-box"><div id="requiredItem-action">Nodig</div><div id="requiredItem-label"><p>'+item.label+'</p></div><div id="requiredItem-image"><div class="item-slot-img"><img src="images/' + item.image + '" alt="' + item.name + '" /></div></div></div>'
                 $(".requiredItem-container").hide();
                 $(".requiredItem-container").append(element);
                 $(".requiredItem-container").fadeIn(100);

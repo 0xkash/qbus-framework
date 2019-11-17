@@ -268,6 +268,24 @@ Config.JobInteractions = {
             shouldClose = true,
         },
     },
+    ["taxi"] = {
+        {
+            id    = 'togglemeter',
+            title = 'Meter Oppoppen',
+            icon = '#general',
+            type = 'client',
+            event = 'qb-taxi:client:toggleMeter',
+            shouldClose = true,
+        },
+        {
+            id    = 'togglemouse',
+            title = 'Meter Bedienen',
+            icon = '#general',
+            type = 'client',
+            event = 'qb-taxi:client:toggleMuis',
+            shouldClose = true,
+        },
+    },
     ["police"] = {
         {
             id    = 'statuscheck',

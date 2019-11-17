@@ -15,7 +15,7 @@ closesthouse = nil
 hasKey = false
 isOwned = false
 
-isLoggedIn = true
+isLoggedIn = false
 local contractOpen = false
 
 local cam = nil
@@ -461,7 +461,10 @@ function enterOwnedHouse(house)
     if Config.Houses[house].tier == 1 then
         data = exports['qb-interior']:CreateTier1House(coords)
     elseif Config.Houses[house].tier == 2 then
+        data = exports['qb-interior']:CreateTrevorsShell(coords)
+    elseif Config.Houses[house].tier == 3 then
         data = exports['qb-interior']:CreateMichaelShell(coords)
+        print('vilaaa')
     end
     Citizen.Wait(100)
     houseObj = data[1]
@@ -514,7 +517,12 @@ function enterNonOwnedHouse(house)
     local coords = { x = Config.Houses[closesthouse].coords.enter.x, y = Config.Houses[closesthouse].coords.enter.y, z= Config.Houses[closesthouse].coords.enter.z - Config.MinZOffset}
     LoadDecorations(house)
     if Config.Houses[house].tier == 1 then
-        data = exports['qb-interior']:CreateMichaelShell(coords, false)
+        data = exports['qb-interior']:CreateTier1House(coords)
+    elseif Config.Houses[house].tier == 2 then
+        data = exports['qb-interior']:CreateTrevorsShell(coords)
+    elseif Config.Houses[house].tier == 3 then
+        data = exports['qb-interior']:CreateMichaelShell(coords)
+        print('vilaaa')
     end
     houseObj = data[1]
     POIOffsets = data[2]

@@ -35,16 +35,16 @@ $(document).ready(function(){
 
 $(document).on('click', '.toggle-meter-btn', function(){
     if (!meterStarted) {
-        $.post('http://qb-taxi/toggleMeter', JSON.stringify({
+        $.post('http://qb-taxi/enableMeter', JSON.stringify({
             enabled: true,
-            plate: meterPlate,
         }));
+        toggleMeter(true)
         meterStarted = true;
     } else {
-        $.post('http://qb-taxi/toggleMeter', JSON.stringify({
+        $.post('http://qb-taxi/enableMeter', JSON.stringify({
             enabled: false,
-            plate: meterPlate,
         }));
+        toggleMeter(false)
         meterStarted = false;
     }
 });
