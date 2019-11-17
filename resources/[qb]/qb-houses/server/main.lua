@@ -33,13 +33,16 @@ AddEventHandler('qb-houses:server:buyHouse', function(house)
 	local pData 	= QBCore.Functions.GetPlayer(src)
 	local price   	= houseprices[house]
 	local keyyeet 	= {pData.PlayerData.citizenid}
+	local bankBalance = pData.PlayerData.money["bank"]
 
-	if pData.Functions.RemoveMoney('bank', price) then
+	if (bankBalance >= price) then
 		QBCore.Functions.ExecuteSql("INSERT INTO `player_houses` (`house`, `identifier`, `citizenid`, `keyholders`) VALUES ('"..house.."', '"..pData.PlayerData.steam.."', '"..pData.PlayerData.citizenid.."', '"..json.encode(keyyeet).."')")
 		houseowneridentifier[house] = pData.PlayerData.steam
 		houseownercid[house] = pData.PlayerData.citizenid
 		housekeyholders[house] = json.encode(keyyeet)
 		TriggerClientEvent('qb-houses:client:SetClosestHouse', src)
+	else
+		TriggerClientEvent('QBCore:Notify', source, "Je hebt niet genoeg geld..", "error")
 	end
 end)
 

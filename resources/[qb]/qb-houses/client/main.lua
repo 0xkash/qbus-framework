@@ -228,8 +228,10 @@ Citizen.CreateThread(function()
                             DrawText3Ds(logoutLocation.x, logoutLocation.y, logoutLocation.z, '~g~E~w~ - Uitloggen')
                             if IsControlJustPressed(0, Keys["E"]) then
                                 exports['qb-interior']:DespawnInterior(houseObj, function()
-                                    DoScreenFadeOut(250)
-                                    Citizen.Wait(1000)
+                                    DoScreenFadeIn(500)
+                                    while not IsScreenFadedOut() do
+                                        Citizen.Wait(10)
+                                    end
                                     TriggerEvent('qb-weathersync:client:EnableSync')
                                     SetEntityCoords(GetPlayerPed(-1), Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z + 0.5)
                                     SetEntityHeading(GetPlayerPed(-1), Config.Houses[closesthouse].coords.enter.h)

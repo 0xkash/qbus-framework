@@ -166,7 +166,7 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 	local fromSlot = tonumber(fromSlot)
 	local toSlot = tonumber(toSlot)
 
-	if (fromInventory == "player" or fromInventory == "hotbar") and QBCore.Shared.SplitStr(toInventory, "-")[1] == "itemshop" then
+	if (fromInventory == "player" or fromInventory == "hotbar") and (QBCore.Shared.SplitStr(toInventory, "-")[1] == "itemshop" or toInventory == "itemshop") then
 		return
 	end
 

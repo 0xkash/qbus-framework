@@ -119,7 +119,7 @@ RegisterNUICallback('cDataPed', function(data)
             
                     for i = 0, 11 do
                         local idx = tostring(i)
-                        if (i == 1) then
+                        if (i == 0) then
                             SetPedHeadBlendData(charPed, data.drawables[idx], data.drawables[idx], data.drawables[idx], data.drawables[idx], data.drawables[idx], data.drawables[idx], 1.0, 1.0, 1.0, true)
                         elseif (i == 3) then
                             SetPedComponentVariation(charPed, i, tonumber(data.drawables[idx]), 0, 0)

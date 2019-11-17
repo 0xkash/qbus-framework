@@ -35,7 +35,7 @@ end)
 RegisterNetEvent('weapon:client:AddAmmo')
 AddEventHandler('weapon:client:AddAmmo', function(type, amount)
     local weapon = GetSelectedPedWeapon(GetPlayerPed(-1))
-    if QBCore.Shared.Weapons[weapon]["ammotype"] == type:upper() then
+    if QBCore.Shared.Weapons[weapon] ~= nil and QBCore.Shared.Weapons[weapon]["ammotype"] == type:upper() then
         local total = (GetAmmoInPedWeapon(GetPlayerPed(-1), weapon) + amount)
         SetPedAmmo(GetPlayerPed(-1), weapon, total)
     end

@@ -88,15 +88,6 @@ QBCore.Commands.Add("setjob", "Geef een baan aan een speler", {{name="id", help=
 	end
 end, "admin")
 
-QBCore.Commands.Add("setgang", "Geef een gang (groep) aan een speler", {{name="id", help="Speler ID"}, {name="gang", help="Naam van een gang"}, {name="grade", help="Gang grade (start vanaf 1)"}}, true, function(source, args)
-	local Player = QBCore.Functions.GetPlayer(tonumber(args[1]))
-	if Player ~= nil then
-		Player.Functions.SetGang(tostring(args[2]), tonumber(args[3]))
-	else
-		TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Speler is niet online!")
-	end
-end, "admin")
-
 QBCore.Commands.Add("setpermission", "Geef een permissie aan een speler", {{name="id", help="Speler ID"}, {name="permission", help="Permissie naam"}}, true, function(source, args)
 	local Player = QBCore.Functions.GetPlayer(tonumber(args[1]))
 	if Player ~= nil then
