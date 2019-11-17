@@ -885,11 +885,11 @@ AddEventHandler("clothes:loadSkin", function(new, model, data)
 			local idx = tostring(i)
 			if (i == 0) then
 				SetPedHeadBlendData(GetPlayerPed(-1), data.drawables[idx], data.drawables[idx], data.drawables[idx], data.drawables[idx], data.drawables[idx], data.drawables[idx], 1.0, 1.0, 1.0, true)
-			elseif (i == 3) then
+			elseif (i == 2) then
 				SetPedComponentVariation(GetPlayerPed(-1), i, tonumber(data.drawables[idx]), 0, 0)
 				SetPedHairColor(GetPlayerPed(-1), tonumber(data.textures[idx]), tonumber(data.palletetextures[idx]))
 			else
-				SetPedComponentVariation(GetPlayerPed(-1), i, tonumber(data.drawables[idx]), tonumber(data.textures[idx]), tonumber(data.palletetextures[idx]))
+				SetPedComponentVariation(GetPlayerPed(-1), i, tonumber(data.drawables[idx]), tonumber(data.textures[tonumber(idx)]), tonumber(data.palletetextures[tonumber(idx)]))
 			end
 		end
 
@@ -905,7 +905,6 @@ AddEventHandler("clothes:loadSkin", function(new, model, data)
 			SetPedHeadOverlayColor(GetPlayerPed(-1), i, 1, tonumber(data.overlaycolors[idx]), 0)
 		end
 	end)
-	ChangeToSkin()
 	SetEntityInvincible(GetPlayerPed(-1),false)
 end)
 
@@ -955,7 +954,7 @@ function ChangeToSkin(skin)
 		if (i == 0) then
 			local drawable = headblend
 			drawables[i] = drawable
-		elseif (i == 3) then
+		elseif (i == 2) then
 			local drawable = GetPedDrawableVariation(GetPlayerPed(-1), i)
 			drawables[i] = drawable
 
@@ -1033,7 +1032,7 @@ function SaveOutfit(skin, outfitName)
 		if (i == 0) then
 			local drawable = headblend
 			drawables[i] = drawable
-		elseif (i == 3) then
+		elseif (i == 2) then
 			local drawable = GetPedDrawableVariation(GetPlayerPed(-1), i)
 			drawables[i] = drawable
 

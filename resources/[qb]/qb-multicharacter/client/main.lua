@@ -121,11 +121,11 @@ RegisterNUICallback('cDataPed', function(data)
                         local idx = tostring(i)
                         if (i == 0) then
                             SetPedHeadBlendData(charPed, data.drawables[idx], data.drawables[idx], data.drawables[idx], data.drawables[idx], data.drawables[idx], data.drawables[idx], 1.0, 1.0, 1.0, true)
-                        elseif (i == 3) then
+                        elseif (i == 2) then
                             SetPedComponentVariation(charPed, i, tonumber(data.drawables[idx]), 0, 0)
                             SetPedHairColor(charPed, tonumber(data.textures[idx]), tonumber(data.palletetextures[idx]))
                         else
-                            SetPedComponentVariation(charPed, i, tonumber(data.drawables[idx]), tonumber(data.textures[idx]), tonumber(data.palletetextures[idx]))
+                            SetPedComponentVariation(charPed, i, tonumber(data.drawables[idx]), tonumber(data.textures[tonumber(idx)]), tonumber(data.palletetextures[tonumber(idx)]))
                         end
                     end
             

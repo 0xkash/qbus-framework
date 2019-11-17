@@ -19,7 +19,7 @@ AddEventHandler('clothes:saveSkin', function(model, skin)
     if model ~= nil and skin ~= nil then 
         QBCore.Functions.ExecuteSql("DELETE FROM `playerskins` WHERE `citizenid` = '"..Player.PlayerData.citizenid.."'")
         Citizen.Wait(500)
-        QBCore.Functions.ExecuteSql("INSERT INTO `playerskins` (`citizenid`, `model`, `skin`) VALUES ('"..Player.PlayerData.citizenid.."', '"..model.."', '"..skin.."')")
+        QBCore.Functions.ExecuteSql("INSERT INTO `playerskins` (`citizenid`, `model`, `skin`, `active`) VALUES ('"..Player.PlayerData.citizenid.."', '"..model.."', '"..skin.."', 1)")
     end
 end)
 
@@ -28,7 +28,7 @@ AddEventHandler('clothes:saveOutfit', function(model, skin, outfitname)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     if model ~= nil and skin ~= nil then
-        QBCore.Functions.ExecuteSql("INSERT INTO `player_outfits` (`citizenid`, `outfitname`, `model`, `skin`, `active`) VALUES ('"..Player.PlayerData.citizenid.."', '"..outfitname.."', '"..model.."', '"..skin.."', 1)")
+        QBCore.Functions.ExecuteSql("INSERT INTO `player_outfits` (`citizenid`, `outfitname`, `model`, `skin`) VALUES ('"..Player.PlayerData.citizenid.."', '"..outfitname.."', '"..model.."', '"..skin.."')")
     end
 end)
 
