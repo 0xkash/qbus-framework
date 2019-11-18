@@ -132,6 +132,15 @@ function RepairVehicle(vehicle)
 	end)
 end
 
+function IsBackEngine(vehModel)
+    for _, model in pairs(BackEngineVehicles) do
+        if GetHashKey(model) == vehModel then
+            return true
+        end
+    end
+    return false
+end
+
 local function notification(msg)
 	QBCore.Functions.Notify(msg)
 end
