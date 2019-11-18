@@ -1,0 +1,231 @@
+@import url('https://fonts.googleapis.com/css?family=Lato&display=swap');
+
+.container {
+    height: 100vh;
+}
+
+::-webkit-inner-spin-button {
+    display: none;
+}
+
+.clothing-menu-container {
+    display: none;
+    position: absolute;
+    height: 100vh;
+    width: 38vh;
+    background-color: rgb(56, 35, 35);
+    right: -25vw;
+}
+
+.clothing-menu-header {
+    height: 6vh;
+    width: 100%;
+}
+
+.clothing-menu-header-btn {
+    position: relative;
+    height: 95%;
+    width: 33.3%;
+    float: left;
+    background-color: rgb(136, 75, 75);
+    color: white;
+    text-align: center;
+    line-height: 6vh;
+    border-bottom: 2px solid rgba(255, 255, 255, 0);
+    transition: all 0.1s linear;
+}
+
+.clothing-menu-header-btn:hover {
+    background-color: rgb(187, 104, 104);
+}
+
+.selected {
+    border-bottom: 2px solid rgb(255, 255, 255);
+}
+
+.clothing-menu-header-btn > p {
+    font-family: sans-serif;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 1.1vh;
+    letter-spacing: 0.1vh;
+}
+
+.clothing-menu-character-container {
+    display: block;
+    position: absolute;
+    margin: 0 auto;
+    left: 0.3vh;
+    right: 0;
+    bottom: 1.8vh;
+    height: 90vh;
+    width: 92%;
+    background-color: rgba(24, 15, 15, 0.2);
+}
+
+.clothing-menu-clothing-container {
+    display: none;
+    position: absolute;
+    margin: 0 auto;
+    left: 0.3vh;
+    right: 0;
+    bottom: 1.8vh;
+    height: 90vh;
+    width: 92%;
+    background-color: rgba(24, 15, 15, 0.2);
+}
+
+.clothing-menu-accessoires-container {
+    display: none;
+    position: absolute;
+    margin: 0 auto;
+    left: 0.3vh;
+    right: 0;
+    bottom: 1.8vh;
+    height: 90vh;
+    width: 92%;
+    background-color: rgba(24, 15, 15, 0.2);
+}
+
+.clothing-menu-option {
+    position: relative;
+    width: 100%;
+    height: 14%;
+    background-color: rgb(77, 41, 41);
+    margin-bottom: 1.5vh;
+}
+
+.clothing-menu-option-header {
+    color: white;
+    padding: 0.8vh;
+    width: 100%;
+    background-color: rgb(158, 84, 84);
+}
+
+.clothing-menu-option-header > p {
+    font-family: sans-serif;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 1.0vh;
+    letter-spacing: 0.1vh;
+}
+
+.clothing-menu-option-item {
+    position: relative;
+    float: left;
+    height: 50%;
+    width: 40%;
+    margin-left: 2.4vh;
+    margin-top: 2vh;
+}
+
+.clothing-menu-option-item-left {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 70%;
+    width: 33%;
+    background-color: rgb(129, 73, 73);
+    color: white;
+    text-align: center;
+    line-height: 5vh;
+    border-radius: 5px 0px 0px 5px;
+    transition: all 0.1s linear;
+}
+
+.clothing-menu-option-item-left:hover {
+    background-color: rgb(160, 92, 92);
+}
+
+.clothing-menu-option-item-right {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: 70%;
+    width: 33%;
+    background-color: rgb(129, 73, 73);
+    color: white;
+    text-align: center;
+    line-height: 5vh;
+    border-radius: 0px 5px 5px 0px;
+    transition: all 0.1s linear;
+}
+
+.clothing-menu-option-item-right:hover {
+    background-color: rgb(160, 92, 92);
+}
+
+.clothing-menu-option-texture-left {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 70%;
+    width: 33%;
+    background-color: rgb(129, 73, 73);
+    color: white;
+    text-align: center;
+    line-height: 5vh;
+    border-radius: 5px 0px 0px 5px;
+    transition: all 0.1s linear;
+}
+
+.clothing-menu-option-texture-left:hover {
+    background-color: rgb(160, 92, 92);
+}
+
+.clothing-menu-option-texture-right {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: 70%;
+    width: 33%;
+    background-color: rgb(129, 73, 73);
+    color: white;
+    text-align: center;
+    line-height: 5vh;
+    border-radius: 0px 5px 5px 0px;
+    transition: all 0.1s linear;
+}
+
+.clothing-menu-option-texture-right:hover {
+    background-color: rgb(160, 92, 92);
+}
+
+.item-number {
+    position: absolute;
+    width: 25%;
+    height: 60%;
+    top: 2vh;
+    left: 5.25vh;
+    background: none;
+    border: none;
+    border-bottom: 2px solid rgb(155, 92, 92);
+    text-align: center;
+    font-family: sans-serif;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 1.1vh;
+    letter-spacing: 0.1vh;
+    color: white;
+    outline: none;
+    transition: all 0.1s linear;
+}
+
+.item-number:focus {
+    border-bottom: 2px solid rgb(252, 151, 151);
+}
+
+.clothing-menu-option-item-header {
+    position: absolute;
+    bottom: 5vh;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 1vh;
+    letter-spacing: 0.1vh;
+    color: white;
+}
+
+.clothing-menu-option-item-header > p {
+    font-family: sans-serif;
+    padding: 0.2vh;
+}

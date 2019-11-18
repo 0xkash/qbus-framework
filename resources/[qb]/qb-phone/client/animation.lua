@@ -3,6 +3,8 @@ local myPedId = nil
 local phoneProp = 0
 local phoneModel = `prop_npc_phone_02`
 
+-- prop_cs_hand_radio
+
 local currentStatus = 'out'
 local lastDict = nil
 local lastAnim = nil

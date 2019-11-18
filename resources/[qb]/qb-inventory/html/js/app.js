@@ -11,6 +11,9 @@ $(document).on('keydown', function() {
         case 27: // ESC
             Inventory.Close();
             break;
+        case 9: // TAB
+            Inventory.Close();
+            break;
     }
 });
 

@@ -37,11 +37,26 @@ function setVehData(veh,data)
     SetVehicleHandlingFloat(veh, "CHandlingData", "fBrakeBiasFront", data.breaking * multp)
 end
 
+function resetVeh(veh)
+    SetVehicleHandlingFloat(veh, "CHandlingData", "fInitialDriveForce", 1.0)
+    SetVehicleHandlingFloat(veh, "CHandlingData", "fDriveInertia", 1.0)
+    SetVehicleEnginePowerMultiplier(veh, 1.0)
+    SetVehicleHandlingFloat(veh, "CHandlingData", "fDriveBiasFront", 0.5)
+    SetVehicleHandlingFloat(veh, "CHandlingData", "fBrakeBiasFront", 1.0)
+end
+
 RegisterNUICallback('save', function(data)
     local ped = GetPlayerPed(-1)
     local veh = GetVehiclePedIsUsing(ped)
     setVehData(veh, data)
     QBCore.Functions.Notify('Tjoenertjip v1.05: Voertuig aangepast!', 'error')
+end)
+
+RegisterNUICallback('reset', function(data)
+    local ped = GetPlayerPed(-1)
+    local veh = GetVehiclePedIsUsing(ped)
+    resetVeh(veh)
+    QBCore.Functions.Notify('Tjoenertjip v1.05: Voertuig is gereset!', 'error')
 end)
 
 RegisterNetEvent('qb-tunerchip:client:openChip')
