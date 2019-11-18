@@ -9,9 +9,22 @@ Keys = {
 	['LEFT'] = 174, ['RIGHT'] = 175, ['TOP'] = 27, ['DOWN'] = 173,
 }
 
+QBCore = nil
+
+Citizen.CreateThread(function()
+	while true do
+		Citizen.Wait(10)
+		if QBCore == nil then
+			TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
+			Citizen.Wait(200)
+		end
+	end
+end)
+
 local inside = false
 local currentpos = nil
 local currentgarage = 0
+local editCount = 0
 
 local garages = { 
 	[1] = { locked = false, camera = {x = -330.945, y = -135.471, z = 39.01, heading = 102.213}, driveout = {x = -350.376,y = -136.76, z = 38.294, heading = 70.226}, drivein = {x = -350.655,y = -136.55, z = 38.295, heading = 249.532}, outside = { x = -362.7962, y = -132.4005, z = 38.25239, heading = 71.187133}, inside = {x = -337.3863,y = -136.9247,z = 38.5737, heading = 269.455}},
@@ -209,6 +222,7 @@ local function DriveInGarage()
 		myveh.model = GetDisplayNameFromVehicleModel(GetEntityModel(veh)):lower()
 		myveh.color =  table.pack(GetVehicleColours(veh))
 		myveh.extracolor = table.pack(GetVehicleExtraColours(veh))
+		myveh.color[3] = myveh.extracolor[1]
 		myveh.neoncolor = table.pack(GetVehicleNeonLightsColour(veh))
 		myveh.smokecolor = table.pack(GetVehicleTyreSmokeColor(veh))
 		myveh.plateindex = GetVehicleNumberPlateTextIndex(veh)
@@ -418,6 +432,42 @@ local function DriveInGarage()
 						btn.purchased = true
 					end
 				end
+			perl = respray:addSubMenu("PEARLESCENT", "Pearlescent color", nil,true)
+			perl:addSubMenu("CHROME", "Chrome", nil,true)
+				for n, c in pairs(LSC_Config.prices.chrome2.colors) do
+					local btn = perl.Chrome:addPurchase(c.name,LSC_Config.prices.chrome2.price)btn.colorindex = c.colorindex
+					if btn.colorindex == myveh.color[3] then
+						btn.purchased = true
+					end
+				end
+				perl:addSubMenu("CLASSIC", "Classic", nil,true)
+				for n, c in pairs(LSC_Config.prices.classic2.colors) do
+					local btn = perl.Classic:addPurchase(c.name,LSC_Config.prices.classic2.price)btn.colorindex = c.colorindex
+					if btn.colorindex == myveh.color[3] then
+						btn.purchased = true
+					end
+				end
+				perl:addSubMenu("MATTE", "Matte", nil,true)
+				for n, c in pairs(LSC_Config.prices.chrome2.colors) do
+					local btn = perl.Matte:addPurchase(c.name,LSC_Config.prices.matte2.price)btn.colorindex = c.colorindex
+					if btn.colorindex == myveh.color[3] then
+						btn.purchased = true
+					end
+				end
+				perl:addSubMenu("METALLIC", "Metallic", nil,true)
+				for n, c in pairs(LSC_Config.prices.metallic2.colors) do
+					local btn = perl.Metallic:addPurchase(c.name,LSC_Config.prices.metallic2.price)btn.colorindex = c.colorindex
+					if btn.colorindex == myveh.color[3] and myveh.extracolor[1] == btn.colorindex then
+						btn.purchased = true
+					end
+				end
+				perl:addSubMenu("METALS", "Metals", nil,true)
+				for n, c in pairs(LSC_Config.prices.metal2.colors) do
+					local btn = perl.Metals:addPurchase(c.name,LSC_Config.prices.metal2.price)btn.colorindex = c.colorindex
+					if btn.colorindex == myveh.color[3] then
+						btn.purchased = true
+					end
+				end
 		
 		
 		LSCMenu.categories:addSubMenu("WHEELS", "Wheels", nil,true)
@@ -516,24 +566,34 @@ local function DriveOutOfGarage(pos)
 		local veh = GetVehiclePedIsUsing(ped)
 		
 		pos = currentpos
+
+		QBCore.Functions.Progressbar("vehicletune_editvehicle", "Bezig met voertuig..", (editCount * 500), false, true, {
+			disableMovement = true,
+			disableCarMovement = true,
+			disableMouse = false,
+			disableCombat = true,
+		}, {}, {}, {}, function() -- Done
+			SetEntityCollision(veh,true,true)
+			FreezeEntityPosition(ped, false)
+			FreezeEntityPosition(veh, false)
+			SetEntityCoords(veh,pos.inside.x, pos.inside.y, pos.inside.z)
+			SetEntityHeading(veh,pos.outside.heading)
+			SetVehicleOnGroundProperly(veh)
+			SetVehicleDoorsLocked(veh,0)
+			SetPlayerInvincible(GetPlayerIndex(),false)
+			NetworkLeaveTransition()
+			
+			NetworkFadeInEntity(veh, 1)	
+			NetworkRegisterEntityAsNetworked(veh)
+			ClearPedTasks(ped)
+			inside = false
 		
-		SetEntityCollision(veh,true,true)
-		FreezeEntityPosition(ped, false)
-		FreezeEntityPosition(veh, false)
-		SetEntityCoords(veh,pos.inside.x, pos.inside.y, pos.inside.z)
-		SetEntityHeading(veh,pos.outside.heading)
-		SetVehicleOnGroundProperly(veh)
-		SetVehicleDoorsLocked(veh,0)
-		SetPlayerInvincible(GetPlayerIndex(),false)
-		NetworkLeaveTransition()
-		
-		NetworkFadeInEntity(veh, 1)	
-		NetworkRegisterEntityAsNetworked(veh)
-		ClearPedTasks(ped)
-		inside = false
+			currentgarage = 0
+			SetPlayerControl(PlayerId(),true)
 	
-		currentgarage = 0
-		SetPlayerControl(PlayerId(),true)
+			TriggerServerEvent("lscustoms:server:SaveVehicleProps", QBCore.Functions.GetVehicleProperties(veh))
+			--TriggerServerEvent('lockGarage',false,lsc.currentgarage)
+		end)
 	end)
 end
 
@@ -586,6 +646,7 @@ Citizen.CreateThread(function()
 									inside = true
 									currentpos = pos
 									currentgarage = i
+									editCount = 0
 									DriveInGarage()
 								else
 									drawTxt("DRUK ~b~ENTER~w~ OM JE VOERTUIG AAN TE PASSEN ",4,1,0.5,0.8,1.0,255,255,255,255)
@@ -622,20 +683,21 @@ function LSCMenu:onSelectedIndexChanged(name, button)
 	if m == "chrome" or m ==  "classic" or m ==  "matte" or m ==  "metals" then
 		if p == "primary color" then
 			SetVehicleColours(veh,button.colorindex,myveh.color[2])
-		else
+		elseif p == "secondary color" then
 			SetVehicleColours(veh,myveh.color[1],button.colorindex)	
+		else
+			SetVehicleExtraColours(veh, button.colorindex, myveh.extracolor[2])
 		end
-		
 	elseif m == "metallic" then
 		if p == "primary color" then
 			SetVehicleColours(veh,button.colorindex,myveh.color[2])
-			SetVehicleExtraColours(veh, myveh.color[2], myveh.extracolor[2])
-		else
-			SetVehicleColours(veh,myveh.color[1],button.colorindex)
-			SetVehicleExtraColours(veh, button.colorindex, myveh.extracolor[2])				
+		elseif p == "secondary color" then
+			SetVehicleColours(veh,myveh.color[1],button.colorindex)	
+		else	
+			SetVehicleExtraColours(veh, button.colorindex, myveh.extracolor[2])
 		end
 	elseif m == "wheel color" then
-		SetVehicleExtraColours(veh,myveh.extracolor[1], button.colorindex)
+		SetVehicleExtraColours(veh,myveh.color[3], button.colorindex)
 	elseif button.modtype and button.mod then
 		if button.modtype ~= 18 and button.modtype ~= 22 then
 			if button.wtype then
@@ -690,21 +752,27 @@ AddEventHandler("LSC:buttonSelected", function(name, button, canpurchase)
 			if button.name == "Stock" or button.purchased or CanPurchase(price, canpurchase) then
 				myveh.color[1] = button.colorindex
 			end
-		else
+		elseif m.parent == "Secondary color" then
 			if button.name == "Stock" or button.purchased or CanPurchase(price, canpurchase) then
 				myveh.color[2] = button.colorindex
+			end
+		else
+			if button.name == "Stock" or button.purchased or CanPurchase(price, canpurchase) then
+				myveh.color[3] = button.colorindex
 			end
 		end
 	elseif mname == "metallic" then
 		if m.parent == "Primary color" then
 			if button.name == "Stock" or button.purchased or CanPurchase(price, canpurchase)then
 				myveh.color[1] = button.colorindex
-				myveh.extracolor[1] = myveh.color[2]
+			end
+		elseif m.parent == "Secondary color" then
+			if button.name == "Stock" or button.purchased or CanPurchase(price, canpurchase)then
+				myveh.color[2] = button.colorindex
 			end
 		else
 			if button.name == "Stock" or button.purchased or CanPurchase(price, canpurchase)then
-				myveh.extracolor[1] = button.colorindex
-				myveh.color[2] = button.colorindex
+				myveh.color[3] = button.colorindex
 			end
 		end	
 	elseif mname == "liveries" or mname == "hydraulics" or mname == "horn" or mname == "tank" or mname == "ornaments" or  mname == "arch cover" or mname == "aerials" or mname == "roof scoops" or mname == "doors" or mname == "roll cage" or mname == "engine block" or mname == "cam cover" or mname == "strut brace" or mname == "trim design" or mname == "ormnametns" or mname == "dashboard" or mname == "dials" or mname == "seats" or mname == "steering wheels" or mname == "plate holder" or mname == "vanity plates" or mname == "shifter leavers" or mname == "plaques" or mname == "speakers" or mname == "trunk" or mname == "armor" or mname == "suspension" or mname == "transmission" or mname == "brakes" or mname == "engine tunes" or mname == "roof" or mname == "hood" or mname == "grille" or mname == "roll cage" or mname == "exhausts" or mname == "skirts" or mname == "rear bumpers" or mname == "front bumpers" or mname == "spoiler" then
@@ -773,7 +841,7 @@ AddEventHandler("LSC:buttonSelected", function(name, button, canpurchase)
 	elseif mname == "wheel color" then
 		if button.purchased or CanPurchase(price, canpurchase) then
 			myveh.extracolor[2] = button.colorindex
-			SetVehicleExtraColours(veh, myveh.extracolor[1], button.colorindex)
+			SetVehicleExtraColours(veh, myveh.color[3], button.colorindex)
 		end
 	elseif mname == "wheel accessories" then
 		if button.name == "Stock Tires" then
@@ -815,7 +883,7 @@ AddEventHandler("LSC:buttonSelected", function(name, button, canpurchase)
 			SetVehicleNumberPlateTextIndex(veh,button.plateindex)
 		end
 	elseif mname == "main" then
-		if name == "repair vehicle" then
+		if name == "repareer voertuig" then
 			if CanPurchase(price, canpurchase) then 
 				myveh.repair()
 				LSCMenu:ChangeMenu("categories")
@@ -960,12 +1028,22 @@ function CheckPurchases(m)
 					b.sprite = "garage"
 				end
 			end
-		else
+		elseif m.parent == "Secondary color" then
 			for i,b in pairs(m.buttons) do
-				if b.purchased and (b.colorindex ~= myveh.color[1] or myveh.extracolor[1] ~= myveh.color[2]) then
+				if b.purchased and (b.colorindex ~= myveh.color[2]) then
 					if b.purchased ~= nil then b.purchased = false end
 					b.sprite = nil
-				elseif b.purchased == false and b.colorindex == myveh.color[1] and myveh.extracolor[1] == myveh.color[2] then
+				elseif b.purchased == false and b.colorindex == myveh.color[2] then
+					if b.purchased ~= nil then b.purchased = true end
+					b.sprite = "garage"
+				end
+			end
+		else
+			for i,b in pairs(m.buttons) do
+				if b.purchased and (b.colorindex ~= myveh.color[3]) then
+					if b.purchased ~= nil then b.purchased = false end
+					b.sprite = nil
+				elseif b.purchased == false and b.colorindex == myveh.color[3] then
 					if b.purchased ~= nil then b.purchased = true end
 					b.sprite = "garage"
 				end
@@ -982,12 +1060,22 @@ function CheckPurchases(m)
 					b.sprite = "garage"
 				end
 			end
-		else
+		elseif m.parent == "Secondary color" then
 			for i,b in pairs(m.buttons) do
-				if b.purchased and (b.colorindex ~= myveh.color[2] or myveh.extracolor[1] ~= b.colorindex) then
+				if b.purchased and (b.colorindex ~= myveh.color[2]) then
 					if b.purchased ~= nil then b.purchased = false end
 					b.sprite = nil
-				elseif b.purchased == false and b.colorindex == myveh.color[2] and myveh.extracolor[1] == b.colorindex then
+				elseif b.purchased == false and b.colorindex == myveh.color[2] then
+					if b.purchased ~= nil then b.purchased = true end
+					b.sprite = "garage"
+				end
+			end
+		else
+			for i,b in pairs(m.buttons) do
+				if b.purchased and (b.colorindex ~= myveh.color[3]) then
+					if b.purchased ~= nil then b.purchased = false end
+					b.sprite = nil
+				elseif b.purchased == false and b.colorindex == myveh.color[3] then
 					if b.purchased ~= nil then b.purchased = true end
 					b.sprite = "garage"
 				end
@@ -1125,6 +1213,8 @@ function CanPurchase(price, canpurchase)
 		else
 			LSCMenu:showNotification("Item purchased.")
 		end
+		TriggerServerEvent("InteractSound_SV:PlayOnSource", "airwrench", 0.1)
+		editCount = editCount + 1
 		return true
 	else
 		LSCMenu:showNotification("~r~You cannot afford this purchase.")
@@ -1147,7 +1237,7 @@ function UnfakeVeh()
 		end
 	end
 	SetVehicleColours(veh,myveh.color[1], myveh.color[2])
-	SetVehicleExtraColours(veh,myveh.extracolor[1], myveh.extracolor[2])
+	SetVehicleExtraColours(veh,myveh.color[3], myveh.extracolor[2])
 	SetVehicleNeonLightsColour(veh,myveh.neoncolor[1],myveh.neoncolor[2],myveh.neoncolor[3])
 	SetVehicleNumberPlateTextIndex(veh, myveh.plateindex)
 	SetVehicleWindowTint(veh, myveh.windowtint)
@@ -1158,6 +1248,7 @@ Citizen.CreateThread(function()
 	for i,pos in ipairs(garages) do
 		local blip = AddBlipForCoord(pos.inside.x,pos.inside.y,pos.inside.z)
 		SetBlipSprite(blip, 72)
+		SetBlipScale(blip, 0.7)
 		SetBlipAsShortRange(blip,true)
 		if i == 5 then
 			BeginTextCommandSetBlipName("STRING")

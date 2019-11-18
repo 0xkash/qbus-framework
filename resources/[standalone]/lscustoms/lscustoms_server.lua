@@ -1,17 +1,6 @@
---[[
-Los Santos Customs V1.1 
-Credits - MythicalBro
-/////License/////
-Do not reupload/re release any part of this script without my permission
-]]
-local tbl = {
-[1] = {locked = false, player = nil},
-[2] = {locked = false, player = nil},
-[3] = {locked = false, player = nil},
-[4] = {locked = false, player = nil},
-[5] = {locked = false, player = nil},
-[6] = {locked = false, player = nil},
-}
+QBCore = nil
+TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
+
 RegisterServerEvent('lockGarage')
 AddEventHandler('lockGarage', function(b,garage)
 	tbl[tonumber(garage)].locked = b
@@ -42,18 +31,35 @@ end)
 
 RegisterServerEvent("LSC:buttonSelected")
 AddEventHandler("LSC:buttonSelected", function(name, button)
-	local mymoney = 999999 --Just so you can buy everything while there is no money system implemented
+	local src = source
+	local Player = QBCore.Functions.GetPlayer(src)
+	local bankBalance = Player.PlayerData.money["bank"]
 	if button.price then -- check if button have price
-		if button.price <= mymoney then
+		if Player.Functions.RemoveMoney("cash", button.price) then
 			TriggerClientEvent("LSC:buttonSelected", source,name, button, true)
-			mymoney  = mymoney - button.price
+		elseif bankBalance >= button.price then
+			Player.Functions.RemoveMoney("bank", button.price)
+			TriggerClientEvent("LSC:buttonSelected", source,name, button, true)
 		else
 			TriggerClientEvent("LSC:buttonSelected", source,name, button, false)
 		end
 	end
 end)
 
-RegisterServerEvent("LSC:finished")
-AddEventHandler("LSC:finished", function(veh)
-	
+RegisterServerEvent("lscustoms:server:SaveVehicleProps")
+AddEventHandler("lscustoms:server:SaveVehicleProps", function(vehicleProps)
+	local src = source
+    if IsVehicleOwned(vehicleProps.plate) then
+        QBCore.Functions.ExecuteSql("UPDATE `player_vehicles` SET `mods` = '"..json.encode(vehicleProps).."' WHERE `plate` = '"..vehicleProps.plate.."'")
+    end
 end)
+
+function IsVehicleOwned(plate)
+    local retval = false
+    QBCore.Functions.ExecuteSql("SELECT * FROM `player_vehicles` WHERE `plate` = '"..plate.."'", function(result)
+        if result[1] ~= nil then
+            retval = true
+        end
+    end)
+    return retval
+end
