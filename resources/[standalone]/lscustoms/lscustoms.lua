@@ -277,7 +277,9 @@ local function DriveInGarage()
 		AddMod(6,LSCMenu.categories,"GRILLE", "Grille", nil,true)
 		AddMod(7,LSCMenu.categories,"HOOD", "Hood", nil,true)
 		AddMod(8,LSCMenu.categories,"FENDERS", "Fenders", nil,true)
-		AddMod(10,LSCMenu.categories,"ROOF", "Roof", nil,true)
+		if (not RoofNotAllowed(veh)) then
+			AddMod(10,LSCMenu.categories,"ROOF", "Roof", nil,true)
+		end
 		AddMod(12,LSCMenu.categories,"BRAKES", "Brakes", nil,true)
 		AddMod(13,LSCMenu.categories,"TRANSMISSION", "Transmission", nil,true)
 		AddMod(14,LSCMenu.categories,"HORN", "Horn", nil,true)
@@ -1323,6 +1325,16 @@ function SetIbuttons(buttons, layout)
 		PushScaleformMovieFunctionParameterInt(layout)
 		PopScaleformMovieFunction()
 	end)
+end
+
+function RoofNotAllowed(vehicle)
+	local retval = false
+	for k, v in pairs(LSC_Config.NoRoofAllowed) do
+		if GetEntityModel(vehicle) == GetHashKey(v) then
+			retval = true
+		end
+	end
+	return retval
 end
 
 --Draw the scaleform

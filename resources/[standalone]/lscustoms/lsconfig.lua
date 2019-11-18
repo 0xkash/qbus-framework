@@ -76,6 +76,11 @@ local mattecolors = {
 
 
 LSC_Config = {}
+
+LSC_Config.NoRoofAllowed = {
+	"revolter",
+}
+
 LSC_Config.prices = {}
 
 --------Prices---------
