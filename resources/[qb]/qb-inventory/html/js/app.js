@@ -699,9 +699,16 @@ var requiredItemOpen = false;
     Inventory.droplabel = "Grond";
     Inventory.dropmaxweight = 100000
 
+    Inventory.Error = function() {
+        $.post("http://qb-inventory/PlayDropFail", JSON.stringify({}));
+    }
+
     Inventory.Open = function(data) {
         totalWeight = 0;
         totalWeightOther = 0;
+
+        $(".player-inventory").find(".item-slot").remove();
+        $(".ply-hotbar-inventory").find(".item-slot").remove();
 
         if (requiredItemOpen) {
             $(".requiredItem-container").hide();
@@ -788,12 +795,13 @@ var requiredItemOpen = false;
     };
 
     Inventory.Close = function() {
-        $(".item-slot").css("border", "1px solid rgba(255, 255, 255, 0.1)")
+        console.log("close is joh");
+        $(".item-slot").css("border", "1px solid rgba(255, 255, 255, 0.1)");
         $(".ply-hotbar-inventory").css("display", "block");
         $(".ply-iteminfo-container").css("display", "none");
         $("#qbus-inventory").fadeOut(300);
         $(".combine-option-container").hide();
-        blurInventory(false)
+        blurInventory(false);
         $(".item-slot").remove();
         $.post("http://qb-inventory/CloseInventory", JSON.stringify({}));
     };
@@ -801,7 +809,20 @@ var requiredItemOpen = false;
     Inventory.Update = function(data) {
         totalWeight = 0;
         totalWeightOther = 0;
-        
+        $(".player-inventory").find(".item-slot").remove();
+        $(".ply-hotbar-inventory").find(".item-slot").remove();
+        if (data.error) {
+            Inventory.Error();
+        }
+        // Hotbar
+        for(i = 1; i < 6; i++) {
+            $(".ply-hotbar-inventory").append('<div class="item-slot" data-slot="' + i + '"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div>');
+        }
+        // Inventory
+        for(i = 6; i < (data.slots + 1); i++) {
+            $(".player-inventory").append('<div class="item-slot" data-slot="' + i + '"><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div>');
+        }
+
         $.each(data.inventory, function (i, item) {
             if (item != null) {
                 totalWeight += (item.weight * item.amount);

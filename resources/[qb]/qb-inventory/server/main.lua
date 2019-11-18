@@ -6,6 +6,7 @@ Trunks = {}
 Gloveboxes = {}
 Stashes = {}
 ShopItems = {}
+CraftItems = {}
 
 RegisterServerEvent("inventory:server:LoadDrops")
 AddEventHandler('inventory:server:LoadDrops', function()
@@ -24,6 +25,20 @@ AddEventHandler('inventory:server:combineItem', function(item, fromItem, toItem)
 	ply.Functions.AddItem(item, 1)
 	ply.Functions.RemoveItem(fromItem, 1)
 	ply.Functions.RemoveItem(toItem, 1)
+end)
+
+RegisterServerEvent("inventory:server:CraftItems")
+AddEventHandler('inventory:server:CraftItems', function(itemName, itemCosts, amount, toSlot)
+	local src = source
+	local Player = QBCore.Functions.GetPlayer(src)
+	local amount = tonumber(amount)
+	if itemName ~= nil and itemCosts ~= nil then
+		for k, v in pairs(itemCosts) do
+			Player.Functions.RemoveItem(k, (v*amount))
+		end
+		Player.Functions.AddItem(itemName, amount, toSlot)
+		TriggerClientEvent("inventory:client:UpdatePlayerInventory", src, false)
+	end
 end)
 
 RegisterServerEvent("inventory:server:OpenInventory")
@@ -92,6 +107,9 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 			secondInv.maxweight = 900000
 			secondInv.inventory = other.items
 			secondInv.slots = #other.items
+			if CraftItems == nil or next(CraftItems) == nil then
+				CraftItems = other.items
+			end
 		elseif name == "otherplayer" then
 			local OtherPlayer = QBCore.Functions.GetPlayer(tonumber(id))
 			if OtherPlayer ~= nil then
@@ -176,7 +194,7 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 	local fromSlot = tonumber(fromSlot)
 	local toSlot = tonumber(toSlot)
 
-	if (fromInventory == "player" or fromInventory == "hotbar") and (QBCore.Shared.SplitStr(toInventory, "-")[1] == "itemshop" or toInventory == "itemshop") then
+	if (fromInventory == "player" or fromInventory == "hotbar") and (QBCore.Shared.SplitStr(toInventory, "-")[1] == "itemshop" or toInventory == "crafting") then
 		return
 	end
 
@@ -508,6 +526,14 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 				TriggerClientEvent('QBCore:Notify', src, "Je hebt niet genoeg geld..", "error")
 			end
 		end
+	elseif fromInventory == "crafting" then
+		local itemData = CraftItems[fromSlot]
+		if hasCraftItems(src, itemData.costs, fromAmount) then
+			TriggerClientEvent("inventory:client:CraftItems", src, itemData.name, itemData.costs, fromAmount, toSlot)
+		else
+			TriggerClientEvent("inventory:client:UpdatePlayerInventory", src, true)
+			TriggerClientEvent('QBCore:Notify', src, "Je hebt niet de juiste items..", "error")
+		end
 	else
 		-- drop
 		fromInventory = tonumber(fromInventory)
@@ -553,6 +579,20 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 		end
 	end
 end)
+
+function hasCraftItems(source, CostItems, amount)
+	local Player = QBCore.Functions.GetPlayer(source)
+	for k, v in pairs(CostItems) do
+		if Player.Functions.GetItemByName(k) ~= nil then 
+			if Player.Functions.GetItemByName(k).amount < (v * amount) then
+				return false
+			end
+		else
+			return false
+		end
+	end
+	return true
+end
 
 function IsVehicleOwned(plate)
 	local val = false
