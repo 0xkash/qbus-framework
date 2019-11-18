@@ -16,6 +16,16 @@ AddEventHandler('inventory:server:LoadDrops', function()
 	end
 end)
 
+RegisterServerEvent("inventory:server:combineItem")
+AddEventHandler('inventory:server:combineItem', function(item, fromItem, toItem)
+	local src = source
+	local ply = QBCore.Functions.GetPlayer(src)
+
+	ply.Functions.AddItem(item, 1)
+	ply.Functions.RemoveItem(fromItem, 1)
+	ply.Functions.RemoveItem(toItem, 1)
+end)
+
 RegisterServerEvent("inventory:server:OpenInventory")
 AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 	local src = source
