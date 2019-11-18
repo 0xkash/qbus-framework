@@ -520,7 +520,7 @@ function swap($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
             }));
         } else {
             if (fromData.amount == $toAmount) {
-                if (toData != undefined && toData.combinable != null && toData.combinable.accept === fromData.name) {
+                if (toData != undefined && toData.combinable != null && isItemAllowed(fromData.name, toData.combinable.accept)) {
                     $.post('http://qb-inventory/getCombineItem', JSON.stringify({item: toData.combinable.reward}), function(item){
                         $('.combine-option-text').html("<p>Als je dit item combined krijg je een: <b>"+item.label+"</b></p>");
                     })
@@ -653,6 +653,17 @@ function swap($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
         //InventoryError($fromInv, $fromSlot);
     }
     handleDragDrop();
+}
+
+function isItemAllowed(item, allowedItems) {
+    var retval = false
+    $.each(allowedItems, function(index, i){
+        if (i == item) {
+            console.log('dit item kan')
+            retval = true;
+        }
+    });
+    return retval
 }
 
 function blurInventory(toggle) {

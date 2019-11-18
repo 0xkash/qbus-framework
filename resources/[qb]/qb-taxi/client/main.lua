@@ -266,9 +266,9 @@ Citizen.CreateThread(function()
 
     SetBlipSprite (TaxiBlip, 198)
     SetBlipDisplay(TaxiBlip, 4)
-    SetBlipScale  (TaxiBlip, 0.75)
+    SetBlipScale  (TaxiBlip, 0.6)
     SetBlipAsShortRange(TaxiBlip, true)
-    SetBlipColour(TaxiBlip, 47)
+    SetBlipColour(TaxiBlip, 5)
 
     BeginTextCommandSetBlipName("STRING")
     AddTextComponentSubstringPlayerName("Downtown Cab")
