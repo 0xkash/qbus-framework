@@ -26,3 +26,5 @@ client_scripts {
 	"client/consumables.lua",
 	"client/discord.lua",
 }
+
+this_is_a_map 'yes'
