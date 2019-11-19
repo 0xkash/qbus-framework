@@ -218,6 +218,8 @@ $(function () {
     document.onkeyup = function (data) {
         if (data.which == 27 ) {
             $.post('http://qb-storerobbery/exit');
+            Keypad.Close();
+            Padlock.Close();
         }
     };
 }); //docready

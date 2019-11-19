@@ -316,6 +316,17 @@ QBCore.Functions.CreateCallback('police:IsPlateFlagged', function(source, cb, pl
     cb(retval)
 end)
 
+QBCore.Functions.CreateCallback('police:GetCops', function(source, cb)
+	local players = QBCore.Functions.GetPlayers()
+	local amount = 0
+	for source, Player in pairs(players) do
+		if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
+			amount = amount + 1
+		end
+	end
+	cb(amount)
+end)
+
 QBCore.Commands.Add("cuff", "Boei een speler", {}, false, function(source, args)
 	local Player = QBCore.Functions.GetPlayer(source)
     if Player.PlayerData.job.name == "police" then

@@ -112,6 +112,9 @@ $(document).on("contextmenu", ".item-slot", function(e){
             }else if (itemData.info.type == "blood") {
                 $(".item-info-description").html('<p><strong>Bewijstuk: </strong><span>' + itemData.info.label + '</span></p><p><strong>Bloodgroep: </strong><span>' + itemData.info.bloodtype + '</span></p><p><strong>DNA Code: </strong><span>' + itemData.info.dnalabel + '</span></p><p><strong>Plaats delict: </strong><span>' + itemData.info.street + '</span></p><br /><p>' + itemData.description + '</p>');
             }
+        } else if (itemData.name == "stickynote") {
+            $(".item-info-title").html('<p>'+itemData.label+'</p>')
+            $(".item-info-description").html('<p>'+ itemData.info.label + '</p>');
         }
     } else {
         $(".item-info-title").html('<p>'+itemData.label+'</p>')
@@ -222,7 +225,6 @@ function handleDragDrop() {
             fromData = ui.draggable.data("item");
             fromInventory = ui.draggable.parent().attr("data-inventory");
             if(fromData.useable) {
-                console.log(fromData)
                 if (fromData.shouldClose) {
                     Inventory.Close();
                 }
@@ -662,7 +664,6 @@ function isItemAllowed(item, allowedItems) {
     var retval = false
     $.each(allowedItems, function(index, i){
         if (i == item) {
-            console.log('dit item kan')
             retval = true;
         }
     });
@@ -798,7 +799,6 @@ var requiredItemOpen = false;
     };
 
     Inventory.Close = function() {
-        console.log("close is joh");
         $(".item-slot").css("border", "1px solid rgba(255, 255, 255, 0.1)");
         $(".ply-hotbar-inventory").css("display", "block");
         $(".ply-iteminfo-container").css("display", "none");

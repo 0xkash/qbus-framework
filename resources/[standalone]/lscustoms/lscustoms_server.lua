@@ -1,34 +1,6 @@
 QBCore = nil
 TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 
-RegisterServerEvent('lockGarage')
-AddEventHandler('lockGarage', function(b,garage)
-	tbl[tonumber(garage)].locked = b
-	if not b then
-		tbl[tonumber(garage)].player = nil
-	else
-		tbl[tonumber(garage)].player = source
-	end
-	TriggerClientEvent('lockGarage',-1,tbl)
-	--print(json.encode(tbl))
-end)
-RegisterServerEvent('getGarageInfo')
-AddEventHandler('getGarageInfo', function()
-	TriggerClientEvent('lockGarage',-1,tbl)
-	--print(json.encode(tbl))
-end)
-AddEventHandler('playerDropped', function()
-	for i,g in pairs(tbl) do
-		if g.player then
-			if source == g.player then
-				g.locked = false
-				g.player = nil
-				TriggerClientEvent('lockGarage',-1,tbl)
-			end
-		end
-	end
-end)
-
 RegisterServerEvent('lscustoms:server:setGarageBusy')
 AddEventHandler('lscustoms:server:setGarageBusy', function(garage, busy)
 	TriggerClientEvent('lscustoms:server:setGarageBusy', -1, garage, busy)
