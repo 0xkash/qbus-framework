@@ -30,8 +30,10 @@ $(document).on('click', '#save', function(){
         breaking: $("#breaking-slider").val(),
         drivetrain: $("#drivetrain-slider").val()
     }));
+});
 
-    console.log('yeet?')
+$(document).on('click', '#reset', function(){
+    $.post('http://qb-tunerchip/reset');
 });
 
 $(document).on('click', '#cancel', function(){

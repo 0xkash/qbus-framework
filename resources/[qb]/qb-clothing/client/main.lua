@@ -25,8 +25,7 @@ end)
 
 function openMenu()
     SendNUIMessage({
-        action = "open",
-        items = Config.Menus["clothing"]
+        action = "open"
     })
     SetNuiFocus(true, true)
     SetCursorLocation(0.9, 0.25)
@@ -104,8 +103,35 @@ RegisterNUICallback('updateSkin', function(data)
             SetPedHeadBlendData(ped, skinData.face, skinData.face, skinData.face, item, item, item, 1.0, 1.0, 1.0, true)
             skinData.skin = item
         end
+    elseif clothingCategory == "model" then
+        local playerData = QBCore.Functions.GetPlayerData()
+
+        if playerData.charinfo.gender == 0 then
+            ChangeToSkinNoUpdate(Config.ManPlayerModels[item])
+        else
+            ChangeToSkinNoUpdate(Config.WomanPlayerModels[item])
+        end
     end
 end)
+
+function ChangeToSkinNoUpdate(skin)
+	SetEntityInvincible(GetPlayerPed(-1),true)
+	local model = GetHashKey(skin)
+	if IsModelInCdimage(model) and IsModelValid(model) then
+		RequestModel(model)
+		while not HasModelLoaded(model) do
+			Citizen.Wait(0)
+		end
+		SetPlayerModel(PlayerId(), model)
+		if skin ~= "tony" and skin ~= "g_m_m_chigoon_02_m" and skin ~= "u_m_m_jesus_01" and skin ~= "a_m_y_stbla_m" and skin ~= "ig_terry_m" and skin ~= "a_m_m_ktown_m" and skin ~= "a_m_y_skater_m" and skin ~= "u_m_y_coop" and skin ~= "ig_car3guy1_m" then
+			SetPedRandomComponentVariation(GetPlayerPed(-1), true)
+		end
+		
+		SetModelAsNoLongerNeeded(model)
+	end
+
+	SetEntityInvincible(GetPlayerPed(-1),false)
+end
 
 RegisterNUICallback('updateSkinOnInput', function(data)
     local ped = GetPlayerPed(-1)
@@ -120,5 +146,14 @@ RegisterNUICallback('updateSkinOnInput', function(data)
             local curItem = GetPedDrawableVariation(ped, 4)
             SetPedComponentVariation(ped, 4, curItem, articleNumber, 2)
         end
+    end
+end)
+
+RegisterNUICallback('setCurrentPed', function(data, cb)
+    local playerData = QBCore.Functions.GetPlayerData()
+    if playerData.charinfo.gender == 0 then
+        cb(Config.ManPlayerModels[data.ped])
+    else
+        cb(Config.WomanPlayerModels[data.ped])
     end
 end)

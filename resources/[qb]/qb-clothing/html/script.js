@@ -34,6 +34,12 @@ $(document).on('click', '.clothing-menu-option-item-right', function(e){
         articleNumber: newValue,
         type: buttonType,
     }));
+
+    if (clothingCategory == "model") {
+        $.post('http://qb-clothing/setCurrentPed', JSON.stringify({ped: newValue}), function(model){
+            $("#current-model").html("<p>"+model+"</p>")
+        });
+    }
 })
 
 $(document).on('click', '.clothing-menu-option-item-left', function(e){
@@ -54,6 +60,12 @@ $(document).on('click', '.clothing-menu-option-item-left', function(e){
         articleNumber: newValue,
         type: buttonType,
     }));
+
+    if (clothingCategory == "model") {
+        $.post('http://qb-clothing/setCurrentPed', JSON.stringify({ped: newValue}), function(model){
+            $("#current-model").html("<p>"+model+"</p>")
+        });
+    }
 })
 
 $(document).on('change', '.item-number', function(){
@@ -99,5 +111,3 @@ QBClothing.Close = function() {
         $(".clothing-menu-container").css({"display":"none"});
     });
 }
-
-QBClothing.Open();
