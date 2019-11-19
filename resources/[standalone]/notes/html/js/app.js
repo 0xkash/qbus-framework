@@ -22,7 +22,6 @@ $(document).on('click', '#drop', function(){
         $(".notepad-container").css("display", "block");
         noteId = data.noteid;
         if (data.text != null) {
-            console.log(data.text)
             $("#notetext").val(data.text);
         }
     };

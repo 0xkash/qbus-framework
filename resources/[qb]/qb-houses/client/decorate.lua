@@ -14,6 +14,7 @@ local SelObjRot = {}
 local curRotate = {}
 
 local ObjectList = {}
+local SelObjId = 0
 
 local rotateActive = false
 local peanut = false
@@ -63,10 +64,13 @@ Citizen.CreateThread(function()
 					SelObjPos.z = groundPos.z
                 end
 				if IsControlJustReleased(0, Keys["ENTER"]) then
-                    SaveDecorations()
-                    FreezeEntityPosition(SelectedObj, true)
-                    SelectedObj = nil
-                    peanut = false
+					SetNuiFocus(true, true)
+					cursorEnabled = not cursorEnabled
+					if SelObjId == 0 then
+						SendNUIMessage({
+							type = "buyOption",
+						})
+					end
 				end
 			else
 				if IsControlJustPressed(0, Keys["F5"]) then
@@ -80,13 +84,14 @@ Citizen.CreateThread(function()
 end)
 
 -- Out of area
-Citizen.CreateThread(function() 
+Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(7)
 		if DecoMode then
 			local camPos = GetCamCoord(MainCamera)
-			if GetDistanceBetweenCoords(camPos.x, camPos.y, camPos.z, Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z, false) > 100.0 then
+			if GetDistanceBetweenCoords(camPos.x, camPos.y, camPos.z, Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z, false) > 50.0 then
 				DisableEditMode()
+				closeDecorateUI()
 				QBCore.Functions.Notify("Je bent buiten de range gegaan!")
 			end
 		end
@@ -120,6 +125,14 @@ function openDecorateUI()
 	SetCursorLocation(0.5, 0.5)
 end
 
+function closeDecorateUI()
+	cursorEnabled = not cursorEnabled
+	SetNuiFocus(false, false)
+	SendNUIMessage({
+		type = "closeUI",
+	})
+end
+
 RegisterNetEvent("qb-houses:server:sethousedecorations")
 AddEventHandler("qb-houses:server:sethousedecorations", function(house, decorations)
 	Config.Houses[house].decorations = decorations
@@ -134,6 +147,31 @@ RegisterNUICallback("closedecorations", function(data, cb)
 	end
 	DisableEditMode()
     SetNuiFocus(false, false)
+end)
+
+RegisterNUICallback("deleteSelectedObject", function(data, cb)
+	DeleteObject(SelectedObj)
+	SelectedObj = nil
+	table.remove(ObjectList, SelObjId)
+	SaveDecorations()
+	SelObjId = 0
+	peanut = false
+end)
+
+RegisterNUICallback("cancelSelectedObject", function(data, cb)
+	DeleteObject(SelectedObj)
+	SelectedObj = nil
+	SelObjId = 0
+	peanut = false
+end)
+
+RegisterNUICallback("buySelectedObject", function(data, cb)
+	SetNuiFocus(false, false)
+	cursorEnabled = not cursorEnabled
+	SaveDecorations()
+	SelectedObj = nil
+	SelObjId = 0
+	peanut = false
 end)
 
 RegisterNUICallback('setupMyObjects', function(data, cb)
@@ -162,9 +200,28 @@ RegisterNUICallback('selectOwnedObject', function(data)
     local rot = GetEntityRotation(ownedObject)
     SelObjRot = {x = rot.x, y = rot.y, z = rot.z}
 	SelObjPos = {x = pos.x, y = pos.y, z = pos.z}
-	SelObjHash = GetHashKey(objectData.hashname)
+	SelObjHash = objectData.hashname
+	SelObjId = objectData.objectId
 	SelectedObj = ownedObject
-    peanut = true
+	FreezeEntityPosition(SelectedObj, true)
+	peanut = true
+end)
+
+RegisterNUICallback('editOwnedObject', function(data)
+	SetNuiFocus(false, false)
+	cursorEnabled = not cursorEnabled
+	local objectData = data.objectData
+
+	local ownedObject = GetClosestObjectOfType(objectData.x, objectData.y, objectData.z, 1.5, GetHashKey(objectData.hashname), false, 6, 7)
+	local pos = GetEntityCoords(ownedObject, true)
+    local rot = GetEntityRotation(ownedObject)
+    SelObjRot = {x = rot.x, y = rot.y, z = rot.z}
+	SelObjPos = {x = pos.x, y = pos.y, z = pos.z}
+	SelObjHash = objectData.hashname
+	SelObjId = objectData.objectId
+	SelectedObj = ownedObject
+	FreezeEntityPosition(SelectedObj, true)
+	peanut = true
 end)
 
 RegisterNUICallback('deselectOwnedObject', function()
@@ -243,7 +300,7 @@ function UnloadDecorations()
 end
 
 function LoadDecorations(house)
-	if next(Config.Houses[house].decorations) == nil then
+	if Config.Houses[house].decorations == nil or next(Config.Houses[house].decorations) == nil then
 		QBCore.Functions.TriggerCallback('qb-houses:server:getHouseDecorations', function(result)
 			Config.Houses[house].decorations = result
 			if Config.Houses[house].decorations ~= nil then
@@ -261,7 +318,7 @@ function LoadDecorations(house)
 					end
 					local decorateObject = CreateObject(modelHash, Config.Houses[house].decorations[k].x, Config.Houses[house].decorations[k].y, Config.Houses[house].decorations[k].z, false, false, false)
 					SetEntityRotation(decorateObject, Config.Houses[house].decorations[k].rotx, Config.Houses[house].decorations[k].roty, Config.Houses[house].decorations[k].rotz)
-					table.insert(ObjectList, {hashname = Config.Houses[house].decorations[k].hashname, x = Config.Houses[house].decorations[k].x, y = Config.Houses[house].decorations[k].y, z = Config.Houses[house].decorations[k].z, rotx = Config.Houses[house].decorations[k].rotx, roty = Config.Houses[house].decorations[k].roty, rotz = Config.Houses[house].decorations[k].rotz, object = decorateObject})
+					ObjectList[Config.Houses[house].decorations[k].objectId] = {hashname = Config.Houses[house].decorations[k].hashname, x = Config.Houses[house].decorations[k].x, y = Config.Houses[house].decorations[k].y, z = Config.Houses[house].decorations[k].z, rotx = Config.Houses[house].decorations[k].rotx, roty = Config.Houses[house].decorations[k].roty, rotz = Config.Houses[house].decorations[k].rotz, object = decorateObject, objectId = Config.Houses[house].decorations[k].objectId}
 					FreezeEntityPosition(decorateObject, true)
 				end
 			end
@@ -282,7 +339,7 @@ function LoadDecorations(house)
 			local decorateObject = CreateObject(modelHash, Config.Houses[house].decorations[k].x, Config.Houses[house].decorations[k].y, Config.Houses[house].decorations[k].z, false, false, false)
 			Config.Houses[house].decorations[k].object = decorateObject
 			SetEntityRotation(decorateObject, Config.Houses[house].decorations[k].rotx, Config.Houses[house].decorations[k].roty, Config.Houses[house].decorations[k].rotz)
-			table.insert(ObjectList, {hashname = Config.Houses[house].decorations[k].hashname, x = Config.Houses[house].decorations[k].x, y = Config.Houses[house].decorations[k].y, z = Config.Houses[house].decorations[k].z, rotx = Config.Houses[house].decorations[k].rotx, roty = Config.Houses[house].decorations[k].roty, rotz = Config.Houses[house].decorations[k].rotz, object = decorateObject})
+			ObjectList[Config.Houses[house].decorations[k].objectId] = {hashname = Config.Houses[house].decorations[k].hashname, x = Config.Houses[house].decorations[k].x, y = Config.Houses[house].decorations[k].y, z = Config.Houses[house].decorations[k].z, rotx = Config.Houses[house].decorations[k].rotx, roty = Config.Houses[house].decorations[k].roty, rotz = Config.Houses[house].decorations[k].rotz, object = decorateObject, objectId = Config.Houses[house].decorations[k].objectId}
 			FreezeEntityPosition(decorateObject, true)
 		end
 	end
@@ -291,7 +348,12 @@ end
 function SaveDecorations()
 	if closesthouse ~= nil then
 		if SelectedObj ~= nil then
-			table.insert(ObjectList, {hashname = SelObjHash, x = SelObjPos.x, y = SelObjPos.y, z = SelObjPos.z, rotx = SelObjRot.x, roty = SelObjRot.y, rotz = SelObjRot.z, object = SelectedObj})
+			if SelObjId ~= 0 then
+				ObjectList[SelObjId] = {hashname = SelObjHash, x = SelObjPos.x, y = SelObjPos.y, z = SelObjPos.z, rotx = SelObjRot.x, roty = SelObjRot.y, rotz = SelObjRot.z, object = SelectedObj, objectId = SelObjId}
+			else
+				ObjectList[#ObjectList+1] = {hashname = SelObjHash, x = SelObjPos.x, y = SelObjPos.y, z = SelObjPos.z, rotx = SelObjRot.x, roty = SelObjRot.y, rotz = SelObjRot.z, object = SelectedObj, objectId = #ObjectList+1}
+			end
+
 			for k, v in pairs(ObjectList) do
 				DeleteObject(v.object)
 			end

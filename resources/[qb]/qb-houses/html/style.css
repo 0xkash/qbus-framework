@@ -414,3 +414,28 @@
 	color: #FFFFFF;
 	background: #9e1818;
 }
+
+.btn-spawnobj:hover {
+	background: #d93636;
+}
+
+.decorate-confirm {
+    display: none;
+    position: relative;
+    top: 40vh;
+    color: #FFFFFF;
+    width: 20vw;
+    margin: auto;
+    background-color: rgba(0, 0, 0, 0.75);
+    border-bottom: 4px solid #9e181800;
+    padding: 10px 20px;
+    text-align: center;
+    border-radius: 2px;
+}
+
+.decorate-confirm-buttons {
+    width: 100%;
+    margin: auto;
+    text-transform: uppercase!important;
+    margin-top: 2vh;
+}

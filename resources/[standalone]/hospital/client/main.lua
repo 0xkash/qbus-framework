@@ -281,6 +281,8 @@ AddEventHandler('hospital:client:Revive', function()
         canLeaveBed = true
     end
 
+    TriggerServerEvent("hospital:server:RestoreWeaponDamage")
+
     SetEntityHealth(player, GetEntityMaxHealth(player))
     ClearPedBloodDamage(player)
     SetPlayerSprint(PlayerId(), true)
@@ -331,6 +333,7 @@ AddEventHandler('hospital:client:HealInjuries', function(type)
     else
         ResetPartial()
     end
+    TriggerServerEvent("hospital:server:RestoreWeaponDamage")
     QBCore.Functions.Notify("Je wonden zijn geholpen!")
 end)
 

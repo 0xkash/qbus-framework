@@ -15,7 +15,7 @@ closesthouse = nil
 hasKey = false
 isOwned = false
 
-isLoggedIn = true
+isLoggedIn = false
 local contractOpen = false
 
 local cam = nil
@@ -24,6 +24,8 @@ local viewCam = false
 stashLocation = nil
 outfitLocation = nil
 logoutLocation = nil
+
+local OwnedHouseBlips = {}
 
 local CurrentDoorBell = 0
 local rangDoorbell = nil
@@ -96,6 +98,9 @@ AddEventHandler('QBCore:Client:OnPlayerUnload', function()
     closesthouse = nil
     hasKey = false
     isOwned = false
+    for k, v in pairs(OwnedHouseBlips) do
+        RemoveBlip(v)
+    end
 end)
 
 RegisterNetEvent('qb-houses:client:lockHouse')
@@ -580,6 +585,8 @@ AddEventHandler('qb-houses:client:setupHouseBlips', function()
                         BeginTextCommandSetBlipName("STRING")
                         AddTextComponentSubstringPlayerName(house.adress)
                         EndTextCommandSetBlipName(HouseBlip)
+
+                        table.insert(OwnedHouseBlips, HouseBlip)
                     end
                 end
             end)

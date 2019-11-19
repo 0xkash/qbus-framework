@@ -360,7 +360,8 @@ QBCore.Functions.GetVehicleProperties = function(vehicle)
 		modTrimB          = GetVehicleMod(vehicle, 44),
 		modTank           = GetVehicleMod(vehicle, 45),
 		modWindows        = GetVehicleMod(vehicle, 46),
-		modLivery         = GetVehicleLivery(vehicle),
+		modLivery         = GetVehicleMod(vehicle, 48),
+		modCustomTyres	  = GetVehicleModVariation(vehicle, 23)
 	}
 end
 
@@ -604,6 +605,9 @@ QBCore.Functions.SetVehicleProperties = function(vehicle, props)
 
 	if props.modLivery ~= nil then
 		SetVehicleMod(vehicle, 48, props.modLivery, false)
-		SetVehicleLivery(vehicle, props.modLivery)
+		--SetVehicleLivery(vehicle, props.modLivery)
+	end
+	if props.modCustomTyres ~= nil then 
+		SetVehicleMod(vehicle, 23, props.modCustomTyres, true)
 	end
 end

@@ -4,6 +4,8 @@ var houseCategorys = {};
 
 var selectedObject = null;
 
+var selectedObjectData = null;
+
 $(".container").hide();
 
 $('document').ready(function() {
@@ -32,6 +34,15 @@ $('document').ready(function() {
             Decorations.Open(item);
             houseCategorys = item.furniture;
         }
+
+        if (item.type == "closeUI") {
+            Decorations.Close();
+        }
+
+        if (item.type == "buyOption") {
+            $(".decorate-confirm").css("display", "block");
+            $(".decorate-confirm").find("p").html("Weet je zeker dat je het object wilt kopen voor €"+selectedObjectData.price+"?");
+        }
     })
 
     document.onkeyup = function (data) {
@@ -40,9 +51,24 @@ $('document').ready(function() {
         }
 
         if (data.which == 13 ) {
-            if (selectedObject !== null) {
+            if (selectedObjectData != null) {
+                $.post('http://qb-houses/editOwnedObject', JSON.stringify({
+                    objectData: selectedObjectData
+                }));
+                selectedObjectData = null;
+                $.post('http://qb-houses/setupMyObjects', JSON.stringify({}), function(myObjects){
+                    $('.decorate-items').html("");
+                    $.each(myObjects, function(i, object){
+                        var elem = '<div class="decorate-item" id="myobject-'+i+'" data-type="myObject"><span id="decorate-item-name"><b>Object: </b>'+object.hashname+'</span><span id="decorate-item-category"><strong>Prijs: </strong><span id="item-price" style="color: green;">OWNED</span></span></div>';
+                        $('.decorate-items').append(elem);
+                        $('#myobject-'+i).data('myObjectData', object);
+                    });
+                    $(".decorate-items").fadeIn(150);
+                });
+            } else if (selectedObject !== null) {
                 var objId = $(selectedObject).attr('id');
                 var objData = $('#'+objId).data('objectData');
+                selectedObjectData = objData
                 if (objData != null) {
                     $.post("http://qb-houses/spawnobject", JSON.stringify({
                         object: objData.object,
@@ -147,6 +173,18 @@ $(document).on('click', '.footer-btn', function(){
     $(".decorate-items").fadeIn(150);
 });
 
+$(document).on('click', '#buy-object', function(){
+    $.post('http://qb-houses/buySelectedObject');
+    selectedObjectData = null;
+    $(".decorate-confirm").css("display", "none");
+});
+
+$(document).on('click', '#cancel-object', function(){
+    $.post('http://qb-houses/cancelSelectedObject');
+    selectedObjectData = null;
+    $(".decorate-confirm").css("display", "none");
+});
+
 $(document).on('click', '.decorate-item', function(){
     var objId = $(this).attr('id');
     var objData = $('#'+objId).data('objectData');
@@ -175,6 +213,7 @@ $(document).on('click', '.decorate-item', function(){
         } else {
             $(this).addClass('selected-object');
             selectedObject = this;
+            selectedObjectData = myObjectData;
             $.post('http://qb-houses/selectOwnedObject', JSON.stringify({
                 objectData: myObjectData
             }))
@@ -184,6 +223,8 @@ $(document).on('click', '.decorate-item', function(){
 
 Decorations.Close = function() {
     $("#decorate").css("display", "none");
+    $(".decorate-confirm").css("display", "none");
+    selectedObjectData = null;
     $.post("http://qb-houses/closedecorations", JSON.stringify({}));
 }
 
