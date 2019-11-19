@@ -11,6 +11,10 @@ $(function() {
         if (data.which == 27) { // Escape key
             $.post('http://qb-radio/escape', JSON.stringify({}));
             SlideDown()
+        } else if (data.which == 13) { // Escape key
+            $.post('http://qb-radio/joinRadio', JSON.stringify({
+                channel: $("#channel").val()
+            }));
         }
     };
 });
