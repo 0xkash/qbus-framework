@@ -27,12 +27,12 @@ local currentgarage = 0
 local editCount = 0
 
 local garages = { 
-	[1] = { locked = false, camera = {x = -330.945, y = -135.471, z = 39.01, heading = 102.213}, driveout = {x = -350.376,y = -136.76, z = 38.294, heading = 70.226}, drivein = {x = -350.655,y = -136.55, z = 38.295, heading = 249.532}, outside = { x = -362.7962, y = -132.4005, z = 38.25239, heading = 71.187133}, inside = {x = -337.3863,y = -136.9247,z = 38.5737, heading = 269.455}},
-	[2] = { locked = false, camera = {x = 737.09, y = -1085.721, z = 22.169, heading = 114.86}, driveout = {x = 725.46,y = -1088.822, z = 21.455, heading = 89.395}, drivein = {x = 726.157, y = -1088.768, z = 22.169, heading = 270.288}, outside = {x = 716.54,y = -1088.757, z = 21.651, heading = 89.248}, inside = {x = 733.69,y = -1088.74, z = 21.733, heading = 270.528}},
-	[3] = { locked = false, camera = {x = -1154.902, y = -2011.438, z = 13.18, heading = 95.49}, driveout = {x = -1150.379,y = -1995.845, z = 12.465, heading = 313.594}, drivein = {x = -1150.26,y = -1995.642, z = 12.466, heading = 136.859}, outside = {x = -1140.352,y = -1985.89, z = 12.45, heading = 314.406}, inside = {x = -1155.077,y = -2006.61, z = 12.465, heading = 162.58}},
-	[4] = { locked = false, camera = {x = 1177.98, y = 2636.059, z = 37.754, heading = 37.082}, driveout = {x = 1175.003,y = 2642.175, z = 37.045, heading = 0.759}, drivein = {x = 1174.701,y = 2643.764, z = 37.048, heading = 178.119}, outside = {x = 1175.565,y = 2652.819, z = 37.941, heading = 351.579}, inside = {x = 1174.823,y = 2637.807, z = 37.045, heading = 181.19}},
-	[5] = { locked = false, camera = {x = 105.825, y = 6627.562, z = 31.787, heading = 266.692}, driveout = {x = 112.326,y = 6625.148, z = 31.073, heading = 224.641}, drivein = {x = 112.738,y = 6624.644, z = 31.072, heading = 44.262}, outside = {x = 118.493,y = 6618.897, z = 31.13, heading = 224.701}, inside = {x = 108.842,y = 6628.447, z = 31.072, heading = 45.504}},
-	[6]= { locked = false, camera = {x = -215.518, y = -1329.135, z = 30.89, heading = 329.092}, driveout = {x = -205.935,y = -1316.642, z = 30.176, heading = 356.495}, drivein = {x = -205.626,y = -1314.99, z = 30.247, heading = 179.395}, outside = {x = -205.594,y = -1304.085, z = 30.614, heading = 359.792}, inside = {x = -212.368,y = -1325.486, z = 30.176, heading = 141.107} }
+	[1] = { isBusy = false, locked = false, camera = {x = -330.945, y = -135.471, z = 39.01, heading = 102.213}, driveout = {x = -350.376,y = -136.76, z = 38.294, heading = 70.226}, drivein = {x = -350.655,y = -136.55, z = 38.295, heading = 249.532}, outside = { x = -362.7962, y = -132.4005, z = 38.25239, heading = 71.187133}, inside = {x = -337.3863,y = -136.9247,z = 38.5737, heading = 269.455}},
+	[2] = { isBusy = false, locked = false, camera = {x = 737.09, y = -1085.721, z = 22.169, heading = 114.86}, driveout = {x = 725.46,y = -1088.822, z = 21.455, heading = 89.395}, drivein = {x = 726.157, y = -1088.768, z = 22.169, heading = 270.288}, outside = {x = 716.54,y = -1088.757, z = 21.651, heading = 89.248}, inside = {x = 733.69,y = -1088.74, z = 21.733, heading = 270.528}},
+	[3] = { isBusy = false, locked = false, camera = {x = -1154.902, y = -2011.438, z = 13.18, heading = 95.49}, driveout = {x = -1150.379,y = -1995.845, z = 12.465, heading = 313.594}, drivein = {x = -1150.26,y = -1995.642, z = 12.466, heading = 136.859}, outside = {x = -1140.352,y = -1985.89, z = 12.45, heading = 314.406}, inside = {x = -1155.077,y = -2006.61, z = 12.465, heading = 162.58}},
+	[4] = { isBusy = false, locked = false, camera = {x = 1177.98, y = 2636.059, z = 37.754, heading = 37.082}, driveout = {x = 1175.003,y = 2642.175, z = 37.045, heading = 0.759}, drivein = {x = 1174.701,y = 2643.764, z = 37.048, heading = 178.119}, outside = {x = 1175.565,y = 2652.819, z = 37.941, heading = 351.579}, inside = {x = 1174.823,y = 2637.807, z = 37.045, heading = 181.19}},
+	[5] = { isBusy = false, locked = false, camera = {x = 105.825, y = 6627.562, z = 31.787, heading = 266.692}, driveout = {x = 112.326,y = 6625.148, z = 31.073, heading = 224.641}, drivein = {x = 112.738,y = 6624.644, z = 31.072, heading = 44.262}, outside = {x = 118.493,y = 6618.897, z = 31.13, heading = 224.701}, inside = {x = 108.842,y = 6628.447, z = 31.072, heading = 45.504}},
+	[6]=  { isBusy = false, locked = false, camera = {x = -215.518, y = -1329.135, z = 30.89, heading = 329.092}, driveout = {x = -205.935,y = -1316.642, z = 30.176, heading = 356.495}, drivein = {x = -205.626,y = -1314.99, z = 30.247, heading = 179.395}, outside = {x = -205.594,y = -1304.085, z = 30.614, heading = 359.792}, inside = {x = -212.368,y = -1325.486, z = 30.176, heading = 141.107} }
 }
 
 local Menu = SetMenu()
@@ -142,6 +142,11 @@ local function SetupInsideCam()
 	RenderScriptCams( 1, 0, cam, 0, 0)
 end
 
+RegisterNetEvent('lscustoms:client:setGarageBusy')
+AddEventHandler('lscustoms:client:setGarageBusy', function(garage, state)
+	garages[garage].isBusy = state
+end)
+
 --So we can actually enter it?
 local function DriveInGarage()
 
@@ -168,6 +173,8 @@ local function DriveInGarage()
 			LSCMenu:setTitle("Los Santos Customs")
 			LSCMenu.title_sprite = "shopui_title_carmod"
 		end
+
+		TriggerServerEvent('lscustoms:server:setGarageBusy', currentgarage, true)
 		
 		-------------------------------Load some settings-----------------------------------
 		
@@ -594,6 +601,8 @@ local function DriveOutOfGarage(pos)
 			SetPlayerControl(PlayerId(),true)
 	
 			TriggerServerEvent("lscustoms:server:SaveVehicleProps", QBCore.Functions.GetVehicleProperties(veh))
+
+			TriggerServerEvent('lscustoms:server:setGarageBusy', currentgarage, false)
 			--TriggerServerEvent('lockGarage',false,lsc.currentgarage)
 		end)
 	end)
@@ -632,6 +641,21 @@ local function tableContains(t,val)
 	return false
 end
 
+function DrawText3Ds(x, y, z, text)
+	SetTextScale(0.35, 0.35)
+    SetTextFont(4)
+    SetTextProportional(1)
+    SetTextColour(255, 255, 255, 215)
+    SetTextEntry("STRING")
+    SetTextCentre(true)
+    AddTextComponentString(text)
+    SetDrawOrigin(x,y,z, 0)
+    DrawText(0.0, 0.0)
+    local factor = (string.len(text)) / 370
+    DrawRect(0.0, 0.0+0.0125, 0.017+ factor, 0.03, 0, 0, 0, 75)
+    ClearDrawOrigin()
+end
+
 Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(0)
@@ -643,18 +667,29 @@ Citizen.CreateThread(function()
 					for i,pos in ipairs(garages) do
 						coords = pos.inside		
 						if GetDistanceBetweenCoords(coords.x,coords.y,coords.z,GetEntityCoords(ped)) <= 5 then
-							if not tableContains(LSC_Config.ModelBlacklist,GetDisplayNameFromVehicleModel(GetEntityModel(veh)):lower()) then
-								if IsControlJustPressed(1, Keys["ENTER"]) then
-									inside = true
-									currentpos = pos
-									currentgarage = i
-									editCount = 0
-									DriveInGarage()
-								else
-									drawTxt("DRUK ~b~ENTER~w~ OM JE VOERTUIG AAN TE PASSEN ",4,1,0.5,0.8,1.0,255,255,255,255)
+							if not garages[i].isBusy then
+								if not tableContains(LSC_Config.ModelBlacklist,GetDisplayNameFromVehicleModel(GetEntityModel(veh)):lower()) then
+									if IsControlJustPressed(1, Keys["ENTER"]) then
+										inside = true
+										currentpos = pos
+										currentgarage = i
+										editCount = 0
+										DriveInGarage()
+									else
+										if i == 5 then
+											DrawText3Ds(coords.x, coords.y, coords.z + 0.5, '~g~ENTER~w~ - Om Beeker\'s te gebruiken')
+											DrawMarker(21, coords.x, coords.y, coords.z + 0.7, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.5, 1.5, 1.4, 61, 155, 255, 155, false, false, false, true, false, false, false)
+										elseif i == 6 then
+											DrawText3Ds(coords.x, coords.y, coords.z + 0.5, '~g~ENTER~w~ - Om Benny\'s te gebruiken')
+											DrawMarker(21, coords.x, coords.y, coords.z + 0.7, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.5, 1.5, 1.4, 229, 61, 255, 155, false, false, false, true, false, false, false)
+										else
+											DrawText3Ds(coords.x, coords.y, coords.z + 0.5, '~g~ENTER~w~ - Om LS Custom\'s te gebruiken')
+											DrawMarker(21, coords.x, coords.y, coords.z + 0.7, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.1, 1.1, 0.9, 177, 255, 61, 155, false, false, false, true, false, false, false)
+										end
+									end
 								end
 							else
-								drawTxt("~r~Dit voertuig kan niet aangepast worden",4,1,0.5,0.8,1.0,255,255,255,255)
+								DrawText3Ds(coords.x, coords.y, coords.z + 0.5, 'Garage is niet beschikbaar')
 							end
 						end
 					end

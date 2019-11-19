@@ -29,6 +29,11 @@ AddEventHandler('playerDropped', function()
 	end
 end)
 
+RegisterServerEvent('lscustoms:server:setGarageBusy')
+AddEventHandler('lscustoms:server:setGarageBusy', function(garage, busy)
+	TriggerClientEvent('lscustoms:server:setGarageBusy', -1, garage, busy)
+end)
+
 RegisterServerEvent("LSC:buttonSelected")
 AddEventHandler("LSC:buttonSelected", function(name, button)
 	local src = source
