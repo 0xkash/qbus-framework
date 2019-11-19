@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+        integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="./reset.css">
+    <link rel="stylesheet" href="./style.css">
+    <title>QB Clothing</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="clothing-menu-container">
+            <div class="clothing-menu-header">
+                <div class="clothing-menu-header-btn characterTab selected" data-category="character">
+                    <p>Karakter</p>
+                </div>
+                <div class="clothing-menu-header-btn clothingTab" data-category="clothing">
+                    <p>Kleding</p>
+                </div>
+                <div class="clothing-menu-header-btn accessoiresTab" data-category="accessoires">
+                    <p>Accessoires</p>
+                </div>
+            </div>
+
+            <div class="clothing-menu-character-container">
+                <div class="clothing-menu-option" data-type="model">
+                    <div class="clothing-menu-option-header"><p>Player Model</p></div>
+                    <div class="clothing-menu-option-item">
+                        <div class="clothing-menu-option-item-header"><p>Model:</p></div>
+                        <div class="clothing-menu-option-item-left" id="model-left" data-type="item"><i class="fa fa-angle-left"></i></div> 
+                        <input type="number" class="item-number" data-type="item" value="1">
+                        <div class="clothing-menu-option-item-right" id="model-right" data-type="item"><i class="fa fa-angle-right"></i></div>
+                    </div>
+                    <div class="clothing-menu-option-item">
+                        <div class="clothing-menu-option-item-header"><p>mp_m_freemode_01</p></div>
+                    </div>
+                </div>
+                <div class="clothing-menu-option" data-type="face">
+                    <div class="clothing-menu-option-header"><p>Gezicht</p></div>
+                    <div class="clothing-menu-option-item">
+                        <div class="clothing-menu-option-item-header"><p>Item</p></div>
+                        <div class="clothing-menu-option-item-left" data-type="item"><i class="fa fa-angle-left"></i></div> 
+                        <input type="number" class="item-number" data-type="item" value="1">
+                        <div class="clothing-menu-option-item-right" data-type="item"><i class="fa fa-angle-right"></i></div>
+                    </div>
+                    <div class="clothing-menu-option-item">
+                        <div class="clothing-menu-option-item-header"><p>Huidskleur</p></div>
+                        <div class="clothing-menu-option-item-left" data-type="texture"><i class="fa fa-angle-left"></i></div>
+                        <input type="text" class="item-number" data-type="texture" value="1">
+                        <div class="clothing-menu-option-item-right" data-type="texture"><i class="fa fa-angle-right"></i></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="clothing-menu-clothing-container">
+                <div class="clothing-menu-option" data-type="pants">
+                    <div class="clothing-menu-option-header"><p>Broeken</p></div>
+                    <div class="clothing-menu-option-item">
+                        <div class="clothing-menu-option-item-header"><p>Item</p></div>
+                        <div class="clothing-menu-option-item-left" data-type="item"><i class="fa fa-angle-left"></i></div> 
+                        <input type="number" class="item-number" data-type="item" value="1">
+                        <div class="clothing-menu-option-item-right" data-type="item"><i class="fa fa-angle-right"></i></div>
+                    </div>
+                    <div class="clothing-menu-option-item">
+                        <div class="clothing-menu-option-item-header"><p>Texture</p></div>
+                        <div class="clothing-menu-option-item-left" data-type="texture"><i class="fa fa-angle-left"></i></div>
+                        <input type="text" class="item-number" data-type="texture" value="1">
+                        <div class="clothing-menu-option-item-right" data-type="texture"><i class="fa fa-angle-right"></i></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="clothing-menu-accessoires-container">
+            </div>
+        </div>
+    </div>
+</body>
+<script src="./script.js"></script>
+
+</html>
