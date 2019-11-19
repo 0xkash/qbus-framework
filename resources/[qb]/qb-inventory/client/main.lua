@@ -13,6 +13,8 @@ local CurrentVehicle = nil
 local CurrentGlovebox = nil
 local CurrentStash = nil
 
+local isCrafting = false
+
 local showTrunkPos = false
 
 Citizen.CreateThread(function() 
@@ -60,7 +62,7 @@ Citizen.CreateThread(function()
         DisableControlAction(0, Keys["3"], true)
         DisableControlAction(0, Keys["4"], true)
         DisableControlAction(0, Keys["5"], true)
-        if IsDisabledControlJustReleased(0, Keys["TAB"]) then
+        if IsDisabledControlJustReleased(0, Keys["TAB"]) and not isCrafting then
             QBCore.Functions.GetPlayerData(function(PlayerData)
                 if not PlayerData.metadata["isdead"] and not PlayerData.metadata["ishandcuffed"] then
                     local curVeh = nil
@@ -247,12 +249,41 @@ AddEventHandler("inventory:client:ShowTrunkPos", function()
 end)
 
 RegisterNetEvent("inventory:client:UpdatePlayerInventory")
-AddEventHandler("inventory:client:UpdatePlayerInventory", function(playerItems)
+AddEventHandler("inventory:client:UpdatePlayerInventory", function(isError)
     SendNUIMessage({
         action = "update",
-        items = playerItems,
-        inventory = "player",
+        inventory = QBCore.Functions.GetPlayerData().items,
+        maxweight = QBCore.Config.Player.MaxWeight,
+        slots = MaxInventorySlots,
+        error = isError,
     })
+end)
+
+RegisterNetEvent("inventory:client:CraftItems")
+AddEventHandler("inventory:client:CraftItems", function(itemName, itemCosts, amount, toSlot)
+    SendNUIMessage({
+        action = "close",
+    })
+    isCrafting = true
+    QBCore.Functions.Progressbar("repair_vehicle", "Bezig met craften..", (math.random(2000, 5000) * amount), false, true, {
+		disableMovement = true,
+		disableCarMovement = true,
+		disableMouse = false,
+		disableCombat = true,
+	}, {
+		animDict = "mini@repair",
+		anim = "fixing_a_player",
+		flags = 16,
+	}, {}, {}, function() -- Done
+		StopAnimTask(GetPlayerPed(-1), "mini@repair", "fixing_a_player", 1.0)
+        TriggerServerEvent("inventory:server:CraftItems", itemName, itemCosts, amount, toSlot)
+        TriggerEvent('inventory:client:ItemBox', QBCore.Shared.Items[itemName], 'add')
+        isCrafting = false
+	end, function() -- Cancel
+		StopAnimTask(GetPlayerPed(-1), "mini@repair", "fixing_a_player", 1.0)
+        QBCore.Functions.Notify("Mislukt!", "error")
+        isCrafting = false
+	end)
 end)
 
 RegisterNetEvent("inventory:client:UseWeapon")
@@ -313,7 +344,6 @@ AddEventHandler("inventory:client:DropItemAnim", function()
     Citizen.Wait(2000)
     ClearPedTasks(GetPlayerPed(-1))
 end)
-
 
 RegisterNetEvent("inventory:client:ShowId")
 AddEventHandler("inventory:client:ShowId", function(sourceId, citizenid, character)

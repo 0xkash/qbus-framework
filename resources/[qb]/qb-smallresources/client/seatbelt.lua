@@ -77,22 +77,22 @@ Citizen.CreateThread(function()
                     if lastFrameVehiclespeed > 110 and thisFrameVehicleSpeed < (lastFrameVehiclespeed * 0.75) and not damagedone then
                         if frameBodyChange > 18.0 then
                             if not IsThisModelABike(currentVehicle) then 
-                                TriggerServerEvent("carhud:ejection:server",GetVehicleNumberPlateText(currentVehicle))
+
                             end
                             if not seatbeltOn and not IsThisModelABike(currentVehicle) then
-                                if math.random(math.ceil(lastFrameVehiclespeed)) > 110 then
+                                if math.random(math.ceil(lastFrameVehiclespeed)) > 60 then
                                     EjectFromVehicle()                           
                                 end
                             elseif seatbeltOn and not IsThisModelABike(currentVehicle) then
                                 if lastFrameVehiclespeed > 150 then
-                                    if math.random(math.ceil(lastFrameVehiclespeed)) > 200 then
+                                    if math.random(math.ceil(lastFrameVehiclespeed)) > 150 then
                                         EjectFromVehicle()                           
                                     end
                                 end
                             end
                         else
                             if not IsThisModelABike(currentVehicle) then 
-                                TriggerServerEvent("carhud:ejection:server",GetVehicleNumberPlateText(currentVehicle))
+
                             end     
 
                             if not seatbeltOn and not IsThisModelABike(currentVehicle) then

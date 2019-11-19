@@ -1,3 +1,14 @@
+Keys = {
+    ['ESC'] = 322, ['F1'] = 288, ['F2'] = 289, ['F3'] = 170, ['F5'] = 166, ['F6'] = 167, ['F7'] = 168, ['F8'] = 169, ['F9'] = 56, ['F10'] = 57,
+    ['~'] = 243, ['1'] = 157, ['2'] = 158, ['3'] = 160, ['4'] = 164, ['5'] = 165, ['6'] = 159, ['7'] = 161, ['8'] = 162, ['9'] = 163, ['-'] = 84, ['='] = 83, ['BACKSPACE'] = 177,
+    ['TAB'] = 37, ['Q'] = 44, ['W'] = 32, ['E'] = 38, ['R'] = 45, ['T'] = 245, ['Y'] = 246, ['U'] = 303, ['P'] = 199, ['['] = 39, [']'] = 40, ['ENTER'] = 18,
+    ['CAPS'] = 137, ['A'] = 34, ['S'] = 8, ['D'] = 9, ['F'] = 23, ['G'] = 47, ['H'] = 74, ['K'] = 311, ['L'] = 182,
+    ['LEFTSHIFT'] = 21, ['Z'] = 20, ['X'] = 73, ['C'] = 26, ['V'] = 0, ['B'] = 29, ['N'] = 249, ['M'] = 244, [','] = 82, ['.'] = 81,
+    ['LEFTCTRL'] = 36, ['LEFTALT'] = 19, ['SPACE'] = 22, ['RIGHTCTRL'] = 70,
+    ['HOME'] = 213, ['PAGEUP'] = 10, ['PAGEDOWN'] = 11, ['DELETE'] = 178,
+    ['LEFT'] = 174, ['RIGHT'] = 175, ['TOP'] = 27, ['DOWN'] = 173,
+}
+
 QBCore = nil
 
 Citizen.CreateThread(function() 
@@ -14,10 +25,12 @@ end)
 
 local uiOpen            = false
 local currentRegister   = nil
+local currentSafe = 0
 
 Citizen.CreateThread(function()
     Citizen.Wait(1000)
     setupRegister()
+    setupSafes()
     while true do
         local ped = GetPlayerPed(-1)
         local pos = GetEntityCoords(ped)
@@ -30,6 +43,38 @@ Citizen.CreateThread(function()
             end
         end
         Citizen.Wait(3)
+    end
+end)
+
+Citizen.CreateThread(function()
+    while true do 
+        Citizen.Wait(1)
+        local inRange = false
+        if QBCore ~= nil then
+            local pos = GetEntityCoords(GetPlayerPed(-1))
+            for safe,_ in pairs(Config.Safes) do
+                local dist = GetDistanceBetweenCoords(pos, Config.Safes[safe].x, Config.Safes[safe].y, Config.Safes[safe].z)
+                if dist < 3 then
+                    inRange = true
+                    if dist < 1.5 then
+                        if not Config.Safes[safe].robbed then
+                            DrawText3Ds(Config.Safes[safe].x, Config.Safes[safe].y, Config.Safes[safe].z, '~g~E~w~ - Combinatie proberen')
+                            if IsControlJustPressed(0, Keys["E"]) then
+                                SetNuiFocus(true, true)
+                                SendNUIMessage({
+                                    action = "openKeypad",
+                                })
+                                currentSafe = safe
+                            end
+                        end
+                    end
+                end
+            end
+        end
+
+        if not inRange then
+            Citizen.Wait(2000)
+        end
     end
 end)
 
@@ -57,6 +102,14 @@ function setupRegister()
     QBCore.Functions.TriggerCallback('qb-storerobbery:server:getRegisterStatus', function(Registers)
         for k, v in pairs(Registers) do
             Config.Registers[k].robbed = Registers[k].robbed
+        end
+    end)
+end
+
+function setupSafes()
+    QBCore.Functions.TriggerCallback('qb-storerobbery:server:getSafeStatus', function(Safes)
+        for k, v in pairs(Safes) do
+            Config.Safes[k].robbed = Safes[k].robbed
         end
     end)
 end
@@ -112,6 +165,10 @@ RegisterNUICallback('success', function()
     takeAnim()
 end)
 
+RegisterNUICallback("CombinationFail", function(data, cb)
+    PlaySound(-1, "Place_Prop_Fail", "DLC_Dmod_Prop_Editor_Sounds", 0, 0, 1)
+end)
+
 RegisterNUICallback('fail', function()
     TriggerServerEvent("QBCore:Server:RemoveItem", "lockpick", 1)
     QBCore.Functions.Notify("Je lockpick is gebroken..", "error")
@@ -122,7 +179,34 @@ RegisterNUICallback('exit', function()
     lockpick(false)
 end)
 
+RegisterNUICallback('TryCombination', function(data, cb)
+    QBCore.Functions.TriggerCallback('qb-storerobbery:server:isCombinationRight', function(combination)
+        if tonumber(data.combination) == combination then
+            TriggerServerEvent("qb-storerobbery:server:SafeReward", currentSafe)
+            TriggerServerEvent("qb-storerobbery:server:setSafeStatus", currentSafe)
+            SetNuiFocus(false, false)
+            SendNUIMessage({
+                action = "closeKeypad",
+                error = false,
+            })
+            currentSafe = 0
+        else
+            SetNuiFocus(false, false)
+            SendNUIMessage({
+                action = "closeKeypad",
+                error = true,
+            })
+            currentSafe = 0
+        end
+    end, currentSafe)
+end)
+
 RegisterNetEvent('qb-storerobbery:client:setRegisterStatus')
 AddEventHandler('qb-storerobbery:client:setRegisterStatus', function(register, bool)
     Config.Registers[register].robbed = bool
+end)
+
+RegisterNetEvent('qb-storerobbery:client:setSafeStatus')
+AddEventHandler('qb-storerobbery:client:setSafeStatus', function(safe, bool)
+    Config.Safes[safe].robbed = bool
 end)
