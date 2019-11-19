@@ -294,6 +294,9 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 					end
 					local itemInfo = QBCore.Shared.Items[fromItemData.name:lower()]
 					AddToDrop(toInventory, toSlot, itemInfo["name"], fromAmount, fromItemData.info)
+					if itemInfo["name"] == "radio" then
+						TriggerClientEvent('qb-radio:onRadioDrop', src)
+					end
 				end
 			end
 		else
@@ -523,6 +526,9 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 					if toItemData.name ~= fromItemData.name then
 						Player.Functions.RemoveItem(toItemData.name, toAmount, toSlot)
 						AddToDrop(fromInventory, toSlot, itemInfo["name"], toAmount, toItemData.info)
+						if itemInfo["name"] == "radio" then
+							TriggerClientEvent('qb-radio:onRadioDrop', src)
+						end
 					end
 				else
 					--Player.PlayerData.items[fromSlot] = nil
@@ -541,12 +547,18 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 						local itemInfo = QBCore.Shared.Items[toItemData.name:lower()]
 						RemoveFromDrop(toInventory, toSlot, itemInfo["name"], toAmount)
 						AddToDrop(fromInventory, fromSlot, itemInfo["name"], toAmount, toItemData.info)
+						if itemInfo["name"] == "radio" then
+							TriggerClientEvent('qb-radio:onRadioDrop', src)
+						end
 					end
 				else
 					--Player.PlayerData.items[fromSlot] = nil
 				end
 				local itemInfo = QBCore.Shared.Items[fromItemData.name:lower()]
 				AddToDrop(toInventory, toSlot, itemInfo["name"], fromAmount, fromItemData.info)
+				if itemInfo["name"] == "radio" then
+					TriggerClientEvent('qb-radio:onRadioDrop', src)
+				end
 			end
 		else
 			TriggerClientEvent("QBCore:Notify", src, "Item bestaat niet??", "error")
@@ -917,6 +929,9 @@ function CreateNewDrop(source, fromSlot, toSlot, itemAmount)
 		}
 		TriggerClientEvent("inventory:client:DropItemAnim", source)
 		TriggerClientEvent("inventory:client:AddDropItem", -1, dropId, source)
+		if itemData.name:lower() == "radio" then
+			TriggerClientEvent('qb-radio:onRadioDrop', source)
+		end
 	else
 		TriggerClientEvent("QBCore:Notify", src, "Je hebt dit item niet!", "error")
 		return

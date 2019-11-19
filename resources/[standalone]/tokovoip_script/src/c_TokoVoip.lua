@@ -1,19 +1,3 @@
-------------------------------------------------------------
-------------------------------------------------------------
----- Author: Dylan 'Itokoyamato' Thuillier              ----
-----                                                    ----
----- Email: itokoyamato@hotmail.fr                      ----
-----                                                    ----
----- Resource: tokovoip_script                          ----
-----                                                    ----
----- File: c_TokoVoip.lua                               ----\
-------------------------------------------------------------
-------------------------------------------------------------
-
---------------------------------------------------------------------------------
---	Client: TokoVoip functions
---------------------------------------------------------------------------------
-
 TokoVoip = {};
 TokoVoip.__index = TokoVoip;
 local lastTalkState = false
@@ -70,9 +54,9 @@ function TokoVoip.updateTokoVoipInfo(self, forceUpdate) -- Update the top-left i
 	end
 	if (self.plugin_data.radioChannel ~= -1 and self.myChannels[self.plugin_data.radioChannel]) then
 		if (string.match(self.myChannels[self.plugin_data.radioChannel].name, "Call")) then
-			info = info  .. "<br> [Phone] " .. self.myChannels[self.plugin_data.radioChannel].name;
+			info = info  .. "<br> [".. channelLabel.. "] " .. self.myChannels[self.plugin_data.radioChannel].name;
 		else
-			info = info  .. "<br> [Radio] " .. self.myChannels[self.plugin_data.radioChannel].name;
+			info = info  .. "<br> [".. channelLabel.. "] " .. self.myChannels[self.plugin_data.radioChannel].name;
 		end
 	end
 	if (info == self.screenInfo and not forceUpdate) then return end

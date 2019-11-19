@@ -10,6 +10,8 @@
 ------------------------------------------------------------
 ------------------------------------------------------------
 
+channelLabel = nil
+
 --------------------------------------------------------------------------------
 --	Client: Voip data processed before sending it to TS3Plugin
 --------------------------------------------------------------------------------
@@ -233,8 +235,9 @@ end)
 --	Radio functions
 --------------------------------------------------------------------------------
 
-function addPlayerToRadio(channel)
-	TriggerServerEvent("TokoVoip:addPlayerToRadio", channel, voip.serverId);
+function addPlayerToRadio(channel, name, type)
+	TriggerServerEvent("TokoVoip:addPlayerToRadio", channel, voip.serverId, type);
+	channelLabel = name
 end
 RegisterNetEvent("TokoVoip:addPlayerToRadio");
 AddEventHandler("TokoVoip:addPlayerToRadio", addPlayerToRadio);
