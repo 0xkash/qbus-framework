@@ -61,10 +61,20 @@ Citizen.CreateThread(function()
                             DrawText3Ds(Config.Safes[safe].x, Config.Safes[safe].y, Config.Safes[safe].z, '~g~E~w~ - Combinatie proberen')
                             if IsControlJustPressed(0, Keys["E"]) then
                                 SetNuiFocus(true, true)
-                                SendNUIMessage({
-                                    action = "openKeypad",
-                                })
-                                currentSafe = safe
+                                if Config.Safes[safe].type == "keypad" then
+                                    SendNUIMessage({
+                                        action = "openKeypad",
+                                    })
+                                    currentSafe = safe
+                                else
+                                    QBCore.Functions.TriggerCallback('qb-storerobbery:server:getPadlockCombination', function(combination)
+                                        SendNUIMessage({
+                                            action = "openPadlock",
+                                            combination = combination, 
+                                        })
+                                        currentSafe = safe
+                                    end, safe)
+                                end
                             end
                         end
                     end
@@ -153,7 +163,7 @@ function takeAnim()
         Citizen.Wait(100)
     end
     TaskPlayAnim(ped, "amb@prop_human_bum_bin@idle_b", "idle_d", 8.0, 8.0, -1, 50, 0, false, false, false)
-    Citizen.Wait(1000)
+    Citizen.Wait(2500)
     TaskPlayAnim(ped, "amb@prop_human_bum_bin@idle_b", "exit", 8.0, 8.0, -1, 50, 0, false, false, false)
 end
 
@@ -163,6 +173,22 @@ RegisterNUICallback('success', function()
     TriggerServerEvent('qb-storerobbery:server:setRegisterStatus', currentRegister)
     lockpick(false)
     takeAnim()
+end)
+
+RegisterNUICallback('PadLockSuccess', function()
+    if currentSafe ~= 0 then
+        if not Config.Safes[currentSafe].robbed then
+            SetNuiFocus(false, false)
+            TriggerServerEvent("qb-storerobbery:server:SafeReward", currentSafe)
+            TriggerServerEvent("qb-storerobbery:server:setSafeStatus", currentSafe)
+            currentSafe = 0
+            takeAnim()
+        end
+    else
+        SendNUIMessage({
+            action = "kekw",
+        })
+    end
 end)
 
 RegisterNUICallback("CombinationFail", function(data, cb)
@@ -190,6 +216,7 @@ RegisterNUICallback('TryCombination', function(data, cb)
                 error = false,
             })
             currentSafe = 0
+            takeAnim()
         else
             SetNuiFocus(false, false)
             SendNUIMessage({

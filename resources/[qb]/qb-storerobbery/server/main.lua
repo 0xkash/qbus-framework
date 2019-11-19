@@ -3,7 +3,8 @@ QBCore = nil
 TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 
 local SafeCodes = {
-    [1] = math.random(1000, 9999)
+    [1] = math.random(1000, 9999),
+    [2] = {math.random(0, 39), math.random(0, 39), math.random(0, 39), math.random(0, 39), math.random(0, 39)}
 }
 
 RegisterServerEvent('qb-storerobbery:server:takeMoney')
@@ -50,6 +51,10 @@ Citizen.CreateThread(function()
 end)
 
 QBCore.Functions.CreateCallback('qb-storerobbery:server:isCombinationRight', function(source, cb, safe)
+    cb(SafeCodes[safe])
+end)
+
+QBCore.Functions.CreateCallback('qb-storerobbery:server:getPadlockCombination', function(source, cb, safe)
     cb(SafeCodes[safe])
 end)
 

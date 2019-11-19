@@ -519,7 +519,7 @@ function ResetAll()
         isBleeding = tonumber(isBleeding)
     })
 
-    CurrentDamageList = nil
+    CurrentDamageList = {}
     TriggerServerEvent('hospital:server:SetWeaponDamage', CurrentDamageList)
 
     ProcessRunStuff(PlayerPedId())

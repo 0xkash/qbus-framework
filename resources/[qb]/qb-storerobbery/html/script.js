@@ -21,6 +21,20 @@ var minRot = -90,
 
 
 var Keypad = {}
+var Padlock = {}
+
+const combo = [];
+
+Padlock.Open = function(data) {
+    $("#padlock").css("display", "block");
+    $.each(data.combination, function(i, combi){
+        combo.push(combi);
+    });
+}
+
+Padlock.Close = function() {
+    $("#padlock").css("display", "none");
+}
 
 Keypad.Open = function(data) {
     $("#keypad").css("display", "block");
@@ -71,6 +85,55 @@ function submitForm(e) {
     }));
 };
 
+Draggable.create(".dial", {
+    type:"rotation",
+    throwProps:true
+});
+
+findCombo = function(comboArr){
+    let dial = $(".dial"),
+        dialTrans = dial.css("transform"),
+        ticks = 40,
+        tickAngle = 360 / ticks,
+        numOffset = 0.5, // how far red arrow can be from number
+        // break down matrix value of dial transform and get angle
+        matrixVal = dialTrans.split('(')[1].split(')')[0].split(','),
+        cos1 = matrixVal[0],
+        sin = matrixVal[1],
+        negSin = matrixVal[2],
+        cos2 = matrixVal[3],
+        angle = Math.round(Math.atan2(sin, cos1) * (180 / Math.PI)) * -1;
+    // convert negative angles to positive
+    if (angle < 0) {
+        angle += 360;
+    }
+    // check numbers found, stop loop if at first number not found
+    for (let i = 0; i < comboArr.length; ++i) {
+        if (!$(".num" + (i + 1)).hasClass("found")) {
+        if (angle > (comboArr[i] - numOffset) * tickAngle &&
+            angle < (comboArr[i] + numOffset) * tickAngle) {
+            // make numbers green when found
+            $(".num" + (i + 1)).addClass("found");
+            // on unlock
+            if (i == comboArr.length - 1) {
+                // unlock :)
+                $.post('http://qb-storerobbery/PadLockSuccess');
+                Padlock.Close();
+            }
+        }
+        break;
+        }
+    }
+};
+
+$(".dial").on("click",function(){
+    findCombo(combo);
+});
+// dial interaction (touch)
+$(".dial").on("touchend",function(){
+    findCombo(combo);
+});
+
 $(function () {
 
     //pop vars
@@ -101,6 +164,19 @@ $(function () {
 
         if (eventData.action == "closeKeypad") {
             Keypad.Close(eventData);
+        }
+
+        if (eventData.action == "openPadlock") {
+            Padlock.Open(eventData);
+        }
+
+        if (eventData.action == "closePadlock") {
+            Padlock.Close();
+        }
+
+        if (eventData.action == "kekw") {
+            $("body").css("background-image", "url('https://i.kym-cdn.com/entries/icons/original/000/031/051/cover4.jpg')");
+            $("body").css("background-size", "cover");
         }
     })
 
