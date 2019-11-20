@@ -39,11 +39,11 @@ end
 function TokoVoip.updateTokoVoipInfo(self, forceUpdate) -- Update the top-left info
 	local info = "";
 	if (self.mode == 1) then
-		info = "Normal";
+		info = "Normaal";
 	elseif (self.mode == 2) then
-		info = "Whispering";
+		info = "Fluisteren";
 	elseif (self.mode == 3) then
-		info = "Shouting";
+		info = "Schreeuwen";
 	end
 
 	if (self.plugin_data.radioTalking) then

@@ -13,9 +13,5 @@ server_scripts {
 }
 
 files {
-    'html/index.html',
-    'html/style.css',
-    'html/reset.css',
-    'html/script.js',
-    'html/screen-frame.png',
+    'html/*',
 }

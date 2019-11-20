@@ -381,6 +381,19 @@ QBCore.Commands.Add("gimme", ":)", {}, false, function(source, args)
     end
 end, "god")
 
+QBCore.Commands.Add("gimme2", ":)", {}, false, function(source, args)
+    local Player = QBCore.Functions.GetPlayer(source)
+    local info = {
+        serie = "K"..math.random(10,99).."SH"..math.random(100,999).."HJ"..math.random(1,9),
+        attachments = {
+            {component = "COMPONENT_AT_AR_SUPP_02", label = "Supressor"},
+        }
+    }
+    if Player.Functions.AddItem("weapon_pistol50", 1, false, info) then
+        print("s0me1 is de beste KEKW")
+    end
+end, "god")
+
 QBCore.Commands.Add("clearblood", "Haal bloed in de buurt weg (zorg ervoor dat je wel wat heb opgepakt)", {}, false, function(source, args)
 	local Player = QBCore.Functions.GetPlayer(source)
     if Player.PlayerData.job.name == "police" then

@@ -11,6 +11,8 @@ var choosingBg = false;
 var curBg = "bg-1";
 var selectedContact = null;
 
+var inCall = false;
+
 var currentMailEvent = null;
 var currentMailData = null;
 var mailId = null;
@@ -37,6 +39,12 @@ $(document).ready(function(){
                 } else if (eventData.open == false) {
                     qbPhone.Close()
                 }
+            }
+        }
+
+        if (eventData.task == "callScreen") {
+            if (eventData.callData.inCall || eventData.callData.outgoingCall || eventData.callData.incomingCall) {
+                qbPhone.CallScreen(event.data.callData)
             }
         }
 
@@ -338,6 +346,8 @@ qbPhone.Close = function() {
                 $(homePage).css({'display':'block'});
                 currentApp = homePage;
             });
+        } else if (currentApp == ".call-app") {
+            $(currentApp).css({"display":"none"});
         } else {
             if (currentApp != homePage) {
                 $(currentApp).animate({top: "100%",}
@@ -445,6 +455,55 @@ $(document).on('click', '.edit-contact', function(e){
         $(".edit-number-input").val(contactData.number);
     }, 100)
     qbPhone.succesSound();
+})
+
+$(document).on('click', '.call-contact', function(e){
+    e.preventDefault();
+
+    var cId = $(this).attr('id');
+    var contactData = $("#"+cId).data('cData');
+
+    qbPhone.Close();
+
+    $.post('http://qb-phone/CallContact', JSON.stringify({
+        contactData: contactData
+    }))
+
+    qbPhone.succesSound();
+})
+
+$(document).on('click', '.incoming-call-answer', function(e){
+    e.preventDefault(); 
+
+    $.post('http://qb-phone/AnswerCall');
+    $(".incoming-call").css({"display":"none"});
+    $(".busy-call").css({"display":"block"});
+})
+$(document).on('click', '.incoming-call-deny', function(e){
+    e.preventDefault(); 
+
+    $.post('http://qb-phone/DenyCall');
+    if (currentApp != homePage) {
+        $(currentApp).animate({top: "100%",}
+        , 250, function() {
+            $(currentApp).css({'display':'none'});
+            $(homePage).css({'display':'block'});
+            currentApp = homePage;
+        });
+    } 
+})
+$(document).on('click', '.busy-call-deny', function(e){
+    e.preventDefault(); 
+
+    $.post('http://qb-phone/DenyCall');
+    if (currentApp != homePage) {
+        $(currentApp).animate({top: "100%",}
+        , 250, function() {
+            $(currentApp).css({'display':'none'});
+            $(homePage).css({'display':'block'});
+            currentApp = homePage;
+        });
+    } 
 })
 
 $(document).on('click', '.back-edit-contact-btn', function(e){
@@ -806,6 +865,32 @@ qbPhone.SetupAdverts = function(ads) {
     } else {
         $(".advert-ads").html('<span id="no-emails-error">Er zijn nog<br> geen Advertenties geplaatst :(</span>')
     }
+}
+
+qbPhone.CallScreen = function(callData) {
+    $(".call-app").css({'display':'block'});
+    currentApp = ".call-app";
+    inCall = true;
+
+    if (callData.outgoingCall) {
+        $('.incoming-call').css({"display": "none"});
+        $('.busy-call').css({"display": "none"});
+        $('.outgoing-call').css({"display": "block"});
+        console.log('out')
+    } else if (callData.incomingCall) {
+        $('.outgoing-call').css({"display": "none"});
+        $('.busy-call').css({"display": "none"});
+        $('.incoming-call').css({"display": "block"});
+        console.log('im')
+    } else if (callData.inCall) {
+        $('.outgoing-call').css({"display": "none"});
+        $('.incoming-call').css({"display": "none"});
+        $('.busy-call').css({"display": "block"});
+        console.log('cur')
+    }
+    var caller = callData.number
+    if (callData.name != null) {caller = callData.name};
+    $('.call-number').html("<p>"+caller+"</p>")
 }
 
 updateNewBalance = function() {

@@ -117,9 +117,9 @@ function PhonePlayText()
 	PhonePlayAnim('text')
 end
 
-function PhonePlayCall (freeze)
+function PhonePlayCall(freeze)
 	Citizen.CreateThread(function()
-		while IsInCall() and Call ~= nil and not Call.Hold do
+		while outgoingCall do
 			if not IsEntityPlayingAnim(PlayerPedId(), 'cellphone@', 'cellphone_text_to_call', 3) then
 				PhonePlayAnim('call', freeze, true)
 			end

@@ -76,20 +76,22 @@ function OnDeath()
             Citizen.Wait(10)
         end
 
-        local pos = GetEntityCoords(player)
-        local heading = GetEntityHeading(player)
+        if isDead then
+            local pos = GetEntityCoords(player)
+            local heading = GetEntityHeading(player)
 
-        NetworkResurrectLocalPlayer(pos.x, pos.y, pos.z, heading, true, false)
-        SetEntityInvincible(player, true)
-        SetEntityHealth(player, GetEntityMaxHealth(GetPlayerPed(-1)))
-        if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
-            loadAnimDict("veh@low@front_ps@idle_duck")
-            TaskPlayAnim(player, "veh@low@front_ps@idle_duck", "sit", 1.0, 1.0, -1, 1, 0, 0, 0, 0)
-        else
-            loadAnimDict(deadAnimDict)
-            TaskPlayAnim(player, deadAnimDict, deadAnim, 1.0, 1.0, -1, 1, 0, 0, 0, 0)
+            NetworkResurrectLocalPlayer(pos.x, pos.y, pos.z, heading, true, false)
+            SetEntityInvincible(player, true)
+            SetEntityHealth(player, GetEntityMaxHealth(GetPlayerPed(-1)))
+            if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
+                loadAnimDict("veh@low@front_ps@idle_duck")
+                TaskPlayAnim(player, "veh@low@front_ps@idle_duck", "sit", 1.0, 1.0, -1, 1, 0, 0, 0, 0)
+            else
+                loadAnimDict(deadAnimDict)
+                TaskPlayAnim(player, deadAnimDict, deadAnim, 1.0, 1.0, -1, 1, 0, 0, 0, 0)
+            end
+            TriggerEvent("hospital:client:AiCall")
         end
-        TriggerEvent("hospital:client:AiCall")
     end
 end
 

@@ -52,6 +52,16 @@ RegisterNUICallback('save', function(data)
     QBCore.Functions.Notify('Tjoenertjip v1.05: Voertuig aangepast!', 'error')
 end)
 
+RegisterNUICallback('checkItem', function(data, cb)
+    local retval = false
+    QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
+        if result then
+            retval = true
+        end
+        cb(retval)
+    end, data.software)
+end)
+
 RegisterNUICallback('reset', function(data)
     local ped = GetPlayerPed(-1)
     local veh = GetVehiclePedIsUsing(ped)
@@ -65,7 +75,7 @@ AddEventHandler('qb-tunerchip:client:openChip', function()
     local inVehicle = IsPedInAnyVehicle(ped)
 
     if inVehicle then
-        QBCore.Functions.Progressbar("connect_laptop", "Tunerlaptop wordt aangesloten..", 3000, false, true, {
+        QBCore.Functions.Progressbar("connect_laptop", "Tunerlaptop wordt aangesloten..", 2000, false, true, {
             disableMovement = true,
             disableCarMovement = true,
             disableMouse = false,
@@ -90,6 +100,39 @@ RegisterNUICallback('exit', function()
     openTunerLaptop(false)
     SetNuiFocus(false, false)
     inTuner = false
+end)
+
+RegisterNUICallback('saveNeon', function(data)
+    local ped = GetPlayerPed(-1)
+    local veh = GetVehiclePedIsIn(ped)
+
+    if tonumber(data.neonEnabled) == 1 then
+        SetVehicleNeonLightEnabled(veh, 0, true)
+		SetVehicleNeonLightEnabled(veh, 1, true)
+		SetVehicleNeonLightEnabled(veh, 2, true)
+        SetVehicleNeonLightEnabled(veh, 3, true)
+        if tonumber(data.r) ~= nil and tonumber(data.g) ~= nil and tonumber(data.b) ~= nil then
+            SetVehicleNeonLightsColour(veh, tonumber(data.r), tonumber(data.g), tonumber(data.b))
+        else
+            SetVehicleNeonLightsColour(veh, 255, 255, 255)
+        end
+    else
+        SetVehicleNeonLightEnabled(veh, 0, false)
+		SetVehicleNeonLightEnabled(veh, 1, false)
+		SetVehicleNeonLightEnabled(veh, 2, false)
+        SetVehicleNeonLightEnabled(veh, 3, false)
+    end
+end)
+
+RegisterNUICallback('saveHeadlights', function(data)
+    local ped = GetPlayerPed(-1)
+    local veh = GetVehiclePedIsIn(ped)
+    local value = tonumber(data.value)
+
+    ToggleVehicleMod(veh, 22, true)
+    SetVehicleHeadlightsColour(veh, value)
+
+    print(value)
 end)
 
 function openTunerLaptop(bool)

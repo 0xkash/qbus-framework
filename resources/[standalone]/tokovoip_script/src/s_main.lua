@@ -21,7 +21,7 @@ function addPlayerToRadio(channelId, playerServerId, type)
 		if type == "radio" then
 			channels[channelId] = {id = channelId, name = "Frequentie " .. channelId .. ".00 MHz", subscribers = {}};
 		else
-			channels[channelId] = {id = channelId, name = "Call with " .. channelId, subscribers = {}};
+			channels[channelId] = {id = channelId, name = "Ingesprek, ID: " .. channelId, subscribers = {}};
 		end
 	end
 	if (not channels[channelId].id) then

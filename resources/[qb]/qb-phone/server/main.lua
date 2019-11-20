@@ -3,6 +3,8 @@ TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 
 --CODE
 
+local callId = 501
+
 local Adverts = {}
 
 Citizen.CreateThread(function()
@@ -211,3 +213,86 @@ function convertDate(vardate)
     local y,m,d,h,i,s = string.match(vardate, '(%d+)-(%d+)-(%d+) (%d+):(%d+):(%d+)')
     return string.format('%s/%s/%s %s:%s:%s', d,m,y,h,i,s)
 end
+
+QBCore.Functions.CreateCallback('qb-phone:server:getContactName', function(source, cb, number)
+    local src = source
+    local plyCid = QBCore.Functions.GetPlayer(src)
+
+    QBCore.Functions.ExecuteSql('SELECT `name` FROM `player_contacts` WHERE `citizenid` = "'..plyCid.PlayerData.citizenid..'" AND `number` = "'..number..'"', function(result)
+        if result[1] ~= nil then
+            cb(result[1].name)
+        else
+            cb(nil)
+        end
+    end)
+end)
+
+RegisterServerEvent('qb-phone:server:CallContact')
+AddEventHandler('qb-phone:server:CallContact', function(callData, caller)
+    local src = source
+    local ply = QBCore.Functions.GetPlayer(src)
+
+    QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `charinfo` LIKE '%"..callData.number.."%'", function(result)
+        if result[1] ~= nil then
+            local target = result[1]
+            local targetPlayer = QBCore.Functions.GetPlayerByCitizenId(target.citizenid)
+
+            if targetPlayer ~= nil then
+                TriggerClientEvent('qb-phone:client:IncomingCall', targetPlayer.PlayerData.source, callData, caller)
+            end
+        end
+    end)
+end)
+
+QBCore.Commands.Add("opnemen", "Inkomend oproep beantwoorden", {}, false, function(source, args)
+    local Player = QBCore.Functions.GetPlayer(source)
+	TriggerClientEvent('qb-phone:client:AnswerCall', source)
+end)
+
+RegisterServerEvent('qb-phone:server:AnswerCall')
+AddEventHandler('qb-phone:server:AnswerCall', function(callData)
+    local src = source
+    local ply = QBCore.Functions.GetPlayer(src)
+
+    QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `charinfo` LIKE '%"..callData.number.."%'", function(result)
+        if result[1] ~= nil then
+            local target = result[1]
+            local targetPlayer = QBCore.Functions.GetPlayerByCitizenId(target.citizenid)
+
+            print(targetPlayer.PlayerData.source)
+
+            if targetPlayer ~= nil then
+                TriggerClientEvent('qb-phone:client:AnswerCallOther', targetPlayer.PlayerData.source)
+            end
+        end
+    end)
+end)
+
+RegisterServerEvent('qb-phone:server:HangupCall')
+AddEventHandler('qb-phone:server:HangupCall', function(callData)
+    local src = source
+    local ply = QBCore.Functions.GetPlayer(src)
+
+    QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `charinfo` LIKE '%"..callData.number.."%'", function(result)
+        if result[1] ~= nil then
+            local target = result[1]
+            local targetPlayer = QBCore.Functions.GetPlayerByCitizenId(target.citizenid)
+
+            if targetPlayer ~= nil then
+                TriggerClientEvent('qb-phone:client:HangupCallOther', targetPlayer.PlayerData.source, callData)
+            end
+        end
+    end)
+end)
+
+QBCore.Commands.Add("ophangen", "Oproep beeindigen", {}, false, function(source, args)
+    local Player = QBCore.Functions.GetPlayer(source)
+	TriggerClientEvent('qb-phone:client:HangupCall', source)
+end)
+
+QBCore.Commands.Add("bel", "Oproep beeindigen", {}, true, function(source, args)
+    local Player = QBCore.Functions.GetPlayer(source)
+    if args[1] ~= nil then
+        TriggerClientEvent('qb-phone:client:CallNumber', source, args[1])
+    end
+end)

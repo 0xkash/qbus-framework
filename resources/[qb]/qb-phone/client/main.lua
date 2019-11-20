@@ -13,7 +13,16 @@ QBCore = nil
 
 
 local phoneMeta = {}
-local isLoggedIn = false
+local isLoggedIn = true
+
+local callData = {
+    number = nil,
+    name = nil,
+    callId = 0,
+    inCall = false,
+    incomingCall = false,
+    outgoingCall = false
+}
 
 local defaultPhoneMeta = {
     ["settings"] = {
@@ -58,6 +67,14 @@ AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     end)
 end)
 
+Citizen.CreateThread(function()
+    Wait(500)
+    setPhoneMeta()
+    QBCore.Functions.TriggerCallback('qb-phone:server:getUserContacts', function(result)
+        playerContacts = result
+    end)
+end)
+
 function setPhoneMeta()
     phoneMeta = QBCore.Functions.GetPlayerData().metadata["phone"]
 
@@ -85,8 +102,6 @@ function setupContacts()
         pContacts = playerContacts,
         pData = QBCore.Functions.GetPlayerData(),
     })
-
-    print(json.encode(playerContacts))
 end
 
 RegisterNUICallback('getBankData', function()
@@ -261,6 +276,13 @@ function openPhone(bool)
             apps = Config.PhoneApps
         })
 
+        if callData.inCall or callData.outgoingCall or callData.incomingCall then
+            SendNUIMessage({
+                task = "callScreen",
+                callData = callData
+            })
+        end
+
         PhonePlayIn()
     else
         PhonePlayOut()
@@ -345,4 +367,271 @@ RegisterNUICallback('clickMailButton', function(data)
     TriggerEvent(data.buttonEvent, data.buttonData)
 
     TriggerServerEvent('qb-phone:server:clearButtonData', data.mailId)
+end)
+
+------------------------------
+---- Call Phone Part YEET ----
+------------------------------
+
+RegisterNUICallback('CallContact', function(data)
+    local contactData = data.contactData
+
+    local callTime = 0
+    
+    local pData = QBCore.Functions.GetPlayerData()
+
+    callData.number = contactData.number
+    callData.name = contactData.name
+    callData.callId = math.random(500, 1000) + math.random(1, 120)
+    callData.inCall = false
+    callData.incomingCall = false
+    callData.outgoingCall = true
+
+    QBCore.Functions.Notify('Oproep gestart met '..callData.name, 'primary', 2500)
+
+    PhonePlayAnim('call')
+
+    Citizen.CreateThread(function()
+        for i = 1, 10, 1 do
+            if callData.outgoingCall then
+                Citizen.Wait(3000)
+                TriggerServerEvent("InteractSound_SV:PlayOnSource", "demo", 0.1)
+                QBCore.Functions.Notify('Oproep is bezig, /ophangen om gesprek te stoppen', 'primary', 2000)
+                callTime = i
+                if callTime == 10 then
+                    Citizen.Wait(3000)
+                    QBCore.Functions.Notify('Er word niet opgenomen..', 'error', 3500)
+                    callData.number = nil
+                    callData.name = nil
+                    callData.callId = 0
+                    callData.inCall = false
+                    callData.incomingCall = false
+                    callData.outgoingCall = false
+
+                    PhonePlayOut()
+                    break
+                end
+            else
+                break
+            end
+        end
+    end)
+
+    TriggerServerEvent('qb-phone:server:CallContact', callData, pData.charinfo.phone)
+end)
+
+RegisterNetEvent('qb-phone:client:CallNumber')
+AddEventHandler('qb-phone:client:CallNumber', function(number)
+    if not callData.outgoingCall or not callData.inComingCall or not callData.inCall then
+        local callTime = 0
+        
+        local pData = QBCore.Functions.GetPlayerData()
+
+        callData.number = number
+        callData.name = nil
+        callData.callId = math.random(500, 1000) + math.random(1, 120)
+        callData.inCall = false
+        callData.incomingCall = false
+        callData.outgoingCall = true
+
+        QBCore.Functions.Notify('Oproep gestart met '..callData.number, 'primary', 2500)
+
+        PhonePlayAnim('call')
+
+        if inPhone then
+            SendNUIMessage({
+                task = "callScreen",
+                callData = callData
+            })
+        end
+
+        Citizen.CreateThread(function()
+            for i = 1, 10, 1 do
+                if callData.outgoingCall then
+                    TriggerServerEvent("InteractSound_SV:PlayOnSource", "demo", 0.1)
+                    QBCore.Functions.Notify('Oproep is bezig, /ophangen om gesprek te stoppen', 'primary', 2000)
+                    callTime = i
+                    if callTime == 5 then
+                        Citizen.Wait(3000)
+                        QBCore.Functions.Notify('Er word niet opgenomen..', 'error', 3500)
+                        callData.number = nil
+                        callData.name = nil
+                        callData.callId = 0
+                        callData.inCall = false
+                        callData.incomingCall = false
+                        callData.outgoingCall = false
+
+                        PhonePlayOut()
+                    end
+                else
+                    break
+                end
+                Citizen.Wait(3000)
+            end
+        end)
+
+        TriggerServerEvent('qb-phone:server:CallContact', callData, pData.charinfo.phone)
+    end
+end)
+
+RegisterNetEvent('qb-phone:client:IncomingCall')
+AddEventHandler('qb-phone:client:IncomingCall', function(cData, caller)
+    if not callData.inCall or not callData.incomingCall then
+        callData.number = caller
+        callData.callId = cData.callId
+        callData.incomingCall = true
+
+        if inPhone then
+            SendNUIMessage({
+                task = "callScreen",
+                callData = callData
+            })
+        end
+        
+        inComingCall()
+    end
+end)
+
+function inComingCall()
+    QBCore.Functions.TriggerCallback('qb-phone:server:getContactName', function(name)
+        callData.name = name
+
+        local number = callData.number
+        if callData.name ~= nil then number = callData.name end
+        Citizen.CreateThread(function()
+            for i = 1, 10, 1 do
+                if callData.incomingCall then
+                    TriggerServerEvent("InteractSound_SV:PlayOnSource", "demo", 0.1)
+                    QBCore.Functions.Notify('Inkomend gesprek van '..number..', /opnemen of /ophangen', 'primary', 2000)
+                else
+                    break
+                end
+                Citizen.Wait(3000)
+            end
+        end)
+    end, callData.number)
+end
+
+RegisterNUICallback('AnswerCall', function()
+    TriggerEvent('qb-phone:client:AnswerCall')
+end)
+
+RegisterNUICallback('DenyCall', function()
+    TriggerEvent('qb-phone:client:HangupCall')
+end)
+
+RegisterNetEvent('qb-phone:client:AnswerCall')
+AddEventHandler('qb-phone:client:AnswerCall', function()
+    if callData.incomingCall then
+        if not callData.inCall then
+            callData.inCall = true
+            callData.incomingCall = false
+
+            exports.tokovoip_script:addPlayerToRadio(callData.callId, 'Telefoon')
+            TriggerServerEvent('qb-phone:server:AnswerCall', callData)
+
+            if inPhone then
+                SendNUIMessage({
+                    task = "callScreen",
+                    callData = callData
+                })
+            end
+        else
+            QBCore.Functions.Notify('Je bent al in gesprek..', 'error')
+        end
+    else
+        QBCore.Functions.Notify('Je hebt geen inkomend oproep..', 'error')
+    end
+end)
+
+RegisterNetEvent('qb-phone:client:AnswerCallOther')
+AddEventHandler('qb-phone:client:AnswerCallOther', function()
+    callData.inCall = true
+    callData.outgoingCall = false
+
+    if inPhone then
+        SendNUIMessage({
+            task = "callScreen",
+            callData = callData
+        })
+    end
+
+    exports.tokovoip_script:addPlayerToRadio(callData.callId, 'Telefoon')
+end)
+
+RegisterNetEvent('qb-phone:client:HangupCallOther')
+AddEventHandler('qb-phone:client:HangupCallOther', function(cData)
+    if cData.callId == callData.callId then
+        exports.tokovoip_script:removePlayerFromRadio(callData.callId)
+        QBCore.Functions.Notify('Het gesprek is beëindigd')
+
+        callData.number = nil
+        callData.name = nil
+        callData.callId = 0
+        callData.inCall = false
+        callData.incomingCall = false
+        callData.outgoingCall = false
+
+        if inPhone then
+            SendNUIMessage({
+                task = "callScreen",
+                callData = callData
+            })
+        end
+
+        PhonePlayOut()
+    end
+end)
+
+RegisterNetEvent('qb-phone:client:HangupCall')
+AddEventHandler('qb-phone:client:HangupCall', function()
+    if callData.inCall then
+        exports.tokovoip_script:removePlayerFromRadio(callData.callId)
+
+        TriggerServerEvent('qb-phone:server:HangupCall', callData)
+        QBCore.Functions.Notify('Het gesprek is beëindigd')
+
+        callData.number = nil
+        callData.name = nil
+        callData.callId = 0
+        callData.inCall = false
+        callData.incomingCall = false
+        callData.outgoingCall = false
+
+        PhonePlayOut()
+    elseif callData.outgoingCall then
+
+        TriggerServerEvent('qb-phone:server:HangupCall', callData)
+        QBCore.Functions.Notify('Het gesprek is beëindigd')
+
+        callData.number = nil
+        callData.name = nil
+        callData.callId = 0
+        callData.inCall = false
+        callData.incomingCall = false
+        callData.outgoingCall = false
+
+        PhonePlayOut()
+    elseif callData.incomingCall then
+        TriggerServerEvent('qb-phone:server:HangupCall', callData)
+        QBCore.Functions.Notify('Het gesprek is beëindigd')
+
+        callData.number = nil
+        callData.name = nil
+        callData.callId = 0
+        callData.inCall = false
+        callData.incomingCall = false
+        callData.outgoingCall = false
+
+        PhonePlayOut()
+    else
+        QBCore.Functions.Notify('Je zit niet in een gesprek..', 'error')
+    end
+
+    if inPhone then
+        SendNUIMessage({
+            task = "callScreen",
+            callData = callData
+        })
+    end
 end)
