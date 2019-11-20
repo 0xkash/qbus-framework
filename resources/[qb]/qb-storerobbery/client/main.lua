@@ -126,7 +126,7 @@ AddEventHandler('lockpicks:UseLockpick', function()
 
         if dist <= 1 and not Config.Registers[k].robbed then
             QBCore.Functions.TriggerCallback('police:GetCops', function(cops)
-                if cops >= 3 then
+                if cops >= 1 then
                     QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
                         if result then
                             lockpick(true)
@@ -146,9 +146,9 @@ AddEventHandler('lockpicks:UseLockpick', function()
                             QBCore.Functions.Notify("Het lijkt erop dat je een schroevendraaier mist..", "error")
                         end
                     end, "screwdriverset")
+                else
+                    QBCore.Functions.Notify("Niet genoeg politie.. (3 nodig)", "error")
                 end
-            else
-                QBCore.Functions.Notify("Niet genoeg politie.. (3 nodig)", "error")
             end)
         end
     end

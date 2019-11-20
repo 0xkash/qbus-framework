@@ -15,7 +15,7 @@ Citizen.CreateThread(function()
             local instructions = CreateInstuctionScaleform("instructional_buttons")
             DrawScaleformMovieFullscreen(instructions, 255, 255, 255, 255, 0)
             SetTimecycleModifier("scanline_cam_cheap")
-            SetTimecycleModifierStrength(2.0)
+            SetTimecycleModifierStrength(1.0)
 
             if Config.SecurityCameras.hideradar then
                 DisplayRadar(false)

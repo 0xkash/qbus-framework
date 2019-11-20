@@ -182,7 +182,7 @@ function MakeCall(ped, male, street1, street2)
         sprite = 280,
         color = 4,
         scale = 0.9,
-        text = "180 - Gewond persoon"
+        text = "Gewond persoon"
     }
 
     if math.random(10) > 5 then

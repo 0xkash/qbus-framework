@@ -33,31 +33,13 @@ Citizen.CreateThread(function()
         local dist
 
         if QBCore ~= nil then
-            requiredItems = {
-                [1] = {name = QBCore.Shared.Items["electronickit"]["name"], image = QBCore.Shared.Items["electronickit"]["image"]},
-                [2] = {name = QBCore.Shared.Items["trojan_usb"]["name"], image = QBCore.Shared.Items["trojan_usb"]["image"]},
-            }
             inRange = false
 
             for k, v in pairs(Config.SmallBanks) do
                 dist = GetDistanceBetweenCoords(pos, Config.SmallBanks[k]["coords"]["x"], Config.SmallBanks[k]["coords"]["y"], Config.SmallBanks[k]["coords"]["z"])
-
-                if dist < 30 then
+                if dist < 15 then
                     closestBank = k
                     inRange = true
-                    if dist < 1 then
-                        if not requiredItemsShowed then
-                            requiredItemsShowed = true
-                            TriggerEvent('inventory:client:requiredItems', requiredItems, true)
-                        end
-                    end
-                end
-
-                if dist > 1 then
-                    if requiredItemsShowed then
-                        requiredItemsShowed = false
-                        TriggerEvent('inventory:client:requiredItems', requiredItems, false)
-                    end
                 end
             end
 
@@ -72,12 +54,31 @@ Citizen.CreateThread(function()
 end)
 
 Citizen.CreateThread(function()
+    Citizen.Wait(2000)
+    local requiredItems = {
+        [1] = {name = QBCore.Shared.Items["electronickit"]["name"], image = QBCore.Shared.Items["electronickit"]["image"]},
+        [2] = {name = QBCore.Shared.Items["trojan_usb"]["name"], image = QBCore.Shared.Items["trojan_usb"]["image"]},
+    }
     while true do
         local ped = GetPlayerPed(-1)
         local pos = GetEntityCoords(ped)
 
         if QBCore ~= nil then
             if closestBank ~= nil then
+                if not Config.SmallBanks[closestBank]["isOpened"] then
+                    local dist = GetDistanceBetweenCoords(pos, Config.SmallBanks[closestBank]["coords"]["x"], Config.SmallBanks[closestBank]["coords"]["y"], Config.SmallBanks[closestBank]["coords"]["z"])
+                    if dist < 1 then
+                        if not requiredItemsShowed then
+                            requiredItemsShowed = true
+                            TriggerEvent('inventory:client:requiredItems', requiredItems, true)
+                        end
+                    else
+                        if requiredItemsShowed then
+                            requiredItemsShowed = false
+                            TriggerEvent('inventory:client:requiredItems', requiredItems, false)
+                        end
+                    end
+                end
                 if Config.SmallBanks[closestBank]["isOpened"] then
                     for k, v in pairs(Config.SmallBanks[closestBank]["lockers"]) do
                         local lockerDist = GetDistanceBetweenCoords(pos, Config.SmallBanks[closestBank]["lockers"][k].x, Config.SmallBanks[closestBank]["lockers"][k].y, Config.SmallBanks[closestBank]["lockers"][k].z)
@@ -107,7 +108,7 @@ Citizen.CreateThread(function()
             end
         end
 
-        Citizen.Wait(3)
+        Citizen.Wait(1)
     end
 end)
 
@@ -138,7 +139,7 @@ AddEventHandler('electronickit:UseElectronickit', function()
 
                 if dist < 1.5 then
                     QBCore.Functions.TriggerCallback('police:GetCops', function(cops)
-                        if cops >= 0 then
+                        if cops >= 4 then
                             if not Config.SmallBanks[closestBank]["isOpened"] then 
                                 QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
                                     if result then 
@@ -155,7 +156,7 @@ AddEventHandler('electronickit:UseElectronickit', function()
                                         }, {}, {}, function() -- Done
                                             StopAnimTask(GetPlayerPed(-1), "anim@gangops@facility@servers@", "hotwire", 1.0)
                                             TriggerEvent("mhacking:show")
-                                            TriggerEvent("mhacking:start", math.random(5, 9), --[[math.random(10, 18)]]60, OnHackDone)
+                                            TriggerEvent("mhacking:start", math.random(5, 9), math.random(10, 18), OnHackDone)
                                             if not copsCalled then
                                                 local s1, s2 = Citizen.InvokeNative(0x2EB41072B4C1E4C0, pos.x, pos.y, pos.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
                                                 local street1 = GetStreetNameFromHashKey(s1)
@@ -201,15 +202,15 @@ AddEventHandler('qb-bankrobbery:client:setBankState', function(bankId, state)
 end)
 
 function OpenBankDoor(bankId)
-    local object = GetClosestObjectOfType(Config.SmallBanks[bankId]["coords"]["x"], Config.SmallBanks[bankId]["coords"]["y"], Config.SmallBanks[bankId]["coords"]["z"], 5.0, `v_ilev_gb_vauldr`, false, false, false)
+    local object = GetClosestObjectOfType(Config.SmallBanks[bankId]["coords"]["x"], Config.SmallBanks[bankId]["coords"]["y"], Config.SmallBanks[bankId]["coords"]["z"], 5.0, Config.SmallBanks[bankId]["object"], false, false, false)
     local timeOut = 10
-    local entHeading = 250.0
+    local entHeading = Config.SmallBanks[bankId]["heading"].closed
 
     if object ~= 0 then
         Citizen.CreateThread(function()
             while true do
 
-                if entHeading ~= 160.0 then
+                if entHeading ~= Config.SmallBanks[bankId]["heading"].open then
                     SetEntityHeading(object, entHeading - 10)
                     entHeading = entHeading - 0.5
                 else
@@ -224,9 +225,8 @@ end
 
 function ResetBankDoors()
     for k, v in pairs(Config.SmallBanks) do
-        local object = GetClosestObjectOfType(Config.SmallBanks[k]["coords"]["x"], Config.SmallBanks[k]["coords"]["y"], Config.SmallBanks[k]["coords"]["z"], 5.0, `v_ilev_gb_vauldr`, false, false, false)
-
-        SetEntityHeading(object, 250.0)
+        local object = GetClosestObjectOfType(Config.SmallBanks[k]["coords"]["x"], Config.SmallBanks[k]["coords"]["y"], Config.SmallBanks[k]["coords"]["z"], 5.0, Config.SmallBanks[k]["object"], false, false, false)
+        SetEntityHeading(object, Config.SmallBanks[k]["heading"].closed)
     end
 end
 
