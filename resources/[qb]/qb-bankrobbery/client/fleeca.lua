@@ -15,6 +15,16 @@ end)
 local closestBank = nil
 local inRange
 local requiredItemsShowed = false
+local copsCalled = false
+
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(1000 * 60 * 5)
+        if copsCalled then
+            copsCalled = false
+        end
+    end
+end)
 
 Citizen.CreateThread(function()
     while true do
@@ -75,11 +85,16 @@ Citizen.CreateThread(function()
                             if not Config.SmallBanks[closestBank]["lockers"][k]["isOpened"] then
                                 if lockerDist < 5 then
                                     DrawMarker(2, Config.SmallBanks[closestBank]["lockers"][k].x, Config.SmallBanks[closestBank]["lockers"][k].y, Config.SmallBanks[closestBank]["lockers"][k].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 0.1, 0.05, 255, 255, 255, 255, false, false, false, 1, false, false, false)
-
                                     if lockerDist < 0.5 then
                                         DrawText3Ds(Config.SmallBanks[closestBank]["lockers"][k].x, Config.SmallBanks[closestBank]["lockers"][k].y, Config.SmallBanks[closestBank]["lockers"][k].z + 0.3, '[E] Kluis openbreken')
                                         if IsControlJustPressed(0, Keys["E"]) then
-                                            openLocker(closestBank, k)
+                                            QBCore.Functions.TriggerCallback('police:GetCops', function(cops)
+                                                if cops >= 4 then
+                                                    openLocker(closestBank, k)
+                                                else
+                                                    QBCore.Functions.Notify("Niet genoeg politie.. (4 nodig)", "error")
+                                                end
+                                            end)
                                         end
                                     end
                                 end
@@ -122,34 +137,51 @@ AddEventHandler('electronickit:UseElectronickit', function()
                 local dist = GetDistanceBetweenCoords(pos, Config.SmallBanks[closestBank]["coords"]["x"], Config.SmallBanks[closestBank]["coords"]["y"], Config.SmallBanks[closestBank]["coords"]["z"])
 
                 if dist < 1.5 then
-                    if not Config.SmallBanks[closestBank]["isOpened"] then 
-                        QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
-                            if result then 
-                                TriggerEvent('inventory:client:requiredItems', requiredItems, false)
-                                QBCore.Functions.Progressbar("hack_gate", "Electronic kit aansluiten..", math.random(5000, 10000), false, true, {
-                                    disableMovement = true,
-                                    disableCarMovement = true,
-                                    disableMouse = false,
-                                    disableCombat = true,
-                                }, {
-                                    animDict = "anim@gangops@facility@servers@",
-                                    anim = "hotwire",
-                                    flags = 16,
-                                }, {}, {}, function() -- Done
-                                    StopAnimTask(GetPlayerPed(-1), "anim@gangops@facility@servers@", "hotwire", 1.0)
-                                    TriggerEvent("mhacking:show")
-                                    TriggerEvent("mhacking:start", math.random(5, 9), --[[math.random(10, 18)]]60, OnHackDone)
-                                end, function() -- Cancel
-                                    StopAnimTask(GetPlayerPed(-1), "anim@gangops@facility@servers@", "hotwire", 1.0)
-                                    QBCore.Functions.Notify("Geannuleerd..", "error")
-                                end)
+                    QBCore.Functions.TriggerCallback('police:GetCops', function(cops)
+                        if cops >= 0 then
+                            if not Config.SmallBanks[closestBank]["isOpened"] then 
+                                QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
+                                    if result then 
+                                        TriggerEvent('inventory:client:requiredItems', requiredItems, false)
+                                        QBCore.Functions.Progressbar("hack_gate", "Electronic kit aansluiten..", math.random(5000, 10000), false, true, {
+                                            disableMovement = true,
+                                            disableCarMovement = true,
+                                            disableMouse = false,
+                                            disableCombat = true,
+                                        }, {
+                                            animDict = "anim@gangops@facility@servers@",
+                                            anim = "hotwire",
+                                            flags = 16,
+                                        }, {}, {}, function() -- Done
+                                            StopAnimTask(GetPlayerPed(-1), "anim@gangops@facility@servers@", "hotwire", 1.0)
+                                            TriggerEvent("mhacking:show")
+                                            TriggerEvent("mhacking:start", math.random(5, 9), --[[math.random(10, 18)]]60, OnHackDone)
+                                            if not copsCalled then
+                                                local s1, s2 = Citizen.InvokeNative(0x2EB41072B4C1E4C0, pos.x, pos.y, pos.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
+                                                local street1 = GetStreetNameFromHashKey(s1)
+                                                local street2 = GetStreetNameFromHashKey(s2)
+                                                local streetLabel = street1
+                                                if street2 ~= nil then 
+                                                    streetLabel = streetLabel .. " " .. street2
+                                                end
+                                                TriggerServerEvent("qb-bankrobbery:server:callCops", "small", closestBank, streetLabel, pos)
+                                                copsCalled = true
+                                            end
+                                        end, function() -- Cancel
+                                            StopAnimTask(GetPlayerPed(-1), "anim@gangops@facility@servers@", "hotwire", 1.0)
+                                            QBCore.Functions.Notify("Geannuleerd..", "error")
+                                        end)
+                                    else
+                                        QBCore.Functions.Notify("Je mist een item..", "error")
+                                    end
+                                end, "trojan_usb")
                             else
-                                QBCore.Functions.Notify("Je mist een item..", "error")
+                                QBCore.Functions.Notify("Het lijkt erop dat de bank al open is..", "error")
                             end
-                        end, "trojan_usb")
-                    else
-                        QBCore.Functions.Notify("Het lijkt erop dat de bank al open is..", "error")
-                    end
+                        else
+                            QBCore.Functions.Notify("Niet genoeg politie.. (4 nodig)", "error")
+                        end
+                    end)
                 end
             end
         else
@@ -225,7 +257,39 @@ end
 RegisterNetEvent('qb-bankrobbery:client:setLockerState')
 AddEventHandler('qb-bankrobbery:client:setLockerState', function(bankId, lockerId, state, bool)
     Config.SmallBanks[bankId]["lockers"][lockerId][state] = bool
-    print(Config.SmallBanks[bankId]["lockers"][lockerId][state])
+end)
+
+RegisterNetEvent('qb-bankrobbery:client:robberyCall')
+AddEventHandler('qb-bankrobbery:client:robberyCall', function(type, key, streetLabel, coords)
+    local cameraId = 4
+    local bank = "Fleeca"
+    if type == "small" then
+        cameraId = Config.SmallBanks[key]["camId"]
+        bank = "Fleeca"
+    end
+    PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
+    TriggerEvent("chatMessage", "112-MELDING", "error", "Poging bankoverval bij "..bank.. " " ..streetLabel.." (CAMERA ID: "..cameraId..")")
+    local transG = 250
+    local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
+    SetBlipSprite(blip, 487)
+    SetBlipColour(blip, 4)
+    SetBlipDisplay(blip, 4)
+    SetBlipAlpha(blip, transG)
+    SetBlipScale(blip, 1.2)
+    SetBlipFlashes(blip, true)
+    BeginTextCommandSetBlipName('STRING')
+    AddTextComponentString("112: Bankoverval")
+    EndTextCommandSetBlipName(blip)
+    while transG ~= 0 do
+        Wait(180 * 4)
+        transG = transG - 1
+        SetBlipAlpha(blip, transG)
+        if transG == 0 then
+            SetBlipSprite(blip, 2)
+            RemoveBlip(blip)
+            return
+        end
+    end
 end)
 
 function OnHackDone(success, timeremaining)

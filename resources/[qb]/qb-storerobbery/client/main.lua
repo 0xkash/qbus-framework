@@ -68,10 +68,10 @@ Citizen.CreateThread(function()
                     inRange = true
                     if dist < 1.5 then
                         if not Config.Safes[safe].robbed then
-                            QBCore.Functions.TriggerCallback('police:GetCops', function(result)
-                                if result >= 3 then
-                                    DrawText3Ds(Config.Safes[safe].x, Config.Safes[safe].y, Config.Safes[safe].z, '~g~E~w~ - Combinatie proberen')
-                                    if IsControlJustPressed(0, Keys["E"]) then
+                            DrawText3Ds(Config.Safes[safe].x, Config.Safes[safe].y, Config.Safes[safe].z, '~g~E~w~ - Combinatie proberen')
+                            if IsControlJustPressed(0, Keys["E"]) then
+                                QBCore.Functions.TriggerCallback('police:GetCops', function(cops)
+                                    if cops >= 3 then
                                         SetNuiFocus(true, true)
                                         if Config.Safes[safe].type == "keypad" then
                                             SendNUIMessage({
@@ -98,9 +98,11 @@ Citizen.CreateThread(function()
                                             TriggerServerEvent("qb-storerobbery:server:callCops", "safe", currentSafe, streetLabel, pos)
                                             copsCalled = true
                                         end
+                                    else
+                                        QBCore.Functions.Notify("Niet genoeg politie.. (3 nodig)", "error")
                                     end
-                                end
-                            end)
+                                end)
+                            end
                         else
                             DrawText3Ds(Config.Safes[safe].x, Config.Safes[safe].y, Config.Safes[safe].z, 'Kluis opengemaakt..')
                         end
@@ -123,8 +125,8 @@ AddEventHandler('lockpicks:UseLockpick', function()
         local dist = GetDistanceBetweenCoords(pos, Config.Registers[k].x, Config.Registers[k].y, Config.Registers[k].z)
 
         if dist <= 1 and not Config.Registers[k].robbed then
-            QBCore.Functions.TriggerCallback('police:GetCops', function(result)
-                if result >= 3 then
+            QBCore.Functions.TriggerCallback('police:GetCops', function(cops)
+                if cops >= 3 then
                     QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
                         if result then
                             lockpick(true)
@@ -145,6 +147,8 @@ AddEventHandler('lockpicks:UseLockpick', function()
                         end
                     end, "screwdriverset")
                 end
+            else
+                QBCore.Functions.Notify("Niet genoeg politie.. (3 nodig)", "error")
             end)
         end
     end

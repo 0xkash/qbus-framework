@@ -458,4 +458,20 @@ QB.Doors = {
 		distance = 1.5,
 		size = 2
 	},
+
+	----------------
+	-- Fleeca Banks
+	----------------
+	-- Door 1
+	{
+		objName = 'v_ilev_gb_vaubar',
+		objCoords  = vector3(314.61, -285.82, 54.49),
+		textCoords = vector3(313.3, -285.45, 54.49),
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		pickable = true,
+		distance = 1.5,
+		size = 2
+	},
 }

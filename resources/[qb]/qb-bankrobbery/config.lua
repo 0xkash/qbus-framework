@@ -43,6 +43,7 @@ Config.SmallBanks = {
             ["y"] = -284.49,
             ["z"] = 54.16,
         },
+        ["camId"] = 21,
         ["isOpened"] = false,
         ["lockers"] = {
             [1] = {
