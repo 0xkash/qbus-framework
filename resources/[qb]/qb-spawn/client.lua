@@ -214,6 +214,11 @@ Citizen.CreateThread(function()
     end
 end)
 
+RegisterNetEvent('qb-houses:client:setHouseConfig')
+AddEventHandler('qb-houses:client:setHouseConfig', function(houseConfig)
+    Config.Houses = houseConfig
+end)
+
 RegisterNetEvent('qb-spawn:client:setupSpawns')
 AddEventHandler('qb-spawn:client:setupSpawns', function(cData, new, apps)
     if not new then

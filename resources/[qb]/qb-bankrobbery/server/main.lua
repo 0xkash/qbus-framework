@@ -73,3 +73,13 @@ AddEventHandler('qb-bankrobbery:server:setTimeout', function()
         end)
     end
 end)
+
+RegisterServerEvent('qb-bankrobbery:server:callCops')
+AddEventHandler('qb-bankrobbery:server:callCops', function(type, bank, streetLabel, coords)
+    local players = QBCore.Functions.GetPlayers()
+    for source, Player in pairs(players) do
+		if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
+			TriggerClientEvent("qb-bankrobbery:client:robberyCall", Player.PlayerData.source, type, bank, streetLabel, coords)
+		end
+	end
+end)

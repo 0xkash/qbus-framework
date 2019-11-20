@@ -15,7 +15,7 @@ closesthouse = nil
 hasKey = false
 isOwned = false
 
-isLoggedIn = true
+isLoggedIn = false
 local contractOpen = false
 
 local cam = nil
@@ -84,7 +84,6 @@ local data = nil
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
-    TriggerServerEvent('qb-houses:client:setHouses')
     isLoggedIn = true
     SetClosestHouse()
     TriggerEvent('qb-houses:client:setupHouseBlips')
@@ -104,44 +103,9 @@ AddEventHandler('QBCore:Client:OnPlayerUnload', function()
     end
 end)
 
-RegisterNetEvent('qb-houses:client:setHouseConfig')
-AddEventHandler('qb-houses:client:setHouseConfig', function(houseConfig)
-    Config.Houses = houseConfig
-end)
-
 RegisterNetEvent('qb-houses:client:lockHouse')
 AddEventHandler('qb-houses:client:lockHouse', function(bool, house)
     Config.Houses[house].locked = bool
-end)
-
-RegisterNetEvent('qb-houses:client:createHouses')
-AddEventHandler('qb-houses:client:createHouses', function(price, tier)
-    local pos = GetEntityCoords(GetPlayerPed(-1))
-    local heading = GetEntityHeading(GetPlayerPed(-1))
-    local s1, s2 = Citizen.InvokeNative(0x2EB41072B4C1E4C0, pos.x, pos.y, pos.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
-    local street = GetStreetNameFromHashKey(s1)
-    local coords = {
-        enter 	= { x = pos.x, y = pos.y, z = pos.z, h = heading},
-        cam 	= { x = pos.x, y = pos.y, z = pos.z, h = heading, yaw = -10.00},
-    }
-    TriggerServerEvent('qb-houses:server:addNewHouse', street, coords, price, tier)
-end)
-
-RegisterNetEvent('qb-houses:client:addGarage')
-AddEventHandler('qb-houses:client:addGarage', function()
-    if closesthouse ~= nil then 
-        local pos = GetEntityCoords(GetPlayerPed(-1))
-        local heading = GetEntityHeading(GetPlayerPed(-1))
-        local coords = {
-            x = pos.x,
-            y = pos.y,
-            z = pos.z,
-            h = heading,
-        }
-        TriggerServerEvent('qb-houses:server:addGarage', closesthouse, coords)
-    else
-        QBCore.Functions.Notify("Geen huis in de buurt..", "error")
-    end
 end)
 
 RegisterNetEvent('qb-houses:client:toggleDoorlock')
@@ -193,9 +157,9 @@ Citizen.CreateThread(function()
                 if closesthouse ~= nil then
                     if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z, true) < 1.5)then
                         if Config.Houses[closesthouse].locked then
-                            DrawText3Ds(Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z, '~r~E~w~ - Ga naar binnen')
+                            DrawText3Ds(Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z + 0.98, '~r~E~w~ - Ga naar binnen')
                         elseif not Config.Houses[closesthouse].locked then
-                            DrawText3Ds(Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z, '~g~E~w~ - Ga naar binnen')
+                            DrawText3Ds(Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z + 0.98, '~g~E~w~ - Ga naar binnen')
                         end
                         if IsControlJustPressed(0, Keys["E"]) then
                             enterOwnedHouse(closesthouse)
@@ -507,6 +471,7 @@ function enterOwnedHouse(house)
         data = exports['qb-interior']:CreateTrevorsShell(coords)
     elseif Config.Houses[house].tier == 3 then
         data = exports['qb-interior']:CreateMichaelShell(coords)
+        print('vilaaa')
     end
     Citizen.Wait(100)
     houseObj = data[1]
@@ -564,6 +529,7 @@ function enterNonOwnedHouse(house)
         data = exports['qb-interior']:CreateTrevorsShell(coords)
     elseif Config.Houses[house].tier == 3 then
         data = exports['qb-interior']:CreateMichaelShell(coords)
+        print('vilaaa')
     end
     houseObj = data[1]
     POIOffsets = data[2]
@@ -662,6 +628,7 @@ end)
 
 RegisterNetEvent('qb-houses:client:viewHouse')
 AddEventHandler('qb-houses:client:viewHouse', function(houseprice, brokerfee, bankfee, taxes, firstname, lastname)
+    print(closesthouse)
     setViewCam(Config.Houses[closesthouse].coords.cam, Config.Houses[closesthouse].coords.cam.h, Config.Houses[closesthouse].coords.yaw)
     Citizen.Wait(500)
     openContract(true)
@@ -696,31 +663,29 @@ function SetClosestHouse()
     end
     closesthouse = current
 
-    if closesthouse ~= nil then 
-        QBCore.Functions.TriggerCallback('qb-houses:server:hasKey', function(result)
-            hasKey = result
-        end, closesthouse)
-    
-        QBCore.Functions.TriggerCallback('qb-houses:server:isOwned', function(result)
-            isOwned = result
-        end, closesthouse)
-    
-        QBCore.Functions.TriggerCallback('qb-houses:server:getHouseLocations', function(result)
-            if result ~= nil then
-                if result.stash ~= nil then
-                    stashLocation = json.decode(result.stash)
-                end
-    
-                if result.outfit ~= nil then
-                    outfitLocation = json.decode(result.outfit)
-                end
-    
-                if result.logout ~= nil then
-                    logoutLocation = json.decode(result.logout)
-                end
+    QBCore.Functions.TriggerCallback('qb-houses:server:hasKey', function(result)
+        hasKey = result
+    end, closesthouse)
+
+    QBCore.Functions.TriggerCallback('qb-houses:server:isOwned', function(result)
+        isOwned = result
+    end, closesthouse)
+
+    QBCore.Functions.TriggerCallback('qb-houses:server:getHouseLocations', function(result)
+        if result ~= nil then
+            if result.stash ~= nil then
+                stashLocation = json.decode(result.stash)
             end
-        end, closesthouse)
-    end
+
+            if result.outfit ~= nil then
+                outfitLocation = json.decode(result.outfit)
+            end
+
+            if result.logout ~= nil then
+                logoutLocation = json.decode(result.logout)
+            end
+        end
+    end, closesthouse)
 end
 
 RegisterNetEvent('qb-houses:client:setLocation')
