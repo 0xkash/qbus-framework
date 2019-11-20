@@ -50,7 +50,6 @@ RegisterNUICallback('selectCharacter', function(data)
     local cData = data.cData
     DoScreenFadeOut(10)
     TriggerServerEvent('qb-multicharacter:server:loadUserData', cData)
-    TriggerEvent('apartments:client:setupSpawnUI', cData)
     openCharMenu(false)
 end)
 

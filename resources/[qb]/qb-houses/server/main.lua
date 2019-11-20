@@ -3,6 +3,7 @@ QBCore = nil
 TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 
 Citizen.CreateThread(function()
+	local HouseGarages = {}
 	QBCore.Functions.ExecuteSql("SELECT * FROM `houselocations`", function(result)
 		if result[1] ~= nil then
 			for k, v in pairs(result) do
@@ -10,6 +11,7 @@ Citizen.CreateThread(function()
 				if tonumber(v.owned) == 1 then
 					owned = true
 				end
+				local garage = v.garage ~= nil and json.decode(v.garage) or {}
 				Config.Houses[v.name] = {
 					coords = json.decode(v.coords),
 					owned = v.owned,
@@ -17,10 +19,16 @@ Citizen.CreateThread(function()
 					locked = true,
 					adress = v.label, 
 					tier = v.tier,
+					garage = garage,
 					decorations = {},
+				}
+				HouseGarages[v.name] = {
+					label = v.label,
+					takeVehicle = garage,
 				}
 			end
 		end
+		TriggerClientEvent("qb-garages:client:houseGarageConfig", -1, HouseGarages)
 		TriggerClientEvent("qb-houses:client:setHouseConfig", -1, Config.Houses)
 	end)
 end)
@@ -52,9 +60,23 @@ AddEventHandler('qb-houses:server:addNewHouse', function(street, coords, price, 
 		locked = true,
 		adress = label, 
 		tier = tier,
+		garage = {},
 		decorations = {},
 	}
 	TriggerClientEvent("qb-houses:client:setHouseConfig", -1, Config.Houses)
+	TriggerClientEvent('QBCore:Notify', src, "Je hebt een huis toegevoegd: "..label)
+end)
+
+RegisterServerEvent('qb-houses:server:addGarage')
+AddEventHandler('qb-houses:server:addGarage', function(house, coords)
+	local src = source
+	QBCore.Functions.ExecuteSql("UPDATE `houselocations` SET `garage` = '"..json.encode(coords).."' WHERE `name` = '"..house.."'")
+	local garageInfo = {
+		label = Config.Houses[house].adress,
+		takeVehicle = coords,
+	}
+	TriggerClientEvent("qb-garages:client:addHouseGarage", -1, house, garageInfo)
+	TriggerClientEvent('QBCore:Notify', src, "Je hebt een garage toegevoegd bij: "..garageInfo.label)
 end)
 
 RegisterServerEvent('qb-houses:server:viewHouse')
@@ -335,5 +357,12 @@ QBCore.Commands.Add("createhouse", "Maak een huis aan als makelaar", {{name="pri
 	local tier = tonumber(args[2])
 	if Player.PlayerData.job.name == "realestate" then
 		TriggerClientEvent("qb-houses:client:createHouses", source, price, tier)
+	end
+end)
+
+QBCore.Commands.Add("addgarage", "Voeg garage toe bij dichtsbijzijnde huis", {}, false, function(source, args)
+	local Player = QBCore.Functions.GetPlayer(source)
+	if Player.PlayerData.job.name == "realestate" then
+		TriggerClientEvent("qb-houses:client:addGarage", source)
 	end
 end)

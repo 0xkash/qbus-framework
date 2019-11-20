@@ -22,6 +22,16 @@ AddEventHandler('qb-garages:client:setHouseGarage', function(house, hasKey)
     hasGarageKey = hasKey
 end)
 
+RegisterNetEvent('qb-garages:client:houseGarageConfig')
+AddEventHandler('qb-garages:client:houseGarageConfig', function(garageConfig)
+    HouseGarages = garageConfig
+end)
+
+RegisterNetEvent('qb-garages:client:addHouseGarage')
+AddEventHandler('qb-garages:client:addHouseGarage', function(house, garageInfo)
+    HouseGarages[house] = garageInfo
+end)
+
 RegisterNetEvent('qb-garages:client:takeOutDepot')
 AddEventHandler('qb-garages:client:takeOutDepot', function(vehicle)
     QBCore.Functions.SpawnVehicle(vehicle.vehicle, function(veh)
@@ -436,8 +446,8 @@ Citizen.CreateThread(function()
         local pos = GetEntityCoords(ped)
         local inGarageRange = false
 
-        if currentHouseGarage ~= nil then
-            if hasGarageKey then
+        if HouseGarages ~= nil and currentHouseGarage ~= nil then
+            if hasGarageKey and HouseGarages[currentHouseGarage] ~= nil then
                 local takeDist = GetDistanceBetweenCoords(pos, HouseGarages[currentHouseGarage].takeVehicle.x, HouseGarages[currentHouseGarage].takeVehicle.y, HouseGarages[currentHouseGarage].takeVehicle.z)
                 if takeDist <= 15 then
                     inGarageRange = true

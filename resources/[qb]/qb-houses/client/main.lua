@@ -15,7 +15,7 @@ closesthouse = nil
 hasKey = false
 isOwned = false
 
-isLoggedIn = false
+isLoggedIn = true
 local contractOpen = false
 
 local cam = nil
@@ -125,6 +125,23 @@ AddEventHandler('qb-houses:client:createHouses', function(price, tier)
         cam 	= { x = pos.x, y = pos.y, z = pos.z, h = heading, yaw = -10.00},
     }
     TriggerServerEvent('qb-houses:server:addNewHouse', street, coords, price, tier)
+end)
+
+RegisterNetEvent('qb-houses:client:addGarage')
+AddEventHandler('qb-houses:client:addGarage', function()
+    if closesthouse ~= nil then 
+        local pos = GetEntityCoords(GetPlayerPed(-1))
+        local heading = GetEntityHeading(GetPlayerPed(-1))
+        local coords = {
+            x = pos.x,
+            y = pos.y,
+            z = pos.z,
+            h = heading,
+        }
+        TriggerServerEvent('qb-houses:server:addGarage', closesthouse, coords)
+    else
+        QBCore.Functions.Notify("Geen huis in de buurt..", "error")
+    end
 end)
 
 RegisterNetEvent('qb-houses:client:toggleDoorlock')

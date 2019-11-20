@@ -13,9 +13,13 @@ AddEventHandler('qb-multicharacter:server:loadUserData', function(cData)
     local src = source
     if QBCore.Player.Login(src, cData.citizenid) then
         print('^2[qb-core]^7 '..GetPlayerName(src)..' (Citizen ID: '..cData.citizenid..') has succesfully loaded!')
-		QBCore.Commands.Refresh(src)
-		--TriggerEvent('QBCore:Server:OnPlayerLoaded')
+        QBCore.Commands.Refresh(src)
+        
+        loadHouseData()
+		--TriggerEvent('QBCore:Server:OnPlayerLoaded')-
         --TriggerClientEvent('QBCore:Client:OnPlayerLoaded', src)
+        
+        TriggerClientEvent('apartments:client:setupSpawnUI', src, cData)
 	end
 end)
 
@@ -28,7 +32,9 @@ AddEventHandler('qb-multicharacter:server:createCharacter', function(data)
     --QBCore.Player.CreateCharacter(src, data)
     if QBCore.Player.Login(src, false, newData) then
         print('^2[qb-core]^7 '..GetPlayerName(src)..' has succesfully loaded!')
-		QBCore.Commands.Refresh(src)
+        QBCore.Commands.Refresh(src)
+        
+        loadHouseData()
 
         TriggerClientEvent("qb-multicharacter:client:closeNUI", src)
         TriggerClientEvent('apartments:client:setupSpawnUI', src, newData)
@@ -91,3 +97,35 @@ QBCore.Functions.CreateCallback("qb-multicharacter:server:getSkin", function(sou
         end
     end)
 end)
+
+function loadHouseData()
+    local HouseGarages = {}
+    local Houses = {}
+	QBCore.Functions.ExecuteSql("SELECT * FROM `houselocations`", function(result)
+		if result[1] ~= nil then
+			for k, v in pairs(result) do
+				local owned = false
+				if tonumber(v.owned) == 1 then
+					owned = true
+				end
+				local garage = v.garage ~= nil and json.decode(v.garage) or {}
+				Houses[v.name] = {
+					coords = json.decode(v.coords),
+					owned = v.owned,
+					price = v.price,
+					locked = true,
+					adress = v.label, 
+					tier = v.tier,
+					garage = garage,
+					decorations = {},
+				}
+				HouseGarages[v.name] = {
+					label = v.label,
+					takeVehicle = garage,
+				}
+			end
+		end
+		TriggerClientEvent("qb-garages:client:houseGarageConfig", -1, HouseGarages)
+		TriggerClientEvent("qb-houses:client:setHouseConfig", -1, Houses)
+	end)
+end
