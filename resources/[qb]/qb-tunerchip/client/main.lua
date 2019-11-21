@@ -50,6 +50,26 @@ RegisterNUICallback('save', function(data)
     local veh = GetVehiclePedIsUsing(ped)
     setVehData(veh, data)
     QBCore.Functions.Notify('Tjoenertjip v1.05: Voertuig aangepast!', 'error')
+
+    TriggerServerEvent('qb-tunerchip:server:TuneStatus', GetVehicleNumberPlateText(veh), true)
+end)
+
+RegisterNetEvent('qb-tunerchip:server:TuneStatus')
+AddEventHandler('qb-tunerchip:server:TuneStatus', function()
+    local ped = GetPlayerPed(-1)
+    local closestVehicle = GetClosestVehicle(GetEntityCoords(ped), 5.0, 0, 70)
+    local plate = GetVehicleNumberPlateText(closestVehicle)
+    local vehModel = GetEntityModel(closestVehicle)
+
+    local displayName = GetLabelText(GetDisplayNameFromVehicleModel(vehModel))
+
+    QBCore.Functions.TriggerCallback('qb-tunerchip:server:GetStatus', function(status)
+        if status then
+            TriggerEvent("chatMessage", "VOERTUIG STATUS", "warning", displayName..": Chiptuned: Ja")
+        else
+            TriggerEvent("chatMessage", "VOERTUIG STATUS", "warning", displayName..": Chiptuned: Nee")
+        end
+    end, plate)
 end)
 
 RegisterNUICallback('checkItem', function(data, cb)

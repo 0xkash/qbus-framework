@@ -152,7 +152,7 @@ Config.MenuItems = {
             },
             {
                 id    = 'getintrunk',
-                title = 'Kofferbak [In/Uit]',
+                title = 'Kofferbak In / Uit',
                 icon = '#vehiclekey',
                 type = 'client',
                 event = 'qb-smallresources:trunk:client:getInTrunk',
@@ -349,6 +349,14 @@ Config.JobInteractions = {
             icon = '#general',
             type = 'client',
             event = 'police:client:BillPlayer',
+            shouldClose = true,
+        },
+        {
+            id    = 'checkvehstatus',
+            title = 'Check Tune Status',
+            icon = '#vehiclekey',
+            type = 'client',
+            event = 'qb-tunerchip:server:TuneStatus',
             shouldClose = true,
         },
     },
