@@ -164,13 +164,21 @@ $(document).on('click', '.header-btn', function(){
 
 $(document).on('click', '.footer-btn', function(){
     var selectedCategory = $(this).attr('id');
-    $('.decorate-items').html("");
-    $.each(houseCategorys[selectedCategory].items, function(i, item){
-        var elem = '<div class="decorate-item" id="object-'+i+'" data-type="newObject"><span id="decorate-item-name"><b>Object: </b>'+item.label+'</span><span id="decorate-item-category"><strong>Prijs: </strong><span id="item-price" style="color: green;">€'+item.price+'</span></span></div>';
-        $('.decorate-items').append(elem);
-        $('#object-'+i).data('objectData', item);
-    });
-    $(".decorate-items").fadeIn(150);
+    if (selectedCategory != "remove-owned-obj") {
+        $('.decorate-items').html("");
+        $.each(houseCategorys[selectedCategory].items, function(i, item){
+            var elem = '<div class="decorate-item" id="object-'+i+'" data-type="newObject"><span id="decorate-item-name"><b>Object: </b>'+item.label+'</span><span id="decorate-item-category"><strong>Prijs: </strong><span id="item-price" style="color: green;">€'+item.price+'</span></span></div>';
+            $('.decorate-items').append(elem);
+            $('#object-'+i).data('objectData', item);
+        });
+        $(".decorate-items").fadeIn(150);
+    } else {
+        $(".decorate-items").html("");
+        $(".decorate-footer-buttons").html("");
+        $.post('http://qb-houses/deleteSelectedObject');
+        $(".decorate-footer-buttons").fadeOut(150);
+        $(".decorate-items").fadeOut(150);
+    }
 });
 
 $(document).on('click', '#buy-object', function(){
@@ -217,6 +225,10 @@ $(document).on('click', '.decorate-item', function(){
             $.post('http://qb-houses/selectOwnedObject', JSON.stringify({
                 objectData: myObjectData
             }))
+            $(".decorate-footer-buttons").html("");
+            var elem = '<div class="footer-btn" id="remove-owned-obj"><p>Verwijderen</p></div>';
+            $(".decorate-footer-buttons").append(elem);
+            $(".decorate-footer-buttons").fadeIn(150);
         }
     }
 });

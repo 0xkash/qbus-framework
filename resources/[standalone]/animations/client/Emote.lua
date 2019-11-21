@@ -144,8 +144,12 @@ function EmoteMenuStart(args, hard)
 end
 
 function EmoteCommandStart(args)
-    if #args > 0 then
-    local name = string.lower(args[1])
+    local name
+    if args[2] ~= nil then
+      name = string.lower(args[1])
+    else
+      name = args
+    end
     if name == "c" then
         if IsInAnimation then
             EmoteCancel()
@@ -166,7 +170,6 @@ function EmoteCommandStart(args)
     else
       --EmoteChatMessage("'"..name.."' is geen bestaande emote")
     end
-  end
 end
 
 LoadAnim = function(dict)

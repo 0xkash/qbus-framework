@@ -79,7 +79,7 @@ RegisterNUICallback('checkItem', function(data, cb)
             retval = true
         end
         cb(retval)
-    end, data.software)
+    end, data.item)
 end)
 
 RegisterNUICallback('reset', function(data)

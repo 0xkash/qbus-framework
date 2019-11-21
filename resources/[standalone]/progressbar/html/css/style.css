@@ -39,13 +39,15 @@ body {
 }
 
 .progress-labels div {
-    font-size: 12px;
+    font-size: 0.9vh;
     line-height: 35px;
     position: relative;
     color: #ffffff;
-    text-shadow: 1px 1px 7px #000000;
     z-index: 10;
-    font-family: 'Open Sans', sans-serif;
+    font-family: sans-serif;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.1vh;
 }
 
 .progress-bar-container {

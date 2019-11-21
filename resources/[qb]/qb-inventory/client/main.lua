@@ -296,6 +296,12 @@ AddEventHandler("inventory:client:UseWeapon", function(weaponData)
         SetCurrentPedWeapon(GetPlayerPed(-1), GetHashKey("WEAPON_UNARMED"), true)
         RemoveWeaponFromPed(GetPlayerPed(-1), GetHashKey(currentWeapon))
         currentWeapon = nil
+    elseif weaponName == "weapon_stickybomb" then
+        GiveWeaponToPed(GetPlayerPed(-1), GetHashKey(weaponName), ammo, false, false)
+        SetPedAmmo(GetPlayerPed(-1), GetHashKey(weaponName), 1)
+        SetCurrentPedWeapon(GetPlayerPed(-1), GetHashKey(weaponName), true)
+        TriggerServerEvent('QBCore:Server:RemoveItem', weaponName, 1)
+        currentWeapon = weaponName
     else
         QBCore.Functions.TriggerCallback("weapon:server:GetWeaponAmmo", function(result)
             local ammo = tonumber(result)

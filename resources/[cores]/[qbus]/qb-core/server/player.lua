@@ -62,6 +62,8 @@ QBCore.Player.CheckPlayerData = function(source, PlayerData)
 	PlayerData.metadata["jailitems"] = PlayerData.metadata["jailitems"] ~= nil and PlayerData.metadata["jailitems"] or {}
 	PlayerData.metadata["status"] = PlayerData.metadata["status"] ~= nil and PlayerData.metadata["status"] or {}
 	PlayerData.metadata["phone"]  = PlayerData.metadata["phone"]  ~= nil and PlayerData.metadata["phone"] or {}
+	PlayerData.metadata["fitbit"]  = PlayerData.metadata["fitbit"]  ~= nil and PlayerData.metadata["fitbit"] or {}
+	PlayerData.metadata["commandbinds"]  = PlayerData.metadata["commandbinds"]  ~= nil and PlayerData.metadata["commandbinds"] or {}
 	PlayerData.metadata["bloodtype"]  = PlayerData.metadata["bloodtype"]  ~= nil and PlayerData.metadata["bloodtype"] or QBCore.Config.Player.Bloodtypes[math.random(1, #QBCore.Config.Player.Bloodtypes)]
 	PlayerData.metadata["dealerrep"]  = PlayerData.metadata["dealerrep"]  ~= nil and PlayerData.metadata["dealerrep"] or 0
 

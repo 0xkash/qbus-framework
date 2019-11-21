@@ -24,20 +24,6 @@ $(document).on('keydown', function() {
     }
 });
 
-$(document).on('click', '.option-button', function(e){
-    e.preventDefault();
-
-    var software = $(this).data('software');
-
-    if (software == "tuning") {
-        $.post('http://qb-tunerchip/checkItem', JSON.stringify({software: "tunerlaptop"}), function(hasItem){
-            if (hasItem) {
-                $(".tunerchip-software").css({"display": "block"});
-            }
-        })
-    }
-});
-
 $(document).on('click', '#save', function(){
     $.post('http://qb-tunerchip/save', JSON.stringify({
         boost: $("#boost-slider").val(),
@@ -109,7 +95,11 @@ $(document).on('click', ".neon-software-color-pallete-color", function(){
 });
 
 QBTuner.Open = function() {
-    $('.container').fadeIn(250);
+    $.post('http://qb-tunerchip/checkItem', JSON.stringify({item: "tunerlaptop"}), function(hasItem){
+        if (hasItem) {
+            $('.container').fadeIn(250);
+        }
+    })
 }
 
 QBTuner.Close = function() {
