@@ -109,6 +109,25 @@ AddEventHandler('police:client:ActiveCamera', function(cameraId)
     end
 end)
 
+RegisterNetEvent('police:client:DisableAllCameras')
+AddEventHandler('police:client:DisableAllCameras', function()
+    for k, v in pairs(Config.SecurityCameras) do 
+        Config.SecurityCameras[k].isOnline = false
+    end
+end)
+
+RegisterNetEvent('police:client:EnableAllCameras')
+AddEventHandler('police:client:EnableAllCameras', function()
+    for k, v in pairs(Config.SecurityCameras) do 
+        Config.SecurityCameras[k].isOnline = true
+    end
+end)
+
+RegisterNetEvent('police:client:SetCamera')
+AddEventHandler('police:client:SetCamera', function(key, isOnline)
+    Config.SecurityCameras.cameras[key].isOnline = isOnline
+end)
+
 ---------------------------------------------------------------------------
 -- FUNCTIONS
 ---------------------------------------------------------------------------

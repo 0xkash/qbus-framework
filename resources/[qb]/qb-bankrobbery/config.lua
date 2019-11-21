@@ -23,6 +23,61 @@ Config.RewardTypes = {
     }
 }
 
+Config.PowerStations = {
+    [1] = { -- Big Power Station 1
+        coords = {x = 2835.24, y = 1505.68, z = 24.72},
+        hit = false,
+    },
+    [2] = { -- Big Power Station 2
+        coords = {x = 2811.76, y = 1500.6, z = 24.72},
+        hit = false,
+    },
+    [3] = { -- Power Station Windmills
+        coords = {x = 2137.73, y = 1949.62, z = 93.78},
+        hit = false,
+    },
+    [4] = {
+        coords = {x = 708.92, y = 117.49, z = 80.95},
+        hit = false,
+    },
+    [5] = {
+        coords = {x = 670.23, y = 128.14, z = 80.95},
+        hit = false,
+    },
+    [6] = {
+        coords = {x = 692.17, y = 160.28, z = 80.94},
+        hit = false,
+    },
+    [7] = {
+        coords = {x = 2459.16, y = 1460.94, z = 36.2},
+        hit = false,
+    },
+    [8] = {
+        coords = {x = 2280.45, y = 2964.83, z = 46.75},
+        hit = false,
+    },
+    [9] = {
+        coords = {x = 2059.68, y = 3683.8, z = 34.58},
+        hit = false,
+    },
+    [10] = {
+        coords = {x = 2589.5, y = 5057.38, z = 44.91},
+        hit = false,
+    },
+    [11] = {
+        coords = {x = 1343.61, y = 6388.13, z = 33.41},
+        hit = false,
+    },
+    [12] = {
+        coords = {x = 236.61, y = 6406.1, z = 31.83},
+        hit = false,
+    },
+    [13] = {
+        coords = {x = -293.1, y = 6023.54, z = 31.54},
+        hit = false,
+    },
+}
+
 Config.LockerRewards = {
     ["tier1"] = {
         [1] = {item = "rolex", maxAmount = 5},
@@ -43,6 +98,7 @@ Config.SmallBanks = {
             ["y"] = -284.49,
             ["z"] = 54.16,
         },
+        ["alarm"] = true,
         ["object"] = GetHashKey("v_ilev_gb_vauldr"),
         ["heading"] = {
             closed = 250.0,
@@ -116,6 +172,7 @@ Config.SmallBanks = {
             ["y"] = -1046.11,
             ["z"] = 29.36,
         },
+        ["alarm"] = true,
         ["object"] = GetHashKey("v_ilev_gb_vauldr"),
         ["heading"] = {
             closed = 250.0,
@@ -189,6 +246,7 @@ Config.SmallBanks = {
             ["y"] = -55.37,
             ["z"] = 49.03,
         },
+        ["alarm"] = true,
         ["object"] = GetHashKey("v_ilev_gb_vauldr"),
         ["heading"] = {
             closed = 250.0,
@@ -262,6 +320,7 @@ Config.SmallBanks = {
             ["y"] = -336.57,
             ["z"] = 37.78,
         },
+        ["alarm"] = true,
         ["object"] = GetHashKey("v_ilev_gb_vauldr"),
         ["heading"] = {
             closed = 296.863,
@@ -335,6 +394,7 @@ Config.SmallBanks = {
             ["y"] = 481.74,
             ["z"] = 15.69,
         },
+        ["alarm"] = true,
         ["object"] = GetHashKey("hei_prop_heist_sec_door"),
         ["heading"] = {
             closed = 357.542,
@@ -400,5 +460,25 @@ Config.SmallBanks = {
                 ["isOpened"] = false,
             },
         },
+    },
+}
+
+Config.BigBanks = {
+    ["paleto"] = {
+        ["label"] = "Blaine County Savings Bank",
+        ["coords"] = {
+            ["x"] = -105.61,
+            ["y"] = 6472.03,
+            ["z"] = 31.62,
+        },
+        ["alarm"] = true,
+        ["object"] = -1185205679,
+        ["heading"] = {
+            closed = 45.45,
+            open = 130.45,
+        },
+        ["camId"] = 25,
+        ["isOpened"] = false,
+        ["lockers"] = {}
     },
 }

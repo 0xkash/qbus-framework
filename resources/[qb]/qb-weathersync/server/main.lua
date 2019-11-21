@@ -56,6 +56,11 @@ AddEventHandler('qb-weathersync:server:setWeather', function(type)
     TriggerEvent('qb-weathersync:server:RequestStateSync')
 end)
 
+RegisterServerEvent('qb-weathersync:server:toggleBlackout')
+AddEventHandler('qb-weathersync:server:toggleBlackout', function()
+    ToggleBlackout()
+end)
+
 function SetWeather(type)
     CurrentWeather = string.upper(type)
     TriggerEvent('qb-weathersync:server:RequestStateSync')
