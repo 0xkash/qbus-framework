@@ -139,7 +139,7 @@ AddEventHandler('electronickit:UseElectronickit', function()
 
                 if dist < 1.5 then
                     QBCore.Functions.TriggerCallback('police:GetCops', function(cops)
-                        if cops >= 4 then
+                        if cops >= 0 then
                             if not Config.SmallBanks[closestBank]["isOpened"] then 
                                 QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
                                     if result then 
