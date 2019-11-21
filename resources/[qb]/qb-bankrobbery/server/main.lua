@@ -28,8 +28,14 @@ end)
 
 RegisterServerEvent('qb-bankrobbery:server:setBankState')
 AddEventHandler('qb-bankrobbery:server:setBankState', function(bankId, state)
-    Config.SmallBanks[bankId]["isOpened"] = state
-    TriggerClientEvent('qb-bankrobbery:client:setBankState', -1, bankId, state)
+    if bankId == "paleto" then
+        Config.BigBanks["paleto"]["isOpened"] = state
+        TriggerClientEvent('qb-bankrobbery:client:setBankState', -1, bankId, state)
+    else
+        Config.SmallBanks[bankId]["isOpened"] = state
+        TriggerClientEvent('qb-bankrobbery:client:setBankState', -1, bankId, state)
+    end
+    
 
     if not robberyBusy then
         robberyBusy = true
@@ -190,5 +196,12 @@ QBCore.Functions.CreateUseableItem("thermite", function(source, item)
     local Player = QBCore.Functions.GetPlayer(source)
 	if Player.Functions.RemoveItem('thermite', 1, item.slot) then
         TriggerClientEvent("thermite:UseThermite", source)
+    end
+end)
+
+QBCore.Functions.CreateUseableItem("security_card_01", function(source, item)
+    local Player = QBCore.Functions.GetPlayer(source)
+	if Player.Functions.RemoveItem('security_card_01', 1, item.slot) then
+        TriggerClientEvent("qb-bankrobbery:UseBankcardA", source)
     end
 end)

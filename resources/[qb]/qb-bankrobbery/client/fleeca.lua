@@ -26,6 +26,11 @@ Citizen.CreateThread(function()
     end
 end)
 
+RegisterNetEvent("QBCore:Client:OnPlayerLoaded")
+AddEventHandler("QBCore:Client:OnPlayerLoaded", function()
+    ResetBankDoors()
+end)
+
 Citizen.CreateThread(function()
     while true do
         local ped = GetPlayerPed(-1)
@@ -139,7 +144,7 @@ AddEventHandler('electronickit:UseElectronickit', function()
 
                 if dist < 1.5 then
                     QBCore.Functions.TriggerCallback('police:GetCops', function(cops)
-                        if cops >= 0 then
+                        if cops >= 4 then
                             if not Config.SmallBanks[closestBank]["isOpened"] then 
                                 QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
                                     if result then 
@@ -195,11 +200,18 @@ end)
 
 RegisterNetEvent('qb-bankrobbery:client:setBankState')
 AddEventHandler('qb-bankrobbery:client:setBankState', function(bankId, state)
-    Config.SmallBanks[bankId]["isOpened"] = state
-    TriggerServerEvent('qb-bankrobbery:server:setTimeout')
-
-    if state then
-        OpenBankDoor(bankId)
+    if bankId == "paleto" then
+        Config.BigBanks["paleto"]["isOpened"] = state
+        TriggerServerEvent('qb-bankrobbery:server:setTimeout')
+        if state then
+            OpenPaletoDoor(bankId)
+        end
+    else
+        Config.SmallBanks[bankId]["isOpened"] = state
+        TriggerServerEvent('qb-bankrobbery:server:setTimeout')
+        if state then
+            OpenBankDoor(bankId)
+        end
     end
 end)
 
@@ -218,7 +230,7 @@ AddEventHandler('qb-bankrobbery:client:disableAllBankSecurity', function()
 end)
 
 RegisterNetEvent('qb-bankrobbery:client:BankSecurity')
-AddEventHandler('qb-bankrobbery:client:BankSecurity', function(keym status)
+AddEventHandler('qb-bankrobbery:client:BankSecurity', function(key, status)
     Config.SmallBanks[key]["alarm"] = status
 end)
 
@@ -249,6 +261,8 @@ function ResetBankDoors()
         local object = GetClosestObjectOfType(Config.SmallBanks[k]["coords"]["x"], Config.SmallBanks[k]["coords"]["y"], Config.SmallBanks[k]["coords"]["z"], 5.0, Config.SmallBanks[k]["object"], false, false, false)
         SetEntityHeading(object, Config.SmallBanks[k]["heading"].closed)
     end
+    local paletoObject = GetClosestObjectOfType(Config.BigBanks["paleto"]["coords"]["x"], Config.BigBanks["paleto"]["coords"]["y"], Config.BigBanks["paleto"]["coords"]["z"], 5.0, Config.BigBanks["paleto"]["object"], false, false, false)
+    SetEntityHeading(paletoObject, Config.BigBanks["paleto"]["heading"].closed)
 end
 
 function openLocker(bankId, lockerId)

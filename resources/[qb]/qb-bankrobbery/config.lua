@@ -462,3 +462,23 @@ Config.SmallBanks = {
         },
     },
 }
+
+Config.BigBanks = {
+    ["paleto"] = {
+        ["label"] = "Blaine County Savings Bank",
+        ["coords"] = {
+            ["x"] = -105.61,
+            ["y"] = 6472.03,
+            ["z"] = 31.62,
+        },
+        ["alarm"] = true,
+        ["object"] = -1185205679,
+        ["heading"] = {
+            closed = 45.45,
+            open = 130.45,
+        },
+        ["camId"] = 25,
+        ["isOpened"] = false,
+        ["lockers"] = {}
+    },
+}
