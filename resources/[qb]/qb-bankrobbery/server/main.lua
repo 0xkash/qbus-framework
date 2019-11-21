@@ -12,8 +12,17 @@ Citizen.CreateThread(function()
             Citizen.Wait(1000 * 60 * 10)
             TriggerEvent("qb-weathersync:server:toggleBlackout")
             TriggerClientEvent("police:client:EnableAllCameras", -1)
+            TriggerClientEvent("qb-bankrobbery:client:enableAllBankSecurity", -1)
             blackoutActive = false
         end
+    end
+end)
+
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(1000 * 60 * 30)
+        TriggerClientEvent("qb-bankrobbery:client:enableAllBankSecurity", -1)
+        TriggerClientEvent("police:client:EnableAllCameras", -1)
     end
 end)
 
@@ -102,6 +111,7 @@ AddEventHandler('qb-bankrobbery:server:SetStationStatus', function(key, isHit)
     if AllStationsHit() then
         TriggerEvent("qb-weathersync:server:toggleBlackout")
         TriggerClientEvent("police:client:DisableAllCameras", -1)
+        TriggerClientEvent("qb-bankrobbery:client:disableAllBankSecurity", -1)
         blackoutActive = true
     else
         CheckStationHits()
@@ -150,14 +160,19 @@ function CheckStationHits()
     end
     if Config.PowerStations[11].hit and Config.PowerStations[1].hit and Config.PowerStations[2].hit then
         TriggerClientEvent("police:client:SetCamera", -1, 21, false)
+        TriggerClientEvent("qb-bankrobbery:client:BankSecurity", 1, false)
         TriggerClientEvent("police:client:SetCamera", -1, 22, false)
+        TriggerClientEvent("qb-bankrobbery:client:BankSecurity", 2, false)
     end
     if Config.PowerStations[8].hit and Config.PowerStations[4].hit and Config.PowerStations[5].hit and Config.PowerStations[6].hit then
         TriggerClientEvent("police:client:SetCamera", -1, 23, false)
+        TriggerClientEvent("qb-bankrobbery:client:BankSecurity", 3, false)
     end
     if Config.PowerStations[12].hit and Config.PowerStations[13].hit then
         TriggerClientEvent("police:client:SetCamera", -1, 24, false)
+        TriggerClientEvent("qb-bankrobbery:client:BankSecurity", 4, false)
         TriggerClientEvent("police:client:SetCamera", -1, 25, false)
+        TriggerClientEvent("qb-bankrobbery:client:BankSecurity", 5, false)
     end
 end
 

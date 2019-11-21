@@ -98,6 +98,7 @@ Config.SmallBanks = {
             ["y"] = -284.49,
             ["z"] = 54.16,
         },
+        ["alarm"] = true,
         ["object"] = GetHashKey("v_ilev_gb_vauldr"),
         ["heading"] = {
             closed = 250.0,
@@ -171,6 +172,7 @@ Config.SmallBanks = {
             ["y"] = -1046.11,
             ["z"] = 29.36,
         },
+        ["alarm"] = true,
         ["object"] = GetHashKey("v_ilev_gb_vauldr"),
         ["heading"] = {
             closed = 250.0,
@@ -244,6 +246,7 @@ Config.SmallBanks = {
             ["y"] = -55.37,
             ["z"] = 49.03,
         },
+        ["alarm"] = true,
         ["object"] = GetHashKey("v_ilev_gb_vauldr"),
         ["heading"] = {
             closed = 250.0,
@@ -317,6 +320,7 @@ Config.SmallBanks = {
             ["y"] = -336.57,
             ["z"] = 37.78,
         },
+        ["alarm"] = true,
         ["object"] = GetHashKey("v_ilev_gb_vauldr"),
         ["heading"] = {
             closed = 296.863,
@@ -390,6 +394,7 @@ Config.SmallBanks = {
             ["y"] = 481.74,
             ["z"] = 15.69,
         },
+        ["alarm"] = true,
         ["object"] = GetHashKey("hei_prop_heist_sec_door"),
         ["heading"] = {
             closed = 357.542,

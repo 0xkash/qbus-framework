@@ -165,8 +165,10 @@ AddEventHandler('electronickit:UseElectronickit', function()
                                                 if street2 ~= nil then 
                                                     streetLabel = streetLabel .. " " .. street2
                                                 end
-                                                TriggerServerEvent("qb-bankrobbery:server:callCops", "small", closestBank, streetLabel, pos)
-                                                copsCalled = true
+                                                if Config.SmallBanks[closestBank]["alarm"] then
+                                                    TriggerServerEvent("qb-bankrobbery:server:callCops", "small", closestBank, streetLabel, pos)
+                                                    copsCalled = true
+                                                end
                                             end
                                         end, function() -- Cancel
                                             StopAnimTask(GetPlayerPed(-1), "anim@gangops@facility@servers@", "hotwire", 1.0)
@@ -199,6 +201,25 @@ AddEventHandler('qb-bankrobbery:client:setBankState', function(bankId, state)
     if state then
         OpenBankDoor(bankId)
     end
+end)
+
+RegisterNetEvent('qb-bankrobbery:client:enableAllBankSecurity')
+AddEventHandler('qb-bankrobbery:client:enableAllBankSecurity', function()
+    for k, v in pairs(Config.SmallBanks) do
+        Config.SmallBanks[k]["alarm"] = true
+    end
+end)
+
+RegisterNetEvent('qb-bankrobbery:client:disableAllBankSecurity')
+AddEventHandler('qb-bankrobbery:client:disableAllBankSecurity', function()
+    for k, v in pairs(Config.SmallBanks) do
+        Config.SmallBanks[k]["alarm"] = false
+    end
+end)
+
+RegisterNetEvent('qb-bankrobbery:client:BankSecurity')
+AddEventHandler('qb-bankrobbery:client:BankSecurity', function(keym status)
+    Config.SmallBanks[key]["alarm"] = status
 end)
 
 function OpenBankDoor(bankId)
