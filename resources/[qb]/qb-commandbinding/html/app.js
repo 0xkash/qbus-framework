@@ -30,7 +30,6 @@ $(document).on('click', '.save-bindings', function(e){
     keyData['F7'] = [$("#command-F7").val(), $("#argument-F7").val()]
     keyData['F9'] = [$("#command-F9").val(), $("#argument-F9").val()]
     keyData['F10'] = [$("#command-F10").val(), $("#argument-F10").val()]
-    keyData['F11'] = [$("#command-F11").val(), $("#argument-F11").val()]
     
 
     $.post('http://qb-commandbinding/save', JSON.stringify({
