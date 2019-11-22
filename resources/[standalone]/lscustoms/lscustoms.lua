@@ -768,6 +768,7 @@ end
 
 function LSCMenu:onButtonSelected(name, button)
 	--Send the selected button to server
+	print(json.encode(button))
 	TriggerServerEvent("LSC:buttonSelected", name, button)
 end
 

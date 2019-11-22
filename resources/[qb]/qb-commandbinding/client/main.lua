@@ -69,8 +69,12 @@ Citizen.CreateThread(function()
                 local PlayerData = QBCore.Functions.GetPlayerData()
                 local keyMeta = PlayerData.metadata["commandbinds"]
                 if next(keyMeta) ~= nil then
-                    TriggerServerEvent('QBCore:CallCommand', keyMeta[v]["command"], keyMeta[v]["argument"])
+                    local args
+                    if keyMeta[v]["argument"] ~= "" then args = {[1] = keyMeta[v]["argument"]} else args = {[1] = nil} end
+                    TriggerServerEvent('QBCore:CallCommand', keyMeta[v]["command"], args)
                     keyPressed = true
+                else
+                    QBCore.Functions.Notify('Er is nog niks aan ['..v..'] gebind, /binds om een commando te binden')
                 end
             end
         end

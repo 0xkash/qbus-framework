@@ -3,7 +3,7 @@ TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 
 -- Code
 
-QBCore.Commands.Add("keys", "Open commandbinding menu", {}, false, function(source, args)
+QBCore.Commands.Add("binds", "Open commandbinding menu", {}, false, function(source, args)
     local Player = QBCore.Functions.GetPlayer(source)
 	TriggerClientEvent("qb-commandbinding:client:openUI", source)
 end)

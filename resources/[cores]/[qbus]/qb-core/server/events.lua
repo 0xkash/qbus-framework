@@ -179,15 +179,25 @@ end)
 
 RegisterServerEvent('QBCore:CallCommand')
 AddEventHandler('QBCore:CallCommand', function(command, args)
-	if (QBCore.Commands.List[command].argsrequired and #QBCore.Commands.List[command].arguments ~= 0 and args[#QBCore.Commands.List[command].arguments] == nil) then
-		TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Alle argumenten moeten ingevuld worden!")
-		local agus = ""
-		for name, help in pairs(QBCore.Commands.List[command].arguments) do
-			agus = agus .. " ["..help.name.."]"
+	if QBCore.Commands.List[command] ~= nil then
+		local Player = QBCore.Functions.GetPlayer(tonumber(source))
+		if Player ~= nil then
+			table.remove(args, 1)
+			if (Player.PlayerData.permission == "god") or (QBCore.Commands.List[command].permission == "moderator" and Player.PlayerData.permission == "admin") or (QBCore.Commands.List[command].permission == Player.PlayerData.permission or Player.Functions.HasAcePermission("qbcommands."..command)) or (QBCore.Commands.List[command].permission == Player.PlayerData.job.name) then
+				if (QBCore.Commands.List[command].argsrequired and #QBCore.Commands.List[command].arguments ~= 0 and args[#QBCore.Commands.List[command].arguments] == nil) then
+					TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Alle argumenten moeten ingevuld worden!")
+					local agus = ""
+					for name, help in pairs(QBCore.Commands.List[command].arguments) do
+						agus = agus .. " ["..help.name.."]"
+					end
+					TriggerClientEvent('chatMessage', source, "/"..command, nil, agus)
+				else
+					QBCore.Commands.List[command].callback(source, args)
+				end
+			else
+				TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Geen toegant tot dit command!")
+			end
 		end
-		TriggerClientEvent('chatMessage', source, "/"..command, nil, agus)
-	else
-		QBCore.Commands.List[command].callback(source, args)
 	end
 end)
 

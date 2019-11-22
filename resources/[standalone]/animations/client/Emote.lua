@@ -144,31 +144,28 @@ function EmoteMenuStart(args, hard)
 end
 
 function EmoteCommandStart(args)
-    local name
-    if args[2] ~= nil then
-      name = string.lower(args[1])
-    else
-      name = args
-    end
-    if name == "c" then
-        if IsInAnimation then
-            EmoteCancel()
-        else
-            --EmoteChatMessage("Geen emote om te stoppen :)")
-        end
-      return
-    elseif name == "help" then
-      EmotesOnCommand()
-    return end
+    if #args > 0 then
+      local name = string.lower(args[1])
+      if name == "c" then
+          if IsInAnimation then
+              EmoteCancel()
+          else
+              --EmoteChatMessage("Geen emote om te stoppen :)")
+          end
+        return
+      elseif name == "help" then
+        EmotesOnCommand()
+      return end
 
-    if AnimationList.Emotes[name] ~= nil then
-      if OnEmotePlay(AnimationList.Emotes[name]) then end return
-    elseif AnimationList.Dances[name] ~= nil then
-      if OnEmotePlay(AnimationList.Dances[name]) then end return
-    elseif AnimationList.PropEmotes[name] ~= nil then
-      if OnEmotePlay(AnimationList.PropEmotes[name]) then end return
-    else
-      --EmoteChatMessage("'"..name.."' is geen bestaande emote")
+      if AnimationList.Emotes[name] ~= nil then
+        if OnEmotePlay(AnimationList.Emotes[name]) then end return
+      elseif AnimationList.Dances[name] ~= nil then
+        if OnEmotePlay(AnimationList.Dances[name]) then end return
+      elseif AnimationList.PropEmotes[name] ~= nil then
+        if OnEmotePlay(AnimationList.PropEmotes[name]) then end return
+      else
+        --EmoteChatMessage("'"..name.."' is geen bestaande emote")
+      end
     end
 end
 
