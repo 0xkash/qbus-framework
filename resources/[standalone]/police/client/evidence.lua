@@ -379,7 +379,7 @@ function IsPedNearby()
     local player = GetPlayerPed(-1)
     local coords = GetEntityCoords(player)
 	local closestPed, closestDistance = QBCore.Functions.GetClosestPed(coords, PlayerPeds)
-	if closestDistance < 100.0 then
+	if not IsEntityDead(closestPed) and closestDistance < 100.0 then
 		retval = true
 	end
 	return retval
