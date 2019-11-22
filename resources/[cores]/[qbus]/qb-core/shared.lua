@@ -172,6 +172,7 @@ QBShared.Items = {
 	["phone"] 			 	 	 	 = {["name"] = "phone", 			  			["label"] = "Telefoon", 				["weight"] = 1000, 		["type"] = "item", 		["image"] = "phone.png", 			["unique"] = true, 		["useable"] = false, 	["shouldClose"] = false,   ["combinable"] = nil,   ["description"] = "Leuk telefoontjuhh"},
 	["fitbit"] 			 	 	 	 = {["name"] = "fitbit", 			  			["label"] = "Fitbit", 					["weight"] = 1000, 		["type"] = "item", 		["image"] = "fitbit.png", 			["unique"] = true, 		["useable"] = false, 	["shouldClose"] = false,   ["combinable"] = nil,   ["description"] = "I like fitbit"},
 	["thermite"] 			 	 	 = {["name"] = "thermite", 			  			["label"] = "Thermiet", 				["weight"] = 1000, 		["type"] = "item", 		["image"] = "thermite.png", 		["unique"] = false, 	["useable"] = true, 	["shouldClose"] = true,    ["combinable"] = nil,   ["description"] = "Soms wil je alles wel zien verbranden.."},
+	["goldbar"] 			 	 	 = {["name"] = "goldbar", 			  			["label"] = "Goudstaaf", 				["weight"] = 1000, 		["type"] = "item", 		["image"] = "goldbar.png", 			["unique"] = false, 	["useable"] = false, 	["shouldClose"] = true,    ["combinable"] = nil,   ["description"] = "Ziet er duur uit o.o"},
 }
 
 -- // HASH WEAPON ITEMS, NEED SOMETIMES TO GET INFO FOR CLIENT

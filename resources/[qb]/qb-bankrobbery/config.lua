@@ -80,13 +80,13 @@ Config.PowerStations = {
 
 Config.LockerRewards = {
     ["tier1"] = {
-        [1] = {item = "rolex", maxAmount = 5},
+        [1] = {item = "goldchain", maxAmount = 20},
     },
     ["tier2"] = {
-        [1] = {item = "rolex", maxAmount = 5},
+        [1] = {item = "rolex", maxAmount = 12},
     },
     ["tier3"] = {
-        [1] = {item = "rolex", maxAmount = 5},
+        [1] = {item = "goldbar", maxAmount = 5},
     },
 }
 
@@ -477,8 +477,65 @@ Config.BigBanks = {
             closed = 45.45,
             open = 130.45,
         },
-        ["camId"] = 25,
+        ["camId"] = 26,
         ["isOpened"] = false,
-        ["lockers"] = {}
+        ["lockers"] = {
+            [1] = {
+                x = -107.4, 
+                y = 6473.87, 
+                z = 31.62,
+                ["isBusy"] = false,
+                ["isOpened"] = false,
+            },
+            [2] = {
+                x = -107.66, 
+                y = 6475.61, 
+                z = 31.62,
+                ["isBusy"] = false,
+                ["isOpened"] = false,
+            },
+            [3] = {
+                x = -103.52, 
+                y = 6475.03, 
+                z = 31.66,
+                ["isBusy"] = false,
+                ["isOpened"] = false,
+            },
+            [4] = {
+                x = -102.3, 
+                y = 6476.13, 
+                z = 31.66,
+                ["isBusy"] = false,
+                ["isOpened"] = false,
+            },
+            [5] = {
+                x = -102.43, 
+                y = 6477.45, 
+                z = 31.67,
+                ["isBusy"] = false,
+                ["isOpened"] = false,
+            },
+            [6] = {
+                x = -103.97, 
+                y = 6478.97, 
+                z = 31.62,
+                ["isBusy"] = false,
+                ["isOpened"] = false,
+            },
+            [7] = {
+                x = -105.39, 
+                y = 6479.19, 
+                z = 31.67,
+                ["isBusy"] = false,
+                ["isOpened"] = false,
+            },
+            [8] = {
+                x = -106.57, 
+                y = 6478.01, 
+                z = 31.62,
+                ["isBusy"] = false,
+                ["isOpened"] = false,
+            },
+        },
     },
 }

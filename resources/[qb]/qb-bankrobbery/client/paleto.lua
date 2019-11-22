@@ -28,7 +28,7 @@ Citizen.CreateThread(function()
                     for k, v in pairs(Config.BigBanks["paleto"]["lockers"]) do
                         local lockerDist = GetDistanceBetweenCoords(pos, Config.BigBanks["paleto"]["lockers"][k].x, Config.BigBanks["paleto"]["lockers"][k].y, Config.BigBanks["paleto"]["lockers"][k].z)
                         if not Config.BigBanks["paleto"]["lockers"][k]["isBusy"] then
-                            if not Config.SmallBanks[closestBank]["lockers"][k]["isOpened"] then
+                            if not Config.BigBanks["paleto"]["lockers"][k]["isOpened"] then
                                 if lockerDist < 5 then
                                     DrawMarker(2, Config.BigBanks["paleto"]["lockers"][k].x, Config.BigBanks["paleto"]["lockers"][k].y, Config.BigBanks["paleto"]["lockers"][k].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 0.1, 0.05, 255, 255, 255, 255, false, false, false, 1, false, false, false)
                                     if lockerDist < 0.5 then
@@ -36,7 +36,7 @@ Citizen.CreateThread(function()
                                         if IsControlJustPressed(0, Keys["E"]) then
                                             QBCore.Functions.TriggerCallback('police:GetCops', function(cops)
                                                 if cops >= 5 then
-                                                    openLocker(closestBank, k)
+                                                    openLocker("paleto", k)
                                                 else
                                                     QBCore.Functions.Notify("Niet genoeg politie.. (5 nodig)", "error")
                                                 end
@@ -61,14 +61,13 @@ RegisterNetEvent('qb-bankrobbery:UseBankcardA')
 AddEventHandler('qb-bankrobbery:UseBankcardA', function()
     local ped = GetPlayerPed(-1)
     local pos = GetEntityCoords(ped)
-    
-    QBCore.Functions.TriggerCallback('qb-bankrobbery:server:isRobberyActive', function(isBusy)
-        if not isBusy then
-            local dist = GetDistanceBetweenCoords(pos, Config.BigBanks["paleto"]["coords"]["x"], Config.BigBanks["paleto"]["coords"]["y"],Config.BigBanks["paleto"]["coords"]["z"])
+    local dist = GetDistanceBetweenCoords(pos, Config.BigBanks["paleto"]["coords"]["x"], Config.BigBanks["paleto"]["coords"]["y"],Config.BigBanks["paleto"]["coords"]["z"])
 
-            if dist < 1.5 then
+    if dist < 1.5 then
+        QBCore.Functions.TriggerCallback('qb-bankrobbery:server:isRobberyActive', function(isBusy)
+            if not isBusy then
                 QBCore.Functions.TriggerCallback('police:GetCops', function(cops)
-                    if cops >= 0 then
+                    if cops >= 5 then
                         if not Config.BigBanks["paleto"]["isOpened"] then 
                             TriggerEvent('inventory:client:requiredItems', requiredItems, false)
                             QBCore.Functions.Progressbar("security_pass", "Pas aan het valideren..", math.random(5000, 10000), false, true, {
@@ -92,8 +91,8 @@ AddEventHandler('qb-bankrobbery:UseBankcardA', function()
                                         streetLabel = streetLabel .. " " .. street2
                                     end
                                     if Config.BigBanks["paleto"]["alarm"] then
-                                        --TriggerServerEvent("qb-bankrobbery:server:callCops", "small", closestBank, streetLabel, pos)
-                                        --copsCalled = true
+                                        TriggerServerEvent("qb-bankrobbery:server:callCops", "paleto", 0, streetLabel, pos)
+                                        copsCalled = true
                                     end
                                 end
                             end, function() -- Cancel
@@ -107,14 +106,15 @@ AddEventHandler('qb-bankrobbery:UseBankcardA', function()
                         QBCore.Functions.Notify("Niet genoeg politie.. (5 nodig)", "error")
                     end
                 end)
+            else
+                QBCore.Functions.Notify("Het beveiligingsslot is actief, het openen van de deur is momenteel niet mogelijk..", "error", 5500)
             end
-        else
-            QBCore.Functions.Notify("Het beveiligingsslot is actief, het openen van de deur is momenteel niet mogelijk..", "error", 5500)
-        end
-    end)
+        end)
+    end 
 end)
 
 function OpenPaletoDoor()
+    TriggerServerEvent('qb-doorlock:server:updateState', 41, false)
     local object = GetClosestObjectOfType(Config.BigBanks["paleto"]["coords"]["x"], Config.BigBanks["paleto"]["coords"]["y"], Config.BigBanks["paleto"]["coords"]["z"], 5.0, Config.BigBanks["paleto"]["object"], false, false, false)
     local timeOut = 10
     local entHeading = Config.BigBanks["paleto"]["heading"].closed
