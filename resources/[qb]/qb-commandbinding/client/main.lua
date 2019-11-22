@@ -24,6 +24,7 @@ end)
 -- Code
 
 local keyPressed = false
+local isLoggedIn = false
 
 local inKeyBinding = false
 local availableKeys = {
@@ -34,8 +35,17 @@ local availableKeys = {
     "F7",
     "F9",
     "F10",
-    "F11"
 }
+
+RegisterNetEvent("QBCore:Client:OnPlayerUnload")
+AddEventHandler("QBCore:Client:OnPlayerUnload", function()
+    isLoggedIn = false
+end)
+
+RegisterNetEvent("QBCore:Client:OnPlayerLoaded")
+AddEventHandler("QBCore:Client:OnPlayerLoaded", function()
+    isLoggedIn = true
+end)
 
 function openBindingMenu()
     local PlayerData = QBCore.Functions.GetPlayerData()
@@ -64,24 +74,28 @@ end)
 Citizen.CreateThread(function()
     while true do
 
-        for k, v in pairs(availableKeys) do
-            if IsControlJustPressed(0, Keys[v]) then
-                local PlayerData = QBCore.Functions.GetPlayerData()
-                local keyMeta = PlayerData.metadata["commandbinds"]
-                if next(keyMeta) ~= nil then
-                    local args
-                    if keyMeta[v]["argument"] ~= "" then args = {[1] = keyMeta[v]["argument"]} else args = {[1] = nil} end
-                    TriggerServerEvent('QBCore:CallCommand', keyMeta[v]["command"], args)
-                    keyPressed = true
-                else
-                    QBCore.Functions.Notify('Er is nog niks aan ['..v..'] gebind, /binds om een commando te binden')
+        if isLoggedIn then
+            for k, v in pairs(availableKeys) do
+                if IsControlJustPressed(0, Keys[v]) then
+                    local PlayerData = QBCore.Functions.GetPlayerData()
+                    local keyMeta = PlayerData.metadata["commandbinds"]
+                    local args = nil
+                    if keyMeta[v]["command"] ~= "" then
+                        if keyMeta[v]["argument"] ~= "" then args = {[1] = keyMeta[v]["argument"]} end
+                        TriggerServerEvent('QBCore:CallCommand', keyMeta[v]["command"], args)
+                        keyPressed = true
+                    else
+                        QBCore.Functions.Notify('Er is nog niks aan ['..v..'] gebind, /binds om een commando te binden', 'primary', 4000)
+                    end
                 end
             end
-        end
 
-        if keyPressed then
+            if keyPressed then
+                Citizen.Wait(1000)
+                keyPressed = false
+            end
+        else
             Citizen.Wait(1000)
-            keyPressed = false
         end
 
         Citizen.Wait(3)
@@ -97,7 +111,6 @@ RegisterNUICallback('save', function(data)
         ["F7"]  = {["command"] = data.keyData["F7"][1],  ["argument"] = data.keyData["F7"][2]},
         ["F9"]  = {["command"] = data.keyData["F9"][1],  ["argument"] = data.keyData["F9"][2]},
         ["F10"] = {["command"] = data.keyData["F10"][1], ["argument"] = data.keyData["F10"][2]},
-        ["F11"] = {["command"] = data.keyData["F11"][1], ["argument"] = data.keyData["F11"][2]},
     }
 
     QBCore.Functions.Notify('Commandbindings zijn opgeslagen!', 'success')

@@ -171,11 +171,12 @@ p {
 .hungerBar, .thirstBar, .bleedingBar, .oxygenBar, .voiceBar {
     width: 100%;
     height: 100%;
+    max-width: 100%;
     transition: 0.2s ease-in-out;
 }
 
 .hungerBar {
-    background: #3da83b;
+    background: #ff9a3c;
 } 
 
 .thirstBar {
