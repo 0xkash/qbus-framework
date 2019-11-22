@@ -204,8 +204,9 @@ end
 function openDoorAnim()
     loadAnimDict("anim@heists@keycard@") 
     TaskPlayAnim( GetPlayerPed(-1), "anim@heists@keycard@", "exit", 5.0, 1.0, -1, 16, 0, 0, 0, 0 )
-    Citizen.Wait(400)
-    ClearPedTasks(GetPlayerPed(-1))
+	SetTimeout(400, function()
+		ClearPedTasks(GetPlayerPed(-1))
+	end)
 end
 
 RegisterNetEvent('qb-doorlock:client:setState')
