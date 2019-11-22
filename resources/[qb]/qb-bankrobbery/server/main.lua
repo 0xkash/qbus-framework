@@ -226,7 +226,7 @@ end)
 
 QBCore.Functions.CreateUseableItem("security_card_01", function(source, item)
     local Player = QBCore.Functions.GetPlayer(source)
-	if Player.Functions.RemoveItem('security_card_01', 1, item.slot) then
+	if Player.Functions.GetItemByName('security_card_01') ~= nil then
         TriggerClientEvent("qb-bankrobbery:UseBankcardA", source)
     end
 end)
