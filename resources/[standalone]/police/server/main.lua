@@ -273,18 +273,17 @@ end)
 QBCore.Functions.CreateCallback('police:IsSilencedWeapon', function(source, cb, weapon)
     local Player = QBCore.Functions.GetPlayer(source)
     local itemInfo = Player.Functions.GetItemByName(QBCore.Shared.Weapons[weapon]["name"])
+    local retval = false
     if itemInfo ~= nil then 
         if itemInfo.info ~= nil and itemInfo.info.attachments ~= nil then 
             for k, v in pairs(itemInfo.info.attachments) do
                 if itemInfo.info.attachments[k].component == "COMPONENT_AT_AR_SUPP_02" or itemInfo.info.attachments[k].component == "COMPONENT_AT_AR_SUPP" or itemInfo.info.attachments[k].component == "COMPONENT_AT_PI_SUPP_02" or itemInfo.info.attachments[k].component == "COMPONENT_AT_PI_SUPP" then
-                    cb(true)
+                    retval = true
                 end
             end
         end
-        cb(false)
-    else
-        cb(false)
     end
+    cb(retval)
 end)
 
 function CreateBloodId()

@@ -395,10 +395,13 @@ function IsSilentWeapon(weapon)
 	if not retval then 
 		QBCore.Functions.TriggerCallback('police:IsSilencedWeapon', function(result)
 			retval = result
-			return retval
+			return result
 		end, weapon)
+		Citizen.Wait(100)
+		return retval
+	else
+		return retval
 	end
-	return retval
 end
 
 function DropBulletCasing(weapon)
