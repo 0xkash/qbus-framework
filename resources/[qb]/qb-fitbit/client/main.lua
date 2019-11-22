@@ -24,6 +24,17 @@ end)
 -- Code
 
 local inWatch = false
+local isLoggedIn = false
+
+RegisterNetEvent("QBCore:Client:OnPlayerUnload")
+AddEventHandler("QBCore:Client:OnPlayerUnload", function()
+    isLoggedIn = false
+end)
+
+RegisterNetEvent("QBCore:Client:OnPlayerLoaded")
+AddEventHandler("QBCore:Client:OnPlayerLoaded", function()
+    isLoggedIn = true
+end)
 
 function openWatch()
     SendNUIMessage({
@@ -62,14 +73,16 @@ end)
 Citizen.CreateThread(function()
     while true do
 
-        if IsControlJustPressed(0, Keys["N"]) then
-            QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
-                if result then
-                    openWatch()
-                else
-                    QBCore.Functions.Notify('Je hebt geen Fitbit', 'error')
-                end
-            end, "fitbit")
+        if isLoggedIn then
+            if IsControlJustPressed(0, Keys["N"]) then
+                QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
+                    if result then
+                        openWatch()
+                    else
+                        QBCore.Functions.Notify('Je hebt geen Fitbit', 'error')
+                    end
+                end, "fitbit")
+            end
         end
 
         Citizen.Wait(5)
@@ -82,24 +95,26 @@ Citizen.CreateThread(function()
         Citizen.Wait(1000)
         
         if QBCore ~= nil then
-            QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
-                if result then
-                    local PlayerData = QBCore.Functions.GetPlayerData()
-                    if PlayerData.metadata["fitbit"].food ~= nil then
-                        if PlayerData.metadata["hunger"] < PlayerData.metadata["fitbit"].food then
-                            TriggerEvent("chatMessage", "FITBIT ", "warning", "Je voedsel is "..PlayerData.metadata["hunger"].."%")
-                            PlaySound(-1, "Event_Start_Text", "GTAO_FM_Events_Soundset", 0, 0, 1)
+            if isLoggedIn then
+                QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
+                    if result then
+                        local PlayerData = QBCore.Functions.GetPlayerData()
+                        if PlayerData.metadata["fitbit"].food ~= nil then
+                            if PlayerData.metadata["hunger"] < PlayerData.metadata["fitbit"].food then
+                                TriggerEvent("chatMessage", "FITBIT ", "warning", "Je voedsel is "..PlayerData.metadata["hunger"].."%")
+                                PlaySound(-1, "Event_Start_Text", "GTAO_FM_Events_Soundset", 0, 0, 1)
+                            end
+                        end
+            
+                        if PlayerData.metadata["fitbit"].thirst ~= nil then
+                            if PlayerData.metadata["thirst"] < PlayerData.metadata["fitbit"].thirst  then
+                                TriggerEvent("chatMessage", "FITBIT ", "warning", "Je hydratatie is "..PlayerData.metadata["thirst"].."%")
+                                PlaySound(-1, "Event_Start_Text", "GTAO_FM_Events_Soundset", 0, 0, 1)
+                            end
                         end
                     end
-        
-                    if PlayerData.metadata["fitbit"].thirst ~= nil then
-                        if PlayerData.metadata["thirst"] < PlayerData.metadata["fitbit"].thirst  then
-                            TriggerEvent("chatMessage", "FITBIT ", "warning", "Je hydratatie is "..PlayerData.metadata["thirst"].."%")
-                            PlaySound(-1, "Event_Start_Text", "GTAO_FM_Events_Soundset", 0, 0, 1)
-                        end
-                    end
-                end
-            end, "fitbit")
+                end, "fitbit")
+            end
         end
 
         Citizen.Wait(3 * 60 * 1000)
