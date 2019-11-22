@@ -65,6 +65,53 @@ AddEventHandler('QBCore:Client:OnPlayerUnload', function()
     DetachEntity(GetPlayerPed(-1), true, false)
 end)
 
+RegisterNetEvent('police:client:GunShotAlert')
+AddEventHandler('police:client:GunShotAlert', function(streetLabel, isAutomatic, fromVehicle, coords, vehicleInfo)
+    local msg = ""
+    local blipSprite = 433
+    local blipText = "Melding: Schoten gelost"
+    if fromVehicle then
+        if isAutomatic then
+            blipText = "Melding: Schoten gelost (automatisch)"
+            blipSprite = 433
+            msg = "Schoten gelost (automatisch vuurwapen) uit een voertuig. Model: "..vehicleInfo.name..", kenteken: "..vehicleInfo.plate..", locatie: "..streetLabel
+        else
+            msg = "Schoten gelost uit een voertuig. Model: "..vehicleInfo.name..", kenteken: "..vehicleInfo.plate..", locatie: "..streetLabel
+        end
+    else
+        if isAutomatic then
+            blipText = "Melding: Schoten gelost (automatisch)"
+            blipSprite = 433
+            msg = "Schoten gelost (automatisch vuurwapen). Locatie: "..streetLabel
+        else
+            msg = "Schoten gelost. Locatie: "..streetLabel
+        end
+    end
+    TriggerEvent("chatMessage", "MELDING", "error", msg)
+    PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
+    local transG = 250
+    local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
+    SetBlipSprite(blip, blipSprite)
+    SetBlipColour(blip, 0)
+    SetBlipDisplay(blip, 4)
+    SetBlipAlpha(blip, transG)
+    SetBlipScale(blip, 1.0)
+    SetBlipAsShortRange(blip, false)
+    BeginTextCommandSetBlipName('STRING')
+    AddTextComponentString(blipText)
+    EndTextCommandSetBlipName(blip)
+    while transG ~= 0 do
+        Wait(180 * 4)
+        transG = transG - 1
+        SetBlipAlpha(blip, transG)
+        if transG == 0 then
+            SetBlipSprite(blip, 2)
+            RemoveBlip(blip)
+            return
+        end
+    end
+end)
+
 RegisterNetEvent('112:client:SendPoliceAlert')
 AddEventHandler('112:client:SendPoliceAlert', function(notifyType, msg, type, blipSettings)
     if notifyType == "flagged" then

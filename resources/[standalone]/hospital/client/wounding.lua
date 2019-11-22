@@ -261,20 +261,20 @@ end
 function CheckWeaponDamage(ped)
 	for k, v in pairs(WeaponDamageList) do
         if HasPedBeenDamagedByWeapon(ped, GetHashKey(k), 0) then
-            if not IsInDamageList(WeaponDamageList[k][2]) then
+            if not IsInDamageList(k) then
                 TriggerEvent("chatMessage", "STATUS", "error", v)
-                table.insert(CurrentDamageList, WeaponDamageList[k][2])
+                table.insert(CurrentDamageList, k)
             end
 		end
     end
     TriggerServerEvent("hospital:server:SetWeaponDamage", CurrentDamageList)
 end
 
-function IsInDamageList(damageString)
+function IsInDamageList(damage)
     local retval = false
     if CurrentDamageList ~= nil then 
         for k, v in pairs(CurrentDamageList) do
-            if v == damageString then
+            if CurrentDamageList[k] == damage then
                 retval = true
             end
         end

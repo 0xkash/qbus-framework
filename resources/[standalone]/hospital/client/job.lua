@@ -273,7 +273,7 @@ AddEventHandler('hospital:client:CheckStatus', function()
                                 table.insert(statusChecks, {bone = Config.BoneIndexes[k], label = v.label .." (".. Config.WoundStates[v.severity] ..")"})
                             elseif result["WEAPONWOUNDS"] ~= nil then 
                                 for k, v in pairs(result["WEAPONWOUNDS"]) do
-                                    TriggerEvent("chatMessage", "STATUS CHECK", "error", v)
+                                    TriggerEvent("chatMessage", "STATUS CHECK", "error", WeaponDamageList[v])
                                 end
                             elseif result["BLEED"] > 0 then
                                 TriggerEvent("chatMessage", "STATUS CHECK", "error", "Is "..Config.BleedingStates[v].label)
