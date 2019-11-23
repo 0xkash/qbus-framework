@@ -310,6 +310,99 @@ Citizen.CreateThread(function()
         end
     end
 end)
+local SilentWeapons = {
+	"WEAPON_PETROLCAN",
+	"WEAPON_STUNGUN",
+	"WEAPON_FIREEXTINGUISHER",
+}
+Citizen.CreateThread( function()
+    local currentWeapon = GetSelectedPedWeapon(GetPlayerPed(-1))
+	local isArmed = false
+	local timeCheck = 0
+    while true do
+        Citizen.Wait(50)
+        if not isArmed then
+            if IsPedArmed(GetPlayerPed(-1), 7) and not IsPedArmed(GetPlayerPed(-1), 1) then
+                currentWeapon = GetSelectedPedWeapon(GetPlayerPed(-1))
+                isArmed = true
+                timeCheck = 7
+            end
+        end
+		if isArmed then
+			if PlayerJob.name ~= "police" then
+				if IsPedShooting(GetPlayerPed(-1)) and not IsSilentWeapon(currentWeapon) and IsPedNearby() then
+					local coords = GetEntityCoords(GetPlayerPed(-1))
+					local automatic = false
+					if QBCore.Shared.Weapons[currentWeapon]["ammotype"] ~= "AMMO_PISTOL" then
+						automatic = true
+					end
+					local s1, s2 = Citizen.InvokeNative(0x2EB41072B4C1E4C0, coords.x, coords.y, coords.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
+					local streetLabel = GetStreetNameFromHashKey(s1)
+					local street2 = GetStreetNameFromHashKey(s2)
+					if street2 ~= nil and street2 ~= "" then 
+						streetLabel = streetLabel .. " " .. street2
+					end
+					if IsPedInAnyVehicle(GetPlayerPed(-1), true) then
+						local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1), false)
+						local vehicleInfo = {
+							plate = GetVehicleNumberPlateText(vehicle),
+							name = GetDisplayNameFromVehicleModel(GetEntityModel(vehicle))
+						}
+						TriggerServerEvent("police:server:GunshotAlert", streetLabel, automatic, true, coords, vehicleInfo)
+					else
+						TriggerServerEvent("police:server:GunshotAlert", streetLabel, automatic, false, coords)
+					end
+					Citizen.Wait(15000)
+				end
+
+				if timeCheck == 0 then
+					isArmed = false
+				else
+					timeCheck = timeCheck - 1
+				end
+			else
+				Citizen.Wait(5000)
+			end
+		else
+			Citizen.Wait(2500)
+        end
+    end
+end)
+
+function IsPedNearby()
+	local retval = false
+	local PlayerPeds = {}
+    for _, player in ipairs(GetActivePlayers()) do
+        local ped = GetPlayerPed(player)
+        table.insert(PlayerPeds, ped)
+    end
+    local player = GetPlayerPed(-1)
+    local coords = GetEntityCoords(player)
+	local closestPed, closestDistance = QBCore.Functions.GetClosestPed(coords, PlayerPeds)
+	if not IsEntityDead(closestPed) and closestDistance < 100.0 then
+		retval = true
+	end
+	return retval
+end
+
+function IsSilentWeapon(weapon)
+	local retval = false
+	for k, v in pairs(SilentWeapons) do
+		if GetHashKey(v) == weapon then 
+			retval = true
+		end
+	end
+	if not retval then 
+		QBCore.Functions.TriggerCallback('police:IsSilencedWeapon', function(result)
+			retval = result
+			return result
+		end, weapon)
+		Citizen.Wait(100)
+		return retval
+	else
+		return retval
+	end
+end
 
 function DropBulletCasing(weapon)
 	local randX = math.random() + math.random(-1, 1)

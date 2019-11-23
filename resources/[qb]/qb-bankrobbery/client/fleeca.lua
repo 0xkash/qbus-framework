@@ -263,35 +263,69 @@ function ResetBankDoors()
     end
     local paletoObject = GetClosestObjectOfType(Config.BigBanks["paleto"]["coords"]["x"], Config.BigBanks["paleto"]["coords"]["y"], Config.BigBanks["paleto"]["coords"]["z"], 5.0, Config.BigBanks["paleto"]["object"], false, false, false)
     SetEntityHeading(paletoObject, Config.BigBanks["paleto"]["heading"].closed)
+    TriggerServerEvent('qb-doorlock:server:updateState', 41, true)
+    TriggerServerEvent('qb-doorlock:server:updateState', 42, true)
 end
 
 function openLocker(bankId, lockerId)
     TriggerServerEvent('qb-bankrobbery:server:setLockerState', bankId, lockerId, 'isBusy', true)
-    QBCore.Functions.Progressbar("open_locker", "Kluis aan het openbreken..", math.random(8000, 16000), false, true, {
-        disableMovement = true,
-        disableCarMovement = true,
-        disableMouse = false,
-        disableCombat = true,
-    }, {
-        animDict = "anim@gangops@facility@servers@",
-        anim = "hotwire",
-        flags = 16,
-    }, {}, {}, function() -- Done
-        StopAnimTask(GetPlayerPed(-1), "anim@gangops@facility@servers@", "hotwire", 1.0)
-        TriggerServerEvent('qb-bankrobbery:server:setLockerState', bankId, lockerId, 'isOpened', true)
-        TriggerServerEvent('qb-bankrobbery:server:setLockerState', bankId, lockerId, 'isBusy', false)
-        TriggerServerEvent('qb-bankrobbery:server:recieveItem', 'small')
-        QBCore.Functions.Notify("Gelukt!", "success")
-    end, function() -- Cancel
-        StopAnimTask(GetPlayerPed(-1), "anim@gangops@facility@servers@", "hotwire", 1.0)
-        TriggerServerEvent('qb-bankrobbery:server:setLockerState', bankId, lockerId, 'isBusy', false)
-        QBCore.Functions.Notify("Geannuleerd..", "error")
-    end)
+    if bankId == "paleto" then
+        loadAnimDict("anim@heists@fleeca_bank@drilling")
+        TaskPlayAnim(GetPlayerPed(-1), 'anim@heists@fleeca_bank@drilling', 'drill_straight_idle' , 3.0, 3.0, -1, 1, 0, false, false, false)
+        local pos = GetEntityCoords(GetPlayerPed(-1), true)
+        local DrillObject = CreateObject(GetHashKey("hei_prop_heist_drill"), pos.x, pos.y, pos.z, true, true, true)
+        AttachEntityToEntity(DrillObject, GetPlayerPed(-1), GetPedBoneIndex(GetPlayerPed(-1), 57005), 0.14, 0, -0.01, 90.0, -90.0, 180.0, true, true, false, true, 1, true)
+        QBCore.Functions.Progressbar("open_locker_drill", "Kluis aan het openbreken..", math.random(40000, 60000), false, true, {
+            disableMovement = true,
+            disableCarMovement = true,
+            disableMouse = false,
+            disableCombat = true,
+        }, {}, {}, {}, function() -- Done
+            StopAnimTask(GetPlayerPed(-1), "anim@heists@fleeca_bank@drilling", "drill_straight_idle", 1.0)
+            DetachEntity(DrillObject, true, true)
+            DeleteObject(DrillObject)
+            TriggerServerEvent('qb-bankrobbery:server:setLockerState', bankId, lockerId, 'isOpened', true)
+            TriggerServerEvent('qb-bankrobbery:server:setLockerState', bankId, lockerId, 'isBusy', false)
+            TriggerServerEvent('qb-bankrobbery:server:recieveItem', 'paleto')
+            QBCore.Functions.Notify("Gelukt!", "success")
+        end, function() -- Cancel
+            StopAnimTask(GetPlayerPed(-1), "anim@heists@fleeca_bank@drilling", "drill_straight_idle", 1.0)
+            TriggerServerEvent('qb-bankrobbery:server:setLockerState', bankId, lockerId, 'isBusy', false)
+            DetachEntity(DrillObject, true, true)
+            DeleteObject(DrillObject)
+            QBCore.Functions.Notify("Geannuleerd..", "error")
+        end)
+    else
+        QBCore.Functions.Progressbar("open_locker", "Kluis aan het openbreken..", math.random(8000, 16000), false, true, {
+            disableMovement = true,
+            disableCarMovement = true,
+            disableMouse = false,
+            disableCombat = true,
+        }, {
+            animDict = "anim@gangops@facility@servers@",
+            anim = "hotwire",
+            flags = 16,
+        }, {}, {}, function() -- Done
+            StopAnimTask(GetPlayerPed(-1), "anim@gangops@facility@servers@", "hotwire", 1.0)
+            TriggerServerEvent('qb-bankrobbery:server:setLockerState', bankId, lockerId, 'isOpened', true)
+            TriggerServerEvent('qb-bankrobbery:server:setLockerState', bankId, lockerId, 'isBusy', false)
+            TriggerServerEvent('qb-bankrobbery:server:recieveItem', 'small')
+            QBCore.Functions.Notify("Gelukt!", "success")
+        end, function() -- Cancel
+            StopAnimTask(GetPlayerPed(-1), "anim@gangops@facility@servers@", "hotwire", 1.0)
+            TriggerServerEvent('qb-bankrobbery:server:setLockerState', bankId, lockerId, 'isBusy', false)
+            QBCore.Functions.Notify("Geannuleerd..", "error")
+        end)
+    end
 end
 
 RegisterNetEvent('qb-bankrobbery:client:setLockerState')
 AddEventHandler('qb-bankrobbery:client:setLockerState', function(bankId, lockerId, state, bool)
-    Config.SmallBanks[bankId]["lockers"][lockerId][state] = bool
+    if bankId == "paleto" then
+        Config.BigBanks["paleto"]["lockers"][lockerId][state] = bool
+    else
+        Config.SmallBanks[bankId]["lockers"][lockerId][state] = bool
+    end
 end)
 
 RegisterNetEvent('qb-bankrobbery:client:robberyCall')
@@ -301,9 +335,20 @@ AddEventHandler('qb-bankrobbery:client:robberyCall', function(type, key, streetL
     if type == "small" then
         cameraId = Config.SmallBanks[key]["camId"]
         bank = "Fleeca"
+        PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
+        TriggerEvent("chatMessage", "112-MELDING", "error", "Poging bankoverval bij "..bank.. " " ..streetLabel.." (CAMERA ID: "..cameraId..")")
+    elseif type == "paleto" then
+        cameraId = Config.BigBanks["paleto"]["camId"]
+        bank = "Blaine County Savings"
+        PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
+        Citizen.Wait(100)
+        PlaySoundFrontend( -1, "Beep_Red", "DLC_HEIST_HACKING_SNAKE_SOUNDS", 1 )
+        Citizen.Wait(100)
+        PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
+        Citizen.Wait(100)
+        PlaySoundFrontend( -1, "Beep_Red", "DLC_HEIST_HACKING_SNAKE_SOUNDS", 1 )
+        TriggerEvent("chatMessage", "112-MELDING", "error", "Groot alarm! Poging bankoverval bij "..bank.. " Paleto Bay (CAMERA ID: "..cameraId..")")
     end
-    PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
-    TriggerEvent("chatMessage", "112-MELDING", "error", "Poging bankoverval bij "..bank.. " " ..streetLabel.." (CAMERA ID: "..cameraId..")")
     local transG = 250
     local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
     SetBlipSprite(blip, 487)

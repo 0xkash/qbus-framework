@@ -44,7 +44,11 @@ end)
 
 RegisterServerEvent('qb-bankrobbery:server:setLockerState')
 AddEventHandler('qb-bankrobbery:server:setLockerState', function(bankId, lockerId, state, bool)
-    Config.SmallBanks[bankId]["lockers"][lockerId][state] = bool
+    if bankId == "paleto" then
+        Config.BigBanks["paleto"]["lockers"][lockerId][state] = bool
+    else
+        Config.SmallBanks[bankId]["lockers"][lockerId][state] = bool
+    end
 
     TriggerClientEvent('qb-bankrobbery:client:setLockerState', -1, bankId, lockerId, state, bool)
 end)
@@ -74,6 +78,27 @@ AddEventHandler('qb-bankrobbery:server:recieveItem', function(type)
         else
             ply.Functions.AddItem('security_card_01', 1)
             TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items['security_card_01'], "add")
+        end
+    elseif type == "paleto" then
+        local itemType = math.random(#Config.RewardTypes)
+        local tierChance = math.random(1, 100)
+        local tier = 1
+        if tierChance < 25 then tier = 1 elseif tierChance >= 25 and tierChance < 70 then tier = 2 elseif tierChance >= 70 and tierChance < 95 then tier = 3 else tier = 4 end
+
+        if tier ~= 4 then
+            if Config.RewardTypes[itemType].type == "item" then
+                local item = Config.LockerRewards["tier"..tier][math.random(#Config.LockerRewards["tier"..tier])]
+                local itemAmount = math.random(item.maxAmount)
+
+                ply.Functions.AddItem(item.item, itemAmount)
+                TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[item.item], "add")
+            elseif Config.RewardTypes[itemType].type == "money" then
+                local moneyAmount = math.random(500, 5000)
+                ply.Functions.AddMoney('cash', moneyAmount)
+            end
+        else
+            ply.Functions.AddItem('security_card_02', 1)
+            TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items['security_card_02'], "add")
         end
     end
 end)
@@ -201,7 +226,7 @@ end)
 
 QBCore.Functions.CreateUseableItem("security_card_01", function(source, item)
     local Player = QBCore.Functions.GetPlayer(source)
-	if Player.Functions.RemoveItem('security_card_01', 1, item.slot) then
+	if Player.Functions.GetItemByName('security_card_01') ~= nil then
         TriggerClientEvent("qb-bankrobbery:UseBankcardA", source)
     end
 end)
