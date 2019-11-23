@@ -106,7 +106,6 @@ function PhonePlayAnim(status, freeze, force)
 		deletePhone()
 		StopAnimTask(myPedId, lastDict, lastAnim, 1.0)
 	end
-
 end
 
 function PhonePlayOut()

@@ -110,6 +110,12 @@ $(document).ready(function(){
         if (eventData.task == "updateChat") {
             qbPhone.UpdateChat(eventData.messages, eventData.number)
         }
+
+        if (eventData.task == "updateChats") {
+            $.post('http://qb-phone/getMessages', JSON.stringify({}), function(messages){
+                qbPhone.SetupChat(messages)
+            });
+        }
     });
 
     $('.notify-btn').change(function() {
@@ -181,6 +187,8 @@ $(document).on('click', '#chat-window-arrow-left', function(e){
     $('.chat-window').css({"display":"block"}).animate({top: "103.5%",}, 250, function(){
         $(".chat-window").css({"display":"none"});
     });
+
+    currentChatNumber = null;
 })
 
 var chatData = null;
@@ -206,6 +214,7 @@ $(document).on('click', '.chat', function(e){
 
 qbPhone.UpdateChat = function(messages, number) {
     if (currentChatNumber == number) {
+        console.log('ik update')
         $(".messages").html("");
         $.each(messages, function(i, chat){
             if (chat.sender != myCitizenId) {
@@ -217,6 +226,7 @@ qbPhone.UpdateChat = function(messages, number) {
                 $(".messages").append(elem);
             }
         });
+        qbPhone.loadUserMessages();
     }
 }
 
@@ -264,6 +274,8 @@ $(document).on('click', '.sms-contact', function(){
             qbPhone.OpenNewChat(contactData)
         }
     });
+    currentChatNumber = contactData.number;
+    qbPhone.loadUserMessages();
 });
 
 qbPhone.OpenExistingChat = function(messageData) {
@@ -690,9 +702,19 @@ function changecName() {
 }
 
 $(document).on('click', '.delete-contact-btn', function(e){
+    e.preventDefault();
+
     $('.edit-contact-container').css({"display":"block"}).animate({top: "103%",}, 250, function(){
         $(".edit-contact-container").css({"display":"none"});
-    });
+    });    
+
+    var oldContactName = editContactData.name;
+    var oldContactNum =  editContactData.number;
+    
+    $.post('http://qb-phone/removeContact', JSON.stringify({
+        oldContactName: oldContactName,
+        oldContactNum: oldContactNum,
+    }))
 
     editContactData = null;
 });

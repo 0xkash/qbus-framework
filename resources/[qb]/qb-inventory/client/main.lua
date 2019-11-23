@@ -396,7 +396,6 @@ RegisterNUICallback("CloseInventory", function(data, cb)
     end
     SetNuiFocus(false, false)
     inInventory = false
-    SetTimecycleModifier('default')
 end)
 
 RegisterNUICallback("UseItem", function(data, cb)
