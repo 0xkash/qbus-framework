@@ -227,6 +227,63 @@ QBCore.Functions.CreateCallback('qb-phone:server:getContactName', function(sourc
     end)
 end)
 
+RegisterServerEvent('qb-phone:server:createChat')
+AddEventHandler('qb-phone:server:createChat', function(messages)
+    local src = source
+    local ply = QBCore.Functions.GetPlayer(src)
+
+    QBCore.Functions.ExecuteSql("INSERT INTO `phone_messages` (`citizenid`, `number`, `messages`) VALUES ('"..ply.PlayerData.citizenid.."', '"..messages.number.."', '"..json.encode(messages.messages).."')")
+
+
+    QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `charinfo` LIKE '%"..messages.number.."%'", function(target)
+        local target = QBCore.Functions.GetPlayerByCitizenId(target[1].citizenid)
+
+        TriggerClientEvent('qb-phone:client:createChatOther', target.PlayerData.source, messages, ply.PlayerData.charinfo.phone)
+    end)
+end)
+
+RegisterServerEvent('qb-phone:server:createChatOther')
+AddEventHandler('qb-phone:server:createChatOther', function(chatData, senderPhone)
+    local src = source
+    local ply = QBCore.Functions.GetPlayer(src)
+
+    QBCore.Functions.ExecuteSql("INSERT INTO `phone_messages` (`citizenid`, `number`, `messages`) VALUES ('"..ply.PlayerData.citizenid.."', '"..senderPhone.."', '"..json.encode(chatData.messages).."')")
+end)
+
+RegisterServerEvent('qb-phone:server:sendMessage')
+AddEventHandler('qb-phone:server:sendMessage', function(chatData)
+    local src = source
+    local ply = QBCore.Functions.GetPlayer(src)
+    QBCore.Functions.ExecuteSql("UPDATE `phone_messages` SET `messages` = '"..json.encode(chatData.messages).."' WHERE `citizenid` = '"..ply.PlayerData.citizenid.."' AND `number` = '"..chatData.number.."'")
+    
+    QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `charinfo` LIKE '%"..chatData.number.."%'", function(target)
+        local target = QBCore.Functions.GetPlayerByCitizenId(target[1].citizenid)
+
+        TriggerClientEvent('qb-phone:client:recieveMessage', target.PlayerData.source, chatData, ply.PlayerData.charinfo.phone)
+    end)
+end)
+
+RegisterServerEvent('qb-phone:client:recieveMessage')
+AddEventHandler('qb-phone:server:recieveMessage', function(chatData, senderPhone)
+    local src = source
+    local ply = QBCore.Functions.GetPlayer(src)
+
+    TriggerClientEvent('QBCore:Notify', src, 'Je hebt een bericht ontvangen!')
+    QBCore.Functions.ExecuteSql("UPDATE `phone_messages` SET `messages` = '"..json.encode(chatData.messages).."' WHERE `citizenid` = '"..ply.PlayerData.citizenid.."' AND `number` = '"..senderPhone.."'")
+end)
+
+QBCore.Functions.CreateCallback('qb-phone:server:getPlayerMessages', function(source, cb)
+    local src = source
+    local ply = QBCore.Functions.GetPlayer(src)
+
+    QBCore.Functions.ExecuteSql("SELECT * FROM `phone_messages` WHERE `citizenid` = '"..ply.PlayerData.citizenid.."'", function(result)
+        for k, v in pairs(result) do
+            result[k].messages = json.decode(result[k].messages)
+        end
+        cb(result)
+    end)
+end)
+
 RegisterServerEvent('qb-phone:server:CallContact')
 AddEventHandler('qb-phone:server:CallContact', function(callData, caller)
     local src = source
@@ -281,6 +338,17 @@ AddEventHandler('qb-phone:server:HangupCall', function(callData)
             if targetPlayer ~= nil then
                 TriggerClientEvent('qb-phone:client:HangupCallOther', targetPlayer.PlayerData.source, callData)
             end
+        end
+    end)
+end)
+
+QBCore.Functions.CreateCallback('qb-phone:server:doesChatExists', function(source, cb, number)
+    local ply = QBCore.Functions.GetPlayer(source)
+    QBCore.Functions.ExecuteSql('SELECT * FROM `phone_messages` WHERE `citizenid` = "'..ply.PlayerData.citizenid..'" AND `number` = "'..number..'"', function(result)
+        if result[1] ~= nil then
+            cb(result[1])
+        else
+            cb(nil)
         end
     end)
 end)

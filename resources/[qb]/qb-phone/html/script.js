@@ -11,6 +11,10 @@ var choosingBg = false;
 var curBg = "bg-1";
 var selectedContact = null;
 
+var currentChatNumber = null;
+
+var myCitizenId = null;
+
 var inCall = false;
 
 var currentMailEvent = null;
@@ -34,7 +38,7 @@ $(document).ready(function(){
         if (eventData.action = "phone") {
             if (!eventData.task) {
                 if (eventData.open == true) {
-                    qbPhone.Open()
+                    qbPhone.Open(eventData.cid)
                     qbPhone.setupPhoneApps(eventData.apps)
                 } else if (eventData.open == false) {
                     qbPhone.Close()
@@ -102,6 +106,10 @@ $(document).ready(function(){
             qbPhone.SetupAdverts(eventData.ads);
             qbPhone.Notify('<i class="fas fa-ad" style="position: relative; padding-top: 3px;"></i> Advertentie', 'advert', eventData.sender + ' heeft een advertentie geplaatst!')
         }
+
+        if (eventData.task == "updateChat") {
+            qbPhone.UpdateChat(eventData.messages, eventData.number)
+        }
     });
 
     $('.notify-btn').change(function() {
@@ -149,10 +157,23 @@ $(document).on('click', '.app', function(e){
         $.post('http://qb-phone/getTweets');
     } else if (pressedApp.app == "advert") {
         $.post('http://qb-phone/getAds');
+    } else if (pressedApp.app == "messages") {
+        $.post('http://qb-phone/getMessages', JSON.stringify({}), function(messages){
+            qbPhone.SetupChat(messages)
+        });
     }
 
     qbPhone.succesSound();
 });
+
+qbPhone.SetupChat = function(chats) {
+    $(".chats-container").html("");
+    $.each(chats, function(i, chat){
+        var elem = '<div class="chat" id="chat-'+i+'"><span id="chat-name">'+chat.number+'</span> <span id="chat-last-message">'+chat.messages[0].message+'</span> <span id="chat-last-message-date"><span id="chat-last-message-state">Nieuw &#8226;</span> Vandaag</span> </div>';
+        $(".chats-container").append(elem);
+        $("#chat-"+i).data('chatData', chat);
+    });
+}
 
 $(document).on('click', '#chat-window-arrow-left', function(e){
     e.preventDefault();
@@ -162,12 +183,133 @@ $(document).on('click', '#chat-window-arrow-left', function(e){
     });
 })
 
+var chatData = null;
+
 $(document).on('click', '.chat', function(e){
     e.preventDefault();
-
+    chatData = $(this).data('chatData');
+    currentChatNumber = chatData.number;
+    $(".messages").html("");
     $('.chat-window').css({"display":"block"}).animate({top: "3%",}, 250);
+    $.each(chatData.messages, function(i, chat){
+        if (chat.sender != myCitizenId) {
+            var elem = '<div class="msg-container msg-other">'+chat.message+'</div>'
+            $(".messages").append(elem);
+        }
+        if (chat.sender == myCitizenId) {
+            var elem = '<div class="msg-container msg-me">'+chat.message+'</div>'
+            $(".messages").append(elem);
+        }
+    });
     qbPhone.loadUserMessages();
 });
+
+qbPhone.UpdateChat = function(messages, number) {
+    if (currentChatNumber == number) {
+        $(".messages").html("");
+        $.each(messages, function(i, chat){
+            if (chat.sender != myCitizenId) {
+                var elem = '<div class="msg-container msg-other">'+chat.message+'</div>'
+                $(".messages").append(elem);
+            }
+            if (chat.sender == myCitizenId) {
+                var elem = '<div class="msg-container msg-me">'+chat.message+'</div>'
+                $(".messages").append(elem);
+            }
+        });
+    }
+}
+
+$(document).on('click', '.send-message', function(e){
+    e.preventDefault();
+
+    var message = $(".message-input").val();
+
+    $.post('http://qb-phone/sendMessage', JSON.stringify({
+        number: chatData.number,
+        message: message
+    }), function(cData){
+        $(".messages").html("");
+        chatData.messages = cData;
+        $.each(cData, function(i, chat){
+            if (chat.sender != myCitizenId) {
+                var elem = '<div class="msg-container msg-other">'+chat.message+'</div>'
+                $(".messages").append(elem);
+            }
+            if (chat.sender == myCitizenId) {
+                var elem = '<div class="msg-container msg-me">'+chat.message+'</div>'
+                $(".messages").append(elem);
+            }
+        });
+        qbPhone.loadUserMessages();
+    });
+
+    $.post('http://qb-phone/getMessages', JSON.stringify({}), function(messages){
+        qbPhone.SetupChat(messages)
+    });
+
+    $(".message-input").val("");
+});
+
+$(document).on('click', '.sms-contact', function(){
+    var cId = $(this).attr('id');
+    var contactData = $("#"+cId).data('cData');
+
+    $.post('http://qb-phone/doesChatExists', JSON.stringify({
+        cData: contactData
+    }), function(cbData){
+        if (cbData != "") {
+            qbPhone.OpenExistingChat(cbData)
+        } else {
+            qbPhone.OpenNewChat(contactData)
+        }
+    });
+});
+
+qbPhone.OpenExistingChat = function(messageData) {
+    $('.chat-window').css({"display":"block"}).animate({top: "3%",}, 250);
+    $(".chat-window-header").html('<p><i class="fas fa-arrow-left" id="chat-window-arrow-left"></i> '+messageData.name+'</p>');
+    $(".messages").html("");
+    $(".contacts-app").css({'display':'block'}).animate({
+        top: "103.5%",
+    }, 250, function(){
+        $(".contacts-app").css({'display':'none'});
+        $(".messages-app").css({'display':'block'}).animate({
+            top: "3%",
+        }, 250);
+        currentApp = ".messages-app";
+    });
+    chatData = messageData;
+    $.each(messageData.messages, function(i, chat){
+        if (chat.sender != myCitizenId) {
+            var elem = '<div class="msg-container msg-other">'+chat.message+'</div>'
+            $(".messages").append(elem);
+        }
+
+        if (chat.sender == myCitizenId) {
+            var elem = '<div class="msg-container msg-me">'+chat.message+'</div>'
+            $(".messages").append(elem);
+        }
+    });
+    qbPhone.loadUserMessages();
+}
+
+qbPhone.OpenNewChat = function(data) {
+    $('.chat-window').css({"display":"block"}).animate({top: "3%",}, 250);
+    $(".chat-window-header").html('<p><i class="fas fa-arrow-left" id="chat-window-arrow-left"></i> '+data.name+'</p>');
+    $(".messages").html("");
+    $(".contacts-app").css({'display':'block'}).animate({
+        top: "103.5%",
+    }, 250, function(){
+        $(".contacts-app").css({'display':'none'});
+        $(".messages-app").css({'display':'block'}).animate({
+            top: "3%",
+        }, 250);
+        currentApp = ".messages-app";
+    });
+    chatData = data;
+    qbPhone.loadUserMessages();
+}
 
 $(document).on('click', '#background-item', function(e){
     e.preventDefault();
@@ -318,7 +460,7 @@ $(document).on('click', '.home-container', function(e){
     }
 });
 
-qbPhone.Open = function() {
+qbPhone.Open = function(cid) {
     inPhone = true;
     $(homePage).css({'display':'block'})
     $('.phone-container').css({'display':'block'}).animate({
@@ -327,6 +469,7 @@ qbPhone.Open = function() {
     $('.phone-frame').css({'display':'block'}).animate({
         top: "40%",
     }, 300);
+    myCitizenId = cid;
 }
 
 qbPhone.Close = function() {

@@ -13,7 +13,7 @@ QBCore = nil
 
 
 local phoneMeta = {}
-local isLoggedIn = false
+local isLoggedIn = true
 
 local callData = {
     number = nil,
@@ -35,6 +35,118 @@ local inPhone = false
 local allowNotifys = true
 
 local playerContacts = {}
+
+local messages = {}
+
+RegisterNUICallback('getMessages', function(data, cb)
+    local chats = {}
+    for k, v in pairs(messages) do
+        table.insert(chats, {
+            number = v.number,
+            name = v.number,
+            messages = v.messages,
+        })
+    end
+    cb(chats)
+end)
+
+RegisterNUICallback('doesChatExists', function(data, cb)
+    QBCore.Functions.TriggerCallback('qb-phone:server:doesChatExists', function(result)
+        local cbData = {}
+        if result ~= nil then
+            contactName = nil
+            cbData = {
+                number = data.cData.number,
+                name = data.cData.name,
+                messages = json.decode(result.messages)
+            }
+        end
+        cb(cbData)
+    end, data.cData.number)
+end)
+
+RegisterNUICallback('sendMessage', function(data, cb)
+    local cur = nil
+    local exist = false
+    for k, v in pairs(messages) do
+        if messages[k].number == data.number then
+            exist = true
+            cur = k
+        end
+    end
+
+    if exist then
+        table.insert(messages[cur].messages, {
+            sender = QBCore.Functions.GetPlayerData().citizenid,
+            message = data.message,
+        })
+        TriggerServerEvent('qb-phone:server:sendMessage', messages[cur])
+        QBCore.Functions.Notify('Bericht verstuurd!', 'success', 2500)
+    else
+        table.insert(messages, {
+            number = data.number,
+            name = data.name,
+            messages = {
+                [1] = {
+                    sender = QBCore.Functions.GetPlayerData().citizenid,
+                    message = data.message
+                }
+            }
+        })
+        QBCore.Functions.Notify('Bericht verstuurd!', 'success', 2500)
+        for k, v in pairs(messages) do
+            if messages[k].number == data.number then
+                cur = k
+            end
+        end
+        TriggerServerEvent('qb-phone:server:createChat', messages[cur])
+    end
+
+    cb(messages[cur].messages)
+end)
+
+RegisterNetEvent('qb-phone:client:createChatOther')
+AddEventHandler('qb-phone:client:createChatOther', function(chatData, senderPhone)
+    local contactName = senderPhone
+    for k, v in pairs(playerContacts) do 
+        if playerContacts[k].number == senderPhone then 
+            contactName = playerContacts[k].name 
+        end 
+    end
+    table.insert(messages, {
+        number = senderPhone,
+        name = contactName,
+        messages = chatData.messages
+    })
+    if inPhone then
+
+    end
+    TriggerServerEvent('qb-phone:server:createChatOther', chatData, senderPhone)
+    QBCore.Functions.Notify('Je hebt een bericht ontvangen van '..senderPhone)
+end)
+
+RegisterNetEvent('qb-phone:client:recieveMessage')
+AddEventHandler('qb-phone:client:recieveMessage', function(chatData, senderPhone)
+    local contactName = senderPhone
+    for k, v in pairs(playerContacts) do 
+        if playerContacts[k].number == senderPhone then 
+            contactName = playerContacts[k].name 
+        end 
+    end
+    TriggerServerEvent('qb-phone:server:recieveMessage', chatData, senderPhone)
+
+    SendNUIMessage({
+        task = "updateChat",
+        messages = chatData.messages,
+        number = senderPhone
+    })
+
+    for _, chat in pairs(messages) do
+        if chat.number == senderPhone then
+            chat.messages = chatData.messages
+        end
+    end
+end)
 
 Citizen.CreateThread(function() 
     while true do
@@ -63,6 +175,20 @@ AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     setPhoneMeta()
     QBCore.Functions.TriggerCallback('qb-phone:server:getUserContacts', function(result)
         playerContacts = result
+    end)
+    QBCore.Functions.TriggerCallback('qb-phone:server:getPlayerMessages', function(result)
+        messages = result
+    end)
+end)
+
+Citizen.CreateThread(function()
+    Wait(500)
+    setPhoneMeta()
+    QBCore.Functions.TriggerCallback('qb-phone:server:getUserContacts', function(result)
+        playerContacts = result
+    end)
+    QBCore.Functions.TriggerCallback('qb-phone:server:getPlayerMessages', function(result)
+        messages = result
     end)
 end)
 
@@ -276,7 +402,8 @@ function openPhone(bool)
         SendNUIMessage({
             action = "phone",
             open = bool,
-            apps = Config.PhoneApps
+            apps = Config.PhoneApps,
+            cid = QBCore.Functions.GetPlayerData().citizenid
         })
 
         if callData.inCall or callData.outgoingCall or callData.incomingCall then

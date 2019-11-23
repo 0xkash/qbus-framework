@@ -24,7 +24,7 @@ end)
 -- Code
 
 local keyPressed = false
-local isLoggedIn = false
+local isLoggedIn = true
 
 local inKeyBinding = false
 local availableKeys = {
@@ -79,9 +79,9 @@ Citizen.CreateThread(function()
                 if IsControlJustPressed(0, Keys[v]) then
                     local PlayerData = QBCore.Functions.GetPlayerData()
                     local keyMeta = PlayerData.metadata["commandbinds"]
-                    local args = nil
+                    local args = {}
                     if keyMeta[v]["command"] ~= "" then
-                        if keyMeta[v]["argument"] ~= "" then args = {[1] = keyMeta[v]["argument"]} end
+                        if keyMeta[v]["argument"] ~= "" then args = {[1] = keyMeta[v]["argument"]} else args = {[1] = nil} end
                         TriggerServerEvent('QBCore:CallCommand', keyMeta[v]["command"], args)
                         keyPressed = true
                     else
