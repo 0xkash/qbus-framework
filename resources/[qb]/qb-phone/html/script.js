@@ -110,6 +110,12 @@ $(document).ready(function(){
         if (eventData.task == "updateChat") {
             qbPhone.UpdateChat(eventData.messages, eventData.number)
         }
+
+        if (eventData.task == "updateChats") {
+            $.post('http://qb-phone/getMessages', JSON.stringify({}), function(messages){
+                qbPhone.SetupChat(messages)
+            });
+        }
     });
 
     $('.notify-btn').change(function() {
@@ -181,6 +187,8 @@ $(document).on('click', '#chat-window-arrow-left', function(e){
     $('.chat-window').css({"display":"block"}).animate({top: "103.5%",}, 250, function(){
         $(".chat-window").css({"display":"none"});
     });
+
+    currentChatNumber = null;
 })
 
 var chatData = null;
@@ -690,9 +698,19 @@ function changecName() {
 }
 
 $(document).on('click', '.delete-contact-btn', function(e){
+    e.preventDefault();
+
     $('.edit-contact-container').css({"display":"block"}).animate({top: "103%",}, 250, function(){
         $(".edit-contact-container").css({"display":"none"});
-    });
+    });    
+
+    var oldContactName = editContactData.name;
+    var oldContactNum =  editContactData.number;
+    
+    $.post('http://qb-phone/removeContact', JSON.stringify({
+        oldContactName: oldContactName,
+        oldContactNum: oldContactNum,
+    }))
 
     editContactData = null;
 });

@@ -107,34 +107,21 @@ end)
 
 RegisterNetEvent('qb-phone:client:createChatOther')
 AddEventHandler('qb-phone:client:createChatOther', function(chatData, senderPhone)
-    local contactName = senderPhone
-    for k, v in pairs(playerContacts) do 
-        if playerContacts[k].number == senderPhone then 
-            contactName = playerContacts[k].name 
-        end 
-    end
     table.insert(messages, {
         number = senderPhone,
         name = contactName,
         messages = chatData.messages
     })
     if inPhone then
-
+        SendNUIMessage({
+            task = "updateChats"
+        })
     end
     TriggerServerEvent('qb-phone:server:createChatOther', chatData, senderPhone)
-    QBCore.Functions.Notify('Je hebt een bericht ontvangen van '..senderPhone)
 end)
 
 RegisterNetEvent('qb-phone:client:recieveMessage')
 AddEventHandler('qb-phone:client:recieveMessage', function(chatData, senderPhone)
-    local contactName = senderPhone
-    for k, v in pairs(playerContacts) do 
-        if playerContacts[k].number == senderPhone then 
-            contactName = playerContacts[k].name 
-        end 
-    end
-    TriggerServerEvent('qb-phone:server:recieveMessage', chatData, senderPhone)
-
     SendNUIMessage({
         task = "updateChat",
         messages = chatData.messages,
@@ -146,6 +133,7 @@ AddEventHandler('qb-phone:client:recieveMessage', function(chatData, senderPhone
             chat.messages = chatData.messages
         end
     end
+    TriggerServerEvent('qb-phone:server:recieveMessage', chatData, senderPhone)
 end)
 
 Citizen.CreateThread(function() 
@@ -268,8 +256,6 @@ RegisterNUICallback('editContact', function(data)
     local newContactName = data.newContactName
     local newContactNum = data.newContactNum
 
-    print(json.encode(data))
-
     for k, v in pairs(playerContacts) do
         if playerContacts[k].name == oldContactName and playerContacts[k].number == oldContactNum then
             playerContacts[k].name = newContactName
@@ -280,6 +266,21 @@ RegisterNUICallback('editContact', function(data)
 
     TriggerServerEvent('qb-phone:server:editContact', oldContactName, oldContactNum, newContactName, newContactNum)
     QBCore.Functions.Notify(oldContactNum..' is aangepast!', 'success', 3500)
+end)
+
+RegisterNUICallback('removeContact', function(data)
+    local cName = data.oldContactName
+    local cNumb = data.oldContactNum
+    
+    for k, v in pairs(playerContacts) do
+        if playerContacts[k].name == cName and playerContacts[k].number == cNumb then
+            table.remove(playerContacts, k)
+        end
+    end
+    TriggerServerEvent('qb-phone:server:removeContact', cName, cNumb)
+    QBCore.Functions.Notify(cName..' is verwijderd!', 'success', 3500)
+
+    setupContacts()
 end)
 
 RegisterNUICallback('transferMoney', function(data)

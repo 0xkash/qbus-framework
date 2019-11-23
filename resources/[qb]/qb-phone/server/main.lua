@@ -248,6 +248,14 @@ AddEventHandler('qb-phone:server:createChatOther', function(chatData, senderPhon
     local ply = QBCore.Functions.GetPlayer(src)
 
     QBCore.Functions.ExecuteSql("INSERT INTO `phone_messages` (`citizenid`, `number`, `messages`) VALUES ('"..ply.PlayerData.citizenid.."', '"..senderPhone.."', '"..json.encode(chatData.messages).."')")
+    
+    QBCore.Functions.ExecuteSql("SELECT * FROM `player_contacts` WHERE `citizenid` = '"..ply.PlayerData.citizenid.."' AND `number` = '"..senderPhone.."'", function(result)
+        if result[1] ~= nil then
+            TriggerClientEvent('QBCore:Notify', src, 'Je hebt een bericht ontvangen van '..result[1].name..'!')
+        else
+            TriggerClientEvent('QBCore:Notify', src, 'Je hebt een bericht ontvangen van '..senderPhone..'!')
+        end
+    end)
 end)
 
 RegisterServerEvent('qb-phone:server:sendMessage')
@@ -270,6 +278,22 @@ AddEventHandler('qb-phone:server:recieveMessage', function(chatData, senderPhone
 
     TriggerClientEvent('QBCore:Notify', src, 'Je hebt een bericht ontvangen!')
     QBCore.Functions.ExecuteSql("UPDATE `phone_messages` SET `messages` = '"..json.encode(chatData.messages).."' WHERE `citizenid` = '"..ply.PlayerData.citizenid.."' AND `number` = '"..senderPhone.."'")
+
+    QBCore.Functions.ExecuteSql("SELECT * FROM `player_contacts` WHERE `citizenid` = '"..ply.PlayerData.citizenid.."' AND `number` = '"..senderPhone.."'", function(result)
+        if result[1] ~= nil then
+            TriggerClientEvent('QBCore:Notify', src, 'Je hebt een bericht ontvangen van '..result[1].name..'!')
+        else
+            TriggerClientEvent('QBCore:Notify', src, 'Je hebt een bericht ontvangen van '..senderPhone..'!')
+        end
+    end)
+end)
+
+RegisterServerEvent('qb-phone:server:removeContact')
+AddEventHandler('qb-phone:server:removeContact', function(name, number)
+    local src = source
+    local ply = QBCore.Functions.GetPlayer(src)
+
+    QBCore.Functions.ExecuteSql("DELETE FROM `player_contacts` WHERE `name` = '"..name.."' AND `number` = '"..number.."'")
 end)
 
 QBCore.Functions.CreateCallback('qb-phone:server:getPlayerMessages', function(source, cb)
