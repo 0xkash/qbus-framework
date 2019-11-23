@@ -420,49 +420,49 @@ LSC_Config.prices = {
 ----------Windows--------
 	[46] = {
 		startprice = 2000,
-		increaseby = 1250
+		increaseby = 750
 	},
 	
 ----------Tank--------
 	[45] = {
 		startprice = 2000,
-		increaseby = 1250
+		increaseby = 750
 	},
 	
 ----------Trim--------
 	[44] = {
 		startprice = 2000,
-		increaseby = 1250
+		increaseby = 750
 	},
 	
 ----------Aerials--------
 	[43] = {
 		startprice = 2000,
-		increaseby = 1250
+		increaseby = 750
 	},
 
 ----------Arch cover--------
 	[42] = {
 		startprice = 2000,
-		increaseby = 1250
+		increaseby = 750
 	},
 
 ----------Struts--------
 	[41] = {
 		startprice = 2000,
-		increaseby = 1250
+		increaseby = 750
 	},
 	
 ----------Air filter--------
 	[40] = {
 		startprice = 2000,
-		increaseby = 1250
+		increaseby = 750
 	},
 	
 ----------Engine block--------
 	[39] = {
 		startprice = 2000,
-		increaseby = 1250
+		increaseby = 750
 	},
 
 ----------Hydraulics--------
@@ -474,78 +474,78 @@ LSC_Config.prices = {
 ----------Trunk--------
 	[37] = {
 		startprice = 2000,
-		increaseby = 1250
+		increaseby = 750
 	},
 
 ----------Speakers--------
 	[36] = {
 		startprice = 2000,
-		increaseby = 1250
+		increaseby = 750
 	},
 
 ----------Plaques--------
 	[35] = {
 		startprice = 2000,
-		increaseby = 1250
+		increaseby = 750
 	},
 	
 ----------Shift leavers--------
 	[34] = {
 		startprice = 2000,
-		increaseby = 1250
+		increaseby = 750
 	},
 	
 ----------Steeringwheel--------
 	[33] = {
 		startprice = 2000,
-		increaseby = 1250
+		increaseby = 750
 	},
 	
 ----------Seats--------
 	[32] = {
 		startprice = 2000,
-		increaseby = 1250
+		increaseby = 750
 	},
 	
 ----------Door speaker--------
 	[31] = {
 		startprice = 2000,
-		increaseby = 1250
+		increaseby = 750
 	},
 
 ----------Dial--------
 	[30] = {
 		startprice = 2000,
-		increaseby = 1250
+		increaseby = 750
 	},
 ----------Dashboard--------
 	[29] = {
 		startprice = 2000,
-		increaseby = 1250
+		increaseby = 750
 	},
 	
 ----------Ornaments--------
 	[28] = {
 		startprice = 2000,
-		increaseby = 1250
+		increaseby = 750
 	},
 	
 ----------Trim--------
 	[27] = {
 		startprice = 2000,
-		increaseby = 1250
+		increaseby = 750
 	},
 	
 ----------Vanity plates--------
 	[26] = {
 		startprice = 2000,
-		increaseby = 1250
+		increaseby = 750
 	},
 	
 ----------Plate holder--------
 	[25] = {
 		startprice = 2000,
-		increaseby = 1250
+		increaseby = 750
 	},
 	
 ---------Headlights---------

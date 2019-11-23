@@ -25,7 +25,6 @@ AddEventHandler("LSC:buttonSelected", function(name, button)
 			end
 		end
 	else
-		print("ayayayayayya")
 		TriggerClientEvent("LSC:buttonSelected", source, name, button, false)
 	end
 end)
