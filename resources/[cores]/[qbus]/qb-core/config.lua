@@ -28,3 +28,4 @@ QBConfig.Server.closedReason = nil -- Reason message to display when people can'
 QBConfig.Server.uptime = 0 -- Time the server has been up.
 QBConfig.Server.whitelist = false -- Enable or disable whitelist on the server
 QBConfig.Server.discord = "https://discord.gg/Ttr6fY6" -- Discord invite link
+QBConfig.Server.PermissionList = {} -- permission list

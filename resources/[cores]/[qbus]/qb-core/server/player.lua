@@ -40,8 +40,6 @@ QBCore.Player.CheckPlayerData = function(source, PlayerData)
 		PlayerData.money[moneytype] = PlayerData.money[moneytype] ~= nil and PlayerData.money[moneytype] or startamount
 	end
 
-	PlayerData.permission = PlayerData.permission ~= nil and PlayerData.permission or "user"
-
 	PlayerData.charinfo = PlayerData.charinfo ~= nil and PlayerData.charinfo or {}
 	PlayerData.charinfo.firstname = PlayerData.charinfo.firstname ~= nil and PlayerData.charinfo.firstname or "Firstname"
 	PlayerData.charinfo.lastname = PlayerData.charinfo.lastname ~= nil and PlayerData.charinfo.lastname or "Lastname"
@@ -61,12 +59,13 @@ QBCore.Player.CheckPlayerData = function(source, PlayerData)
 	PlayerData.metadata["injail"] = PlayerData.metadata["injail"] ~= nil and PlayerData.metadata["injail"] or 0
 	PlayerData.metadata["jailitems"] = PlayerData.metadata["jailitems"] ~= nil and PlayerData.metadata["jailitems"] or {}
 	PlayerData.metadata["status"] = PlayerData.metadata["status"] ~= nil and PlayerData.metadata["status"] or {}
-	PlayerData.metadata["phone"]  = PlayerData.metadata["phone"]  ~= nil and PlayerData.metadata["phone"] or {}
-	PlayerData.metadata["fitbit"]  = PlayerData.metadata["fitbit"]  ~= nil and PlayerData.metadata["fitbit"] or {}
-	PlayerData.metadata["commandbinds"]  = PlayerData.metadata["commandbinds"]  ~= nil and PlayerData.metadata["commandbinds"] or {}
-	PlayerData.metadata["bloodtype"]  = PlayerData.metadata["bloodtype"]  ~= nil and PlayerData.metadata["bloodtype"] or QBCore.Config.Player.Bloodtypes[math.random(1, #QBCore.Config.Player.Bloodtypes)]
-	PlayerData.metadata["dealerrep"]  = PlayerData.metadata["dealerrep"]  ~= nil and PlayerData.metadata["dealerrep"] or 0
-	PlayerData.metadata["callsign"]  = PlayerData.metadata["callsign"]  ~= nil and PlayerData.metadata["callsign"] or "NO CALLSIGN"
+	PlayerData.metadata["phone"] = PlayerData.metadata["phone"] ~= nil and PlayerData.metadata["phone"] or {}
+	PlayerData.metadata["fitbit"] = PlayerData.metadata["fitbit"] ~= nil and PlayerData.metadata["fitbit"] or {}
+	PlayerData.metadata["commandbinds"] = PlayerData.metadata["commandbinds"] ~= nil and PlayerData.metadata["commandbinds"] or {}
+	PlayerData.metadata["bloodtype"] = PlayerData.metadata["bloodtype"] ~= nil and PlayerData.metadata["bloodtype"] or QBCore.Config.Player.Bloodtypes[math.random(1, #QBCore.Config.Player.Bloodtypes)]
+	PlayerData.metadata["dealerrep"] = PlayerData.metadata["dealerrep"] ~= nil and PlayerData.metadata["dealerrep"] or 0
+	PlayerData.metadata["callsign"] = PlayerData.metadata["callsign"] ~= nil and PlayerData.metadata["callsign"] or "NO CALLSIGN"
+	PlayerData.metadata["fingerprint"] = PlayerData.metadata["fingerprint"] ~= nil and PlayerData.metadata["fingerprint"] or QBCore.Player.CreateFingerId()
 
 	PlayerData.job = PlayerData.job ~= nil and PlayerData.job or {}
 	PlayerData.job.name = PlayerData.job.name ~= nil and PlayerData.job.name or "unemployed"
@@ -85,23 +84,9 @@ QBCore.Player.CreatePlayer = function(PlayerData)
 	self.Functions = {}
 	self.PlayerData = PlayerData
 
-	self.Functions.HasAcePermission = function(permission)
-		if IsPlayerAceAllowed(self.PlayerData.source, tostring(permission):lower()) then
-			return true
-		else
-			return false
-		end
-	end
-
 	self.Functions.UpdatePlayerData = function()
 		TriggerClientEvent("QBCore:Player:SetPlayerData", self.PlayerData.source, self.PlayerData)
 		QBCore.Commands.Refresh(self.PlayerData.source)
-	end
-
-	self.Functions.SetPermission = function(permission)
-		local permission = permission:lower()
-		self.PlayerData.permission = permission
-		self.UpdatePlayerData()
 	end
 
 	self.Functions.SetJob = function(job)
@@ -285,9 +270,9 @@ QBCore.Player.Save = function(source)
 	if PlayerData ~= nil then
 		QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `citizenid` = '"..PlayerData.citizenid.."'", function(result)
 			if result[1] == nil then
-				QBCore.Functions.ExecuteSql("INSERT INTO `players` (`citizenid`, `cid`, `steam`, `license`, `name`, `money`, `permission`, `charinfo`, `job`, `position`, `metadata`) VALUES ('"..PlayerData.citizenid.."', '"..tonumber(PlayerData.cid).."', '"..PlayerData.steam.."', '"..PlayerData.license.."', '"..PlayerData.name.."', '"..json.encode(PlayerData.money).."', '"..PlayerData.permission.."', '"..json.encode(PlayerData.charinfo).."', '"..json.encode(PlayerData.job).."', '"..json.encode(PlayerData.position).."', '"..json.encode(PlayerData.metadata).."')")
+				QBCore.Functions.ExecuteSql("INSERT INTO `players` (`citizenid`, `cid`, `steam`, `license`, `name`, `money`, `charinfo`, `job`, `position`, `metadata`) VALUES ('"..PlayerData.citizenid.."', '"..tonumber(PlayerData.cid).."', '"..PlayerData.steam.."', '"..PlayerData.license.."', '"..PlayerData.name.."', '"..json.encode(PlayerData.money).."', '"..json.encode(PlayerData.charinfo).."', '"..json.encode(PlayerData.job).."', '"..json.encode(PlayerData.position).."', '"..json.encode(PlayerData.metadata).."')")
 			else
-				QBCore.Functions.ExecuteSql("UPDATE `players` SET steam='"..PlayerData.steam.."',license='"..PlayerData.license.."',name='"..PlayerData.name.."',money='"..json.encode(PlayerData.money).."',permission='"..PlayerData.permission.."',charinfo='"..json.encode(PlayerData.charinfo).."',job='"..json.encode(PlayerData.job).."',position='"..json.encode(PlayerData.position).."',metadata='"..json.encode(PlayerData.metadata).."' WHERE `citizenid` = '"..PlayerData.citizenid.."'")
+				QBCore.Functions.ExecuteSql("UPDATE `players` SET steam='"..PlayerData.steam.."',license='"..PlayerData.license.."',name='"..PlayerData.name.."',money='"..json.encode(PlayerData.money).."',charinfo='"..json.encode(PlayerData.charinfo).."',job='"..json.encode(PlayerData.job).."',position='"..json.encode(PlayerData.position).."',metadata='"..json.encode(PlayerData.metadata).."' WHERE `citizenid` = '"..PlayerData.citizenid.."'")
 			end
 	    end)
 		QBCore.ShowSuccess(GetCurrentResourceName(), PlayerData.name .." PLAYER SAVED!")
@@ -382,6 +367,20 @@ QBCore.Player.CreateCitizenId = function()
 		end)
 	end
 	return CitizenId
+end
+
+QBCore.Player.CreateFingerId = function()
+	local UniqueFound = false
+	local FingerId = nil
+	while not UniqueFound do
+		FingerId = tostring(QBCore.Shared.RandomStr(2) .. QBCore.Shared.RandomInt(3) .. QBCore.Shared.RandomStr(1) .. QBCore.Shared.RandomInt(2) .. QBCore.Shared.RandomStr(3) .. QBCore.Shared.RandomInt(4))
+		QBCore.Functions.ExecuteSql("SELECT COUNT(*) as count FROM `players` WHERE `metadata` LIKE '%"..FingerId.."%'", function(result)
+			if result[1].count == 0 then
+				UniqueFound = true
+			end
+		end)
+	end
+	return FingerId
 end
 
 QBCore.Player.GetJobInfo = function(job)

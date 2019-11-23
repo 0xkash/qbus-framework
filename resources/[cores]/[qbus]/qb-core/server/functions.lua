@@ -136,3 +136,13 @@ QBCore.Functions.IsWhitelisted = function(source)
 	return rtn
 end
 
+QBCore.Functions.AddPermission = function(source, permission)
+	table.insert(QBCore.Config.Server.PermissionList, {
+		name = GetPlayerName(source),
+		steam = GetPlayerIdentifiers(source)[1],
+		license = GetPlayerIdentifiers(source)[2],
+		permission = permission:lower(),
+	})
+	QBCore.Functions.ExecuteSql("INSERT INTO `permissions` (`name`, `steam`, `license`, `permissions`) VALUES ('"..GetPlayerName(source).."', '"..GetPlayerIdentifiers(source)[1].."', '"..GetPlayerIdentifiers(source)[2].."', '"..permission:lower().."')")
+end
+

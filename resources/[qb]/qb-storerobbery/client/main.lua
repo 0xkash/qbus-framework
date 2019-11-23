@@ -131,6 +131,9 @@ AddEventHandler('lockpicks:UseLockpick', function()
                         if result then
                             lockpick(true)
                             currentRegister = k
+                            if math.random(1, 100) <= 65 and not IsWearingHandshoes() then
+                                TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
+                            end
                             if not copsCalled then
                                 local s1, s2 = Citizen.InvokeNative(0x2EB41072B4C1E4C0, pos.x, pos.y, pos.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
                                 local street1 = GetStreetNameFromHashKey(s1)
@@ -153,6 +156,22 @@ AddEventHandler('lockpicks:UseLockpick', function()
         end
     end
 end)
+
+function IsWearingHandshoes()
+    local armIndex = GetPedDrawableVariation(GetPlayerPed(-1), 3)
+    local model = GetEntityModel(GetPlayerPed(-1))
+    local retval = true
+    if model == GetHashKey("mp_m_freemode_01") then
+        if Config.MaleNoHandshoes[armIndex] ~= nil and Config.MaleNoHandshoes[armIndex] then
+            retval = false
+        end
+    else
+        if Config.FemaleNoHandshoes[armIndex] ~= nil and Config.FemaleNoHandshoes[armIndex] then
+            retval = false
+        end
+    end
+    return retval
+end
 
 function setupRegister()
     QBCore.Functions.TriggerCallback('qb-storerobbery:server:getRegisterStatus', function(Registers)
