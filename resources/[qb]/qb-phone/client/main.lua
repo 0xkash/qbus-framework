@@ -122,18 +122,19 @@ end)
 
 RegisterNetEvent('qb-phone:client:recieveMessage')
 AddEventHandler('qb-phone:client:recieveMessage', function(chatData, senderPhone)
-    SendNUIMessage({
-        task = "updateChat",
-        messages = chatData.messages,
-        number = senderPhone
-    })
-
     for _, chat in pairs(messages) do
+        print(chat.number)
+        print(senderPhone)
         if chat.number == senderPhone then
             chat.messages = chatData.messages
         end
     end
     TriggerServerEvent('qb-phone:server:recieveMessage', chatData, senderPhone)
+    SendNUIMessage({
+        task = "updateChat",
+        messages = chatData.messages,
+        number = senderPhone
+    })
 end)
 
 Citizen.CreateThread(function() 

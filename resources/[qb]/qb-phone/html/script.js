@@ -214,6 +214,7 @@ $(document).on('click', '.chat', function(e){
 
 qbPhone.UpdateChat = function(messages, number) {
     if (currentChatNumber == number) {
+        console.log('ik update')
         $(".messages").html("");
         $.each(messages, function(i, chat){
             if (chat.sender != myCitizenId) {
@@ -225,6 +226,7 @@ qbPhone.UpdateChat = function(messages, number) {
                 $(".messages").append(elem);
             }
         });
+        qbPhone.loadUserMessages();
     }
 }
 
@@ -272,6 +274,8 @@ $(document).on('click', '.sms-contact', function(){
             qbPhone.OpenNewChat(contactData)
         }
     });
+    currentChatNumber = contactData.number;
+    qbPhone.loadUserMessages();
 });
 
 qbPhone.OpenExistingChat = function(messageData) {

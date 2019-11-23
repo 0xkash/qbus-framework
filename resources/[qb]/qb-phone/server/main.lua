@@ -271,12 +271,10 @@ AddEventHandler('qb-phone:server:sendMessage', function(chatData)
     end)
 end)
 
-RegisterServerEvent('qb-phone:client:recieveMessage')
+RegisterServerEvent('qb-phone:server:recieveMessage')
 AddEventHandler('qb-phone:server:recieveMessage', function(chatData, senderPhone)
     local src = source
     local ply = QBCore.Functions.GetPlayer(src)
-
-    TriggerClientEvent('QBCore:Notify', src, 'Je hebt een bericht ontvangen!')
     QBCore.Functions.ExecuteSql("UPDATE `phone_messages` SET `messages` = '"..json.encode(chatData.messages).."' WHERE `citizenid` = '"..ply.PlayerData.citizenid.."' AND `number` = '"..senderPhone.."'")
 
     QBCore.Functions.ExecuteSql("SELECT * FROM `player_contacts` WHERE `citizenid` = '"..ply.PlayerData.citizenid.."' AND `number` = '"..senderPhone.."'", function(result)
