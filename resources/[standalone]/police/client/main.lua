@@ -46,6 +46,7 @@ end)
 RegisterNetEvent('QBCore:Client:OnJobUpdate')
 AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
     PlayerJob = JobInfo
+    TriggerServerEvent("police:server:UpdateBlips")
 end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
@@ -53,6 +54,7 @@ AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     isLoggedIn = true
     PlayerJob = QBCore.Functions.GetPlayerData().job
     onDuty = QBCore.Functions.GetPlayerData().job.onduty
+    TriggerServerEvent("police:server:UpdateBlips")
 end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerUnload')
@@ -63,17 +65,68 @@ AddEventHandler('QBCore:Client:OnPlayerUnload', function()
     isEscorted = false
     ClearPedTasks(GetPlayerPed(-1))
     DetachEntity(GetPlayerPed(-1), true, false)
+    if DutyBlips ~= nil then 
+        for k, v in pairs(DutyBlips) do
+            RemoveBlip(v)
+        end
+        DutyBlips = {}
+    end
 end)
+local DutyBlips = {}
+RegisterNetEvent('police:client:UpdateBlips')
+AddEventHandler('police:client:UpdateBlips', function()
+    if DutyBlips ~= nil then 
+        for k, v in pairs(DutyBlips) do
+            RemoveBlip(v)
+        end
+    end
+	DutyBlips = {}
+	if PlayerJob ~= nil and PlayerJob.name == 'police' or PlayerJob.name == 'ambulance' and PlayerJob.onduty then
+        QBCore.Functions.TriggerCallback('police:GetDutyPlayers', function(players)
+            if players ~= nil then
+                for k, data in pairs(players) do
+                    local id = GetPlayerFromServerId(data.source)
+                    if NetworkIsPlayerActive(id) and GetPlayerPed(id) ~= PlayerPedId() then
+                        CreateDutyBlips(id, data.label, data.job)
+                    end
+                end
+            end
+		end)
+	end
+end)
+
+function CreateDutyBlips(playerId, playerLabel, playerJob)
+	local ped = GetPlayerPed(playerId)
+	local blip = GetBlipFromEntity(ped)
+	if not DoesBlipExist(blip) then
+		blip = AddBlipForEntity(ped)
+		SetBlipSprite(blip, 1)
+		ShowHeadingIndicatorOnBlip(blip, true)
+		SetBlipRotation(blip, math.ceil(GetEntityHeading(ped)))
+        SetBlipScale(blip, 1.0)
+        if playerJob == "police" then
+            SetBlipColour(blip, 38)
+        else
+            SetBlipColour(blip, 5)
+        end
+        SetBlipAsShortRange(blip, true)
+        BeginTextCommandSetBlipName('STRING')
+        AddTextComponentString(playerLabel)
+        EndTextCommandSetBlipName(blip)
+		
+		table.insert(DutyBlips, blip)
+	end
+end
 
 RegisterNetEvent('police:client:GunShotAlert')
 AddEventHandler('police:client:GunShotAlert', function(streetLabel, isAutomatic, fromVehicle, coords, vehicleInfo)
     local msg = ""
-    local blipSprite = 433
+    local blipSprite = 313
     local blipText = "Melding: Schoten gelost"
     if fromVehicle then
         if isAutomatic then
             blipText = "Melding: Schoten gelost (automatisch)"
-            blipSprite = 433
+            blipSprite = 313
             msg = "Schoten gelost (automatisch vuurwapen) uit een voertuig. Model: "..vehicleInfo.name..", kenteken: "..vehicleInfo.plate..", locatie: "..streetLabel
         else
             msg = "Schoten gelost uit een voertuig. Model: "..vehicleInfo.name..", kenteken: "..vehicleInfo.plate..", locatie: "..streetLabel
@@ -81,7 +134,7 @@ AddEventHandler('police:client:GunShotAlert', function(streetLabel, isAutomatic,
     else
         if isAutomatic then
             blipText = "Melding: Schoten gelost (automatisch)"
-            blipSprite = 433
+            blipSprite = 313
             msg = "Schoten gelost (automatisch vuurwapen). Locatie: "..streetLabel
         else
             msg = "Schoten gelost. Locatie: "..streetLabel
@@ -95,10 +148,64 @@ AddEventHandler('police:client:GunShotAlert', function(streetLabel, isAutomatic,
     SetBlipColour(blip, 0)
     SetBlipDisplay(blip, 4)
     SetBlipAlpha(blip, transG)
-    SetBlipScale(blip, 1.0)
+    SetBlipScale(blip, 0.8)
     SetBlipAsShortRange(blip, false)
     BeginTextCommandSetBlipName('STRING')
     AddTextComponentString(blipText)
+    EndTextCommandSetBlipName(blip)
+    while transG ~= 0 do
+        Wait(180 * 4)
+        transG = transG - 1
+        SetBlipAlpha(blip, transG)
+        if transG == 0 then
+            SetBlipSprite(blip, 2)
+            RemoveBlip(blip)
+            return
+        end
+    end
+end)
+
+RegisterNetEvent('police:client:VehicleCall')
+AddEventHandler('police:client:VehicleCall', function(coords, msg)
+    TriggerEvent("chatMessage", "MELDING", "error", msg)
+    PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
+    local transG = 250
+    local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
+    SetBlipSprite(blip, 380)
+    SetBlipColour(blip, 1)
+    SetBlipDisplay(blip, 4)
+    SetBlipAlpha(blip, transG)
+    SetBlipScale(blip, 1.0)
+    SetBlipAsShortRange(blip, false)
+    BeginTextCommandSetBlipName('STRING')
+    AddTextComponentString("Melding: Voertuig inbraak")
+    EndTextCommandSetBlipName(blip)
+    while transG ~= 0 do
+        Wait(180 * 4)
+        transG = transG - 1
+        SetBlipAlpha(blip, transG)
+        if transG == 0 then
+            SetBlipSprite(blip, 2)
+            RemoveBlip(blip)
+            return
+        end
+    end
+end)
+
+RegisterNetEvent('police:client:HouseRobberyCall')
+AddEventHandler('police:client:HouseRobberyCall', function(coords, msg)
+    TriggerEvent("chatMessage", "MELDING", "error", msg)
+    PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
+    local transG = 250
+    local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
+    SetBlipSprite(blip, 411)
+    SetBlipColour(blip, 1)
+    SetBlipDisplay(blip, 4)
+    SetBlipAlpha(blip, transG)
+    SetBlipScale(blip, 0.7)
+    SetBlipAsShortRange(blip, false)
+    BeginTextCommandSetBlipName('STRING')
+    AddTextComponentString("Melding: Inbraak huis")
     EndTextCommandSetBlipName(blip)
     while transG ~= 0 do
         Wait(180 * 4)

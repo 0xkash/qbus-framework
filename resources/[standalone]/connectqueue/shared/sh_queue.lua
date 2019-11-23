@@ -13,7 +13,7 @@ end
 
 local Queue = {}
 -- EDIT THESE IN SERVER.CFG + OTHER OPTIONS IN CONFIG.LUA
-Queue.MaxPlayers = GetConvarInt("sv_maxclients", 30)
+Queue.MaxPlayers = GetConvarInt("sv_maxclients", 32)
 Queue.Debug = GetConvar("sv_debugqueue", "true") == "true" and true or false
 Queue.DisplayQueue = GetConvar("sv_displayqueue", "true") == "true" and true or false
 Queue.InitHostName = GetConvar("sv_hostname")
@@ -742,7 +742,7 @@ AddEventHandler("onResourceStop", function(resource)
 end)
 
 if Config.DisableHardCap then
-    Queue:DebugPrint("^1 [connectqueue] Disabling hardcap ^7")
+    --Queue:DebugPrint("^1 [connectqueue] Disabling hardcap ^7")
 
     AddEventHandler("onResourceStarting", function(resource)
         if resource == "hardcap" then CancelEvent() return end

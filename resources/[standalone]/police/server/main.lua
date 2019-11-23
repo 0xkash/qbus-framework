@@ -161,6 +161,28 @@ AddEventHandler('police:server:GunshotAlert', function(streetLabel, isAutomatic,
     end
 end)
 
+RegisterServerEvent('police:server:VehicleCall')
+AddEventHandler('police:server:VehicleCall', function(coords, msg)
+    local src = source
+    local players = QBCore.Functions.GetPlayers()
+	for k, Player in pairs(players) do
+        if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
+            print(msg)
+            TriggerClientEvent("police:client:VehicleCall", k, coords, msg)
+		end
+    end
+end)
+
+RegisterServerEvent('police:server:HouseRobberyCall')
+AddEventHandler('police:server:HouseRobberyCall', function(coords, message)
+    local src = source
+    local players = QBCore.Functions.GetPlayers()
+	for k, Player in pairs(players) do
+		if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
+            TriggerClientEvent("police:client:HouseRobberyCall", k, coords, message)
+		end
+    end
+end)
 
 RegisterServerEvent('police:server:SearchPlayer')
 AddEventHandler('police:server:SearchPlayer', function(playerId)
@@ -170,6 +192,12 @@ AddEventHandler('police:server:SearchPlayer', function(playerId)
         TriggerClientEvent('chatMessage', source, "SYSTEM", "warning", "Persoon heeft €"..SearchedPlayer.PlayerData.money["cash"]..",- op zak..")
         TriggerClientEvent('QBCore:Notify', SearchedPlayer.PlayerData.source, "Je wordt gefouilleerd..")
     end
+end)
+
+RegisterServerEvent('police:server:UpdateBlips')
+AddEventHandler('police:server:UpdateBlips', function()
+    local src = source
+    TriggerClientEvent("police:client:UpdateBlips", -1)
 end)
 
 RegisterServerEvent('police:server:Impound')
@@ -286,6 +314,21 @@ QBCore.Functions.CreateCallback('police:IsSilencedWeapon', function(source, cb, 
     cb(retval)
 end)
 
+QBCore.Functions.CreateCallback('police:GetDutyPlayers', function(source, cb)
+    local players = QBCore.Functions.GetPlayers()
+    local dutyPlayers = {}
+	for k, Player in pairs(players) do
+		if ((Player.PlayerData.job.name == "police" or Player.PlayerData.job.name == "ambulance") and Player.PlayerData.job.onduty) then
+            table.insert(dutyPlayers, {
+                source = Player.PlayerData.source,
+                label = Player.PlayerData.metadata["callsign"],
+                job = Player.PlayerData.job.name,
+            })
+		end
+    end
+    cb(dutyPlayers)
+end)
+
 function CreateBloodId()
     if BloodDrops ~= nil then
 		local bloodId = math.random(10000, 99999)
@@ -362,6 +405,11 @@ QBCore.Commands.Add("cuff", "Boei een speler", {}, false, function(source, args)
     else
         TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Dit command is voor hulpdiensten!")
     end
+end)
+
+QBCore.Commands.Add("callsign", "Zet de naam van je callsign (roepnummer)", {{name="name", help="Naam van je callsign"}}, false, function(source, args)
+	local Player = QBCore.Functions.GetPlayer(source)
+    Player.Functions.SetMetaData("callsign", table.concat(args, " "))
 end)
 
 QBCore.Commands.Add("clearcasings", "Haal kogelhulsen in de buurt weg (zorg ervoor dat je wel wat heb opgepakt)", {}, false, function(source, args)

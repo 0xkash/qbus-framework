@@ -197,6 +197,7 @@ AddEventHandler('lockpicks:UseLockpick', function()
         if closestHouse ~= nil then
             if result then
                 if not Config.Houses[closestHouse]["opened"] then
+                    PoliceCall()
                     TriggerEvent('qb-lockpick:client:openLockpick', lockpickFinish)
                 else
                     QBCore.Functions.Notify('De deur is al open..', 'error', 3500)
@@ -207,6 +208,47 @@ AddEventHandler('lockpicks:UseLockpick', function()
         end
     end, "screwdriverset")
 end)
+
+function PoliceCall()
+    local pos = GetEntityCoords(GetPlayerPed(-1))
+    local chance = 75
+    if GetClockHours() >= 1 and GetClockHours() <= 6 then
+        chance = 25
+    end
+    if math.random(1, 100) <= chance then
+        local closestPed = GetNearbyPed()
+        if closestPed ~= nil then
+            local s1, s2 = Citizen.InvokeNative(0x2EB41072B4C1E4C0, pos.x, pos.y, pos.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
+            local streetLabel = GetStreetNameFromHashKey(s1)
+            local street2 = GetStreetNameFromHashKey(s2)
+            if street2 ~= nil and street2 ~= "" then 
+                streetLabel = streetLabel .. " " .. street2
+            end
+            local gender = "Man"
+            if QBCore.Functions.GetPlayerData().charinfo.gender == 1 then
+                gender = "Vrouw"
+            end
+            local msg = "Poging inbraak in een huis door een " .. gender .." bij " .. streetLabel
+            TriggerServerEvent("police:server:HouseRobberyCall", pos, msg)
+        end
+    end
+end
+
+function GetNearbyPed()
+	local retval = nil
+	local PlayerPeds = {}
+    for _, player in ipairs(GetActivePlayers()) do
+        local ped = GetPlayerPed(player)
+        table.insert(PlayerPeds, ped)
+    end
+    local player = GetPlayerPed(-1)
+    local coords = GetEntityCoords(player)
+	local closestPed, closestDistance = QBCore.Functions.GetClosestPed(coords, PlayerPeds)
+	if not IsEntityDead(closestPed) and closestDistance < 50.0 then
+		retval = closestPed
+	end
+	return retval
+end
 
 function lockpickFinish(success)
     if success then
