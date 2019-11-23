@@ -38,6 +38,16 @@ local playerContacts = {}
 
 local messages = {}
 
+Citizen.CreateThread(function() 
+    while true do
+        Citizen.Wait(10)
+        if QBCore == nil then
+            TriggerEvent("QBCore:GetObject", function(obj) QBCore = obj end)    
+            Citizen.Wait(200)
+        end
+    end
+end)
+
 RegisterNUICallback('getMessages', function(data, cb)
     local chats = {}
     for k, v in pairs(messages) do
@@ -68,6 +78,7 @@ end)
 RegisterNUICallback('sendMessage', function(data, cb)
     local cur = nil
     local exist = false
+    local type = "normal"
     for k, v in pairs(messages) do
         if messages[k].number == data.number then
             exist = true
@@ -75,24 +86,60 @@ RegisterNUICallback('sendMessage', function(data, cb)
         end
     end
 
+    if data.type == "gps" then 
+        type = "gps" 
+    end 
+
     if exist then
-        table.insert(messages[cur].messages, {
-            sender = QBCore.Functions.GetPlayerData().citizenid,
-            message = data.message,
-        })
+        if type == "normal" then
+            table.insert(messages[cur].messages, {
+                sender = QBCore.Functions.GetPlayerData().citizenid,
+                message = data.message,
+                type = type
+            })
+        else
+            table.insert(messages[cur].messages, {
+                sender = QBCore.Functions.GetPlayerData().citizenid,
+                message = "Gedeelde Locatie",
+                coords = {
+                    x = GetEntityCoords(GetPlayerPed(-1)).x,
+                    y = GetEntityCoords(GetPlayerPed(-1)).y,
+                },
+                type = type
+            })
+        end
         TriggerServerEvent('qb-phone:server:sendMessage', messages[cur])
         QBCore.Functions.Notify('Bericht verstuurd!', 'success', 2500)
     else
-        table.insert(messages, {
-            number = data.number,
-            name = data.name,
-            messages = {
-                [1] = {
-                    sender = QBCore.Functions.GetPlayerData().citizenid,
-                    message = data.message
+        if type == "normal" then
+            table.insert(messages, {
+                number = data.number,
+                name = data.name,
+                messages = {
+                    [1] = {
+                        sender = QBCore.Functions.GetPlayerData().citizenid,
+                        message = data.message,
+                        type = type
+                    }
                 }
-            }
-        })
+            })
+        else
+            table.insert(messages, {
+                number = data.number,
+                name = data.name,
+                messages = {
+                    [1] = {
+                        sender = QBCore.Functions.GetPlayerData().citizenid,
+                        message = "Gedeelde Locatie",
+                        coords = {
+                            x = GetEntityCoords(GetPlayerPed(-1)).x,
+                            y = GetEntityCoords(GetPlayerPed(-1)).y,
+                        },
+                        type = type
+                    }
+                }
+            })
+        end
         QBCore.Functions.Notify('Bericht verstuurd!', 'success', 2500)
         for k, v in pairs(messages) do
             if messages[k].number == data.number then
@@ -103,6 +150,13 @@ RegisterNUICallback('sendMessage', function(data, cb)
     end
 
     cb(messages[cur].messages)
+end)
+
+RegisterNUICallback('setMessageLocation', function(data)
+    local msgCoords = data.msgCoords
+
+    QBCore.Functions.Notify('GPS Locatie ingesteld!', 'success')
+    SetNewWaypoint(msgCoords.x, msgCoords.y)
 end)
 
 RegisterNetEvent('qb-phone:client:createChatOther')
@@ -123,8 +177,6 @@ end)
 RegisterNetEvent('qb-phone:client:recieveMessage')
 AddEventHandler('qb-phone:client:recieveMessage', function(chatData, senderPhone)
     for _, chat in pairs(messages) do
-        print(chat.number)
-        print(senderPhone)
         if chat.number == senderPhone then
             chat.messages = chatData.messages
         end
@@ -137,13 +189,16 @@ AddEventHandler('qb-phone:client:recieveMessage', function(chatData, senderPhone
     })
 end)
 
-Citizen.CreateThread(function() 
-    while true do
-        Citizen.Wait(10)
-        if QBCore == nil then
-            TriggerEvent("QBCore:GetObject", function(obj) QBCore = obj end)    
-            Citizen.Wait(200)
-        end
+RegisterNetEvent('qb-phone:client:msgNotify')
+AddEventHandler('qb-phone:client:msgNotify', function(msg, contact)
+    if not inPhone then
+        QBCore.Functions.Notify(msg)
+        PlaySound(-1, "Menu_Accept", "Phone_SoundSet_Default" ,0 ,0 ,1)
+    else
+        SendNUIMessage({
+            task = "newMessage",
+            sender = contact
+        })
     end
 end)
 

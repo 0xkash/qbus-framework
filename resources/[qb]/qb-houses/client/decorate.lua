@@ -152,7 +152,7 @@ end)
 RegisterNUICallback("deleteSelectedObject", function(data, cb)
 	DeleteObject(SelectedObj)
 	SelectedObj = nil
-	table.remove(ObjectList, SelObjId)
+	ObjectList[SelObjId] = nil
 	SaveDecorations()
 	SelObjId = 0
 	peanut = false
@@ -175,6 +175,7 @@ RegisterNUICallback("buySelectedObject", function(data, cb)
 end)
 
 RegisterNUICallback('setupMyObjects', function(data, cb)
+	print(json.encode(ObjectList))
 	cb(ObjectList)
 end)
 
