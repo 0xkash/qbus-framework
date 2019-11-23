@@ -91,6 +91,43 @@ local function EndFade()
 	end)
 end
 
+local function SetupModPrices()
+	local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1))
+	local model = GetEntityModel(vehicle)
+	local percentage = 5
+	local vehiclePrice = 35000
+	if QBCore.Shared.VehicleModels[model] ~= nil then
+		vehiclePrice = QBCore.Shared.VehicleModels[model]["price"]
+	end
+	for k, v in pairs(LSC_Config.prices.mods[11]) do
+		local price = ((vehiclePrice / 100) * percentage) + LSC_Config.prices.mods[11][k].price
+		LSC_Config.prices.mods[11][k].price = math.ceil(price)
+	end
+
+	for k, v in pairs(LSC_Config.prices.mods[12]) do
+		local price = ((vehiclePrice / 100) * percentage) + LSC_Config.prices.mods[12][k].price
+		LSC_Config.prices.mods[12][k].price = math.ceil(price)
+	end
+
+	for k, v in pairs(LSC_Config.prices.mods[13]) do
+		local price = ((vehiclePrice / 100) * percentage) + LSC_Config.prices.mods[13][k].price
+		LSC_Config.prices.mods[13][k].price = math.ceil(price)
+	end
+
+	for k, v in pairs(LSC_Config.prices.mods[16]) do
+		local price = ((vehiclePrice / 100) * percentage) + LSC_Config.prices.mods[16][k].price
+		LSC_Config.prices.mods[16][k].price = math.ceil(price)
+	end
+
+	for k, v in pairs(LSC_Config.prices.mods[15]) do
+		local price = ((vehiclePrice / 100) * percentage) + LSC_Config.prices.mods[15][k].price
+		LSC_Config.prices.mods[15][k].price = math.ceil(price)
+	end
+
+	local price = ((vehiclePrice / 100) * percentage) + LSC_Config.prices.mods[18][2].price
+	LSC_Config.prices.mods[18][2].price = math.ceil(price)
+end
+
 --Setup main menu
 local LSCMenu = Menu.new("Los Santos Customs","CATEGORIES", 0.16,0.13,0.24,0.36,0,{255,255,255,255})
 LSCMenu.config.pcontrol = false
@@ -670,6 +707,7 @@ Citizen.CreateThread(function()
 							if not garages[i].isBusy then
 								if not tableContains(LSC_Config.ModelBlacklist,GetDisplayNameFromVehicleModel(GetEntityModel(veh)):lower()) then
 									if IsControlJustPressed(1, Keys["ENTER"]) then
+										SetupModPrices()
 										inside = true
 										currentpos = pos
 										currentgarage = i
@@ -768,8 +806,12 @@ end
 
 function LSCMenu:onButtonSelected(name, button)
 	--Send the selected button to server
-	print(json.encode(button))
-	TriggerServerEvent("LSC:buttonSelected", name, button)
+	if button.price then
+		if not button.purchased then
+			TriggerServerEvent("LSC:buttonSelected", name, button)
+		end
+	end
+	
 end
 
 --So we get the button back from server +  bool that determines if we can prchase specific item or not
@@ -1119,7 +1161,7 @@ function CheckPurchases(m)
 				end
 			end
 		end
-	elseif name == "armor" or name == "suspension" or name == "transmission" or name == "brakes" or name == "engine tunes" or name == "roof" or name == "fenders" or name == "hood" or name == "grille" or name == "roll cage" or name == "exhausts" or name == "skirts" or name == "rear bumpers" or name == "front bumpers" or name == "spoiler" then
+	elseif name == "armor" or name == "suspension" or name == "turbo" or name == "transmission" or name == "brakes" or name == "engine tunes" or name == "roof" or name == "fenders" or name == "hood" or name == "grille" or name == "roll cage" or name == "exhausts" or name == "skirts" or name == "rear bumpers" or name == "front bumpers" or name == "spoiler" then
 		for i,b in pairs(m.buttons) do
 			if b.mod == -1  then
 				if myveh.mods[b.modtype].mod == -1 then
@@ -1227,8 +1269,10 @@ function CheckPurchases(m)
 	elseif name == "license" then
 		for i,b in pairs(m.buttons) do
 			if myveh.plateindex == b.plateindex then
+				if b.purchased ~= nil then b.purchased = true end
 				b.sprite = "garage"
 			else
+				b.purchased = false
 				b.sprite = nil
 			end
 		end
