@@ -6,6 +6,7 @@ cuffedPlayers = {}
 PlayerStatus = {}
 Casings = {}
 BloodDrops = {}
+FingerDrops = {}
 
 RegisterServerEvent('police:server:CuffPlayer')
 AddEventHandler('police:server:CuffPlayer', function(playerId, isSoftcuff)
@@ -225,7 +226,17 @@ RegisterServerEvent('evidence:server:CreateBloodDrop')
 AddEventHandler('evidence:server:CreateBloodDrop', function(citizenid, bloodtype, coords)
     local src = source
     local bloodId = CreateBloodId()
+    BloodDrops[bloodId] = {dna = citizenid, bloodtype = bloodtype}
     TriggerClientEvent("evidence:client:AddBlooddrop", -1, bloodId, citizenid, bloodtype, coords)
+end)
+
+RegisterServerEvent('evidence:server:CreateFingerDrop')
+AddEventHandler('evidence:server:CreateFingerDrop', function(coords)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    local fingerId = CreateFingerId()
+    FingerDrops[fingerId] = Player.PlayerData.metadata["fingerprint"]
+    TriggerClientEvent("evidence:client:AddFingerPrint", -1, fingerId, Player.PlayerData.metadata["fingerprint"], coords)
 end)
 
 RegisterServerEvent('evidence:server:ClearBlooddrops')
@@ -247,6 +258,21 @@ AddEventHandler('evidence:server:AddBlooddropToInventory', function(bloodId, blo
             TriggerClientEvent("inventory:client:ItemBox", src, QBCore.Shared.Items["filled_evidence_bag"], "add")
             TriggerClientEvent("evidence:client:RemoveBlooddrop", -1, bloodId)
             BloodDrops[bloodId] = nil
+        end
+    else
+        TriggerClientEvent('QBCore:Notify', src, "Je moet een leeg bewijszakje bij je hebben", "error")
+    end
+end)
+
+RegisterServerEvent('evidence:server:AddFingerprintToInventory')
+AddEventHandler('evidence:server:AddFingerprintToInventory', function(fingerId, fingerInfo)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    if Player.Functions.RemoveItem("empty_evidence_bag", 1) then
+        if Player.Functions.AddItem("filled_evidence_bag", 1, false, fingerInfo) then
+            TriggerClientEvent("inventory:client:ItemBox", src, QBCore.Shared.Items["filled_evidence_bag"], "add")
+            TriggerClientEvent("evidence:client:RemoveFingerprint", -1, fingerId)
+            FingerDrops[fingerId] = nil
         end
     else
         TriggerClientEvent('QBCore:Notify', src, "Je moet een leeg bewijszakje bij je hebben", "error")
@@ -339,6 +365,19 @@ function CreateBloodId()
 	else
 		local bloodId = math.random(10000, 99999)
 		return bloodId
+	end
+end
+
+function CreateFingerId()
+    if FingerDrops ~= nil then
+		local fingerId = math.random(10000, 99999)
+		while FingerDrops[caseId] ~= nil do
+			fingerId = math.random(10000, 99999)
+		end
+		return fingerId
+	else
+		local fingerId = math.random(10000, 99999)
+		return fingerId
 	end
 end
 

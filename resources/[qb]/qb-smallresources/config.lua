@@ -17,7 +17,7 @@ Consumeables = {
 
 Config = {}
 
-Config.RemoveWeaponDrops = false
+Config.RemoveWeaponDrops = true
 Config.RemoveWeaponDropsTimer = 25
 
 Config.BlacklistedScenarios = {

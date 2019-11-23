@@ -112,7 +112,10 @@ function CreateMichaelShell(spawn)
 
     local POIOffsets = {}
 	POIOffsets.exit = json.decode('{"z":1.4,"y":2.65636328125,"x":-10.572736328125,"h":265.633972168}')
-
+	RequestModel(`micheal_shell`)
+	while not HasModelLoaded(`micheal_shell`) do
+	    Citizen.Wait(1000)
+	end
 	local house = CreateObject(`micheal_shell`, spawn.x, spawn.y, spawn.z, false, false, false)
     FreezeEntityPosition(house, true)
 	table.insert(objects, house)
@@ -127,7 +130,10 @@ function CreateTrevorsShell(spawn)
 
     local POIOffsets = {}
 	POIOffsets.exit = json.decode('{"z":2.5,"y":4.29636328125,"x":1.172736328125,"h":2.2633972168}')
-
+	RequestModel(`trevors_shell`)
+	while not HasModelLoaded(`trevors_shell`) do
+	    Citizen.Wait(1000)
+	end
 	local house = CreateObject(`trevors_shell`, spawn.x, spawn.y, spawn.z, false, false, false)
     FreezeEntityPosition(house, true)
 	table.insert(objects, house)
@@ -148,6 +154,10 @@ function CreateTier1HouseFurnished(spawn, isBackdoor)
 	POIOffsets.logout = json.decode('{"z":2.0,"y":-1.1463337,"x":-6.69117089,"h":2.2633972168}')
 	POIOffsets.backdoor = json.decode('{"z":2.5,"y":4.3798828125,"x":0.88999176025391,"h":182.2633972168}')
 
+	RequestModel(`playerhouse_tier1_full`)
+	while not HasModelLoaded(`playerhouse_tier1_full`) do
+	    Citizen.Wait(1000)
+	end
     local shell = CreateObject(`playerhouse_tier1_full`, spawn.x, spawn.y, spawn.z, false, false, false)
     FreezeEntityPosition(shell, true)
     table.insert(objects, shell)
