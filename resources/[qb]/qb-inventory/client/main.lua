@@ -242,7 +242,7 @@ AddEventHandler("inventory:client:OpenInventory", function(inventory, other)
             maxweight = QBCore.Config.Player.MaxWeight,
         })
         inInventory = true
-        SetTimecycleModifier('hud_def_blur')
+        --SetTimecycleModifier('hud_def_blur')
     end
 end)
 

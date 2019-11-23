@@ -66,6 +66,7 @@ QBCore.Player.CheckPlayerData = function(source, PlayerData)
 	PlayerData.metadata["commandbinds"]  = PlayerData.metadata["commandbinds"]  ~= nil and PlayerData.metadata["commandbinds"] or {}
 	PlayerData.metadata["bloodtype"]  = PlayerData.metadata["bloodtype"]  ~= nil and PlayerData.metadata["bloodtype"] or QBCore.Config.Player.Bloodtypes[math.random(1, #QBCore.Config.Player.Bloodtypes)]
 	PlayerData.metadata["dealerrep"]  = PlayerData.metadata["dealerrep"]  ~= nil and PlayerData.metadata["dealerrep"] or 0
+	PlayerData.metadata["callsign"]  = PlayerData.metadata["callsign"]  ~= nil and PlayerData.metadata["callsign"] or "NO CALLSIGN"
 
 	PlayerData.job = PlayerData.job ~= nil and PlayerData.job or {}
 	PlayerData.job.name = PlayerData.job.name ~= nil and PlayerData.job.name or "unemployed"

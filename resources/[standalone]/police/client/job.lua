@@ -41,6 +41,7 @@ Citizen.CreateThread(function()
                         if IsControlJustReleased(0, Keys["E"]) then
                             onDuty = not onDuty
                             TriggerServerEvent("QBCore:ToggleDuty")
+                            TriggerServerEvent("police:server:UpdateBlips")
                         end
                     elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["duty"].x, Config.Locations["duty"].y, Config.Locations["duty"].z, true) < 2.5) then
                         QBCore.Functions.DrawText3D(Config.Locations["duty"].x, Config.Locations["duty"].y, Config.Locations["duty"].z, "In/Uit dienst")
@@ -99,35 +100,6 @@ Citizen.CreateThread(function()
                                 end
                             end
                             Menu.renderGUI()
-                        end  
-                    end
-                end
-
-                if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["helicopter"].x, Config.Locations["helicopter"].y, Config.Locations["helicopter"].z, true) < 7.5) then
-                    if onDuty then
-                        DrawMarker(2, Config.Locations["helicopter"].x, Config.Locations["helicopter"].y, Config.Locations["helicopter"].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
-                        if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["helicopter"].x, Config.Locations["helicopter"].y, Config.Locations["helicopter"].z, true) < 1.5) then
-                            if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
-                                QBCore.Functions.DrawText3D(Config.Locations["helicopter"].x, Config.Locations["helicopter"].y, Config.Locations["helicopter"].z, "~g~E~w~ - Helikopter opbergen")
-                            else
-                                QBCore.Functions.DrawText3D(Config.Locations["helicopter"].x, Config.Locations["helicopter"].y, Config.Locations["helicopter"].z, "~g~E~w~ - Helikopter pakken")
-                            end
-                            if IsControlJustReleased(0, Keys["E"]) then
-                                if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
-                                    QBCore.Functions.DeleteVehicle(GetVehiclePedIsIn(GetPlayerPed(-1)))
-                                else
-                                    local coords = Config.Locations["helicopter"]
-                                    QBCore.Functions.SpawnVehicle(Config.Helicopter, function(veh)
-                                        SetVehicleNumberPlateText(veh, "ZULU"..tostring(math.random(1000, 9999)))
-                                        SetEntityHeading(veh, coords.h)
-                                        exports['LegacyFuel']:SetFuel(veh, 100.0)
-                                        closeMenuFull()
-                                        TaskWarpPedIntoVehicle(GetPlayerPed(-1), veh, -1)
-                                        TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
-                                        SetVehicleEngineOn(veh, true, true)
-                                    end, coords, true)
-                                end
-                            end
                         end  
                     end
                 end
