@@ -5,7 +5,17 @@ TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 local permissions = {
     ["kick"] = "admin",
     ["ban"] = "admin",
+    ["noclip"] = "admin",
+    ["kickall"] = "admin",
 }
+
+RegisterServerEvent('qb-admin:server:togglePlayerNoclip')
+AddEventHandler('qb-admin:server:togglePlayerNoclip', function(playerId, reason)
+    local src = source
+    if QBCore.Functions.HasPermission(src, permissions["noclip"]) then
+        TriggerClientEvent("qb-admin:client:toggleNoclip", playerId)
+    end
+end)
 
 RegisterServerEvent('qb-admin:server:kickPlayer')
 AddEventHandler('qb-admin:server:kickPlayer', function(playerId, reason)
@@ -18,7 +28,7 @@ end)
 RegisterServerEvent('qb-admin:server:serverKick')
 AddEventHandler('qb-admin:server:serverKick', function(reason)
     local src = source
-    if QBCore.Functions.HasPermission(src, permissions["kick"]) then
+    if QBCore.Functions.HasPermission(src, permissions["kickall"]) then
         local players = QBCore.Functions.GetPlayers()
         for k, Player in pairs(players) do
             if k ~= src then 

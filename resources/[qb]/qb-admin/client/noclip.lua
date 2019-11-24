@@ -15,37 +15,37 @@ function drawNotification(string)
     SetNotificationTextEntry("STRING")
     AddTextComponentString(string)
     DrawNotification(true, false)
-  end
-  
-  function LoadAnimDict( dict )
-      while ( not HasAnimDictLoaded( dict ) ) do
-          RequestAnimDict( dict )
-          Citizen.Wait( 5 )
-      end
-  end
-  
-  function getTableLength(T)
-      local count = 0
-      for _ in pairs(T) do
-          count = count + 1
-      end
-      return count
-  end
-  
-  function getEntity(player)
-      local result, entity = GetEntityPlayerIsFreeAimingAt(player)
-      return entity
-  end
-  
-  function bulletCoords()
-    local result, coord = GetPedLastWeaponImpactCoord(GetPlayerPed(-1))
-    return coord
-  end
-  
-  function getGroundZ(x, y, z)
-          local result, groundZ = GetGroundZFor_3dCoord(x + 0.0, y + 0.0, z + 0.0, Citizen.ReturnResultAnyway())
-          return groundZ
-  end
+end
+
+function LoadAnimDict( dict )
+    while ( not HasAnimDictLoaded( dict ) ) do
+        RequestAnimDict( dict )
+        Citizen.Wait( 5 )
+    end
+end
+
+function getTableLength(T)
+    local count = 0
+    for _ in pairs(T) do
+        count = count + 1
+    end
+    return count
+end
+
+function getEntity(player)
+    local result, entity = GetEntityPlayerIsFreeAimingAt(player)
+    return entity
+end
+
+function bulletCoords()
+local result, coord = GetPedLastWeaponImpactCoord(GetPlayerPed(-1))
+return coord
+end
+
+function getGroundZ(x, y, z)
+        local result, groundZ = GetGroundZFor_3dCoord(x + 0.0, y + 0.0, z + 0.0, Citizen.ReturnResultAnyway())
+        return groundZ
+end
 
 function toggleNoClipMode()
     if(in_noclip_mode)then
@@ -73,6 +73,11 @@ function turnNoClipOff()
     in_noclip_mode = false
 
 end
+
+RegisterNetEvent('qb-admin:client:toggleNoclip')
+AddEventHandler('qb-admin:client:toggleNoclip', function()
+    toggleNoClipMode()
+end)
 
 function turnNoClipOn()
     blockinput = true -- Prevent Trainer access while in noclip mode.

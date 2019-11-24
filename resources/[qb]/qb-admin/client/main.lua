@@ -264,7 +264,8 @@ Citizen.CreateThread(function()
             WarMenu.Display()
         elseif WarMenu.IsMenuOpened('adminOptions') then
             if WarMenu.CheckBox("Noclip", isNoclip, function(checked) isNoclip = checked end) then
-                toggleNoClipMode()
+                local target = GetPlayerServerId(currentPlayer)
+                TriggerServerEvent("qb-admin:server:togglePlayerNoclip", target)
             end
             if WarMenu.ComboBox('Ban lengte', bans, currentBanIndex, selectedBanIndex, function(currentIndex, selectedIndex)
                 currentBanIndex = currentIndex
