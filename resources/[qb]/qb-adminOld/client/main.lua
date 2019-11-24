@@ -25,7 +25,7 @@ Citizen.CreateThread(function()
         if (QBCore ~= nil) then
             QBCore.Functions.GetPlayerData(function(PlayerData)
                 if PlayerData ~= nil then
-                    permissionlvl = PlayerData.permission
+                    --permissionlvl = PlayerData.permission
                     return false
                 end
             end)

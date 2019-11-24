@@ -69,7 +69,8 @@ RegisterServerEvent("QBCore:server:CloseServer")
 AddEventHandler('QBCore:server:CloseServer', function(reason)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    if Player.PlayerData.permission == "admin" or Player.PlayerData.permission == "god" then 
+
+    if QBCore.Functions.HasPermission(source, "admin") or QBCore.Functions.HasPermission(source, "god") then 
         local reason = reason ~= nil and reason or "Geen reden opgegeven..."
         QBCore.Config.Server.closed = true
         QBCore.Config.Server.closedReason = reason
@@ -83,7 +84,7 @@ RegisterServerEvent("QBCore:server:OpenServer")
 AddEventHandler('QBCore:server:OpenServer', function()
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    if Player.PlayerData.permission == "admin" or Player.PlayerData.permission == "god" then
+    if QBCore.Functions.HasPermission(source, "admin") or QBCore.Functions.HasPermission(source, "god") then
         QBCore.Config.Server.closed = false
         TriggerClientEvent("qbadmin:client:SetServerStatus", -1, false)
     else
@@ -158,14 +159,14 @@ AddEventHandler('chatMessage', function(source, n, message)
 			local Player = QBCore.Functions.GetPlayer(tonumber(source))
 			if Player ~= nil then
 				table.remove(args, 1)
-				if (Player.PlayerData.permission == "god") or (QBCore.Commands.List[command].permission == "moderator" and Player.PlayerData.permission == "admin") or (QBCore.Commands.List[command].permission == Player.PlayerData.permission or Player.Functions.HasAcePermission("qbcommands."..command)) or (QBCore.Commands.List[command].permission == Player.PlayerData.job.name) then
+				if (QBCore.Functions.HasPermission(source, "god") or QBCore.Functions.HasPermission(source, QBCore.Commands.List[command].permission)) then
 					if (QBCore.Commands.List[command].argsrequired and #QBCore.Commands.List[command].arguments ~= 0 and args[#QBCore.Commands.List[command].arguments] == nil) then
 					    TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Alle argumenten moeten ingevuld worden!")
 					    local agus = ""
 					    for name, help in pairs(QBCore.Commands.List[command].arguments) do
 					    	agus = agus .. " ["..help.name.."]"
 					    end
-				        TriggerClientEvent('chatMessage', source, "/"..command, nil, agus)
+				        TriggerClientEvent('chatMessage', source, "/"..command, false, agus)
 					else
 						QBCore.Commands.List[command].callback(source, args)
 					end
@@ -182,14 +183,14 @@ AddEventHandler('QBCore:CallCommand', function(command, args)
 	if QBCore.Commands.List[command] ~= nil then
 		local Player = QBCore.Functions.GetPlayer(tonumber(source))
 		if Player ~= nil then
-			if (Player.PlayerData.permission == "god") or (QBCore.Commands.List[command].permission == "moderator" and Player.PlayerData.permission == "admin") or (QBCore.Commands.List[command].permission == Player.PlayerData.permission or Player.Functions.HasAcePermission("qbcommands."..command)) or (QBCore.Commands.List[command].permission == Player.PlayerData.job.name) then
+			if (QBCore.Functions.HasPermission(source, "god")) or (QBCore.Functions.HasPermission(source, QBCore.Commands.List[command].permission)) or (QBCore.Commands.List[command].permission == Player.PlayerData.job.name) then
 				if (QBCore.Commands.List[command].argsrequired and #QBCore.Commands.List[command].arguments ~= 0 and args[#QBCore.Commands.List[command].arguments] == nil) then
 					TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Alle argumenten moeten ingevuld worden!")
 					local agus = ""
 					for name, help in pairs(QBCore.Commands.List[command].arguments) do
 						agus = agus .. " ["..help.name.."]"
 					end
-					TriggerClientEvent('chatMessage', source, "/"..command, nil, agus)
+					TriggerClientEvent('chatMessage', source, "/"..command, false, agus)
 				else
 					QBCore.Commands.List[command].callback(source, args)
 				end
@@ -216,6 +217,20 @@ AddEventHandler('QBCore:ToggleDuty', function()
 		Player.Functions.SetJobDuty(true)
 		TriggerClientEvent('QBCore:Notify', src, "Je bent nu in dienst!")
 	end
+end)
+
+Citizen.CreateThread(function()
+	QBCore.Functions.ExecuteSql("SELECT * FROM `permissions`", function(result)
+		if result[1] ~= nil then
+			for k, v in pairs(result) do
+				QBCore.Config.Server.PermissionList[v.steam] = {
+					steam = v.steam,
+					license = v.license,
+					permission = v.permission,
+				}
+			end
+		end
+	end)
 end)
 
 QBCore.Functions.CreateCallback('QBCore:HasItem', function(source, cb, itemName)

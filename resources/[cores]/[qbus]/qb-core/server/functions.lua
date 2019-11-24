@@ -137,12 +137,59 @@ QBCore.Functions.IsWhitelisted = function(source)
 end
 
 QBCore.Functions.AddPermission = function(source, permission)
-	table.insert(QBCore.Config.Server.PermissionList, {
-		name = GetPlayerName(source),
-		steam = GetPlayerIdentifiers(source)[1],
-		license = GetPlayerIdentifiers(source)[2],
-		permission = permission:lower(),
-	})
-	QBCore.Functions.ExecuteSql("INSERT INTO `permissions` (`name`, `steam`, `license`, `permissions`) VALUES ('"..GetPlayerName(source).."', '"..GetPlayerIdentifiers(source)[1].."', '"..GetPlayerIdentifiers(source)[2].."', '"..permission:lower().."')")
+	local Player = QBCore.Functions.GetPlayer(source)
+	if Player ~= nil then 
+		QBCore.Config.Server.PermissionList[GetPlayerIdentifiers(source)[1]] = {
+			steam = GetPlayerIdentifiers(source)[1],
+			license = GetPlayerIdentifiers(source)[2],
+			permission = permission:lower(),
+		}	
+		QBCore.Functions.ExecuteSql("INSERT INTO `permissions` (`name`, `steam`, `license`, `permission`) VALUES ('"..GetPlayerName(source).."', '"..GetPlayerIdentifiers(source)[1].."', '"..GetPlayerIdentifiers(source)[2].."', '"..permission:lower().."')")
+		Player.Functions.UpdatePlayerData()
+	end
+end
+
+QBCore.Functions.RemovePermission = function(source)
+	local Player = QBCore.Functions.GetPlayer(source)
+	if Player ~= nil then 
+		QBCore.Config.Server.PermissionList[GetPlayerIdentifiers(source)[1]] = nil	
+		QBCore.Functions.ExecuteSql("DELETE FROM `permissions` WHERE `steam` = '"..GetPlayerIdentifiers(source)[1].."'")
+		Player.Functions.UpdatePlayerData()
+	end
+end
+
+QBCore.Functions.HasPermission = function(source, permission)
+	local retval = false
+	local steamid = GetPlayerIdentifiers(source)[1]
+	local licenseid = GetPlayerIdentifiers(source)[2]
+	local permission = tostring(permission:lower())
+	if permission == "user" then
+		retval = true
+	else
+		if QBCore.Config.Server.PermissionList[steamid] ~= nil then 
+			if QBCore.Config.Server.PermissionList[steamid].steam == steamid and QBCore.Config.Server.PermissionList[steamid].license == licenseid then
+				if QBCore.Config.Server.PermissionList[steamid].permission == permission then
+					retval = true
+				end
+			end
+		end
+	end
+	return retval
+end
+
+QBCore.Functions.GetPermission = function(source)
+	local retval = "user"
+	Player = QBCore.Functions.GetPlayer(source)
+	local steamid = GetPlayerIdentifiers(source)[1]
+	local licenseid = GetPlayerIdentifiers(source)[2]
+	local permission = tostring(permission:lower())
+	if Player ~= nil then
+		if QBCore.Config.Server.PermissionList[Player.PlayerData.steam] ~= nil then 
+			if QBCore.Config.Server.PermissionList[Player.PlayerData.steam].steam == steamid and QBCore.Config.Server.PermissionList[Player.PlayerData.steam].license == licenseid then
+				retval = QBCore.Config.Server.PermissionList[Player.PlayerData.steam].permission
+			end
+		end
+	end
+	return retval
 end
 

@@ -63,7 +63,9 @@ RegisterServerEvent('hospital:server:SetWeaponDamage')
 AddEventHandler('hospital:server:SetWeaponDamage', function(data)
 	local src = source
 	local Player = QBCore.Functions.GetPlayer(src)
-	PlayerWeaponWounds[Player.PlayerData.source] = data
+	if Player ~= nil then 
+		PlayerWeaponWounds[Player.PlayerData.source] = data
+	end
 end)
 
 RegisterServerEvent('hospital:server:RestoreWeaponDamage')
@@ -248,7 +250,7 @@ QBCore.Commands.Add("revive", "Revive een speler of jezelf", {{name="id", help="
 	else
 		TriggerClientEvent('hospital:client:Revive', source)
 	end
-end, "moderator")
+end, "admin")
 
 QBCore.Commands.Add("setpain", "Zet een pijn voor jezelf of iemand anders", {{name="id", help="Speler ID (mag leeg zijn)"}}, false, function(source, args)
 	if args[1] ~= nil then

@@ -30,7 +30,6 @@ AddEventHandler('chatMessage', function(author, ctype, text)
       args = {author, text}
     }
   })
-  print(text)
 end)
 
 AddEventHandler('__cfx_internal:serverPrint', function(msg)

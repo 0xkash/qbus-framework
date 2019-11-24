@@ -15,10 +15,8 @@ AddEventHandler('_chat:messageEntered', function(author, color, message)
     TriggerEvent('chatMessage', source, author, message)
 
     if not WasEventCanceled() then
-        TriggerClientEvent('chatMessage', -1, 'OOC | '..author,  false, message)
+        --TriggerClientEvent('chatMessage', -1, 'OOC | '..author,  false, message)
     end
-
-    print(author .. '^7: ' .. message .. '^7')
 end)
 
 AddEventHandler('__cfx_internal:commandFallback', function(command)
@@ -27,7 +25,7 @@ AddEventHandler('__cfx_internal:commandFallback', function(command)
     TriggerEvent('chatMessage', source, name, '/' .. command)
 
     if not WasEventCanceled() then
-        TriggerClientEvent('chatMessage', -1, name, nil, '/' .. command) 
+        TriggerClientEvent('chatMessage', -1, name, false, '/' .. command) 
     end
 
     CancelEvent()

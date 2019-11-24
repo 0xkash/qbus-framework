@@ -1,14 +1,14 @@
 QBCore.Commands = {}
 QBCore.Commands.List = {}
 
-QBCore.Commands.Add = function(name, help, arguments, argsrequired, callback, persmission) -- [name] = command name (ex. /givemoney), [help] = help text, [arguments] = arguments that need to be passed (ex. {{name="id", help="ID of a player"}, {name="amount", help="amount of money"}}), [argsrequired] = set arguments required (true or false), [callback] = function(source, args) callback, [permission] = rank or job of a player
+QBCore.Commands.Add = function(name, help, arguments, argsrequired, callback, permission) -- [name] = command name (ex. /givemoney), [help] = help text, [arguments] = arguments that need to be passed (ex. {{name="id", help="ID of a player"}, {name="amount", help="amount of money"}}), [argsrequired] = set arguments required (true or false), [callback] = function(source, args) callback, [permission] = rank or job of a player
 	QBCore.Commands.List[name:lower()] = {
-		['name'] = name:lower(),
-		['persmission'] = permission ~= nil and permission:lower() or "user",
-		['help'] = help,
-		['arguments'] = arguments,
-		['argsrequired'] = argsrequired,
-		['callback'] = callback,
+		name = name:lower(),
+		permission = permission ~= nil and permission:lower() or "user",
+		help = help,
+		arguments = arguments,
+		argsrequired = argsrequired,
+		callback = callback,
 	}
 end
 
@@ -16,7 +16,7 @@ QBCore.Commands.Refresh = function(source)
 	local Player = QBCore.Functions.GetPlayer(tonumber(source))
 	if Player ~= nil then
 		for command, info in pairs(QBCore.Commands.List) do
-			if (Player.PlayerData.permission == "god") or (QBCore.Commands.List[command].permission == "moderator" and Player.PlayerData.permission == "admin") or (QBCore.Commands.List[command].permission == Player.PlayerData.permission or Player.Functions.HasAcePermission("qbcommands."..command)) or (QBCore.Commands.List[command].permission == Player.PlayerData.job.name) then
+			if QBCore.Functions.HasPermission(source, "god") or QBCore.Functions.HasPermission(source, QBCore.Commands.List[command].permission) then
 				TriggerClientEvent('chat:addSuggestion', source, "/"..command, info.help, info.arguments)
 			end
 		end
@@ -43,7 +43,26 @@ QBCore.Commands.Add("tp", "Teleport naar een speler of location", {{name="id/x",
 			TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Niet elk argument is ingevuld (x, y, z)")
 		end
 	end
-end, "moderator")
+end, "admin")
+
+QBCore.Commands.Add("addpermission", "Geef permissie aan iemand (god/admin)", {{name="id", help="ID van de speler"}, {name="permission", help="Permission level"}}, true, function(source, args)
+	local Player = QBCore.Functions.GetPlayer(tonumber(args[1]))
+	local permission = tostring(permission):lower()
+	if Player ~= nil then
+		QBCore.Functions.AddPermission(Player.PlayerData.source, permission)
+	else
+		TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Speler is niet online!")	
+	end
+end, "god")
+
+QBCore.Commands.Add("removepermission", "Haal permissie weg van iemand", {{name="id", help="ID van de speler"}}, true, function(source, args)
+	local Player = QBCore.Functions.GetPlayer(tonumber(args[1]))
+	if Player ~= nil then
+		QBCore.Functions.RemovePermission(Player.PlayerData.source)
+	else
+		TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Speler is niet online!")	
+	end
+end, "god")
 
 QBCore.Commands.Add("sv", "Spawn een voertuig", {{name="model", help="Model naam van het voertuig"}}, true, function(source, args)
 	TriggerClientEvent('QBCore:Command:SpawnVehicle', source, args[1])
@@ -55,11 +74,11 @@ end, "admin")
 
 QBCore.Commands.Add("dv", "Spawn een voertuig", {}, false, function(source, args)
 	TriggerClientEvent('QBCore:Command:DeleteVehicle', source)
-end, "moderator")
+end, "admin")
 
 QBCore.Commands.Add("tpm", "Teleport naar een marker", {}, false, function(source, args)
 	TriggerClientEvent('QBCore:Command:GoToMarker', source)
-end, "moderator")
+end, "admin")
 
 QBCore.Commands.Add("givemoney", "Geef geld aan een speler", {{name="id", help="Speler ID"},{name="moneytype", help="Type geld (cash, bank, crypto)"}, {name="amount", help="Aantal munnies"}}, true, function(source, args)
 	local Player = QBCore.Functions.GetPlayer(tonumber(args[1]))
@@ -88,15 +107,6 @@ QBCore.Commands.Add("setjob", "Geef een baan aan een speler", {{name="id", help=
 	end
 end, "admin")
 
-QBCore.Commands.Add("setpermission", "Geef een permissie aan een speler", {{name="id", help="Speler ID"}, {name="permission", help="Permissie naam"}}, true, function(source, args)
-	local Player = QBCore.Functions.GetPlayer(tonumber(args[1]))
-	if Player ~= nil then
-		Player.Functions.SetPermission(tostring(args[2]))
-	else
-		TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Speler is niet online!")
-	end
-end, "god")
-
 QBCore.Commands.Add("testnotify", "test notify", {{name="text", help="Tekst enzo"}}, true, function(source, args)
 	TriggerClientEvent('QBCore:Notify', source, table.concat(args, " "), "success")
 end, "god")
@@ -106,7 +116,6 @@ QBCore.Commands.Add("baan", "Kijk wat je baan is", {}, false, function(source, a
 	TriggerClientEvent('chatMessage', source, "SYSTEM", "warning", "Baan: "..Player.PlayerData.job.label)
 end)
 
-
 QBCore.Commands.Add("clearinv", "Leeg de inventory van jezelf of een speler", {{name="id", help="Speler ID"}}, false, function(source, args)
 	local playerId = args[1] ~= nil and args[1] or source 
 	local Player = QBCore.Functions.GetPlayer(tonumber(playerId))
@@ -115,4 +124,9 @@ QBCore.Commands.Add("clearinv", "Leeg de inventory van jezelf of een speler", {{
 	else
 		TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Speler is niet online!")
 	end
-end, "god")
+end, "admin")
+
+QBCore.Commands.Add("ooc", "Out Of Character chat bericht (alleen gebruiken wanneer nodig)", {}, false, function(source, args)
+	local message = table.concat(args, " ")
+	TriggerClientEvent('chatMessage', source, GetPlayerName(source), false, message)
+end)
