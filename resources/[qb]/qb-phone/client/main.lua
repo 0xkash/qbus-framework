@@ -51,13 +51,64 @@ end)
 RegisterNUICallback('getMessages', function(data, cb)
     local chats = {}
     for k, v in pairs(messages) do
+        local contactName = v.number
+        for _, contact in pairs(playerContacts) do
+            if v.number == contact.number then
+                contactName = contact.name
+            end
+        end
+
         table.insert(chats, {
             number = v.number,
-            name = v.number,
+            name = contactName,
             messages = v.messages,
         })
     end
     cb(chats)
+end)
+
+function GetClosestPlayer()
+    local closestPlayers = QBCore.Functions.GetPlayersFromCoords()
+    local closestDistance = -1
+    local closestPlayer = -1
+    local coords = GetEntityCoords(GetPlayerPed(-1))
+
+    for i=1, #closestPlayers, 1 do
+        if closestPlayers[i] ~= PlayerId() then
+            local pos = GetEntityCoords(GetPlayerPed(closestPlayers[i]))
+            local distance = GetDistanceBetweenCoords(pos.x, pos.y, pos.z, coords.x, coords.y, coords.z, true)
+
+            if closestDistance == -1 or closestDistance > distance then
+                closestPlayer = closestPlayers[i]
+                closestDistance = distance
+            end
+        end
+	end
+
+	return closestPlayer, closestDistance
+end
+
+RegisterNetEvent('qb-phone:client:giveNumber')
+AddEventHandler('qb-phone:client:giveNumber', function(data)
+    local ped = GetPlayerPed(-1)
+    local PlayerData = QBCore.Functions.GetPlayerData()
+
+    local player, distance = GetClosestPlayer()
+    if player ~= -1 and distance < 2.5 then
+        local playerId = GetPlayerServerId(player)
+        TriggerServerEvent('qb-phone:server:giveNumber', playerId, PlayerData)
+    else
+        QBCore.Functions.Notify("Niemand in de buurt!", "error")
+    end
+end)
+
+RegisterNetEvent('qb-phone:server:newContactNotify')
+AddEventHandler('qb-phone:server:newContactNotify', function(number)
+    QBCore.Functions.Notify('[M] Je hebt een nieuw voorgesteld contactpersoon!')
+    SendNUIMessage({
+        task = "suggestedNumberNotify",
+        number = number
+    })
 end)
 
 RegisterNUICallback('doesChatExists', function(data, cb)
@@ -295,11 +346,15 @@ RegisterNUICallback('addToContact', function(data)
     local contactName = data.contactName
     local contactNum = data.contactNum
 
-    table.insert(playerContacts, {
-        name = contactName,
-        number = contactNum,
-        status = "unknown",
-    })
+    QBCore.Functions.TriggerCallback('qb-phone:server:getContactStatus', function(stat)
+        table.insert(playerContacts, {
+            name = contactName,
+            number = contactNum,
+            status = stat,
+        })
+        print(stat)
+    end, contactNum)
+    Citizen.Wait(250)
     setupContacts()
 
     TriggerServerEvent('qb-phone:server:addContact', contactName, contactNum)

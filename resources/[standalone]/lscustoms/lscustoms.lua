@@ -700,7 +700,7 @@ Citizen.CreateThread(function()
 			local ped = GetPlayerPed(-1)
 			if IsPedSittingInAnyVehicle(ped) then
 				local veh = GetVehiclePedIsUsing(ped)
-				if DoesEntityExist(veh) and GetPedInVehicleSeat(veh, -1) == ped and (IsThisModelACar(GetEntityModel(veh)) or IsThisModelABike(GetEntityModel(veh)))  then
+				if DoesEntityExist(veh) and GetPedInVehicleSeat(veh, -1) == ped and (IsThisModelACar(GetEntityModel(veh)) or IsThisModelABike(GetEntityModel(veh))) then
 					for i,pos in ipairs(garages) do
 						coords = pos.inside		
 						if GetDistanceBetweenCoords(coords.x,coords.y,coords.z,GetEntityCoords(ped)) <= 5 then

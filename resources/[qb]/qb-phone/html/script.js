@@ -11,6 +11,8 @@ var choosingBg = false;
 var curBg = "bg-1";
 var selectedContact = null;
 
+var suggestedNumber = null;
+
 var currentChatNumber = null;
 
 var myCitizenId = null;
@@ -123,6 +125,12 @@ $(document).ready(function(){
         if (eventData.task == "newMessage") {
             qbPhone.Notify('<i class="fas fa-envelope" style="position: relative; padding-top: 7px;"></i> Berichten', 'success', eventData.sender + ' heeft een bericht gestuurd!')
         }
+
+        if (eventData.task == "suggestedNumberNotify") {
+            suggestedNumber = eventData.number
+            $(".suggestedContact").css({"bottom":"40%"});
+            $(".suggestedContact").fadeIn(250);
+        }
     });
 
     $('.notify-btn').change(function() {
@@ -145,6 +153,39 @@ $(document).ready(function(){
         }
     })
 });
+
+$(document).on('click', '#suggestedContact-accept', function(e){
+    e.preventDefault();
+
+    $(".suggestedContact").fadeOut(250);
+    $(".suggestedContact").css({"bottom":"-40%"});
+
+    $.post('http://qb-phone/setupContacts');
+
+    $(".contacts-app").css({'display':'block'}).animate({
+        top: "3%",
+    }, 250, function(){
+        $('.add-contact-container').css({"display":"block"}).animate({top: "20%",}, 250);
+        setTimeout(function(){
+            $(".contactname-input").val("");
+            $(".number-input").val(suggestedNumber);
+            addingContact = true;
+        }, 100)
+    });
+
+    qbPhone.succesSound();
+
+    currentApp = ".contacts-app";
+})
+
+$(document).on('click', '#suggestedContact-deny', function(e){
+    e.preventDefault();
+
+    suggestedNumber = null;
+
+    $(".suggestedContact").fadeOut(250);
+    $(".suggestedContact").css({"bottom":"-40%"});
+})
 
 $(document).on('click', '.app', function(e){
     e.preventDefault();
@@ -183,7 +224,7 @@ qbPhone.SetupChat = function(chats) {
     $(".chats-container").html("");
     $.each(chats, function(i, chat){
         var chatLength = chat.messages.length;
-        var elem = '<div class="chat" id="chat-'+i+'"><span id="chat-name">'+chat.number+'</span> <span id="chat-last-message">'+chat.messages[chatLength - 1].message+'</span> <span id="chat-last-message-date"><span id="chat-last-message-state">Nieuw &#8226;</span> Vandaag</span> </div>';
+        var elem = '<div class="chat" id="chat-'+i+'"><span id="chat-name">'+chat.name+'</span> <span id="chat-last-message">'+chat.messages[chatLength - 1].message+'</span> <span id="chat-last-message-date"><span id="chat-last-message-state">Nieuw &#8226;</span> Vandaag</span> </div>';
         $(".chats-container").append(elem);
         $("#chat-"+i).data('chatData', chat);
     });
@@ -207,6 +248,7 @@ $(document).on('click', '.chat', function(e){
     currentChatNumber = chatData.number;
     $(".messages").html("");
     $('.chat-window').css({"display":"block"}).animate({top: "3%",}, 250);
+    $(".chat-window-header").html('<p><i class="fas fa-arrow-left" id="chat-window-arrow-left"></i> '+chatData.name+'</p>');
     $.each(chatData.messages, function(i, chat){
         if (chat.sender != myCitizenId) {
             if (chat.type == "normal") {
@@ -882,9 +924,7 @@ qbPhone.setupPlayerContacts = function(contacts) {
         '<div class="contact-option edit-contact" id="cData-'+index+'"><i class="fa fa-edit" id="edit-contact-icon"></i></div></div>' +
         '<span id="contact-name">'+contact.name+'</span></div>'
         $(".contact-list").append(contactHTML);
-        if (contact.status === "unknown") {
-            $("#contact-"+index).addClass("unknown");
-        } else if (contact.status === true) {
+        if (contact.status === true) {
             $("#contact-"+index).addClass("online");
         } else if (contact.status === false) {
             $("#contact-"+index).addClass("offline");

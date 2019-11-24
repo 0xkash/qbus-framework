@@ -76,16 +76,20 @@ Citizen.CreateThread(function()
 
         if isLoggedIn then
             for k, v in pairs(availableKeys) do
-                if IsControlJustPressed(0, Keys[v]) then
+                if IsControlJustPressed(0, Keys[v]) or IsDisabledControlJustPressed(0, Keys[v]) then
                     local PlayerData = QBCore.Functions.GetPlayerData()
                     local keyMeta = PlayerData.metadata["commandbinds"]
                     local args = {}
-                    if keyMeta[v]["command"] ~= "" then
-                        if keyMeta[v]["argument"] ~= "" then args = {[1] = keyMeta[v]["argument"]} else args = {[1] = nil} end
-                        TriggerServerEvent('QBCore:CallCommand', keyMeta[v]["command"], args)
-                        keyPressed = true
+                    if next(keyMeta) ~= nil then
+                        if keyMeta[v]["command"] ~= "" then
+                            if keyMeta[v]["argument"] ~= "" then args = {[1] = keyMeta[v]["argument"]} else args = {[1] = nil} end
+                            TriggerServerEvent('QBCore:CallCommand', keyMeta[v]["command"], args)
+                            keyPressed = true
+                        else
+                            QBCore.Functions.Notify('Er is nog niks aan ['..v..'] gebind, /binds om een commando te binden', 'primary', 4000)
+                        end
                     else
-                        QBCore.Functions.Notify('Er is nog niks aan ['..v..'] gebind, /binds om een commando te binden', 'primary', 4000)
+                        QBCore.Functions.Notify('Je hebt nog geen commands gebind, /binds om een commando te binden', 'primary', 4000)
                     end
                 end
             end
