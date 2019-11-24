@@ -55,6 +55,7 @@ Citizen.CreateThread(function()
                     if not Config.BigBanks["pacific"]["lockers"][k]["isBusy"] then
                         if not Config.BigBanks["pacific"]["lockers"][k]["isOpened"] then
                             if lockerDist < 5 then
+                                inRange = true
                                 DrawMarker(2, Config.BigBanks["pacific"]["lockers"][k].x, Config.BigBanks["pacific"]["lockers"][k].y, Config.BigBanks["pacific"]["lockers"][k].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 0.1, 0.05, 255, 255, 255, 255, false, false, false, 1, false, false, false)
                                 if lockerDist < 0.5 then
                                     DrawText3Ds(Config.BigBanks["pacific"]["lockers"][k].x, Config.BigBanks["pacific"]["lockers"][k].y, Config.BigBanks["pacific"]["lockers"][k].z + 0.3, '[E] Kluis openbreken')

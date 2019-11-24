@@ -297,7 +297,7 @@ function IsNearATM()
     local closestObj = GetClosestObjectOfType(plyCoords.x, plyCoords.y, plyCoords.z, 3.0, v, false, 0, 0)
     local objCoords = GetEntityCoords(closestObj)
     if closestObj ~= 0 then
-      local dist = GetDistanceBetweenCoords(plyCoords.x, plyCoords.y, plyCoords.z, objCoords.x, objCoords.y, objCoords.z)
+      local dist = GetDistanceBetweenCoords(plyCoords.x, plyCoords.y, plyCoords.z, objCoords.x, objCoords.y, objCoords.z, true)
       if dist <= 2 then
         return true
       end

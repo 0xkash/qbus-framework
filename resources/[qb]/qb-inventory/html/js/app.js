@@ -117,6 +117,9 @@ $(document).on("contextmenu", ".item-slot", function(e){
         } else if (itemData.name == "stickynote") {
             $(".item-info-title").html('<p>'+itemData.label+'</p>')
             $(".item-info-description").html('<p>'+ itemData.info.label + '</p>');
+        } else {
+            $(".item-info-title").html('<p>'+itemData.label+'</p>')
+            $(".item-info-description").html('<p>' + itemData.description + '</p>')
         }
     } else {
         $(".item-info-title").html('<p>'+itemData.label+'</p>')

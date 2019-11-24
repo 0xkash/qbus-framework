@@ -49,6 +49,8 @@ RegisterServerEvent('qb-bankrobbery:server:setLockerState')
 AddEventHandler('qb-bankrobbery:server:setLockerState', function(bankId, lockerId, state, bool)
     if bankId == "paleto" then
         Config.BigBanks["paleto"]["lockers"][lockerId][state] = bool
+    elseif bankId == "pacific" then
+        Config.BigBanks["pacific"]["lockers"][lockerId][state] = bool
     else
         Config.SmallBanks[bankId]["lockers"][lockerId][state] = bool
     end
@@ -102,6 +104,37 @@ AddEventHandler('qb-bankrobbery:server:recieveItem', function(type)
         else
             ply.Functions.AddItem('security_card_02', 1)
             TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items['security_card_02'], "add")
+        end
+    elseif type == "pacific" then
+        local itemType = math.random(#Config.RewardTypes)
+        local tierChance = math.random(1, 100)
+        local tier = 1
+        if tierChance < 10 then tier = 1 elseif tierChance >= 25 and tierChance < 50 then tier = 2 elseif tierChance >= 50 and tierChance < 95 then tier = 3 else tier = 4 end
+        if tier ~= 4 then
+            if Config.RewardTypes[itemType].type == "item" then
+                local item = Config.LockerRewards["tier"..tier][math.random(#Config.LockerRewards["tier"..tier])]
+                local maxAmount = item.maxAmount
+                if tier == 3 then
+                    maxAmount = 7
+                elseif tier == 2 then
+                    maxAmount = 18
+                else
+                    maxAmount = 25
+                end
+                local itemAmount = math.random(maxAmount)
+
+                ply.Functions.AddItem(item.item, itemAmount)
+                TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[item.item], "add")
+            elseif Config.RewardTypes[itemType].type == "money" then
+                local moneyAmount = math.random(1200, 7000)
+                ply.Functions.AddMoney('cash', moneyAmount)
+            end
+        else
+            local info = {
+                crypto = math.random(1, 3)
+            }
+            ply.Functions.AddItem("cryptostick", 1, false, info)
+            TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items['cryptostick'], "add")
         end
     end
 end)

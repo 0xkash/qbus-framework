@@ -479,8 +479,8 @@ QB.Doors = {
 	-- First safe Door
 	[37] = {
 		objName = 'hei_v_ilev_bk_safegate_pris',
-		objCoords  = vector3(261.83, 221.39, 106.41),
-		textCoords = vector3(261.83, 221.39, 106.41),
+		objCoords  = vector3(252.98, 220.65, 101.8),
+		textCoords = vector3(252.98, 220.65, 101.8),
 		authorizedJobs = { 'police' },
 		locking = false,
 		locked = true,
@@ -491,8 +491,8 @@ QB.Doors = {
 	-- Second safe Door
 	[38] = {
 		objName = 'hei_v_ilev_bk_safegate_pris',
-		objCoords  = vector3(265.19, 217.84, 110.28),
-		textCoords = vector3(265.19, 217.84, 110.28),
+		objCoords  = vector3(261.68, 215.62, 101.81),
+		textCoords = vector3(261.68, 215.62, 101.81),
 		authorizedJobs = { 'police' },
 		locking = false,
 		locked = true,
