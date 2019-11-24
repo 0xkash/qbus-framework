@@ -1654,10 +1654,10 @@
       <textureName>VehicleLight_sirenlight</textureName>
       <sequencerBpm value="220"/>
       <leftHeadLight>
-        <sequencer value="1431655765"/>
+        <sequencer value="0"/>
       </leftHeadLight>
       <rightHeadLight>
-        <sequencer value="2863311530"/>
+        <sequencer value="0"/>
       </rightHeadLight>
       <leftTailLight>
         <sequencer value="0"/>

@@ -18,7 +18,6 @@
 resource_manifest_version '05cfa83c-a124-4cfa-a768-c24a5811d8f9'
 local NUIEnabled = true
 
-
 -- ELS-FiveM Requirements
 client_script 'SharpConfig.net.dll'
 client_script 'els-plus.net.dll'
