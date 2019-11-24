@@ -65,6 +65,9 @@ RegisterNetEvent('thermite:UseThermite')
 AddEventHandler('thermite:UseThermite', function()
     local ped = GetPlayerPed(-1)
     local pos = GetEntityCoords(ped)
+    if math.random(1, 100) <= 65 and not IsWearingHandshoes() then
+        TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
+    end
     if closestStation ~= 0 then
         local dist = GetDistanceBetweenCoords(pos, Config.PowerStations[closestStation].coords.x, Config.PowerStations[closestStation].coords.y, Config.PowerStations[closestStation].coords.z)
         if dist < 1.5 then

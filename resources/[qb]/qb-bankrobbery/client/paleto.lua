@@ -62,7 +62,9 @@ AddEventHandler('qb-bankrobbery:UseBankcardA', function()
     local ped = GetPlayerPed(-1)
     local pos = GetEntityCoords(ped)
     local dist = GetDistanceBetweenCoords(pos, Config.BigBanks["paleto"]["coords"]["x"], Config.BigBanks["paleto"]["coords"]["y"],Config.BigBanks["paleto"]["coords"]["z"])
-
+    if math.random(1, 100) <= 65 and not IsWearingHandshoes() then
+        TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
+    end
     if dist < 1.5 then
         QBCore.Functions.TriggerCallback('qb-bankrobbery:server:isRobberyActive', function(isBusy)
             if not isBusy then

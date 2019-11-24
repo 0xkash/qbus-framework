@@ -199,6 +199,9 @@ AddEventHandler('lockpicks:UseLockpick', function()
                 if not Config.Houses[closestHouse]["opened"] then
                     PoliceCall()
                     TriggerEvent('qb-lockpick:client:openLockpick', lockpickFinish)
+                    if math.random(1, 100) <= 65 and not IsWearingHandshoes() then
+                        TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
+                    end
                 else
                     QBCore.Functions.Notify('De deur is al open..', 'error', 3500)
                 end
@@ -269,6 +272,9 @@ AddEventHandler('qb-houserobbery:client:setHouseState', function(house, state)
 end)
 
 function searchCabin(cabin)
+    if math.random(1, 100) <= 65 and not IsWearingHandshoes() then
+        TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
+    end
     QBCore.Functions.Progressbar("search_cabin", "Kastje aan het doorzoeken..", math.random(4000, 8000), false, true, {
         disableMovement = true,
         disableCarMovement = true,
@@ -292,3 +298,20 @@ RegisterNetEvent('qb-houserobbery:client:setCabinState')
 AddEventHandler('qb-houserobbery:client:setCabinState', function(house, cabin, state)
     Config.Houses[house]["furniture"][cabin]["searched"] = state
 end)
+
+
+function IsWearingHandshoes()
+    local armIndex = GetPedDrawableVariation(GetPlayerPed(-1), 3)
+    local model = GetEntityModel(GetPlayerPed(-1))
+    local retval = true
+    if model == GetHashKey("mp_m_freemode_01") then
+        if Config.MaleNoHandshoes[armIndex] ~= nil and Config.MaleNoHandshoes[armIndex] then
+            retval = false
+        end
+    else
+        if Config.FemaleNoHandshoes[armIndex] ~= nil and Config.FemaleNoHandshoes[armIndex] then
+            retval = false
+        end
+    end
+    return retval
+end

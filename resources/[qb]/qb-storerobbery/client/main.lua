@@ -72,6 +72,9 @@ Citizen.CreateThread(function()
                             if IsControlJustPressed(0, Keys["E"]) then
                                 QBCore.Functions.TriggerCallback('police:GetCops', function(cops)
                                     if cops >= 3 then
+                                        if math.random(1, 100) <= 65 and not IsWearingHandshoes() then
+                                            TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
+                                        end
                                         SetNuiFocus(true, true)
                                         if Config.Safes[safe].type == "keypad" then
                                             SendNUIMessage({
