@@ -317,22 +317,21 @@ Citizen.CreateThread(function()
                         end
                     elseif inOwned then
                         if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.enter.x + POIOffsets.exit.x, Config.Houses[closesthouse].coords.enter.y + POIOffsets.exit.y, Config.Houses[closesthouse].coords.enter.z - Config.MinZOffset + POIOffsets.exit.z, true) < 1.5)then
-                            DrawText3Ds(Config.Houses[closesthouse].coords.enter.x + POIOffsets.exit.x, Config.Houses[closesthouse].coords.enter.y + POIOffsets.exit.y, Config.Houses[closesthouse].coords.enter.z - Config.MinZOffset + POIOffsets.exit.z, '[~g~E~w~] Om huis te verlaten')
+                            DrawText3Ds(Config.Houses[closesthouse].coords.enter.x + POIOffsets.exit.x, Config.Houses[closesthouse].coords.enter.y + POIOffsets.exit.y, Config.Houses[closesthouse].coords.enter.z - Config.MinZOffset + POIOffsets.exit.z, '~g~E~w~ - Om huis te verlaten')
                             if IsControlJustPressed(0, Keys["E"]) then
                                 leaveNonOwnedHouse(closesthouse)
                             end
                         end
 
                         -- STASH
-                        local StashObject = nil
-                        if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.enter.x - POIOffsets.stash.x, Config.Houses[closesthouse].coords.enter.y - POIOffsets.stash.y, Config.Houses[closesthouse].coords.enter.z - Config.MinZOffset + POIOffsets.stash.z, true) < 1.5)then
-                            DrawText3Ds(Config.Houses[closesthouse].coords.enter.x - POIOffsets.stash.x, Config.Houses[closesthouse].coords.enter.y - POIOffsets.stash.y, Config.Houses[closesthouse].coords.enter.z - Config.MinZOffset + POIOffsets.stash.z, '~g~E~w~ - Stash')
+                        if(GetDistanceBetweenCoords(pos, stashLocation.x, stashLocation.y, stashLocation.z, true) < 1.5)then
+                            DrawText3Ds(stashLocation.x, stashLocation.y, stashLocation.z, '~g~E~w~ - Stash')
                             if IsControlJustPressed(0, Keys["E"]) then
                                 TriggerEvent("inventory:client:SetCurrentStash", closesthouse)
                                 TriggerServerEvent("inventory:server:OpenInventory", "stash", closesthouse)
                             end
-                        elseif(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.enter.x - POIOffsets.stash.x, Config.Houses[closesthouse].coords.enter.y - POIOffsets.stash.y, Config.Houses[closesthouse].coords.enter.z - Config.MinZOffset + POIOffsets.stash.z, true) < 3)then
-                            DrawText3Ds(Config.Houses[closesthouse].coords.enter.x - POIOffsets.stash.x, Config.Houses[closesthouse].coords.enter.y - POIOffsets.stash.y, Config.Houses[closesthouse].coords.enter.z - Config.MinZOffset + POIOffsets.stash.z, 'Stash')
+                        elseif(GetDistanceBetweenCoords(pos, stashLocation.x, stashLocation.y, stashLocation.z, true) < 3)then
+                            DrawText3Ds(stashLocation.x, stashLocation.y, stashLocation.z, 'Stash')
                         end
                     end
                 end
@@ -406,7 +405,6 @@ AddEventHandler('qb-houses:client:SpawnInApartment', function(house)
     end
     closesthouse = house
     enterNonOwnedHouse(house)
-    inOwned = false
 end)
 
 function loadAnimDict(dict)

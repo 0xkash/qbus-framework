@@ -41,7 +41,6 @@ Citizen.CreateThread(function()
     end
 end)
 
-
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(1)
@@ -303,7 +302,7 @@ function LeaveApartment(house)
         Citizen.Wait(10)
     end
     exports['qb-interior']:DespawnInterior(houseObj, function()
-        --TriggerEvent('qb-weathersync:client:EnableSync')
+        TriggerEvent('qb-weathersync:client:EnableSync')
         SetEntityCoords(GetPlayerPed(-1), Apartments.Locations[house].coords.enter.x, Apartments.Locations[house].coords.enter.y,Apartments.Locations[house].coords.enter.z)
         SetEntityHeading(GetPlayerPed(-1), Apartments.Locations[house].coords.enter.h)
         Citizen.Wait(1000)
