@@ -1,3 +1,8 @@
+QBCore = nil
+TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
+
+-- Code
+
 if not IsDuplicityVersion() then
     Citizen.CreateThread(function()
         while true do
@@ -441,7 +446,7 @@ exports("GetQueueExports", function()
     return Queue
 end)
 
-local function playerConnect(name, setKickReason, deferrals)
+local function playerConnect(source, setKickReason, deferrals)
     local src = source
     local ids = Queue:GetIds(src)
     local name = GetPlayerName(src)
@@ -650,7 +655,12 @@ local function playerConnect(name, setKickReason, deferrals)
         update(msg, data.deferrals)
     end
 end
-AddEventHandler("playerConnecting", playerConnect)
+--AddEventHandler("playerConnecting", playerConnect)
+
+RegisterServerEvent('connectqueue:playerConnect')
+AddEventHandler('connectqueue:playerConnect', function(source, setKickReason, deferrals)
+    playerConnect(source, setKickReason, deferrals)
+end)
 
 Citizen.CreateThread(function()
     local function remove(data, pos, msg)

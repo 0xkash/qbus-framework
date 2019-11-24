@@ -168,7 +168,7 @@ QBCore.Functions.HasPermission = function(source, permission)
 	else
 		if QBCore.Config.Server.PermissionList[steamid] ~= nil then 
 			if QBCore.Config.Server.PermissionList[steamid].steam == steamid and QBCore.Config.Server.PermissionList[steamid].license == licenseid then
-				if QBCore.Config.Server.PermissionList[steamid].permission == permission then
+				if QBCore.Config.Server.PermissionList[steamid].permission == permission or QBCore.Config.Server.PermissionList[steamid].permission == "god" then
 					retval = true
 				end
 			end
@@ -191,5 +191,18 @@ QBCore.Functions.GetPermission = function(source)
 		end
 	end
 	return retval
+end
+
+QBCore.Functions.IsPlayerBanned = function (source)
+	local retval = false
+	local message = ""
+	QBCore.Functions.ExecuteSql("SELECT * FROM `bans` WHERE `steam` = '"..GetPlayerIdentifiers(source)[1].."' OR `license` = '"..GetPlayerIdentifiers(source)[2].."' OR `ip` = '"..GetPlayerIdentifiers(source)[3].."'", function(result)
+		if result[1] ~= nil then 
+			retval = true
+			local timeTable = os.date("*t", tonumber(result[1].expire))
+			message = "Je bent verbannen van de server:\n"..result[1].reason.."\nJe ban verloopt "..timeTable.day.. "/" .. timeTable.month .. "/" .. timeTable.year .. " " .. timeTable.hour.. ":" .. timeTable.min .. "\n"
+		end
+	end)
+	return retval, message
 end
 
