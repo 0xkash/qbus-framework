@@ -31,6 +31,9 @@ AddEventHandler('qb-bankrobbery:server:setBankState', function(bankId, state)
     if bankId == "paleto" then
         Config.BigBanks["paleto"]["isOpened"] = state
         TriggerClientEvent('qb-bankrobbery:client:setBankState', -1, bankId, state)
+    elseif bankId == "pacific" then
+        Config.BigBanks["pacific"]["isOpened"] = state
+        TriggerClientEvent('qb-bankrobbery:client:setBankState', -1, bankId, state)
     else
         Config.SmallBanks[bankId]["isOpened"] = state
         TriggerClientEvent('qb-bankrobbery:client:setBankState', -1, bankId, state)
@@ -228,5 +231,12 @@ QBCore.Functions.CreateUseableItem("security_card_01", function(source, item)
     local Player = QBCore.Functions.GetPlayer(source)
 	if Player.Functions.GetItemByName('security_card_01') ~= nil then
         TriggerClientEvent("qb-bankrobbery:UseBankcardA", source)
+    end
+end)
+
+QBCore.Functions.CreateUseableItem("security_card_02", function(source, item)
+    local Player = QBCore.Functions.GetPlayer(source)
+	if Player.Functions.GetItemByName('security_card_02') ~= nil then
+        TriggerClientEvent("qb-bankrobbery:UseBankcardB", source)
     end
 end)
