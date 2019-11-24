@@ -199,6 +199,11 @@ $(document).on('click', '.app', function(e){
 
     currentApp = "."+pressedApp.app+"-app";
 
+    if (suggestedNumber !== null) {
+        $(".suggestedContact").css({"bottom":"40%"});
+        $(".suggestedContact").fadeOut(250);
+    }
+
     if (pressedApp.app == "contacts") {
         $.post('http://qb-phone/setupContacts');
     } else if (pressedApp.app == "bank") {
