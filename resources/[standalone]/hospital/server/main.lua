@@ -141,9 +141,16 @@ AddEventHandler('hospital:server:MakeDeadCall', function(blipSettings, gender, s
 	for k, Player in pairs(players) do
 		if ((Player.PlayerData.job.name == "doctor" or  Player.PlayerData.job.name == "ambulance" or Player.PlayerData.job.name == "police") and Player.PlayerData.job.onduty) then
 			if street2 ~= nil then
-				TriggerClientEvent("112:client:SendAlert", k, "Code 180 - Een ".. genderstr .." gewond bij " ..street1 .. " "..street2, blipSettings)
+				TriggerClientEvent("112:client:SendAlert", k, "Een ".. genderstr .." gewond bij " ..street1 .. " "..street2, blipSettings)
 			else
-				TriggerClientEvent("112:client:SendAlert", k, "Code 180 - Een ".. genderstr .." gewond bij "..street1, blipSettings)
+				TriggerClientEvent("112:client:SendAlert", k, "Een ".. genderstr .." gewond bij "..street1, blipSettings)
+			end
+		elseif Player.Functions.GetItemByName("radioscanner") ~= nil and math.random(1, 100) <= 50 then
+			TriggerClientEvent("police:client:PoliceAlertMessage", k, msg, coords)
+			if street2 ~= nil then
+				TriggerClientEvent("112:client:SendAlert", k, "Een ".. genderstr .." gewond bij " ..street1 .. " "..street2, blipSettings)
+			else
+				TriggerClientEvent("112:client:SendAlert", k, "Een ".. genderstr .." gewond bij "..street1, blipSettings)
 			end
 		end
 	end

@@ -146,6 +146,8 @@ AddEventHandler('police:server:PoliceAlertMessage', function(msg, coords)
 	for k, Player in pairs(players) do
 		if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
             TriggerClientEvent("police:client:PoliceAlertMessage", k, msg, coords)
+        elseif Player.Functions.GetItemByName("radioscanner") ~= nil and math.random(1, 100) <= 50 then
+            TriggerClientEvent("police:client:PoliceAlertMessage", k, msg, coords)
 		end
     end
 end)
@@ -158,6 +160,8 @@ AddEventHandler('police:server:GunshotAlert', function(streetLabel, isAutomatic,
 	for k, Player in pairs(players) do
 		if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
             TriggerClientEvent("police:client:GunShotAlert", k, streetLabel, isAutomatic, fromVehicle, coords, vehicleInfo)
+        elseif Player.Functions.GetItemByName("radioscanner") ~= nil and math.random(1, 100) <= 50 then
+            TriggerClientEvent("police:client:GunShotAlert", k, streetLabel, isAutomatic, fromVehicle, coords, vehicleInfo)
 		end
     end
 end)
@@ -168,7 +172,6 @@ AddEventHandler('police:server:VehicleCall', function(coords, msg)
     local players = QBCore.Functions.GetPlayers()
 	for k, Player in pairs(players) do
         if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
-            print(msg)
             TriggerClientEvent("police:client:VehicleCall", k, coords, msg)
 		end
     end

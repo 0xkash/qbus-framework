@@ -172,6 +172,7 @@ QBShared.Items = {
 	["thermite"] 			 	 	 = {["name"] = "thermite", 			  			["label"] = "Thermiet", 				["weight"] = 1000, 		["type"] = "item", 		["image"] = "thermite.png", 		["unique"] = false, 	["useable"] = true, 	["shouldClose"] = true,    ["combinable"] = nil,   ["description"] = "Soms wil je alles wel zien verbranden.."},
 	["goldbar"] 			 	 	 = {["name"] = "goldbar", 			  			["label"] = "Goudstaaf", 				["weight"] = 1000, 		["type"] = "item", 		["image"] = "goldbar.png", 			["unique"] = false, 	["useable"] = false, 	["shouldClose"] = true,    ["combinable"] = nil,   ["description"] = "Ziet er duur uit o.o"},
     ["cryptostick"] 			 	 = {["name"] = "cryptostick", 			  		["label"] = "Crypto stick", 			["weight"] = 1000, 		["type"] = "item", 		["image"] = "cryptostick.png", 		["unique"] = true, 		["useable"] = true, 	["shouldClose"] = true,    ["combinable"] = nil,   ["description"] = "Waarom zou iemand ooit geld kopen wat niet bestaat.. Hoeveel zou er op staan..?"},
+    ["radioscanner"] 			 	 = {["name"] = "radioscanner", 			  		["label"] = "Radio Scanner", 			["weight"] = 1000, 		["type"] = "item", 		["image"] = "radioscanner.png", 	["unique"] = false, 	["useable"] = false, 	["shouldClose"] = true,    ["combinable"] = nil,   ["description"] = "Hiermee kan je sommige politie meldingen ontvangen. Het is niet altijd effectief.."},
 }
 
 -- // HASH WEAPON ITEMS, NEED SOMETIMES TO GET INFO FOR CLIENT
