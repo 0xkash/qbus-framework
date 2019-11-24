@@ -48,7 +48,7 @@ QBCore.Player.CheckPlayerData = function(source, PlayerData)
 	PlayerData.charinfo.backstory = PlayerData.charinfo.backstory ~= nil and PlayerData.charinfo.backstory or "placeholder backstory"
 	PlayerData.charinfo.nationality = PlayerData.charinfo.nationality ~= nil and PlayerData.charinfo.nationality or "Nederlands"
 	PlayerData.charinfo.phone = PlayerData.charinfo.phone ~= nil and PlayerData.charinfo.phone or "06"..math.random(11111111, 99999999)
-	PlayerData.charinfo.account = PlayerData.charinfo.account ~= nil and PlayerData.charinfo.account or "NL0"..math.random(1,9).."QBBA"..math.random(1111,9999)..math.random(1111,9999)..math.random(11,99)
+	PlayerData.charinfo.account = PlayerData.charinfo.account ~= nil and PlayerData.charinfo.account or "NL0"..math.random(1,9).."QBUS"..math.random(1111,9999)..math.random(1111,9999)..math.random(11,99)
 	
 	PlayerData.metadata = PlayerData.metadata ~= nil and PlayerData.metadata or {}
 	PlayerData.metadata["hunger"] = PlayerData.metadata["hunger"] ~= nil and PlayerData.metadata["hunger"] or 100

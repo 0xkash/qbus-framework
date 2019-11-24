@@ -51,9 +51,12 @@ function setupCharInfo(cData) {
     if (cData == 'empty') {
         $('.character-info-valid').html('<span id="no-char">Het geselecteerde karakter slot is nog niet in gebruik.<br><br>Dit karakter heeft dus nog geen informatie.</span>');
     } else {
+        var gender = "Man"
+        if (cData.charinfo.gender == 1) { gender = "Vrouw" }
         $('.character-info-valid').html(
         '<div class="character-info-box"><span id="info-label">Naam: </span><span class="char-info-js">'+cData.charinfo.firstname+' '+cData.charinfo.lastname+'</span></div>' +
         '<div class="character-info-box"><span id="info-label">Geboortedatum: </span><span class="char-info-js">'+cData.charinfo.birthdate+'</span></div>' +
+        '<div class="character-info-box"><span id="info-label">Geslacht: </span><span class="char-info-js">'+gender+'</span></div>' +
         '<div class="character-info-box"><span id="info-label">Nationaliteit: </span><span class="char-info-js">'+cData.charinfo.nationality+'</span></div>' +
         '<div class="character-info-box"><span id="info-label">Baan: </span><span class="char-info-js">'+cData.job.label+'</span></div>' +
         '<div class="character-info-box"><span id="info-label">Cash: </span><span class="char-info-js">&euro; '+cData.money.cash+'</span></div>' +
