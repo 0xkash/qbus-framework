@@ -227,6 +227,26 @@ QBCore.Functions.CreateCallback('qb-phone:server:getContactName', function(sourc
     end)
 end)
 
+QBCore.Functions.CreateCallback('qb-phone:server:getContactStatus', function(source, cb, number)
+    local src = source
+    local plyCid = QBCore.Functions.GetPlayer(src)
+
+    QBCore.Functions.ExecuteSql('SELECT * FROM `players` WHERE `charinfo` LIKE "%'..number..'%"', function(result)
+        local target = result[1]
+
+        if target ~= nil then
+            local trgt = QBCore.Functions.GetPlayerByCitizenId(target.citizenid)
+            if trgt ~= nil then
+                cb(true)
+            else
+                cb(false)
+            end
+        else
+            cb(false)
+        end
+    end)
+end)
+
 RegisterServerEvent('qb-phone:server:createChat')
 AddEventHandler('qb-phone:server:createChat', function(messages)
     local src = source
@@ -234,12 +254,19 @@ AddEventHandler('qb-phone:server:createChat', function(messages)
 
     QBCore.Functions.ExecuteSql("INSERT INTO `phone_messages` (`citizenid`, `number`, `messages`) VALUES ('"..ply.PlayerData.citizenid.."', '"..messages.number.."', '"..json.encode(messages.messages).."')")
 
+    if messages.number ~= ply.PlayerData.charinfo.phone then
+        QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `charinfo` LIKE '%"..messages.number.."%'", function(target)
+            local target = QBCore.Functions.GetPlayerByCitizenId(target[1].citizenid)
 
-    QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `charinfo` LIKE '%"..messages.number.."%'", function(target)
-        local target = QBCore.Functions.GetPlayerByCitizenId(target[1].citizenid)
+            TriggerClientEvent('qb-phone:client:createChatOther', target.PlayerData.source, messages, ply.PlayerData.charinfo.phone)
+        end)
+    end
+end)
 
-        TriggerClientEvent('qb-phone:client:createChatOther', target.PlayerData.source, messages, ply.PlayerData.charinfo.phone)
-    end)
+
+RegisterServerEvent('qb-phone:server:giveNumber')
+AddEventHandler('qb-phone:server:giveNumber', function(targetId, playerData)
+    TriggerClientEvent('qb-phone:server:newContactNotify', targetId, playerData.charinfo.phone)
 end)
 
 RegisterServerEvent('qb-phone:server:createChatOther')
@@ -251,9 +278,9 @@ AddEventHandler('qb-phone:server:createChatOther', function(chatData, senderPhon
     
     QBCore.Functions.ExecuteSql("SELECT * FROM `player_contacts` WHERE `citizenid` = '"..ply.PlayerData.citizenid.."' AND `number` = '"..senderPhone.."'", function(result)
         if result[1] ~= nil then
-            TriggerClientEvent('QBCore:Notify', src, 'Je hebt een bericht ontvangen van '..result[1].name..'!')
+            TriggerClientEvent('qb-phone:client:msgNotify', src, 'Je hebt een bericht ontvangen van '..result[1].name, result[1].name)
         else
-            TriggerClientEvent('QBCore:Notify', src, 'Je hebt een bericht ontvangen van '..senderPhone..'!')
+            TriggerClientEvent('qb-phone:client:msgNotify', src, 'Je hebt een bericht ontvangen van '..senderPhone, senderPhone)
         end
     end)
 end)
@@ -275,13 +302,14 @@ RegisterServerEvent('qb-phone:server:recieveMessage')
 AddEventHandler('qb-phone:server:recieveMessage', function(chatData, senderPhone)
     local src = source
     local ply = QBCore.Functions.GetPlayer(src)
+
     QBCore.Functions.ExecuteSql("UPDATE `phone_messages` SET `messages` = '"..json.encode(chatData.messages).."' WHERE `citizenid` = '"..ply.PlayerData.citizenid.."' AND `number` = '"..senderPhone.."'")
 
     QBCore.Functions.ExecuteSql("SELECT * FROM `player_contacts` WHERE `citizenid` = '"..ply.PlayerData.citizenid.."' AND `number` = '"..senderPhone.."'", function(result)
         if result[1] ~= nil then
-            TriggerClientEvent('QBCore:Notify', src, 'Je hebt een bericht ontvangen van '..result[1].name..'!')
+            TriggerClientEvent('qb-phone:client:msgNotify', src, 'Je hebt een bericht ontvangen van '..result[1].name, result[1].name)
         else
-            TriggerClientEvent('QBCore:Notify', src, 'Je hebt een bericht ontvangen van '..senderPhone..'!')
+            TriggerClientEvent('qb-phone:client:msgNotify', src, 'Je hebt een bericht ontvangen van '..senderPhone, senderPhone)
         end
     end)
 end)

@@ -9,6 +9,7 @@ files {
     'stream/[police]/ptouran/PTOURAN.xml',
     'stream/[police]/pbklasse/PBKLASSE.xml',
     'stream/[police]/paudi/PAUDI.xml',
+    'stream/[dienst]/sneeuwschuiver/sneeuwschuiver.xml',
 }
  
 data_file 'HANDLING_FILE' 'handling.meta'

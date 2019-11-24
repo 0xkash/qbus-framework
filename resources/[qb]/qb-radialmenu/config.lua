@@ -38,7 +38,7 @@ Config.MenuItems = {
                 title = 'Geef Nummer',
                 icon = '#nummer',
                 type = 'client',
-                event = 'qb-radialmenu:client:giveidkaart',
+                event = 'qb-phone:client:giveNumber',
                 shouldClose = true,
             },
             {
