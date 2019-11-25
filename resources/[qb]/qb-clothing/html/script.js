@@ -178,11 +178,25 @@ QBClothing.Open = function(data) {
     $(".clothing-menu-container").css({"display":"block"}).animate({right: 0,}, 200);
     QBClothing.SetMaxValues(data.maxValues)
     $(".clothing-menu-header").html("");
+    $(".clothing-menu-roomOutfits-container").html("");
     $.each(data.menus, function(i, menu){
         if (menu.selected) {
             $(".clothing-menu-header").append('<div class="clothing-menu-header-btn '+menu.menu+'Tab selected" data-category="'+menu.menu+'"><p>'+menu.label+'</p></div>')
+            $(".clothing-menu-"+menu.menu+"-container").css({"display":"block"});
+            selectedTab = "." + menu.menu + "Tab";
+            lastCategory = menu.menu;
+
         } else {
             $(".clothing-menu-header").append('<div class="clothing-menu-header-btn '+menu.menu+'Tab" data-category="'+menu.menu+'"><p>'+menu.label+'</p></div>')
+        }
+
+        if (menu.menu == "roomOutfits") {
+            $.each(menu.outfits, function(index, outfit){
+                var elem = '<div class="clothing-menu-option" data-outfit="'+(index + 1)+'"> <div class="clothing-menu-option-header"><p>'+outfit.outfitLabel+'</p></div> <div class="clothing-menu-outfit-option-button"><p>Selecteer Outfit</p></div> </div>'
+                $(".clothing-menu-roomOutfits-container").append(elem)
+                
+                $("[data-outfit='"+(index + 1)+"']").data('outfitData', outfit.outfitData)
+            });
         }
     });
 
@@ -191,11 +205,26 @@ QBClothing.Open = function(data) {
     $(".clothing-menu-header-btn").css("width", menuWidth + "%")
 }
 
+$(document).on('click', '.clothing-menu-outfit-option-button', function(e){
+    e.preventDefault();
+
+    var outfitData = $(this).parent().data('outfitData');
+
+    $.post('http://qb-clothing/selectOutfit', JSON.stringify({
+        outfitData: outfitData
+    }))
+});
+
 QBClothing.Close = function() {
     $.post('http://qb-clothing/close');
     $(".clothing-menu-container").css({"display":"block"}).animate({right: "-25vw",}, 200, function(){
         $(".clothing-menu-container").css({"display":"none"});
     });
+
+    $(".clothing-menu-roomOutfits-container").css("display", "none");
+    $(".clothing-menu-character-container").css("display", "none");
+    $(".clothing-menu-clothing-container").css("display", "none");
+    $(".clothing-menu-accessories-container").css("display", "none");
 }
 
 QBClothing.SetMaxValues = function(maxValues) {

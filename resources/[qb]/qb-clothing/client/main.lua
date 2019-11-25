@@ -1,3 +1,14 @@
+Keys = {
+    ['ESC'] = 322, ['F1'] = 288, ['F2'] = 289, ['F3'] = 170, ['F5'] = 166, ['F6'] = 167, ['F7'] = 168, ['F8'] = 169, ['F9'] = 56, ['F10'] = 57,
+    ['~'] = 243, ['1'] = 157, ['2'] = 158, ['3'] = 160, ['4'] = 164, ['5'] = 165, ['6'] = 159, ['7'] = 161, ['8'] = 162, ['9'] = 163, ['-'] = 84, ['='] = 83, ['BACKSPACE'] = 177,
+    ['TAB'] = 37, ['Q'] = 44, ['W'] = 32, ['E'] = 38, ['R'] = 45, ['T'] = 245, ['Y'] = 246, ['U'] = 303, ['P'] = 199, ['['] = 39, [']'] = 40, ['ENTER'] = 18,
+    ['CAPS'] = 137, ['A'] = 34, ['S'] = 8, ['D'] = 9, ['F'] = 23, ['G'] = 47, ['H'] = 74, ['K'] = 311, ['L'] = 182,
+    ['LEFTSHIFT'] = 21, ['Z'] = 20, ['X'] = 73, ['C'] = 26, ['V'] = 0, ['B'] = 29, ['N'] = 249, ['M'] = 244, [','] = 82, ['.'] = 81,
+    ['LEFTCTRL'] = 36, ['LEFTALT'] = 19, ['SPACE'] = 22, ['RIGHTCTRL'] = 70,
+    ['HOME'] = 213, ['PAGEUP'] = 10, ['PAGEDOWN'] = 11, ['DELETE'] = 178,
+    ['LEFT'] = 174, ['RIGHT'] = 175, ['TOP'] = 27, ['DOWN'] = 173,
+}
+
 QBCore = nil
 
 Citizen.CreateThread(function()
@@ -18,10 +29,14 @@ local cam = -1
 local heading = 332.219879
 local zoom = "character"
 
+local isLoggedIn = false
+
+local PlayerData = {}
+
 local skinData = {
     ["face"] = {
-        item = 0,
-        texture = 0,
+        item = -1,
+        texture = -1,
     },
     ["pants"] = {
         item = 0,
@@ -96,6 +111,136 @@ local skinData = {
         texture = 0,
     },
 }
+RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
+AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+    TriggerServerEvent("qb-clothes:loadPlayerSkin")
+    PlayerData = QBCore.Functions.GetPlayerData()
+    isLoggedIn = true
+end)
+
+RegisterNetEvent('QBCore:Client:OnPlayerUnload')
+AddEventHandler('QBCore:Client:OnPlayerUnload', function()
+    isLoggedIn = false
+end)
+
+RegisterNetEvent('QBCore:Client:OnJobUpdate')
+AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
+    PlayerData.job = JobInfo
+end)
+
+function DrawText3Ds(x, y, z, text)
+	SetTextScale(0.35, 0.35)
+    SetTextFont(4)
+    SetTextProportional(1)
+    SetTextColour(255, 255, 255, 215)
+    SetTextEntry("STRING")
+    SetTextCentre(true)
+    AddTextComponentString(text)
+    SetDrawOrigin(x,y,z, 0)
+    DrawText(0.0, 0.0)
+    local factor = (string.len(text)) / 370
+    DrawRect(0.0, 0.0+0.0125, 0.017+ factor, 0.03, 0, 0, 0, 75)
+    ClearDrawOrigin()
+end
+
+Citizen.CreateThread(function()
+    for k, v in pairs (Config.Stores) do
+        local blip = AddBlipForCoord(v.x, v.y, v.z)
+        SetBlipSprite(blip, 366)
+        SetBlipColour(blip, 47)
+        SetBlipScale  (blip, 0.7)
+        SetBlipAsShortRange(blip, true)
+        BeginTextCommandSetBlipName("STRING")
+        AddTextComponentString("Kledingwinkel")
+        EndTextCommandSetBlipName(blip)
+    end
+end)
+
+Citizen.CreateThread(function()
+    while true do
+
+        if isLoggedIn then
+
+            local ped = GetPlayerPed(-1)
+            local pos = GetEntityCoords(ped)
+
+            local inRange = false
+
+            for k, v in pairs(Config.Stores) do
+                local dist = GetDistanceBetweenCoords(pos, Config.Stores[k].x, Config.Stores[k].y, Config.Stores[k].z, true)
+
+                if dist < 30 then
+                    DrawMarker(2, Config.Stores[k].x, Config.Stores[k].y, Config.Stores[k].z + 0.98, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.4, 0.4, 0.2, 255, 255, 255, 255, 0, 0, 0, 1, 0, 0, 0)
+                    if dist < 5 then
+                        DrawText3Ds(Config.Stores[k].x, Config.Stores[k].y, Config.Stores[k].z + 1.25, '~g~E~w~ - Om kleding te shoppen')
+                        if IsControlJustPressed(0, Keys["E"]) then
+                            openMenu({
+                                {menu = "character", label = "Karakter", selected = true},
+                                {menu = "clothing", label = "Uiterlijk", selected = false},
+                                {menu = "accessoires", label = "Accessoires", selected = false}
+                            })
+                        end
+                    end
+                    inRange = true
+                end
+            end
+
+            if not inRange then
+                Citizen.Wait(2000)
+            end
+
+        end
+
+        Citizen.Wait(3)
+    end
+end)
+
+Citizen.CreateThread(function()
+    while true do
+
+        if isLoggedIn then
+
+            local ped = GetPlayerPed(-1)
+            local pos = GetEntityCoords(ped)
+
+            local inRange = false
+
+            for k, v in pairs(Config.ClothingRooms) do
+                local dist = GetDistanceBetweenCoords(pos, Config.ClothingRooms[k].x, Config.ClothingRooms[k].y, Config.ClothingRooms[k].z, true)
+
+                if dist < 15 then
+                    DrawMarker(2, Config.ClothingRooms[k].x, Config.ClothingRooms[k].y, Config.ClothingRooms[k].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.4, 0.4, 0.2, 255, 255, 255, 255, 0, 0, 0, 1, 0, 0, 0)
+                    if dist < 2 then
+                        if PlayerData.job.name == Config.ClothingRooms[k].requiredJob then
+                            DrawText3Ds(Config.ClothingRooms[k].x, Config.ClothingRooms[k].y, Config.ClothingRooms[k].z + 0.3, '~g~E~w~ - Outfits bekijken')
+                            if IsControlJustPressed(0, Keys["E"]) then
+                                openMenu({
+                                    {menu = "roomOutfits", label = "Presets", selected = true, outfits = Config.Outfits[PlayerData.job.name]},
+                                    {menu = "character", label = "Karakter", selected = false},
+                                    {menu = "accessoires", label = "Accessoires", selected = false}
+                                })
+                            end
+                        end
+                    end
+                    inRange = true
+                end
+            end
+
+            if not inRange then
+                Citizen.Wait(2000)
+            end
+
+        end
+
+        Citizen.Wait(3)
+    end
+end)
+
+RegisterNUICallback('selectOutfit', function(data)
+    local outfitData = data.outfitData
+
+    TriggerEvent('qb-clothing:client:loadOutfit', outfitData)
+end)
 
 RegisterNUICallback('rotateRight', function()
     local ped = GetPlayerPed(-1)
@@ -109,12 +254,6 @@ RegisterNUICallback('rotateLeft', function()
     local heading = GetEntityHeading(ped)
 
     SetEntityHeading(ped, heading - 30)
-end)
-
-RegisterNetEvent("QBCore:Client:OnPlayerLoaded")
-AddEventHandler("QBCore:Client:OnPlayerLoaded", function()
-    TriggerServerEvent("qb-clothes:loadPlayerSkin")
-    print('laad')
 end)
 
 firstChar = false
@@ -226,6 +365,8 @@ function openMenu(allowedMenus)
     SetCursorLocation(0.9, 0.25)
     creatingCharacter = true
 
+    FreezeEntityPosition(GetPlayerPed(-1), true)
+
     enableCam()
 end
 
@@ -269,6 +410,8 @@ end)
 function disableCam()
     RenderScriptCams(false, true, 250, 1, 0)
     DestroyCam(cam, false)
+
+    FreezeEntityPosition(GetPlayerPed(-1), false)
 end
 
 function closeMenu()
@@ -282,6 +425,8 @@ RegisterNUICallback('close', function()
     SetNuiFocus(false, false)
     creatingCharacter = false
     disableCam()
+    
+    FreezeEntityPosition(GetPlayerPed(-1), false)
 end)
 
 RegisterNUICallback('getCatergoryItems', function(data, cb)
@@ -543,13 +688,15 @@ RegisterNetEvent("qb-clothes:loadSkin")
 AddEventHandler("qb-clothes:loadSkin", function(new, model, data)
 	local function setDefault()
 		Citizen.CreateThread(function()
-			QBCore.Functions.GetPlayerData(function(PlayerData)
-				openMenu({
-                    "character",
-                    "clothing",
-                    "accessoires"
-                })
-				DoScreenFadeIn(50)
+            QBCore.Functions.GetPlayerData(function(PlayerData)
+                SetTimeout(1000, function()
+                    openMenu({
+                        "character",
+                        "clothing",
+                        "accessoires"
+                    })
+                    DoScreenFadeIn(50)
+                end)
 			end)
 		end)
     end
@@ -560,11 +707,9 @@ AddEventHandler("qb-clothes:loadSkin", function(new, model, data)
 
 	SetEntityInvincible(GetPlayerPed(-1),true)
     if IsModelInCdimage(model) and IsModelValid(model) then
-        print('model valid')
 		RequestModel(model)
 		while not HasModelLoaded(model) do
             Citizen.Wait(0)
-            print('ik laad')
 		end
         SetPlayerModel(PlayerId(), model)
 
@@ -581,9 +726,14 @@ end)
 
 RegisterNetEvent('qb-clothing:client:loadPlayerClothing')
 AddEventHandler('qb-clothing:client:loadPlayerClothing', function(data, ped)
+    if ped == nil then ped = GetPlayerPed(-1) end
 
     for i = 0, 11 do
         SetPedComponentVariation(ped, i, 0, 0, 0)
+    end
+
+    for i = 0, 7 do
+        ClearPedProp(ped, i)
     end
 
     -- Face
@@ -657,4 +807,44 @@ AddEventHandler('qb-clothing:client:loadPlayerClothing', function(data, ped)
     SetPedPropIndex(ped, 7, data["bracelet"].item, data["bracelet"].texture, true)
 
     print('Clothing loaded')
+end)
+
+RegisterNetEvent('qb-clothing:client:loadOutfit')
+AddEventHandler('qb-clothing:client:loadOutfit', function(data)
+    local ped = GetPlayerPed(-1)
+
+    -- Pants
+    SetPedComponentVariation(ped, 4, data["pants"].item, 0, 0)
+    SetPedComponentVariation(ped, 4, data["pants"].item, data["pants"].texture, 0)
+
+    -- Arms
+    SetPedComponentVariation(ped, 3, data["arms"].item, 0, 2)
+    SetPedComponentVariation(ped, 3, data["arms"].item, data["arms"].texture, 0)
+
+    -- T-Shirt
+    SetPedComponentVariation(ped, 8, data["t-shirt"].item, 0, 2)
+    SetPedComponentVariation(ped, 8, data["t-shirt"].item, data["t-shirt"].texture, 0)
+
+    -- Torso 2
+    SetPedComponentVariation(ped, 11, data["torso2"].item, 0, 2)
+    SetPedComponentVariation(ped, 11, data["torso2"].item, data["torso2"].texture, 0)
+
+    -- Shoes
+    SetPedComponentVariation(ped, 6, data["shoes"].item, 0, 2)
+    SetPedComponentVariation(ped, 6, data["shoes"].item, data["shoes"].texture, 0)
+
+    -- Mask
+    SetPedComponentVariation(ped, 1, data["mask"].item, 0, 2)
+    SetPedComponentVariation(ped, 1, data["mask"].item, data["mask"].texture, 0)
+
+    -- Hat
+    SetPedPropIndex(ped, 0, data["hat"].item, data["hat"].texture, true)
+
+    -- Glass
+    SetPedPropIndex(ped, 1, data["glass"].item, data["glass"].texture, true)
+
+    -- Ear
+    SetPedPropIndex(ped, 2, data["ear"].item, data["ear"].texture, true)
+
+    print('Outfit loaded')
 end)

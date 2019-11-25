@@ -88,8 +88,47 @@
     font-size: 1.4vh;
 }
 
+.clothing-menu-roomOutfits-container {
+    display: none;
+    position: absolute;
+    margin: 0 auto;
+    left: 0.3vh;
+    right: 0;
+    top: 9vh;
+    height: 87vh;
+    width: 92%;
+    background-color: #282e36;
+    overflow-y: scroll !important;
+}
+
+.clothing-menu-outfit-option-button {
+    position: relative;
+    text-align: center;
+    line-height: 4.8vh;
+    width: 60%;
+    height: 40%;
+    margin: 0 auto;
+    top: 2.3vh;
+    background-color: #b12424;
+    border-radius: 0.75vh;
+    transition: all 0.1s linear;
+}
+
+.clothing-menu-outfit-option-button:hover {
+    background-color: #d62f2f;
+}
+
+.clothing-menu-outfit-option-button > p {
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-family: sans-serif;
+    letter-spacing: 0.1vh;
+    font-size: 1vh;
+}
+
 .clothing-menu-character-container {
-    display: block;
+    display: none;
     position: absolute;
     margin: 0 auto;
     left: 0.3vh;
