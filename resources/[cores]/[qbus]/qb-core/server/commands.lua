@@ -47,7 +47,7 @@ end, "admin")
 
 QBCore.Commands.Add("addpermission", "Geef permissie aan iemand (god/admin)", {{name="id", help="ID van de speler"}, {name="permission", help="Permission level"}}, true, function(source, args)
 	local Player = QBCore.Functions.GetPlayer(tonumber(args[1]))
-	local permission = tostring(permission):lower()
+	local permission = tostring(args[2]):lower()
 	if Player ~= nil then
 		QBCore.Functions.AddPermission(Player.PlayerData.source, permission)
 	else

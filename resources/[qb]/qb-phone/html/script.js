@@ -671,6 +671,10 @@ $(document).on('click', '.home-container', function(e){
     
         qbPhone.succesSound();
     }
+
+    $('.chat-window').css({"display":"block"}).animate({top: "103.5%",}, 250, function(){
+        $(".chat-window").css({"display":"none"});
+    });
 });
 
 qbPhone.Open = function(cid) {
@@ -716,6 +720,10 @@ qbPhone.Close = function() {
         }
     });
     $.post('http://qb-phone/closePhone');
+
+    $('.chat-window').css({"display":"block"}).animate({top: "103.5%",}, 250, function(){
+        $(".chat-window").css({"display":"none"});
+    });
 }
 
 qbPhone.setupPhoneApps = function(apps) {

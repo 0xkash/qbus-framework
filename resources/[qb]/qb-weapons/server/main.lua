@@ -26,14 +26,16 @@ AddEventHandler('weapons:server:AddWeaponAmmo', function(type, amount)
     local Player = QBCore.Functions.GetPlayer(src)
     local type = tostring(type):upper()
     local amount = tonumber(amount)
-    if next(WeaponAmmo[Player.PlayerData.citizenid]) ~= nil then
-        if WeaponAmmo[Player.PlayerData.citizenid][type] ~= nil then
-            WeaponAmmo[Player.PlayerData.citizenid][type] = WeaponAmmo[Player.PlayerData.citizenid][type] + amount
+    if WeaponAmmo[Player.PlayerData.citizenid] ~= nil then
+        if next(WeaponAmmo[Player.PlayerData.citizenid]) ~= nil then
+            if WeaponAmmo[Player.PlayerData.citizenid][type] ~= nil then
+                WeaponAmmo[Player.PlayerData.citizenid][type] = WeaponAmmo[Player.PlayerData.citizenid][type] + amount
+            else
+                WeaponAmmo[Player.PlayerData.citizenid][type] = amount
+            end
         else
             WeaponAmmo[Player.PlayerData.citizenid][type] = amount
         end
-    else
-        WeaponAmmo[Player.PlayerData.citizenid][type] = amount
     end
 end)
 

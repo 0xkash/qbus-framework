@@ -276,7 +276,7 @@ AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     end)
 end)
 
---[[Citizen.CreateThread(function()
+Citizen.CreateThread(function()
     Wait(500)
     setPhoneMeta()
     QBCore.Functions.TriggerCallback('qb-phone:server:getUserContacts', function(result)
@@ -285,7 +285,7 @@ end)
     QBCore.Functions.TriggerCallback('qb-phone:server:getPlayerMessages', function(result)
         messages = result
     end)
-end)]]
+end)
 
 function setPhoneMeta()
     phoneMeta = QBCore.Functions.GetPlayerData().metadata["phone"]

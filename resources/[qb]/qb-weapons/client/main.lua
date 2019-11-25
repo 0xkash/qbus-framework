@@ -1,6 +1,6 @@
 QBCore = nil
 
-local isLoggedIn = false
+local isLoggedIn = true
 
 Citizen.CreateThread(function() 
     while true do
