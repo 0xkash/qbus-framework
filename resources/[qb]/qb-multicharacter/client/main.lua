@@ -116,56 +116,7 @@ RegisterNUICallback('cDataPed', function(data)
                     
                     data = json.decode(data)
             
-                    -- Face
-                    SetPedHeadBlendData(charPed, data["face"].texture, data["face"].texture, data["face"].texture, data["face"].item, data["face"].item, data["face"].item, 1.0, 1.0, 1.0, true)
-
-                    -- Pants
-                    SetPedComponentVariation(charPed, 4, data["pants"].item, 0, 0)
-                    SetPedComponentVariation(charPed, 4, data["pants"].item, data["pants"].texture, 0)
-
-                    -- Hair
-                    SetPedComponentVariation(charPed, 2, data["hair"].item, 0, 0)
-                    SetPedHairColor(charPed, data["hair"].texture, data["hair"].texture)
-
-                    -- Eyebrows
-                    SetPedHeadOverlay(charPed, 2, data["eyebrows"].item, 1.0)
-                    SetPedHeadOverlayColor(charPed, 2, 1, data["eyebrows"].texture, 0)
-
-                    -- Beard
-                    SetPedHeadOverlay(charPed, 1, data["beard"].item, 1.0)
-                    SetPedHeadOverlayColor(charPed, 1, 1, data["beard"].texture, 0)
-
-                    -- Blush
-                    SetPedHeadOverlay(charPed, 5, data["blush"].item, 1.0)
-                    SetPedHeadOverlayColor(charPed, 5, 1, data["blush"].texture, 0)
-
-                    -- Lipstick
-                    SetPedHeadOverlay(charPed, 8, data["lipstick"].item, 1.0)
-                    SetPedHeadOverlayColor(charPed, 8, 1, data["lipstick"].item, 0)
-
-                    -- Makeup
-                    SetPedHeadOverlay(charPed, 4, data["makeup"].item, 1.0)
-                    SetPedHeadOverlayColor(charPed, 4, 1, data["blush"].texture, 0)
-
-                    -- Ageing
-                    SetPedHeadOverlay(charPed, 3, data["ageing"].item, 1.0)
-                    SetPedHeadOverlayColor(charPed, 3, 1, data["ageing"].texture, 0)
-
-                    -- Arms
-                    SetPedComponentVariation(charPed, 3, data["arms"].item, 0, 2)
-                    SetPedComponentVariation(charPed, 3, data["arms"].item, data["arms"].texture, 0)
-
-                    -- T-Shirt
-                    SetPedComponentVariation(charPed, 8, data["t-shirt"].item, 0, 2)
-                    SetPedComponentVariation(charPed, 8, data["t-shirt"].item, data["t-shirt"].texture, 0)
-
-                    -- Torso 2
-                    SetPedComponentVariation(charPed, 11, data["torso2"].item, 0, 2)
-                    SetPedComponentVariation(charPed, 11, data["torso2"].item, data["torso2"].texture, 0)
-
-                    -- Shoes
-                    SetPedComponentVariation(charPed, 6, data["shoes"].item, 0, 2)
-                    SetPedComponentVariation(charPed, 6, data["shoes"].item, data["shoes"].texture, 0)
+                    TriggerEvent('qb-clothing:client:loadPlayerClothing', data, charPed)
                 end)
             else
                 charPed = CreatePed(4, GetHashKey("mp_m_freemode_01"), 306.25, -991.09, -99.99, 89.5, false, true)

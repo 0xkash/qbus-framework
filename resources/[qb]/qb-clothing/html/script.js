@@ -74,7 +74,7 @@ $(document).on('click', '.clothing-menu-option-item-left', function(e){
     var inputVal = $(inputElem).val();
     var newValue = parseFloat(inputVal) - 1;
 
-    if (newValue != -1) {
+    if (newValue != -2) {
         $(inputElem).val(newValue);
         $.post('http://qb-clothing/updateSkin', JSON.stringify({
             clothingType: clothingCategory,
@@ -136,13 +136,16 @@ $(document).on('click', '.clothing-menu-header-camera-btn', function(e){
     }
 });
 
-// $(document).on('keydown', function() {
-//     switch(event.keyCode) {
-//         case 27: // ESC
-//             QBClothing.Close();
-//             break;
-//     }
-// });
+$(document).on('keydown', function() {
+    switch(event.keyCode) {
+        case 68: // D
+            $.post('http://qb-clothing/rotateRight');
+            break;
+        case 65: // A
+            $.post('http://qb-clothing/rotateLeft');
+            break;
+    }
+});
 
 $(document).ready(function(){
     window.addEventListener('message', function(event) {
@@ -182,6 +185,10 @@ QBClothing.Open = function(data) {
             $(".clothing-menu-header").append('<div class="clothing-menu-header-btn '+menu.menu+'Tab" data-category="'+menu.menu+'"><p>'+menu.label+'</p></div>')
         }
     });
+
+    var menuWidth = (100 / data.menus.length)
+
+    $(".clothing-menu-header-btn").css("width", menuWidth + "%")
 }
 
 QBClothing.Close = function() {
@@ -205,6 +212,16 @@ QBClothing.SetMaxValues = function(maxValues) {
             $(headerMax).html("<p>Texture: " + maxValues[containers.data('type')].texture + "</p>")
         } else if (cat.type == "hair") {
             var containers = $(".clothing-menu-clothing-container").find('[data-type="'+i+'"]');
+            var itemMax = $(containers).find('[data-headertype="item-header"]');
+            var headerMax = $(containers).find('[data-headertype="texture-header"]');
+    
+            $(itemMax).data('maxItem', maxValues[containers.data('type')].item)
+            $(headerMax).data('maxTexture', maxValues[containers.data('type')].texture)
+    
+            $(itemMax).html("<p>Item: " + maxValues[containers.data('type')].item + "</p>")
+            $(headerMax).html("<p>Texture: " + maxValues[containers.data('type')].texture + "</p>")
+        } else if (cat.type == "accessoires") {
+            var containers = $(".clothing-menu-accessoires-container").find('[data-type="'+i+'"]');
             var itemMax = $(containers).find('[data-headertype="item-header"]');
             var headerMax = $(containers).find('[data-headertype="texture-header"]');
     
