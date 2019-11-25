@@ -847,6 +847,138 @@
 			<lightSettings value="1"/>
 			<sirenSettings value="666"/>
 		</Item>
+    <Item>
+			<modelName>pamarok</modelName>
+			<colors>
+				<Item>
+					<!-- nobel white -->
+					<indices content="char_array">
+            134
+            134
+            134
+            156
+            7
+            111
+					</indices>
+					<liveries>
+					</liveries>
+				</Item>
+			</colors>
+			<windowsWithExposedEdges />
+			<plateProbabilities>
+				<Probabilities>
+					<Item>
+						<Name>Standard White</Name>
+						<Value value="80"/>
+					</Item>
+					<Item>
+						<Name>White Plate 2</Name>
+						<Value value="20"/>
+					</Item>
+				</Probabilities>
+			</plateProbabilities>
+			<lightSettings value="1"/>
+			<sirenSettings value="666"/>
+		</Item>
+    <Item>
+			<modelName>pfosprinter</modelName>
+			<colors>
+				<Item>
+					<!-- nobel white -->
+					<indices content="char_array">
+            134
+            134
+            134
+            156
+            7
+            111
+					</indices>
+					<liveries>
+					</liveries>
+				</Item>
+			</colors>
+			<windowsWithExposedEdges />
+			<plateProbabilities>
+				<Probabilities>
+					<Item>
+						<Name>Standard White</Name>
+						<Value value="80"/>
+					</Item>
+					<Item>
+						<Name>White Plate 2</Name>
+						<Value value="20"/>
+					</Item>
+				</Probabilities>
+			</plateProbabilities>
+			<lightSettings value="1"/>
+			<sirenSettings value="666"/>
+		</Item>
+    <Item>
+			<modelName>ptouran11</modelName>
+			<colors>
+				<Item>
+					<!-- nobel white -->
+					<indices content="char_array">
+            134
+            134
+            134
+            156
+            7
+            111
+					</indices>
+					<liveries>
+					</liveries>
+				</Item>
+			</colors>
+			<windowsWithExposedEdges />
+			<plateProbabilities>
+				<Probabilities>
+					<Item>
+						<Name>Standard White</Name>
+						<Value value="80"/>
+					</Item>
+					<Item>
+						<Name>White Plate 2</Name>
+						<Value value="20"/>
+					</Item>
+				</Probabilities>
+			</plateProbabilities>
+			<lightSettings value="1"/>
+			<sirenSettings value="666"/>
+		</Item>
+    <Item>
+			<modelName>pt5</modelName>
+			<colors>
+				<Item>
+					<!-- nobel white -->
+					<indices content="char_array">
+            134
+            134
+            134
+            156
+            7
+            111
+					</indices>
+					<liveries>
+					</liveries>
+				</Item>
+			</colors>
+			<windowsWithExposedEdges />
+			<plateProbabilities>
+				<Probabilities>
+					<Item>
+						<Name>Standard White</Name>
+						<Value value="80"/>
+					</Item>
+					<Item>
+						<Name>White Plate 2</Name>
+						<Value value="20"/>
+					</Item>
+				</Probabilities>
+			</plateProbabilities>
+			<lightSettings value="1"/>
+			<sirenSettings value="666"/>
+		</Item>
     <Item> <!-- Nissan GTR Liberty Walk (start) -->
       <modelName>lwgtr</modelName>
       <colors>
