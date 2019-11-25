@@ -291,6 +291,7 @@ local clothingCategorys = {
 
 RegisterNetEvent('qb-clothing:client:openMenu')
 AddEventHandler('qb-clothing:client:openMenu', function()
+    customCamLocation = nil
     openMenu({
         {menu = "character", label = "Karakter", selected = true},
         {menu = "clothing", label = "Uiterlijk", selected = false},
