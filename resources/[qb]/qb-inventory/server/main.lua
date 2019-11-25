@@ -53,6 +53,10 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 			secondInv.maxweight = 1000000
 			secondInv.inventory = {}
 			secondInv.slots = 100
+			if Stashes[id] ~= nil and Stashes[id].isOpen then
+				TriggerClientEvent('QBCore:Notify', src, "Er zit al iemand in de kofferbak..", "error")
+				return
+			end
 			if next(GetStashItems(id)) ~= nil then
 				secondInv.inventory = GetStashItems(id)
 				Stashes[id] = {}
@@ -61,6 +65,7 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 				Stashes[id] = {}
 				Stashes[id].items = {}
 			end
+			Stashes[id].isOpen = true
 		elseif name == "trunk" then
 			secondInv.name = "trunk-"..id
 			secondInv.label = "Trunk-"..id
@@ -69,30 +74,40 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 			secondInv.slots = other.slots ~= nil and other.slots or 50
 			if IsVehicleOwned(id) and next(GetOwnedVehicleItems(id)) ~= nil then
 				secondInv.inventory = GetOwnedVehicleItems(id)
+				if Trunks[id] ~= nil and Trunks[id].isOpen then
+					TriggerClientEvent('QBCore:Notify', src, "Er zit al iemand in de kofferbak..", "error")
+					return
+				end
 				Trunks[id] = {}
 				Trunks[id].items = GetOwnedVehicleItems(id)
-			elseif Trunks[id] ~= nil then
+			elseif Trunks[id] ~= nil and not Trunks[id].isOpen then
 				secondInv.inventory = Trunks[id].items
 			else
 				Trunks[id] = {}
 				Trunks[id].items = {}
 			end
+			Trunks[id].isOpen = true
 		elseif name == "glovebox" then
 			secondInv.name = "glovebox-"..id
 			secondInv.label = "Glovebox-"..id
 			secondInv.maxweight = 10000
 			secondInv.inventory = {}
 			secondInv.slots = 5
-			if Gloveboxes[id] ~= nil then
+			if Gloveboxes[id] ~= nil and not Gloveboxes[id].isOpen then
 				secondInv.inventory = Gloveboxes[id].items
 			elseif IsVehicleOwned(id) and next(GetOwnedVehicleGloveboxItems(id)) ~= nil then
 				secondInv.inventory = GetOwnedVehicleGloveboxItems(id)
+				if Gloveboxes[id] ~= nil and Gloveboxes[id].isOpen then
+					TriggerClientEvent('QBCore:Notify', src, "Er zit al iemand in de dashboardkastje..", "error")
+					return
+				end
 				Gloveboxes[id] = {}
 				Gloveboxes[id].items = GetOwnedVehicleGloveboxItems(id)
 			else
 				Gloveboxes[id] = {}
 				Gloveboxes[id].items = {}
 			end
+			Gloveboxes[id].isOpen = true
 		elseif name == "shop" then
 			secondInv.name = "itemshop-"..id
 			secondInv.label = other.label
@@ -121,13 +136,17 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 				Citizen.Wait(250)
 			end
 		else
-			if Drops[id] ~= nil then
+			if Drops[id] ~= nil and not Drops[id].isOpen then
 				secondInv.name = id
 				secondInv.label = "Dropped-"..tostring(id)
 				secondInv.maxweight = 100000
 				secondInv.inventory = Drops[id].items
 				secondInv.slots = 30
+			else
+				TriggerClientEvent('QBCore:Notify', src, "Er zit al iemand in de drop..", "error")
+				return
 			end
+			Drops[id].isOpen = true
 		end
 		TriggerClientEvent("inventory:client:OpenInventory", src, Player.PlayerData.items, secondInv)
 	else
@@ -141,14 +160,18 @@ AddEventHandler('inventory:server:SaveInventory', function(type, id)
 		if (IsVehicleOwned(id)) then
 			SaveOwnedVehicleItems(id, Trunks[id].items)
 		end
+		Trunks[id].isOpen = false
 	elseif type == "glovebox" then
 		if (IsVehicleOwned(id)) then
 			SaveOwnedGloveboxItems(id, Gloveboxes[id].items)
 		end
+		Gloveboxes[id].isOpen = false
 	elseif type == "stash" then
 		SaveStashItems(id, Stashes[id].items)
+		Stashes[id].isOpen = false
 	elseif type == "drop" then
 		if Drops[id] ~= nil then
+			Drops[id].isOpen = false
 			if next(Drops[id].items) == nil then
 				Drops[id] = nil
 				TriggerClientEvent("inventory:client:RemoveDropItem", -1, id)
