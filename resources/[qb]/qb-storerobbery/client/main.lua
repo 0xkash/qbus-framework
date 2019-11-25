@@ -134,7 +134,7 @@ AddEventHandler('lockpicks:UseLockpick', function()
                         if result then
                             lockpick(true)
                             currentRegister = k
-                            if math.random(1, 100) <= 65 and not IsWearingHandshoes() then
+                            if math.random(1, 100) <= 100 and not IsWearingHandshoes() then
                                 TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
                             end
                             if not copsCalled then
