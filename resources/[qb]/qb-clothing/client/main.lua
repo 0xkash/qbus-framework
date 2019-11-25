@@ -556,8 +556,7 @@ function ChangeVariation(data)
             SetPedComponentVariation(ped, 9, item, 0, 2)
             skinData["vest"].item = item
         elseif type == "texture" then
-            local curItem = GetPedDrawableVariation(ped, 8)
-            SetPedComponentVariation(ped, 9, curItem, item, 0)
+            SetPedComponentVariation(ped, 9, skinData["vest"].item, item, 0)
             skinData["vest"].texture = item
         end
     elseif clothingCategory == "torso2" then
