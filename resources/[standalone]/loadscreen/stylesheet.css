@@ -54,7 +54,7 @@ body {
 }
 
 .yeet {
-    width: 10%;
+    width: 0%;
     border-radius: 5px;
     background-color: var(--loadbar-progress-color);
     height: var(--loadbar-height);
@@ -62,7 +62,7 @@ body {
     transition: 500ms;
 
     position: absolute;
-    left: 10%;
+    left: 0%;
 }
 
 #container {

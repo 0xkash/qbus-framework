@@ -57,7 +57,6 @@ $('document').ready(function() {
                 }));
                 selectedObjectData = null;
                 $.post('http://qb-houses/setupMyObjects', JSON.stringify({}), function(myObjects){
-                    console.log(JSON.stringify(myObjects))
                     $('.decorate-items').html("");
                     $.each(myObjects, function(i, object){
                         var elem = '<div class="decorate-item" id="myobject-'+i+'" data-type="myObject"><span id="decorate-item-name"><b>Object: </b>'+object.hashname+'</span><span id="decorate-item-category"><strong>Prijs: </strong><span id="item-price" style="color: green;">OWNED</span></span></div>';
@@ -77,6 +76,7 @@ $('document').ready(function() {
                     }));
                     $(".decorate-items").fadeOut(150);
                 }
+                selectedObject = null;
             }
         }
     };
@@ -177,6 +177,7 @@ $(document).on('click', '.footer-btn', function(){
     } else {
         $(".decorate-items").html("");
         $(".decorate-footer-buttons").html("");
+        $(selectedHeaderButton).removeClass('header-btn-selected');
         $.post('http://qb-houses/deleteSelectedObject');
         $(".decorate-footer-buttons").fadeOut(150);
         $(".decorate-items").fadeOut(150);

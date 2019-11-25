@@ -7,7 +7,11 @@ loadscreen_manual_shutdown 'yes'
 files {
     'index.html',
     'stylesheet.css',
-    'app.js',
     'music/music.ogg',
-    'imgs/logo.png'
+    'imgs/logo.png',
+
+    'js/app.js',
+	'js/progressbar-handler.js',
+	'js/progressbar-main.js',
+	'js/progressbar-renderer.js'
 }

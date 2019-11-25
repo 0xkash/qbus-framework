@@ -17,6 +17,11 @@ AddEventHandler('qb-admin:server:togglePlayerNoclip', function(playerId, reason)
     end
 end)
 
+RegisterServerEvent('qb-admin:server:killPlayer')
+AddEventHandler('qb-admin:server:killPlayer', function(playerId)
+    TriggerClientEvent('hospital:client:KillPlayer', playerId)
+end)
+
 RegisterServerEvent('qb-admin:server:kickPlayer')
 AddEventHandler('qb-admin:server:kickPlayer', function(playerId, reason)
     local src = source

@@ -16,6 +16,8 @@ local curRotate = {}
 local ObjectList = {}
 local SelObjId = 0
 
+local isEdit = false
+
 local rotateActive = false
 local peanut = false
 
@@ -66,10 +68,12 @@ Citizen.CreateThread(function()
 				if IsControlJustReleased(0, Keys["ENTER"]) then
 					SetNuiFocus(true, true)
 					cursorEnabled = not cursorEnabled
-					if SelObjId == 0 then
+					if not isEdit then
 						SendNUIMessage({
 							type = "buyOption",
 						})
+					else
+						isEdit = false
 					end
 				end
 			else
@@ -152,7 +156,9 @@ end)
 RegisterNUICallback("deleteSelectedObject", function(data, cb)
 	DeleteObject(SelectedObj)
 	SelectedObj = nil
-	ObjectList[SelObjId] = nil
+	print(SelObjId)
+	table.remove(ObjectList, SelObjId)
+	Citizen.Wait(100)
 	SaveDecorations()
 	SelObjId = 0
 	peanut = false
@@ -221,6 +227,7 @@ RegisterNUICallback('editOwnedObject', function(data)
 	SelObjHash = objectData.hashname
 	SelObjId = objectData.objectId
 	SelectedObj = ownedObject
+	isEdit = true
 	FreezeEntityPosition(SelectedObj, true)
 	peanut = true
 end)

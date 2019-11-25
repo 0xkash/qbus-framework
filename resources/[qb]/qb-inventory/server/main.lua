@@ -54,7 +54,7 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 			secondInv.inventory = {}
 			secondInv.slots = 100
 			if Stashes[id] ~= nil and Stashes[id].isOpen then
-				TriggerClientEvent('QBCore:Notify', src, "Er zit al iemand in de kofferbak..", "error")
+				TriggerClientEvent('QBCore:Notify', src, "Er zit al iemand in de stash..", "error")
 				return
 			end
 			if next(GetStashItems(id)) ~= nil then
@@ -72,12 +72,12 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 			secondInv.maxweight = other.maxweight ~= nil and other.maxweight or 60000
 			secondInv.inventory = {}
 			secondInv.slots = other.slots ~= nil and other.slots or 50
+			if Trunks[id] ~= nil and Trunks[id].isOpen then
+				TriggerClientEvent('QBCore:Notify', src, "Er zit al iemand in de kofferbak..", "error")
+				return
+			end
 			if IsVehicleOwned(id) and next(GetOwnedVehicleItems(id)) ~= nil then
 				secondInv.inventory = GetOwnedVehicleItems(id)
-				if Trunks[id] ~= nil and Trunks[id].isOpen then
-					TriggerClientEvent('QBCore:Notify', src, "Er zit al iemand in de kofferbak..", "error")
-					return
-				end
 				Trunks[id] = {}
 				Trunks[id].items = GetOwnedVehicleItems(id)
 			elseif Trunks[id] ~= nil and not Trunks[id].isOpen then
@@ -93,14 +93,14 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 			secondInv.maxweight = 10000
 			secondInv.inventory = {}
 			secondInv.slots = 5
+			if Gloveboxes[id] ~= nil and Gloveboxes[id].isOpen then
+				TriggerClientEvent('QBCore:Notify', src, "Er zit al iemand in de dashboardkastje..", "error")
+				return
+			end
 			if Gloveboxes[id] ~= nil and not Gloveboxes[id].isOpen then
 				secondInv.inventory = Gloveboxes[id].items
 			elseif IsVehicleOwned(id) and next(GetOwnedVehicleGloveboxItems(id)) ~= nil then
 				secondInv.inventory = GetOwnedVehicleGloveboxItems(id)
-				if Gloveboxes[id] ~= nil and Gloveboxes[id].isOpen then
-					TriggerClientEvent('QBCore:Notify', src, "Er zit al iemand in de dashboardkastje..", "error")
-					return
-				end
 				Gloveboxes[id] = {}
 				Gloveboxes[id].items = GetOwnedVehicleGloveboxItems(id)
 			else
@@ -167,8 +167,8 @@ AddEventHandler('inventory:server:SaveInventory', function(type, id)
 		end
 		Gloveboxes[id].isOpen = false
 	elseif type == "stash" then
-		SaveStashItems(id, Stashes[id].items)
 		Stashes[id].isOpen = false
+		SaveStashItems(id, Stashes[id].items)
 	elseif type == "drop" then
 		if Drops[id] ~= nil then
 			Drops[id].isOpen = false
