@@ -709,9 +709,9 @@ AddEventHandler("qb-clothes:loadSkin", function(new, model, data)
             QBCore.Functions.GetPlayerData(function(PlayerData)
                 SetTimeout(1000, function()
                     openMenu({
-                        "character",
-                        "clothing",
-                        "accessoires"
+                        {menu = "character", label = "Karakter", selected = true},
+                        {menu = "clothing", label = "Uiterlijk", selected = false},
+                        {menu = "accessoires", label = "Accessoires", selected = false}
                     })
                     DoScreenFadeIn(50)
                 end)
