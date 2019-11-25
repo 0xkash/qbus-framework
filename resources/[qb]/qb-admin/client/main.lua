@@ -238,10 +238,8 @@ Citizen.CreateThread(function()
             
             WarMenu.Display()
         elseif WarMenu.IsMenuOpened('playerOptions') then
-            if WarMenu.MenuButton('Slay', currentPlayer) then
-                local target = GetPlayerPed(currentPlayer)
-                local ply = GetPlayerPed(-1)
-                SetEntityHealth(target, 0)
+            if WarMenu.MenuButton('Kill', currentPlayer) then
+                TriggerServerEvent("qb-admin:server:killPlayer", GetPlayerServerId(currentPlayer))
             end
             if WarMenu.MenuButton('Revive', currentPlayer) then
                 local target = GetPlayerServerId(currentPlayer)

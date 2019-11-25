@@ -225,68 +225,6 @@ Citizen.CreateThread(function()
                     end
                 end
             end
-
-            local StashObject = nil
-            -- STASH
-            if inside then
-                if closesthouse ~= nil then
-                    if stashLocation ~= nil then
-                        if(GetDistanceBetweenCoords(pos, stashLocation.x, stashLocation.y, stashLocation.z, true) < 1.5)then
-                            DrawText3Ds(stashLocation.x, stashLocation.y, stashLocation.z, '~g~E~w~ - Stash')
-                            if IsControlJustPressed(0, Keys["E"]) then
-                                TriggerEvent("inventory:client:SetCurrentStash", closesthouse)
-                                TriggerServerEvent("inventory:server:OpenInventory", "stash", closesthouse)
-                            end
-                        elseif(GetDistanceBetweenCoords(pos, stashLocation.x, stashLocation.y, stashLocation.z, true) < 3)then
-                            DrawText3Ds(stashLocation.x, stashLocation.y, stashLocation.z, 'Stash')
-                        end
-                    end
-                end
-            end
-
-            if inside then
-                if closesthouse ~= nil then
-                    if outfitLocation ~= nil then
-                        if(GetDistanceBetweenCoords(pos, outfitLocation.x, outfitLocation.y, outfitLocation.z, true) < 1.5)then
-                            DrawText3Ds(outfitLocation.x, outfitLocation.y, outfitLocation.z, '~g~E~w~ - Outfits')
-                            if IsControlJustPressed(0, Keys["E"]) then
-                                MenuOutfits()
-                                Menu.hidden = not Menu.hidden
-                            end
-
-                            Menu.renderGUI()
-                        elseif(GetDistanceBetweenCoords(pos, outfitLocation.x, outfitLocation.y, outfitLocation.z, true) < 3)then
-                            DrawText3Ds(outfitLocation.x, outfitLocation.y, outfitLocation.z, 'Outfits')
-                        end
-                    end
-                end
-            end
-
-            if inside then
-                if closesthouse ~= nil then
-                    if logoutLocation ~= nil then
-                        if(GetDistanceBetweenCoords(pos, logoutLocation.x, logoutLocation.y, logoutLocation.z, true) < 1.5)then
-                            DrawText3Ds(logoutLocation.x, logoutLocation.y, logoutLocation.z, '~g~E~w~ - Uitloggen')
-                            if IsControlJustPressed(0, Keys["E"]) then
-                                exports['qb-interior']:DespawnInterior(houseObj, function()
-                                    DoScreenFadeIn(500)
-                                    while not IsScreenFadedOut() do
-                                        Citizen.Wait(10)
-                                    end
-                                    TriggerEvent('qb-weathersync:client:EnableSync')
-                                    SetEntityCoords(GetPlayerPed(-1), Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z + 0.5)
-                                    SetEntityHeading(GetPlayerPed(-1), Config.Houses[closesthouse].coords.enter.h)
-                                    inOwned = false
-                                    inside = false
-                                    TriggerServerEvent('qb-houses:server:logOut')
-                                end)
-                            end
-                        elseif(GetDistanceBetweenCoords(pos, logoutLocation.x, logoutLocation.y, logoutLocation.z, true) < 3)then
-                            DrawText3Ds(logoutLocation.x, logoutLocation.y, logoutLocation.z, 'Uitloggen')
-                        end
-                    end
-                end
-            end
         else
             if not isOwned then
                 if closesthouse ~= nil then
@@ -322,21 +260,72 @@ Citizen.CreateThread(function()
                                 leaveNonOwnedHouse(closesthouse)
                             end
                         end
-
-                        -- STASH
-                        if(GetDistanceBetweenCoords(pos, stashLocation.x, stashLocation.y, stashLocation.z, true) < 1.5)then
-                            DrawText3Ds(stashLocation.x, stashLocation.y, stashLocation.z, '~g~E~w~ - Stash')
-                            if IsControlJustPressed(0, Keys["E"]) then
-                                TriggerEvent("inventory:client:SetCurrentStash", closesthouse)
-                                TriggerServerEvent("inventory:server:OpenInventory", "stash", closesthouse)
-                            end
-                        elseif(GetDistanceBetweenCoords(pos, stashLocation.x, stashLocation.y, stashLocation.z, true) < 3)then
-                            DrawText3Ds(stashLocation.x, stashLocation.y, stashLocation.z, 'Stash')
-                        end
                     end
                 end
             end
-        end          
+        end
+        
+        local StashObject = nil
+        -- STASH
+        if inside then
+            if closesthouse ~= nil then
+                if stashLocation ~= nil then
+                    if(GetDistanceBetweenCoords(pos, stashLocation.x, stashLocation.y, stashLocation.z, true) < 1.5)then
+                        DrawText3Ds(stashLocation.x, stashLocation.y, stashLocation.z, '~g~E~w~ - Stash')
+                        if IsControlJustPressed(0, Keys["E"]) then
+                            TriggerEvent("inventory:client:SetCurrentStash", closesthouse)
+                            TriggerServerEvent("inventory:server:OpenInventory", "stash", closesthouse)
+                        end
+                    elseif(GetDistanceBetweenCoords(pos, stashLocation.x, stashLocation.y, stashLocation.z, true) < 3)then
+                        DrawText3Ds(stashLocation.x, stashLocation.y, stashLocation.z, 'Stash')
+                    end
+                end
+            end
+        end
+
+        if inside then
+            if closesthouse ~= nil then
+                if outfitLocation ~= nil then
+                    if(GetDistanceBetweenCoords(pos, outfitLocation.x, outfitLocation.y, outfitLocation.z, true) < 1.5)then
+                        DrawText3Ds(outfitLocation.x, outfitLocation.y, outfitLocation.z, '~g~E~w~ - Outfits')
+                        if IsControlJustPressed(0, Keys["E"]) then
+                            MenuOutfits()
+                            Menu.hidden = not Menu.hidden
+                        end
+
+                        Menu.renderGUI()
+                    elseif(GetDistanceBetweenCoords(pos, outfitLocation.x, outfitLocation.y, outfitLocation.z, true) < 3)then
+                        DrawText3Ds(outfitLocation.x, outfitLocation.y, outfitLocation.z, 'Outfits')
+                    end
+                end
+            end
+        end
+
+        if inside then
+            if closesthouse ~= nil then
+                if logoutLocation ~= nil then
+                    if(GetDistanceBetweenCoords(pos, logoutLocation.x, logoutLocation.y, logoutLocation.z, true) < 1.5)then
+                        DrawText3Ds(logoutLocation.x, logoutLocation.y, logoutLocation.z, '~g~E~w~ - Uitloggen')
+                        if IsControlJustPressed(0, Keys["E"]) then
+                            exports['qb-interior']:DespawnInterior(houseObj, function()
+                                DoScreenFadeIn(500)
+                                while not IsScreenFadedOut() do
+                                    Citizen.Wait(10)
+                                end
+                                TriggerEvent('qb-weathersync:client:EnableSync')
+                                SetEntityCoords(GetPlayerPed(-1), Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z + 0.5)
+                                SetEntityHeading(GetPlayerPed(-1), Config.Houses[closesthouse].coords.enter.h)
+                                inOwned = false
+                                inside = false
+                                TriggerServerEvent('qb-houses:server:logOut')
+                            end)
+                        end
+                    elseif(GetDistanceBetweenCoords(pos, logoutLocation.x, logoutLocation.y, logoutLocation.z, true) < 3)then
+                        DrawText3Ds(logoutLocation.x, logoutLocation.y, logoutLocation.z, 'Uitloggen')
+                    end
+                end
+            end
+        end
     end
 end)
 
@@ -680,44 +669,45 @@ function SetClosestHouse()
     local pos = GetEntityCoords(GetPlayerPed(-1), true)
     local current = nil
     local dist = nil
-
-    for id, house in pairs(Config.Houses) do
-        if current ~= nil then
-            if(GetDistanceBetweenCoords(pos, Config.Houses[id].coords.enter.x, Config.Houses[id].coords.enter.y, Config.Houses[id].coords.enter.z, true) < dist)then
-                current = id
+    if not inside then
+        for id, house in pairs(Config.Houses) do
+            if current ~= nil then
+                if(GetDistanceBetweenCoords(pos, Config.Houses[id].coords.enter.x, Config.Houses[id].coords.enter.y, Config.Houses[id].coords.enter.z, true) < dist)then
+                    current = id
+                    dist = GetDistanceBetweenCoords(pos, Config.Houses[id].coords.enter.x, Config.Houses[id].coords.enter.y, Config.Houses[id].coords.enter.z, true)
+                end
+            else
                 dist = GetDistanceBetweenCoords(pos, Config.Houses[id].coords.enter.x, Config.Houses[id].coords.enter.y, Config.Houses[id].coords.enter.z, true)
+                current = id
             end
-        else
-            dist = GetDistanceBetweenCoords(pos, Config.Houses[id].coords.enter.x, Config.Houses[id].coords.enter.y, Config.Houses[id].coords.enter.z, true)
-            current = id
         end
-    end
-    closesthouse = current
-
-    if closesthouse ~= nil then 
-        QBCore.Functions.TriggerCallback('qb-houses:server:hasKey', function(result)
-            hasKey = result
-        end, closesthouse)
+        closesthouse = current
     
-        QBCore.Functions.TriggerCallback('qb-houses:server:isOwned', function(result)
-            isOwned = result
-        end, closesthouse)
-    
-        QBCore.Functions.TriggerCallback('qb-houses:server:getHouseLocations', function(result)
-            if result ~= nil then
-                if result.stash ~= nil then
-                    stashLocation = json.decode(result.stash)
+        if closesthouse ~= nil then 
+            QBCore.Functions.TriggerCallback('qb-houses:server:hasKey', function(result)
+                hasKey = result
+            end, closesthouse)
+        
+            QBCore.Functions.TriggerCallback('qb-houses:server:isOwned', function(result)
+                isOwned = result
+            end, closesthouse)
+        
+            QBCore.Functions.TriggerCallback('qb-houses:server:getHouseLocations', function(result)
+                if result ~= nil then
+                    if result.stash ~= nil then
+                        stashLocation = json.decode(result.stash)
+                    end
+        
+                    if result.outfit ~= nil then
+                        outfitLocation = json.decode(result.outfit)
+                    end
+        
+                    if result.logout ~= nil then
+                        logoutLocation = json.decode(result.logout)
+                    end
                 end
-    
-                if result.outfit ~= nil then
-                    outfitLocation = json.decode(result.outfit)
-                end
-    
-                if result.logout ~= nil then
-                    logoutLocation = json.decode(result.logout)
-                end
-            end
-        end, closesthouse)
+            end, closesthouse)
+        end
     end
 end
 
@@ -752,6 +742,7 @@ AddEventHandler('qb-houses:client:refreshLocations', function(house, location, t
     if closesthouse == house then
         if inside then
             if type == 1 then
+                print("stashLocation SETTTT")
                 stashLocation = json.decode(location)
             elseif type == 2 then
                 outfitLocation = json.decode(location)
