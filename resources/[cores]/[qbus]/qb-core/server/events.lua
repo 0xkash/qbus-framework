@@ -43,9 +43,9 @@ AddEventHandler('playerConnecting', function(playerName, setKickReason, deferral
 		return false
     end
 	deferrals.update("\nChecking ban status...")
-    local isBanned, Reason = false, ""
+    local isBanned, Reason = QBCore.Functions.IsPlayerBanned(src)
     if(isBanned) then
-        QBCore.Functions.Kick(src, 'Ban reden:\n'..Reason, setKickReason, deferrals)
+        QBCore.Functions.Kick(src, Reason, setKickReason, deferrals)
         CancelEvent()
         return false
     end
@@ -60,9 +60,8 @@ AddEventHandler('playerConnecting', function(playerName, setKickReason, deferral
 		QBCore.Functions.Kick(_source, 'De server is gesloten:\n'..QBCore.Config.Server.closedReason, setKickReason, deferrals)
         CancelEvent()
         return false
-    end
-	deferrals.done()
-	return true
+	end
+	TriggerEvent("connectqueue:playerConnect", src, setKickReason, deferrals)
 end)
 
 RegisterServerEvent("QBCore:server:CloseServer")

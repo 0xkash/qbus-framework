@@ -25,6 +25,7 @@ client_scripts {
 	"client/tackle.lua",
 	"client/consumables.lua",
 	"client/discord.lua",
+	"client/point.lua",
 }
 
 this_is_a_map 'yes'

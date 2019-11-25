@@ -133,15 +133,30 @@ Citizen.CreateThread(function()
                     end
                 end
 
-                if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["armory"].x, Config.Locations["armory"].y, Config.Locations["armory"].z, true) < 4.5) then
+                if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["armory"].x, Config.Locations["armory"].y, Config.Locations["armory"].z, true) < 4.5) and IsArmoryWhitelist() then
                     if onDuty then
                         if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["armory"].x, Config.Locations["armory"].y, Config.Locations["armory"].z, true) < 1.5) then
                             QBCore.Functions.DrawText3D(Config.Locations["armory"].x, Config.Locations["armory"].y, Config.Locations["armory"].z, "~g~E~w~ - Wapenkluis")
                             if IsControlJustReleased(0, Keys["E"]) then
+                                SetWeaponSeries()
                                 TriggerServerEvent("inventory:server:OpenInventory", "shop", "police", Config.Items)
                             end
                         elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["armory"].x, Config.Locations["armory"].y, Config.Locations["armory"].z, true) < 2.5) then
                             QBCore.Functions.DrawText3D(Config.Locations["armory"].x, Config.Locations["armory"].y, Config.Locations["armory"].z, "Wapenkluis")
+                        end  
+                    end
+                end
+
+                if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["stash"].x, Config.Locations["stash"].y, Config.Locations["stash"].z, true) < 4.5) then
+                    if onDuty then
+                        if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["stash"].x, Config.Locations["stash"].y, Config.Locations["stash"].z, true) < 1.5) then
+                            QBCore.Functions.DrawText3D(Config.Locations["stash"].x, Config.Locations["stash"].y, Config.Locations["stash"].z, "~g~E~w~ - Persoonlijke kluis")
+                            if IsControlJustReleased(0, Keys["E"]) then
+                                TriggerEvent("inventory:client:SetCurrentStash", "policestash_"..QBCore.Functions.GetPlayerData().citizenid)
+                                TriggerServerEvent("inventory:server:OpenInventory", "stash", "policestash_"..QBCore.Functions.GetPlayerData().citizenid)
+                            end
+                        elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["stash"].x, Config.Locations["stash"].y, Config.Locations["stash"].z, true) < 2.5) then
+                            QBCore.Functions.DrawText3D(Config.Locations["stash"].x, Config.Locations["stash"].y, Config.Locations["stash"].z, "Persoonlijke kluis")
                         end  
                     end
                 end
@@ -386,6 +401,25 @@ function doCarDamage(currentVehicle, veh)
 	if body < 1000 then
 		SetVehicleBodyHealth(currentVehicle, 985.1)
 	end
+end
+
+function IsArmoryWhitelist()
+    local retval = false
+    local citizenid = QBCore.Functions.GetPlayerData().citizenid
+    for k, v in pairs(Config.ArmoryWhitelist) do
+        if v == citizenid then
+            retval = true
+        end
+    end
+    return retval
+end
+
+function SetWeaponSeries()
+    for k, v in pairs(Config.Items.items) do
+        if k < 6 then
+            Config.Items.items[k].info.serie = tostring(Config.RandomInt(2) .. Config.RandomStr(3) .. Config.RandomInt(1) .. Config.RandomStr(2) .. Config.RandomInt(3) .. Config.RandomStr(4))
+        end
+    end
 end
 
 function round(num, numDecimalPlaces)

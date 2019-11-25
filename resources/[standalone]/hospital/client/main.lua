@@ -248,7 +248,7 @@ Citizen.CreateThread(function()
         if QBCore ~= nil then
             if isInHospitalBed and canLeaveBed then
                 local pos = GetEntityCoords(GetPlayerPed(-1))
-                QBCore.Functions.DrawText3D(pos.x, pos.y, pos.z, "~g~E~w~ - Om uit bet te stappen..")
+                QBCore.Functions.DrawText3D(pos.x, pos.y, pos.z, "~g~E~w~ - Om uit bed te stappen..")
                 if IsControlJustReleased(0, Keys["E"]) then
                     LeaveBed()
                 end

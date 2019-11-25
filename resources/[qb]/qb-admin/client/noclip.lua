@@ -1,17 +1,3 @@
---[[--------------------------------------------------------------------------
-    * Credits to
-    * Mello Trainer
-    * Michael Goodwin 2017
----------------------------------------------------------------------------]]
-QBCore = nil
-
-Citizen.CreateThread(function ()
-    while QBCore == nil do
-        TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
-        Citizen.Wait(0)
-    end
-end)
-
 -- Animation Variables
 local loadedAnims = false
 local noclip_ANIM_A = "amb@world_human_stand_impatient@male@no_sign@base"
@@ -24,6 +10,42 @@ local curLocation
 local curRotation
 local curHeading
 local target
+
+function drawNotification(string)
+    SetNotificationTextEntry("STRING")
+    AddTextComponentString(string)
+    DrawNotification(true, false)
+end
+
+function LoadAnimDict( dict )
+    while ( not HasAnimDictLoaded( dict ) ) do
+        RequestAnimDict( dict )
+        Citizen.Wait( 5 )
+    end
+end
+
+function getTableLength(T)
+    local count = 0
+    for _ in pairs(T) do
+        count = count + 1
+    end
+    return count
+end
+
+function getEntity(player)
+    local result, entity = GetEntityPlayerIsFreeAimingAt(player)
+    return entity
+end
+
+function bulletCoords()
+local result, coord = GetPedLastWeaponImpactCoord(GetPlayerPed(-1))
+return coord
+end
+
+function getGroundZ(x, y, z)
+        local result, groundZ = GetGroundZFor_3dCoord(x + 0.0, y + 0.0, z + 0.0, Citizen.ReturnResultAnyway())
+        return groundZ
+end
 
 function toggleNoClipMode()
     if(in_noclip_mode)then
@@ -51,6 +73,11 @@ function turnNoClipOff()
     in_noclip_mode = false
 
 end
+
+RegisterNetEvent('qb-admin:client:toggleNoclip')
+AddEventHandler('qb-admin:client:toggleNoclip', function()
+    toggleNoClipMode()
+end)
 
 function turnNoClipOn()
     blockinput = true -- Prevent Trainer access while in noclip mode.

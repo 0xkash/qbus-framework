@@ -1,17 +1,45 @@
 Config = {}
 
+local StringCharset = {}
+local NumberCharset = {}
+
+for i = 48,  57 do table.insert(NumberCharset, string.char(i)) end
+for i = 65,  90 do table.insert(StringCharset, string.char(i)) end
+for i = 97, 122 do table.insert(StringCharset, string.char(i)) end
+
+Config.RandomStr = function(length)
+	if length > 0 then
+		return Config.RandomStr(length-1) .. StringCharset[math.random(1, #StringCharset)]
+	else
+		return ''
+	end
+end
+
+Config.RandomInt = function(length)
+	if length > 0 then
+		return Config.RandomInt(length-1) .. NumberCharset[math.random(1, #NumberCharset)]
+	else
+		return ''
+	end
+end
+
 Config.Locations = {
    ["duty"] = {x = 440.085, y = -974.924, z = 30.689, h = 90.654},
    ["clothing"] = {x = 454.456, y = -988.743, z = 30.689, h = 90.654},
    ["vehicle"] = {x = 448.159, y = -1017.41, z = 28.562, h = 90.654},
    ["impound"] = {x = 436.323, y = -998.388, z = 25.744, h = 179.657},
    ["helicopter"] = {x = 449.168, y = -981.325, z = 43.691, h = 87.234},
-   ["armory"] = {x = 453.075, y = -980.124, z = 30.889, h = 90.654},
+   ["armory"] = {x = 462.23, y = -981.12, z = 30.68, h = 90.654},
+   ["stash"] = {x = 453.075, y = -980.124, z = 30.889, h = 90.654},
    ["evidence"] = {x = 455.838, y = -978.573, z = 30.689, h = 90.654},
    ["stations"] = {
        [1] = {label = "Politie Hoofdbureau", coords = {x = 428.23, y = -984.28, z = 29.76, h = 3.5}},
        [2] = {label = "Gevangenis", coords = {x = 1845.903, y = 2585.873, z = 45.672, h = 272.249}},
    },
+}
+
+Config.ArmoryWhitelist = {
+    "DVH09193",
 }
 
 Config.Helicopter = "polmav"
@@ -86,7 +114,7 @@ Config.Items = {
             price = 0,
             amount = 1,
             info = {
-                serie = "P"..math.random(10,99).."LI"..math.random(100,999).."ZI"..math.random(1,9),
+                serie = "",                
                 attachments = {
                     {component = "COMPONENT_AT_PI_FLSH", label = "Flashlight"},
                 }
@@ -99,7 +127,7 @@ Config.Items = {
             price = 0,
             amount = 1,
             info = {
-                serie = "P"..math.random(10,99).."LI"..math.random(100,999).."ZI"..math.random(1,9),
+                serie = "",            
             },
             type = "weapon",
             slot = 2,
@@ -109,7 +137,7 @@ Config.Items = {
             price = 0,
             amount = 1,
             info = {
-                serie = "P"..math.random(10,99).."LI"..math.random(100,999).."ZI"..math.random(1,9),
+                serie = "",
                 attachments = {
                     {component = "COMPONENT_AT_AR_FLSH", label = "Flashlight"},
                 }
@@ -122,7 +150,7 @@ Config.Items = {
             price = 0,
             amount = 1,
             info = {
-                serie = "P"..math.random(10,99).."LI"..math.random(100,999).."ZI"..math.random(1,9),
+                serie = "",                
                 attachments = {
                     {component = "COMPONENT_AT_SCOPE_MACRO_02", label = "1x Scope"},
                     {component = "COMPONENT_AT_AR_FLSH", label = "Flashlight"},
@@ -136,7 +164,7 @@ Config.Items = {
             price = 0,
             amount = 1,
             info = {
-                serie = "P"..math.random(10,99).."LI"..math.random(100,999).."ZI"..math.random(1,9),
+                serie = "",
                 attachments = {
                     {component = "COMPONENT_AT_AR_FLSH", label = "Flashlight"},
                     {component = "COMPONENT_AT_SCOPE_MEDIUM", label = "3x Scope"},
@@ -219,3 +247,4 @@ Config.Items = {
         },
     }
 }
+
