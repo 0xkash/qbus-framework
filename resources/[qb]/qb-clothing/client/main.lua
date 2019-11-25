@@ -29,6 +29,8 @@ local cam = -1
 local heading = 332.219879
 local zoom = "character"
 
+local customCamLocation = nil
+
 local isLoggedIn = false
 
 local PlayerData = {}
@@ -79,6 +81,10 @@ local skinData = {
         texture = 0,
     },
     ["torso2"] = {
+        item = 0,
+        texture = 0,
+    },
+    ["vest"] = {
         item = 0,
         texture = 0,
     },
@@ -174,6 +180,7 @@ Citizen.CreateThread(function()
                     if dist < 5 then
                         DrawText3Ds(Config.Stores[k].x, Config.Stores[k].y, Config.Stores[k].z + 1.25, '~g~E~w~ - Om kleding te shoppen')
                         if IsControlJustPressed(0, Keys["E"]) then
+                            customCamLocation = nil
                             openMenu({
                                 {menu = "character", label = "Karakter", selected = true},
                                 {menu = "clothing", label = "Uiterlijk", selected = false},
@@ -214,6 +221,7 @@ Citizen.CreateThread(function()
                         if PlayerData.job.name == Config.ClothingRooms[k].requiredJob then
                             DrawText3Ds(Config.ClothingRooms[k].x, Config.ClothingRooms[k].y, Config.ClothingRooms[k].z + 0.3, '~g~E~w~ - Outfits bekijken')
                             if IsControlJustPressed(0, Keys["E"]) then
+                                customCamLocation = Config.ClothingRooms[k].cameraLocation
                                 openMenu({
                                     {menu = "roomOutfits", label = "Presets", selected = true, outfits = Config.Outfits[PlayerData.job.name]},
                                     {menu = "character", label = "Karakter", selected = false},
@@ -263,6 +271,7 @@ local clothingCategorys = {
     ["t-shirt"]     = {type = "variation",  id = 8},
     ["torso2"]      = {type = "variation",  id = 11},
     ["pants"]       = {type = "variation",  id = 4},
+    ["vest"]        = {type = "variation",  id = 9},
     ["shoes"]       = {type = "variation",  id = 6},
     ["hair"]        = {type = "hair",       id = 2},
     ["eyebrows"]    = {type = "overlay",    id = 2},
@@ -297,6 +306,7 @@ function GetMaxValues()
         ["pants"]       = {type = "character", item = 0, texture = 0},
         ["shoes"]       = {type = "character", item = 0, texture = 0},
         ["face"]        = {type = "character", item = 0, texture = 0},
+        ["vest"]        = {type = "character", item = 0, texture = 0},
         ["hair"]        = {type = "hair", item = 0, texture = 0},
         ["eyebrows"]    = {type = "hair", item = 0, texture = 0},
         ["beard"]       = {type = "hair", item = 0, texture = 0},
@@ -384,8 +394,12 @@ function enableCam()
         SetCamCoord(cam, GetEntityCoords(GetPlayerPed(-1)))
     end
     local x,y,z = table.unpack(GetEntityCoords(GetPlayerPed(-1)))
-    SetCamCoord(cam, x+0.5, y+2.5, z+0.3)
-    SetCamRot(cam, 0.0, 0.0, 160.0)
+    if customCamLocation == nil then
+        SetCamCoord(cam, x+0.5, y+2.5, z+0.3)
+        SetCamRot(cam, 0.0, 0.0, 160.0)
+    else
+        SetCamCoord(cam, customCamLocation.x, customCamLocation.y, customCamLocation.z)
+    end
 end
 
 RegisterNUICallback('setupCam', function(data)
@@ -394,16 +408,12 @@ RegisterNUICallback('setupCam', function(data)
 
     if value == 1 then
         SetCamCoord(cam, x+0.3, y+1.0, z+0.5)
-        SetCamRot(cam, 0.0, 0.0, 160.0)
     elseif value == 2 then
         SetCamCoord(cam, x+0.3, y+1.0, z+0.2)
-        SetCamRot(cam, 0.0, 0.0, 160.0)
     elseif value == 3 then
         SetCamCoord(cam, x+0.3, y+1.0, z-0.5)
-        SetCamRot(cam, 0.0, 0.0, 160.0)
     else
         SetCamCoord(cam, x+0.5, y+2.5, z+0.3)
-        SetCamRot(cam, 0.0, 0.0, 160.0)
     end
 end)
 
@@ -540,6 +550,15 @@ function ChangeVariation(data)
             local curItem = GetPedDrawableVariation(ped, 8)
             SetPedComponentVariation(ped, 8, curItem, item, 0)
             skinData["t-shirt"].texture = item
+        end
+    elseif clothingCategory == "vest" then
+        if type == "item" then
+            SetPedComponentVariation(ped, 9, item, 0, 2)
+            skinData["vest"].item = item
+        elseif type == "texture" then
+            local curItem = GetPedDrawableVariation(ped, 8)
+            SetPedComponentVariation(ped, 9, curItem, item, 0)
+            skinData["vest"].texture = item
         end
     elseif clothingCategory == "torso2" then
         if type == "item" then
@@ -779,6 +798,10 @@ AddEventHandler('qb-clothing:client:loadPlayerClothing', function(data, ped)
     SetPedComponentVariation(ped, 8, data["t-shirt"].item, 0, 2)
     SetPedComponentVariation(ped, 8, data["t-shirt"].item, data["t-shirt"].texture, 0)
 
+    -- Vest
+    SetPedComponentVariation(ped, 9, data["vest"].item, 0, 2)
+    SetPedComponentVariation(ped, 9, data["vest"].item, data["vest"].texture, 0)
+
     -- Torso 2
     SetPedComponentVariation(ped, 11, data["torso2"].item, 0, 2)
     SetPedComponentVariation(ped, 11, data["torso2"].item, data["torso2"].texture, 0)
@@ -824,6 +847,10 @@ AddEventHandler('qb-clothing:client:loadOutfit', function(data)
     -- T-Shirt
     SetPedComponentVariation(ped, 8, data["t-shirt"].item, 0, 2)
     SetPedComponentVariation(ped, 8, data["t-shirt"].item, data["t-shirt"].texture, 0)
+
+    -- Vest
+    SetPedComponentVariation(ped, 9, data["vest"].item, 0, 2)
+    SetPedComponentVariation(ped, 9, data["vest"].item, data["vest"].texture, 0)
 
     -- Torso 2
     SetPedComponentVariation(ped, 11, data["torso2"].item, 0, 2)

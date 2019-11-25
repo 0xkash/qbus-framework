@@ -537,7 +537,7 @@ Config.Stores = {
 }
 
 Config.ClothingRooms = {
-    [1] = {requiredJob = "police", x = 454.45, y = -988.93, z = 30.68}, 
+    [1] = {requiredJob = "police", x = 454.45, y = -988.93, z = 30.68, cameraLocation = {x = 454.51, y = -990.36, z = 30.68, h = 3.5}},
 }
 
 Config.Outfits = {
