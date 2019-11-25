@@ -37,8 +37,8 @@ local PlayerData = {}
 
 local skinData = {
     ["face"] = {
-        item = -1,
-        texture = -1,
+        item = 0,
+        texture = 0,
     },
     ["pants"] = {
         item = 0,
@@ -469,8 +469,10 @@ function ChangeVariation(data)
         end
     elseif clothingCategory == "face" then
         if type == "item" then
-            SetPedHeadBlendData(ped, item, item, item, skinData["face"].texture, skinData["face"].texture, skinData["face"].texture, 1.0, 1.0, 1.0, true)
+            print(item)
+            SetPedHeadBlendData(ped, tonumber(item), tonumber(item), tonumber(item), skinData["face"].texture, skinData["face"].texture, skinData["face"].texture, 1.0, 1.0, 1.0, true)
             skinData["face"].item = item
+            print('yeye')
         elseif type == "texture" then
             SetPedHeadBlendData(ped, skinData["face"].item, skinData["face"].item, skinData["face"].item, item, item, item, 1.0, 1.0, 1.0, true)
             skinData["face"].texture = item
@@ -754,6 +756,8 @@ AddEventHandler('qb-clothing:client:loadPlayerClothing', function(data, ped)
     for i = 0, 7 do
         ClearPedProp(ped, i)
     end
+
+    skinData = data
 
     -- Face
     SetPedHeadBlendData(ped, data["face"].item, data["face"].item, data["face"].item, data["face"].texture, data["face"].texture, data["face"].texture, 1.0, 1.0, 1.0, true)
