@@ -468,6 +468,28 @@ QBCore.Functions.CreateCallback('police:GetCops', function(source, cb)
 	cb(amount)
 end)
 
+QBCore.Commands.Add("pobject", "Plaats/Verwijder een object", {{name="type", help="Type object dat je wilt of 'delete' om te verwijderen"}}, true, function(source, args)
+    local Player = QBCore.Functions.GetPlayer(source)
+    local type = args[1]:lower()
+    if Player.PlayerData.job.name == "police" then
+        if type == "pion" then
+            TriggerClientEvent("police:client:spawnCone", source)
+        elseif type == "barier" then
+            TriggerClientEvent("police:client:spawnBarier", source)
+        elseif type == "schotten" then
+            TriggerClientEvent("police:client:spawnSchotten", source)
+        elseif type == "tent" then
+            TriggerClientEvent("police:client:spawnTent", source)
+        elseif type == "light" then
+            TriggerClientEvent("police:client:spawnLight", source)
+        elseif type == "delete" then
+            TriggerClientEvent("police:client:deleteObject", source)
+        end
+    else
+        TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Dit command is voor hulpdiensten!")
+    end
+end)
+
 QBCore.Commands.Add("cuff", "Boei een speler", {}, false, function(source, args)
 	local Player = QBCore.Functions.GetPlayer(source)
     if Player.PlayerData.job.name == "police" then

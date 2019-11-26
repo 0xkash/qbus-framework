@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="./apps/twitter.css">     <!-- Twitter CSS -->
     <link rel="stylesheet" href="./apps/advert.css">     <!-- Advert CSS -->
     <link rel="stylesheet" href="./apps/call.css">     <!-- Call CSS -->
+    <link rel="stylesheet" href="./apps/police.css">     <!-- MEOS CSS -->
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>  
@@ -67,7 +68,7 @@
 
                 <div class="top-bar">
                     <span id="time">12.05</span>
-                    <span id="provider"><i class="fa fa-signal"></i> qBus 4G</span>
+                    <span id="provider"><i class="fa fa-signal"></i> kubie 5G</span>
                 </div>
 
                 <div class="phone-home-page">
@@ -308,6 +309,74 @@
                     </div>
 
                     <div class="advert-new-ad"><i class="fas fa-pen" id="advert-new-ad-icon"></i></div>
+                </div>
+
+                <div class="police-app">
+                    <div class="police-header">
+                        <p><span class="app-title">MEOS</span><span class="app-character-name"></span></p>
+                    </div>
+                    <div class="police-tabs">
+                        <div class="police-tab-item" id="person">
+                            <div class="police-tab-info">
+                                <i class="fas fa-user"></i>
+                                <p class="police-tab-label">Persoon</p>
+                            </div>
+                        </div>
+                        <div class="police-tab-item" id="vehicle">
+                            <div class="police-tab-info">
+                                <i class="fas fa-car"></i>
+                                <p class="police-tab-label">Voertuig</p>
+                            </div>
+                        </div>
+                        <div class="police-tab-item" id="alerts">
+                            <div class="police-tab-info">
+                                <i class="fas fa-bell"></i>
+                                <p class="police-tab-label">Meldingen</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="police-person">
+                        <div class="police-search-person">
+                            <input class="police-input" id="person-input-search" type="text" placeholder="Zoek persoon.." />
+                            <button class="btn police-button" id="person-button-search">Zoek</button>
+                        </div>
+                        <div class="police-person-found">
+                            
+                        </div>
+                    </div>
+                    <div class="police-vehicle">
+                        <div class="police-search-vehicle">
+                            <input class="police-input" id="vehicle-input-search" type="text" placeholder="Zoek kenteken.." />
+                            <button class="btn police-button" id="vehicle-button-search">Zoek</button>
+                            <button class="btn police-button" id="vehicle-button-scan">SCAN KENTEKEN</button>
+                        </div>
+                        <div class="police-vehicle-found">
+                            <div class="vehicle-found-item">
+                                <p class="person-name">Benefactor Schwarzer Custom</p>
+                                <p class="person-citizenid">Kenteken: 94D945LD</p>
+                            </div>
+                            <div class="vehicle-found-item">
+                                <p class="person-name">Benefactor Schwarzer Custom</p>
+                                <p class="person-citizenid">Kenteken: 94D945LD</p>
+                            </div>
+                            <div class="vehicle-found-item">
+                                <p class="person-name">Benefactor Schwarzer Custom</p>
+                                <p class="person-citizenid">Kenteken: 94D945LD</p>
+                            </div>
+                            <div class="vehicle-found-item">
+                                <p class="person-name">Benefactor Schwarzer Custom</p>
+                                <p class="person-citizenid">Kenteken: 94D945LD</p>
+                            </div>
+                            <div class="vehicle-found-item">
+                                <p class="person-name">Benefactor Schwarzer Custom</p>
+                                <p class="person-citizenid">Kenteken: 94D945LD</p>
+                            </div>
+                            <div class="vehicle-found-item">
+                                <p class="person-name">Benefactor Schwarzer Custom</p>
+                                <p class="person-citizenid">Kenteken: 94D945LD</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="call-app">

@@ -220,10 +220,73 @@ $(document).on('click', '.app', function(e){
         $.post('http://qb-phone/getMessages', JSON.stringify({}), function(messages){
             qbPhone.SetupChat(messages)
         });
+    } else if (pressedApp.app == "police") {
+        $.post('http://qb-phone/getCharacterData', JSON.stringify({}), function(charinfo){
+            qbPhone.SetupPoliceApp(charinfo)
+        });
     }
 
     qbPhone.succesSound();
 });
+
+qbPhone.SetupPoliceApp = function(data) {
+    $(".app-character-name").html("Welkom " + data.firstname + " " + data.lastname);
+}
+
+$(document).on('click', '.police-tab-item', function(e){
+    e.preventDefault();
+    var tab = $(this).attr("id");
+    if (tab == "person") {
+        $(".police-tabs").fadeOut(150, function() {
+            $(".police-person").fadeIn(150);
+        });
+        
+        lastPage = currentApp
+        currentApp = ".police-person"
+    }
+});
+
+$(document).on('click', '.person-found-item', function(e){
+    e.preventDefault();
+    $(".person-found-item").each(function(index) {
+        var person = $(this).data("personData");
+        $(this).html('<p class="person-name">Naam: '+person.firstname+' '+person.lastname+'</p><p class="person-citizenid">BSN: '+person.citizenid+'</p>')
+    });
+    var person = $(this).data("personData");
+    var status = '<span class="person-status-inactive">Nee</span>'
+    var gender = "Man"
+    if (person.gender == 1) {
+        gender = "Vrouw"
+    }
+    if (person.warrant) {
+        status = '<span class="person-status-active">Ja</span>'
+    }
+    $(this).html('<p class="person-name">Naam: '+person.firstname+' '+person.lastname+'</p><p class="person-citizenid">BSN: '+person.citizenid+'</p><hr><p class="person-birthdate">Geboortedatum: '+person.birthdate+'</p><p class="person-phonenumber">Telefoonnummer: '+person.phone+'</p><p class="person-address">Nationaliteit: '+person.nationality+'</p><p class="person-address">Geslacht: '+gender+'</p><br/><p class="person-status">Gesignaleerd: '+status+'</p>');
+})
+
+$(document).on('click', '#person-button-search', function(e){
+    e.preventDefault();
+    var search = $("#person-input-search").val();
+    $(".police-person-found").html("");
+    $.post('http://qb-phone/policeSearchPerson', JSON.stringify({search: search,}), function(persons){
+        if (persons != null) {
+            $.each(persons, function (i, person) {
+                $(".police-person-found").append('<div class="person-found-item" id="person-'+i+'"><p class="person-name">Naam: '+person.firstname+' '+person.lastname+'</p><p class="person-citizenid">BSN: '+person.citizenid+'</p></div>');
+                $("#person-" + i).data("personData", person);
+            });
+        } else {
+            $(".police-person-found").htm("<p>Geen persoon gevonden..</p>")
+        }
+    });
+})
+
+$(document).on('click', '.vehicle-found-item', function(e){
+    e.preventDefault();
+    $(".vehicle-found-item").each(function(index) {
+        $(this).html('<p class="person-name">Benefactor Schwarzer Custom</p><p class="person-citizenid">Kenteken: 94D945LD</p>')
+    });
+    $(this).html('<p class="person-name">Benefactor Schwarzer Custom</p><p class="person-citizenid">Kenteken: 94D945LD</p><hr><p class="person-birthdate">Eigenaar: Austin Kash</p><br/><p class="person-status">APK: <span class="vehicle-status-inactive">Ja</span></p>');
+})
 
 qbPhone.SetupChat = function(chats) {
     $(".chats-container").html("");
@@ -303,7 +366,6 @@ $(document).on('click', '.msg-other-location', function(e){
 
 qbPhone.UpdateChat = function(messages, number) {
     if (currentChatNumber == number) {
-        console.log('ik update')
         $(".messages").html("");
         $.each(messages, function(i, chat){
             if (chat.sender != myCitizenId) {
@@ -642,7 +704,6 @@ $(document).on('click', '.background-option', function(e){
 
 $(document).on('click', '.home-container', function(e){
     e.preventDefault();
-
     if (lastPage == null) {
         if (currentApp != homePage) {
             $(currentApp).animate({top: "100%",}
@@ -656,6 +717,12 @@ $(document).on('click', '.home-container', function(e){
         } else {
             qbPhone.Close();
         }
+    } else if (lastPage == ".police-app") {
+        $(currentApp).fadeOut(150, function(){
+            $(".police-tabs").fadeIn(150);
+            currentApp = lastPage;
+            lastPage = null;
+        });
     } else {
         $(currentApp).animate({top: "100%",}
         , 250, function() {
@@ -708,6 +775,12 @@ qbPhone.Close = function() {
             });
         } else if (currentApp == ".call-app") {
             $(currentApp).css({"display":"none"});
+        } else if (currentApp == ".police-app" || currentApp == ".police-tabs" || currentApp == ".police-person") {
+            $(".police-app").css({"display":"block"});
+            $(".police-tabs").css({"display":"block"});
+            $(".police-person").css({"display":"none"});
+            $(homePage).css({'display':'block'});
+            currentApp = homePage;
         } else {
             if (currentApp != homePage) {
                 $(currentApp).animate({top: "100%",}
@@ -730,10 +803,18 @@ qbPhone.setupPhoneApps = function(apps) {
     if (phoneApps === null) {
         $.each(apps, function(index, app) {
             $('.slot-'+app.slot).html("");
-            var appElement = '<div class="app" id="slot-'+app.slot+'" style="background-color: '+app.color+';" data-toggle="tooltip" data-placement="bottom" title="'+app.tooltipText+'"><i class="'+app.icon+'" id="app-icon" style="'+app.style+'"></i></div>'
-            $('.slot-'+app.slot).append(appElement);
-            $('.slot-'+app.slot).removeClass("empty-slot");
-            $('#slot-'+app.slot).data('appData', app);
+            if (index == "police") {
+                var appElement = '<div class="app" id="slot-'+app.slot+'" style="background-color: '+app.color+';" data-toggle="tooltip" data-placement="bottom" title="'+app.tooltipText+'"><img src="img/politie.png" width="20" height="26" alt="police" style="margin-left: 0.65vw!important;margin-top: 0.7vh!important;" /></div>'
+                $('.slot-'+app.slot).append(appElement);
+                $('.slot-'+app.slot).removeClass("empty-slot");
+                $('#slot-'+app.slot).data('appData', app);
+            } else {
+                var appElement = '<div class="app" id="slot-'+app.slot+'" style="background-color: '+app.color+';" data-toggle="tooltip" data-placement="bottom" title="'+app.tooltipText+'"><i class="'+app.icon+'" id="app-icon" style="'+app.style+'"></i></div>'
+                $('.slot-'+app.slot).append(appElement);
+                $('.slot-'+app.slot).removeClass("empty-slot");
+                $('#slot-'+app.slot).data('appData', app);
+            }
+            
         });
         $('[data-toggle="tooltip"]').tooltip();
     }
@@ -1249,17 +1330,14 @@ qbPhone.CallScreen = function(callData) {
         $('.incoming-call').css({"display": "none"});
         $('.busy-call').css({"display": "none"});
         $('.outgoing-call').css({"display": "block"});
-        console.log('out')
     } else if (callData.incomingCall) {
         $('.outgoing-call').css({"display": "none"});
         $('.busy-call').css({"display": "none"});
         $('.incoming-call').css({"display": "block"});
-        console.log('im')
     } else if (callData.inCall) {
         $('.outgoing-call').css({"display": "none"});
         $('.incoming-call').css({"display": "none"});
         $('.busy-call').css({"display": "block"});
-        console.log('cur')
     }
     var caller = callData.number
     if (callData.name != null) {caller = callData.name};
@@ -1272,4 +1350,4 @@ updateNewBalance = function() {
     $("#new-balance").html(balance - minAmount);
 }
 
-// qbPhone.Open();
+//qbPhone.Open();

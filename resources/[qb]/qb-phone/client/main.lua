@@ -67,6 +67,16 @@ RegisterNUICallback('getMessages', function(data, cb)
     cb(chats)
 end)
 
+RegisterNUICallback('getCharacterData', function(data, cb)
+    cb(QBCore.Functions.GetPlayerData().charinfo)
+end)
+
+RegisterNUICallback('policeSearchPerson', function(data, cb)
+    QBCore.Functions.TriggerCallback('qb-phone:server:getSearchData', function(result)
+        cb(result)
+    end, data.search)
+end)
+
 function GetClosestPlayer()
     local closestPlayers = QBCore.Functions.GetPlayersFromCoords()
     local closestDistance = -1
