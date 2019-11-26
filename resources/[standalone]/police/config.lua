@@ -23,6 +23,14 @@ Config.RandomInt = function(length)
 	end
 end
 
+Config.Objects = {
+    ["cone"] = `prop_roadcone02a`,
+    ["barier"] = `prop_barrier_work06a`,
+    ["schotten"] = `prop_snow_sign_road_06g`,
+    ["tent"] = `prop_gazebo_03`,
+    ["light"] = `prop_worklight_03b`,
+}
+
 Config.Locations = {
    ["duty"] = {x = 440.085, y = -974.924, z = 30.689, h = 90.654},
    ["clothing"] = {x = 454.456, y = -988.743, z = 30.689, h = 90.654},

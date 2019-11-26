@@ -12,6 +12,7 @@ client_scripts {
 	'client/heli.lua',
 	'client/anpr.lua',
 	'client/evidence.lua',
+	'client/objects.lua',
 }
 
 server_scripts {

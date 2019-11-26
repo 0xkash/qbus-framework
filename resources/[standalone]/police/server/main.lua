@@ -7,6 +7,7 @@ PlayerStatus = {}
 Casings = {}
 BloodDrops = {}
 FingerDrops = {}
+local Objects = {}
 
 RegisterServerEvent('police:server:CuffPlayer')
 AddEventHandler('police:server:CuffPlayer', function(playerId, isSoftcuff)
@@ -204,6 +205,20 @@ AddEventHandler('police:server:UpdateBlips', function()
     TriggerClientEvent("police:client:UpdateBlips", -1)
 end)
 
+RegisterServerEvent('police:server:spawnObject')
+AddEventHandler('police:server:spawnObject', function(type)
+    local src = source
+    local objectId = CreateObjectId()
+    Objects[objectId] = type
+    TriggerClientEvent("police:client:spawnObject", -1, objectId, type, src)
+end)
+
+RegisterServerEvent('police:server:deleteObject')
+AddEventHandler('police:server:deleteObject', function(objectId)
+    local src = source
+    TriggerClientEvent('police:client:removeObject', -1, objectId)
+end)
+
 RegisterServerEvent('police:server:Impound')
 AddEventHandler('police:server:Impound', function(plate, fullImpound, price)
     local src = source
@@ -394,6 +409,19 @@ function CreateCasingId()
 	else
 		local caseId = math.random(10000, 99999)
 		return caseId
+	end
+end
+
+function CreateObjectId()
+    if Objects ~= nil then
+		local objectId = math.random(10000, 99999)
+		while Objects[caseId] ~= nil do
+			objectId = math.random(10000, 99999)
+		end
+		return objectId
+	else
+		local objectId = math.random(10000, 99999)
+		return objectId
 	end
 end
 
