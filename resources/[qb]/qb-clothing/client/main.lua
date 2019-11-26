@@ -166,21 +166,34 @@ end
 
 Citizen.CreateThread(function()
     for k, v in pairs (Config.Stores) do
-        local blip = AddBlipForCoord(v.x, v.y, v.z)
-        SetBlipSprite(blip, 366)
-        SetBlipColour(blip, 47)
-        SetBlipScale  (blip, 0.7)
-        SetBlipAsShortRange(blip, true)
-        BeginTextCommandSetBlipName("STRING")
-        AddTextComponentString("Kledingwinkel")
-        EndTextCommandSetBlipName(blip)
+        if Config.Stores[k].shopType == "clothing" then
+            local clothingShop = AddBlipForCoord(Config.Stores[k].x, Config.Stores[k].y, Config.Stores[k].z)
+            SetBlipSprite(clothingShop, 366)
+            SetBlipColour(clothingShop, 47)
+            SetBlipScale  (clothingShop, 0.7)
+            SetBlipAsShortRange(clothingShop, true)
+            BeginTextCommandSetBlipName("STRING")
+            AddTextComponentString("Kledingwinkel")
+            EndTextCommandSetBlipName(clothingShop)
+        end
+        
+        if Config.Stores[k].shopType == "barber" then
+            local barberShop = AddBlipForCoord(Config.Stores[k].x, Config.Stores[k].y, Config.Stores[k].z)
+            SetBlipSprite(barberShop, 71)
+            SetBlipColour(barberShop, 0)
+            SetBlipScale  (barberShop, 0.7)
+            SetBlipAsShortRange(barberShop, true)
+            BeginTextCommandSetBlipName("STRING")
+            AddTextComponentString("Kapper")
+            EndTextCommandSetBlipName(barberShop)
+        end
     end
 end)
 
 Citizen.CreateThread(function()
     while true do
 
-        if isLoggedIn then
+        -- if isLoggedIn then
 
             local ped = GetPlayerPed(-1)
             local pos = GetEntityCoords(ped)
@@ -193,14 +206,24 @@ Citizen.CreateThread(function()
                 if dist < 30 then
                     DrawMarker(2, Config.Stores[k].x, Config.Stores[k].y, Config.Stores[k].z + 0.98, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.4, 0.4, 0.2, 255, 255, 255, 255, 0, 0, 0, 1, 0, 0, 0)
                     if dist < 5 then
-                        DrawText3Ds(Config.Stores[k].x, Config.Stores[k].y, Config.Stores[k].z + 1.25, '~g~E~w~ - Om kleding te shoppen')
+                        if Config.Stores[k].shopType == "clothing" then
+                            DrawText3Ds(Config.Stores[k].x, Config.Stores[k].y, Config.Stores[k].z + 1.25, '~g~E~w~ - Om kleding te shoppen')
+                        elseif Config.Stores[k].shopType == "barber" then
+                            DrawText3Ds(Config.Stores[k].x, Config.Stores[k].y, Config.Stores[k].z + 1.25, '~g~E~w~ - Om haar aan te passen')
+                        end
                         if IsControlJustPressed(0, Keys["E"]) then
-                            customCamLocation = nil
-                            openMenu({
-                                {menu = "character", label = "Karakter", selected = true},
-                                {menu = "clothing", label = "Uiterlijk", selected = false},
-                                {menu = "accessoires", label = "Accessoires", selected = false}
-                            })
+                            if Config.Stores[k].shopType == "clothing" then
+                                customCamLocation = nil
+                                openMenu({
+                                    {menu = "character", label = "Kleding", selected = true},
+                                    {menu = "accessoires", label = "Accessoires", selected = false}
+                                })
+                            elseif Config.Stores[k].shopType == "barber" then
+                                customCamLocation = nil
+                                openMenu({
+                                    {menu = "clothing", label = "Haar", selected = true},
+                                })
+                            end
                         end
                     end
                     inRange = true
@@ -211,7 +234,7 @@ Citizen.CreateThread(function()
                 Citizen.Wait(2000)
             end
 
-        end
+        -- end
 
         Citizen.Wait(3)
     end
@@ -220,7 +243,7 @@ end)
 Citizen.CreateThread(function()
     while true do
 
-        if isLoggedIn then
+        -- if isLoggedIn then
 
             local ped = GetPlayerPed(-1)
             local pos = GetEntityCoords(ped)
@@ -233,20 +256,20 @@ Citizen.CreateThread(function()
                 if dist < 15 then
                     DrawMarker(2, Config.ClothingRooms[k].x, Config.ClothingRooms[k].y, Config.ClothingRooms[k].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.4, 0.4, 0.2, 255, 255, 255, 255, 0, 0, 0, 1, 0, 0, 0)
                     if dist < 2 then
-                        if PlayerData.job.name == Config.ClothingRooms[k].requiredJob then
+                        -- if PlayerData.job.name == Config.ClothingRooms[k].requiredJob then
                             DrawText3Ds(Config.ClothingRooms[k].x, Config.ClothingRooms[k].y, Config.ClothingRooms[k].z + 0.3, '~g~E~w~ - Outfits bekijken')
                             if IsControlJustPressed(0, Keys["E"]) then
                                 customCamLocation = Config.ClothingRooms[k].cameraLocation
                                 QBCore.Functions.TriggerCallback('qb-clothing:server:getOutfits', function(result)
                                     openMenu({
-                                        {menu = "roomOutfits", label = "Presets", selected = true, outfits = Config.Outfits[PlayerData.job.name]},
+                                        {menu = "roomOutfits", label = "Presets", selected = true, outfits = Config.Outfits["police"]},
                                         {menu = "myOutfits", label = "Mijn Outfits", selected = false, outfits = result},
                                         {menu = "character", label = "Karakter", selected = false},
                                         {menu = "accessoires", label = "Accessoires", selected = false}
                                     })
                                 end)
                             end
-                        end
+                        -- end
                     end
                     inRange = true
                 end
@@ -256,7 +279,7 @@ Citizen.CreateThread(function()
                 Citizen.Wait(2000)
             end
 
-        end
+        -- end
 
         Citizen.Wait(3)
     end
