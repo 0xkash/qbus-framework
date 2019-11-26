@@ -288,7 +288,6 @@ end)
 RegisterNetEvent('qb-clothing:client:openOutfitMenu')
 AddEventHandler('qb-clothing:client:openOutfitMenu', function()
     QBCore.Functions.TriggerCallback('qb-clothing:server:getOutfits', function(result)
-        print(json.encode(result))
         openMenu({
             {menu = "myOutfits", label = "Mijn Outfits", selected = true, outfits = result},
         })
@@ -671,10 +670,8 @@ function ChangeVariation(data)
         end
     elseif clothingCategory == "face" then
         if type == "item" then
-            print(item)
             SetPedHeadBlendData(ped, tonumber(item), tonumber(item), tonumber(item), skinData["face"].texture, skinData["face"].texture, skinData["face"].texture, 1.0, 1.0, 1.0, true)
             skinData["face"].item = item
-            print('yeye')
         elseif type == "texture" then
             SetPedHeadBlendData(ped, skinData["face"].item, skinData["face"].item, skinData["face"].item, item, item, item, 1.0, 1.0, 1.0, true)
             skinData["face"].texture = item
@@ -684,8 +681,6 @@ function ChangeVariation(data)
         if type == "item" then
             SetPedComponentVariation(ped, 2, item, 0, 0)
             skinData["hair"].item = item
-            print(item)
-            print(skinData["hair"].item)
         elseif type == "texture" then
             SetPedHairColor(GetPlayerPed(-1), item, item)
             skinData["hair"].texture = item
@@ -893,7 +888,6 @@ function ChangeToSkinNoUpdate(skin)
         if skin == "mp_m_freemode_01" or skin == "mp_f_freemode_01" then
             for i = 0, 11 do
                 SetPedComponentVariation(GetPlayerPed(-1), 1, 1, 1, 1)
-                print(i)
             end
             SetPedComponentVariation(GetPlayerPed(-1), 1, -1, -1, -1)
         end
@@ -928,7 +922,6 @@ end)
 function SaveSkin()
 	local model = GetEntityModel(GetPlayerPed(-1))
     clothing = json.encode(skinData)
-    print(clothing)
 	TriggerServerEvent("qb-clothing:saveSkin", model, clothing)
 end
 

@@ -77,23 +77,26 @@ $(document).on('click', '.clothing-menu-option-item-left', function(e){
     var inputVal = $(inputElem).val();
     var newValue = parseFloat(inputVal) - 1;
 
-    if (newValue != -2) {
-        $(inputElem).val(newValue);
-        $.post('http://qb-clothing/updateSkin', JSON.stringify({
-            clothingType: clothingCategory,
-            articleNumber: newValue,
-            type: buttonType,
-        }));
-    
-        if (clothingCategory == "model") {
+    if (clothingCategory == "model") {
+        if (newValue != 0) {
+            $(inputElem).val(newValue);
             $.post('http://qb-clothing/setCurrentPed', JSON.stringify({ped: newValue}), function(model){
                 $("#current-model").html("<p>"+model+"</p>")
             });
-            QBClothing.ResetValues()
+            QBClothing.ResetValues();
+        }
+    } else {
+        if (newValue != -1) {
+            $(inputElem).val(newValue);
+            $.post('http://qb-clothing/updateSkin', JSON.stringify({
+                clothingType: clothingCategory,
+                articleNumber: newValue,
+                type: buttonType,
+            }));
         }
     }
     $.post('http://qb-clothing/PlaySound');
-})
+});
 
 $(document).on('change', '.item-number', function(){
     var clothingCategory = $(this).parent().parent().data('type');
