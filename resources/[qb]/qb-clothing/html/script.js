@@ -18,6 +18,7 @@ $(document).on('click', '.clothing-menu-header-btn', function(e){
     selectedTab = this;
 
     $(".clothing-menu-"+category+"-container").css({"display": "block"});
+    $.post('http://qb-clothing/PlaySound');
 })
 
 $(document).on('click', '.clothing-menu-option-item-right', function(e){
@@ -91,6 +92,7 @@ $(document).on('click', '.clothing-menu-option-item-left', function(e){
             QBClothing.ResetValues()
         }
     }
+    $.post('http://qb-clothing/PlaySound');
 })
 
 $(document).on('change', '.item-number', function(){
@@ -134,6 +136,7 @@ $(document).on('click', '.clothing-menu-header-camera-btn', function(e){
             selectedCam = this;
         }
     }
+    $.post('http://qb-clothing/PlaySound');
 });
 
 $(document).on('keydown', function() {
@@ -158,27 +161,46 @@ $(document).ready(function(){
                 break;
             case "updateMax":
                 QBClothing.SetMaxValues(event.data.maxValues);
-                break
+                break;
+            case "reloadMyOutfits":
+                QBClothing.ReloadOutfits(event.data.outfits);
+                break;
         }
     })
 });
+
+QBClothing.ReloadOutfits = function(outfits) {
+    $(".clothing-menu-myOutfits-container").html("");
+    $.each(outfits, function(index, outfit){
+        var elem = '<div class="clothing-menu-option" data-myOutfit="'+(index + 1)+'"> <div class="clothing-menu-option-header"><p>'+outfit.outfitname+'</p></div><div class="clothing-menu-myOutfit-option-button"><p>Selecteer</p></div><div class="clothing-menu-myOutfit-option-button-remove"><p>Verwijder</p></div></div>'
+        $(".clothing-menu-myOutfits-container").append(elem)
+        
+        $("[data-myOutfit='"+(index + 1)+"']").data('myOutfitData', outfit)
+    });
+    $.post('http://qb-clothing/PlaySound');
+}
 
 $(document).on('click', "#save-menu", function(e){
     e.preventDefault();
     QBClothing.Close();
     $.post('http://qb-clothing/saveClothing');
+    $.post('http://qb-clothing/PlaySound');
 });
 
 $(document).on('click', "#cancel-menu", function(e){
     e.preventDefault();
     QBClothing.Close();
+    $.post('http://qb-clothing/resetOutfit');
+    $.post('http://qb-clothing/PlaySound');
 });
 
 QBClothing.Open = function(data) {
     $(".clothing-menu-container").css({"display":"block"}).animate({right: 0,}, 200);
     QBClothing.SetMaxValues(data.maxValues)
     $(".clothing-menu-header").html("");
+    // QBClothing.SetCurrentValues(data.currentClothing)
     $(".clothing-menu-roomOutfits-container").html("");
+    $(".clothing-menu-myOutfits-container").html("");
     $.each(data.menus, function(i, menu){
         if (menu.selected) {
             $(".clothing-menu-header").append('<div class="clothing-menu-header-btn '+menu.menu+'Tab selected" data-category="'+menu.menu+'"><p>'+menu.label+'</p></div>')
@@ -195,14 +217,23 @@ QBClothing.Open = function(data) {
                 var elem = '<div class="clothing-menu-option" data-outfit="'+(index + 1)+'"> <div class="clothing-menu-option-header"><p>'+outfit.outfitLabel+'</p></div> <div class="clothing-menu-outfit-option-button"><p>Selecteer Outfit</p></div> </div>'
                 $(".clothing-menu-roomOutfits-container").append(elem)
                 
-                $("[data-outfit='"+(index + 1)+"']").data('outfitData', outfit.outfitData)
+                $("[data-outfit='"+(index + 1)+"']").data('outfitData', outfit)
+            });
+        }
+
+        if (menu.menu == "myOutfits") {
+            $.each(menu.outfits, function(index, outfit){
+                var elem = '<div class="clothing-menu-option" data-myOutfit="'+(index + 1)+'"> <div class="clothing-menu-option-header"><p>'+outfit.outfitname+'</p></div><div class="clothing-menu-myOutfit-option-button"><p>Selecteer</p></div><div class="clothing-menu-myOutfit-option-button-remove"><p>Verwijder</p></div></div>'
+                $(".clothing-menu-myOutfits-container").append(elem)
+                
+                $("[data-myOutfit='"+(index + 1)+"']").data('myOutfitData', outfit)
             });
         }
     });
 
     var menuWidth = (100 / data.menus.length)
 
-    $(".clothing-menu-header-btn").css("width", menuWidth + "%")
+    $(".clothing-menu-header-btn").css("width", menuWidth + "%");
 }
 
 $(document).on('click', '.clothing-menu-outfit-option-button', function(e){
@@ -211,8 +242,36 @@ $(document).on('click', '.clothing-menu-outfit-option-button', function(e){
     var outfitData = $(this).parent().data('outfitData');
 
     $.post('http://qb-clothing/selectOutfit', JSON.stringify({
-        outfitData: outfitData
+        outfitData: outfitData.outfitData,
+        outfitName: outfitData.outfitLabel
     }))
+    $.post('http://qb-clothing/PlaySound');
+});
+
+$(document).on('click', '.clothing-menu-myOutfit-option-button', function(e){
+    e.preventDefault();
+
+    var outfitData = $(this).parent().data('myOutfitData');
+
+    $.post('http://qb-clothing/selectOutfit', JSON.stringify({
+        outfitData: outfitData.skin,
+        outfitName: outfitData.outfitname,
+        outfitId: outfitData.outfitId,
+    }))
+    $.post('http://qb-clothing/PlaySound');
+});
+
+$(document).on('click', '.clothing-menu-myOutfit-option-button-remove', function(e){
+    e.preventDefault();
+
+    var outfitData = $(this).parent().data('myOutfitData');
+
+    $.post('http://qb-clothing/removeOutfit', JSON.stringify({
+        outfitData: outfitData.skin,
+        outfitName: outfitData.outfitname,
+        outfitId: outfitData.outfitId,
+    }));
+    $.post('http://qb-clothing/PlaySound');
 });
 
 QBClothing.Close = function() {
@@ -222,12 +281,14 @@ QBClothing.Close = function() {
     });
 
     $(".clothing-menu-roomOutfits-container").css("display", "none");
+    $(".clothing-menu-myOutfits-container").css("display", "none");
     $(".clothing-menu-character-container").css("display", "none");
     $(".clothing-menu-clothing-container").css("display", "none");
     $(".clothing-menu-accessories-container").css("display", "none");
 
     $(selectedCam).removeClass('selected-cam');
     selectedCam = null;
+    $.post('http://qb-clothing/PlaySound');
 }
 
 QBClothing.SetMaxValues = function(maxValues) {
@@ -278,22 +339,32 @@ QBClothing.ResetValues = function() {
 $(document).on('click', '#save-outfit', function(e){
     e.preventDefault();
 
-    $(".clothing-menu-container").css({"filter":"blur(2px)"});
+    $(".clothing-menu-container").css({"display":"block"}).animate({right: "-25vw",}, 200, function(){
+        $(".clothing-menu-container").css({"display":"none"});
+    });
+
     $(".clothing-menu-save-outfit-name").fadeIn(150);
+    $.post('http://qb-clothing/PlaySound');
 });
 
 $(document).on('click', '#save-outfit-save', function(e){
     e.preventDefault();
 
-    $(".clothing-menu-container").css({"filter":"none"});
+    $(".clothing-menu-container").css({"display":"block"}).animate({right: 0,}, 200);
     $(".clothing-menu-save-outfit-name").fadeOut(150);
+
+    $.post('http://qb-clothing/saveOutfit', JSON.stringify({
+        outfitName: $("#outfit-name").val()
+    }));
+    $.post('http://qb-clothing/PlaySound');
 });
 
 $(document).on('click', '#cancel-outfit-save', function(e){
     e.preventDefault();
 
-    $(".clothing-menu-container").css({"filter":"none"});
+    $(".clothing-menu-container").css({"display":"block"}).animate({right: 0,}, 200);
     $(".clothing-menu-save-outfit-name").fadeOut(150);
+    $.post('http://qb-clothing/PlaySound');
 });
 
-QBClothing.Open()
+// QBClothing.Open()

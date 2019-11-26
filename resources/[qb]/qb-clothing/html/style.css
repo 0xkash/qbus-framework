@@ -101,6 +101,19 @@
     overflow-y: scroll !important;
 }
 
+.clothing-menu-myOutfits-container {
+    display: none;
+    position: absolute;
+    margin: 0 auto;
+    left: 0.3vh;
+    right: 0;
+    top: 9vh;
+    height: 87vh;
+    width: 92%;
+    background-color: #282e36;
+    overflow-y: scroll !important;
+}
+
 .clothing-menu-outfit-option-button {
     position: relative;
     text-align: center;
@@ -119,6 +132,58 @@
 }
 
 .clothing-menu-outfit-option-button > p {
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-family: sans-serif;
+    letter-spacing: 0.1vh;
+    font-size: 1vh;
+}
+
+.clothing-menu-myOutfit-option-button {
+    position: absolute;
+    text-align: center;
+    line-height: 4.8vh;
+    width: 40%;
+    height: 40%;
+    left: 2vh;
+    top: 5.1vh;
+    background-color: #b12424;
+    border-radius: 0.75vh;
+    transition: all 0.1s linear;
+}
+
+.clothing-menu-myOutfit-option-button:hover {
+    background-color: #d62f2f;
+}
+
+.clothing-menu-myOutfit-option-button > p {
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-family: sans-serif;
+    letter-spacing: 0.1vh;
+    font-size: 1vh;
+}
+
+.clothing-menu-myOutfit-option-button-remove {
+    position: absolute;
+    text-align: center;
+    line-height: 4.8vh;
+    width: 40%;
+    height: 40%;
+    right: 2vh;
+    top: 5.1vh;
+    background-color: #b12424;
+    border-radius: 0.75vh;
+    transition: all 0.1s linear;
+}
+
+.clothing-menu-myOutfit-option-button-remove:hover {
+    background-color: #d62f2f;
+}
+
+.clothing-menu-myOutfit-option-button-remove > p {
     color: white;
     font-weight: bold;
     text-transform: uppercase;
@@ -264,7 +329,7 @@
     font-family: sans-serif;
     text-transform: uppercase;
     font-weight: bold;
-    font-size: 1.1vh;
+    font-size: 1vh;
     letter-spacing: 0.1vh;
     color: white;
     outline: none;
@@ -323,6 +388,7 @@
 }
 
 .clothing-menu-save-outfit-name {
+    display: none;
     position: relative;
     width: 40vh;
     height: 25vh;

@@ -129,6 +129,9 @@ local skinData = {
         texture = 0,
     },
 }
+
+local previousSkinData = {}
+
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     TriggerServerEvent("qb-clothes:loadPlayerSkin")
@@ -234,11 +237,14 @@ Citizen.CreateThread(function()
                             DrawText3Ds(Config.ClothingRooms[k].x, Config.ClothingRooms[k].y, Config.ClothingRooms[k].z + 0.3, '~g~E~w~ - Outfits bekijken')
                             if IsControlJustPressed(0, Keys["E"]) then
                                 customCamLocation = Config.ClothingRooms[k].cameraLocation
-                                openMenu({
-                                    {menu = "roomOutfits", label = "Presets", selected = true, outfits = Config.Outfits[PlayerData.job.name]},
-                                    {menu = "character", label = "Karakter", selected = false},
-                                    {menu = "accessoires", label = "Accessoires", selected = false}
-                                })
+                                QBCore.Functions.TriggerCallback('qb-clothing:server:getOutfits', function(result)
+                                    openMenu({
+                                        {menu = "roomOutfits", label = "Presets", selected = true, outfits = Config.Outfits[PlayerData.job.name]},
+                                        {menu = "myOutfits", label = "Mijn Outfits", selected = false, outfits = result},
+                                        {menu = "character", label = "Karakter", selected = false},
+                                        {menu = "accessoires", label = "Accessoires", selected = false}
+                                    })
+                                end)
                             end
                         end
                     end
@@ -256,10 +262,19 @@ Citizen.CreateThread(function()
     end
 end)
 
-RegisterNUICallback('selectOutfit', function(data)
-    local outfitData = data.outfitData
+RegisterNetEvent('qb-clothing:client:openOutfitMenu')
+AddEventHandler('qb-clothing:client:openOutfitMenu', function()
+    QBCore.Functions.TriggerCallback('qb-clothing:server:getOutfits', function(result)
+        print(json.encode(result))
+        openMenu({
+            {menu = "myOutfits", label = "Mijn Outfits", selected = true, outfits = result},
+        })
+    end)
+end)
 
-    TriggerEvent('qb-clothing:client:loadOutfit', outfitData)
+RegisterNUICallback('selectOutfit', function(data)
+
+    TriggerEvent('qb-clothing:client:loadOutfit', data)
 end)
 
 RegisterNUICallback('rotateRight', function()
@@ -385,10 +400,14 @@ function GetMaxValues()
 end
 
 function openMenu(allowedMenus)
+
+    previousSkinData = json.encode(skinData)
+
     GetMaxValues()
     SendNUIMessage({
         action = "open",
-        menus = allowedMenus
+        menus = allowedMenus,
+        currentClothing = skinData
     })
     SetNuiFocus(true, true)
     SetCursorLocation(0.9, 0.25)
@@ -398,6 +417,25 @@ function openMenu(allowedMenus)
 
     enableCam()
 end
+
+RegisterNUICallback('saveOutfit', function(data, cb)
+    local ped = GetPlayerPed(-1)
+    local model = GetEntityModel(ped)
+
+    TriggerServerEvent('qb-clothes:saveOutfit', data.outfitName, model, skinData)
+end)
+
+RegisterNetEvent('qb-clothing:client:reloadOutfits')
+AddEventHandler('qb-clothing:client:reloadOutfits', function(myOutfits)
+    SendNUIMessage({
+        action = "reloadMyOutfits",
+        outfits = myOutfits
+    })
+end)
+
+RegisterNUICallback("PlaySound", function(data, cb)
+    PlaySound(-1, "CLICK_BACK", "WEB_NAVIGATION_SOUNDS_PHONE", 0, 0, 1)
+end)
 
 function enableCam()
     SetEntityHeading(GetPlayerPed(-1), heading)
@@ -450,6 +488,122 @@ function closeMenu()
     disableCam()
 end
 
+RegisterNUICallback('resetOutfit', function()
+    resetClothing(json.decode(previousSkinData))
+    skinData = json.decode(previousSkinData)
+    previousSkinData = {}
+end)
+
+function resetClothing(data)
+    local ped = GetPlayerPed(-1)
+
+    -- Face
+    SetPedHeadBlendData(ped, data["face"].item, data["face"].item, data["face"].item, data["face"].texture, data["face"].texture, data["face"].texture, 1.0, 1.0, 1.0, true)
+
+    -- Pants
+    SetPedComponentVariation(ped, 4, data["pants"].item, 0, 0)
+    SetPedComponentVariation(ped, 4, data["pants"].item, data["pants"].texture, 0)
+
+    -- Hair
+    SetPedComponentVariation(ped, 2, data["hair"].item, 0, 0)
+    SetPedHairColor(ped, data["hair"].texture, data["hair"].texture)
+
+    -- Eyebrows
+    SetPedHeadOverlay(ped, 2, data["eyebrows"].item, 1.0)
+    SetPedHeadOverlayColor(ped, 2, 1, data["eyebrows"].texture, 0)
+
+    -- Beard
+    SetPedHeadOverlay(ped, 1, data["beard"].item, 1.0)
+    SetPedHeadOverlayColor(ped, 1, 1, data["beard"].texture, 0)
+
+    -- Blush
+    SetPedHeadOverlay(ped, 5, data["blush"].item, 1.0)
+    SetPedHeadOverlayColor(ped, 5, 1, data["blush"].texture, 0)
+
+    -- Lipstick
+    SetPedHeadOverlay(ped, 8, data["lipstick"].item, 1.0)
+    SetPedHeadOverlayColor(ped, 8, 1, data["lipstick"].item, 0)
+
+    -- Makeup
+    SetPedHeadOverlay(ped, 4, data["makeup"].item, 1.0)
+    SetPedHeadOverlayColor(ped, 4, 1, data["blush"].texture, 0)
+
+    -- Ageing
+    SetPedHeadOverlay(ped, 3, data["ageing"].item, 1.0)
+    SetPedHeadOverlayColor(ped, 3, 1, data["ageing"].texture, 0)
+
+    -- Arms
+    SetPedComponentVariation(ped, 3, data["arms"].item, 0, 2)
+    SetPedComponentVariation(ped, 3, data["arms"].item, data["arms"].texture, 0)
+
+    -- T-Shirt
+    SetPedComponentVariation(ped, 8, data["t-shirt"].item, 0, 2)
+    SetPedComponentVariation(ped, 8, data["t-shirt"].item, data["t-shirt"].texture, 0)
+
+    -- Vest
+    SetPedComponentVariation(ped, 9, data["vest"].item, 0, 2)
+    SetPedComponentVariation(ped, 9, data["vest"].item, data["vest"].texture, 0)
+
+    -- Torso 2
+    SetPedComponentVariation(ped, 11, data["torso2"].item, 0, 2)
+    SetPedComponentVariation(ped, 11, data["torso2"].item, data["torso2"].texture, 0)
+
+    -- Shoes
+    SetPedComponentVariation(ped, 6, data["shoes"].item, 0, 2)
+    SetPedComponentVariation(ped, 6, data["shoes"].item, data["shoes"].texture, 0)
+
+    -- Mask
+    SetPedComponentVariation(ped, 1, data["mask"].item, 0, 2)
+    SetPedComponentVariation(ped, 1, data["mask"].item, data["mask"].texture, 0)
+
+    -- Badge
+    SetPedComponentVariation(ped, 10, data["decals"].item, 0, 2)
+    SetPedComponentVariation(ped, 10, data["decals"].item, data["decals"].texture, 0)
+
+    -- Accessory
+    SetPedComponentVariation(ped, 7, data["accessory"].item, 0, 2)
+    SetPedComponentVariation(ped, 7, data["accessory"].item, data["accessory"].texture, 0)
+
+    -- Bag
+    SetPedComponentVariation(ped, 5, data["bag"].item, 0, 2)
+    SetPedComponentVariation(ped, 5, data["bag"].item, data["bag"].texture, 0)
+
+    -- Hat
+    if data["hat"].item ~= -1 and data["hat"].item ~= 0 then
+        SetPedPropIndex(ped, 0, data["hat"].item, data["hat"].texture, true)
+    else
+        ClearPedProp(ped, 0)
+    end
+
+    -- Glass
+    if data["glass"].item ~= -1 and data["glass"].item ~= 0 then
+        SetPedPropIndex(ped, 1, data["glass"].item, data["glass"].texture, true)
+    else
+        ClearPedProp(ped, 1)
+    end
+
+    -- Ear
+    if data["ear"].item ~= -1 and data["ear"].item ~= 0 then
+        SetPedPropIndex(ped, 2, data["ear"].item, data["ear"].texture, true)
+    else
+        ClearPedProp(ped, 2)
+    end
+
+    -- Watch
+    if data["watch"].item ~= -1 and data["watch"].item ~= 0 then
+        SetPedPropIndex(ped, 6, data["watch"].item, data["watch"].texture, true)
+    else
+        ClearPedProp(ped, 6)
+    end
+
+    -- Bracelet
+    if data["bracelet"].item ~= -1 and data["bracelet"].item ~= 0 then
+        SetPedPropIndex(ped, 7, data["bracelet"].item, data["bracelet"].texture, true)
+    else
+        ClearPedProp(ped, 7)
+    end
+end
+
 RegisterNUICallback('close', function()
     SetNuiFocus(false, false)
     creatingCharacter = false
@@ -470,11 +624,18 @@ RegisterNUICallback('updateSkinOnInput', function(data)
     ChangeVariation(data)
 end)
 
+RegisterNUICallback('removeOutfit', function(data, cb)
+    TriggerServerEvent('qb-clothing:server:removeOutfit', data.outfitName, data.outfitId)
+    TriggerEvent('chatMessage', "SYSTEM", "warning", "Je hebt "..data.outfitName.." verwijderd!")
+end)
+
 function ChangeVariation(data)
     local ped = GetPlayerPed(-1)
     local clothingCategory = data.clothingType
     local type = data.type
     local item = data.articleNumber
+
+    PlaySound(-1, "CLICK_BACK", "WEB_NAVIGATION_SOUNDS_PHONE", 0, 0, 1)
 
     if clothingCategory == "pants" then
         if type == "item" then
@@ -909,8 +1070,15 @@ AddEventHandler('qb-clothing:client:loadPlayerClothing', function(data, ped)
 end)
 
 RegisterNetEvent('qb-clothing:client:loadOutfit')
-AddEventHandler('qb-clothing:client:loadOutfit', function(data)
+AddEventHandler('qb-clothing:client:loadOutfit', function(oData)
     local ped = GetPlayerPed(-1)
+
+    data = oData.outfitData
+
+    for k, v in pairs(data) do
+        skinData[k].item = data[k].item
+        skinData[k].texture = data[k].texture
+    end
 
     -- Pants
     SetPedComponentVariation(ped, 4, data["pants"].item, 0, 0)
@@ -936,16 +1104,38 @@ AddEventHandler('qb-clothing:client:loadOutfit', function(data)
     SetPedComponentVariation(ped, 6, data["shoes"].item, 0, 2)
     SetPedComponentVariation(ped, 6, data["shoes"].item, data["shoes"].texture, 0)
 
-    -- Mask
-    SetPedComponentVariation(ped, 1, data["mask"].item, 0, 2)
-    SetPedComponentVariation(ped, 1, data["mask"].item, data["mask"].texture, 0)
+    -- Badge
+    SetPedComponentVariation(ped, 10, data["decals"].item, 0, 2)
+    SetPedComponentVariation(ped, 10, data["decals"].item, data["decals"].texture, 0)
+
+    -- Accessory
+    SetPedComponentVariation(ped, 7, data["accessory"].item, 0, 2)
+    SetPedComponentVariation(ped, 7, data["accessory"].item, data["accessory"].texture, 0)
+
+    -- Bag
+    SetPedComponentVariation(ped, 5, data["bag"].item, 0, 2)
+    SetPedComponentVariation(ped, 5, data["bag"].item, data["bag"].texture, 0)
 
     -- Hat
-    SetPedPropIndex(ped, 0, data["hat"].item, data["hat"].texture, true)
+    if data["hat"].item ~= -1 and data["hat"].item ~= 0 then
+        SetPedPropIndex(ped, 0, data["hat"].item, data["hat"].texture, true)
+    else
+        ClearPedProp(ped, 0)
+    end
 
     -- Glass
-    SetPedPropIndex(ped, 1, data["glass"].item, data["glass"].texture, true)
+    if data["glass"].item ~= -1 and data["glass"].item ~= 0 then
+        SetPedPropIndex(ped, 1, data["glass"].item, data["glass"].texture, true)
+    else
+        ClearPedProp(ped, 1)
+    end
 
     -- Ear
-    SetPedPropIndex(ped, 2, data["ear"].item, data["ear"].texture, true)
+    if data["ear"].item ~= -1 and data["ear"].item ~= 0 then
+        SetPedPropIndex(ped, 2, data["ear"].item, data["ear"].texture, true)
+    else
+        ClearPedProp(ped, 2)
+    end
+
+    TriggerEvent('chatMessage', "SYSTEM", "warning", "Je hebt "..oData.outfitName.." gekozen! Druk op Bevestig om outfit te bevestigen.")
 end)

@@ -289,11 +289,8 @@ Citizen.CreateThread(function()
                     if(GetDistanceBetweenCoords(pos, outfitLocation.x, outfitLocation.y, outfitLocation.z, true) < 1.5)then
                         DrawText3Ds(outfitLocation.x, outfitLocation.y, outfitLocation.z, '~g~E~w~ - Outfits')
                         if IsControlJustPressed(0, Keys["E"]) then
-                            MenuOutfits()
-                            Menu.hidden = not Menu.hidden
+                            TriggerEvent('qb-clothing:client:openOutfitMenu')
                         end
-
-                        Menu.renderGUI()
                     elseif(GetDistanceBetweenCoords(pos, outfitLocation.x, outfitLocation.y, outfitLocation.z, true) < 3)then
                         DrawText3Ds(outfitLocation.x, outfitLocation.y, outfitLocation.z, 'Outfits')
                     end
