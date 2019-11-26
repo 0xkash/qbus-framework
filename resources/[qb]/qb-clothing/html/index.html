@@ -115,6 +115,51 @@
                         <div class="clothing-menu-option-item-right" data-type="texture"><i class="fa fa-angle-right"></i></div>
                     </div>
                 </div>
+                <div class="clothing-menu-option" data-type="decals">
+                    <div class="clothing-menu-option-header"><p>Decals</p></div>
+                    <div class="clothing-menu-option-item">
+                        <div class="clothing-menu-option-item-header" data-headertype="item-header"><p>Item</p></div>
+                        <div class="clothing-menu-option-item-left" data-type="item"><i class="fa fa-angle-left"></i></div> 
+                        <input type="number" class="item-number" data-type="item" value="0">
+                        <div class="clothing-menu-option-item-right" data-type="item"><i class="fa fa-angle-right"></i></div>
+                    </div>
+                    <div class="clothing-menu-option-item">
+                        <div class="clothing-menu-option-item-header" data-headertype="texture-header"><p>Texture</p></div>
+                        <div class="clothing-menu-option-item-left" data-type="texture"><i class="fa fa-angle-left"></i></div>
+                        <input type="text" class="item-number" data-type="texture" value="0">
+                        <div class="clothing-menu-option-item-right" data-type="texture"><i class="fa fa-angle-right"></i></div>
+                    </div>
+                </div>
+                <div class="clothing-menu-option" data-type="accessory">
+                    <div class="clothing-menu-option-header"><p>Nek / Das</p></div>
+                    <div class="clothing-menu-option-item">
+                        <div class="clothing-menu-option-item-header" data-headertype="item-header"><p>Item</p></div>
+                        <div class="clothing-menu-option-item-left" data-type="item"><i class="fa fa-angle-left"></i></div> 
+                        <input type="number" class="item-number" data-type="item" value="0">
+                        <div class="clothing-menu-option-item-right" data-type="item"><i class="fa fa-angle-right"></i></div>
+                    </div>
+                    <div class="clothing-menu-option-item">
+                        <div class="clothing-menu-option-item-header" data-headertype="texture-header"><p>Texture</p></div>
+                        <div class="clothing-menu-option-item-left" data-type="texture"><i class="fa fa-angle-left"></i></div>
+                        <input type="text" class="item-number" data-type="texture" value="0">
+                        <div class="clothing-menu-option-item-right" data-type="texture"><i class="fa fa-angle-right"></i></div>
+                    </div>
+                </div>
+                <div class="clothing-menu-option" data-type="bag">
+                    <div class="clothing-menu-option-header"><p>Tassen / Accessories</p></div>
+                    <div class="clothing-menu-option-item">
+                        <div class="clothing-menu-option-item-header" data-headertype="item-header"><p>Item</p></div>
+                        <div class="clothing-menu-option-item-left" data-type="item"><i class="fa fa-angle-left"></i></div> 
+                        <input type="number" class="item-number" data-type="item" value="0">
+                        <div class="clothing-menu-option-item-right" data-type="item"><i class="fa fa-angle-right"></i></div>
+                    </div>
+                    <div class="clothing-menu-option-item">
+                        <div class="clothing-menu-option-item-header" data-headertype="texture-header"><p>Texture</p></div>
+                        <div class="clothing-menu-option-item-left" data-type="texture"><i class="fa fa-angle-left"></i></div>
+                        <input type="text" class="item-number" data-type="texture" value="0">
+                        <div class="clothing-menu-option-item-right" data-type="texture"><i class="fa fa-angle-right"></i></div>
+                    </div>
+                </div>
                 <div class="clothing-menu-option" data-type="pants">
                     <div class="clothing-menu-option-header"><p>Broeken</p></div>
                     <div class="clothing-menu-option-item">
@@ -349,19 +394,27 @@
             </div>
 
             <div class="clothing-menu-roomOutfits-container">
-                <!-- <div class="clothing-menu-option" data-outfit="1">
-                    <div class="clothing-menu-option-header"><p>DSI Outfit</p></div>
-                    <div class="clothing-menu-outfit-option-button"><p>Selecteer Outfit</p></div>
-                </div> -->
+
             </div>
 
             <div class="clothing-menu-option-buttons">
                 <div class="clothing-menu-option-button" id="save-menu"><p>Opslaan</p></div>
                 <div class="clothing-menu-option-button" id="cancel-menu"><p>Annuleren</p></div>
+                <div class="clothing-menu-option-button" id="save-outfit"><p>Outfit Opslaan</p></div>
+            </div>
+        </div>
+
+        <div class="clothing-menu-save-outfit-name">
+            <div class="clothing-menu-save-outfit-name-header"><p>Geef je outfit een naam</p></div>
+
+            <input type="text" id="outfit-name" placeholder="Outfit Naam">
+
+            <div class="clothing-menu-save-outfit-name-buttons">
+                <div class="clothing-menu-save-outfit-name-button" id="save-outfit-save"><p>Opslaan</p></div>
+                <div class="clothing-menu-save-outfit-name-button" id="cancel-outfit-save"><p>Annuleren</p></div>
             </div>
         </div>
     </div>
 </body>
 <script src="./script.js"></script>
-
 </html>

@@ -3,6 +3,8 @@ QBClothing = {}
 var selectedTab = ".characterTab"
 var lastCategory = "character"
 
+var selectedCam = null;
+
 var clothingCategorys = ["arms", "t-shirt", "torso2", "pants", "shoes", "eyebrows", "face"]
 
 $(document).on('click', '.clothing-menu-header-btn', function(e){
@@ -102,8 +104,6 @@ $(document).on('change', '.item-number', function(){
         type: buttonType,
     }));
 });
-
-var selectedCam = null;
 
 $(document).on('click', '.clothing-menu-header-camera-btn', function(e){
     e.preventDefault();
@@ -225,6 +225,9 @@ QBClothing.Close = function() {
     $(".clothing-menu-character-container").css("display", "none");
     $(".clothing-menu-clothing-container").css("display", "none");
     $(".clothing-menu-accessories-container").css("display", "none");
+
+    $(selectedCam).removeClass('selected-cam');
+    selectedCam = null;
 }
 
 QBClothing.SetMaxValues = function(maxValues) {
@@ -272,4 +275,25 @@ QBClothing.ResetValues = function() {
     })
 }
 
-// QBClothing.Open()
+$(document).on('click', '#save-outfit', function(e){
+    e.preventDefault();
+
+    $(".clothing-menu-container").css({"filter":"blur(2px)"});
+    $(".clothing-menu-save-outfit-name").fadeIn(150);
+});
+
+$(document).on('click', '#save-outfit-save', function(e){
+    e.preventDefault();
+
+    $(".clothing-menu-container").css({"filter":"none"});
+    $(".clothing-menu-save-outfit-name").fadeOut(150);
+});
+
+$(document).on('click', '#cancel-outfit-save', function(e){
+    e.preventDefault();
+
+    $(".clothing-menu-container").css({"filter":"none"});
+    $(".clothing-menu-save-outfit-name").fadeOut(150);
+});
+
+QBClothing.Open()

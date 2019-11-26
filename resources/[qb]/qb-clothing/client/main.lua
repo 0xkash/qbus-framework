@@ -49,27 +49,27 @@ local skinData = {
         texture = 0,
     },
     ["eyebrows"] = {
-        item = 0,
+        item = -1,
         texture = 0,
     },
     ["beard"] = {
-        item = 0,
+        item = -1,
         texture = 0,
     },
     ["blush"] = {
         item = -1,
-        texture = -1,
+        texture = 0,
     },
     ["lipstick"] = {
         item = -1,
-        texture = -1,
+        texture = 0,
     },
     ["makeup"] = {
         item = -1,
-        texture = -1,
+        texture = 0,
     },
     ["ageing"] = {
-        item = 0,
+        item = -1,
         texture = 0,
     },
     ["arms"] = {
@@ -85,7 +85,11 @@ local skinData = {
         texture = 0,
     },
     ["vest"] = {
-        item = 0,
+        item = -1,
+        texture = 0,
+    },
+    ["bag"] = {
+        item = -1,
         texture = 0,
     },
     ["shoes"] = {
@@ -93,27 +97,35 @@ local skinData = {
         texture = 0,
     },
     ["mask"] = {
-        item = 0,
+        item = -1,
         texture = 0,
     },
     ["hat"] = {
-        item = 0,
+        item = -1,
         texture = 0,
     },
     ["glass"] = {
-        item = 0,
+        item = -1,
         texture = 0,
     },
     ["ear"] = {
-        item = 0,
+        item = -1,
         texture = 0,
     },
     ["watch"] = {
-        item = 0,
+        item = -1,
         texture = 0,
     },
     ["bracelet"] = {
-        item = 0,
+        item = -1,
+        texture = 0,
+    },
+    ["accessory"] = {
+        item = -1,
+        texture = 0,
+    },
+    ["decals"] = {
+        item = -1,
         texture = 0,
     },
 }
@@ -273,6 +285,7 @@ local clothingCategorys = {
     ["pants"]       = {type = "variation",  id = 4},
     ["vest"]        = {type = "variation",  id = 9},
     ["shoes"]       = {type = "variation",  id = 6},
+    ["bag"]         = {type = "variation",  id = 5},
     ["hair"]        = {type = "hair",       id = 2},
     ["eyebrows"]    = {type = "overlay",    id = 2},
     ["face"]        = {type = "face",       id = 2},
@@ -287,6 +300,8 @@ local clothingCategorys = {
     ["ear"]         = {type = "prop",       id = 2},
     ["watch"]       = {type = "prop",       id = 6},
     ["bracelet"]    = {type = "prop",       id = 7},
+    ["accessory"]   = {type = "variation",  id = 7},
+    ["decals"]      = {type = "variation",  id = 10},
 }
 
 RegisterNetEvent('qb-clothing:client:openMenu')
@@ -308,6 +323,9 @@ function GetMaxValues()
         ["shoes"]       = {type = "character", item = 0, texture = 0},
         ["face"]        = {type = "character", item = 0, texture = 0},
         ["vest"]        = {type = "character", item = 0, texture = 0},
+        ["accessory"]   = {type = "character", item = 0, texture = 0},
+        ["decals"]      = {type = "character", item = 0, texture = 0},
+        ["bag"]         = {type = "character", item = 0, texture = 0},
         ["hair"]        = {type = "hair", item = 0, texture = 0},
         ["eyebrows"]    = {type = "hair", item = 0, texture = 0},
         ["beard"]       = {type = "hair", item = 0, texture = 0},
@@ -562,6 +580,30 @@ function ChangeVariation(data)
             SetPedComponentVariation(ped, 9, skinData["vest"].item, item, 0)
             skinData["vest"].texture = item
         end
+    elseif clothingCategory == "bag" then
+        if type == "item" then
+            SetPedComponentVariation(ped, 5, item, 0, 2)
+            skinData["bag"].item = item
+        elseif type == "texture" then
+            SetPedComponentVariation(ped, 5, skinData["bag"].item, item, 0)
+            skinData["bag"].texture = item
+        end
+    elseif clothingCategory == "decals" then
+        if type == "item" then
+            SetPedComponentVariation(ped, 10, item, 0, 2)
+            skinData["decals"].item = item
+        elseif type == "texture" then
+            SetPedComponentVariation(ped, 10, skinData["decals"].item, item, 0)
+            skinData["decals"].texture = item
+        end
+    elseif clothingCategory == "accessory" then
+        if type == "item" then
+            SetPedComponentVariation(ped, 7, item, 0, 2)
+            skinData["accessory"].item = item
+        elseif type == "texture" then
+            SetPedComponentVariation(ped, 7, skinData["accessory"].item, item, 0)
+            skinData["accessory"].texture = item
+        end
     elseif clothingCategory == "torso2" then
         if type == "item" then
             SetPedComponentVariation(ped, 11, item, 0, 2)
@@ -605,10 +647,10 @@ function ChangeVariation(data)
         if type == "item" then
             if item ~= -1 then
                 SetPedPropIndex(ped, 1, item, skinData["glass"].texture, true)
+                skinData["glass"].item = item
             else
                 ClearPedProp(ped, 1)
             end
-            skinData["glass"].item = item
         elseif type == "texture" then
             SetPedPropIndex(ped, 1, skinData["glass"].item, item, true)
             skinData["glass"].texture = item
@@ -701,7 +743,8 @@ end)
 
 function SaveSkin()
 	local model = GetEntityModel(GetPlayerPed(-1))
-	clothing = json.encode(skinData)
+    clothing = json.encode(skinData)
+    print(clothing)
 	TriggerServerEvent("qb-clothing:saveSkin", model, clothing)
 end
 
@@ -734,7 +777,6 @@ AddEventHandler("qb-clothes:loadSkin", function(new, model, data)
 		end
         SetPlayerModel(PlayerId(), model)
 
-		SetPedRandomComponentVariation(GetPlayerPed(-1), false)
         SetModelAsNoLongerNeeded(model)
 
         SetEntityInvincible(GetPlayerPed(-1),false)
@@ -756,8 +798,6 @@ AddEventHandler('qb-clothing:client:loadPlayerClothing', function(data, ped)
     for i = 0, 7 do
         ClearPedProp(ped, i)
     end
-
-    skinData = data
 
     -- Face
     SetPedHeadBlendData(ped, data["face"].item, data["face"].item, data["face"].item, data["face"].texture, data["face"].texture, data["face"].texture, 1.0, 1.0, 1.0, true)
@@ -818,22 +858,54 @@ AddEventHandler('qb-clothing:client:loadPlayerClothing', function(data, ped)
     SetPedComponentVariation(ped, 1, data["mask"].item, 0, 2)
     SetPedComponentVariation(ped, 1, data["mask"].item, data["mask"].texture, 0)
 
+    -- Badge
+    SetPedComponentVariation(ped, 10, data["decals"].item, 0, 2)
+    SetPedComponentVariation(ped, 10, data["decals"].item, data["decals"].texture, 0)
+
+    -- Accessory
+    SetPedComponentVariation(ped, 7, data["accessory"].item, 0, 2)
+    SetPedComponentVariation(ped, 7, data["accessory"].item, data["accessory"].texture, 0)
+
+    -- Bag
+    SetPedComponentVariation(ped, 5, data["bag"].item, 0, 2)
+    SetPedComponentVariation(ped, 5, data["bag"].item, data["bag"].texture, 0)
+
     -- Hat
-    SetPedPropIndex(ped, 0, data["hat"].item, data["hat"].texture, true)
+    if data["hat"].item ~= -1 and data["hat"].item ~= 0 then
+        SetPedPropIndex(ped, 0, data["hat"].item, data["hat"].texture, true)
+    else
+        ClearPedProp(ped, 0)
+    end
 
     -- Glass
-    SetPedPropIndex(ped, 1, data["glass"].item, data["glass"].texture, true)
+    if data["glass"].item ~= -1 and data["glass"].item ~= 0 then
+        SetPedPropIndex(ped, 1, data["glass"].item, data["glass"].texture, true)
+    else
+        ClearPedProp(ped, 1)
+    end
 
     -- Ear
-    SetPedPropIndex(ped, 2, data["ear"].item, data["ear"].texture, true)
+    if data["ear"].item ~= -1 and data["ear"].item ~= 0 then
+        SetPedPropIndex(ped, 2, data["ear"].item, data["ear"].texture, true)
+    else
+        ClearPedProp(ped, 2)
+    end
 
     -- Watch
-    SetPedPropIndex(ped, 6, data["watch"].item, data["watch"].texture, true)
+    if data["watch"].item ~= -1 and data["watch"].item ~= 0 then
+        SetPedPropIndex(ped, 6, data["watch"].item, data["watch"].texture, true)
+    else
+        ClearPedProp(ped, 6)
+    end
 
     -- Bracelet
-    SetPedPropIndex(ped, 7, data["bracelet"].item, data["bracelet"].texture, true)
+    if data["bracelet"].item ~= -1 and data["bracelet"].item ~= 0 then
+        SetPedPropIndex(ped, 7, data["bracelet"].item, data["bracelet"].texture, true)
+    else
+        ClearPedProp(ped, 7)
+    end
 
-    print('Clothing loaded')
+    skinData = data
 end)
 
 RegisterNetEvent('qb-clothing:client:loadOutfit')
@@ -876,6 +948,4 @@ AddEventHandler('qb-clothing:client:loadOutfit', function(data)
 
     -- Ear
     SetPedPropIndex(ped, 2, data["ear"].item, data["ear"].texture, true)
-
-    print('Outfit loaded')
 end)
