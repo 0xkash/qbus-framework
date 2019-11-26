@@ -73,4 +73,12 @@ Config.PhoneApps = {
         tooltipText = "Advertenties",
         slot = 9,
     },
+    ['police'] = {
+        app = "police",
+        color = "#004682",
+        icon = "fas fa-ad",
+        style = "",
+        tooltipText = "MEOS",
+        slot = 16,
+    },
 }

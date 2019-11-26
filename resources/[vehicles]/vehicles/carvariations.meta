@@ -2,6 +2,372 @@
 
 <CVehicleModelInfoVariation>
   <variationData>
+  <Item>
+  <modelName>dsimerc</modelName>
+  <colors>
+    <Item>
+      <indices content="char_array">
+        001
+        134
+        001
+        156
+      </indices>
+      <liveries>
+        <Item value="true" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+      </liveries>
+    </Item>
+<Item>
+      <indices content="char_array">
+        000
+        134
+        000
+        156
+      </indices>
+      <liveries>
+        <Item value="true" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+      </liveries>
+    </Item>
+    <Item>
+      <indices content="char_array">
+        002
+        134
+        002
+        156
+      </indices>
+      <liveries>
+        <Item value="false" />
+        <Item value="true" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+      </liveries>
+    </Item>
+    <Item>
+      <indices content="char_array">
+        004
+        134
+        004
+        156
+      </indices>
+      <liveries>
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="true" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+      </liveries>
+    </Item>
+    <Item>
+      <indices content="char_array">
+        007
+        134
+        007
+        156
+      </indices>
+      <liveries>
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="true" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+      </liveries>
+    </Item>
+    <Item>
+      <indices content="char_array">
+        008
+        134
+        008
+        156
+      </indices>
+      <liveries>
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="true" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+      </liveries>
+    </Item>
+  </colors>
+  <kits>
+    <Item>157_massacaro2_modkit</Item>
+  </kits>
+  <windowsWithExposedEdges />
+  <plateProbabilities>
+    <Probabilities />
+  </plateProbabilities>
+  <lightSettings value="1" />
+  <sirenSettings value="666" />
+</Item>
+<Item>
+  <modelName>dsiq5</modelName>
+  <colors>
+    <Item>
+      <indices content="char_array">
+        001
+        134
+        001
+        156
+      </indices>
+      <liveries>
+        <Item value="true" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+      </liveries>
+    </Item>
+<Item>
+      <indices content="char_array">
+        000
+        134
+        000
+        156
+      </indices>
+      <liveries>
+        <Item value="true" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+      </liveries>
+    </Item>
+    <Item>
+      <indices content="char_array">
+        002
+        134
+        002
+        156
+      </indices>
+      <liveries>
+        <Item value="false" />
+        <Item value="true" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+      </liveries>
+    </Item>
+    <Item>
+      <indices content="char_array">
+        004
+        134
+        004
+        156
+      </indices>
+      <liveries>
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="true" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+      </liveries>
+    </Item>
+    <Item>
+      <indices content="char_array">
+        007
+        134
+        007
+        156
+      </indices>
+      <liveries>
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="true" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+      </liveries>
+    </Item>
+    <Item>
+      <indices content="char_array">
+        008
+        134
+        008
+        156
+      </indices>
+      <liveries>
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="true" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+      </liveries>
+    </Item>
+  </colors>
+  <kits>
+    <Item>157_massacaro2_modkit</Item>
+  </kits>
+  <windowsWithExposedEdges />
+  <plateProbabilities>
+    <Probabilities />
+  </plateProbabilities>
+  <lightSettings value="1" />
+  <sirenSettings value="666" />
+</Item>
+		<Item>
+  <modelName>dsivito</modelName>
+  <colors>
+    <Item>
+      <indices content="char_array">
+        001
+        134
+        001
+        156
+      </indices>
+      <liveries>
+        <Item value="true" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+      </liveries>
+    </Item>
+<Item>
+      <indices content="char_array">
+        000
+        134
+        000
+        156
+      </indices>
+      <liveries>
+        <Item value="true" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+      </liveries>
+    </Item>
+    <Item>
+      <indices content="char_array">
+        002
+        134
+        002
+        156
+      </indices>
+      <liveries>
+        <Item value="false" />
+        <Item value="true" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+      </liveries>
+    </Item>
+    <Item>
+      <indices content="char_array">
+        004
+        134
+        004
+        156
+      </indices>
+      <liveries>
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="true" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+      </liveries>
+    </Item>
+    <Item>
+      <indices content="char_array">
+        007
+        134
+        007
+        156
+      </indices>
+      <liveries>
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="true" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+      </liveries>
+    </Item>
+    <Item>
+      <indices content="char_array">
+        008
+        134
+        008
+        156
+      </indices>
+      <liveries>
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="true" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+        <Item value="false" />
+      </liveries>
+    </Item>
+  </colors>
+  <kits>
+    <Item>157_massacaro2_modkit</Item>
+  </kits>
+  <windowsWithExposedEdges />
+  <plateProbabilities>
+    <Probabilities />
+  </plateProbabilities>
+  <lightSettings value="1" />
+  <sirenSettings value="666" />
+</Item>
 <Item>
       <modelName>snowmobile</modelName>
       <colors>
@@ -787,6 +1153,39 @@
 			<sirenSettings value="666" />
 		</Item>
     <Item>
+			<modelName>pschafter</modelName>
+			<colors>
+				<Item>
+					<!-- nobel white -->
+					<indices content="char_array">
+            134
+            134
+            134
+            156
+            7
+            111
+					</indices>
+					<liveries>
+					</liveries>
+				</Item>
+			</colors>
+			<windowsWithExposedEdges />
+			<plateProbabilities>
+				<Probabilities>
+					<Item>
+						<Name>Standard White</Name>
+						<Value value="80"/>
+					</Item>
+					<Item>
+						<Name>White Plate 2</Name>
+						<Value value="20"/>
+					</Item>
+				</Probabilities>
+			</plateProbabilities>
+			<lightSettings value="1" />
+			<sirenSettings value="666" />
+		</Item>
+    <Item>
       <modelName>pbklasse</modelName>
 			<colors>
 				<Item>
@@ -947,7 +1346,106 @@
 			<sirenSettings value="666"/>
 		</Item>
     <Item>
+			<modelName>pyamahamotor</modelName>
+			<colors>
+				<Item>
+					<!-- nobel white -->
+					<indices content="char_array">
+            134
+            134
+            134
+            156
+            7
+            111
+					</indices>
+					<liveries>
+					</liveries>
+				</Item>
+			</colors>
+			<windowsWithExposedEdges />
+			<plateProbabilities>
+				<Probabilities>
+					<Item>
+						<Name>Standard White</Name>
+						<Value value="80"/>
+					</Item>
+					<Item>
+						<Name>White Plate 2</Name>
+						<Value value="20"/>
+					</Item>
+				</Probabilities>
+			</plateProbabilities>
+			<lightSettings value="1"/>
+			<sirenSettings value="666"/>
+		</Item>
+    <Item>
+			<modelName>pbmwmotor2</modelName>
+			<colors>
+				<Item>
+					<!-- nobel white -->
+					<indices content="char_array">
+            134
+            134
+            134
+            156
+            7
+            111
+					</indices>
+					<liveries>
+					</liveries>
+				</Item>
+			</colors>
+			<windowsWithExposedEdges />
+			<plateProbabilities>
+				<Probabilities>
+					<Item>
+						<Name>Standard White</Name>
+						<Value value="80"/>
+					</Item>
+					<Item>
+						<Name>White Plate 2</Name>
+						<Value value="20"/>
+					</Item>
+				</Probabilities>
+			</plateProbabilities>
+			<lightSettings value="1"/>
+			<sirenSettings value="666"/>
+		</Item>
+    <Item>
 			<modelName>pt5</modelName>
+			<colors>
+				<Item>
+					<!-- nobel white -->
+					<indices content="char_array">
+            134
+            134
+            134
+            156
+            7
+            111
+					</indices>
+					<liveries>
+					</liveries>
+				</Item>
+			</colors>
+			<windowsWithExposedEdges />
+			<plateProbabilities>
+				<Probabilities>
+					<Item>
+						<Name>Standard White</Name>
+						<Value value="80"/>
+					</Item>
+					<Item>
+						<Name>White Plate 2</Name>
+						<Value value="20"/>
+					</Item>
+				</Probabilities>
+			</plateProbabilities>
+			<lightSettings value="1"/>
+			<sirenSettings value="666"/>
+		</Item>
+    <Item>
+			<modelName>pt6</modelName>
 			<colors>
 				<Item>
 					<!-- nobel white -->

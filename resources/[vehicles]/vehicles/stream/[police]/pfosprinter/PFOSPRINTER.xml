@@ -39,7 +39,7 @@
 	</CRUISE>
 	<!-- AUX CORONAS -->
 	<ACORONAS>
-		<Headlights DfltPattern="0" ColorL="white" ColorR="white" />
+		<Headlights DfltPattern="2" ColorL="white" ColorR="white" />
 		<TailLights DfltPattern="0" ColorL="red" ColorR="red" />
 		<IndicatorsF DfltPattern="0" ColorL="white" ColorR="white" />
 		<IndicatorsB DfltPattern="0" ColorL="red" ColorR="red" />

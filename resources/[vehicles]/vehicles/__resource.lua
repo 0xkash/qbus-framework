@@ -13,6 +13,13 @@ files {
     'stream/[police]/pfosprinter/PFOSPRINTER.xml',
     'stream/[police]/ptouran11/PTOURAN11.xml',
     'stream/[police]/pt5/PT5.xml',
+    'stream/[police]/pt6/PT6.xml',
+    'stream/[police]/dsimerc/DSIMERC.xml',
+    'stream/[police]/dsiq5/DSIQ5.xml',
+    'stream/[police]/dsivito/DSIVITO.xml',
+    'stream/[police]/pschafter/PSCHAFTER.xml',
+    'stream/[police]/pbmwmotor2/PBMWMOTOR2.xml',
+    'stream/[police]/pyamahamotor/PYAMAHAMOTOR.xml',
     'stream/[dienst]/sneeuwschuiver/sneeuwschuiver.xml',
 }
  

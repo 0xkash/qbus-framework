@@ -227,6 +227,38 @@ QBCore.Functions.CreateCallback('qb-phone:server:getContactName', function(sourc
     end)
 end)
 
+QBCore.Functions.CreateCallback('qb-phone:server:getSearchData', function(source, cb, search)
+    local src = source
+    local search = escape_sqli(search)
+    local searchData = {}
+    QBCore.Functions.ExecuteSql('SELECT * FROM `players` WHERE `citizenid` = "'..search..'" OR `charinfo` LIKE "%'..search..'%"', function(result)
+        if result[1] ~= nil then
+            for k, v in pairs(result) do
+                local charinfo = json.decode(v.charinfo)
+                table.insert(searchData, {
+                    citizenid = v.citizenid,
+                    firstname = charinfo.firstname,
+                    lastname = charinfo.lastname,
+                    birthdate = charinfo.birthdate,
+                    phone = charinfo.phone,
+                    nationality = charinfo.nationality,
+                    gender = charinfo.gender,
+                    warrant = false,
+                })
+            end
+            cb(searchData)
+        else
+            cb(nil)
+        end
+    end)
+    cb(searchData)
+end)
+
+function escape_sqli(source)
+    local replacements = { ['"'] = '\\"', ["'"] = "\\'" }
+    return source:gsub( "['\"]", replacements ) -- or string.gsub( source, "['\"]", replacements )
+end
+
 QBCore.Functions.CreateCallback('qb-phone:server:getContactStatus', function(source, cb, number)
     local src = source
     local plyCid = QBCore.Functions.GetPlayer(src)
