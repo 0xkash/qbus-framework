@@ -243,6 +243,13 @@ $(document).on('click', '.police-tab-item', function(e){
         
         lastPage = currentApp
         currentApp = ".police-person"
+    } else if (tab == "vehicle") {
+        $(".police-tabs").fadeOut(150, function() {
+            $(".police-vehicle").fadeIn(150);
+        });
+        
+        lastPage = currentApp
+        currentApp = ".police-vehicle"
     }
 });
 
@@ -262,7 +269,7 @@ $(document).on('click', '.person-found-item', function(e){
         status = '<span class="person-status-active">Ja</span>'
     }
     $(this).html('<p class="person-name">Naam: '+person.firstname+' '+person.lastname+'</p><p class="person-citizenid">BSN: '+person.citizenid+'</p><hr><p class="person-birthdate">Geboortedatum: '+person.birthdate+'</p><p class="person-phonenumber">Telefoonnummer: '+person.phone+'</p><p class="person-address">Nationaliteit: '+person.nationality+'</p><p class="person-address">Geslacht: '+gender+'</p><br/><p class="person-status">Gesignaleerd: '+status+'</p>');
-})
+});
 
 $(document).on('click', '#person-button-search', function(e){
     e.preventDefault();
@@ -278,15 +285,57 @@ $(document).on('click', '#person-button-search', function(e){
             $(".police-person-found").htm("<p>Geen persoon gevonden..</p>")
         }
     });
-})
+});
 
 $(document).on('click', '.vehicle-found-item', function(e){
     e.preventDefault();
     $(".vehicle-found-item").each(function(index) {
-        $(this).html('<p class="person-name">Benefactor Schwarzer Custom</p><p class="person-citizenid">Kenteken: 94D945LD</p>')
+        var vehicleData = $(this).data("vehicleData");
+        $(this).html('<p class="vehicle-name">'+vehicleData.label+'</p><p class="vehicle-plate">Kenteken: '+vehicleData.plate+'</p>')
     });
-    $(this).html('<p class="person-name">Benefactor Schwarzer Custom</p><p class="person-citizenid">Kenteken: 94D945LD</p><hr><p class="person-birthdate">Eigenaar: Austin Kash</p><br/><p class="person-status">APK: <span class="vehicle-status-inactive">Ja</span></p>');
-})
+    var vehicleData = $(this).data("vehicleData");
+    var status = '<span class="vehicle-status-inactive">Ja</span>'
+    if (!vehicleData.status) {
+        status = '<span class="vehicle-status-active">Nee</span>'
+    }
+    var flagged = '<span class="vehicle-status-active">Ja</span>'
+    if (!vehicleData.isFlagged) {
+        flagged = '<span class="vehicle-status-inactive">Nee</span>'
+    }
+    $(this).html('<p class="vehicle-name">'+vehicleData.label+'</p><p class="vehicle-plate">Kenteken: '+vehicleData.plate+'</p><hr><p class="vehicle-person">Eigenaar: '+vehicleData.owner+' ('+vehicleData.citizenid+')</p><br/><p class="vehicle-status">APK: '+status+'</p><p class="vehicle-status">Gesignaleerd: '+flagged+'</p>');
+});
+
+$(document).on('click', '#vehicle-button-search', function(e){
+    e.preventDefault();
+    var search = $("#vehicle-input-search").val();
+    $(".police-vehicle-found").html("");
+    $.post('http://qb-phone/policeSearchVehicle', JSON.stringify({search: search,}), function(vehicles){
+        if (vehicles != null) {
+            $.each(vehicles, function (i, vehicleData) {
+                $(".police-vehicle-found").append('<div class="vehicle-found-item" id="vehicle-'+i+'"><p class="vehicle-name">'+vehicleData.label+'</p><p class="vehicle-plate">Kenteken: '+vehicleData.plate+'</p></div>');
+                $("#vehicle-" + i).data("vehicleData", vehicleData);
+            });
+        } else {
+            $(".police-vehicle-found").html("<p>Geen persoon gevonden..</p>")
+        }
+    });
+});
+
+$(document).on('click', '#vehicle-button-scan', function(e){
+    e.preventDefault();
+    $(".vehicle-found-item").html("")
+    $.post('http://qb-phone/scanVehiclePlate', JSON.stringify({}), function(vehicleData){
+        var status = '<span class="vehicle-status-inactive">Ja</span>'
+        if (!vehicleData.status) {
+            status = '<span class="vehicle-status-active">Nee</span>'
+        }
+        var flagged = '<span class="vehicle-status-active">Ja</span>'
+        if (!vehicleData.isFlagged) {
+            flagged = '<span class="vehicle-status-inactive">Nee</span>'
+        }
+        $(".police-vehicle-found").html('<div class="vehicle-found-item"><p class="vehicle-name">'+vehicleData.label+'</p><p class="vehicle-plate">Kenteken: '+vehicleData.plate+'</p><hr><p class="vehicle-person">Eigenaar: '+vehicleData.owner+' ('+vehicleData.citizenid+')</p><br/><p class="vehicle-status">APK: '+status+'</p><p class="vehicle-status">Gesignaleerd: '+flagged+'</p></div>');
+    });
+});
 
 qbPhone.SetupChat = function(chats) {
     $(".chats-container").html("");
@@ -775,10 +824,11 @@ qbPhone.Close = function() {
             });
         } else if (currentApp == ".call-app") {
             $(currentApp).css({"display":"none"});
-        } else if (currentApp == ".police-app" || currentApp == ".police-tabs" || currentApp == ".police-person") {
+        } else if (currentApp == ".police-app" || currentApp == ".police-tabs" || currentApp == ".police-person" || currentApp == ".police-vehicle") {
             $(".police-app").css({"display":"block"});
             $(".police-tabs").css({"display":"block"});
             $(".police-person").css({"display":"none"});
+            $(".police-vehicle").css({"display":"none"});
             $(homePage).css({'display':'block'});
             currentApp = homePage;
         } else {
