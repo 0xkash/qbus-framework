@@ -198,6 +198,11 @@ $(document).on('click', "#cancel-menu", function(e){
 });
 
 QBClothing.Open = function(data) {
+    $(".clothing-menu-roomOutfits-container").css("display", "none");
+    $(".clothing-menu-myOutfits-container").css("display", "none");
+    $(".clothing-menu-character-container").css("display", "none");
+    $(".clothing-menu-clothing-container").css("display", "none");
+    $(".clothing-menu-accessories-container").css("display", "none");
     $(".clothing-menu-container").css({"display":"block"}).animate({right: 0,}, 200);
     QBClothing.SetMaxValues(data.maxValues)
     $(".clothing-menu-header").html("");
@@ -242,11 +247,11 @@ QBClothing.Open = function(data) {
 $(document).on('click', '.clothing-menu-outfit-option-button', function(e){
     e.preventDefault();
 
-    var outfitData = $(this).parent().data('outfitData');
+    var oData = $(this).parent().data('outfitData');
 
     $.post('http://qb-clothing/selectOutfit', JSON.stringify({
-        outfitData: outfitData.outfitData,
-        outfitName: outfitData.outfitLabel
+        outfitData: oData.outfitData,
+        outfitName: oData.outfitLabel
     }))
     $.post('http://qb-clothing/PlaySound');
 });
@@ -291,6 +296,8 @@ QBClothing.Close = function() {
 
     $(selectedCam).removeClass('selected-cam');
     selectedCam = null;
+    selectedTab = null;
+    lastCategory = null;
     $.post('http://qb-clothing/PlaySound');
 }
 

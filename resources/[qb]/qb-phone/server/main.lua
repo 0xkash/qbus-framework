@@ -399,9 +399,13 @@ AddEventHandler('qb-phone:server:createChat', function(messages)
 
     if messages.number ~= ply.PlayerData.charinfo.phone then
         QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `charinfo` LIKE '%"..messages.number.."%'", function(target)
-            local target = QBCore.Functions.GetPlayerByCitizenId(target[1].citizenid)
+            local targetPly = QBCore.Functions.GetPlayerByCitizenId(target[1].citizenid)
 
-            TriggerClientEvent('qb-phone:client:createChatOther', target.PlayerData.source, messages, ply.PlayerData.charinfo.phone)
+            if targetPly ~= nil then
+                TriggerClientEvent('qb-phone:client:createChatOther', targetPly.PlayerData.source, messages, ply.PlayerData.charinfo.phone)
+            else
+                QBCore.Functions.ExecuteSql("INSERT INTO `phone_messages` (`citizenid`, `number`, `messages`) VALUES ('"..target[1].citizenid.."', '"..ply.PlayerData.charinfo.phone.."', '"..json.encode(messages.messages).."')")
+            end
         end)
     end
 end)
@@ -435,9 +439,13 @@ AddEventHandler('qb-phone:server:sendMessage', function(chatData)
     QBCore.Functions.ExecuteSql("UPDATE `phone_messages` SET `messages` = '"..json.encode(chatData.messages).."' WHERE `citizenid` = '"..ply.PlayerData.citizenid.."' AND `number` = '"..chatData.number.."'")
     
     QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `charinfo` LIKE '%"..chatData.number.."%'", function(target)
-        local target = QBCore.Functions.GetPlayerByCitizenId(target[1].citizenid)
+        local targetPly = QBCore.Functions.GetPlayerByCitizenId(target[1].citizenid)
 
-        TriggerClientEvent('qb-phone:client:recieveMessage', target.PlayerData.source, chatData, ply.PlayerData.charinfo.phone)
+        if targetPly ~= nil then
+            TriggerClientEvent('qb-phone:client:recieveMessage', target.PlayerData.source, chatData, ply.PlayerData.charinfo.phone)
+        else
+            QBCore.Functions.ExecuteSql("UPDATE `phone_messages` SET `messages` = '"..json.encode(chatData.messages).."' WHERE `citizenid` = '"..target[1].citizenid.."' AND `number` = '"..ply.PlayerData.charinfo.phone.."'")
+        end
     end)
 end)
 

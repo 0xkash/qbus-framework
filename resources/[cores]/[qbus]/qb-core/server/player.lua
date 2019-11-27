@@ -71,6 +71,10 @@ QBCore.Player.CheckPlayerData = function(source, PlayerData)
 	}
 	PlayerData.metadata["callsign"] = PlayerData.metadata["callsign"] ~= nil and PlayerData.metadata["callsign"] or "NO CALLSIGN"
 	PlayerData.metadata["fingerprint"] = PlayerData.metadata["fingerprint"] ~= nil and PlayerData.metadata["fingerprint"] or QBCore.Player.CreateFingerId()
+	PlayerData.metadata["criminalrecord"] = PlayerData.metadata["criminalrecord"] ~= nil and PlayerData.metadata["criminalrecord"] or {
+		["hasRecord"] = false
+		["date"] = nil
+	}
 
 	PlayerData.job = PlayerData.job ~= nil and PlayerData.job or {}
 	PlayerData.job.name = PlayerData.job.name ~= nil and PlayerData.job.name or "unemployed"

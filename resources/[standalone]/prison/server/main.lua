@@ -58,6 +58,21 @@ AddEventHandler('prison:server:SetGateHit', function(key)
     end
 end)
 
+RegisterServerEvent('prison:server:CheckRecordStatus')
+AddEventHandler('prison:server:CheckRecordStatus', function()
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    local CriminalRecord = Player.PlayerData.metadata["criminalrecord"]
+    local currentDate = os.date("*t")
+
+    if CriminalRecord["hasRecord"] then
+        if currentDate.month == (CriminalRecord["date"].month + 1) or currentDate.day == (CriminalRecord["date"].day - 1) then
+            CriminalRecord["hasRecord"] = false
+            CriminalRecord["date"] = nil
+        end
+    end
+end)
+
 QBCore.Functions.CreateUseableItem("electronickit", function(source, item)
     local Player = QBCore.Functions.GetPlayer(source)
 	if Player.Functions.GetItemByName(item.name) then

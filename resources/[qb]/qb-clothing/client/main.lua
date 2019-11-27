@@ -1113,11 +1113,26 @@ AddEventHandler('qb-clothing:client:loadPlayerClothing', function(data, ped)
     skinData = data
 end)
 
+function typeof(var)
+    local _type = type(var);
+    if(_type ~= "table" and _type ~= "userdata") then
+        return _type;
+    end
+    local _meta = getmetatable(var);
+    if(_meta ~= nil and _meta._NAME ~= nil) then
+        return _meta._NAME;
+    else
+        return _type;
+    end
+end
+
 RegisterNetEvent('qb-clothing:client:loadOutfit')
 AddEventHandler('qb-clothing:client:loadOutfit', function(oData)
     local ped = GetPlayerPed(-1)
 
     data = oData.outfitData
+
+    if typeof(data) ~= "table" then data = json.decode(data) end
 
     for k, v in pairs(data) do
         skinData[k].item = data[k].item
