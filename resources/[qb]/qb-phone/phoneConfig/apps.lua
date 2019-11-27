@@ -7,6 +7,7 @@ Config.PhoneApps = {
         icon = "fa fa-cog",
         style = "padding-left: 12px !important;",
         tooltipText = "Instellingen",
+        job = nil,
         slot = 1,
     },
     ['messages'] = {
@@ -15,6 +16,7 @@ Config.PhoneApps = {
         icon = "fas fa-comment-dots",
         style = "padding-left: 12px !important;",
         tooltipText = "Berichten",
+        job = nil,
         slot = 2,
     },
     ['contacts'] = {
@@ -23,6 +25,7 @@ Config.PhoneApps = {
         icon = "fa fa-address-book",
         style = "padding-left: 13px !important;",
         tooltipText = "Contacten",
+        job = nil,
         slot = 3,
     },
     ['notes'] = {
@@ -31,6 +34,7 @@ Config.PhoneApps = {
         icon = "fa fa-sticky-note",
         style = "padding-left: 13px !important;",
         tooltipText = "Notitie's",
+        job = nil,
         slot = 4,
     },
     ['bank'] = {
@@ -39,6 +43,7 @@ Config.PhoneApps = {
         icon = "fas fa-university",
         style = "padding-left: 12px !important;",
         tooltipText = "Maze Bank",
+        job = nil,
         slot = 5,
     },
     ['garage'] = {
@@ -47,6 +52,7 @@ Config.PhoneApps = {
         icon = "fas fa-warehouse",
         style = "padding-left: 9px !important;",
         tooltipText = "Voertuigen",
+        job = nil,
         slot = 6,
     },
     ['mails'] = {
@@ -55,6 +61,7 @@ Config.PhoneApps = {
         icon = "fas fa-envelope",
         style = "padding-left: 11px !important;",
         tooltipText = "Mail",
+        job = nil,
         slot = 7,
     },
     ['twitter'] = {
@@ -63,6 +70,7 @@ Config.PhoneApps = {
         icon = "fab fa-twitter",
         style = "padding-left: 12px !important;",
         tooltipText = "Twitter",
+        job = nil,
         slot = 8,
     },
     ['advert'] = {
@@ -71,6 +79,7 @@ Config.PhoneApps = {
         icon = "fas fa-ad",
         style = "padding-left: 12px !important;",
         tooltipText = "Advertenties",
+        job = nil,
         slot = 9,
     },
     ['police'] = {
@@ -79,6 +88,7 @@ Config.PhoneApps = {
         icon = "fas fa-ad",
         style = "",
         tooltipText = "MEOS",
+        job = "police",
         slot = 16,
     },
 }

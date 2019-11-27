@@ -247,6 +247,21 @@ RegisterNUICallback('setMessageLocation', function(data)
     SetNewWaypoint(msgCoords.x, msgCoords.y)
 end)
 
+RegisterNetEvent('qb-phone:client:addPoliceAlert')
+AddEventHandler('qb-phone:client:addPoliceAlert', function(alertData)
+    SendNUIMessage({
+        task = "newPoliceAlert",
+        alert = alertData,
+    })
+end)
+
+RegisterNUICallback('setAlertWaypoint', function(data)
+    local coords = data.alert.coords
+
+    QBCore.Functions.Notify('GPS Locatie ingesteld: '..data.alert.title)
+    SetNewWaypoint(coords.x, coords.y)
+end)
+
 RegisterNetEvent('qb-phone:client:createChatOther')
 AddEventHandler('qb-phone:client:createChatOther', function(chatData, senderPhone)
     table.insert(messages, {
@@ -255,9 +270,7 @@ AddEventHandler('qb-phone:client:createChatOther', function(chatData, senderPhon
         messages = chatData.messages
     })
     if inPhone then
-        SendNUIMessage({
-            task = "updateChats"
-        })
+       
     end
     TriggerServerEvent('qb-phone:server:createChatOther', chatData, senderPhone)
 end)
@@ -551,7 +564,7 @@ function openPhone(bool)
         SendNUIMessage({
             action = "phone",
             open = bool,
-            apps = Config.PhoneApps,
+            apps = GetPhoneApps(),
             cid = QBCore.Functions.GetPlayerData().citizenid
         })
 
@@ -566,6 +579,18 @@ function openPhone(bool)
     else
         PhonePlayOut()
     end
+end
+
+function GetPhoneApps()
+    local apps = {}
+    for k, v in pairs(Config.PhoneApps) do
+        if Config.PhoneApps[k].job == nil then 
+            apps[k] = v
+        elseif (Config.PhoneApps[k].job == QBCore.Functions.GetPlayerData().job.name) and QBCore.Functions.GetPlayerData().job.onduty then
+            apps[k] = v
+        end
+    end
+    return apps
 end
 
 Citizen.CreateThread(function()

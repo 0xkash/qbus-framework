@@ -66,8 +66,6 @@ AddEventHandler('evidence:client:AddFingerPrint', function(fingerId, fingerprint
 			z = coords.z - 0.9,
 		}
 	}
-
-	print(json.encode(Fingerprints))
 end)
 
 RegisterNetEvent("evidence:client:RemoveFingerprint")

@@ -263,3 +263,65 @@
     color: #26962c;
     font-weight: bold;
 }
+
+.police-alerts {
+    display:none;
+    position: absolute;
+    top: 5.5vh;
+    left: 0;
+    height: 100%;
+}
+
+.police-incomming-alerts {
+    width: 100%;
+    max-height: 65%;
+    overflow: auto;
+    padding: 10px;
+}
+
+.police-alert-item {
+    background: #004682;
+    padding: 10px;
+    color: #ffffff;
+    text-align: left;
+    width: 90%;
+    margin-left: 0.33vw;
+    border-radius: 5px;
+    transition: all 500ms ease-in-out;
+    margin-bottom: 1vh;
+}
+
+.police-alert-item:hover {
+    background: #007be7;
+}
+
+.police-alert-item .alert-title {
+    font-size: 14px;
+}
+
+.police-alert-item .alert-description {
+    font-size: 12px;
+    font-style: italic;
+}
+
+.police-alert-item hr {
+    margin-top: 0.5vh;
+    margin-bottom: 0.5vh;
+}
+
+.police-light-button {
+    float: right;
+    border-radius: 0.6vh;
+    background: #f7f7f7;
+    transition: all 500ms ease-in-out;
+    font-size: 12px;
+    color: rgb(15, 15, 15);
+    font-family: sans-serif;
+    line-height: 2.3vh;
+    padding: 2px 4px!important;
+}
+
+.police-light-button:hover {
+    background: #d8d8d8;
+    color: rgb(5, 5, 5);
+}

@@ -40,7 +40,7 @@ $(document).ready(function(){
     window.addEventListener('message', function(event){
         var eventData = event.data;
 
-        if (eventData.action = "phone") {
+        if (eventData.action == "phone") {
             if (!eventData.task) {
                 if (eventData.open == true) {
                     qbPhone.Open(eventData.cid)
@@ -124,6 +124,10 @@ $(document).ready(function(){
 
         if (eventData.task == "newMessage") {
             qbPhone.Notify('<i class="fas fa-envelope" style="position: relative; padding-top: 7px;"></i> Berichten', 'success', eventData.sender + ' heeft een bericht gestuurd!')
+        }
+
+        if (eventData.task == "newPoliceAlert") {
+            qbPhone.AddPoliceAlert(eventData);
         }
 
         if (eventData.task == "suggestedNumberNotify") {
@@ -250,6 +254,13 @@ $(document).on('click', '.police-tab-item', function(e){
         
         lastPage = currentApp
         currentApp = ".police-vehicle"
+    } else if (tab == "alerts") {
+        $(".police-tabs").fadeOut(150, function() {
+            $(".police-alerts").fadeIn(150);
+        });
+        
+        lastPage = currentApp
+        currentApp = ".police-alerts"
     }
 });
 
@@ -335,6 +346,29 @@ $(document).on('click', '#vehicle-button-scan', function(e){
         }
         $(".police-vehicle-found").html('<div class="vehicle-found-item"><p class="vehicle-name">'+vehicleData.label+'</p><p class="vehicle-plate">Kenteken: '+vehicleData.plate+'</p><hr><p class="vehicle-person">Eigenaar: '+vehicleData.owner+' ('+vehicleData.citizenid+')</p><br/><p class="vehicle-status">APK: '+status+'</p><p class="vehicle-status">Gesignaleerd: '+flagged+'</p></div>');
     });
+});
+
+qbPhone.AddPoliceAlert = function(data) {
+    var randId = Math.floor((Math.random() * 10000) + 1);
+    if (data.alert.coords != undefined && data.alert.coords != null) {
+        $(".police-incomming-alerts").prepend('<div class="police-alert-item" id="alert-'+randId+'"><span class="badge badge-danger alert-new" style="margin-bottom: 1vh;">NIEUW</span><p class="alert-title">Melding: '+data.alert.title+'</p><p class="alert-description">'+data.alert.description+'</p><hr><button type="button" class="btn police-light-button alert-location">LOCATIE</button></div>');
+    } else {
+        $(".police-incomming-alerts").prepend('<div class="police-alert-item" id="alert-'+randId+'"><span class="badge badge-danger alert-new" style="margin-bottom: 1vh;">NIEUW</span><p class="alert-title">Melding: '+data.alert.title+'</p><p class="alert-description">'+data.alert.description+'</p></div>');
+    }
+    $("#alert-"+randId).data("alertData", data.alert);
+}
+
+$(document).on('click', '.alert-location', function(e){
+    e.preventDefault();
+    var alertData = $(this).parent().data("alertData");
+    $.post('http://qb-phone/setAlertWaypoint', JSON.stringify({
+        alert: alertData,
+    }))
+});
+
+$(document).on('click', '#alert-button-clear', function(e){
+    e.preventDefault();
+    $(".police-alert-item").remove();
 });
 
 qbPhone.SetupChat = function(chats) {
@@ -768,6 +802,9 @@ $(document).on('click', '.home-container', function(e){
         }
     } else if (lastPage == ".police-app") {
         $(currentApp).fadeOut(150, function(){
+            if (currentApp == ".police-alerts") {
+                $(".alert-new").remove();
+            }
             $(".police-tabs").fadeIn(150);
             currentApp = lastPage;
             lastPage = null;
@@ -824,11 +861,15 @@ qbPhone.Close = function() {
             });
         } else if (currentApp == ".call-app") {
             $(currentApp).css({"display":"none"});
-        } else if (currentApp == ".police-app" || currentApp == ".police-tabs" || currentApp == ".police-person" || currentApp == ".police-vehicle") {
-            $(".police-app").css({"display":"block"});
+        } else if (currentApp == ".police-app" || currentApp == ".police-tabs" || currentApp == ".police-person" || currentApp == ".police-vehicle" || currentApp == ".police-alerts") {
+            if (currentApp == ".police-alerts") {
+                $(".alert-new").remove();
+            }
+            $(".police-app").css({"display":"none"});
             $(".police-tabs").css({"display":"block"});
             $(".police-person").css({"display":"none"});
             $(".police-vehicle").css({"display":"none"});
+            $(".police-alerts").css({"display":"none"});
             $(homePage).css({'display':'block'});
             currentApp = homePage;
         } else {
@@ -850,24 +891,22 @@ qbPhone.Close = function() {
 }
 
 qbPhone.setupPhoneApps = function(apps) {
-    if (phoneApps === null) {
-        $.each(apps, function(index, app) {
-            $('.slot-'+app.slot).html("");
-            if (index == "police") {
-                var appElement = '<div class="app" id="slot-'+app.slot+'" style="background-color: '+app.color+';" data-toggle="tooltip" data-placement="bottom" title="'+app.tooltipText+'"><img src="img/politie.png" width="20" height="26" alt="police" style="margin-left: 0.65vw!important;margin-top: 0.7vh!important;" /></div>'
-                $('.slot-'+app.slot).append(appElement);
-                $('.slot-'+app.slot).removeClass("empty-slot");
-                $('#slot-'+app.slot).data('appData', app);
-            } else {
-                var appElement = '<div class="app" id="slot-'+app.slot+'" style="background-color: '+app.color+';" data-toggle="tooltip" data-placement="bottom" title="'+app.tooltipText+'"><i class="'+app.icon+'" id="app-icon" style="'+app.style+'"></i></div>'
-                $('.slot-'+app.slot).append(appElement);
-                $('.slot-'+app.slot).removeClass("empty-slot");
-                $('#slot-'+app.slot).data('appData', app);
-            }
-            
-        });
-        $('[data-toggle="tooltip"]').tooltip();
-    }
+    $('.app-slot').html("");
+    $.each(apps, function(index, app) {
+        if (index == "police") {
+            var appElement = '<div class="app" id="slot-'+app.slot+'" style="background-color: '+app.color+';" data-toggle="tooltip" data-placement="bottom" title="'+app.tooltipText+'"><img src="img/politie.png" width="20" height="26" alt="police" style="margin-left: 0.65vw!important;margin-top: 0.7vh!important;" /></div>'
+            $('.slot-'+app.slot).append(appElement);
+            $('.slot-'+app.slot).removeClass("empty-slot");
+            $('#slot-'+app.slot).data('appData', app);
+        } else {
+            var appElement = '<div class="app" id="slot-'+app.slot+'" style="background-color: '+app.color+';" data-toggle="tooltip" data-placement="bottom" title="'+app.tooltipText+'"><i class="'+app.icon+'" id="app-icon" style="'+app.style+'"></i></div>'
+            $('.slot-'+app.slot).append(appElement);
+            $('.slot-'+app.slot).removeClass("empty-slot");
+            $('#slot-'+app.slot).data('appData', app);
+        }
+        
+    });
+    $('[data-toggle="tooltip"]').tooltip();
     phoneApps = apps
 }
 

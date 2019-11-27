@@ -53,9 +53,21 @@ end)
 RegisterServerEvent('qb-storerobbery:server:callCops')
 AddEventHandler('qb-storerobbery:server:callCops', function(type, safe, streetLabel, coords)
     local players = QBCore.Functions.GetPlayers()
+    local cameraId = 4
+    if type == "safe" then
+        cameraId = Config.Safes[safe].camId
+    else
+        cameraId = Config.Registers[safe].camId
+    end
+    local alertData = {
+        title = "Winkeloverval",
+        coords = {x = coords.x, y = coords.y, z = coords.z},
+        description = "Iemand probeert een winkel te overvallen bij "..streetLabel.." (CAMERA ID: "..cameraId..")"
+    }
     for source, Player in pairs(players) do
 		if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
-			TriggerClientEvent("qb-storerobbery:client:robberyCall", Player.PlayerData.source, type, safe, streetLabel, coords)
+            TriggerClientEvent("qb-storerobbery:client:robberyCall", Player.PlayerData.source, type, safe, streetLabel, coords)
+            TriggerClientEvent("qb-phone:client:addPoliceAlert", Player.PlayerData.source, alertData)
 		end
 	end
 end)

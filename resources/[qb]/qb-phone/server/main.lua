@@ -292,36 +292,41 @@ end)
 QBCore.Functions.CreateCallback('qb-phone:server:getVehicleData', function(source, cb, plate)
     local src = source
     local vehicleData = {}
-    QBCore.Functions.ExecuteSql('SELECT * FROM `player_vehicles` WHERE `plate` = "'..plate..'"', function(result)
-        if result[1] ~= nil then
-            QBCore.Functions.ExecuteSql('SELECT * FROM `players` WHERE `citizenid` = "'..result[1].citizenid..'"', function(player)
-                local charinfo = json.decode(player[1].charinfo)
+    if plate ~= nil then 
+        QBCore.Functions.ExecuteSql('SELECT * FROM `player_vehicles` WHERE `plate` = "'..plate..'"', function(result)
+            if result[1] ~= nil then
+                QBCore.Functions.ExecuteSql('SELECT * FROM `players` WHERE `citizenid` = "'..result[1].citizenid..'"', function(player)
+                    local charinfo = json.decode(player[1].charinfo)
+                    vehicleData = {
+                        plate = plate,
+                        status = true,
+                        owner = charinfo.firstname .. " " .. charinfo.lastname,
+                        citizenid = result[1].citizenid,
+                    }
+                end)
+            elseif GeneratedPlates ~= nil and GeneratedPlates[plate] ~= nil then 
+                vehicleData = GeneratedPlates[plate]
+            else
+                local ownerInfo = GenerateOwnerName()
+                GeneratedPlates[plate] = {
+                    plate = plate,
+                    status = true,
+                    owner = ownerInfo.name,
+                    citizenid = ownerInfo.citizenid,
+                }
                 vehicleData = {
                     plate = plate,
                     status = true,
-                    owner = charinfo.firstname .. " " .. charinfo.lastname,
-                    citizenid = result[1].citizenid,
+                    owner = ownerInfo.name,
+                    citizenid = ownerInfo.citizenid,
                 }
-            end)
-        elseif GeneratedPlates ~= nil and GeneratedPlates[plate] ~= nil then 
-            vehicleData = GeneratedPlates[plate]
-        else
-            local ownerInfo = GenerateOwnerName()
-            GeneratedPlates[plate] = {
-                plate = plate,
-                status = true,
-                owner = ownerInfo.name,
-                citizenid = ownerInfo.citizenid,
-            }
-            vehicleData = {
-                plate = plate,
-                status = true,
-                owner = ownerInfo.name,
-                citizenid = ownerInfo.citizenid,
-            }
-        end
-    end)
-    cb(vehicleData)
+            end
+        end)
+        cb(vehicleData)
+    else
+        TriggerClientEvent('QBCore:Notify', src, "Geen voertuig in de buurt..", "error")
+        cb(nil)
+    end
 end)
 
 function GenerateOwnerName()
@@ -487,6 +492,16 @@ AddEventHandler('qb-phone:server:CallContact', function(callData, caller)
             end
         end
     end)
+end)
+
+RegisterServerEvent('qb-phone:server:addPoliceAlert')
+AddEventHandler('qb-phone:server:addPoliceAlert', function(alertData)
+    local players = QBCore.Functions.GetPlayers()
+    for source, Player in pairs(players) do
+        if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
+            TriggerClientEvent("qb-phone:client:addPoliceAlert", Player.PlayerData.source, alertData)
+		end
+	end
 end)
 
 QBCore.Commands.Add("opnemen", "Inkomend oproep beantwoorden", {}, false, function(source, args)

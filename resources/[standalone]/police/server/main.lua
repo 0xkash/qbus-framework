@@ -173,9 +173,15 @@ RegisterServerEvent('police:server:VehicleCall')
 AddEventHandler('police:server:VehicleCall', function(coords, msg)
     local src = source
     local players = QBCore.Functions.GetPlayers()
+    local alertData = {
+        title = "Voertuigdiefstal",
+        coords = {x = coords.x, y = coords.y, z = coords.z},
+        description = msg,
+    }
 	for k, Player in pairs(players) do
         if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
             TriggerClientEvent("police:client:VehicleCall", k, coords, msg)
+            TriggerClientEvent("qb-phone:client:addPoliceAlert", k, alertData)
 		end
     end
 end)
@@ -184,9 +190,15 @@ RegisterServerEvent('police:server:HouseRobberyCall')
 AddEventHandler('police:server:HouseRobberyCall', function(coords, message)
     local src = source
     local players = QBCore.Functions.GetPlayers()
+    local alertData = {
+        title = "Huisinbraak",
+        coords = {x = coords.x, y = coords.y, z = coords.z},
+        description = message,
+    }
 	for k, Player in pairs(players) do
 		if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
             TriggerClientEvent("police:client:HouseRobberyCall", k, coords, message)
+            TriggerClientEvent("qb-phone:client:addPoliceAlert", k, alertData)
 		end
     end
 end)
