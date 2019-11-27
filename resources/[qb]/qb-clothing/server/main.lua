@@ -75,16 +75,19 @@ QBCore.Functions.CreateCallback('qb-clothing:server:getOutfits', function(source
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
 
+    local anusVal = {}
+
     QBCore.Functions.ExecuteSql("SELECT * FROM `player_outfits` WHERE `citizenid` = '"..Player.PlayerData.citizenid.."'", function(result)
         if result[1] ~= nil then
             for k, v in pairs(result) do
                 result[k].skin = json.decode(result[k].skin)
+                anusVal[k] = v
             end
-            cb(result)
-        else
-            cb(nil)
+            cb(anusVal)
         end
+        cb(anusVal)
     end)
+    cb(anusVal)
 end)
 
 RegisterServerEvent('qb-clothing:print')

@@ -227,25 +227,27 @@ Citizen.CreateThread(function()
                 local dist = GetDistanceBetweenCoords(pos, Config.Stores[k].x, Config.Stores[k].y, Config.Stores[k].z, true)
 
                 if dist < 30 then
-                    DrawMarker(2, Config.Stores[k].x, Config.Stores[k].y, Config.Stores[k].z + 0.98, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.4, 0.4, 0.2, 255, 255, 255, 255, 0, 0, 0, 1, 0, 0, 0)
-                    if dist < 5 then
-                        if Config.Stores[k].shopType == "clothing" then
-                            DrawText3Ds(Config.Stores[k].x, Config.Stores[k].y, Config.Stores[k].z + 1.25, '~g~E~w~ - Om kleding te shoppen')
-                        elseif Config.Stores[k].shopType == "barber" then
-                            DrawText3Ds(Config.Stores[k].x, Config.Stores[k].y, Config.Stores[k].z + 1.25, '~g~E~w~ - Om haar aan te passen')
-                        end
-                        if IsControlJustPressed(0, Keys["E"]) then
+                    if not creatingCharacter then
+                        DrawMarker(2, Config.Stores[k].x, Config.Stores[k].y, Config.Stores[k].z + 0.98, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.4, 0.4, 0.2, 255, 255, 255, 255, 0, 0, 0, 1, 0, 0, 0)
+                        if dist < 5 then
                             if Config.Stores[k].shopType == "clothing" then
-                                customCamLocation = nil
-                                openMenu({
-                                    {menu = "character", label = "Kleding", selected = true},
-                                    {menu = "accessoires", label = "Accessoires", selected = false}
-                                })
+                                DrawText3Ds(Config.Stores[k].x, Config.Stores[k].y, Config.Stores[k].z + 1.25, '~g~E~w~ - Om kleding te shoppen')
                             elseif Config.Stores[k].shopType == "barber" then
-                                customCamLocation = nil
-                                openMenu({
-                                    {menu = "clothing", label = "Haar", selected = true},
-                                })
+                                DrawText3Ds(Config.Stores[k].x, Config.Stores[k].y, Config.Stores[k].z + 1.25, '~g~E~w~ - Om haar aan te passen')
+                            end
+                            if IsControlJustPressed(0, Keys["E"]) then
+                                if Config.Stores[k].shopType == "clothing" then
+                                    customCamLocation = nil
+                                    openMenu({
+                                        {menu = "character", label = "Kleding", selected = true},
+                                        {menu = "accessoires", label = "Accessoires", selected = false}
+                                    })
+                                elseif Config.Stores[k].shopType == "barber" then
+                                    customCamLocation = nil
+                                    openMenu({
+                                        {menu = "clothing", label = "Haar", selected = true},
+                                    })
+                                end
                             end
                         end
                     end
@@ -1113,11 +1115,26 @@ AddEventHandler('qb-clothing:client:loadPlayerClothing', function(data, ped)
     skinData = data
 end)
 
+function typeof(var)
+    local _type = type(var);
+    if(_type ~= "table" and _type ~= "userdata") then
+        return _type;
+    end
+    local _meta = getmetatable(var);
+    if(_meta ~= nil and _meta._NAME ~= nil) then
+        return _meta._NAME;
+    else
+        return _type;
+    end
+end
+
 RegisterNetEvent('qb-clothing:client:loadOutfit')
 AddEventHandler('qb-clothing:client:loadOutfit', function(oData)
     local ped = GetPlayerPed(-1)
 
     data = oData.outfitData
+
+    if typeof(data) ~= "table" then data = json.decode(data) end
 
     for k, v in pairs(data) do
         skinData[k].item = data[k].item
@@ -1125,60 +1142,90 @@ AddEventHandler('qb-clothing:client:loadOutfit', function(oData)
     end
 
     -- Pants
-    SetPedComponentVariation(ped, 4, data["pants"].item, 0, 0)
-    SetPedComponentVariation(ped, 4, data["pants"].item, data["pants"].texture, 0)
+    if data["pants"] ~= nil then
+        SetPedComponentVariation(ped, 4, data["pants"].item, 0, 0)
+        SetPedComponentVariation(ped, 4, data["pants"].item, data["pants"].texture, 0)
+    end
 
     -- Arms
-    SetPedComponentVariation(ped, 3, data["arms"].item, 0, 2)
-    SetPedComponentVariation(ped, 3, data["arms"].item, data["arms"].texture, 0)
+    if data["arms"] ~= nil then
+        SetPedComponentVariation(ped, 3, data["arms"].item, 0, 2)
+        SetPedComponentVariation(ped, 3, data["arms"].item, data["arms"].texture, 0)
+    end
 
     -- T-Shirt
-    SetPedComponentVariation(ped, 8, data["t-shirt"].item, 0, 2)
-    SetPedComponentVariation(ped, 8, data["t-shirt"].item, data["t-shirt"].texture, 0)
+    if data["t-shirt"] ~= nil then
+        SetPedComponentVariation(ped, 8, data["t-shirt"].item, 0, 2)
+        SetPedComponentVariation(ped, 8, data["t-shirt"].item, data["t-shirt"].texture, 0)
+    end
 
     -- Vest
-    SetPedComponentVariation(ped, 9, data["vest"].item, 0, 2)
-    SetPedComponentVariation(ped, 9, data["vest"].item, data["vest"].texture, 0)
+    if data["vest"] ~= nil then
+        SetPedComponentVariation(ped, 9, data["vest"].item, 0, 2)
+        SetPedComponentVariation(ped, 9, data["vest"].item, data["vest"].texture, 0)
+    end
 
     -- Torso 2
-    SetPedComponentVariation(ped, 11, data["torso2"].item, 0, 2)
-    SetPedComponentVariation(ped, 11, data["torso2"].item, data["torso2"].texture, 0)
+    if data["torso2"] ~= nil then
+        SetPedComponentVariation(ped, 11, data["torso2"].item, 0, 2)
+        SetPedComponentVariation(ped, 11, data["torso2"].item, data["torso2"].texture, 0)
+    end
 
     -- Shoes
-    SetPedComponentVariation(ped, 6, data["shoes"].item, 0, 2)
-    SetPedComponentVariation(ped, 6, data["shoes"].item, data["shoes"].texture, 0)
+    if data["shoes"] ~= nil then
+        SetPedComponentVariation(ped, 6, data["shoes"].item, 0, 2)
+        SetPedComponentVariation(ped, 6, data["shoes"].item, data["shoes"].texture, 0)
+    end
 
     -- Badge
-    SetPedComponentVariation(ped, 10, data["decals"].item, 0, 2)
-    SetPedComponentVariation(ped, 10, data["decals"].item, data["decals"].texture, 0)
+    if data["badge"] ~= nil then
+        SetPedComponentVariation(ped, 10, data["decals"].item, 0, 2)
+        SetPedComponentVariation(ped, 10, data["decals"].item, data["decals"].texture, 0)
+    end
 
     -- Accessory
-    SetPedComponentVariation(ped, 7, data["accessory"].item, 0, 2)
-    SetPedComponentVariation(ped, 7, data["accessory"].item, data["accessory"].texture, 0)
+    if data["accessory"] ~= nil then
+        SetPedComponentVariation(ped, 7, data["accessory"].item, 0, 2)
+        SetPedComponentVariation(ped, 7, data["accessory"].item, data["accessory"].texture, 0)
+    end
+
+    if data["mask"] ~= nil then
+        -- Mask
+        SetPedComponentVariation(ped, 1, data["mask"].item, 0, 2)
+        SetPedComponentVariation(ped, 1, data["mask"].item, data["mask"].texture, 0)
+    end
 
     -- Bag
-    SetPedComponentVariation(ped, 5, data["bag"].item, 0, 2)
-    SetPedComponentVariation(ped, 5, data["bag"].item, data["bag"].texture, 0)
+    if data["bag"] ~= nil then
+        SetPedComponentVariation(ped, 5, data["bag"].item, 0, 2)
+        SetPedComponentVariation(ped, 5, data["bag"].item, data["bag"].texture, 0)
+    end
 
     -- Hat
-    if data["hat"].item ~= -1 and data["hat"].item ~= 0 then
-        SetPedPropIndex(ped, 0, data["hat"].item, data["hat"].texture, true)
-    else
-        ClearPedProp(ped, 0)
+    if data["hat"] ~= nil then
+        if data["hat"].item ~= -1 and data["hat"].item ~= 0 then
+            SetPedPropIndex(ped, 0, data["hat"].item, data["hat"].texture, true)
+        else
+            ClearPedProp(ped, 0)
+        end
     end
 
     -- Glass
-    if data["glass"].item ~= -1 and data["glass"].item ~= 0 then
-        SetPedPropIndex(ped, 1, data["glass"].item, data["glass"].texture, true)
-    else
-        ClearPedProp(ped, 1)
+    if data["glass"] ~= nil then
+        if data["glass"].item ~= -1 and data["glass"].item ~= 0 then
+            SetPedPropIndex(ped, 1, data["glass"].item, data["glass"].texture, true)
+        else
+            ClearPedProp(ped, 1)
+        end
     end
 
     -- Ear
-    if data["ear"].item ~= -1 and data["ear"].item ~= 0 then
-        SetPedPropIndex(ped, 2, data["ear"].item, data["ear"].texture, true)
-    else
-        ClearPedProp(ped, 2)
+    if data["ear"] ~= nil then
+        if data["ear"].item ~= -1 and data["ear"].item ~= 0 then
+            SetPedPropIndex(ped, 2, data["ear"].item, data["ear"].texture, true)
+        else
+            ClearPedProp(ped, 2)
+        end
     end
 
     TriggerEvent('chatMessage', "SYSTEM", "warning", "Je hebt "..oData.outfitName.." gekozen! Druk op Bevestig om outfit te bevestigen.")

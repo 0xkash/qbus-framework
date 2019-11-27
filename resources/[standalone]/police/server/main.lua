@@ -99,15 +99,20 @@ AddEventHandler('police:server:JailPlayer', function(playerId, time)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     local OtherPlayer = QBCore.Functions.GetPlayer(playerId)
+    local currentDate = os.date("*t")
+    if currentDate.day == 31 then currentDate.day = 30 end
+
     if Player.PlayerData.job.name == "police" then
         if OtherPlayer ~= nil then
             OtherPlayer.Functions.SetMetaData("injail", time)
+            OtherPlayer.Functions.SetMetaData("criminalrecord", {
+                ["hasRecord"] = true,
+                ["date"] = currentDate
+            })
             TriggerClientEvent("police:client:SendToJail", OtherPlayer.PlayerData.source, time)
             TriggerClientEvent('QBCore:Notify', src, "Je hebt de persoon naar de gevangenis gestuurd voor "..time.." maanden")
         end
     end
-
-    print(os.date())
 end)
 
 RegisterServerEvent('police:server:SetHandcuffStatus')

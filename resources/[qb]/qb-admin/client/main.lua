@@ -255,9 +255,9 @@ Citizen.CreateThread(function()
             end
             if WarMenu.MenuButton('Bring', currentPlayer) then
                 local target = GetPlayerPed(currentPlayer)
-                local ply = GetPlayerPed(-1)
+                local plyCoords = GetEntityCoords(GetPlayerPed(-1))
 
-                SetEntityCoords(target, GetEntityCoords(ply))
+                TriggerServerEvent('qb-admin:server:bringTp', GetPlayerServerId(currentPlayer), plyCoords)
             end
             WarMenu.Display()
         elseif WarMenu.IsMenuOpened('adminOptions') then
@@ -314,6 +314,13 @@ Citizen.CreateThread(function()
 
         Citizen.Wait(0)
     end
+end)
+
+RegisterNetEvent('qb-admin:client:bringTp')
+AddEventHandler('qb-admin:client:bringTp', function(coords)
+    local ped = GetPlayerPed(-1)
+
+    SetEntityCoords(ped, coords.x, coords.y, coords.z)
 end)
 
 
