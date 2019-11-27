@@ -118,13 +118,13 @@ Config.Items = {
     label = "Politie Wapenkluis",
     items = {
         [1] = {
-            name = "weapon_combatpistol",
+            name = "weapon_pistol_mk2",
             price = 0,
             amount = 1,
             info = {
                 serie = "",                
                 attachments = {
-                    {component = "COMPONENT_AT_PI_FLSH", label = "Flashlight"},
+                    {component = "COMPONENT_AT_PI_FLSH_02", label = "Flashlight"},
                 }
             },
             type = "weapon",
@@ -252,6 +252,14 @@ Config.Items = {
             info = {},
             type = "item",
             slot = 14,
+        },
+        [15] = {
+            name = "armor",
+            price = 0,
+            amount = 50,
+            info = {},
+            type = "item",
+            slot = 15,
         },
     }
 }

@@ -61,7 +61,7 @@ Citizen.CreateThread(function()
 				DeleteEntity(veh)
 			end
 		end
-        Citizen.Wait(1000)
+        Citizen.Wait(500)
 	end
 end)
 
