@@ -39,94 +39,117 @@ local skinData = {
     ["face"] = {
         item = 0,
         texture = 0,
+        defaultItem = 0,        
     },
     ["pants"] = {
         item = 0,
         texture = 0,
+        defaultItem = 0,        
     },
     ["hair"] = {
         item = 0,
         texture = 0,
+        defaultItem = 0,        
     },
     ["eyebrows"] = {
         item = -1,
         texture = 0,
+        defaultItem = -1,        
     },
     ["beard"] = {
         item = -1,
         texture = 0,
+        defaultItem = -1,        
     },
     ["blush"] = {
         item = -1,
         texture = 0,
+        defaultItem = -1,        
     },
     ["lipstick"] = {
         item = -1,
         texture = 0,
+        defaultItem = -1,        
     },
     ["makeup"] = {
         item = -1,
         texture = 0,
+        defaultItem = -1,        
     },
     ["ageing"] = {
         item = -1,
         texture = 0,
+        defaultItem = -1,        
     },
     ["arms"] = {
         item = 0,
         texture = 0,
+        defaultItem = 0,        
     },
     ["t-shirt"] = {
         item = 0,
         texture = 0,
+        defaultItem = 0,        
     },
     ["torso2"] = {
         item = 0,
         texture = 0,
+        defaultItem = 0,        
     },
     ["vest"] = {
         item = -1,
         texture = 0,
+        defaultItem = -1,        
     },
     ["bag"] = {
         item = -1,
         texture = 0,
+        defaultItem = -1,        
     },
     ["shoes"] = {
         item = 0,
         texture = 0,
+        defaultItem = 0,        
     },
     ["mask"] = {
         item = -1,
         texture = 0,
+        defaultItem = -1,        
     },
     ["hat"] = {
         item = -1,
         texture = 0,
+        defaultItem = -1,        
     },
     ["glass"] = {
         item = -1,
         texture = 0,
+        defaultItem = -1,        
     },
     ["ear"] = {
         item = -1,
         texture = 0,
+        defaultItem = -1,        
     },
     ["watch"] = {
         item = -1,
         texture = 0,
+        defaultItem = -1,        
     },
     ["bracelet"] = {
         item = -1,
         texture = 0,
+        defaultItem = -1,        
     },
     ["accessory"] = {
         item = -1,
         texture = 0,
+        defaultItem = -1,        
     },
     ["decals"] = {
         item = -1,
         texture = 0,
+        defaultItem = -1,        
     },
 }
 
@@ -396,7 +419,7 @@ function GetMaxValues()
 
         if v.type == "face" then
             maxModelValues[k].item = 44
-            maxModelValues[k].texture = 11
+            maxModelValues[k].texture = 15
         end
 
         if v.type == "ageing" then
@@ -885,6 +908,11 @@ function ChangeToSkinNoUpdate(skin)
 		end
         SetPlayerModel(PlayerId(), model)
 
+        for k, v in pairs(skinData) do
+            skinData[k].item = skinData[k].defaultItem
+            skinData[k].texture = 0
+        end
+
         if skin == "mp_m_freemode_01" or skin == "mp_f_freemode_01" then
             for i = 0, 11 do
                 SetPedComponentVariation(GetPlayerPed(-1), 1, 1, 1, 1)
@@ -1154,4 +1182,141 @@ AddEventHandler('qb-clothing:client:loadOutfit', function(oData)
     end
 
     TriggerEvent('chatMessage', "SYSTEM", "warning", "Je hebt "..oData.outfitName.." gekozen! Druk op Bevestig om outfit te bevestigen.")
+end)
+
+local faceProps = {
+	[1] = { ["Prop"] = -1, ["Texture"] = -1 },
+	[2] = { ["Prop"] = -1, ["Texture"] = -1 },
+	[3] = { ["Prop"] = -1, ["Texture"] = -1 },
+	[4] = { ["Prop"] = -1, ["Palette"] = -1, ["Texture"] = -1 }, -- this is actually a pedtexture variations, not a prop
+	[5] = { ["Prop"] = -1, ["Palette"] = -1, ["Texture"] = -1 }, -- this is actually a pedtexture variations, not a prop
+	[6] = { ["Prop"] = -1, ["Palette"] = -1, ["Texture"] = -1 }, -- this is actually a pedtexture variations, not a prop
+}
+
+function loadAnimDict( dict )
+    while ( not HasAnimDictLoaded( dict ) ) do
+        RequestAnimDict( dict )
+        Citizen.Wait( 5 )
+    end
+end 
+
+RegisterNetEvent("qb-clothing:client:adjustfacewear")
+AddEventHandler("qb-clothing:client:adjustfacewear",function(type)
+    if QBCore.Functions.GetPlayerData().metadata["ishandcuffed"] then return end
+	removeWear = not removeWear
+	local AnimSet = "none"
+	local AnimationOn = "none"
+	local AnimationOff = "none"
+	local PropIndex = 0
+
+	local AnimSet = "mp_masks@on_foot"
+	local AnimationOn = "put_on_mask"
+	local AnimationOff = "put_on_mask"
+
+	faceProps[6]["Prop"] = GetPedDrawableVariation(GetPlayerPed(-1), 0)
+	faceProps[6]["Palette"] = GetPedPaletteVariation(GetPlayerPed(-1), 0)
+	faceProps[6]["Texture"] = GetPedTextureVariation(GetPlayerPed(-1), 0)
+
+	for i = 0, 3 do
+		if GetPedPropIndex(GetPlayerPed(-1), i) ~= -1 then
+			faceProps[i+1]["Prop"] = GetPedPropIndex(GetPlayerPed(-1), i)
+		end
+		if GetPedPropTextureIndex(GetPlayerPed(-1), i) ~= -1 then
+			faceProps[i+1]["Texture"] = GetPedPropTextureIndex(GetPlayerPed(-1), i)
+		end
+	end
+
+	if GetPedDrawableVariation(GetPlayerPed(-1), 1) ~= -1 then
+		faceProps[4]["Prop"] = GetPedDrawableVariation(GetPlayerPed(-1), 1)
+		faceProps[4]["Palette"] = GetPedPaletteVariation(GetPlayerPed(-1), 1)
+		faceProps[4]["Texture"] = GetPedTextureVariation(GetPlayerPed(-1), 1)
+	end
+
+	if GetPedDrawableVariation(GetPlayerPed(-1), 11) ~= -1 then
+		faceProps[5]["Prop"] = GetPedDrawableVariation(GetPlayerPed(-1), 11)
+		faceProps[5]["Palette"] = GetPedPaletteVariation(GetPlayerPed(-1), 11)
+		faceProps[5]["Texture"] = GetPedTextureVariation(GetPlayerPed(-1), 11)
+	end
+
+	if type == 1 then
+		PropIndex = 0
+	elseif type == 2 then
+		PropIndex = 1
+
+		AnimSet = "clothingspecs"
+		AnimationOn = "take_off"
+		AnimationOff = "take_off"
+
+	elseif type == 3 then
+		PropIndex = 2
+	elseif type == 4 then
+		PropIndex = 1
+		if removeWear then
+			AnimSet = "missfbi4"
+			AnimationOn = "takeoff_mask"
+			AnimationOff = "takeoff_mask"
+		end
+	elseif type == 5 then
+		PropIndex = 11
+		AnimSet = "oddjobs@basejump@ig_15"
+		AnimationOn = "puton_parachute"
+		AnimationOff = "puton_parachute"	
+		--mp_safehouseshower@male@ male_shower_idle_d_towel
+		--mp_character_creation@customise@male_a drop_clothes_a
+		--oddjobs@basejump@ig_15 puton_parachute_bag
+	end
+
+	loadAnimDict( AnimSet )
+	if type == 5 then
+		if removeWear then
+			SetPedComponentVariation(GetPlayerPed(-1), 3, 2, faceProps[6]["Texture"], faceProps[6]["Palette"])
+		end
+	end
+	if removeWear then
+		TaskPlayAnim( GetPlayerPed(-1), AnimSet, AnimationOff, 4.0, 3.0, -1, 49, 1.0, 0, 0, 0 )
+		Citizen.Wait(500)
+		if type ~= 5 then
+			if type == 4 then
+				SetPedComponentVariation(GetPlayerPed(-1), PropIndex, -1, -1, -1)
+			else
+				if type ~= 2 then
+					ClearPedProp(GetPlayerPed(-1), tonumber(PropIndex))
+				end
+			end
+		end
+	else
+		TaskPlayAnim( GetPlayerPed(-1), AnimSet, AnimationOn, 4.0, 3.0, -1, 49, 1.0, 0, 0, 0 )
+		Citizen.Wait(500)
+		if type ~= 5 and type ~= 2 then
+			if type == 4 then
+				SetPedComponentVariation(GetPlayerPed(-1), PropIndex, faceProps[type]["Prop"], faceProps[type]["Texture"], faceProps[type]["Palette"])
+			else
+				SetPedPropIndex( GetPlayerPed(-1), tonumber(PropIndex), tonumber(faceProps[PropIndex+1]["Prop"]), tonumber(faceProps[PropIndex+1]["Texture"]), false)
+			end
+		end
+	end
+	if type == 5 then
+		if not removeWear then
+			SetPedComponentVariation(GetPlayerPed(-1), 3, 1, faceProps[6]["Texture"], faceProps[6]["Palette"])
+			SetPedComponentVariation(GetPlayerPed(-1), PropIndex, faceProps[type]["Prop"], faceProps[type]["Texture"], faceProps[type]["Palette"])
+		else
+			SetPedComponentVariation(GetPlayerPed(-1), PropIndex, -1, -1, -1)
+		end
+		Citizen.Wait(1800)
+	end
+	if type == 2 then
+		Citizen.Wait(600)
+		if removeWear then
+			ClearPedProp(GetPlayerPed(-1), tonumber(PropIndex))
+		end
+
+		if not removeWear then
+			Citizen.Wait(140)
+			SetPedPropIndex( GetPlayerPed(-1), tonumber(PropIndex), tonumber(faceProps[PropIndex+1]["Prop"]), tonumber(faceProps[PropIndex+1]["Texture"]), false)
+		end
+	end
+	if type == 4 and removeWear then
+		Citizen.Wait(1200)
+	end
+	ClearPedTasks(GetPlayerPed(-1))
 end)

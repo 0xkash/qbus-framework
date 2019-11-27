@@ -66,7 +66,7 @@ $(document).on('click', '.clothing-menu-option-item-right', function(e){
             }
         }
     }
-})
+});
 
 $(document).on('click', '.clothing-menu-option-item-left', function(e){
     e.preventDefault();
@@ -86,7 +86,7 @@ $(document).on('click', '.clothing-menu-option-item-left', function(e){
             QBClothing.ResetValues();
         }
     } else {
-        if (newValue != -1) {
+        if (newValue != -2) {
             $(inputElem).val(newValue);
             $.post('http://qb-clothing/updateSkin', JSON.stringify({
                 clothingType: clothingCategory,

@@ -112,7 +112,7 @@ function AddEmoteMenu(menu)
       propitem = NativeUI.CreateItem(z, "/a ("..a..")")
       propfavitem = NativeUI.CreateItem(z)
       propmenu:AddItem(propitem)
-      favmenu:AddItem(propfavitem)
+      -- favmenu:AddItem(propfavitem)
       table.insert(PropETable, a)
       table.insert(FavEmoteTable, a)
     end

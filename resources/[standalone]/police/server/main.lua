@@ -106,6 +106,8 @@ AddEventHandler('police:server:JailPlayer', function(playerId, time)
             TriggerClientEvent('QBCore:Notify', src, "Je hebt de persoon naar de gevangenis gestuurd voor "..time.." maanden")
         end
     end
+
+    print(os.date())
 end)
 
 RegisterServerEvent('police:server:SetHandcuffStatus')
