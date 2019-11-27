@@ -662,7 +662,7 @@ Config.Outfits = {
             outfitData = {
                 ["pants"]       = { item = 4, texture = 2},  -- Broek
                 ["arms"]        = { item = 17, texture = 0},  -- Armen
-                ["t-shirt"]     = { item = 57, texture = 0},  -- T Shirt
+                ["t-shirt"]     = { item = 58, texture = 0},  -- T Shirt
                 ["vest"]        = { item = 5, texture = 0},  -- Body Vest
                 ["torso2"]      = { item = 53, texture = 0},  -- Jas / Vesten
                 ["shoes"]       = { item = 8, texture = 0},  -- Schoenen
@@ -672,7 +672,7 @@ Config.Outfits = {
                 ["hat"]         = { item = 119, texture = 0},  -- Pet
         --      ["glass"]       = { item = 0, texture = 0},  -- Bril
         --      ["ear"]         = { item = 0, texture = 0},  -- Oor accessoires
-                ["mask"]         = { item = 35, texture = 0},  -- Masker
+                ["mask"]         = { item = 56, texture = 1},  -- Masker
             },
         },
     },
