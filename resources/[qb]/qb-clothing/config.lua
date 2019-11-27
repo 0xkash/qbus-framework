@@ -550,20 +550,129 @@ Config.ClothingRooms = {
 Config.Outfits = {
     ["police"] = {
         [1] = {
-            outfitLabel = "DSI Outfit",
+            outfitLabel = "Noodhulp Kort",
             outfitData = {
-                ["pants"]       = { item = 0, texture = 0},
-                ["arms"]        = { item = 0, texture = 0},
-                ["t-shirt"]     = { item = 0, texture = 0},
-                ["vest"]        = { item = 0, texture = 0},
-                ["torso2"]      = { item = 0, texture = 0},
-                ["shoes"]       = { item = 0, texture = 0},
-                ["decals"]      = { item = 0, texture = 0},
-                ["accessory"]   = { item = 0, texture = 0},
-                ["bag"]         = { item = 0, texture = 0},
-                ["hat"]         = { item = 0, texture = 0},
-                ["glass"]       = { item = 0, texture = 0},
-                ["ear"]         = { item = 0, texture = 0},
+                ["pants"]       = { item = 97, texture = 0},  -- Broek
+                ["arms"]        = { item = 0, texture = 0},  -- Armen
+                ["t-shirt"]     = { item = 56, texture = 0},  -- T Shirt
+                ["vest"]        = { item = 7, texture = 0},  -- Body Vest
+                ["torso2"]      = { item = 2, texture = 0},  -- Jas / Vesten
+                ["shoes"]       = { item = 24, texture = 0},  -- Schoenen
+                ["decals"]      = { item = 7, texture = 0},  -- Decals
+                ["accessory"]   = { item = 8, texture = 0},  -- Nek / Das
+        --      ["bag"]         = { item = 0, texture = 0},  -- Tas
+                ["hat"]         = { item = -1, texture = -1},  -- Pet
+        --      ["glass"]       = { item = 0, texture = 0},  -- Bril
+        --      ["ear"]         = { item = 0, texture = 0},  -- Oor accessoires
+                ["mask"]         = { item = 0, texture = 0},  -- Masker
+            },
+        },
+        [2] = {
+            outfitLabel = "Noodhulp Lang",
+            outfitData = {
+                ["pants"]       = { item = 97, texture = 0},  -- Broek
+                ["arms"]        = { item = 4, texture = 0},  -- Armen
+                ["t-shirt"]     = { item = 56, texture = 0},  -- T Shirt
+                ["vest"]        = { item = 7, texture = 0},  -- Body Vest
+                ["torso2"]      = { item = 3, texture = 0},  -- Jas / Vesten
+                ["shoes"]       = { item = 24, texture = 0},  -- Schoenen
+                ["decals"]      = { item = 7, texture = 0},  -- Decals
+                ["accessory"]   = { item = 8, texture = 0},  -- Nek / Das
+        --      ["bag"]         = { item = 0, texture = 0},  -- Tas
+                ["hat"]         = { item = -1, texture = -1},  -- Pet
+        --      ["glass"]       = { item = 0, texture = 0},  -- Bril
+        --      ["ear"]         = { item = 0, texture = 0},  -- Oor accessoires
+                ["mask"]         = { item = 0, texture = 0},  -- Masker
+            },
+        },
+        [3] = {
+            outfitLabel = "VP Kort",
+            outfitData = {
+                ["pants"]       = { item = 97, texture = 0},  -- Broek
+                ["arms"]        = { item = 0, texture = 0},  -- Armen
+                ["t-shirt"]     = { item = 56, texture = 0},  -- T Shirt
+                ["vest"]        = { item = 7, texture = 3},  -- Body Vest
+                ["torso2"]      = { item = 2, texture = 0},  -- Jas / Vesten
+                ["shoes"]       = { item = 24, texture = 0},  -- Schoenen
+                ["decals"]      = { item = 7, texture = 0},  -- Decals
+                ["accessory"]   = { item = 8, texture = 0},  -- Nek / Das
+        --      ["bag"]         = { item = 0, texture = 0},  -- Tas
+                ["hat"]         = { item = -1, texture = -1},  -- Pet
+        --      ["glass"]       = { item = 0, texture = 0},  -- Bril
+        --      ["ear"]         = { item = 0, texture = 0},  -- Oor accessoires
+                ["mask"]         = { item = 0, texture = 0},  -- Masker
+            },
+        },
+        [4] = {
+            outfitLabel = "VP Lang",
+            outfitData = {
+                ["pants"]       = { item = 97, texture = 0},  -- Broek
+                ["arms"]        = { item = 4, texture = 0},  -- Armen
+                ["t-shirt"]     = { item = 56, texture = 0},  -- T Shirt
+                ["vest"]        = { item = 7, texture = 3},  -- Body Vest
+                ["torso2"]      = { item = 3, texture = 0},  -- Jas / Vesten
+                ["shoes"]       = { item = 24, texture = 0},  -- Schoenen
+                ["decals"]      = { item = 7, texture = 0},  -- Decals
+                ["accessory"]   = { item = 8, texture = 0},  -- Nek / Das
+        --      ["bag"]         = { item = 0, texture = 0},  -- Tas
+                ["hat"]         = { item = -1, texture = -1},  -- Pet
+        --      ["glass"]       = { item = 0, texture = 0},  -- Bril
+        --      ["ear"]         = { item = 0, texture = 0},  -- Oor accessoires
+                ["mask"]         = { item = 0, texture = 0},  -- Masker
+            },
+        },
+        [5] = {
+            outfitLabel = "VP Onopvallend Kort",
+            outfitData = {
+                ["pants"]       = { item = 97, texture = 0},  -- Broek
+                ["arms"]        = { item = 0, texture = 0},  -- Armen
+                ["t-shirt"]     = { item = 56, texture = 0},  -- T Shirt
+                ["vest"]        = { item = 7, texture = 2},  -- Body Vest
+                ["torso2"]      = { item = 2, texture = 1},  -- Jas / Vesten
+                ["shoes"]       = { item = 24, texture = 0},  -- Schoenen
+                ["decals"]      = { item = 7, texture = 0},  -- Decals
+                ["accessory"]   = { item = 8, texture = 0},  -- Nek / Das
+        --      ["bag"]         = { item = 0, texture = 0},  -- Tas
+                ["hat"]         = { item = -1, texture = -1},  -- Pet
+        --      ["glass"]       = { item = 0, texture = 0},  -- Bril
+        --      ["ear"]         = { item = 0, texture = 0},  -- Oor accessoires
+                ["mask"]         = { item = 0, texture = 0},  -- Masker
+            },
+        },
+        [6] = {
+            outfitLabel = "Motoragent",
+            outfitData = {
+                ["pants"]       = { item = 92, texture = 0},  -- Broek
+                ["arms"]        = { item = 4, texture = 0},  -- Armen
+                ["t-shirt"]     = { item = 56, texture = 0},  -- T Shirt
+                ["vest"]        = { item = 0, texture = 0},  -- Body Vest
+                ["torso2"]      = { item = 227, texture = 0},  -- Jas / Vesten
+                ["shoes"]       = { item = 24, texture = 0},  -- Schoenen
+                ["decals"]      = { item = 7, texture = 0},  -- Decals
+                ["accessory"]   = { item = 8, texture = 0},  -- Nek / Das
+        --      ["bag"]         = { item = 0, texture = 0},  -- Tas
+                ["hat"]         = { item = -1, texture = -1},  -- Pet
+        --      ["glass"]       = { item = 0, texture = 0},  -- Bril
+        --      ["ear"]         = { item = 0, texture = 0},  -- Oor accessoires
+                ["mask"]         = { item = 0, texture = 0},  -- Masker
+            },
+        },
+        [7] = {
+            outfitLabel = "DSI",
+            outfitData = {
+                ["pants"]       = { item = 4, texture = 2},  -- Broek
+                ["arms"]        = { item = 17, texture = 0},  -- Armen
+                ["t-shirt"]     = { item = 57, texture = 0},  -- T Shirt
+                ["vest"]        = { item = 5, texture = 0},  -- Body Vest
+                ["torso2"]      = { item = 53, texture = 0},  -- Jas / Vesten
+                ["shoes"]       = { item = 8, texture = 0},  -- Schoenen
+                ["decals"]      = { item = 7, texture = 0},  -- Decals
+                ["accessory"]   = { item = 9, texture = 0},  -- Nek / Das
+        --      ["bag"]         = { item = 0, texture = 0},  -- Tas
+                ["hat"]         = { item = 119, texture = 0},  -- Pet
+        --      ["glass"]       = { item = 0, texture = 0},  -- Bril
+        --      ["ear"]         = { item = 0, texture = 0},  -- Oor accessoires
+                ["mask"]         = { item = 35, texture = 0},  -- Masker
             },
         },
     },

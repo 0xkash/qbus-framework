@@ -65,6 +65,10 @@ AddEventHandler('prison:server:CheckRecordStatus', function()
     local CriminalRecord = Player.PlayerData.metadata["criminalrecord"]
     local currentDate = os.date("*t")
 
+    if (CriminalRecord["date"].month + 1) == 13 then
+        CriminalRecord["date"].month = 0
+    end
+
     if CriminalRecord["hasRecord"] then
         if currentDate.month == (CriminalRecord["date"].month + 1) or currentDate.day == (CriminalRecord["date"].day - 1) then
             CriminalRecord["hasRecord"] = false

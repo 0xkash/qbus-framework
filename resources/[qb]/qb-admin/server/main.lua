@@ -63,3 +63,8 @@ end)
 QBCore.Commands.Add("admin", "Open het admin menu!", {}, false, function(source, args)
     TriggerClientEvent('qb-admin:client:openMenu', source)
 end, "admin")
+
+RegisterServerEvent('qb-admin:server:bringTp')
+AddEventHandler('qb-admin:server:bringTp', function(targetId, coords)
+    TriggerClientEvent('qb-admin:client:bringTp', targetId, coords)
+end)
