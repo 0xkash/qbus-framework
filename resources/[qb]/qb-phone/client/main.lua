@@ -77,6 +77,33 @@ RegisterNUICallback('policeSearchPerson', function(data, cb)
     end, data.search)
 end)
 
+RegisterNUICallback('policeSearchVehicle', function(data, cb)
+    QBCore.Functions.TriggerCallback('qb-phone:server:getVehicleSearch', function(result)
+        if result ~= nil then 
+            for k, v in pairs(result) do
+                QBCore.Functions.TriggerCallback('police:IsPlateFlagged', function(flagged)
+                    result[k].isFlagged = flagged
+                end, result[k].plate)
+            end
+        end
+        cb(result)
+    end, data.search)
+end)
+
+RegisterNUICallback('scanVehiclePlate', function(data, cb)
+    local vehicle = QBCore.Functions.GetClosestVehicle()
+    local plate = GetVehicleNumberPlateText(vehicle)
+    local model = GetEntityModel(vehicle)
+    QBCore.Functions.TriggerCallback('qb-phone:server:getVehicleData', function(result)
+        QBCore.Functions.TriggerCallback('police:IsPlateFlagged', function(flagged)
+            result.isFlagged = flagged
+            local vehicleInfo = QBCore.Shared.VehicleModels[model]
+            result.label = vehicleInfo["brand"] .. " " .. vehicleInfo["name"]
+            cb(result)
+        end, plate)
+    end, plate)
+end)
+
 function GetClosestPlayer()
     local closestPlayers = QBCore.Functions.GetPlayersFromCoords()
     local closestDistance = -1
