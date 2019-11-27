@@ -197,6 +197,19 @@ $(document).on('click', "#cancel-menu", function(e){
     $.post('http://qb-clothing/PlaySound');
 });
 
+var clothingCategorys = {}
+
+QBClothing.SetCurrentValues = function(clothingValues) {
+    $.each(clothingValues, function(i, item){
+        var itemCats = $(".clothing-menu-container").find('[data-type="'+i+'"]');
+        var input = $(itemCats).find('input[data-type="item"]');
+        var texture = $(itemCats).find('input[data-type="texture"]');
+
+        $(input).val(item.item);
+        $(texture).val(item.texture);
+    });
+}
+
 QBClothing.Open = function(data) {
     $(".clothing-menu-roomOutfits-container").css("display", "none");
     $(".clothing-menu-myOutfits-container").css("display", "none");
@@ -206,7 +219,7 @@ QBClothing.Open = function(data) {
     $(".clothing-menu-container").css({"display":"block"}).animate({right: 0,}, 200);
     QBClothing.SetMaxValues(data.maxValues)
     $(".clothing-menu-header").html("");
-    // QBClothing.SetCurrentValues(data.currentClothing)
+    QBClothing.SetCurrentValues(data.currentClothing)
     $(".clothing-menu-roomOutfits-container").html("");
     $(".clothing-menu-myOutfits-container").html("");
     $.each(data.menus, function(i, menu){

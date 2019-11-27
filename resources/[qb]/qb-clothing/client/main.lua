@@ -162,6 +162,10 @@ AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     isLoggedIn = true
 end)
 
+Citizen.CreateThread(function()
+    TriggerServerEvent('qb-clothes:loadPlayerSkin')
+end)
+
 RegisterNetEvent('QBCore:Client:OnPlayerUnload')
 AddEventHandler('QBCore:Client:OnPlayerUnload', function()
     isLoggedIn = false
