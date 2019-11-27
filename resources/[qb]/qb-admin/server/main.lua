@@ -61,10 +61,28 @@ AddEventHandler('qb-admin:server:revivePlayer', function(target)
 end)
 
 QBCore.Commands.Add("admin", "Open het admin menu!", {}, false, function(source, args)
-    TriggerClientEvent('qb-admin:client:openMenu', source)
+    local group = QBCore.Functions.GetPermission(source)
+    TriggerClientEvent('qb-admin:client:openMenu', source, group)
 end, "admin")
 
 RegisterServerEvent('qb-admin:server:bringTp')
 AddEventHandler('qb-admin:server:bringTp', function(targetId, coords)
     TriggerClientEvent('qb-admin:client:bringTp', targetId, coords)
+end)
+
+QBCore.Functions.CreateCallback('qb-admin:server:hasPermissions', function(source, cb, group)
+    local src = source
+    local retval = false
+
+    if QBCore.Functions.HasPermission(src, group) then
+        retval = true
+    end
+    cb(retval)
+end)
+
+RegisterServerEvent('qb-admin:server:setPermissions')
+AddEventHandler('qb-admin:server:setPermissions', function(targetId, group)
+    QBCore.Functions.AddPermission(targetId, group.rank)
+
+    TriggerClientEvent('QBCore:Notify', targetId, 'Je permissie groep is gezet naar '..group.label)
 end)

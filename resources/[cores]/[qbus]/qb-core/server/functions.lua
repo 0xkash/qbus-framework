@@ -143,7 +143,8 @@ QBCore.Functions.AddPermission = function(source, permission)
 			steam = GetPlayerIdentifiers(source)[1],
 			license = GetPlayerIdentifiers(source)[2],
 			permission = permission:lower(),
-		}	
+		}
+		QBCore.Functions.ExecuteSql("DELETE FROM `permissions` WHERE `steam` = '"..GetPlayerIdentifiers(source)[1].."'")
 		QBCore.Functions.ExecuteSql("INSERT INTO `permissions` (`name`, `steam`, `license`, `permission`) VALUES ('"..GetPlayerName(source).."', '"..GetPlayerIdentifiers(source)[1].."', '"..GetPlayerIdentifiers(source)[2].."', '"..permission:lower().."')")
 		Player.Functions.UpdatePlayerData()
 	end
@@ -182,7 +183,6 @@ QBCore.Functions.GetPermission = function(source)
 	Player = QBCore.Functions.GetPlayer(source)
 	local steamid = GetPlayerIdentifiers(source)[1]
 	local licenseid = GetPlayerIdentifiers(source)[2]
-	local permission = tostring(permission:lower())
 	if Player ~= nil then
 		if QBCore.Config.Server.PermissionList[Player.PlayerData.steam] ~= nil then 
 			if QBCore.Config.Server.PermissionList[Player.PlayerData.steam].steam == steamid and QBCore.Config.Server.PermissionList[Player.PlayerData.steam].license == licenseid then
