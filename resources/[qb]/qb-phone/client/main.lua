@@ -470,11 +470,15 @@ RegisterNUICallback('setEmailRead', function(data)
 end)
 
 RegisterNetEvent('qb-phone:client:newMailNotify')
-AddEventHandler('qb-phone:client:newMailNotify', function()
+AddEventHandler('qb-phone:client:newMailNotify', function(mailData)
     QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
         if result then
             SendNUIMessage({
-                task = "newMailNotify",
+                task = "phoneNotification",
+                message = {
+                    title = '<i class="fas fa-envelope"></i> Mail',
+                    message = "@"..mailData.sender..", "..mailData.message
+                }
             })
         end
     end, "phone")
@@ -511,7 +515,7 @@ RegisterNUICallback('postAdvert', function(data)
 end)
 
 RegisterNetEvent('qb-phone:client:newTweet')
-AddEventHandler('qb-phone:client:newTweet', function(sender)
+AddEventHandler('qb-phone:client:newTweet', function(sender, message)
     QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
         if result then
             if inPhone then
@@ -524,8 +528,16 @@ AddEventHandler('qb-phone:client:newTweet', function(sender)
                 end)
             else
                 SendNUIMessage({
-                    task = "newTweetNotify",
-                    sender = sender
+                    task = "phoneNotification",
+                    message = {
+                        title = '<i class="fab fa-twitter"></i> <b>Twitter</b>',
+                        message = "@"..sender.." : "..message,
+                        color = {
+                            r = 0,
+                            g = 138,
+                            b = 190,
+                        }
+                    }
                 })
             end
         end
@@ -533,7 +545,7 @@ AddEventHandler('qb-phone:client:newTweet', function(sender)
 end)
 
 RegisterNetEvent('qb-phone:client:newAd')
-AddEventHandler('qb-phone:client:newAd', function(sender)
+AddEventHandler('qb-phone:client:newAd', function(sender, message)
     QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
         if result then
             if inPhone then
@@ -546,8 +558,16 @@ AddEventHandler('qb-phone:client:newAd', function(sender)
                 end)
             else
                 SendNUIMessage({
-                    task = "newAdNotify",
-                    sender = sender
+                    task = "phoneNotification",
+                    message = {
+                        title = '<i class="fas fa-ad"></i> Advertentie',
+                        message = "@"..sender.." : "..message,
+                        color = {
+                            r = 255,
+                            g = 143,
+                            b = 26,
+                        }
+                    }
                 })
             end
         end

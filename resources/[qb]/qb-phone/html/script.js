@@ -82,10 +82,6 @@ $(document).ready(function(){
             qbPhone.setupUserMails(eventData.mails)
         }
 
-        if (eventData.task == "newMailNotify") {
-            qbPhone.MailNotify()
-        }
-
         if (eventData.task == "setupTweets") {
             qbPhone.SetupTweets(eventData.tweets);
         }
@@ -94,12 +90,8 @@ $(document).ready(function(){
             qbPhone.SetupAdverts(eventData.ads);
         }
 
-        if (eventData.task == "newTweetNotify") {
-            qbPhone.TwitterNotify(eventData.sender)
-        }
-
-        if (eventData.task == "newAdNotify") {
-            qbPhone.AdvertNotify(eventData.sender)
+        if (eventData.task == "phoneNotification") {
+            qbPhone.phoneNotification(eventData.message)
         }
 
         if (eventData.task == "newTweet") {
@@ -1347,41 +1339,25 @@ $(document).on('click', '.cancel-new-ad', function(){
     }, 200);
 });
 
-qbPhone.MailNotify = function() {
-    if (allowNotifys) {
-        $(".new-mail-notify").css({'display':'block'}).animate({
-            top: "0%",
-        }, 500);
-        setTimeout(function(){
-            $(".new-mail-notify").css({'display':'block'}).animate({
-                top: "-10%",
-            }, 250)
-        }, 2500)
+var notifyTimer = null;
+
+qbPhone.phoneNotification = function(message) {
+    clearTimeout(notifyTimer)
+    $(".new-notify").css({"right":"-20%"});
+    $('.new-notify-titel').html(message.title);
+    $('.new-notify-content').html(message.message);
+    if (message.color != undefined) {
+        $(".new-notify").css({"background-color":"rgb("+message.color.r+", "+message.color.g+", "+message.color.b+")"})
     }
-}
-
-qbPhone.TwitterNotify = function(sender) {
-    $('.new-twitter-notify-content').html("@" + sender + " heeft een nieuwe tweet geplaatst!");
-    $(".new-twitter-notify").css({'display':'block'}).animate({
-        top: "0%",
-    }, 500);
-    setTimeout(function(){
-        $(".new-twitter-notify").css({'display':'block'}).animate({
-            top: "-10%",
-        }, 250)
-    }, 2500)
-}
-
-qbPhone.AdvertNotify = function(sender) {
-    $('.new-advert-notify-content').html(sender + " heeft een nieuwe advertentie geplaatst!");
-    $(".new-advert-notify").css({'display':'block'}).animate({
-        top: "0%",
-    }, 500);
-    setTimeout(function(){
-        $(".new-advert-notify").css({'display':'block'}).animate({
-            top: "-10%",
-        }, 250)
-    }, 2500)
+    $(".new-notify").css({'display':'block'}).animate({
+        right: "0%",
+    }, 450);
+    notifyTimer = setTimeout(function(){
+        $(".new-notify").css({'display':'block'}).animate({
+            right: "-20%",
+        }, 150)
+        notifyActive = false;
+    }, 3500)
 }
 
 qbPhone.SetupTweets = function(tweets) {

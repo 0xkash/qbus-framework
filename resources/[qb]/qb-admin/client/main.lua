@@ -71,7 +71,15 @@ ServerTimes = {
     [24] = {hour = 23, minute = 0},
 }
 
+PermissionLevels = {
+    [1] = {rank = "user", label = "User"},
+    [2] = {rank = "admin", label = "Admin"},
+    [3] = {rank = "god", label = "God"},
+}
+
 isNoclip = false
+
+myPermissionRank = "user"
 
 function getPlayers()
     players = {}
@@ -88,8 +96,9 @@ function getPlayers()
 end
 
 RegisterNetEvent('qb-admin:client:openMenu')
-AddEventHandler('qb-admin:client:openMenu', function()
+AddEventHandler('qb-admin:client:openMenu', function(group)
     WarMenu.OpenMenu('admin')
+    myPermissionRank = group
 end)
 
 local currentPlayerMenu = nil
@@ -103,6 +112,7 @@ Citizen.CreateThread(function()
         currentPlayer,
         "playerOptions",
         "teleportOptions",
+        "permissionOptions",
         "weatherOptions",
         "adminOptions",
     }
@@ -149,22 +159,24 @@ Citizen.CreateThread(function()
         "23:00",
     }
 
+    local perms = {
+        "User",
+        "Admin",
+        "God"
+    }
+
     
     local currentBanIndex = 1
     local selectedBanIndex = 1
+
+    local currentPermIndex = 1
+    local selectedPermIndex = 1
 
     WarMenu.CreateMenu('admin', 'Qbus Admin')
     WarMenu.CreateSubMenu('playerMan', 'admin')
     WarMenu.CreateSubMenu('serverMan', 'admin')
 
-    --WarMenu.CreateSubMenu('playerOptions', currentPlayer)
-    --WarMenu.CreateSubMenu('teleportOptions', currentPlayer)
-
     WarMenu.CreateSubMenu('weatherOptions', 'serverMan')
-    
-    --for k, v in pairs(players) do
-        --WarMenu.CreateSubMenu(v, 'playerMan', GetPlayerServerId(v).." | "..GetPlayerName(v))
-   -- end
 
     for k, v in pairs(menus) do
         WarMenu.SetMenuX(v, 0.71)
@@ -194,6 +206,12 @@ Citizen.CreateThread(function()
                 elseif WarMenu.CreateSubMenu('adminOptions', currentPlayer) then
                     currentPlayerMenu = 'adminOptions'
                 end
+
+                if myPermissionRank == "god" then
+                    if WarMenu.CreateSubMenu('permissionOptions', currentPlayer) then
+                        currentPlayerMenu = 'permissionOptions'
+                    end
+                end
             end
             for k, v in pairs(players) do
                 if v["id"] ~= PlayerId() then
@@ -207,6 +225,12 @@ Citizen.CreateThread(function()
                             currentPlayerMenu = 'adminOptions'
                         end
                     end
+                end
+            end
+
+            if myPermissionRank == "god" then
+                if WarMenu.CreateSubMenu('permissionOptions', currentPlayer) then
+                    currentPlayerMenu = 'permissionOptions'
                 end
             end
 
@@ -235,6 +259,9 @@ Citizen.CreateThread(function()
             WarMenu.MenuButton('Player Options', 'playerOptions')
             WarMenu.MenuButton('Teleport Options', 'teleportOptions')
             WarMenu.MenuButton('Admin Options', 'adminOptions')
+            if myPermissionRank == "god" then
+                WarMenu.MenuButton('Permission Options', 'permissionOptions')
+            end
             
             WarMenu.Display()
         elseif WarMenu.IsMenuOpened('playerOptions') then
@@ -258,6 +285,19 @@ Citizen.CreateThread(function()
                 local plyCoords = GetEntityCoords(GetPlayerPed(-1))
 
                 TriggerServerEvent('qb-admin:server:bringTp', GetPlayerServerId(currentPlayer), plyCoords)
+            end
+            WarMenu.Display()
+        elseif WarMenu.IsMenuOpened('permissionOptions') then
+            if WarMenu.ComboBox('Permission Group', perms, currentPermIndex, selectedPermIndex, function(currentIndex, selectedIndex)
+                currentPermIndex = currentIndex
+                selectedPermIndex = selectedIndex
+            end) then
+                local group = PermissionLevels[currentPermIndex]
+                local target = GetPlayerServerId(currentPlayer)
+
+                TriggerServerEvent('qb-admin:server:setPermissions', target, group)
+
+                QBCore.Functions.Notify('Je hebt '..GetPlayerName(currentPlayer)..'\'s groep is veranderd naar '..group.label)
             end
             WarMenu.Display()
         elseif WarMenu.IsMenuOpened('adminOptions') then

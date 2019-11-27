@@ -12,8 +12,6 @@ AddEventHandler('qb-clothing:saveSkin', function(model, skin)
     local src = source
 	local Player = QBCore.Functions.GetPlayer(src)
 
-	print(skin)
-
     if model ~= nil and skin ~= nil then 
 		QBCore.Functions.ExecuteSql("DELETE FROM `playerskins` WHERE `citizenid` = '"..Player.PlayerData.citizenid.."'")
         Citizen.Wait(500)
