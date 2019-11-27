@@ -129,7 +129,7 @@ AddEventHandler('lockpicks:UseLockpick', function()
 
         if dist <= 1 and not Config.Registers[k].robbed then
             QBCore.Functions.TriggerCallback('police:GetCops', function(cops)
-                if cops >= 1 then
+                if cops >= 3 then
                     QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
                         if result then
                             lockpick(true)

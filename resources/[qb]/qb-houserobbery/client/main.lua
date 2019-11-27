@@ -194,21 +194,25 @@ end
 RegisterNetEvent('lockpicks:UseLockpick')
 AddEventHandler('lockpicks:UseLockpick', function()
     QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
-        if closestHouse ~= nil then
-            if result then
-                if not Config.Houses[closestHouse]["opened"] then
-                    PoliceCall()
-                    TriggerEvent('qb-lockpick:client:openLockpick', lockpickFinish)
-                    if math.random(1, 100) <= 65 and not IsWearingHandshoes() then
-                        TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
+        QBCore.Functions.TriggerCallback('police:GetCops', function(cops)
+            if cops >= 2 then
+                if closestHouse ~= nil then
+                    if result then
+                        if not Config.Houses[closestHouse]["opened"] then
+                            PoliceCall()
+                            TriggerEvent('qb-lockpick:client:openLockpick', lockpickFinish)
+                            if math.random(1, 100) <= 65 and not IsWearingHandshoes() then
+                                TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
+                            end
+                        else
+                            QBCore.Functions.Notify('De deur is al open..', 'error', 3500)
+                        end
+                    else
+                        QBCore.Functions.Notify('Het lijkt erop dat je iets mist...', 'error', 3500)
                     end
-                else
-                    QBCore.Functions.Notify('De deur is al open..', 'error', 3500)
                 end
-            else
-                QBCore.Functions.Notify('Het lijkt erop dat je iets mist...', 'error', 3500)
             end
-        end
+        end)
     end, "screwdriverset")
 end)
 
