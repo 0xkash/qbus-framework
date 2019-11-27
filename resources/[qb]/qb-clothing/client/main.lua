@@ -279,24 +279,26 @@ Citizen.CreateThread(function()
                 local dist = GetDistanceBetweenCoords(pos, Config.ClothingRooms[k].x, Config.ClothingRooms[k].y, Config.ClothingRooms[k].z, true)
 
                 if dist < 15 then
-                    DrawMarker(2, Config.ClothingRooms[k].x, Config.ClothingRooms[k].y, Config.ClothingRooms[k].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.4, 0.4, 0.2, 255, 255, 255, 255, 0, 0, 0, 1, 0, 0, 0)
-                    if dist < 2 then
-                        -- if PlayerData.job.name == Config.ClothingRooms[k].requiredJob then
-                            DrawText3Ds(Config.ClothingRooms[k].x, Config.ClothingRooms[k].y, Config.ClothingRooms[k].z + 0.3, '~g~E~w~ - Outfits bekijken')
-                            if IsControlJustPressed(0, Keys["E"]) then
-                                customCamLocation = Config.ClothingRooms[k].cameraLocation
-                                QBCore.Functions.TriggerCallback('qb-clothing:server:getOutfits', function(result)
-                                    openMenu({
-                                        {menu = "roomOutfits", label = "Presets", selected = true, outfits = Config.Outfits["police"]},
-                                        {menu = "myOutfits", label = "Mijn Outfits", selected = false, outfits = result},
-                                        {menu = "character", label = "Karakter", selected = false},
-                                        {menu = "accessoires", label = "Accessoires", selected = false}
-                                    })
-                                end)
-                            end
-                        -- end
+                    if not creatingCharacter then
+                        DrawMarker(2, Config.ClothingRooms[k].x, Config.ClothingRooms[k].y, Config.ClothingRooms[k].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.4, 0.4, 0.2, 255, 255, 255, 255, 0, 0, 0, 1, 0, 0, 0)
+                        if dist < 2 then
+                            -- if PlayerData.job.name == Config.ClothingRooms[k].requiredJob then
+                                DrawText3Ds(Config.ClothingRooms[k].x, Config.ClothingRooms[k].y, Config.ClothingRooms[k].z + 0.3, '~g~E~w~ - Outfits bekijken')
+                                if IsControlJustPressed(0, Keys["E"]) then
+                                    customCamLocation = Config.ClothingRooms[k].cameraLocation
+                                    QBCore.Functions.TriggerCallback('qb-clothing:server:getOutfits', function(result)
+                                        openMenu({
+                                            {menu = "roomOutfits", label = "Presets", selected = true, outfits = Config.Outfits["police"]},
+                                            {menu = "myOutfits", label = "Mijn Outfits", selected = false, outfits = result},
+                                            {menu = "character", label = "Karakter", selected = false},
+                                            {menu = "accessoires", label = "Accessoires", selected = false}
+                                        })
+                                    end)
+                                end
+                            -- end
+                        end
+                        inRange = true
                     end
-                    inRange = true
                 end
             end
 
@@ -449,6 +451,7 @@ end
 function openMenu(allowedMenus)
 
     previousSkinData = json.encode(skinData)
+    creatingCharacter = true
 
     GetMaxValues()
     SendNUIMessage({
@@ -458,7 +461,6 @@ function openMenu(allowedMenus)
     })
     SetNuiFocus(true, true)
     SetCursorLocation(0.9, 0.25)
-    creatingCharacter = true
 
     FreezeEntityPosition(GetPlayerPed(-1), true)
 
