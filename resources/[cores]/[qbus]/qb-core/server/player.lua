@@ -64,6 +64,11 @@ QBCore.Player.CheckPlayerData = function(source, PlayerData)
 	PlayerData.metadata["commandbinds"] = PlayerData.metadata["commandbinds"] ~= nil and PlayerData.metadata["commandbinds"] or {}
 	PlayerData.metadata["bloodtype"] = PlayerData.metadata["bloodtype"] ~= nil and PlayerData.metadata["bloodtype"] or QBCore.Config.Player.Bloodtypes[math.random(1, #QBCore.Config.Player.Bloodtypes)]
 	PlayerData.metadata["dealerrep"] = PlayerData.metadata["dealerrep"] ~= nil and PlayerData.metadata["dealerrep"] or 0
+	PlayerData.metadata["jobrep"] = PlayerData.metadata["jobrep"] ~= nil and PlayerData.metadata["jobrep"] or {
+		["tow"] = 0,
+		["trucker"] = 0,
+		["taxi"] = 0,
+	}
 	PlayerData.metadata["callsign"] = PlayerData.metadata["callsign"] ~= nil and PlayerData.metadata["callsign"] or "NO CALLSIGN"
 	PlayerData.metadata["fingerprint"] = PlayerData.metadata["fingerprint"] ~= nil and PlayerData.metadata["fingerprint"] or QBCore.Player.CreateFingerId()
 
@@ -117,6 +122,12 @@ QBCore.Player.CreatePlayer = function(PlayerData)
 			self.PlayerData.metadata[meta] = val
 			self.Functions.UpdatePlayerData()
 		end
+	end
+
+	self.Functions.AddJobReputation = function(amount)
+		local amount = tonumber(amount)
+		self.PlayerData.metadata["jobrep"][self.PlayerData.job.name] = self.PlayerData.metadata["jobrep"][self.PlayerData.job.name] + amount
+		self.Functions.UpdatePlayerData()
 	end
 
 	self.Functions.AddMoney = function(moneytype, amount)

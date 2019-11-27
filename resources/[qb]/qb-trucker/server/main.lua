@@ -22,7 +22,7 @@ AddEventHandler('qb-trucker:server:01101110', function(drops)
     local price = (DropPrice * drops) + bonus
     local taxAmount = math.ceil((price / 100) * PaymentTax)
     local payment = price - taxAmount
-
+    Player.Functions.AddJobReputation(1)
     Player.Functions.AddMoney("bank", payment)
     TriggerClientEvent('chatMessage', source, "BAAN", "warning", "Je hebt je salaris ontvangen van: €"..payment..", bruto: €"..price.." (waarvan €"..bonus.." bonus) en €"..taxAmount.." belasting ("..PaymentTax.."%)")
 end)

@@ -23,6 +23,7 @@ AddEventHandler('qb-tow:server:11101110', function(drops)
     local taxAmount = math.ceil((price / 100) * PaymentTax)
     local payment = price - taxAmount
 
+    Player.Functions.AddJobReputation(1)
     Player.Functions.AddMoney("bank", payment)
     TriggerClientEvent('chatMessage', source, "BAAN", "warning", "Je hebt je salaris ontvangen van: €"..payment..", bruto: €"..price.." (waarvan €"..bonus.." bonus) en €"..taxAmount.." belasting ("..PaymentTax.."%)")
 end)
