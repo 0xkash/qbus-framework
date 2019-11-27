@@ -286,9 +286,11 @@ Citizen.CreateThread(function()
                                 DrawText3Ds(Config.ClothingRooms[k].x, Config.ClothingRooms[k].y, Config.ClothingRooms[k].z + 0.3, '~g~E~w~ - Outfits bekijken')
                                 if IsControlJustPressed(0, Keys["E"]) then
                                     customCamLocation = Config.ClothingRooms[k].cameraLocation
+                                    gender = "male"
+                                    if QBCore.Functions.GetPlayerData().charinfo.gender == 1 then gender = "female" end
                                     QBCore.Functions.TriggerCallback('qb-clothing:server:getOutfits', function(result)
                                         openMenu({
-                                            {menu = "roomOutfits", label = "Presets", selected = true, outfits = Config.Outfits["police"]},
+                                            {menu = "roomOutfits", label = "Presets", selected = true, outfits = Config.Outfits["police"][gender]},
                                             {menu = "myOutfits", label = "Mijn Outfits", selected = false, outfits = result},
                                             {menu = "character", label = "Karakter", selected = false},
                                             {menu = "accessoires", label = "Accessoires", selected = false}

@@ -849,6 +849,26 @@ var requiredItemOpen = false;
         handleDragDrop();
     };
 
+    Inventory.ToggleHotbar = function(data) {
+        if (data.open) {
+            $(".z-hotbar-inventory").html("");
+            for(i = 1; i < 6; i++) {
+                var elem = '<div class="z-hotbar-item-slot" data-zhotbarslot="'+i+'"> <div class="z-hotbar-item-slot-key"><p>['+i+']</p></div><div class="z-hotbar-item-slot-img"></div><div class="z-hotbar-item-slot-label"><p>&nbsp;</p></div></div>'
+                $(".z-hotbar-inventory").append(elem);
+            }
+            $.each(data.items, function(i, item){
+                if (item != null) {
+                    $(".z-hotbar-inventory").find("[data-zhotbarslot=" + item.slot + "]").html('<div class="z-hotbar-item-slot-key"><p>[' + item.slot + ']</p></div><div class="z-hotbar-item-slot-img"><img src="images/' + item.image + '" alt="' + item.name + '" /></div><div class="z-hotbar-item-slot-amount"><p>' + item.amount + ' (' + ((item.weight * item.amount) / 1000).toFixed(1) + ')</p></div><div class="z-hotbar-item-slot-label"><p>' + item.label + '</p></div>');
+                }
+            });
+            $(".z-hotbar-inventory").fadeIn(150);
+        } else {
+            $(".z-hotbar-inventory").fadeOut(150, function(){
+                $(".z-hotbar-inventory").html("");
+            });
+        }
+    }
+
     Inventory.UseItem = function(data) {
         $(".itembox-container").hide();
         $(".itembox-container").fadeIn(250);
@@ -922,10 +942,13 @@ var requiredItemOpen = false;
                     break;
                 case "itemBox":
                     Inventory.itemBox(event.data);
-                    break
+                    break;
                 case "requiredItem":
                     Inventory.RequiredItem(event.data);
-                    break
+                    break;
+                case "toggleHotbar":
+                    Inventory.ToggleHotbar(event.data);
+                    break;
             }
         })
     }

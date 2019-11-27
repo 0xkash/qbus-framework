@@ -177,10 +177,10 @@ AddEventHandler('qb-phone:server:sendNewMail', function(mailData)
 
     if mailData.button == nil then
         QBCore.Functions.ExecuteSql("INSERT INTO `player_mails` (`citizenid`, `sender`, `subject`, `message`, `mailid`, `read`) VALUES ('"..Player.PlayerData.citizenid.."', '"..mailData.sender.."', '"..mailData.subject.."', '"..mailData.message.."', '"..GenerateMailId().."', '0')")
-        TriggerClientEvent('qb-phone:client:newMailNotify', src)
+        TriggerClientEvent('qb-phone:client:newMailNotify', src, mailData)
     else
         QBCore.Functions.ExecuteSql("INSERT INTO `player_mails` (`citizenid`, `sender`, `subject`, `message`, `mailid`, `read`, `button`) VALUES ('"..Player.PlayerData.citizenid.."', '"..mailData.sender.."', '"..mailData.subject.."', '"..mailData.message.."', '"..GenerateMailId().."', '0', '"..json.encode(mailData.button).."')")
-        TriggerClientEvent('qb-phone:client:newMailNotify', src)
+        TriggerClientEvent('qb-phone:client:newMailNotify', src, mailData)
     end
 end)
 
@@ -190,7 +190,7 @@ AddEventHandler('qb-phone:server:postTweet', function(message)
     local Player = QBCore.Functions.GetPlayer(src)
     
     QBCore.Functions.ExecuteSql("INSERT INTO `phone_tweets` (`citizenid`, `sender`, `message`) VALUES ('"..Player.PlayerData.citizenid.."', '"..Player.PlayerData.charinfo.firstname.." "..string.sub(Player.PlayerData.charinfo.lastname, 1, 1):upper()..".', '"..message.."')")
-    TriggerClientEvent('qb-phone:client:newTweet', -1, Player.PlayerData.charinfo.firstname.." "..string.sub(Player.PlayerData.charinfo.lastname, 1, 1):upper()..".")
+    TriggerClientEvent('qb-phone:client:newTweet', -1, Player.PlayerData.charinfo.firstname.." "..string.sub(Player.PlayerData.charinfo.lastname, 1, 1):upper()..".", message)
 end)
 
 RegisterServerEvent('qb-phone:server:postAdvert')
@@ -202,7 +202,7 @@ AddEventHandler('qb-phone:server:postAdvert', function(message)
         phone = Player.PlayerData.charinfo.phone,
         name = Player.PlayerData.charinfo.firstname .." "..Player.PlayerData.charinfo.lastname,
     }
-    TriggerClientEvent('qb-phone:client:newAd', -1, Player.PlayerData.charinfo.firstname .." "..Player.PlayerData.charinfo.lastname)
+    TriggerClientEvent('qb-phone:client:newAd', -1, Player.PlayerData.charinfo.firstname .." "..Player.PlayerData.charinfo.lastname, message)
 end)
 
 function GenerateMailId()

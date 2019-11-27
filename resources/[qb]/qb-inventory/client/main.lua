@@ -1,6 +1,7 @@
 QBCore = nil
 
 inInventory = false
+hotbarOpen = false
 
 local inventoryTest = {}
 local currentWeapon = nil
@@ -118,6 +119,14 @@ Citizen.CreateThread(function()
             end)
         end
 
+        if IsControlJustPressed(0, Keys["Z"]) then
+            ToggleHotbar(true)
+        end
+
+        if IsControlJustReleased(0, Keys["Z"]) then
+            ToggleHotbar(false)
+        end
+
         if IsDisabledControlJustReleased(0, Keys["1"]) then
             QBCore.Functions.GetPlayerData(function(PlayerData)
                 if not PlayerData.metadata["isdead"] and not PlayerData.metadata["ishandcuffed"] then
@@ -233,6 +242,7 @@ end)
 RegisterNetEvent("inventory:client:OpenInventory")
 AddEventHandler("inventory:client:OpenInventory", function(inventory, other)
     if not IsEntityDead(GetPlayerPed(-1)) then
+        ToggleHotbar(false)
         SetNuiFocus(true, true)
         SendNUIMessage({
             action = "open",
@@ -485,4 +495,27 @@ function IsBackEngine(vehModel)
         end
     end
     return false
+end
+
+function ToggleHotbar(toggle)
+    local HotbarItems = {
+        [1] = QBCore.Functions.GetPlayerData().items[1],
+        [2] = QBCore.Functions.GetPlayerData().items[2],
+        [3] = QBCore.Functions.GetPlayerData().items[3],
+        [4] = QBCore.Functions.GetPlayerData().items[4],
+        [5] = QBCore.Functions.GetPlayerData().items[5],
+    } 
+
+    if toggle then
+        SendNUIMessage({
+            action = "toggleHotbar",
+            open = true,
+            items = HotbarItems
+        })
+    else
+        SendNUIMessage({
+            action = "toggleHotbar",
+            open = false,
+        })
+    end
 end
