@@ -1,5 +1,18 @@
 local ObjectList = {}
 
+RegisterNetEvent('police:client:spawnObject')
+AddEventHandler('police:client:spawnObject', function(type)
+    local coords = GetEntityCoords(GetPlayerPed(GetPlayerFromServerId(player)))
+    local heading = GetEntityHeading(GetPlayerPed(GetPlayerFromServerId(player)))
+    local forward = GetEntityForwardVector(GetPlayerPed(-1))
+	local x, y, z = table.unpack(coords + forward * 0.5)
+    local spawnedObj = CreateObject(Config.Objects[type].model, x, y, z, true, false, false)
+    PlaceObjectOnGroundProperly(spawnedObj)
+    SetEntityHeading(spawnedObj, heading)
+    FreezeEntityPosition(spawnedObj, Config.Objects[type].freeze)
+    TriggerServerEvent("police:server:spawnObject", spawnedObj)
+end)
+
 RegisterNetEvent('police:client:spawnCone')
 AddEventHandler('police:client:spawnCone', function()
     QBCore.Functions.Progressbar("spawn_object", "Object plaatsen..", 2500, false, true, {
@@ -13,7 +26,7 @@ AddEventHandler('police:client:spawnCone', function()
         flags = 16,
     }, {}, {}, function() -- Done
         StopAnimTask(GetPlayerPed(-1), "anim@narcotics@trash", "drop_front", 1.0)
-        TriggerServerEvent("police:server:spawnObject", "cone")
+        TriggerEvent("police:client:spawnObject", "cone")
     end, function() -- Cancel
         StopAnimTask(GetPlayerPed(-1), "anim@narcotics@trash", "drop_front", 1.0)
         QBCore.Functions.Notify("Geannuleerd..", "error")
@@ -33,7 +46,7 @@ AddEventHandler('police:client:spawnBarier', function()
         flags = 16,
     }, {}, {}, function() -- Done
         StopAnimTask(GetPlayerPed(-1), "anim@narcotics@trash", "drop_front", 1.0)
-        TriggerServerEvent("police:server:spawnObject", "barier")
+        TriggerEvent("police:client:spawnObject", "barier")
     end, function() -- Cancel
         StopAnimTask(GetPlayerPed(-1), "anim@narcotics@trash", "drop_front", 1.0)
         QBCore.Functions.Notify("Geannuleerd..", "error")
@@ -53,7 +66,7 @@ AddEventHandler('police:client:spawnSchotten', function()
         flags = 16,
     }, {}, {}, function() -- Done
         StopAnimTask(GetPlayerPed(-1), "anim@narcotics@trash", "drop_front", 1.0)
-        TriggerServerEvent("police:server:spawnObject", "schotten")
+        TriggerEvent("police:client:spawnObject", "schotten")
     end, function() -- Cancel
         StopAnimTask(GetPlayerPed(-1), "anim@narcotics@trash", "drop_front", 1.0)
         QBCore.Functions.Notify("Geannuleerd..", "error")
@@ -73,7 +86,7 @@ AddEventHandler('police:client:spawnTent', function()
         flags = 16,
     }, {}, {}, function() -- Done
         StopAnimTask(GetPlayerPed(-1), "anim@narcotics@trash", "drop_front", 1.0)
-        TriggerServerEvent("police:server:spawnObject", "tent")
+        TriggerEvent("police:client:spawnObject", "tent")
     end, function() -- Cancel
         StopAnimTask(GetPlayerPed(-1), "anim@narcotics@trash", "drop_front", 1.0)
         QBCore.Functions.Notify("Geannuleerd..", "error")
@@ -94,7 +107,7 @@ AddEventHandler('police:client:spawnLight', function()
         flags = 16,
     }, {}, {}, function() -- Done
         StopAnimTask(GetPlayerPed(-1), "anim@narcotics@trash", "drop_front", 1.0)
-        TriggerServerEvent("police:server:spawnObject", "light")
+        TriggerEvent("police:client:spawnObject", "light")
     end, function() -- Cancel
         StopAnimTask(GetPlayerPed(-1), "anim@narcotics@trash", "drop_front", 1.0)
         QBCore.Functions.Notify("Geannuleerd..", "error")
@@ -133,16 +146,12 @@ AddEventHandler('police:client:removeObject', function(objectId)
 end)
 
 RegisterNetEvent('police:client:spawnObject')
-AddEventHandler('police:client:spawnObject', function(objectId, type, player)
-    local coords = GetEntityCoords(GetPlayerPed(GetPlayerFromServerId(player)))
-    local heading = GetEntityHeading(GetPlayerPed(GetPlayerFromServerId(player)))
-    local forward = GetEntityForwardVector(GetPlayerPed(-1))
-	local x, y, z = table.unpack(coords + forward * 0.5)
-    local spawnedObj = CreateObject(Config.Objects[type], x, y, z, false, false, false)
-    PlaceObjectOnGroundProperly(spawnedObj)
-    SetEntityHeading(spawnedObj, heading)
-    FreezeEntityPosition(spawnedObj, true)
+AddEventHandler('police:client:spawnObject', function(objectId, spawnedObj, player)
     if PlayerJob.name == "police" then 
+        local coords = GetEntityCoords(GetPlayerPed(GetPlayerFromServerId(player)))
+        local heading = GetEntityHeading(GetPlayerPed(GetPlayerFromServerId(player)))
+        local forward = GetEntityForwardVector(GetPlayerPed(-1))
+        local x, y, z = table.unpack(coords + forward * 0.5)
         ObjectList[objectId] = {
             id = objectId,
             object = spawnedObj,

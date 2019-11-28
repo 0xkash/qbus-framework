@@ -225,11 +225,11 @@ AddEventHandler('police:server:UpdateBlips', function()
 end)
 
 RegisterServerEvent('police:server:spawnObject')
-AddEventHandler('police:server:spawnObject', function(type)
+AddEventHandler('police:server:spawnObject', function(object)
     local src = source
     local objectId = CreateObjectId()
-    Objects[objectId] = type
-    TriggerClientEvent("police:client:spawnObject", -1, objectId, type, src)
+    Objects[objectId] = object
+    TriggerClientEvent("police:client:spawnObject", -1, objectId, object, src)
 end)
 
 RegisterServerEvent('police:server:deleteObject')

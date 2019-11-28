@@ -24,11 +24,11 @@ Config.RandomInt = function(length)
 end
 
 Config.Objects = {
-    ["cone"] = `prop_roadcone02a`,
-    ["barier"] = `prop_barrier_work06a`,
-    ["schotten"] = `prop_snow_sign_road_06g`,
-    ["tent"] = `prop_gazebo_03`,
-    ["light"] = `prop_worklight_03b`,
+    ["cone"] = {model = `prop_roadcone02a`, freeze = false},
+    ["barier"] = {model = `prop_barrier_work06a`, freeze = true},
+    ["schotten"] = {model = `prop_snow_sign_road_06g`, freeze = true},
+    ["tent"] = {model = `prop_gazebo_03`, freeze = true},
+    ["light"] = {model = `prop_worklight_03b`, freeze = true},
 }
 
 Config.Locations = {

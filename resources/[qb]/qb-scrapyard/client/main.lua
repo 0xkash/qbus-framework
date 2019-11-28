@@ -165,8 +165,8 @@ end
 
 function ScrapVehicleAnim(time)
     time = time / 1000
-    loadAnimDict("vmp_car_bomb")
-    TaskPlayAnim(GetPlayerPed(-1), "vmp_car_bomb", "car_bomb_mechanic" ,3.0, 3.0, -1, 16, 0, false, false, false)
+    loadAnimDict("mp_car_bomb")
+    TaskPlayAnim(GetPlayerPed(-1), "mp_car_bomb", "car_bomb_mechanic" ,3.0, 3.0, -1, 16, 0, false, false, false)
     openingDoor = true
     Citizen.CreateThread(function()
         while openingDoor do
@@ -179,6 +179,13 @@ function ScrapVehicleAnim(time)
             end
         end
     end)
+end
+
+function loadAnimDict(dict)
+    while (not HasAnimDictLoaded(dict)) do
+        RequestAnimDict(dict)
+        Citizen.Wait(5)
+    end
 end
 
 function DrawText3Ds(x, y, z, text)
