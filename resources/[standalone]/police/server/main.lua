@@ -323,6 +323,19 @@ AddEventHandler('evidence:server:CreateCasing', function(weapon, coords)
     TriggerClientEvent("evidence:client:AddCasing", -1, casingId, weapon, coords)
 end)
 
+
+RegisterServerEvent('police:server:UpdateCurrentCops')
+AddEventHandler('police:server:UpdateCurrentCops', function()
+    local players = QBCore.Functions.GetPlayers()
+	local amount = 0
+	for source, Player in pairs(players) do
+		if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
+			amount = amount + 1
+		end
+    end
+    TriggerClientEvent("police:SetCopCount", -1, amount)
+end)
+
 RegisterServerEvent('evidence:server:ClearCasings')
 AddEventHandler('evidence:server:ClearCasings', function(casingList)
     if casingList ~= nil and next(casingList) ~= nil then 
@@ -483,7 +496,7 @@ QBCore.Functions.CreateCallback('police:GetCops', function(source, cb)
 		if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
 			amount = amount + 1
 		end
-	end
+    end
 	cb(amount)
 end)
 

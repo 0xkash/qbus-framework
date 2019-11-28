@@ -104,7 +104,7 @@ Citizen.CreateThread(function()
 				if CheckWeapon(newWeap) then
 					if holstered then
 						if QBCore.Functions.GetPlayerData().job.name == "police" then
-							TaskPlayAnim(ped, "rcmjosh4", "josh_leadout_cop2", 8.0, 2.0, -1, 48, 10, 0, 0, 0 )
+							--TaskPlayAnim(ped, "rcmjosh4", "josh_leadout_cop2", 8.0, 2.0, -1, 48, 10, 0, 0, 0 )
 							canFire = false
 							TaskPlayAnimAdvanced(PlayerPedId(), "rcmjosh4", "josh_leadout_cop2", GetEntityCoords(PlayerPedId(), true), 0, 0, rot, 3.0, 3.0, -1, 50, 0, 0, 0)
 							Citizen.Wait(300)

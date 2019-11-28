@@ -1,5 +1,7 @@
 local closestStation = 0
 local currentStation = 0
+CurrentCops = 0
+
 Citizen.CreateThread(function()
     while true do
         local ped = GetPlayerPed(-1)
@@ -61,6 +63,12 @@ Citizen.CreateThread(function()
     end
 end)
 
+RegisterNetEvent('police:SetCopCount')
+AddEventHandler('police:SetCopCount', function(amount)
+    CurrentCops = amount
+end)
+
+
 RegisterNetEvent('thermite:UseThermite')
 AddEventHandler('thermite:UseThermite', function()
     local ped = GetPlayerPed(-1)
@@ -71,23 +79,21 @@ AddEventHandler('thermite:UseThermite', function()
     if closestStation ~= 0 then
         local dist = GetDistanceBetweenCoords(pos, Config.PowerStations[closestStation].coords.x, Config.PowerStations[closestStation].coords.y, Config.PowerStations[closestStation].coords.z)
         if dist < 1.5 then
-            QBCore.Functions.TriggerCallback('police:GetCops', function(cops)
-                if cops >= 0 then
-                    if not Config.PowerStations[closestStation].hit then
-                        TriggerEvent('inventory:client:requiredItems', requiredItems, false)
-                        SetNuiFocus(true, true)
-                        SendNUIMessage({
-                            action = "openThermite",
-                            amount = math.random(5, 10),
-                        })
-                        currentStation = closestStation
-                    else
-                        QBCore.Functions.Notify("Het lijkt erop dat de zekeringen zijn doorgebrand..", "error")
-                    end
+            if CurrentCops >= 4 then
+                if not Config.PowerStations[closestStation].hit then
+                    TriggerEvent('inventory:client:requiredItems', requiredItems, false)
+                    SetNuiFocus(true, true)
+                    SendNUIMessage({
+                        action = "openThermite",
+                        amount = math.random(5, 10),
+                    })
+                    currentStation = closestStation
                 else
-                    QBCore.Functions.Notify("Niet genoeg politie.. (2 nodig)", "error")
+                    QBCore.Functions.Notify("Het lijkt erop dat de zekeringen zijn doorgebrand..", "error")
                 end
-            end)
+            else
+                QBCore.Functions.Notify("Niet genoeg politie.. (2 nodig)", "error")
+            end
         end
     end
 end)

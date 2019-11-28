@@ -20,6 +20,8 @@ local lockpicking = false
 local houseObj = {}
 local POIOffsets = nil
 
+CurrentCops = 0
+
 function DrawText3Ds(x, y, z, text)
 	SetTextScale(0.35, 0.35)
     SetTextFont(4)
@@ -172,6 +174,12 @@ function leaveRobberyHouse(house)
     end)
 end
 
+RegisterNetEvent('police:SetCopCount')
+AddEventHandler('police:SetCopCount', function(amount)
+    CurrentCops = amount
+end)
+
+
 RegisterNetEvent('qb-houserobbery:client:enterHouse')
 AddEventHandler('qb-houserobbery:client:enterHouse', function(house)
     enterRobberyHouse(house)
@@ -194,25 +202,23 @@ end
 RegisterNetEvent('lockpicks:UseLockpick')
 AddEventHandler('lockpicks:UseLockpick', function()
     QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
-        QBCore.Functions.TriggerCallback('police:GetCops', function(cops)
-            if cops >= 2 then
-                if closestHouse ~= nil then
-                    if result then
-                        if not Config.Houses[closestHouse]["opened"] then
-                            PoliceCall()
-                            TriggerEvent('qb-lockpick:client:openLockpick', lockpickFinish)
-                            if math.random(1, 100) <= 65 and not IsWearingHandshoes() then
-                                TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
-                            end
-                        else
-                            QBCore.Functions.Notify('De deur is al open..', 'error', 3500)
+        if CurrentCops >= 2 then
+            if closestHouse ~= nil then
+                if result then
+                    if not Config.Houses[closestHouse]["opened"] then
+                        PoliceCall()
+                        TriggerEvent('qb-lockpick:client:openLockpick', lockpickFinish)
+                        if math.random(1, 100) <= 65 and not IsWearingHandshoes() then
+                            TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
                         end
                     else
-                        QBCore.Functions.Notify('Het lijkt erop dat je iets mist...', 'error', 3500)
+                        QBCore.Functions.Notify('De deur is al open..', 'error', 3500)
                     end
+                else
+                    QBCore.Functions.Notify('Het lijkt erop dat je iets mist...', 'error', 3500)
                 end
             end
-        end)
+        end
     end, "screwdriverset")
 end)
 

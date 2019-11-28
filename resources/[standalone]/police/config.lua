@@ -89,6 +89,13 @@ Config.Vehicles = {
     ["ptouran"] = "Volkswagen Touran",
     ["pbklasse"] = "Mercedes B-Klasse",
     ["paudi"] = "Audi A6",
+    ["pamarok"] = "Volkswagen Amarok",
+    ["pt5"] = "Volkswagen T5",
+    ["pt6"] = "Volkswagen T6",
+    ["pschafter"] = "Unmarked Schafter",
+    ["dsimerc"] = "Mercedes (DSI)",
+    ["dsivito"] = "Mercedes Vito (DSI)",
+    ["dsivito"] = "Audi Q5 (DSI)",
 }
 
 Config.AmmoLabels = {
