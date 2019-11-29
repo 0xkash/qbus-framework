@@ -16,6 +16,11 @@
 	src: url( "digital-7.regular.ttf" );
 }
 
+
+.databank-container {
+	display:none!important;
+}
+
 /* Police Radar */
 #policeradar {
 	width: 495px;

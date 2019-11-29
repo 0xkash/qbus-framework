@@ -1,3 +1,5 @@
+
+
 const CameraApp = new Vue({
     el: "#camcontainer",
 
@@ -58,6 +60,8 @@ const CameraApp = new Vue({
 
 HeliCam = {}
 
+Databank = {}
+
 HeliCam.Open = function(data) {
     $("#helicontainer").css("display", "block");
     $(".scanBar").css("height", "0%");
@@ -86,6 +90,17 @@ HeliCam.Close = function() {
     $(".scanBar").css("height", "0%");
 }
 
+Databank.Open = function() {
+    $(".databank-container").css("display", "block");
+    $(".databank-container iframe").css("display", "block");
+}
+
+Databank.Close = function() {
+    $(".databank-container iframe").css("display", "none");
+    $(".databank-container").css("display", "none");
+    $.post("http://police/closeDatabank", JSON.stringify({}));
+}
+
 document.onreadystatechange = () => {
     if (document.readyState === "complete") {
         window.addEventListener('message', function(event) {
@@ -108,8 +123,19 @@ document.onreadystatechange = () => {
                 HeliCam.UpdateVehicleInfo(event.data);
             } else if (event.data.type == "disablescan") {
                 HeliCam.DisableVehicleInfo();
+            } else if (event.data.type == "databank") {
+                Databank.Open();
+            } else if (event.data.type == "closedatabank") {
+                Databank.Close();
             }
-
         });
     };
 };
+
+$(document).on('keydown', function() {
+    switch(event.keyCode) {
+        case 27: // ESC
+            Databank.Close();
+            break;
+    }
+});

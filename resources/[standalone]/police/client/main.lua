@@ -19,6 +19,8 @@ draggerId = 0
 PlayerJob = {}
 onDuty = false
 
+databankOpen = false
+
 QBCore = nil
 Citizen.CreateThread(function() 
     while true do
@@ -56,6 +58,28 @@ AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     PlayerJob = QBCore.Functions.GetPlayerData().job
     onDuty = QBCore.Functions.GetPlayerData().job.onduty
     TriggerServerEvent("police:server:UpdateBlips")
+end)
+
+RegisterNetEvent('police:client:toggleDatabank')
+AddEventHandler('police:client:toggleDatabank', function()
+    databankOpen = not databankOpen
+    if databankOpen then
+        SetNuiFocus(true, true)
+        SendNUIMessage({
+            type = "databank",
+        })
+    else
+        SetNuiFocus(false, false)
+        SendNUIMessage({
+            type = "closedatabank",
+        })
+    end
+end)
+
+
+RegisterNUICallback("closeDatabank", function(data, cb)
+    databankOpen = false
+    SetNuiFocus(false, false)
 end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerUnload')
