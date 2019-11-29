@@ -34,7 +34,122 @@ Config.Dealers = {
                 minrep = 0,
             },
         }
-    }
+    },
+    [2] = {
+        ["name"] = "Garry",
+        ["coords"] = {
+            ["x"] = -960.01,
+            ["y"] = -1109.62,
+            ["z"] = 2.15,
+        },
+        ["time"] = {
+            ["min"] = 15,
+            ["max"] = 22,
+        },
+        ["products"] = {
+            [1] = {
+                name = "weed_white-widow",
+                price = 15,
+                amount = 150,
+                info = {},
+                type = "item",
+                slot = 1,
+                minrep = 0,
+            },
+        }
+    },
+    [3] = {
+        ["name"] = "Fred",
+        ["coords"] = {
+            ["x"] = -1569.36,
+            ["y"] = -233.13,
+            ["z"] = 49.46,
+        },
+        ["time"] = {
+            ["min"] = 22,
+            ["max"] = 10,
+        },
+        ["products"] = {
+            [1] = {
+                name = "weed_white-widow",
+                price = 15,
+                amount = 150,
+                info = {},
+                type = "item",
+                slot = 1,
+                minrep = 0,
+            },
+        }
+    },
+    [4] = {
+        ["name"] = "Viktor",
+        ["coords"] = {
+            ["x"] = 202.04,
+            ["y"] = -149.02,
+            ["z"] = 65.47,
+        },
+        ["time"] = {
+            ["min"] = 22,
+            ["max"] = 10,
+        },
+        ["products"] = {
+            [1] = {
+                name = "weed_white-widow",
+                price = 15,
+                amount = 150,
+                info = {},
+                type = "item",
+                slot = 1,
+                minrep = 0,
+            },
+        }
+    },
+    [5] = {
+        ["name"] = "Julio",
+        ["coords"] = {
+            ["x"] = 1654.95,
+            ["y"] = 4862.17,
+            ["z"] = 41.99,
+        },
+        ["time"] = {
+            ["min"] = 15,
+            ["max"] = 22,
+        },
+        ["products"] = {
+            [1] = {
+                name = "weed_white-widow",
+                price = 15,
+                amount = 150,
+                info = {},
+                type = "item",
+                slot = 1,
+                minrep = 0,
+            },
+        }
+    },
+    [6] = {
+        ["name"] = "Ricardo",
+        ["coords"] = {
+            ["x"] = 15.25,
+            ["y"] = 3688.94,
+            ["z"] = 40.19,
+        },
+        ["time"] = {
+            ["min"] = 15,
+            ["max"] = 22,
+        },
+        ["products"] = {
+            [1] = {
+                name = "weed_white-widow",
+                price = 15,
+                amount = 150,
+                info = {},
+                type = "item",
+                slot = 1,
+                minrep = 0,
+            },
+        }
+    },
 }
 
 Config.CornerSellingDrugsList = {
@@ -55,6 +170,38 @@ Config.DeliveryLocations = {
             ["z"] = 29.24,
         }
     },
+    [2] = {
+        ["label"] = "Vinewood Video",
+        ["coords"] = {
+            ["x"] = 223.98,
+            ["y"] = 121.53,
+            ["z"] = 102.76,
+        }
+    },
+    [3] = {
+        ["label"] = "Vinewood Video",
+        ["coords"] = {
+            ["x"] = 223.98,
+            ["y"] = 121.53,
+            ["z"] = 102.76,
+        }
+    },
+    [4] = {
+        ["label"] = "Resort",
+        ["coords"] = {
+            ["x"] = -1245.63,
+            ["y"] = 376.21,
+            ["z"] = 75.34,
+        }
+    },
+    [5] = {
+        ["label"] = "Bahama Mamas",
+        ["coords"] = {
+            ["x"] = -1383.1,
+            ["y"] = -639.99,
+            ["z"] = 28.67,
+        }
+    },
 }
 
 Config.CornerSellingZones = {
@@ -68,5 +215,12 @@ Config.CornerSellingZones = {
             ["min"] = 12,
             ["max"] = 18,
         },
+    },
+}
+
+Config.DeliveryItems = {
+    [1] = {
+        ["item"] = "weed_brick".
+        ["minrep"] = 0,
     },
 }

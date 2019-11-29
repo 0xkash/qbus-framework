@@ -32,12 +32,12 @@
     position: relative;
     padding-left: 2vh;
     top: 0.2vh;
-    text-shadow: 3px 3px 3px rgba(0,0,0,0.72);
+    text-shadow: 2px 2px 2px rgba(0,0,0,0.2);
 }
 
 .new-notify-titel > p {
     padding-left: 2vh;
-    text-shadow: 3px 3px 3px rgba(0,0,0,0.72);
+    text-shadow: 2px 2px 2px rgba(0,0,0,0.2);
 }
 
 .new-notify-content {
@@ -55,5 +55,5 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     max-width: 75%;
-    text-shadow: 3px 3px 3px rgba(0,0,0,0.72);
+    text-shadow: 2px 2px 2px rgba(0,0,0,0.2);
 }

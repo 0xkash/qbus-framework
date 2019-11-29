@@ -163,7 +163,7 @@ AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
 end)
 
 Citizen.CreateThread(function()
-    TriggerServerEvent('qb-clothes:loadPlayerSkin')
+    TriggerServerEvent("qb-clothes:loadPlayerSkin")
 end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerUnload')
@@ -220,7 +220,7 @@ end)
 Citizen.CreateThread(function()
     while true do
 
-        -- if isLoggedIn then
+        if isLoggedIn then
 
             local ped = GetPlayerPed(-1)
             local pos = GetEntityCoords(ped)
@@ -263,7 +263,7 @@ Citizen.CreateThread(function()
                 Citizen.Wait(2000)
             end
 
-        -- end
+        end
 
         Citizen.Wait(3)
     end
@@ -272,7 +272,7 @@ end)
 Citizen.CreateThread(function()
     while true do
 
-        -- if isLoggedIn then
+        if isLoggedIn then
 
             local ped = GetPlayerPed(-1)
             local pos = GetEntityCoords(ped)
@@ -286,7 +286,7 @@ Citizen.CreateThread(function()
                     if not creatingCharacter then
                         DrawMarker(2, Config.ClothingRooms[k].x, Config.ClothingRooms[k].y, Config.ClothingRooms[k].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.4, 0.4, 0.2, 255, 255, 255, 255, 0, 0, 0, 1, 0, 0, 0)
                         if dist < 2 then
-                            -- if PlayerData.job.name == Config.ClothingRooms[k].requiredJob then
+                            if PlayerData.job.name == Config.ClothingRooms[k].requiredJob then
                                 DrawText3Ds(Config.ClothingRooms[k].x, Config.ClothingRooms[k].y, Config.ClothingRooms[k].z + 0.3, '~g~E~w~ - Outfits bekijken')
                                 if IsControlJustPressed(0, Keys["E"]) then
                                     customCamLocation = Config.ClothingRooms[k].cameraLocation
@@ -294,14 +294,14 @@ Citizen.CreateThread(function()
                                     if QBCore.Functions.GetPlayerData().charinfo.gender == 1 then gender = "female" end
                                     QBCore.Functions.TriggerCallback('qb-clothing:server:getOutfits', function(result)
                                         openMenu({
-                                            {menu = "roomOutfits", label = "Presets", selected = true, outfits = Config.Outfits["police"][gender]},
+                                            {menu = "roomOutfits", label = "Presets", selected = true, outfits = Config.Outfits[PlayerData.job.name][gender]},
                                             {menu = "myOutfits", label = "Mijn Outfits", selected = false, outfits = result},
                                             {menu = "character", label = "Karakter", selected = false},
                                             {menu = "accessoires", label = "Accessoires", selected = false}
                                         })
                                     end)
                                 end
-                            -- end
+                            end
                         end
                         inRange = true
                     end
@@ -312,7 +312,7 @@ Citizen.CreateThread(function()
                 Citizen.Wait(2000)
             end
 
-        -- end
+        end
 
         Citizen.Wait(3)
     end
