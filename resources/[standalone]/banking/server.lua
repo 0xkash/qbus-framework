@@ -65,6 +65,6 @@ AddEventHandler('banking:server:giveCash', function(trgtId, amount)
   Player.Functions.RemoveMoney('cash', amount)
   Target.Functions.AddMoney('cash', amount)
   
-  TriggerClientEvent('chatMessage', trgtId, "SYSTEM", "success", "Je hebt €"..amount.." gekregen van "..Player.PlayerData.charinfo.firstname.."!")
-  TriggerClientEvent('chatMessage', src, "SYSTEM", "success", "Je hebt €"..amount.." gegeven aan "..Target.PlayerData.charinfo.firstname.."!")
+  TriggerClientEvent('QBCore:Notify', trgtId, "Je hebt €"..amount.." gekregen van "..Player.PlayerData.charinfo.firstname.."!", 'success')
+  TriggerClientEvent('QBCore:Notify', src, "Je hebt €"..amount.." gegeven aan "..Target.PlayerData.charinfo.firstname.."!", 'success')
 end)
