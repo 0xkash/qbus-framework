@@ -87,41 +87,58 @@ Citizen.CreateThread(function()
                         Menu.renderGUI()
                     end 
                 end
+            else
+                Citizen.Wait(2500)
             end
-            if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["main"].coords.x, Config.Locations["main"].coords.y, Config.Locations["main"].coords.z, true) < 1.5) then
-                DrawText3D(Config.Locations["main"].coords.x, Config.Locations["main"].coords.y, Config.Locations["main"].coords.z, "~g~E~w~ - Om naar binnen te gaan")
-                if IsControlJustReleased(0, Keys["E"]) then
-                    DoScreenFadeOut(500)
-                    while not IsScreenFadedOut() do
-                        Citizen.Wait(10)
-                    end
-
-                    SetEntityCoords(PlayerPedId(), Config.Locations["inside"].coords.x, Config.Locations["inside"].coords.y, Config.Locations["inside"].coords.z, 0, 0, 0, false)
-                    SetEntityHeading(PlayerPedId(), Config.Locations["inside"].coords.h)
-
-                    Citizen.Wait(100)
-
-                    DoScreenFadeIn(1000)
-                end
-            end 
-            if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["inside"].coords.x, Config.Locations["inside"].coords.y, Config.Locations["inside"].coords.z, true) < 1.5) then
-                DrawText3D(Config.Locations["inside"].coords.x, Config.Locations["inside"].coords.y, Config.Locations["inside"].coords.z, "~g~E~w~ - Om naar buiten te gaan")
-                if IsControlJustReleased(0, Keys["E"]) then
-                    DoScreenFadeOut(500)
-                    while not IsScreenFadedOut() do
-                        Citizen.Wait(10)
-                    end
-
-                    SetEntityCoords(PlayerPedId(), Config.Locations["outside"].coords.x, Config.Locations["outside"].coords.y, Config.Locations["outside"].coords.z, 0, 0, 0, false)
-                    SetEntityHeading(PlayerPedId(), Config.Locations["outside"].coords.h)
-
-                    Citizen.Wait(100)
-
-                    DoScreenFadeIn(1000)
-                end
-            end 
         else
-            Citizen.Wait(1000)
+            Citizen.Wait(2500)
+        end
+    end
+end)
+
+Citizen.CreateThread(function()
+    while true do 
+        Citizen.Wait(1)
+        local inRange = false
+        if isLoggedIn and QBCore ~= nil then
+            local pos = GetEntityCoords(GetPlayerPed(-1))
+            if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["main"].coords.x, Config.Locations["main"].coords.y, Config.Locations["main"].coords.z, true) < 1.5 or GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["inside"].coords.x, Config.Locations["inside"].coords.y, Config.Locations["inside"].coords.z, true) < 1.5 then
+                inRange = true
+                if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["main"].coords.x, Config.Locations["main"].coords.y, Config.Locations["main"].coords.z, true) < 1.5) then
+                    DrawText3D(Config.Locations["main"].coords.x, Config.Locations["main"].coords.y, Config.Locations["main"].coords.z, "~g~E~w~ - Om naar binnen te gaan")
+                    if IsControlJustReleased(0, Keys["E"]) then
+                        DoScreenFadeOut(500)
+                        while not IsScreenFadedOut() do
+                            Citizen.Wait(10)
+                        end
+    
+                        SetEntityCoords(PlayerPedId(), Config.Locations["inside"].coords.x, Config.Locations["inside"].coords.y, Config.Locations["inside"].coords.z, 0, 0, 0, false)
+                        SetEntityHeading(PlayerPedId(), Config.Locations["inside"].coords.h)
+    
+                        Citizen.Wait(100)
+    
+                        DoScreenFadeIn(1000)
+                    end
+                elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["inside"].coords.x, Config.Locations["inside"].coords.y, Config.Locations["inside"].coords.z, true) < 1.5) then
+                    DrawText3D(Config.Locations["inside"].coords.x, Config.Locations["inside"].coords.y, Config.Locations["inside"].coords.z, "~g~E~w~ - Om naar buiten te gaan")
+                    if IsControlJustReleased(0, Keys["E"]) then
+                        DoScreenFadeOut(500)
+                        while not IsScreenFadedOut() do
+                            Citizen.Wait(10)
+                        end
+    
+                        SetEntityCoords(PlayerPedId(), Config.Locations["outside"].coords.x, Config.Locations["outside"].coords.y, Config.Locations["outside"].coords.z, 0, 0, 0, false)
+                        SetEntityHeading(PlayerPedId(), Config.Locations["outside"].coords.h)
+    
+                        Citizen.Wait(100)
+    
+                        DoScreenFadeIn(1000)
+                    end
+                end 
+            end
+        end
+        if not inRange then
+            Citizen.Wait(2500)
         end
     end
 end)

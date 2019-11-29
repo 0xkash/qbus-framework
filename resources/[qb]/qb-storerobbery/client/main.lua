@@ -45,13 +45,17 @@ Citizen.CreateThread(function()
     while true do
         local ped = GetPlayerPed(-1)
         local pos = GetEntityCoords(ped)
-
+        local inRange = false
         for k, v in pairs(Config.Registers) do
             local dist = GetDistanceBetweenCoords(pos, Config.Registers[k].x, Config.Registers[k].y, Config.Registers[k].z)
 
             if dist <= 1 and Config.Registers[k].robbed then
+                inRange = true
                 DrawText3Ds(Config.Registers[k].x, Config.Registers[k].y, Config.Registers[k].z, 'De kassa is leeg...')
             end
+        end
+        if not inRange then 
+            Citizen.Wait(2000)
         end
         Citizen.Wait(3)
     end
