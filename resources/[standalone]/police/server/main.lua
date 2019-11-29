@@ -531,6 +531,15 @@ QBCore.Commands.Add("cuff", "Boei een speler", {}, false, function(source, args)
     end
 end)
 
+QBCore.Commands.Add("databank", "Toggle politie databank", {}, false, function(source, args)
+	local Player = QBCore.Functions.GetPlayer(source)
+    if Player.PlayerData.job.name == "police" then
+        TriggerClientEvent("police:client:toggleDatabank", source)
+    else
+        TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Dit command is voor hulpdiensten!")
+    end
+end)
+
 QBCore.Commands.Add("callsign", "Zet de naam van je callsign (roepnummer)", {{name="name", help="Naam van je callsign"}}, false, function(source, args)
 	local Player = QBCore.Functions.GetPlayer(source)
     Player.Functions.SetMetaData("callsign", table.concat(args, " "))
