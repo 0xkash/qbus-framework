@@ -12,11 +12,6 @@ end
 
 function TeleportToInterior(x, y, z, h)
     Citizen.CreateThread(function()
-        DoScreenFadeOut(500)
-        while not IsScreenFadedOut() do
-            Citizen.Wait(10)
-        end
-
         SetEntityCoords(PlayerPedId(), x, y, z, 0, 0, 0, false)
         SetEntityHeading(PlayerPedId(), h)
 

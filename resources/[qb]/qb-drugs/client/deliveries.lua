@@ -7,7 +7,6 @@ local waitingDelivery = nil
 local activeDelivery = nil
 
 local interacting = false
-local lastDealer = nil
 
 local deliveryTimeout = 0
 
@@ -32,7 +31,6 @@ Citizen.CreateThread(function()
                             if IsControlJustPressed(0, Keys["E"]) then
                                 currentDealer = id
                                 knockDealerDoor()
-                                lastDealer = currentDealer
                             end
                         elseif dealerIsHome then
                             DrawText3D(dealer["coords"]["x"], dealer["coords"]["y"], dealer["coords"]["z"], '[E] Om in te kopen / [G] Opdracht doen')

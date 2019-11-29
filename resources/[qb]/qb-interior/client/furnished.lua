@@ -93,7 +93,10 @@ function CreateApartmentFurnished(spawn)
 	POIOffsets.clothes = json.decode('{"z":2.5,"y":-2.6444736328,"x":1.824350097,"h":2.2633972168}')
 	POIOffsets.stash = json.decode('{"z":2.5,"y":-1.3440585937501,"x":2.58997509763,"h":2.2633972168}')
 	POIOffsets.logout = json.decode('{"z":2.0,"y":0.0555111328,"x":-2.0689604492,"h":2.2633972168}')
-
+    DoScreenFadeOut(500)
+    while not IsScreenFadedOut() do
+        Citizen.Wait(10)
+    end
 	RequestModel(`playerhouse_appartment_motel`)
 	while not HasModelLoaded(`playerhouse_appartment_motel`) do
 	    Citizen.Wait(1000)
@@ -112,6 +115,10 @@ function CreateMichaelShell(spawn)
 
     local POIOffsets = {}
 	POIOffsets.exit = json.decode('{"z":1.4,"y":2.65636328125,"x":-10.572736328125,"h":265.633972168}')
+	DoScreenFadeOut(500)
+    while not IsScreenFadedOut() do
+        Citizen.Wait(10)
+    end
 	RequestModel(`micheal_shell`)
 	while not HasModelLoaded(`micheal_shell`) do
 	    Citizen.Wait(1000)
@@ -130,6 +137,10 @@ function CreateTrevorsShell(spawn)
 
     local POIOffsets = {}
 	POIOffsets.exit = json.decode('{"z":2.5,"y":4.29636328125,"x":1.172736328125,"h":2.2633972168}')
+	DoScreenFadeOut(500)
+    while not IsScreenFadedOut() do
+        Citizen.Wait(10)
+    end
 	RequestModel(`trevors_shell`)
 	while not HasModelLoaded(`trevors_shell`) do
 	    Citizen.Wait(1000)
@@ -153,7 +164,10 @@ function CreateTier1HouseFurnished(spawn, isBackdoor)
 	POIOffsets.stash = json.decode('{"z":2.5,"y":1.33868212,"x":-9.084908691,"h":2.2633972168}')
 	POIOffsets.logout = json.decode('{"z":2.0,"y":-1.1463337,"x":-6.69117089,"h":2.2633972168}')
 	POIOffsets.backdoor = json.decode('{"z":2.5,"y":4.3798828125,"x":0.88999176025391,"h":182.2633972168}')
-
+    DoScreenFadeOut(500)
+    while not IsScreenFadedOut() do
+        Citizen.Wait(10)
+    end
 	RequestModel(`playerhouse_tier1_full`)
 	while not HasModelLoaded(`playerhouse_tier1_full`) do
 	    Citizen.Wait(1000)

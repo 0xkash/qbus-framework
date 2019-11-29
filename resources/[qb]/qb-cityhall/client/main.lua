@@ -23,3 +23,122 @@ end)
 
 -- Code
 
+local inCityhallPage = false
+local qbCityhall = {}
+
+qbCityhall.Open = function()
+    SendNUIMessage({
+        action = "open"
+    })
+    SetNuiFocus(true, true)
+    inCityhallPage = true
+end
+
+qbCityhall.Close = function()
+    SendNUIMessage({
+        action = "close"
+    })
+    SetNuiFocus(false, false)
+    inCityhallPage = false
+end
+
+qbCityhall.DrawText3Ds = function(coords, text)
+	SetTextScale(0.35, 0.35)
+    SetTextFont(4)
+    SetTextProportional(1)
+    SetTextColour(255, 255, 255, 215)
+    SetTextEntry("STRING")
+    SetTextCentre(true)
+    AddTextComponentString(text)
+    SetDrawOrigin(coords.x, coords.y, coords.z, 0)
+    DrawText(0.0, 0.0)
+    local factor = (string.len(text)) / 370
+    DrawRect(0.0, 0.0+0.0125, 0.017+ factor, 0.03, 0, 0, 0, 75)
+    ClearDrawOrigin()
+end
+
+RegisterNUICallback('close', function()
+    SetNuiFocus(false, false)
+    inCityhallPage = false
+end)
+
+local inRange = false
+
+Citizen.CreateThread(function()
+    while true do
+
+        local ped = GetPlayerPed(-1)
+        local pos = GetEntityCoords(ped)
+        inRange = false
+
+        local dist = GetDistanceBetweenCoords(pos, Config.Cityhall.coords.x, Config.Cityhall.coords.y, Config.Cityhall.coords.z)
+
+        if dist < 20 then
+            inRange = true
+            DrawMarker(2, Config.Cityhall.coords.x, Config.Cityhall.coords.y, Config.Cityhall.coords.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.2, 155, 152, 234, 155, false, false, false, true, false, false, false)
+            if dist < 1.5 then
+                qbCityhall.DrawText3Ds(Config.Cityhall.coords, '~g~E~w~ - To yeet dafuqq')
+                if IsControlJustPressed(0, Keys["E"]) then
+                    qbCityhall.Open()
+                end
+            end
+        end
+
+        if not inRange then
+            Citizen.Wait(1000)
+        end
+
+        Citizen.Wait(2)
+    end
+end)
+
+local idTypes = {
+    ["id-kaart"] = {
+        label = "ID-kaart",
+        item = "id_card"
+    },
+    ["rijbewijs"] = {
+        label = "Rijbewijs",
+        item = "driver_license"
+    }
+}
+
+RegisterNUICallback('requestId', function(data)
+    if inRange then
+        local idType = data.idType
+
+        TriggerServerEvent('qb-cityhall:server:requestId', idTypes[idType])
+        QBCore.Functions.Notify('Je hebt je '..idTypes[idType].label..' aangevraagd voor €50', 'success', 3500)
+    else
+        QBCore.Functions.Notify('Helaas gaat niet werken maat...', 'error')
+    end
+end)
+
+RegisterNUICallback('requestLicenses', function(data, cb)
+    local PlayerData = QBCore.Functions.GetPlayerData()
+    local licensesMeta = PlayerData.metadata["licences"]
+    local availableLicenses = {}
+
+    for type,_ in pairs(licensesMeta) do
+        if licensesMeta[type] then
+            local licenseType = nil
+            local label = nil
+
+            if type == "driver" then licenseType = "rijbewijs" label = "Rijbewijs" end
+
+            table.insert(availableLicenses, {
+                idType = licenseType,
+                label = label
+            })
+        end
+    end
+    cb(availableLicenses)
+end)
+
+RegisterNUICallback('applyJob', function(data)
+    if inRange then
+        TriggerServerEvent('qb-cityhall:server:ApplyJob', data.job)
+    else
+        QBCore.Functions.Notify('Helaas gaat niet werken maat...', 'error')
+    end
+end)

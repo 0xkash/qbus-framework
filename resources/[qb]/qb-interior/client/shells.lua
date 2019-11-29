@@ -3,6 +3,10 @@ function CreateHotel(spawn)
 
     local POIOffsets = {}
     POIOffsets.exit = json.decode('{"z":2.5,"y":-15.901171875,"x":4.251012802124,"h":2.2633972168}')
+    DoScreenFadeOut(500)
+    while not IsScreenFadedOut() do
+        Citizen.Wait(10)
+    end
     RequestModel(`playerhouse_hotel`)
 	while not HasModelLoaded(`playerhouse_hotel`) do
 	    Citizen.Wait(1000)
@@ -30,6 +34,10 @@ function CreateTier1House(spawn, isBackdoor)
 	POIOffsets.stash = json.decode('{"z":2.5,"y":1.33868212,"x":-9.084908691,"h":2.2633972168}')
 	POIOffsets.logout = json.decode('{"z":2.0,"y":-1.1463337,"x":-6.69117089,"h":2.2633972168}')
     POIOffsets.backdoor = json.decode('{"z":2.5,"y":4.3798828125,"x":0.88999176025391,"h":182.2633972168}')
+    DoScreenFadeOut(500)
+    while not IsScreenFadedOut() do
+        Citizen.Wait(10)
+    end
     RequestModel(`playerhouse_tier1`)
 	while not HasModelLoaded(`playerhouse_tier1`) do
 	    Citizen.Wait(1000)
@@ -59,6 +67,10 @@ function CreateTier2House(spawn, isBackdoor)
 
     local POIOffsets = {}
     POIOffsets.exit = json.decode('{"z":2.5,"y":-15.901171875,"x":4.251012802124}')
+    DoScreenFadeOut(500)
+    while not IsScreenFadedOut() do
+        Citizen.Wait(10)
+    end
     RequestModel(`playerhouse_tier1`)
 	while not HasModelLoaded(`playerhouse_tier1`) do
 	    Citizen.Wait(1000)
@@ -87,6 +99,10 @@ function CreateTier3House(spawn, isBackdoor)
     local POIOffsets = {}
     POIOffsets.exit = json.decode('{"y":7.7457427978516,"z":7.2074546813965,"x":-17.097534179688}')
     POIOffsets.backdoor = json.decode('{"z":5.8048210144043,"y":12.009414672852,"x":12.690063476563}')
+    DoScreenFadeOut(500)
+    while not IsScreenFadedOut() do
+        Citizen.Wait(10)
+    end
     RequestModel(`playerhouse_tier3`)
 	while not HasModelLoaded(`playerhouse_tier3`) do
 	    Citizen.Wait(1000)

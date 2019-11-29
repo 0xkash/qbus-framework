@@ -13,5 +13,6 @@ client_scripts {
 }
 
 files {
-	"html/*"
+    "html/*",
+    "html/img/*"
 }
