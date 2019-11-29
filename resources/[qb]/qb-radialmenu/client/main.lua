@@ -135,7 +135,13 @@ AddEventHandler('qb-radialmenu:client:openDoor', function(data)
     local replace = string:gsub("door", "")
     local door = tonumber(replace)
     local ped = GetPlayerPed(-1)
-    local closestVehicle = QBCore.Functions.GetClosestVehicle(GetEntityCoords(ped), 3.0)
+    local closestVehicle = nil
+
+    if IsPedInAnyVehicle(ped, false) then
+        closestVehicle = GetVehiclePedIsIn(ped)
+    else
+        closestVehicle = QBCore.Functions.GetClosestVehicle(GetEntityCoords(ped), 3.0)
+    end
 
     if closestVehicle ~= 0 then
         if GetVehicleDoorAngleRatio(closestVehicle, door) > 0 then

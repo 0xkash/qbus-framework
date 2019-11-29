@@ -50,15 +50,15 @@ AddEventHandler('qb-houses:client:sellHouse', function()
 end)
 
 --------------------------------------------------------------
+
+
 Citizen.CreateThread(function()
-    Citizen.Wait(100)
     while true do
+        Citizen.Wait(10000)
+
         if isLoggedIn then
             SetClosestHouse()
-            Citizen.Wait(100)
-            TriggerEvent('qb-garages:client:setHouseGarage', closesthouse, hasKey)
         end
-        Citizen.Wait(10000)
     end
 end)
 
@@ -183,146 +183,156 @@ end
 
 Citizen.CreateThread(function()
     while true do
-        Citizen.Wait(3)
 
         local pos = GetEntityCoords(GetPlayerPed(-1), true)
+        local inRange = false
 
-        if hasKey then
-            -- ENTER HOUSE
-            if not inside then
-                if closesthouse ~= nil then
-                    if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z, true) < 1.5)then
-                        if Config.Houses[closesthouse].locked then
-                            DrawText3Ds(Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z, '~r~E~w~ - Ga naar binnen')
-                        elseif not Config.Houses[closesthouse].locked then
-                            DrawText3Ds(Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z, '~g~E~w~ - Ga naar binnen')
-                        end
-                        if IsControlJustPressed(0, Keys["E"]) then
-                            enterOwnedHouse(closesthouse)
-                        end
-                    end
-                end
-            end
-
-
-            if CurrentDoorBell ~= 0 then
-                if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.enter.x + POIOffsets.exit.x, Config.Houses[closesthouse].coords.enter.y + POIOffsets.exit.y, Config.Houses[closesthouse].coords.enter.z - Config.MinZOffset + POIOffsets.exit.z, true) < 1.5)then
-                    DrawText3Ds(Config.Houses[closesthouse].coords.enter.x + POIOffsets.exit.x, Config.Houses[closesthouse].coords.enter.y + POIOffsets.exit.y, Config.Houses[closesthouse].coords.enter.z - Config.MinZOffset + POIOffsets.exit.z + 0.35, '~g~G~w~ - Om deur open te doen')
-                    if IsControlJustPressed(0, Keys["G"]) then
-                        TriggerServerEvent("qb-houses:server:OpenDoor", CurrentDoorBell, closesthouse)
-                        CurrentDoorBell = 0
-                    end
-                end
-            end
-            -- EXIT HOUSE
-            if inside then
-                if not entering then
-                    if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.enter.x + POIOffsets.exit.x, Config.Houses[closesthouse].coords.enter.y + POIOffsets.exit.y, Config.Houses[closesthouse].coords.enter.z - Config.MinZOffset + POIOffsets.exit.z, true) < 1.5)then
-                        DrawText3Ds(Config.Houses[closesthouse].coords.enter.x + POIOffsets.exit.x, Config.Houses[closesthouse].coords.enter.y + POIOffsets.exit.y, Config.Houses[closesthouse].coords.enter.z - Config.MinZOffset + POIOffsets.exit.z, '~g~E~w~ - Om huis te verlaten')
-                        if IsControlJustPressed(0, Keys["E"]) then
-                            leaveOwnedHouse(closesthouse)
-                        end
-                    end
-                end
-            end
-        else
-            if not isOwned then
-                if closesthouse ~= nil then
-                    if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z, true) < 1.5)then
-                        if not viewCam then
-                            DrawText3Ds(Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z, '[~g~E~w~] Om het huis te bezichtigen')
-                            if IsControlJustPressed(0, Keys["E"]) then
-                                TriggerServerEvent('qb-houses:server:viewHouse', closesthouse)
-                            end
-                        end
-                    end
-                end
-            elseif isOwned then
-                if closesthouse ~= nil then
-                    if not inOwned then
-                        if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z, true) < 1.5)then
-                            if not Config.Houses[closesthouse].locked then
-                                DrawText3Ds(Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z + 1.2, '[~g~E~w~] Om naar ~b~binnen~w~ te gaan')
-                                if IsControlJustPressed(0, Keys["E"])  then
-                                    enterNonOwnedHouse(closesthouse)
+        if closesthouse ~= nil then
+            if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z, true) < 30)then
+                inRange = true
+                if hasKey then
+                    -- ENTER HOUSE
+                    if not inside then
+                        if closesthouse ~= nil then
+                            if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z, true) < 1.5)then
+                                if Config.Houses[closesthouse].locked then
+                                    DrawText3Ds(Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z, '~r~E~w~ - Ga naar binnen')
+                                elseif not Config.Houses[closesthouse].locked then
+                                    DrawText3Ds(Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z, '~g~E~w~ - Ga naar binnen')
                                 end
-                            else
-                                DrawText3Ds(Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z + 1.2, 'De deur is ~r~vergrendeld / ~g~G~w~ - Aanbellen')
-                                if IsControlJustPressed(0, Keys["G"]) then
-                                    TriggerServerEvent('qb-houses:server:RingDoor', closesthouse)
+                                if IsControlJustPressed(0, Keys["E"]) then
+                                    enterOwnedHouse(closesthouse)
                                 end
                             end
                         end
-                    elseif inOwned then
+                    end
+
+
+                    if CurrentDoorBell ~= 0 then
                         if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.enter.x + POIOffsets.exit.x, Config.Houses[closesthouse].coords.enter.y + POIOffsets.exit.y, Config.Houses[closesthouse].coords.enter.z - Config.MinZOffset + POIOffsets.exit.z, true) < 1.5)then
-                            DrawText3Ds(Config.Houses[closesthouse].coords.enter.x + POIOffsets.exit.x, Config.Houses[closesthouse].coords.enter.y + POIOffsets.exit.y, Config.Houses[closesthouse].coords.enter.z - Config.MinZOffset + POIOffsets.exit.z, '~g~E~w~ - Om huis te verlaten')
-                            if IsControlJustPressed(0, Keys["E"]) then
-                                leaveNonOwnedHouse(closesthouse)
+                            DrawText3Ds(Config.Houses[closesthouse].coords.enter.x + POIOffsets.exit.x, Config.Houses[closesthouse].coords.enter.y + POIOffsets.exit.y, Config.Houses[closesthouse].coords.enter.z - Config.MinZOffset + POIOffsets.exit.z + 0.35, '~g~G~w~ - Om deur open te doen')
+                            if IsControlJustPressed(0, Keys["G"]) then
+                                TriggerServerEvent("qb-houses:server:OpenDoor", CurrentDoorBell, closesthouse)
+                                CurrentDoorBell = 0
+                            end
+                        end
+                    end
+                    -- EXIT HOUSE
+                    if inside then
+                        if not entering then
+                            if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.enter.x + POIOffsets.exit.x, Config.Houses[closesthouse].coords.enter.y + POIOffsets.exit.y, Config.Houses[closesthouse].coords.enter.z - Config.MinZOffset + POIOffsets.exit.z, true) < 1.5)then
+                                DrawText3Ds(Config.Houses[closesthouse].coords.enter.x + POIOffsets.exit.x, Config.Houses[closesthouse].coords.enter.y + POIOffsets.exit.y, Config.Houses[closesthouse].coords.enter.z - Config.MinZOffset + POIOffsets.exit.z, '~g~E~w~ - Om huis te verlaten')
+                                if IsControlJustPressed(0, Keys["E"]) then
+                                    leaveOwnedHouse(closesthouse)
+                                end
+                            end
+                        end
+                    end
+                else
+                    if not isOwned then
+                        if closesthouse ~= nil then
+                            if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z, true) < 1.5)then
+                                if not viewCam then
+                                    DrawText3Ds(Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z, '[~g~E~w~] Om het huis te bezichtigen')
+                                    if IsControlJustPressed(0, Keys["E"]) then
+                                        TriggerServerEvent('qb-houses:server:viewHouse', closesthouse)
+                                    end
+                                end
+                            end
+                        end
+                    elseif isOwned then
+                        if closesthouse ~= nil then
+                            if not inOwned then
+                                if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z, true) < 1.5)then
+                                    if not Config.Houses[closesthouse].locked then
+                                        DrawText3Ds(Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z + 1.2, '[~g~E~w~] Om naar ~b~binnen~w~ te gaan')
+                                        if IsControlJustPressed(0, Keys["E"])  then
+                                            enterNonOwnedHouse(closesthouse)
+                                        end
+                                    else
+                                        DrawText3Ds(Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z + 1.2, 'De deur is ~r~vergrendeld / ~g~G~w~ - Aanbellen')
+                                        if IsControlJustPressed(0, Keys["G"]) then
+                                            TriggerServerEvent('qb-houses:server:RingDoor', closesthouse)
+                                        end
+                                    end
+                                end
+                            elseif inOwned then
+                                if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.enter.x + POIOffsets.exit.x, Config.Houses[closesthouse].coords.enter.y + POIOffsets.exit.y, Config.Houses[closesthouse].coords.enter.z - Config.MinZOffset + POIOffsets.exit.z, true) < 1.5)then
+                                    DrawText3Ds(Config.Houses[closesthouse].coords.enter.x + POIOffsets.exit.x, Config.Houses[closesthouse].coords.enter.y + POIOffsets.exit.y, Config.Houses[closesthouse].coords.enter.z - Config.MinZOffset + POIOffsets.exit.z, '~g~E~w~ - Om huis te verlaten')
+                                    if IsControlJustPressed(0, Keys["E"]) then
+                                        leaveNonOwnedHouse(closesthouse)
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+                
+                local StashObject = nil
+                -- STASH
+                if inside then
+                    if closesthouse ~= nil then
+                        if stashLocation ~= nil then
+                            if(GetDistanceBetweenCoords(pos, stashLocation.x, stashLocation.y, stashLocation.z, true) < 1.5)then
+                                DrawText3Ds(stashLocation.x, stashLocation.y, stashLocation.z, '~g~E~w~ - Stash')
+                                if IsControlJustPressed(0, Keys["E"]) then
+                                    TriggerEvent("inventory:client:SetCurrentStash", closesthouse)
+                                    TriggerServerEvent("inventory:server:OpenInventory", "stash", closesthouse)
+                                end
+                            elseif(GetDistanceBetweenCoords(pos, stashLocation.x, stashLocation.y, stashLocation.z, true) < 3)then
+                                DrawText3Ds(stashLocation.x, stashLocation.y, stashLocation.z, 'Stash')
+                            end
+                        end
+                    end
+                end
+
+                if inside then
+                    if closesthouse ~= nil then
+                        if outfitLocation ~= nil then
+                            if(GetDistanceBetweenCoords(pos, outfitLocation.x, outfitLocation.y, outfitLocation.z, true) < 1.5)then
+                                DrawText3Ds(outfitLocation.x, outfitLocation.y, outfitLocation.z, '~g~E~w~ - Outfits')
+                                if IsControlJustPressed(0, Keys["E"]) then
+                                    TriggerEvent('qb-clothing:client:openOutfitMenu')
+                                end
+                            elseif(GetDistanceBetweenCoords(pos, outfitLocation.x, outfitLocation.y, outfitLocation.z, true) < 3)then
+                                DrawText3Ds(outfitLocation.x, outfitLocation.y, outfitLocation.z, 'Outfits')
+                            end
+                        end
+                    end
+                end
+
+                if inside then
+                    if closesthouse ~= nil then
+                        if logoutLocation ~= nil then
+                            if(GetDistanceBetweenCoords(pos, logoutLocation.x, logoutLocation.y, logoutLocation.z, true) < 1.5)then
+                                DrawText3Ds(logoutLocation.x, logoutLocation.y, logoutLocation.z, '~g~E~w~ - Uitloggen')
+                                if IsControlJustPressed(0, Keys["E"]) then
+                                    exports['qb-interior']:DespawnInterior(houseObj, function()
+                                        DoScreenFadeIn(500)
+                                        while not IsScreenFadedOut() do
+                                            Citizen.Wait(10)
+                                        end
+                                        TriggerEvent('qb-weathersync:client:EnableSync')
+                                        SetEntityCoords(GetPlayerPed(-1), Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z + 0.5)
+                                        SetEntityHeading(GetPlayerPed(-1), Config.Houses[closesthouse].coords.enter.h)
+                                        inOwned = false
+                                        inside = false
+                                        TriggerServerEvent('qb-houses:server:logOut')
+                                    end)
+                                end
+                            elseif(GetDistanceBetweenCoords(pos, logoutLocation.x, logoutLocation.y, logoutLocation.z, true) < 3)then
+                                DrawText3Ds(logoutLocation.x, logoutLocation.y, logoutLocation.z, 'Uitloggen')
                             end
                         end
                     end
                 end
             end
         end
-        
-        local StashObject = nil
-        -- STASH
-        if inside then
-            if closesthouse ~= nil then
-                if stashLocation ~= nil then
-                    if(GetDistanceBetweenCoords(pos, stashLocation.x, stashLocation.y, stashLocation.z, true) < 1.5)then
-                        DrawText3Ds(stashLocation.x, stashLocation.y, stashLocation.z, '~g~E~w~ - Stash')
-                        if IsControlJustPressed(0, Keys["E"]) then
-                            TriggerEvent("inventory:client:SetCurrentStash", closesthouse)
-                            TriggerServerEvent("inventory:server:OpenInventory", "stash", closesthouse)
-                        end
-                    elseif(GetDistanceBetweenCoords(pos, stashLocation.x, stashLocation.y, stashLocation.z, true) < 3)then
-                        DrawText3Ds(stashLocation.x, stashLocation.y, stashLocation.z, 'Stash')
-                    end
-                end
-            end
+        if not inRange then
+            Citizen.Wait(1500)
         end
-
-        if inside then
-            if closesthouse ~= nil then
-                if outfitLocation ~= nil then
-                    if(GetDistanceBetweenCoords(pos, outfitLocation.x, outfitLocation.y, outfitLocation.z, true) < 1.5)then
-                        DrawText3Ds(outfitLocation.x, outfitLocation.y, outfitLocation.z, '~g~E~w~ - Outfits')
-                        if IsControlJustPressed(0, Keys["E"]) then
-                            TriggerEvent('qb-clothing:client:openOutfitMenu')
-                        end
-                    elseif(GetDistanceBetweenCoords(pos, outfitLocation.x, outfitLocation.y, outfitLocation.z, true) < 3)then
-                        DrawText3Ds(outfitLocation.x, outfitLocation.y, outfitLocation.z, 'Outfits')
-                    end
-                end
-            end
-        end
-
-        if inside then
-            if closesthouse ~= nil then
-                if logoutLocation ~= nil then
-                    if(GetDistanceBetweenCoords(pos, logoutLocation.x, logoutLocation.y, logoutLocation.z, true) < 1.5)then
-                        DrawText3Ds(logoutLocation.x, logoutLocation.y, logoutLocation.z, '~g~E~w~ - Uitloggen')
-                        if IsControlJustPressed(0, Keys["E"]) then
-                            exports['qb-interior']:DespawnInterior(houseObj, function()
-                                DoScreenFadeIn(500)
-                                while not IsScreenFadedOut() do
-                                    Citizen.Wait(10)
-                                end
-                                TriggerEvent('qb-weathersync:client:EnableSync')
-                                SetEntityCoords(GetPlayerPed(-1), Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z + 0.5)
-                                SetEntityHeading(GetPlayerPed(-1), Config.Houses[closesthouse].coords.enter.h)
-                                inOwned = false
-                                inside = false
-                                TriggerServerEvent('qb-houses:server:logOut')
-                            end)
-                        end
-                    elseif(GetDistanceBetweenCoords(pos, logoutLocation.x, logoutLocation.y, logoutLocation.z, true) < 3)then
-                        DrawText3Ds(logoutLocation.x, logoutLocation.y, logoutLocation.z, 'Uitloggen')
-                    end
-                end
-            end
-        end
+    
+        Citizen.Wait(3)
     end
 end)
 
@@ -706,6 +716,7 @@ function SetClosestHouse()
             end, closesthouse)
         end
     end
+    TriggerEvent('qb-garages:client:setHouseGarage', closesthouse, hasKey)
 end
 
 RegisterNetEvent('qb-houses:client:setLocation')

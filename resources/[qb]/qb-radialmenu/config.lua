@@ -191,7 +191,7 @@ Config.MenuItems = {
             },
             {
                 id    = 'getintrunk',
-                title = 'Kofferbak In / Uit',
+                title = 'Stap in kofferbak',
                 icon = '#vehiclekey',
                 type = 'client',
                 event = 'qb-smallresources:trunk:client:getInTrunk',

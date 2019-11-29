@@ -72,6 +72,8 @@ end)
 Citizen.CreateThread(function()
     while true do
 
+        Citizen.Wait(3)
+
         if isLoggedIn then
             if IsControlJustReleased(0, Keys["="]) then
                 QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
@@ -83,15 +85,13 @@ Citizen.CreateThread(function()
                 end, "fitbit")
             end
         end
-
-        Citizen.Wait(3)
     end
 end)
 
 Citizen.CreateThread(function()
     while true do
 
-        Citizen.Wait(1000)
+        Citizen.Wait(3 * 60 * 1000)
         
         if QBCore ~= nil then
             if isLoggedIn then
@@ -115,8 +115,6 @@ Citizen.CreateThread(function()
                 end, "fitbit")
             end
         end
-
-        Citizen.Wait(3 * 60 * 1000)
     end
 end)
 

@@ -29,4 +29,4 @@ client_scripts {
 	'client/engine.lua',
 }
 
-this_is_a_map 'yes'
+-- this_is_a_map 'no'
