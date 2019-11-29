@@ -4899,3 +4899,41 @@ QBShared.VehicleModels = {
 		["shop"] = "pdm",
 	}
 }
+
+QBShared.Jobs = {
+	["unemployed"] = {
+		label = "Werkloos",
+		payment = 10,
+		defaultDuty = true,
+	},
+	["police"] = {
+		label = "Politie",
+		payment = 100,
+		defaultDuty = true,
+	},
+	["doctor"] = {
+		label = "Dokter",
+		payment = 150,
+		defaultDuty = true,
+	},
+	["ambulance"] = {
+		label = "Ambulance",
+		payment = 150,
+		defaultDuty = true,
+	},
+	["trucker"] = {
+		label = "Vrachtwagenchauffeur",
+		payment = 50,
+		defaultDuty = true,
+	},
+	["taxi"] = {
+		label = "Taxi",
+		payment = 50,
+		defaultDuty = true,
+	},
+	["realestate"] = {
+		label = "Makelaar",
+		payment = 50,
+		defaultDuty = true,
+	},
+}

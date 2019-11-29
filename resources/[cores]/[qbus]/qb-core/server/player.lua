@@ -105,17 +105,14 @@ QBCore.Player.CreatePlayer = function(PlayerData)
 	self.Functions.SetJob = function(job)
 		local job = job:lower()
 		local grade = tonumber(grade)
-		local JobInfo = QBCore.Player.GetJobInfo(job)
-		if JobInfo ~= nil then
-			self.PlayerData.job.name = JobInfo.name
-			self.PlayerData.job.label = JobInfo.label
-			self.PlayerData.job.payment = JobInfo.payment
-			self.PlayerData.job.onduty = JobInfo.onduty
+		if QBCore.Shared.Jobs[job] ~= nil then
+			self.PlayerData.job.name = job
+			self.PlayerData.job.label = QBCore.Shared.Jobs[job].label
+			self.PlayerData.job.payment = QBCore.Shared.Jobs[job].payment
+			self.PlayerData.job.onduty = QBCore.Shared.Jobs[job].defaultDuty
 			self.Functions.UpdatePlayerData()
 			TriggerClientEvent("QBCore:Client:OnJobUpdate", self.PlayerData.source, self.PlayerData.job)
 			TriggerEvent("QBCore:Server:OnJobUpdate", self.PlayerData.job)
-		else
-			-- Job does not exist
 		end
 	end
 
@@ -405,20 +402,4 @@ QBCore.Player.CreateFingerId = function()
 		end)
 	end
 	return FingerId
-end
-
-QBCore.Player.GetJobInfo = function(job)
-	local job = job:lower()
-	local JobInfo = {}
-	QBCore.Functions.ExecuteSql("SELECT * FROM `jobs`", function(result)
-		for _, info in pairs(result) do
-			if tostring(info.name) == tostring(job) then
-				JobInfo.name = info.name
-				JobInfo.label = info.label
-				JobInfo.payment = info.payment
-				JobInfo.onduty = true
-			end
-		end
-	end)
-	return JobInfo
 end
