@@ -1347,7 +1347,7 @@ qbPhone.phoneNotification = function(message) {
     $('.new-notify-titel').html(message.title);
     $('.new-notify-content').html(message.message);
     if (message.color != undefined) {
-        $(".new-notify").css({"background-color":"rgb("+message.color.r+", "+message.color.g+", "+message.color.b+")"})
+        $(".new-notify").css({"background-color":"rgba("+message.color.r+", "+message.color.g+", "+message.color.b+", "+message.color.a+")"})
     }
     $(".new-notify").css({'display':'block'}).animate({
         right: "0%",

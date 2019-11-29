@@ -81,3 +81,20 @@ AddEventHandler('qb-drugs:server:succesDelivery', function(deliveryData, inTime)
         end)
     end
 end)
+
+RegisterServerEvent('qb-drugs:server:callCops')
+AddEventHandler('qb-drugs:server:callCops', function(streetLabel, coords)
+    local players = QBCore.Functions.GetPlayers()
+    local msg = "Er is een verdachte situatie op "..streetLabel..", mogelijk drugs handel."
+    local alertData = {
+        title = "Winkeloverval",
+        coords = {x = coords.x, y = coords.y, z = coords.z},
+        description = msg
+    }
+    for source, Player in pairs(players) do
+		if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
+            TriggerClientEvent("qb-drugs:client:robberyCall", Player.PlayerData.source, msg, streetLabel, coords)
+            TriggerClientEvent("qb-phone:client:addPoliceAlert", Player.PlayerData.source, alertData)
+		end
+	end
+end)
