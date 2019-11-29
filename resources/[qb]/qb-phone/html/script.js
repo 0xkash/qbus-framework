@@ -302,6 +302,7 @@ $(document).on('click', '.vehicle-found-item', function(e){
         status = '<span class="vehicle-status-active">Nee</span>'
     }
     var flagged = '<span class="vehicle-status-active">Ja</span>'
+    console.log(vehicleData)
     if (!vehicleData.isFlagged) {
         flagged = '<span class="vehicle-status-inactive">Nee</span>'
     }
@@ -316,6 +317,7 @@ $(document).on('click', '#vehicle-button-search', function(e){
         if (vehicles != null) {
             $.each(vehicles, function (i, vehicleData) {
                 $(".police-vehicle-found").append('<div class="vehicle-found-item" id="vehicle-'+i+'"><p class="vehicle-name">'+vehicleData.label+'</p><p class="vehicle-plate">Kenteken: '+vehicleData.plate+'</p></div>');
+                console.log(vehicleData);
                 $("#vehicle-" + i).data("vehicleData", vehicleData);
             });
         } else {

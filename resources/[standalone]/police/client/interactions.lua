@@ -95,6 +95,36 @@ AddEventHandler('police:client:SearchPlayer', function()
     end
 end)
 
+RegisterNetEvent('police:client:RobPlayer')
+AddEventHandler('police:client:RobPlayer', function()
+    local player, distance = GetClosestPlayer()
+    if player ~= -1 and distance < 2.5 then
+        local playerPed = GetPlayerPed(player)
+        local playerId = GetPlayerServerId(player)
+        if IsEntityPlayingAnim(playerPed, "missminuteman_1ig_2", "handsup_base", 3) or IsEntityPlayingAnim(playerPed, "mp_arresting", "idle", 3) or IsTargetDead(playerId) then
+            QBCore.Functions.Progressbar("robbing_player", "Spullen stelen..", math.random(5000, 7000), false, true, {
+                disableMovement = true,
+                disableCarMovement = true,
+                disableMouse = false,
+                disableCombat = true,
+            }, {
+                animDict = "random@shop_robbery",
+                anim = "robbery_action_b",
+                flags = 16,
+            }, {}, {}, function() -- Done
+                StopAnimTask(GetPlayerPed(-1), "random@shop_robbery", "robbery_action_b", 1.0)
+                TriggerServerEvent("inventory:server:OpenInventory", "otherplayer", playerId)
+                TriggerServerEvent("police:server:RobPlayer", playerId)
+            end, function() -- Cancel
+                StopAnimTask(GetPlayerPed(-1), "random@shop_robbery", "robbery_action_b", 1.0)
+                QBCore.Functions.Notify("Geannuleerd..", "error")
+            end)
+        end
+    else
+        QBCore.Functions.Notify("Niemand in de buurt!", "error")
+    end
+end)
+
 RegisterNetEvent('police:client:JailCommand')
 AddEventHandler('police:client:JailCommand', function(playerId, time)
     TriggerServerEvent("police:server:JailPlayer", playerId, tonumber(time))
@@ -242,14 +272,24 @@ AddEventHandler('police:client:GetCuffed', function(playerId, isSoftcuff)
         end
     else
         isHandcuffed = false
+        isEscorted = false
+        DetachEntity(GetPlayerPed(-1), true, false)
         TriggerServerEvent("police:server:SetHandcuffStatus", false)
         ClearPedTasksImmediately(GetPlayerPed(-1))
         QBCore.Functions.Notify("Je bent ontboeid!")
     end
 end)
 
+function IsTargetDead(playerId)
+    local retval = false
+    QBCore.Functions.TriggerCallback('police:server:isPlayerDead', function(result)
+        retval = result
+    end, playerId)
+    Citizen.Wait(100)
+    return retval
+end
+
 function HandCuffAnimation()
-    print("DADADAD")
     loadAnimDict("mp_arrest_paired")
 	Citizen.Wait(100)
     TaskPlayAnim(GetPlayerPed(-1), "mp_arrest_paired", "cop_p2_back_right", 3.0, 3.0, -1, 48, 0, 0, 0, 0)

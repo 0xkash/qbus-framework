@@ -218,6 +218,19 @@ AddEventHandler('police:server:SearchPlayer', function(playerId)
     end
 end)
 
+RegisterServerEvent('police:server:RobPlayer')
+AddEventHandler('police:server:RobPlayer', function(playerId)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    local SearchedPlayer = QBCore.Functions.GetPlayer(playerId)
+    if SearchedPlayer ~= nil then 
+        local money = SearchedPlayer.PlayerData.money["cash"]
+        Player.Functions.AddMoney("cash", money)
+        SearchedPlayer.Functions.RemoveMoney("cash", money)
+        TriggerClientEvent('QBCore:Notify', SearchedPlayer.PlayerData.source, "Je bent van €"..money.." beroofd")
+    end
+end)
+
 RegisterServerEvent('police:server:UpdateBlips')
 AddEventHandler('police:server:UpdateBlips', function()
     local src = source
@@ -359,6 +372,12 @@ AddEventHandler('evidence:server:AddCasingToInventory', function(casingId, casin
     else
         TriggerClientEvent('QBCore:Notify', src, "Je moet een leeg bewijszakje bij je hebben", "error")
     end
+end)
+
+QBCore.Functions.CreateCallback('police:server:isPlayerDead', function(source, cb, playerId)
+    local Player = QBCore.Functions.GetPlayer(playerId)
+    print(Player.PlayerData.metadata["isdead"])
+    cb(Player.PlayerData.metadata["isdead"])
 end)
 
 QBCore.Functions.CreateCallback('police:GetPlayerStatus', function(source, cb, playerId)

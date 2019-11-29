@@ -50,20 +50,44 @@ Config.MenuItems = {
                 shouldClose = true,
             },
             {
-                id = 'illegalactions',
-                title = 'Illegale Actie\'s',
+                id = 'interactions',
+                title = 'Interactie',
                 icon = '#illegal',
                 items = {
                     {
-                        id    = 'cornerselling',
-                        title = 'Corner Selling',
-                        icon = '#cornerselling',
+                        id    = 'handcuff',
+                        title = 'Boeien',
+                        icon = '#general',
                         type = 'client',
-                        event = 'qb-drugs:client:cornerselling',
+                        event = 'police:client:CuffPlayer',
                         shouldClose = true,
-                    }
+                    },
+                    {
+                        id    = 'escort',
+                        title = 'Escorteren',
+                        icon = '#general',
+                        type = 'client',
+                        event = 'police:client:EscortPlayer',
+                        shouldClose = true,
+                    },
+                    {
+                        id    = 'playerinvehicle',
+                        title = 'Zet in voertuig',
+                        icon = '#general',
+                        type = 'client',
+                        event = 'police:client:PutPlayerInVehicle',
+                        shouldClose = true,
+                    },
+                    {
+                        id    = 'stealplayer',
+                        title = 'Beroven',
+                        icon = '#general',
+                        type = 'client',
+                        event = 'police:client:RobPlayer',
+                        shouldClose = true,
+                    },
                 }
-            }
+            },
         }
     },
     {
@@ -132,6 +156,21 @@ Config.MenuItems = {
                             },
                         }
                     },
+                }
+            },
+            {
+                id = 'illegalactions',
+                title = 'Illegale Actie\'s',
+                icon = '#illegal',
+                items = {
+                    {
+                        id    = 'cornerselling',
+                        title = 'Corner Selling',
+                        icon = '#cornerselling',
+                        type = 'client',
+                        event = 'qb-drugs:client:cornerselling',
+                        shouldClose = true,
+                    }
                 }
             },
         }
@@ -301,30 +340,6 @@ Config.JobInteractions = {
             icon = '#general',
             type = 'client',
             event = 'police:client:CheckStatus',
-            shouldClose = true,
-        },
-        {
-            id    = 'handcuff',
-            title = 'Boeien',
-            icon = '#general',
-            type = 'client',
-            event = 'police:client:CuffPlayer',
-            shouldClose = true,
-        },
-        {
-            id    = 'escort',
-            title = 'Escorteren',
-            icon = '#general',
-            type = 'client',
-            event = 'police:client:EscortPlayer',
-            shouldClose = true,
-        },
-        {
-            id    = 'playerinvehicle',
-            title = 'Zet in voertuig',
-            icon = '#general',
-            type = 'client',
-            event = 'police:client:PutPlayerInVehicle',
             shouldClose = true,
         },
         {

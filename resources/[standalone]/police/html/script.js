@@ -93,11 +93,15 @@ HeliCam.Close = function() {
 Databank.Open = function() {
     $(".databank-container").css("display", "block");
     $(".databank-container iframe").css("display", "block");
+    $(".tablet-frame").css("display", "block");
+    $(".databank-bg").css("display", "block");
 }
 
 Databank.Close = function() {
     $(".databank-container iframe").css("display", "none");
     $(".databank-container").css("display", "none");
+    $(".tablet-frame").css("display", "none");
+    $(".databank-bg").css("display", "none");
     $.post("http://police/closeDatabank", JSON.stringify({}));
 }
 

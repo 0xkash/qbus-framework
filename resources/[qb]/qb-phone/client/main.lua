@@ -84,6 +84,7 @@ RegisterNUICallback('policeSearchVehicle', function(data, cb)
                 QBCore.Functions.TriggerCallback('police:IsPlateFlagged', function(flagged)
                     result[k].isFlagged = flagged
                 end, result[k].plate)
+                Citizen.Wait(50)
             end
         end
         cb(result)
