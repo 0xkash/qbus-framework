@@ -38,7 +38,7 @@ QBCore.Commands.Add("geefcontant", "Geef contant geld aan een persoon", {{name="
       if amount > 0 then
         if Player.PlayerData.money.cash >= amount then
           if TargetId ~= source then
-            TriggerClientEvent('banking:client:CheckDistance', source, TargetId)
+            TriggerClientEvent('banking:client:CheckDistance', source, TargetId, amount)
           else
             TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Je kunt geen geld aan jezelf geven.")
           end
@@ -57,13 +57,14 @@ QBCore.Commands.Add("geefcontant", "Geef contant geld aan een persoon", {{name="
 end)
 
 RegisterServerEvent('banking:server:giveCash')
-AddEventHandler('banking:server:giveCash', function(srcId, trgtId, amount)
-  local Player = QBCore.Functions.GetPlayer(srcId)
+AddEventHandler('banking:server:giveCash', function(trgtId, amount)
+  local src = source
+  local Player = QBCore.Functions.GetPlayer(src)
   local Target = QBCore.Functions.GetPlayer(trgtId)
 
   Player.Functions.RemoveMoney('cash', amount)
   Target.Functions.AddMoney('cash', amount)
   
   TriggerClientEvent('chatMessage', trgtId, "SYSTEM", "success", "Je hebt €"..amount.." gekregen van "..Player.PlayerData.charinfo.firstname.."!")
-  TriggerClientEvent('chatMessage', srcId, "SYSTEM", "success", "Je hebt €"..amount.." gegeven aan "..Target.PlayerData.charinfo.firstname.."!")
+  TriggerClientEvent('chatMessage', src, "SYSTEM", "success", "Je hebt €"..amount.." gegeven aan "..Target.PlayerData.charinfo.firstname.."!")
 end)
