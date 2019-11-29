@@ -59,7 +59,6 @@ RegisterNUICallback('setFoodWarning', function(data)
     TriggerServerEvent('qb-fitbit:server:setValue', 'food', foodValue)
 
     QBCore.Functions.Notify('Fitbit: Voedsel waarschuwing ingesteld op '..foodValue..'%')
-    print('setet')
 end)
 
 RegisterNUICallback('setThirstWarning', function(data)
@@ -74,7 +73,7 @@ Citizen.CreateThread(function()
     while true do
 
         if isLoggedIn then
-            if IsControlJustPressed(0, Keys["N"]) then
+            if IsControlJustReleased(0, Keys["="]) then
                 QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
                     if result then
                         openWatch()
@@ -85,7 +84,7 @@ Citizen.CreateThread(function()
             end
         end
 
-        Citizen.Wait(5)
+        Citizen.Wait(3)
     end
 end)
 
@@ -124,4 +123,4 @@ end)
 function round(num, numDecimalPlaces)
     local mult = 10^(numDecimalPlaces or 0)
     return math.floor(num * mult + 0.5) / mult
-  end
+end

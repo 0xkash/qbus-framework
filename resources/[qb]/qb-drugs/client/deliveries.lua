@@ -42,12 +42,12 @@ Citizen.CreateThread(function()
 
                             if IsControlJustPressed(0, Keys["G"]) then
                                 if waitingDelivery == nil then
-                                    TriggerEvent("chatMessage", "Dealer Tony", "normal", 'Hier heb je de producten, houd je mail in de gaten betreft de bestelling!')
+                                    TriggerEvent("chatMessage", "Dealer "..Config.Dealers[currentDealer]["name"], "normal", 'Hier heb je de producten, houd je mail in de gaten betreft de bestelling!')
                                     requestDelivery()
                                     interacting = false
                                     dealerIsHome = false
                                 else
-                                    TriggerEvent("chatMessage", "Dealer Tony", "error", 'Je hebt nog een levering open staan. Waar wacht je op?')
+                                    TriggerEvent("chatMessage", "Dealer "..Config.Dealers[currentDealer]["name"], "error", 'Je hebt nog een levering open staan. Waar wacht je op?')
                                 end
                             end
                         end
@@ -107,7 +107,7 @@ function knockDoorAnim(home)
         TaskPlayAnim(PlayerPed, knockAnimLib, "exit", 3.0, 3.0, -1, 1, 0, false, false, false)
         knockingDoor = false
         Citizen.Wait(1000)
-        TriggerEvent("chatMessage", "Dealer Tony", "normal", 'Yow '..myData.charinfo.firstname..', wat kan ik voor je betekenen?')
+        TriggerEvent("chatMessage", "Dealer "..Config.Dealers[currentDealer]["name"], "normal", 'Yow '..myData.charinfo.firstname..', wat kan ik voor je betekenen?')
         -- knockTimeout()
         dealerIsHome = true
     else
@@ -144,14 +144,15 @@ function requestDelivery()
         ["coords"] = Config.DeliveryLocations[location]["coords"],
         ["locationLabel"] = Config.DeliveryLocations[location]["label"],
         ["amount"] = amount,
-        ["dealer"] = currentDealer
+        ["dealer"] = currentDealer,
+        ["itemData"] = randomDeliveryItemOnRep()
     }
     TriggerServerEvent('qb-drugs:server:giveDeliveryItems', amount)
     SetTimeout(math.random(20000, 30000), function()
         TriggerServerEvent('qb-phone:server:sendNewMail', {
             sender = Config.Dealers[currentDealer]["name"],
             subject = "Aflever Locatie",
-            message = "Hier is alle informatie op je bezorging, <br>Locatie: "..waitingDelivery["locationLabel"].."<br>Spullen: <br> "..amount.."x Wiet Brick 1kg<br><br> Zorg dat je optijd bent!",
+            message = "Hier is alle informatie over je bezorging, <br>Locatie: "..waitingDelivery["locationLabel"].."<br>Spullen: <br> "..amount.."x "..QBCore.Shared.Items[waitingDelivery["itemData"]["item"]]["label"].."<br><br> Zorg dat je optijd bent!",
             button = {
                 enabled = true,
                 buttonEvent = "qb-drugs:client:setLocation",
@@ -159,6 +160,27 @@ function requestDelivery()
             }
         })
     end)
+end
+
+function randomDeliveryItemOnRep()
+    local ped = GetPlayerPed(-1)
+    local myRep = QBCore.Functions.GetPlayerData().metadata["dealerrep"]
+
+    retval = nil
+
+    for k, v in pairs(Config.DeliveryItems) do
+        if Config.DeliveryItems[k]["minrep"] <= myRep then
+            local availableItems = {}
+            table.insert(availableItems, k)
+
+            local item = math.random(1, #availableItems)
+
+            retval = item
+            return retval
+        end
+        return retval
+    end
+    return retval
 end
 
 function setMapBlip(x, y)
@@ -195,7 +217,7 @@ AddEventHandler('qb-drugs:client:setLocation', function(locationData)
                 if dist < 15 then
                     inDeliveryRange = true
                     if dist < 1.5 then
-                        DrawText3D(activeDelivery["coords"]["x"], activeDelivery["coords"]["y"], activeDelivery["coords"]["z"], '[E] '..activeDelivery["amount"]..'x Wiet Brick 1kg afleveren')
+                        DrawText3D(activeDelivery["coords"]["x"], activeDelivery["coords"]["y"], activeDelivery["coords"]["z"], '[E] '..activeDelivery["amount"]..'x '..QBCore.Shared.Items[activeDelivery["itemData"]["item"]]["label"]..' afleveren.')
 
                         if IsControlJustPressed(0, Keys["E"]) then
                             deliverStuff(activeDelivery)
@@ -236,12 +258,86 @@ end
 
 function deliverStuff(activeDelivery)
     if deliveryTimeout > 0 then
-        TriggerServerEvent('qb-drugs:server:succesDelivery', activeDelivery, true)
+        TriggerEvent('animations:client:EmoteCommandStart', {"c"})
+        Citizen.Wait(500)
+        TriggerEvent('animations:client:EmoteCommandStart', {"bumbin"})
+        checkPedDistance()
+        QBCore.Functions.Progressbar("work_dropbox", "Producten afleveren..", 3500, false, true, {
+            disableMovement = true,
+            disableCarMovement = true,
+            disableMouse = false,
+            disableCombat = true,
+        }, {}, {}, {}, function() -- Done
+            TriggerServerEvent('qb-drugs:server:succesDelivery', activeDelivery, true)
+        end, function() -- Cancel
+            ClearPedTasks(GetPlayerPed(-1))
+            QBCore.Functions.Notify("Geannuleerd..", "error")
+        end)
     else
         TriggerServerEvent('qb-drugs:server:succesDelivery', activeDelivery, false)
     end
     deliveryTimeout = 0
 end
+
+function checkPedDistance()
+    local PlayerPeds = {}
+    if next(PlayerPeds) == nil then
+        for _, player in ipairs(GetActivePlayers()) do
+            local ped = GetPlayerPed(player)
+            table.insert(PlayerPeds, ped)
+        end
+    end
+    
+    local closestPed, closestDistance = QBCore.Functions.GetClosestPed(coords, PlayerPeds)
+
+    if closestDistance < 40 and closestPed ~= 0 then
+        local callChance = math.random(1, 100)
+
+        if callChance < 15 then
+            doPoliceAlert()
+        end
+    end
+end
+
+function doPoliceAlert()
+    local ped = GetPlayerPed(-1)
+    local pos = GetEntityCoords(ped)
+    local s1, s2 = Citizen.InvokeNative(0x2EB41072B4C1E4C0, pos.x, pos.y, pos.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
+    local street1 = GetStreetNameFromHashKey(s1)
+    local street2 = GetStreetNameFromHashKey(s2)
+    local streetLabel = street1
+    if street2 ~= nil then 
+        streetLabel = streetLabel .. " " .. street2
+    end
+
+    TriggerServerEvent('qb-drugs:server:callCops', streetLabel, pos)
+end
+
+RegisterNetEvent('qb-drugs:client:robberyCall')
+AddEventHandler('qb-drugs:client:robberyCall', function(msg, streetLabel, coords)
+    PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
+    TriggerEvent("chatMessage", "112-MELDING", "error", msg)
+    local transG = 250
+    local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
+    SetBlipSprite(blip, 458)
+    SetBlipColour(blip, 1)
+    SetBlipDisplay(blip, 4)
+    SetBlipAlpha(blip, transG)
+    SetBlipScale(blip, 1.0)
+    BeginTextCommandSetBlipName('STRING')
+    AddTextComponentString("112: Drugshandel")
+    EndTextCommandSetBlipName(blip)
+    while transG ~= 0 do
+        Wait(180 * 4)
+        transG = transG - 1
+        SetBlipAlpha(blip, transG)
+        if transG == 0 then
+            SetBlipSprite(blip, 2)
+            RemoveBlip(blip)
+            return
+        end
+    end
+end)
 
 RegisterNetEvent('qb-drugs:client:sendDeliveryMail')
 AddEventHandler('qb-drugs:client:sendDeliveryMail', function(type, deliveryData)

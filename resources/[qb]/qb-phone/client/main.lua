@@ -536,6 +536,7 @@ AddEventHandler('qb-phone:client:newTweet', function(sender, message)
                             r = 0,
                             g = 138,
                             b = 190,
+                            a = 155,
                         }
                     }
                 })
@@ -566,6 +567,7 @@ AddEventHandler('qb-phone:client:newAd', function(sender, message)
                             r = 255,
                             g = 143,
                             b = 26,
+                            a = 155,
                         }
                     }
                 })

@@ -164,14 +164,14 @@ function SetClosestScrapyard()
 end
 
 function ScrapVehicleAnim(time)
-    time = time / 1000
+    time = (time / 1000) * 2
     loadAnimDict("mp_car_bomb")
     TaskPlayAnim(GetPlayerPed(-1), "mp_car_bomb", "car_bomb_mechanic" ,3.0, 3.0, -1, 16, 0, false, false, false)
     openingDoor = true
     Citizen.CreateThread(function()
         while openingDoor do
             TaskPlayAnim(PlayerPedId(), "mp_car_bomb", "car_bomb_mechanic", 3.0, 3.0, -1, 16, 0, 0, 0, 0)
-            Citizen.Wait(1000)
+            Citizen.Wait(2000)
             time = time - 1
             if time <= 0 then
                 openingDoor = false
