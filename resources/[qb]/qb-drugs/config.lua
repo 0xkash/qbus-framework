@@ -220,7 +220,7 @@ Config.CornerSellingZones = {
 
 Config.DeliveryItems = {
     [1] = {
-        ["item"] = "weed_brick".
+        ["item"] = "weed_brick",
         ["minrep"] = 0,
     },
 }
