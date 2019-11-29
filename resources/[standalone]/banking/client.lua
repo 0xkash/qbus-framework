@@ -380,5 +380,7 @@ AddEventHandler('banking:client:CheckDistance', function(targetId, amount)
     if targetId == playerId then
       TriggerServerEvent('banking:server:giveCash', playerId, targetId, amount)
     end
+  else
+    QBCore.Functions.Notify('Je bent niet bij het persoon in de buurt..', 'error')
   end
 end)
