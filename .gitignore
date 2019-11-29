@@ -7,6 +7,8 @@
 CitizenFX.log
 CitizenFXdev.log
 start.bat
+mysql.cfg
+position.cfg
 resources/[standalone]/vMenu/__resource.lua
 resources/[standalone]/vMenu/config/addons.json
 resources/[standalone]/vMenu/config/locations.json
