@@ -225,11 +225,11 @@ AddEventHandler('police:server:UpdateBlips', function()
 end)
 
 RegisterServerEvent('police:server:spawnObject')
-AddEventHandler('police:server:spawnObject', function(type)
+AddEventHandler('police:server:spawnObject', function(object)
     local src = source
     local objectId = CreateObjectId()
-    Objects[objectId] = type
-    TriggerClientEvent("police:client:spawnObject", -1, objectId, type, src)
+    Objects[objectId] = object
+    TriggerClientEvent("police:client:spawnObject", -1, objectId, object, src)
 end)
 
 RegisterServerEvent('police:server:deleteObject')
@@ -321,6 +321,19 @@ AddEventHandler('evidence:server:CreateCasing', function(weapon, coords)
     local src = source
     local casingId = CreateCasingId()
     TriggerClientEvent("evidence:client:AddCasing", -1, casingId, weapon, coords)
+end)
+
+
+RegisterServerEvent('police:server:UpdateCurrentCops')
+AddEventHandler('police:server:UpdateCurrentCops', function()
+    local players = QBCore.Functions.GetPlayers()
+	local amount = 0
+	for source, Player in pairs(players) do
+		if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
+			amount = amount + 1
+		end
+    end
+    TriggerClientEvent("police:SetCopCount", -1, amount)
 end)
 
 RegisterServerEvent('evidence:server:ClearCasings')
@@ -483,7 +496,7 @@ QBCore.Functions.CreateCallback('police:GetCops', function(source, cb)
 		if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
 			amount = amount + 1
 		end
-	end
+    end
 	cb(amount)
 end)
 

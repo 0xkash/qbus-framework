@@ -52,6 +52,7 @@ end)
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     isLoggedIn = true
+    TriggerServerEvent("police:server:UpdateCurrentCops")
     PlayerJob = QBCore.Functions.GetPlayerData().job
     onDuty = QBCore.Functions.GetPlayerData().job.onduty
     TriggerServerEvent("police:server:UpdateBlips")
@@ -60,6 +61,7 @@ end)
 RegisterNetEvent('QBCore:Client:OnPlayerUnload')
 AddEventHandler('QBCore:Client:OnPlayerUnload', function()
     TriggerServerEvent("police:server:SetHandcuffStatus", false)
+    TriggerServerEvent("police:server:UpdateCurrentCops")
     isLoggedIn = false
     isHandcuffed = false
     isEscorted = false

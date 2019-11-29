@@ -12,7 +12,7 @@
 }
 
 #wrap {
-	 display: block;
+	 display: none;
 	 position: relative;
 	 width: 12%;
 	 margin: 5% auto;

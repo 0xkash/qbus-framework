@@ -34,13 +34,11 @@ Citizen.CreateThread(function()
                                     if lockerDist < 0.5 then
                                         DrawText3Ds(Config.BigBanks["paleto"]["lockers"][k].x, Config.BigBanks["paleto"]["lockers"][k].y, Config.BigBanks["paleto"]["lockers"][k].z + 0.3, '[E] Kluis openbreken')
                                         if IsControlJustPressed(0, Keys["E"]) then
-                                            QBCore.Functions.TriggerCallback('police:GetCops', function(cops)
-                                                if cops >= 5 then
-                                                    openLocker("paleto", k)
-                                                else
-                                                    QBCore.Functions.Notify("Niet genoeg politie.. (5 nodig)", "error")
-                                                end
-                                            end)
+                                            if CurrentCops >= 5 then
+                                                openLocker("paleto", k)
+                                            else
+                                                QBCore.Functions.Notify("Niet genoeg politie.. (5 nodig)", "error")
+                                            end
                                         end
                                     end
                                 end
@@ -68,47 +66,45 @@ AddEventHandler('qb-bankrobbery:UseBankcardA', function()
     if dist < 1.5 then
         QBCore.Functions.TriggerCallback('qb-bankrobbery:server:isRobberyActive', function(isBusy)
             if not isBusy then
-                QBCore.Functions.TriggerCallback('police:GetCops', function(cops)
-                    if cops >= 5 then
-                        if not Config.BigBanks["paleto"]["isOpened"] then 
-                            TriggerEvent('inventory:client:requiredItems', requiredItems, false)
-                            QBCore.Functions.Progressbar("security_pass", "Pas aan het valideren..", math.random(5000, 10000), false, true, {
-                                disableMovement = true,
-                                disableCarMovement = true,
-                                disableMouse = false,
-                                disableCombat = true,
-                            }, {
-                                animDict = "anim@gangops@facility@servers@",
-                                anim = "hotwire",
-                                flags = 16,
-                            }, {}, {}, function() -- Done
-                                StopAnimTask(GetPlayerPed(-1), "anim@gangops@facility@servers@", "hotwire", 1.0)
-                                TriggerServerEvent('qb-bankrobbery:server:setBankState', "paleto", true)
-                                TriggerServerEvent("QBCore:Server:RemoveItem", "security_card_01", 1)
-                                if not copsCalled then
-                                    local s1, s2 = Citizen.InvokeNative(0x2EB41072B4C1E4C0, pos.x, pos.y, pos.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
-                                    local street1 = GetStreetNameFromHashKey(s1)
-                                    local street2 = GetStreetNameFromHashKey(s2)
-                                    local streetLabel = street1
-                                    if street2 ~= nil then 
-                                        streetLabel = streetLabel .. " " .. street2
-                                    end
-                                    if Config.BigBanks["paleto"]["alarm"] then
-                                        TriggerServerEvent("qb-bankrobbery:server:callCops", "paleto", 0, streetLabel, pos)
-                                        copsCalled = true
-                                    end
+                if CurrentCops >= 5 then
+                    if not Config.BigBanks["paleto"]["isOpened"] then 
+                        TriggerEvent('inventory:client:requiredItems', requiredItems, false)
+                        QBCore.Functions.Progressbar("security_pass", "Pas aan het valideren..", math.random(5000, 10000), false, true, {
+                            disableMovement = true,
+                            disableCarMovement = true,
+                            disableMouse = false,
+                            disableCombat = true,
+                        }, {
+                            animDict = "anim@gangops@facility@servers@",
+                            anim = "hotwire",
+                            flags = 16,
+                        }, {}, {}, function() -- Done
+                            StopAnimTask(GetPlayerPed(-1), "anim@gangops@facility@servers@", "hotwire", 1.0)
+                            TriggerServerEvent('qb-bankrobbery:server:setBankState', "paleto", true)
+                            TriggerServerEvent("QBCore:Server:RemoveItem", "security_card_01", 1)
+                            if not copsCalled then
+                                local s1, s2 = Citizen.InvokeNative(0x2EB41072B4C1E4C0, pos.x, pos.y, pos.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
+                                local street1 = GetStreetNameFromHashKey(s1)
+                                local street2 = GetStreetNameFromHashKey(s2)
+                                local streetLabel = street1
+                                if street2 ~= nil then 
+                                    streetLabel = streetLabel .. " " .. street2
                                 end
-                            end, function() -- Cancel
-                                StopAnimTask(GetPlayerPed(-1), "anim@gangops@facility@servers@", "hotwire", 1.0)
-                                QBCore.Functions.Notify("Geannuleerd..", "error")
-                            end)
-                        else
-                            QBCore.Functions.Notify("Het lijkt erop dat de bank al open is..", "error")
-                        end
+                                if Config.BigBanks["paleto"]["alarm"] then
+                                    TriggerServerEvent("qb-bankrobbery:server:callCops", "paleto", 0, streetLabel, pos)
+                                    copsCalled = true
+                                end
+                            end
+                        end, function() -- Cancel
+                            StopAnimTask(GetPlayerPed(-1), "anim@gangops@facility@servers@", "hotwire", 1.0)
+                            QBCore.Functions.Notify("Geannuleerd..", "error")
+                        end)
                     else
-                        QBCore.Functions.Notify("Niet genoeg politie.. (5 nodig)", "error")
+                        QBCore.Functions.Notify("Het lijkt erop dat de bank al open is..", "error")
                     end
-                end)
+                else
+                    QBCore.Functions.Notify("Niet genoeg politie.. (5 nodig)", "error")
+                end
             else
                 QBCore.Functions.Notify("Het beveiligingsslot is actief, het openen van de deur is momenteel niet mogelijk..", "error", 5500)
             end

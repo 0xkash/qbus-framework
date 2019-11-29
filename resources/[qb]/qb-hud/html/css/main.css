@@ -33,10 +33,6 @@ p {
     top: 7vh;
 }
 
-.money-content {
-    padding: 3%;
-}
-
 #cash {
     color: white;
 }
@@ -85,6 +81,17 @@ p {
     text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
     text-align: right;
     color: #801e1f;
+}
+
+.munnie {
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    text-align: right;
+    color: #277418;
+}
+
+.moneyupdate {
+    float: right;
+    padding-left: 0.5vw;
 }
 
 .plus {
