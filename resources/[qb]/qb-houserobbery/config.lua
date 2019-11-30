@@ -274,6 +274,750 @@ Config.Houses = {
                 ["text"] = "Nachtkastje doorzoeken"
             },
         }
+    },
+    ["12345"] = {
+        ["coords"] = {
+            ["x"] = 1046.22, 
+            ["y"] = -498.13, 
+            ["z"] = 64.27, 
+            ["h"] = 173.5
+        },
+        ["opened"] = false,
+        ["tier"] = 1,
+        ["furniture"] = {
+            [1] = {
+                ["type"] = "cabin",
+                ["coords"] = {
+                    ["x"] = 3.1,
+                    ["y"] = -4.3,
+                    ["z"] = 2.5,
+                },
+                ["searched"] = false,
+                ["text"] = "Kastje doorzoeken"
+            },
+            [2] = {
+                ["type"] = "cabin",
+                ["coords"] = {
+                    ["x"] = -3.5,
+                    ["y"] = -6.3,
+                    ["z"] = 2.5,
+                },
+                ["searched"] = false,
+                ["text"] = "Kastje doorzoeken"
+            },
+            [3] = {
+                ["type"] = "kitchen",
+                ["coords"] = {
+                    ["x"] = 0.9,
+                    ["y"] = -6.3,
+                    ["z"] = 2.5,
+                },
+                ["searched"] = false,
+                ["text"] = "Keuken kastjes doorzoeken"
+            },
+            [4] = {
+                ["type"] = "chest",
+                ["coords"] = {
+                    ["x"] = 9.3,
+                    ["y"] = -1.3,
+                    ["z"] = 2.0,
+                },
+                ["searched"] = false,
+                ["text"] = "Kist doorzoeken"
+            },
+            [5] = {
+                ["type"] = "cabin",
+                ["coords"] = {
+                    ["x"] = 5.85,
+                    ["y"] = 2.6,
+                    ["z"] = 2.0,
+                },
+                ["searched"] = false,
+                ["text"] = "Nachtkastje doorzoeken"
+            },
+        }
+    },
+    ["12sdgsd345"] = {
+        ["coords"] = {
+            ["x"] = 808.83, 
+            ["y"] = -163.65, 
+            ["z"] = 75.87, 
+            ["h"] = 331.5
+        },
+        ["opened"] = false,
+        ["tier"] = 1,
+        ["furniture"] = {
+            [1] = {
+                ["type"] = "cabin",
+                ["coords"] = {
+                    ["x"] = 3.1,
+                    ["y"] = -4.3,
+                    ["z"] = 2.5,
+                },
+                ["searched"] = false,
+                ["text"] = "Kastje doorzoeken"
+            },
+            [2] = {
+                ["type"] = "cabin",
+                ["coords"] = {
+                    ["x"] = -3.5,
+                    ["y"] = -6.3,
+                    ["z"] = 2.5,
+                },
+                ["searched"] = false,
+                ["text"] = "Kastje doorzoeken"
+            },
+            [3] = {
+                ["type"] = "kitchen",
+                ["coords"] = {
+                    ["x"] = 0.9,
+                    ["y"] = -6.3,
+                    ["z"] = 2.5,
+                },
+                ["searched"] = false,
+                ["text"] = "Keuken kastjes doorzoeken"
+            },
+            [4] = {
+                ["type"] = "chest",
+                ["coords"] = {
+                    ["x"] = 9.3,
+                    ["y"] = -1.3,
+                    ["z"] = 2.0,
+                },
+                ["searched"] = false,
+                ["text"] = "Kist doorzoeken"
+            },
+            [5] = {
+                ["type"] = "cabin",
+                ["coords"] = {
+                    ["x"] = 5.85,
+                    ["y"] = 2.6,
+                    ["z"] = 2.0,
+                },
+                ["searched"] = false,
+                ["text"] = "Nachtkastje doorzoeken"
+            },
+        }
+    },
+    ["house1"] = {
+        ["coords"] = {
+            ["x"] = 5.76, 
+            ["y"] = -9.49, 
+            ["z"] = 70.3, 
+            ["h"] = 159.5
+        },
+        ["opened"] = false,
+        ["tier"] = 1,
+        ["furniture"] = {
+            [1] = {
+                ["type"] = "cabin",
+                ["coords"] = {
+                    ["x"] = 3.1,
+                    ["y"] = -4.3,
+                    ["z"] = 2.5,
+                },
+                ["searched"] = false,
+                ["text"] = "Kastje doorzoeken"
+            },
+            [2] = {
+                ["type"] = "cabin",
+                ["coords"] = {
+                    ["x"] = -3.5,
+                    ["y"] = -6.3,
+                    ["z"] = 2.5,
+                },
+                ["searched"] = false,
+                ["text"] = "Kastje doorzoeken"
+            },
+            [3] = {
+                ["type"] = "kitchen",
+                ["coords"] = {
+                    ["x"] = 0.9,
+                    ["y"] = -6.3,
+                    ["z"] = 2.5,
+                },
+                ["searched"] = false,
+                ["text"] = "Keuken kastjes doorzoeken"
+            },
+            [4] = {
+                ["type"] = "chest",
+                ["coords"] = {
+                    ["x"] = 9.3,
+                    ["y"] = -1.3,
+                    ["z"] = 2.0,
+                },
+                ["searched"] = false,
+                ["text"] = "Kist doorzoeken"
+            },
+            [5] = {
+                ["type"] = "cabin",
+                ["coords"] = {
+                    ["x"] = 5.85,
+                    ["y"] = 2.6,
+                    ["z"] = 2.0,
+                },
+                ["searched"] = false,
+                ["text"] = "Nachtkastje doorzoeken"
+            },
+        }
+    },
+    ["house2"] = {
+        ["coords"] = {
+            ["x"] = -968.75, 
+            ["y"] = 436.9, 
+            ["z"] = 80.76, 
+            ["h"] = 72.5
+        },
+        ["opened"] = false,
+        ["tier"] = 1,
+        ["furniture"] = {
+            [1] = {
+                ["type"] = "cabin",
+                ["coords"] = {
+                    ["x"] = 3.1,
+                    ["y"] = -4.3,
+                    ["z"] = 2.5,
+                },
+                ["searched"] = false,
+                ["text"] = "Kastje doorzoeken"
+            },
+            [2] = {
+                ["type"] = "cabin",
+                ["coords"] = {
+                    ["x"] = -3.5,
+                    ["y"] = -6.3,
+                    ["z"] = 2.5,
+                },
+                ["searched"] = false,
+                ["text"] = "Kastje doorzoeken"
+            },
+            [3] = {
+                ["type"] = "kitchen",
+                ["coords"] = {
+                    ["x"] = 0.9,
+                    ["y"] = -6.3,
+                    ["z"] = 2.5,
+                },
+                ["searched"] = false,
+                ["text"] = "Keuken kastjes doorzoeken"
+            },
+            [4] = {
+                ["type"] = "chest",
+                ["coords"] = {
+                    ["x"] = 9.3,
+                    ["y"] = -1.3,
+                    ["z"] = 2.0,
+                },
+                ["searched"] = false,
+                ["text"] = "Kist doorzoeken"
+            },
+            [5] = {
+                ["type"] = "cabin",
+                ["coords"] = {
+                    ["x"] = 5.85,
+                    ["y"] = 2.6,
+                    ["z"] = 2.0,
+                },
+                ["searched"] = false,
+                ["text"] = "Nachtkastje doorzoeken"
+            },
+        }
+    },
+    ["house3"] = {
+        ["coords"] = {
+            ["x"] = -987.26, 
+            ["y"] = 487.07, 
+            ["z"] = 82.46, 
+            ["h"] = 181.5
+        },
+        ["opened"] = false,
+        ["tier"] = 1,
+        ["furniture"] = {
+            [1] = {
+                ["type"] = "cabin",
+                ["coords"] = {
+                    ["x"] = 3.1,
+                    ["y"] = -4.3,
+                    ["z"] = 2.5,
+                },
+                ["searched"] = false,
+                ["text"] = "Kastje doorzoeken"
+            },
+            [2] = {
+                ["type"] = "cabin",
+                ["coords"] = {
+                    ["x"] = -3.5,
+                    ["y"] = -6.3,
+                    ["z"] = 2.5,
+                },
+                ["searched"] = false,
+                ["text"] = "Kastje doorzoeken"
+            },
+            [3] = {
+                ["type"] = "kitchen",
+                ["coords"] = {
+                    ["x"] = 0.9,
+                    ["y"] = -6.3,
+                    ["z"] = 2.5,
+                },
+                ["searched"] = false,
+                ["text"] = "Keuken kastjes doorzoeken"
+            },
+            [4] = {
+                ["type"] = "chest",
+                ["coords"] = {
+                    ["x"] = 9.3,
+                    ["y"] = -1.3,
+                    ["z"] = 2.0,
+                },
+                ["searched"] = false,
+                ["text"] = "Kist doorzoeken"
+            },
+            [5] = {
+                ["type"] = "cabin",
+                ["coords"] = {
+                    ["x"] = 5.85,
+                    ["y"] = 2.6,
+                    ["z"] = 2.0,
+                },
+                ["searched"] = false,
+                ["text"] = "Nachtkastje doorzoeken"
+            },
+        }
+    },
+    ["house4"] = {
+        ["coords"] = {
+            ["x"] = -1308.13, 
+            ["y"] = 448.89, 
+            ["z"] = 100.96, 
+            ["h"] = 172.5
+        },
+        ["opened"] = false,
+        ["tier"] = 1,
+        ["furniture"] = {
+            [1] = {
+                ["type"] = "cabin",
+                ["coords"] = {
+                    ["x"] = 3.1,
+                    ["y"] = -4.3,
+                    ["z"] = 2.5,
+                },
+                ["searched"] = false,
+                ["text"] = "Kastje doorzoeken"
+            },
+            [2] = {
+                ["type"] = "cabin",
+                ["coords"] = {
+                    ["x"] = -3.5,
+                    ["y"] = -6.3,
+                    ["z"] = 2.5,
+                },
+                ["searched"] = false,
+                ["text"] = "Kastje doorzoeken"
+            },
+            [3] = {
+                ["type"] = "kitchen",
+                ["coords"] = {
+                    ["x"] = 0.9,
+                    ["y"] = -6.3,
+                    ["z"] = 2.5,
+                },
+                ["searched"] = false,
+                ["text"] = "Keuken kastjes doorzoeken"
+            },
+            [4] = {
+                ["type"] = "chest",
+                ["coords"] = {
+                    ["x"] = 9.3,
+                    ["y"] = -1.3,
+                    ["z"] = 2.0,
+                },
+                ["searched"] = false,
+                ["text"] = "Kist doorzoeken"
+            },
+            [5] = {
+                ["type"] = "cabin",
+                ["coords"] = {
+                    ["x"] = 5.85,
+                    ["y"] = 2.6,
+                    ["z"] = 2.0,
+                },
+                ["searched"] = false,
+                ["text"] = "Nachtkastje doorzoeken"
+            },
+        }
+    },
+    ["house5"] = {
+        ["coords"] = {
+            ["x"] = -1413.59, 
+            ["y"] = 462.1, 
+            ["z"] = 109.2, 
+            ["h"] = 164.5
+        },
+        ["opened"] = false,
+        ["tier"] = 1,
+        ["furniture"] = {
+            [1] = {
+                ["type"] = "cabin",
+                ["coords"] = {
+                    ["x"] = 3.1,
+                    ["y"] = -4.3,
+                    ["z"] = 2.5,
+                },
+                ["searched"] = false,
+                ["text"] = "Kastje doorzoeken"
+            },
+            [2] = {
+                ["type"] = "cabin",
+                ["coords"] = {
+                    ["x"] = -3.5,
+                    ["y"] = -6.3,
+                    ["z"] = 2.5,
+                },
+                ["searched"] = false,
+                ["text"] = "Kastje doorzoeken"
+            },
+            [3] = {
+                ["type"] = "kitchen",
+                ["coords"] = {
+                    ["x"] = 0.9,
+                    ["y"] = -6.3,
+                    ["z"] = 2.5,
+                },
+                ["searched"] = false,
+                ["text"] = "Keuken kastjes doorzoeken"
+            },
+            [4] = {
+                ["type"] = "chest",
+                ["coords"] = {
+                    ["x"] = 9.3,
+                    ["y"] = -1.3,
+                    ["z"] = 2.0,
+                },
+                ["searched"] = false,
+                ["text"] = "Kist doorzoeken"
+            },
+            [5] = {
+                ["type"] = "cabin",
+                ["coords"] = {
+                    ["x"] = 5.85,
+                    ["y"] = 2.6,
+                    ["z"] = 2.0,
+                },
+                ["searched"] = false,
+                ["text"] = "Nachtkastje doorzoeken"
+            },
+        }
+    },
+    ["house6"] = {
+        ["coords"] = {
+            ["x"] = -2015.01, 
+            ["y"] = 499.84, 
+            ["z"] = 107.17, 
+            ["h"] = 85.5
+        },
+        ["opened"] = false,
+        ["tier"] = 1,
+        ["furniture"] = {
+            [1] = {
+                ["type"] = "cabin",
+                ["coords"] = {
+                    ["x"] = 3.1,
+                    ["y"] = -4.3,
+                    ["z"] = 2.5,
+                },
+                ["searched"] = false,
+                ["text"] = "Kastje doorzoeken"
+            },
+            [2] = {
+                ["type"] = "cabin",
+                ["coords"] = {
+                    ["x"] = -3.5,
+                    ["y"] = -6.3,
+                    ["z"] = 2.5,
+                },
+                ["searched"] = false,
+                ["text"] = "Kastje doorzoeken"
+            },
+            [3] = {
+                ["type"] = "kitchen",
+                ["coords"] = {
+                    ["x"] = 0.9,
+                    ["y"] = -6.3,
+                    ["z"] = 2.5,
+                },
+                ["searched"] = false,
+                ["text"] = "Keuken kastjes doorzoeken"
+            },
+            [4] = {
+                ["type"] = "chest",
+                ["coords"] = {
+                    ["x"] = 9.3,
+                    ["y"] = -1.3,
+                    ["z"] = 2.0,
+                },
+                ["searched"] = false,
+                ["text"] = "Kist doorzoeken"
+            },
+            [5] = {
+                ["type"] = "cabin",
+                ["coords"] = {
+                    ["x"] = 5.85,
+                    ["y"] = 2.6,
+                    ["z"] = 2.0,
+                },
+                ["searched"] = false,
+                ["text"] = "Nachtkastje doorzoeken"
+            },
+        }
+    },
+    ["house7"] = {
+        ["coords"] = {
+            ["x"] = 329.37, 
+            ["y"] = -1845.84, 
+            ["z"] = 27.74, 
+            ["h"] = 236.5
+        },
+        ["opened"] = false,
+        ["tier"] = 1,
+        ["furniture"] = {
+            [1] = {
+                ["type"] = "cabin",
+                ["coords"] = {
+                    ["x"] = 3.1,
+                    ["y"] = -4.3,
+                    ["z"] = 2.5,
+                },
+                ["searched"] = false,
+                ["text"] = "Kastje doorzoeken"
+            },
+            [2] = {
+                ["type"] = "cabin",
+                ["coords"] = {
+                    ["x"] = -3.5,
+                    ["y"] = -6.3,
+                    ["z"] = 2.5,
+                },
+                ["searched"] = false,
+                ["text"] = "Kastje doorzoeken"
+            },
+            [3] = {
+                ["type"] = "kitchen",
+                ["coords"] = {
+                    ["x"] = 0.9,
+                    ["y"] = -6.3,
+                    ["z"] = 2.5,
+                },
+                ["searched"] = false,
+                ["text"] = "Keuken kastjes doorzoeken"
+            },
+            [4] = {
+                ["type"] = "chest",
+                ["coords"] = {
+                    ["x"] = 9.3,
+                    ["y"] = -1.3,
+                    ["z"] = 2.0,
+                },
+                ["searched"] = false,
+                ["text"] = "Kist doorzoeken"
+            },
+            [5] = {
+                ["type"] = "cabin",
+                ["coords"] = {
+                    ["x"] = 5.85,
+                    ["y"] = 2.6,
+                    ["z"] = 2.0,
+                },
+                ["searched"] = false,
+                ["text"] = "Nachtkastje doorzoeken"
+            },
+        }
+    },
+    ["house8"] = {
+        ["coords"] = {
+            ["x"] = 489.64, 
+            ["y"] = -1714.1, 
+            ["z"] = 29.7, 
+            ["h"] = 49.5
+        },
+        ["opened"] = false,
+        ["tier"] = 1,
+        ["furniture"] = {
+            [1] = {
+                ["type"] = "cabin",
+                ["coords"] = {
+                    ["x"] = 3.1,
+                    ["y"] = -4.3,
+                    ["z"] = 2.5,
+                },
+                ["searched"] = false,
+                ["text"] = "Kastje doorzoeken"
+            },
+            [2] = {
+                ["type"] = "cabin",
+                ["coords"] = {
+                    ["x"] = -3.5,
+                    ["y"] = -6.3,
+                    ["z"] = 2.5,
+                },
+                ["searched"] = false,
+                ["text"] = "Kastje doorzoeken"
+            },
+            [3] = {
+                ["type"] = "kitchen",
+                ["coords"] = {
+                    ["x"] = 0.9,
+                    ["y"] = -6.3,
+                    ["z"] = 2.5,
+                },
+                ["searched"] = false,
+                ["text"] = "Keuken kastjes doorzoeken"
+            },
+            [4] = {
+                ["type"] = "chest",
+                ["coords"] = {
+                    ["x"] = 9.3,
+                    ["y"] = -1.3,
+                    ["z"] = 2.0,
+                },
+                ["searched"] = false,
+                ["text"] = "Kist doorzoeken"
+            },
+            [5] = {
+                ["type"] = "cabin",
+                ["coords"] = {
+                    ["x"] = 5.85,
+                    ["y"] = 2.6,
+                    ["z"] = 2.0,
+                },
+                ["searched"] = false,
+                ["text"] = "Nachtkastje doorzoeken"
+            },
+        }
+    },
+    ["house9"] = {
+        ["coords"] = {
+            ["x"] = 1312.14, 
+            ["y"] = -1697.35, 
+            ["z"] = 58.22, 
+            ["h"] = 11.5
+        },
+        ["opened"] = false,
+        ["tier"] = 1,
+        ["furniture"] = {
+            [1] = {
+                ["type"] = "cabin",
+                ["coords"] = {
+                    ["x"] = 3.1,
+                    ["y"] = -4.3,
+                    ["z"] = 2.5,
+                },
+                ["searched"] = false,
+                ["text"] = "Kastje doorzoeken"
+            },
+            [2] = {
+                ["type"] = "cabin",
+                ["coords"] = {
+                    ["x"] = -3.5,
+                    ["y"] = -6.3,
+                    ["z"] = 2.5,
+                },
+                ["searched"] = false,
+                ["text"] = "Kastje doorzoeken"
+            },
+            [3] = {
+                ["type"] = "kitchen",
+                ["coords"] = {
+                    ["x"] = 0.9,
+                    ["y"] = -6.3,
+                    ["z"] = 2.5,
+                },
+                ["searched"] = false,
+                ["text"] = "Keuken kastjes doorzoeken"
+            },
+            [4] = {
+                ["type"] = "chest",
+                ["coords"] = {
+                    ["x"] = 9.3,
+                    ["y"] = -1.3,
+                    ["z"] = 2.0,
+                },
+                ["searched"] = false,
+                ["text"] = "Kist doorzoeken"
+            },
+            [5] = {
+                ["type"] = "cabin",
+                ["coords"] = {
+                    ["x"] = 5.85,
+                    ["y"] = 2.6,
+                    ["z"] = 2.0,
+                },
+                ["searched"] = false,
+                ["text"] = "Nachtkastje doorzoeken"
+            },
+        }
+    },
+    ["house10"] = {
+        ["coords"] = {
+            ["x"] = 1379.2, 
+            ["y"] = -1514.89, 
+            ["z"] = 58.43, 
+            ["h"] = 30.5
+        },
+        ["opened"] = false,
+        ["tier"] = 1,
+        ["furniture"] = {
+            [1] = {
+                ["type"] = "cabin",
+                ["coords"] = {
+                    ["x"] = 3.1,
+                    ["y"] = -4.3,
+                    ["z"] = 2.5,
+                },
+                ["searched"] = false,
+                ["text"] = "Kastje doorzoeken"
+            },
+            [2] = {
+                ["type"] = "cabin",
+                ["coords"] = {
+                    ["x"] = -3.5,
+                    ["y"] = -6.3,
+                    ["z"] = 2.5,
+                },
+                ["searched"] = false,
+                ["text"] = "Kastje doorzoeken"
+            },
+            [3] = {
+                ["type"] = "kitchen",
+                ["coords"] = {
+                    ["x"] = 0.9,
+                    ["y"] = -6.3,
+                    ["z"] = 2.5,
+                },
+                ["searched"] = false,
+                ["text"] = "Keuken kastjes doorzoeken"
+            },
+            [4] = {
+                ["type"] = "chest",
+                ["coords"] = {
+                    ["x"] = 9.3,
+                    ["y"] = -1.3,
+                    ["z"] = 2.0,
+                },
+                ["searched"] = false,
+                ["text"] = "Kist doorzoeken"
+            },
+            [5] = {
+                ["type"] = "cabin",
+                ["coords"] = {
+                    ["x"] = 5.85,
+                    ["y"] = 2.6,
+                    ["z"] = 2.0,
+                },
+                ["searched"] = false,
+                ["text"] = "Nachtkastje doorzoeken"
+            },
+        }
     }
 }
 
