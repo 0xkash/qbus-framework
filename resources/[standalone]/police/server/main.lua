@@ -397,9 +397,22 @@ RegisterServerEvent('police:server:showFingerprint')
 AddEventHandler('police:server:showFingerprint', function(playerId)
     local src = source
     local Player = QBCore.Functions.GetPlayer(playerId)
-    if Player ~= nil then 
-        TriggerClientEvent('chatMessage', source, "SYSTEM", false, "Vingerpatroon: " .. Player.PlayerData.metadata["fingerprint"])
-    end
+    -- if Player ~= nil then 
+    --     TriggerClientEvent('chatMessage', source, "SYSTEM", false, "Vingerpatroon: " .. Player.PlayerData.metadata["fingerprint"])
+    -- end
+
+    TriggerClientEvent('police:client:showFingerprint', playerId, src)
+    TriggerClientEvent('police:client:showFingerprint', src, playerId)
+end)
+
+RegisterServerEvent('police:server:showFingerprintId')
+AddEventHandler('police:server:showFingerprintId', function(sessionId)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(sessionId)
+    local fid = Player.PlayerData.metadata["fingerprint"]
+
+    TriggerClientEvent('police:client:showFingerprintId', sessionId, fid)
+    TriggerClientEvent('police:client:showFingerprintId', src, fid)
 end)
 
 QBCore.Functions.CreateCallback('police:server:isPlayerDead', function(source, cb, playerId)

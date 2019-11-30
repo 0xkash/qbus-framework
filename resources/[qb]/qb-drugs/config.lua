@@ -33,6 +33,15 @@ Config.Dealers = {
                 slot = 1,
                 minrep = 0,
             },
+            [2] = {
+                name = "weapon_snspistol",
+                price = 3500,
+                amount = 2,
+                info = {},
+                type = "item",
+                slot = 2,
+                minrep = 200,
+            },
         }
     },
     [2] = {
@@ -55,6 +64,15 @@ Config.Dealers = {
                 type = "item",
                 slot = 1,
                 minrep = 0,
+            },
+            [2] = {
+                name = "weapon_snspistol",
+                price = 3500,
+                amount = 2,
+                info = {},
+                type = "item",
+                slot = 2,
+                minrep = 200,
             },
         }
     },
@@ -79,6 +97,15 @@ Config.Dealers = {
                 slot = 1,
                 minrep = 0,
             },
+            [2] = {
+                name = "weapon_snspistol",
+                price = 3500,
+                amount = 2,
+                info = {},
+                type = "item",
+                slot = 2,
+                minrep = 200,
+            },
         }
     },
     [4] = {
@@ -101,6 +128,15 @@ Config.Dealers = {
                 type = "item",
                 slot = 1,
                 minrep = 0,
+            },
+            [2] = {
+                name = "weapon_snspistol",
+                price = 3500,
+                amount = 2,
+                info = {},
+                type = "item",
+                slot = 2,
+                minrep = 200,
             },
         }
     },
@@ -125,6 +161,15 @@ Config.Dealers = {
                 slot = 1,
                 minrep = 0,
             },
+            [2] = {
+                name = "weapon_snspistol",
+                price = 3500,
+                amount = 2,
+                info = {},
+                type = "item",
+                slot = 2,
+                minrep = 200,
+            },
         }
     },
     [6] = {
@@ -147,6 +192,15 @@ Config.Dealers = {
                 type = "item",
                 slot = 1,
                 minrep = 0,
+            },
+            [2] = {
+                name = "weapon_snspistol",
+                price = 3500,
+                amount = 2,
+                info = {},
+                type = "item",
+                slot = 2,
+                minrep = 200,
             },
         }
     },

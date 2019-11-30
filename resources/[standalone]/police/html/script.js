@@ -59,8 +59,8 @@ const CameraApp = new Vue({
 });
 
 HeliCam = {}
-
 Databank = {}
+Fingerprint = {}
 
 HeliCam.Open = function(data) {
     $("#helicontainer").css("display", "block");
@@ -105,6 +105,24 @@ Databank.Close = function() {
     $.post("http://police/closeDatabank", JSON.stringify({}));
 }
 
+Fingerprint.Open = function() {
+    $(".fingerprint-container").fadeIn(150);
+    $(".fingerprint-id").html("Fingerprint ID<p>Geen resultaat</p>");
+}
+
+Fingerprint.Close = function() {
+    $(".fingerprint-container").fadeOut(150);
+    $.post('http://police/closeFingerprint');
+}
+
+Fingerprint.Update = function(data) {
+    $(".fingerprint-id").html("Fingerprint ID<p>"+data.fingerprintId+"</p>");
+}
+
+$(document).on('click', '.take-fingerprint', function(){
+    $.post('http://police/doFingerScan');
+})
+
 document.onreadystatechange = () => {
     if (document.readyState === "complete") {
         window.addEventListener('message', function(event) {
@@ -131,6 +149,12 @@ document.onreadystatechange = () => {
                 Databank.Open();
             } else if (event.data.type == "closedatabank") {
                 Databank.Close();
+            } else if (event.data.type == "fingerprintOpen") {
+                Fingerprint.Open();
+            } else if (event.data.type == "fingerprintClose") {
+                Fingerprint.Close();
+            } else if (event.data.type == "updateFingerprintId") {
+                Fingerprint.Update(event.data);
             }
         });
     };
@@ -140,6 +164,7 @@ $(document).on('keydown', function() {
     switch(event.keyCode) {
         case 27: // ESC
             Databank.Close();
+            Fingerprint.Close();
             break;
     }
 });

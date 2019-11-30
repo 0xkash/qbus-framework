@@ -95,30 +95,30 @@ AddEventHandler('qb-vehicleshop:client:spawnBoughtVehicle', function(vehicle)
     end, QB.SpawnPoint, true)
 end)
 
-Citizen.CreateThread(function()
-    Citizen.Wait(100)
-    while true do
-        local ped = GetPlayerPed(-1)
-        local pos = GetEntityCoords(ped)
+-- Citizen.CreateThread(function()
+--     Citizen.Wait(100)
+--     while true do
+--         local ped = GetPlayerPed(-1)
+--         local pos = GetEntityCoords(ped)
 
-        if isLoggedIn then
-            for k, v in pairs(QB.VehicleShops) do
-                local dist = GetDistanceBetweenCoords(pos, QB.VehicleShops[k].x, QB.VehicleShops[k].y, QB.VehicleShops[k].z)
-                if dist <= 15 then
-                    DrawMarker(2, QB.VehicleShops[k].x, QB.VehicleShops[k].y, QB.VehicleShops[k].z + 0.98, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
-                    if dist <= 1.5 then
-                        QBCore.Functions.DrawText3D(QB.VehicleShops[k].x, QB.VehicleShops[k].y, QB.VehicleShops[k].z + 1.3, '~g~E~w~ - Premium Deluxe Motorsports')
-                        if IsControlJustPressed(0, 51) then
-                            openVehicleShop(true)
-                        end
-                    end
-                end
-            end
-        end
+--         if isLoggedIn then
+--             for k, v in pairs(QB.VehicleShops) do
+--                 local dist = GetDistanceBetweenCoords(pos, QB.VehicleShops[k].x, QB.VehicleShops[k].y, QB.VehicleShops[k].z)
+--                 if dist <= 15 then
+--                     DrawMarker(2, QB.VehicleShops[k].x, QB.VehicleShops[k].y, QB.VehicleShops[k].z + 0.98, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
+--                     if dist <= 1.5 then
+--                         QBCore.Functions.DrawText3D(QB.VehicleShops[k].x, QB.VehicleShops[k].y, QB.VehicleShops[k].z + 1.3, '~g~E~w~ - Premium Deluxe Motorsports')
+--                         if IsControlJustPressed(0, 51) then
+--                             openVehicleShop(true)
+--                         end
+--                     end
+--                 end
+--             end
+--         end
 
-        Citizen.Wait(0)
-    end
-end)
+--         Citizen.Wait(0)
+--     end
+-- end)
 
 Citizen.CreateThread(function()
     for k, v in pairs(QB.VehicleShops) do

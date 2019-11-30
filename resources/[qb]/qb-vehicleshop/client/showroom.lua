@@ -531,9 +531,8 @@ end)
 
 RegisterNetEvent('qb-vehicleshop:client:setShowroomVehicle')
 AddEventHandler('qb-vehicleshop:client:setShowroomVehicle', function(showroomVehicle, k)
-    print(showroomVehicle)
-    if QB.ShowroomVehicles[ClosestVehicle].chosenVehicle ~= showroomVehicle then
-        QBCore.Functions.DeleteVehicle(GetClosestVehicle(QB.ShowroomVehicles[ClosestVehicle].coords.x, QB.ShowroomVehicles[ClosestVehicle].coords.y, QB.ShowroomVehicles[ClosestVehicle].coords.z, 1.0, 0, 70))
+    if QB.ShowroomVehicles[k].chosenVehicle ~= showroomVehicle then
+        QBCore.Functions.DeleteVehicle(GetClosestVehicle(QB.ShowroomVehicles[k].coords.x, QB.ShowroomVehicles[k].coords.y, QB.ShowroomVehicles[k].coords.z, 1.0, 0, 70))
         modelLoaded = false
         Wait(250)
         local model = GetHashKey(showroomVehicle)
@@ -541,17 +540,17 @@ AddEventHandler('qb-vehicleshop:client:setShowroomVehicle', function(showroomVeh
         while not HasModelLoaded(model) do
             Citizen.Wait(250)
         end
-        local veh = CreateVehicle(model, QB.ShowroomVehicles[ClosestVehicle].coords.x, QB.ShowroomVehicles[ClosestVehicle].coords.y, QB.ShowroomVehicles[ClosestVehicle].coords.z, false, false)
+        local veh = CreateVehicle(model, QB.ShowroomVehicles[k].coords.x, QB.ShowroomVehicles[k].coords.y, QB.ShowroomVehicles[k].coords.z, false, false)
         SetModelAsNoLongerNeeded(model)
         SetVehicleOnGroundProperly(veh)
         SetEntityInvincible(veh,true)
-        SetEntityHeading(veh, QB.ShowroomVehicles[ClosestVehicle].coords.h)
+        SetEntityHeading(veh, QB.ShowroomVehicles[k].coords.h)
         SetVehicleDoorsLocked(veh, 3)
 
         FreezeEntityPosition(veh, true)
         SetVehicleNumberPlateText(veh, k .. "CARSALE")
         modelLoaded = true
-        QB.ShowroomVehicles[ClosestVehicle].chosenVehicle = showroomVehicle
+        QB.ShowroomVehicles[k].chosenVehicle = showroomVehicle
     end
 end)
 

@@ -163,6 +163,40 @@ Citizen.CreateThread(function()
     end
 end)
 
+local inFingerprint = false
+local FingerPrintSessionId = nil
+
+RegisterNetEvent('police:client:showFingerprint')
+AddEventHandler('police:client:showFingerprint', function(playerId)
+    openFingerprintUI()
+    FingerPrintSessionId = playerId
+end)
+
+RegisterNetEvent('police:client:showFingerprintId')
+AddEventHandler('police:client:showFingerprintId', function(fid)
+    SendNUIMessage({
+        type = "updateFingerprintId",
+        fingerprintId = fid
+    })
+end)
+
+RegisterNUICallback('doFingerScan', function(data)
+    TriggerServerEvent('police:server:showFingerprintId', FingerPrintSessionId)
+end)
+
+function openFingerprintUI()
+    SendNUIMessage({
+        type = "fingerprintOpen"
+    })
+    inFingerprint = true
+    SetNuiFocus(true, true)
+end
+
+RegisterNUICallback('closeFingerprint', function()
+    SetNuiFocus(false, false)
+    inFingerprint = false
+end)
+
 RegisterNetEvent('police:client:SendEmergencyMessage')
 AddEventHandler('police:client:SendEmergencyMessage', function(message)
     local coords = GetEntityCoords(GetPlayerPed(-1))

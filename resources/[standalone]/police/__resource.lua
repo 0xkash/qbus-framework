@@ -27,6 +27,7 @@ files {
     "html/vue.min.js",
 	"html/script.js",
 	"html/tablet-frame.png",
+	"html/fingerprint.png",
 	"html/main.css",
 	"html/vcr-ocd.ttf",
 }

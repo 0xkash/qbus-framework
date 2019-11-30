@@ -6,14 +6,24 @@ TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 RegisterServerEvent('qb-cityhall:server:requestId')
 AddEventHandler('qb-cityhall:server:requestId', function(identityData)
     local src = source
-    local ply = QBCore.Functions.GetPlayer(src)
+    local Player = QBCore.Functions.GetPlayer(src)
 
     local licenses = {
         ["driver"] = true,
         ["business"] = false
     }
 
-    ply.Functions.AddItem(identityData.item, 1)
+    local info = {}
+    if identityData.item == "id_card" then
+        info.citizenid = Player.PlayerData.citizenid
+        info.firstname = Player.PlayerData.charinfo.firstname
+        info.lastname = Player.PlayerData.charinfo.lastname
+        info.birthdate = Player.PlayerData.charinfo.birthdate
+        info.gender = Player.PlayerData.charinfo.gender
+        info.nationality = Player.PlayerData.charinfo.nationality
+    end
+
+    Player.Functions.AddItem(identityData.item, 1, nil, info)
 
     TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[identityData.item], 'add')
 end)
