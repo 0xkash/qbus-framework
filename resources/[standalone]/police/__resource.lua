@@ -13,6 +13,7 @@ client_scripts {
 	'client/anpr.lua',
 	'client/evidence.lua',
 	'client/objects.lua',
+	'client/tracker.lua',
 }
 
 server_scripts {

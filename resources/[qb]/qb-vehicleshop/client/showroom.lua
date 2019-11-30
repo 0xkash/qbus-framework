@@ -32,34 +32,8 @@ vehshop = {
 		["vehicles"] = {
 			title = "VEHICLES",
 			name = "vehicles",
-			buttons = {
-				{name = "Coupes", description = ''},
-				{name = "Sedans", description = ''},
-				{name = "Super", description = ''},
-				{name = "Sports", description = ''},
-				{name = "Motoren", description = ""},
-			}
-		},
-		["coupes"] = {
-			title = "coupes",
-			name = "coupes",
 			buttons = {}
-		},
-		["sedans"] = {
-			title = "sedans",
-			name = "sedans",
-			buttons = {}
-		},
-		["super"] = {
-			title = "super",
-			name = "super",
-			buttons = {}
-		},
-		["sports"] = {
-			title = "sports",
-			name = "sports",
-			buttons = {}
-		},		
+		},	
 	}
 }
 
@@ -67,39 +41,30 @@ vehshop = {
 Citizen.CreateThread(function()
     Citizen.Wait(1500)
 
-    for i = 1, #shopVehicles["coupes"], 1 do
-        table.insert(vehshop.menu["coupes"].buttons, {
-            name = shopVehicles["coupes"][i]["name"],
-            costs = shopVehicles["coupes"][i]["price"],
-            description = {},
-            model = shopVehicles["coupes"][i]["model"]
+    for k, v in pairs(vehicleCategorys) do
+        table.insert(vehshop.menu["vehicles"].buttons, {
+            menu = k,
+            name = v.label,
+            description = {}
         })
-    end
-    for i = 1, #shopVehicles["sedans"], 1 do
-        table.insert(vehshop.menu["sedans"].buttons, {
-            name = shopVehicles["sedans"][i]["name"],
-            costs = shopVehicles["sedans"][i]["price"],
-            description = {},
-            model = shopVehicles["sedans"][i]["model"]
-        })
-    end
-    for i = 1, #shopVehicles["super"], 1 do
-        table.insert(vehshop.menu["super"].buttons, {
-            name = shopVehicles["super"][i]["name"],
-            costs = shopVehicles["super"][i]["price"],
-            description = {},
-            model = shopVehicles["super"][i]["model"]
-        })
-    end
-    for i = 1, #shopVehicles["sports"], 1 do
-        table.insert(vehshop.menu["sports"].buttons, {
-            name = shopVehicles["sports"][i]["name"],
-            costs = shopVehicles["sports"][i]["price"],
-            description = {},
-            model = shopVehicles["sports"][i]["model"]
-        })
+
+        vehshop.menu[k] = {
+            title = k,
+            name = k,
+            buttons = v.vehicles
+        }
     end
 end)
+
+function isValidMenu(menu)
+    local retval = false
+    for k, v in pairs(vehshop.menu["vehicles"].buttons) do
+        if menu == v.menu then
+            retval = true
+        end
+    end
+    return retval
+end
 
 function drawMenuButton(button,x,y,selected)
 	local menu = vehshop.menu
@@ -206,6 +171,8 @@ function ButtonSelected(button)
 			OpenMenu('offroad')
 		elseif btn == "SUVs" then
 			OpenMenu('suvs')
+		elseif btn == "Motoren" then
+			OpenMenu('motorcycles')
 		elseif btn == "Vans" then
 			OpenMenu('vans')
 		end
@@ -231,7 +198,7 @@ function Back()
 	backlock = true
 	if vehshop.currentmenu == "main" then
 		CloseCreator()
-	elseif vehshop.currentmenu == "coupes" or vehshop.currentmenu == "sedans" or vehshop.currentmenu == "super" or vehshop.currentmenu == "sports" then
+	elseif isValidMenu(vehshop.currentmenu) then
 		if DoesEntityExist(fakecar.car) then
 			Citizen.InvokeNative(0xEA386986E786A54F, Citizen.PointerValueIntInitialized(fakecar.car))
 		end
@@ -432,17 +399,18 @@ Citizen.CreateThread(function()
                                     selected = false
                                 end
                                 drawMenuButton(button,vehshop.menu.x,y,selected)
-                                if button.costs ~= nil then
+                                if button.price ~= nil then
 
-                                    drawMenuRight("€"..button.costs,vehshop.menu.x,y,selected)
+                                    drawMenuRight("€"..button.price,vehshop.menu.x,y,selected)
 
                                 end
                                 y = y + 0.04
-                                if vehshop.currentmenu == "coupes" or vehshop.currentmenu == "sedans" or vehshop.currentmenu == "super" or vehshop.currentmenu == "sports" then
+                                if isValidMenu(vehshop.currentmenu) then
                                     if selected then
                                         if IsControlJustPressed(1, 18) then
                                             if modelLoaded then
                                                 TriggerServerEvent('qb-vehicleshop:server:setShowroomVehicle', button.model, ClosestVehicle)
+                                                print('nee')
                                             end
                                         end
                                     end

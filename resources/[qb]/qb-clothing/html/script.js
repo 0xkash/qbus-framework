@@ -5,6 +5,8 @@ var lastCategory = "character"
 
 var selectedCam = null;
 
+var hasTracker = false;
+
 var clothingCategorys = ["arms", "t-shirt", "torso2", "pants", "shoes", "eyebrows", "face"]
 
 $(document).on('click', '.clothing-menu-header-btn', function(e){
@@ -30,39 +32,54 @@ $(document).on('click', '.clothing-menu-option-item-right', function(e){
     var inputVal = $(inputElem).val();
     var newValue = parseFloat(inputVal) + 1;
 
-    if (clothingCategory == "model") {
-        $(inputElem).val(newValue);
-        $.post('http://qb-clothing/setCurrentPed', JSON.stringify({ped: newValue}), function(model){
-            $("#current-model").html("<p>"+model+"</p>")
-        });
-        QBClothing.ResetValues()
-    } else if (clothingCategory == "hair") {
-        $(inputElem).val(newValue);
-        $.post('http://qb-clothing/updateSkin', JSON.stringify({
-            clothingType: clothingCategory,
-            articleNumber: newValue,
-            type: buttonType,
-        }));
+
+    if (hasTracker && clothingCategory == "accessory") {
+        $.post('http://qb-clothing/TrackerError');
+        return
     } else {
-        if (buttonType == "item") {
-            var buttonMax = $(this).parent().find('[data-headertype="item-header"]').data('maxItem');
-            if (newValue <= parseInt(buttonMax)) {
-                $(inputElem).val(newValue);
-                $.post('http://qb-clothing/updateSkin', JSON.stringify({
-                    clothingType: clothingCategory,
-                    articleNumber: newValue,
-                    type: buttonType,
-                }));
-            }
+        if (clothingCategory == "model") {
+            $(inputElem).val(newValue);
+            $.post('http://qb-clothing/setCurrentPed', JSON.stringify({ped: newValue}), function(model){
+                $("#current-model").html("<p>"+model+"</p>")
+            });
+            QBClothing.ResetValues()
+        } else if (clothingCategory == "hair") {
+            $(inputElem).val(newValue);
+            $.post('http://qb-clothing/updateSkin', JSON.stringify({
+                clothingType: clothingCategory,
+                articleNumber: newValue,
+                type: buttonType,
+            }));
         } else {
-            var buttonMax = $(this).parent().find('[data-headertype="texture-header"]').data('maxTexture');
-            if (newValue <= parseInt(buttonMax)) {
-                $(inputElem).val(newValue);
-                $.post('http://qb-clothing/updateSkin', JSON.stringify({
-                    clothingType: clothingCategory,
-                    articleNumber: newValue,
-                    type: buttonType,
-                }));
+            if (buttonType == "item") {
+                var buttonMax = $(this).parent().find('[data-headertype="item-header"]').data('maxItem');
+                if (clothingCategory == "accessory" && newValue == 13) {
+                    $(inputElem).val(14);
+                    $.post('http://qb-clothing/updateSkin', JSON.stringify({
+                        clothingType: clothingCategory,
+                        articleNumber: 14,
+                        type: buttonType,
+                    }));
+                } else {
+                    if (newValue <= parseInt(buttonMax)) {
+                        $(inputElem).val(newValue);
+                        $.post('http://qb-clothing/updateSkin', JSON.stringify({
+                            clothingType: clothingCategory,
+                            articleNumber: newValue,
+                            type: buttonType,
+                        }));
+                    }
+                }
+            } else {
+                var buttonMax = $(this).parent().find('[data-headertype="texture-header"]').data('maxTexture');
+                if (newValue <= parseInt(buttonMax)) {
+                    $(inputElem).val(newValue);
+                    $.post('http://qb-clothing/updateSkin', JSON.stringify({
+                        clothingType: clothingCategory,
+                        articleNumber: newValue,
+                        type: buttonType,
+                    }));
+                }
             }
         }
     }
@@ -77,37 +94,87 @@ $(document).on('click', '.clothing-menu-option-item-left', function(e){
     var inputVal = $(inputElem).val();
     var newValue = parseFloat(inputVal) - 1;
 
-    if (clothingCategory == "model") {
-        if (newValue != 0) {
-            $(inputElem).val(newValue);
-            $.post('http://qb-clothing/setCurrentPed', JSON.stringify({ped: newValue}), function(model){
-                $("#current-model").html("<p>"+model+"</p>")
-            });
-            QBClothing.ResetValues();
-        }
+    if (hasTracker && clothingCategory == "accessory") {
+        $.post('http://qb-clothing/TrackerError');
+        return
     } else {
-        if (newValue != -2) {
-            $(inputElem).val(newValue);
-            $.post('http://qb-clothing/updateSkin', JSON.stringify({
-                clothingType: clothingCategory,
-                articleNumber: newValue,
-                type: buttonType,
-            }));
+        if (clothingCategory == "model") {
+            if (newValue != 0) {
+                $(inputElem).val(newValue);
+                $.post('http://qb-clothing/setCurrentPed', JSON.stringify({ped: newValue}), function(model){
+                    $("#current-model").html("<p>"+model+"</p>")
+                });
+                QBClothing.ResetValues();
+            }
+        } else {
+            if (newValue != -2) {
+                if (clothingCategory == "accessory" && newValue == 13) {
+                    $(inputElem).val(12);
+                    $.post('http://qb-clothing/updateSkin', JSON.stringify({
+                        clothingType: clothingCategory,
+                        articleNumber: 12,
+                        type: buttonType,
+                    }));
+                } else {
+                    $(inputElem).val(newValue);
+                    $.post('http://qb-clothing/updateSkin', JSON.stringify({
+                        clothingType: clothingCategory,
+                        articleNumber: newValue,
+                        type: buttonType,
+                    }));
+                }
+            }
         }
     }
     $.post('http://qb-clothing/PlaySound');
 });
+
+var changingCat = null;
+
+function ChangeUp() {
+    var clothingCategory = $(changingCat).parent().parent().data('type');
+    var buttonType = $(changingCat).data('type');
+    var inputVal = parseFloat($(changingCat).val());
+
+    if (clothingCategory == "accessory" && inputVal + 1 == 13) {
+        $(changingCat).val(14 - 1)
+    }
+}
+
+function ChangeDown() {
+    var clothingCategory = $(changingCat).parent().parent().data('type');
+    var buttonType = $(changingCat).data('type');
+    var inputVal = parseFloat($(changingCat).val());
+
+
+    if (clothingCategory == "accessory" && inputVal - 1 == 13) {
+        $(changingCat).val(12 + 1)
+    }
+}
 
 $(document).on('change', '.item-number', function(){
     var clothingCategory = $(this).parent().parent().data('type');
     var buttonType = $(this).data('type');
     var inputVal = $(this).val();
 
-    $.post('http://qb-clothing/updateSkinOnInput', JSON.stringify({
-        clothingType: clothingCategory,
-        articleNumber: parseFloat(inputVal),
-        type: buttonType,
-    }));
+    changingCat = this;
+
+    if (hasTracker && clothingCategory == "accessory") {
+        $.post('http://qb-clothing/TrackerError');
+        $(this).val(13);
+        return
+    } else {
+        if (clothingCategory == "accessory" && inputVal == 13) {
+            $(this).val(12);
+            return
+        } else {
+            $.post('http://qb-clothing/updateSkinOnInput', JSON.stringify({
+                clothingType: clothingCategory,
+                articleNumber: parseFloat(inputVal),
+                type: buttonType,
+            }));
+        }
+    }
 });
 
 $(document).on('click', '.clothing-menu-header-camera-btn', function(e){
@@ -149,6 +216,12 @@ $(document).on('keydown', function() {
             break;
         case 65: // A
             $.post('http://qb-clothing/rotateLeft');
+            break;
+        case 38: // UP
+            ChangeUp();
+            break;
+        case 40: // DOWN
+            ChangeDown();
             break;
     }
 });
@@ -211,6 +284,13 @@ QBClothing.SetCurrentValues = function(clothingValues) {
 }
 
 QBClothing.Open = function(data) {
+
+    if (data.hasTracker) {
+        hasTracker = true;
+    } else {
+        hasTracker = false;
+    }
+
     $(".clothing-menu-roomOutfits-container").css("display", "none");
     $(".clothing-menu-myOutfits-container").css("display", "none");
     $(".clothing-menu-character-container").css("display", "none");

@@ -63,14 +63,6 @@ Config.MenuItems = {
                         shouldClose = true,
                     },
                     {
-                        id    = 'escort',
-                        title = 'Escorteren',
-                        icon = '#general',
-                        type = 'client',
-                        event = 'police:client:EscortPlayer',
-                        shouldClose = true,
-                    },
-                    {
                         id    = 'playerinvehicle',
                         title = 'Zet in voertuig',
                         icon = '#general',
@@ -84,6 +76,14 @@ Config.MenuItems = {
                         icon = '#general',
                         type = 'client',
                         event = 'police:client:RobPlayer',
+                        shouldClose = true,
+                    },
+                    {
+                        id    = 'escort',
+                        title = 'Kidnappen',
+                        icon = '#general',
+                        type = 'client',
+                        event = 'police:client:KidnapPlayer',
                         shouldClose = true,
                     },
                 }
@@ -340,6 +340,14 @@ Config.JobInteractions = {
             icon = '#general',
             type = 'client',
             event = 'police:client:CheckStatus',
+            shouldClose = true,
+        },
+        {
+            id    = 'escort',
+            title = 'Escorteren',
+            icon = '#general',
+            type = 'client',
+            event = 'police:client:EscortPlayer',
             shouldClose = true,
         },
         {

@@ -22,6 +22,7 @@ AddEventHandler('police:server:CuffPlayer', function(playerId, isSoftcuff)
                     target = CuffedPlayer.PlayerData.citizenid,
                     cuffer = Player.PlayerData.citizenid
                 })
+                print('cuff')
             else
                 for k, v in pairs(cuffedPlayers) do
                     if cuffedPlayers[k].target == CuffedPlayer.PlayerData.citizenid and cuffedPlayers[k].cuffer == Player.PlayerData.citizenid then
@@ -47,6 +48,21 @@ AddEventHandler('police:server:EscortPlayer', function(playerId)
     if EscortPlayer ~= nil then
         if EscortPlayer.PlayerData.metadata["ishandcuffed"] or EscortPlayer.PlayerData.metadata["isdead"] then
             TriggerClientEvent("police:client:GetEscorted", EscortPlayer.PlayerData.source, Player.PlayerData.source)
+        else
+            TriggerClientEvent('chatMessage', src, "SYSTEM", "error", "Persoon is niet dood of geboeid!")
+        end
+    end
+end)
+
+RegisterServerEvent('police:server:KidnapPlayer')
+AddEventHandler('police:server:KidnapPlayer', function(playerId)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(source)
+    local EscortPlayer = QBCore.Functions.GetPlayer(playerId)
+    if EscortPlayer ~= nil then
+        if EscortPlayer.PlayerData.metadata["ishandcuffed"] or EscortPlayer.PlayerData.metadata["isdead"] then
+            TriggerClientEvent("police:client:GetKidnappedTarget", EscortPlayer.PlayerData.source, Player.PlayerData.source)
+            TriggerClientEvent("police:client:GetKidnappedDragger", Player.PlayerData.source, EscortPlayer.PlayerData.source)
         else
             TriggerClientEvent('chatMessage', src, "SYSTEM", "error", "Persoon is niet dood of geboeid!")
         end
@@ -397,9 +413,6 @@ RegisterServerEvent('police:server:showFingerprint')
 AddEventHandler('police:server:showFingerprint', function(playerId)
     local src = source
     local Player = QBCore.Functions.GetPlayer(playerId)
-    -- if Player ~= nil then 
-    --     TriggerClientEvent('chatMessage', source, "SYSTEM", false, "Vingerpatroon: " .. Player.PlayerData.metadata["fingerprint"])
-    -- end
 
     TriggerClientEvent('police:client:showFingerprint', playerId, src)
     TriggerClientEvent('police:client:showFingerprint', src, playerId)
@@ -415,9 +428,44 @@ AddEventHandler('police:server:showFingerprintId', function(sessionId)
     TriggerClientEvent('police:client:showFingerprintId', src, fid)
 end)
 
+RegisterServerEvent('police:server:SetTracker')
+AddEventHandler('police:server:SetTracker', function(targetId)
+    local Target = QBCore.Functions.GetPlayer(targetId)
+    local TrackerMeta = Target.PlayerData.metadata["tracker"]
+
+    if TrackerMeta then
+        Target.Functions.SetMetaData("tracker", false)
+        TriggerClientEvent('QBCore:Notify', targetId, 'Je enkelband is afgedaan.', 'error', 5000)
+        TriggerClientEvent('QBCore:Notify', source, 'Je hebt een enkelband afgedaan van '..Target.PlayerData.charinfo.firstname.." "..Target.PlayerData.charinfo.lastname, 'error', 5000)
+        TriggerClientEvent('police:client:SetTracker', targetId, false)
+    else
+        Target.Functions.SetMetaData("tracker", true)
+        TriggerClientEvent('QBCore:Notify', targetId, 'Je hebt een enkelband omgekregen.', 'error', 5000)
+        TriggerClientEvent('QBCore:Notify', source, 'Je hebt een enkelband omgedaan bij '..Target.PlayerData.charinfo.firstname.." "..Target.PlayerData.charinfo.lastname, 'error', 5000)
+        TriggerClientEvent('police:client:SetTracker', targetId, true)
+    end
+end)
+
+RegisterServerEvent('police:server:SendTrackerLocation')
+AddEventHandler('police:server:SendTrackerLocation', function(coords, requestId)
+    local Target = QBCore.Functions.GetPlayer(source)
+    local players = QBCore.Functions.GetPlayers()
+    local TrackerMeta = Target.PlayerData.metadata["tracker"]
+
+    local msg = "De locatie van "..Target.PlayerData.charinfo.firstname.." "..Target.PlayerData.charinfo.lastname.." staat aangegeven op uw kaart."
+
+    local alertData = {
+        title = "Enkelband Locatie",
+        coords = {x = coords.x, y = coords.y, z = coords.z},
+        description = msg
+    }
+
+    TriggerClientEvent("police:client:TrackerMessage", requestId, msg, coords)
+    TriggerClientEvent("qb-phone:client:addPoliceAlert", requestId, alertData)
+end)
+
 QBCore.Functions.CreateCallback('police:server:isPlayerDead', function(source, cb, playerId)
     local Player = QBCore.Functions.GetPlayer(playerId)
-    print(Player.PlayerData.metadata["isdead"])
     cb(Player.PlayerData.metadata["isdead"])
 end)
 
@@ -815,4 +863,33 @@ QBCore.Commands.Add("112r", "Stuur een bericht terug naar een melding", {{name="
     TriggerClientEvent('chatMessage', OtherPlayer.PlayerData.source, "(POLITIE) " ..Player.PlayerData.charinfo.firstname .. " " .. Player.PlayerData.charinfo.lastname, "error", message)
     TriggerClientEvent("police:client:EmergencySound", OtherPlayer.PlayerData.source)
     TriggerClientEvent("police:client:CallAnim", OtherPlayer.PlayerData.source)
+end)
+
+QBCore.Commands.Add("enkelband", "Doe een enkelband om bij het dichtsbijzijnde persoon.", {}, false, function(source, args)
+    local Player = QBCore.Functions.GetPlayer(source)
+
+    if Player.PlayerData.job.name == "police" then
+        TriggerClientEvent("police:client:CheckDistance", source)
+    else
+        TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Dit command is voor hulpdiensten!")
+    end
+end)
+
+QBCore.Commands.Add("enkelbandlocatie", "Haal locatie van persoon met enkelband", {{"bsn", "BSN van persoon"}}, true, function(source, args)
+    local Player = QBCore.Functions.GetPlayer(source)
+    
+    if Player.PlayerData.job.name == "police" then
+        if args[1] ~= nil then
+            local citizenid = args[1]
+            local Target = QBCore.Functions.GetPlayerByCitizenId(citizenid)
+
+            if Target.PlayerData.metadata["tracker"] then
+                TriggerClientEvent("police:client:SendTrackerLocation", Target.PlayerData.source, source)
+            else
+                TriggerClientEvent('QBCore:Notify', source, 'Dit persoon heeft geen enkelband.', 'error')
+            end
+        end
+    else
+        TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Dit command is voor hulpdiensten!")
+    end
 end)

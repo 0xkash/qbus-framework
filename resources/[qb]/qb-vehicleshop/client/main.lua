@@ -26,18 +26,27 @@ end)
 
 local inVehicleShop = false
 
-shopVehicles = {
-    ["coupes"] = {},
-    ["sedans"] = {},
-    ["super"] = {},
-    ["sports"] = {},
-}
-
 vehicleCategorys = {
-    "coupes",
-    "sedans",
-    "super",
-    "sports",
+    ["coupes"] = {
+        label = "Coupes",
+        vehicles = {}
+    },
+    ["sedans"] = {
+        label = "Sedans",
+        vehicles = {}
+    },
+    ["super"] = {
+        label = "Super",
+        vehicles = {}
+    },
+    ["sports"] = {
+        label = "Sports",
+        vehicles = {}
+    },
+    ["motorcycles"] = {
+        label = "Motoren",
+        vehicles = {}
+    },
 }
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
@@ -48,9 +57,9 @@ end)
 Citizen.CreateThread(function()
     Citizen.Wait(1000)
     for k, v in pairs(QBCore.Shared.Vehicles) do
-        for _, category in pairs(vehicleCategorys) do
-            if QBCore.Shared.Vehicles[k]["category"] == category then
-                table.insert(shopVehicles[category], QBCore.Shared.Vehicles[k])
+        for cat,_ in pairs(vehicleCategorys) do
+            if QBCore.Shared.Vehicles[k]["category"] == cat then
+                table.insert(vehicleCategorys[cat].vehicles, QBCore.Shared.Vehicles[k])
             end
         end
     end

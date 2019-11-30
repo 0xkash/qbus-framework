@@ -455,11 +455,16 @@ function openMenu(allowedMenus)
     previousSkinData = json.encode(skinData)
     creatingCharacter = true
 
+    local PlayerData = QBCore.Functions.GetPlayerData()
+    local trackerMeta = PlayerData.metadata["tracker"]
+
+
     GetMaxValues()
     SendNUIMessage({
         action = "open",
         menus = allowedMenus,
-        currentClothing = skinData
+        currentClothing = skinData,
+        hasTracker = trackerMeta
     })
     SetNuiFocus(true, true)
     SetCursorLocation(0.9, 0.25)
@@ -468,6 +473,10 @@ function openMenu(allowedMenus)
 
     enableCam()
 end
+
+RegisterNUICallback('TrackerError', function()
+    TriggerEvent('chatMessage', "SYSTEM", "error", "Je kan je enkelband niet weghalen..")
+end)
 
 RegisterNUICallback('saveOutfit', function(data, cb)
     local ped = GetPlayerPed(-1)
@@ -964,7 +973,7 @@ AddEventHandler("qb-clothes:loadSkin", function(new, model, data)
 	local function setDefault()
 		Citizen.CreateThread(function()
             QBCore.Functions.GetPlayerData(function(PlayerData)
-                SetTimeout(1000, function()
+                SetTimeout(3000, function()
                     openMenu({
                         {menu = "character", label = "Karakter", selected = true},
                         {menu = "clothing", label = "Uiterlijk", selected = false},

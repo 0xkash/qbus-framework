@@ -178,6 +178,7 @@ AddEventHandler('police:client:showFingerprintId', function(fid)
         type = "updateFingerprintId",
         fingerprintId = fid
     })
+    PlaySound(-1, "Event_Start_Text", "GTAO_FM_Events_Soundset", 0, 0, 1)
 end)
 
 RegisterNUICallback('doFingerScan', function(data)

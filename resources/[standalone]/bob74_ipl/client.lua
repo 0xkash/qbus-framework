@@ -136,10 +136,5 @@ Citizen.CreateThread(function()
     -- =----------------------- [DLC: After Hours] -----------------------=
     -- ====================================================================
     AfterHoursNightclubs.LoadDefault()          -- -1604.664, -3012.583, -78.000
-
-    --pillbox
-    RequestIpl("rc12b_hospitalinterior")
-    RequestIpl("rc12b_destroyed")
-
 end)
 
