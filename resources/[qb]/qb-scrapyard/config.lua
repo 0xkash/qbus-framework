@@ -13,24 +13,14 @@ Config.Locations = {
     }
 }
 
-Config.Rewards = {
-    [1] = {
-        ["metalscrap"] = math.random(4, 30),
-        ["plastic"] = math.random(4, 30),
-        ["copper"] = math.random(4, 11),
-    },
-    [2] = {
-        ["metalscrap"] = math.random(10, 30),
-        ["plastic"] = math.random(1, 20),
-    },
-    [3] = {
-        ["plastic"] = math.random(5, 25),
-        ["copper"] = math.random(1, 15),
-    },
-    [4] = {
-        ["metalscrap"] = math.random(10, 35),
-        ["copper"] = math.random(1, 15),
-    },
+Config.Items = {
+    "metalscrap",
+    "plastic",
+    "copper",
+    "iron",
+    "aluminum",
+    "steel",
+    "glass",
 }
 
 Config.CurrentVehicles = {}

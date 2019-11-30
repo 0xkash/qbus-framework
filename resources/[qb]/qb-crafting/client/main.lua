@@ -10,6 +10,7 @@ Keys = {
 }
 
 QBCore = nil
+local itemInfos = {}
 
 Citizen.CreateThread(function()
 	while QBCore == nil do
@@ -49,7 +50,7 @@ Citizen.CreateThread(function()
 				if IsControlJustReleased(0, Keys["E"]) then
 					local crafting = {}
 					crafting.label = "Crafting"
-					crafting.items = Config.CraftingItems
+					crafting.items = GetThresholdItems()
 					TriggerServerEvent("inventory:server:OpenInventory", "crafting", math.random(1, 99), crafting)
 				end
 			end
@@ -61,14 +62,38 @@ Citizen.CreateThread(function()
 	end
 end)
 
+function GetThresholdItems()
+	local items = {}
+	for k, item in pairs(Config.CraftingItems) do
+		if QBCore.Functions.GetPlayerData().metadata["craftingrep"] >= Config.CraftingItems[k].threshold then
+			items[k] = Config.CraftingItems[k]
+		end
+	end
+	return items
+end
+
 function ItemsToItemInfo()
+	itemInfos = {
+		[1] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 22x, " ..QBCore.Shared.Items["plastic"]["label"] .. ": 32x."},
+		[2] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 30x, " ..QBCore.Shared.Items["plastic"]["label"] .. ": 42x."},
+		[3] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 30x, " ..QBCore.Shared.Items["plastic"]["label"] .. ": 45x, "..QBCore.Shared.Items["aluminum"]["label"] .. ": 28x."},
+		[4] = {costs = QBCore.Shared.Items["electronickit"]["label"] .. ": 2x, " ..QBCore.Shared.Items["plastic"]["label"] .. ": 52x, "..QBCore.Shared.Items["steel"]["label"] .. ": 40x."},
+		[5] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 10x, " ..QBCore.Shared.Items["plastic"]["label"] .. ": 50x, "..QBCore.Shared.Items["aluminum"]["label"] .. ": 30x, "..QBCore.Shared.Items["iron"]["label"] .. ": 17x, "..QBCore.Shared.Items["electronickit"]["label"] .. ": 1x."},
+		[6] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 36x, " ..QBCore.Shared.Items["steel"]["label"] .. ": 24x, "..QBCore.Shared.Items["aluminum"]["label"] .. ": 28x."},
+		[7] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 32x, " ..QBCore.Shared.Items["steel"]["label"] .. ": 43x, "..QBCore.Shared.Items["plastic"]["label"] .. ": 61x."},
+		[8] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 50x, " ..QBCore.Shared.Items["steel"]["label"] .. ": 37x, "..QBCore.Shared.Items["copper"]["label"] .. ": 26x."},
+		[9] = {costs = QBCore.Shared.Items["iron"]["label"] .. ": 60x, " ..QBCore.Shared.Items["glass"]["label"] .. ": 30x."},
+		[10] = {costs = QBCore.Shared.Items["aluminum"]["label"] .. ": 60x, " ..QBCore.Shared.Items["glass"]["label"] .. ": 30x."},
+		[11] = {costs = QBCore.Shared.Items["iron"]["label"] .. ": 33x, " ..QBCore.Shared.Items["steel"]["label"] .. ": 44x, "..QBCore.Shared.Items["plastic"]["label"] .. ": 55x, "..QBCore.Shared.Items["aluminum"]["label"] .. ": 22x."},
+	}
+
 	local items = {}
 	for k, item in pairs(Config.CraftingItems) do
 		local itemInfo = QBCore.Shared.Items[item.name:lower()]
 		items[item.slot] = {
 			name = itemInfo["name"],
 			amount = tonumber(item.amount),
-			info = info,
+			info = itemInfos[item.slot],
 			label = itemInfo["label"],
 			description = itemInfo["description"] ~= nil and itemInfo["description"] or "",
 			weight = itemInfo["weight"], 
@@ -78,6 +103,7 @@ function ItemsToItemInfo()
 			image = itemInfo["image"],
 			slot = item.slot,
 			costs = item.costs,
+			threshold = item.threshold,
 		}
 	end
 	Config.CraftingItems = items

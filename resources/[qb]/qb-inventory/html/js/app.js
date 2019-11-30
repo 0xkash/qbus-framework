@@ -114,6 +114,9 @@ $(document).on("contextmenu", ".item-slot", function(e){
             }else if (itemData.info.type == "fingerprint") {
                 $(".item-info-description").html('<p><strong>Bewijstuk: </strong><span>' + itemData.info.label + '</span></p><p><strong>Vingerpatroon: </strong><span>' + itemData.info.fingerprint + '</span></p><p><strong>Plaats delict: </strong><span>' + itemData.info.street + '</span></p><br /><p>' + itemData.description + '</p>');
             }
+        } else if (itemData.info.costs != undefined && itemData.info.costs != null) {
+            $(".item-info-title").html('<p>'+itemData.label+'</p>')
+            $(".item-info-description").html('<p>'+ itemData.info.costs + '</p>');
         } else if (itemData.name == "stickynote") {
             $(".item-info-title").html('<p>'+itemData.label+'</p>')
             $(".item-info-description").html('<p>'+ itemData.info.label + '</p>');

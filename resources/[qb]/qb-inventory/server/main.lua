@@ -37,6 +37,7 @@ AddEventHandler('inventory:server:CraftItems', function(itemName, itemCosts, amo
 			Player.Functions.RemoveItem(k, (v*amount))
 		end
 		Player.Functions.AddItem(itemName, amount, toSlot)
+		Player.Functions.SetMetaData("craftingrep", Player.PlayerData.metadata["craftingrep"]+1)
 		TriggerClientEvent("inventory:client:UpdatePlayerInventory", src, false)
 	end
 end)

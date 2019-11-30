@@ -14,10 +14,11 @@ AddEventHandler('qb-scrapyard:server:ScrapVehicle', function(listKey)
     local src = source 
     local Player = QBCore.Functions.GetPlayer(src)
     if Config.CurrentVehicles[listKey] ~= nil then 
-        local rewards = Config.Rewards[math.random(1, #Config.Rewards)]
-        for k, v in pairs(rewards) do
-            Player.Functions.AddItem(k, rewards[k])
-            TriggerClientEvent('QBCore:Notify', src, QBCore.Shared.Items[k]["label"] .. " ontvangen")
+        for i = 1, math.random(4, 8), 1 do
+            local item = Config.Items[math.random(1, #Config.Items)]
+            Player.Functions.AddItem(item, math.random(3, 18))
+            TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[item], 'add')
+            Citizen.Wait(500)
         end
         Config.CurrentVehicles[listKey] = nil
         TriggerClientEvent("qb-scapyard:client:setNewVehicles", -1, Config.CurrentVehicles)

@@ -12,6 +12,7 @@ Keys = {
 QBCore = nil
 local closestScrapyard = 0
 local emailSend = false
+local isBusy = false
 
 Citizen.CreateThread(function()
 	while QBCore == nil do
@@ -49,7 +50,7 @@ Citizen.CreateThread(function()
 					local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1), true)
 					if vehicle ~= 0 and vehicle ~= nil then 
 						local vehpos = GetEntityCoords(vehicle)
-						if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, vehpos.x, vehpos.y, vehpos.z, true) < 2.5 then
+						if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, vehpos.x, vehpos.y, vehpos.z, true) < 2.5 and not isBusy then
 							DrawText3Ds(vehpos.x, vehpos.y, vehpos.z, "~g~E~w~ - Voertuig uit elkaar halen")
 							if IsControlJustReleased(0, Keys["E"]) then
 								if IsVehicleValid(GetEntityModel(vehicle)) then 
@@ -104,7 +105,8 @@ function CreateListEmail()
 end
 
 function ScrapVehicle(vehicle)
-	local scrapTime = math.random(20000, 40000)
+	isBusy = true
+	local scrapTime = math.random(30000, 40000)
 	ScrapVehicleAnim(scrapTime)
 	QBCore.Functions.Progressbar("scrap_vehicle", "Voertuig slopen..", scrapTime, false, true, {
 		disableMovement = true,
@@ -115,8 +117,10 @@ function ScrapVehicle(vehicle)
 		StopAnimTask(GetPlayerPed(-1), "mp_car_bomb", "car_bomb_mechanic", 1.0)
 		TriggerServerEvent("qb-scrapyard:server:ScrapVehicle", GetVehicleKey(GetEntityModel(vehicle)))
 		DeleteVehicle(vehicle)
+		isBusy = false
 	end, function() -- Cancel
 		StopAnimTask(GetPlayerPed(-1), "mp_car_bomb", "car_bomb_mechanic", 1.0)
+		isBusy = false
 		QBCore.Functions.Notify("Geannuleerd..", "error")
 	end)
 end
@@ -164,7 +168,7 @@ function SetClosestScrapyard()
 end
 
 function ScrapVehicleAnim(time)
-    time = (time / 1000) * 2
+    time = (time / 1000)
     loadAnimDict("mp_car_bomb")
     TaskPlayAnim(GetPlayerPed(-1), "mp_car_bomb", "car_bomb_mechanic" ,3.0, 3.0, -1, 16, 0, false, false, false)
     openingDoor = true
@@ -172,7 +176,8 @@ function ScrapVehicleAnim(time)
         while openingDoor do
             TaskPlayAnim(PlayerPedId(), "mp_car_bomb", "car_bomb_mechanic", 3.0, 3.0, -1, 16, 0, 0, 0, 0)
             Citizen.Wait(2000)
-            time = time - 1
+			time = time - 2
+			print(time)
             if time <= 0 then
                 openingDoor = false
                 StopAnimTask(GetPlayerPed(-1), "mp_car_bomb", "car_bomb_mechanic", 1.0)
