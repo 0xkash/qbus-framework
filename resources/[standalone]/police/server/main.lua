@@ -211,16 +211,16 @@ end)
 RegisterServerEvent('police:server:SendEmergencyMessage')
 AddEventHandler('police:server:SendEmergencyMessage', function(coords, message)
     local src = source
-    local Player = QBCore.Functions.GetPlayer(src)
+    local MainPlayer = QBCore.Functions.GetPlayer(src)
     local players = QBCore.Functions.GetPlayers()
     local alertData = {
-        title = "112 Melding - "..Player.PlayerData.charinfo.firstname .. " " .. Player.PlayerData.charinfo.lastname .. " ("..src..")",
+        title = "112 Melding - "..MainPlayer.PlayerData.charinfo.firstname .. " " .. MainPlayer.PlayerData.charinfo.lastname .. " ("..src..")",
         coords = {x = coords.x, y = coords.y, z = coords.z},
         description = message,
     }
 	for k, Player in pairs(players) do
 		if ((Player.PlayerData.job.name == "police" or Player.PlayerData.job.name == "ambulance") and Player.PlayerData.job.onduty) then
-            TriggerClientEvent('chatMessage', k, Player.PlayerData.charinfo.firstname .. " " .. Player.PlayerData.charinfo.lastname .. " ("..src..")", "warning", message)
+            TriggerClientEvent('chatMessage', k, MainPlayer.PlayerData.charinfo.firstname .. " " .. MainPlayer.PlayerData.charinfo.lastname .. " ("..src..")", "warning", message)
             TriggerClientEvent("qb-phone:client:addPoliceAlert", k, alertData)
             TriggerClientEvent("police:client:EmergencySound", k)
 		end
@@ -257,11 +257,11 @@ AddEventHandler('police:server:UpdateBlips', function()
 end)
 
 RegisterServerEvent('police:server:spawnObject')
-AddEventHandler('police:server:spawnObject', function(object)
+AddEventHandler('police:server:spawnObject', function(type)
     local src = source
     local objectId = CreateObjectId()
-    Objects[objectId] = object
-    TriggerClientEvent("police:client:spawnObject", -1, objectId, object, src)
+    Objects[objectId] = type
+    TriggerClientEvent("police:client:spawnObject", -1, objectId, type, src)
 end)
 
 RegisterServerEvent('police:server:deleteObject')
@@ -413,6 +413,22 @@ AddEventHandler('police:server:showFingerprintId', function(sessionId)
 
     TriggerClientEvent('police:client:showFingerprintId', sessionId, fid)
     TriggerClientEvent('police:client:showFingerprintId', src, fid)
+end)
+
+RegisterServerEvent('police:server:SendPoliceEmergencyAlert')
+AddEventHandler('police:server:SendPoliceEmergencyAlert', function(streetLabel, coords, callsign)
+    local players = QBCore.Functions.GetPlayers()
+    local alertData = {
+        title = "Assistentie collega",
+        coords = {x = coords.x, y = coords.y, z = coords.z},
+        description = "Noodknop ingedrukt door ".. callsign .. " bij "..streetLabel,
+    }
+    for k, Player in pairs(players) do
+		if ((Player.PlayerData.job.name == "police" or Player.PlayerData.job.name == "ambulance") and Player.PlayerData.job.onduty) then
+            TriggerClientEvent("police:client:PoliceEmergencyAlert", k, callsign, streetLabel, coords)
+            TriggerClientEvent("qb-phone:client:addPoliceAlert", k, alertData)
+		end
+    end
 end)
 
 QBCore.Functions.CreateCallback('police:server:isPlayerDead', function(source, cb, playerId)
@@ -815,4 +831,11 @@ QBCore.Commands.Add("112r", "Stuur een bericht terug naar een melding", {{name="
     TriggerClientEvent('chatMessage', OtherPlayer.PlayerData.source, "(POLITIE) " ..Player.PlayerData.charinfo.firstname .. " " .. Player.PlayerData.charinfo.lastname, "error", message)
     TriggerClientEvent("police:client:EmergencySound", OtherPlayer.PlayerData.source)
     TriggerClientEvent("police:client:CallAnim", OtherPlayer.PlayerData.source)
+end)
+
+QBCore.Commands.Add("noodknop", "Stuur een bericht terug naar een melding", {}, false, function(source, args)
+    local Player = QBCore.Functions.GetPlayer(source)
+    if ((Player.PlayerData.job.name == "police" or Player.PlayerData.job.name == "ambulance") and Player.PlayerData.job.onduty) then
+        TriggerClientEvent("police:client:SendPoliceEmergencyAlert", source)
+    end
 end)

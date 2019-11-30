@@ -306,6 +306,14 @@ Config.JobInteractions = {
             event = 'hospital:client:TreatWounds',
             shouldClose = true,
         },
+        {
+            id    = 'emergencybutton2',
+            title = 'Noodknop',
+            icon = '#general',
+            type = 'client',
+            event = 'police:client:SendPoliceEmergencyAlert',
+            shouldClose = true,
+        },
     },
     ["taxi"] = {
         {
@@ -326,6 +334,14 @@ Config.JobInteractions = {
         },
     },
     ["police"] = {
+        {
+            id    = 'emergencybutton',
+            title = 'Noodknop',
+            icon = '#general',
+            type = 'client',
+            event = 'police:client:SendPoliceEmergencyAlert',
+            shouldClose = true,
+        },
         {
             id    = 'statuscheck',
             title = 'Onderzoek Persoon',
