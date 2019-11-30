@@ -17,6 +17,12 @@ AddEventHandler('inventory:server:LoadDrops', function()
 	end
 end)
 
+RegisterServerEvent("inventory:server:addTrunkItems")
+AddEventHandler('inventory:server:addTrunkItems', function(plate, items)
+	Trunks[plate] = {}
+	Trunks[plate].items = items
+end)
+
 RegisterServerEvent("inventory:server:combineItem")
 AddEventHandler('inventory:server:combineItem', function(item, fromItem, toItem)
 	local src = source

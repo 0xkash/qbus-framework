@@ -96,7 +96,7 @@ Config.Vehicles = {
     ["pschafter"] = "Unmarked Schafter",
     ["dsimerc"] = "Mercedes (DSI)",
     ["dsivito"] = "Mercedes Vito (DSI)",
-    ["dsivito"] = "Audi Q5 (DSI)",
+    ["dsiq5"] = "Audi Q5 (DSI)",
 }
 
 Config.AmmoLabels = {
@@ -120,6 +120,30 @@ Config.Radars = {
 	{x = 2118.287, y = 6040.027, z = 50.928, h = 172.0 },
 	{x = -106.304, y = -1127.5530, z = 30.778, h = 230.0 },
 	{x = -823.3688, y = -1146.980, z = 8.0, h = 300.0 },
+}
+
+Config.CarItems = {
+    [1] = {
+        name = "armor",
+        amount = 5,
+        info = {},
+        type = "item",
+        slot = 1,
+    },
+    [2] = {
+        name = "empty_evidence_bag",
+        amount = 10,
+        info = {},
+        type = "item",
+        slot = 2,
+    },
+    [3] = {
+        name = "police_stormram",
+        amount = 1,
+        info = {},
+        type = "item",
+        slot = 3,
+    },
 }
 
 Config.Items = {

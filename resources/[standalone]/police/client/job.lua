@@ -398,6 +398,7 @@ function TakeOutVehicle(vehicleInfo)
         closeMenuFull()
         TaskWarpPedIntoVehicle(GetPlayerPed(-1), veh, -1)
         TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
+        TriggerServerEvent("inventory:server:addTrunkItems", GetVehicleNumberPlateText(veh), Config.CarItems)
         SetVehicleEngineOn(veh, true, true)
     end, coords, true)
 end
@@ -460,6 +461,27 @@ function doCarDamage(currentVehicle, veh)
 	if body < 1000 then
 		SetVehicleBodyHealth(currentVehicle, 985.1)
 	end
+end
+
+function SetCarItemsInfo()
+	local items = {}
+	for k, item in pairs(Config.CarItems) do
+		local itemInfo = QBCore.Shared.Items[item.name:lower()]
+		items[item.slot] = {
+			name = itemInfo["name"],
+			amount = tonumber(item.amount),
+			info = item.info,
+			label = itemInfo["label"],
+			description = itemInfo["description"] ~= nil and itemInfo["description"] or "",
+			weight = itemInfo["weight"], 
+			type = itemInfo["type"], 
+			unique = itemInfo["unique"], 
+			useable = itemInfo["useable"], 
+			image = itemInfo["image"],
+			slot = item.slot,
+		}
+	end
+	Config.CarItems = items
 end
 
 function IsArmoryWhitelist()
