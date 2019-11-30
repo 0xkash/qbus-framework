@@ -23,13 +23,11 @@ databankOpen = false
 
 QBCore = nil
 Citizen.CreateThread(function() 
-    while true do
-        Citizen.Wait(10)
-        if QBCore == nil then
-            TriggerEvent("QBCore:GetObject", function(obj) QBCore = obj end)    
-            Citizen.Wait(200)
-        end
+    while QBCore == nil do
+        TriggerEvent("QBCore:GetObject", function(obj) QBCore = obj end)    
+        Citizen.Wait(200)
     end
+    SetCarItemsInfo()
 end)
 
 Citizen.CreateThread(function()
@@ -162,6 +160,52 @@ function CreateDutyBlips(playerId, playerLabel, playerJob)
 		table.insert(DutyBlips, blip)
 	end
 end
+
+RegisterNetEvent('police:client:SendPoliceEmergencyAlert')
+AddEventHandler('police:client:SendPoliceEmergencyAlert', function(callsign, streetLabel, coords)
+    local pos = GetEntityCoords(GetPlayerPed(-1))
+    local s1, s2 = Citizen.InvokeNative(0x2EB41072B4C1E4C0, pos.x, pos.y, pos.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
+    local street1 = GetStreetNameFromHashKey(s1)
+    local street2 = GetStreetNameFromHashKey(s2)
+    local streetLabel = street1
+    if street2 ~= nil then 
+        streetLabel = streetLabel .. " " .. street2
+    end
+    TriggerServerEvent("police:server:SendPoliceEmergencyAlert", streetLabel, pos, QBCore.Functions.GetPlayerData().metadata["callsign"])
+end)
+
+RegisterNetEvent('police:client:PoliceEmergencyAlert')
+AddEventHandler('police:client:PoliceEmergencyAlert', function(callsign, streetLabel, coords)
+    PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
+    Citizen.Wait(100)
+    PlaySoundFrontend( -1, "Beep_Red", "DLC_HEIST_HACKING_SNAKE_SOUNDS", 1 )
+    Citizen.Wait(100)
+    PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
+    Citizen.Wait(100)
+    PlaySoundFrontend( -1, "Beep_Red", "DLC_HEIST_HACKING_SNAKE_SOUNDS", 1 )
+    TriggerEvent("chatMessage", "MELDING", "error", "Assistentie collega, noodknop ingedrukt door ".. callsign .. " bij "..streetLabel)
+    local transG = 250
+    local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
+    SetBlipSprite(blip, 487)
+    SetBlipColour(blip, 4)
+    SetBlipDisplay(blip, 4)
+    SetBlipAlpha(blip, transG)
+    SetBlipScale(blip, 1.2)
+    SetBlipFlashes(blip, true)
+    BeginTextCommandSetBlipName('STRING')
+    AddTextComponentString("Assistentie Collega")
+    EndTextCommandSetBlipName(blip)
+    while transG ~= 0 do
+        Wait(180 * 4)
+        transG = transG - 1
+        SetBlipAlpha(blip, transG)
+        if transG == 0 then
+            SetBlipSprite(blip, 2)
+            RemoveBlip(blip)
+            return
+        end
+    end
+end)
 
 RegisterNetEvent('police:client:GunShotAlert')
 AddEventHandler('police:client:GunShotAlert', function(streetLabel, isAutomatic, fromVehicle, coords, vehicleInfo)

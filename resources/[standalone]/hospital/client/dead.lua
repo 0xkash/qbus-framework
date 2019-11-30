@@ -33,6 +33,7 @@ Citizen.CreateThread(function()
 			EnableControlAction(0, Keys['T'], true)
             EnableControlAction(0, Keys['E'], true)
             EnableControlAction(0, Keys['ESC'], true)
+            EnableControlAction(0, Keys['F1'], true)
 
             if not isInHospitalBed then 
                 if deathTime > 0 then
