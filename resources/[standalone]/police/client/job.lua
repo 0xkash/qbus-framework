@@ -135,6 +135,25 @@ Citizen.CreateThread(function()
                         end  
                     end
                 end
+
+                if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["fingerprint"].x, Config.Locations["fingerprint"].y, Config.Locations["fingerprint"].z, true) < 4.5) then
+                    if onDuty then
+                        if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["fingerprint"].x, Config.Locations["fingerprint"].y, Config.Locations["fingerprint"].z, true) < 1.5) then
+                            QBCore.Functions.DrawText3D(Config.Locations["fingerprint"].x, Config.Locations["fingerprint"].y, Config.Locations["fingerprint"].z, "~g~E~w~ - Scan vingerafdruk")
+                            if IsControlJustReleased(0, Keys["E"]) then
+                                local player, distance = GetClosestPlayer()
+                                if player ~= -1 and distance < 2.5 then
+                                    local playerId = GetPlayerServerId(player)
+                                    TriggerServerEvent("police:server:showFingerprint", playerId)
+                                else
+                                    QBCore.Functions.Notify("Niemand in de buurt!", "error")
+                                end
+                            end
+                        elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["fingerprint"].x, Config.Locations["fingerprint"].y, Config.Locations["fingerprint"].z, true) < 2.5) then
+                            QBCore.Functions.DrawText3D(Config.Locations["fingerprint"].x, Config.Locations["fingerprint"].y, Config.Locations["fingerprint"].z, "Vinger scan")
+                        end  
+                    end
+                end
             else
                 Citizen.Wait(2500)
             end
@@ -142,6 +161,37 @@ Citizen.CreateThread(function()
             Citizen.Wait(2000)
         end
     end
+end)
+
+RegisterNetEvent('police:client:SendEmergencyMessage')
+AddEventHandler('police:client:SendEmergencyMessage', function(message)
+    local coords = GetEntityCoords(GetPlayerPed(-1))
+    TriggerServerEvent("police:server:SendEmergencyMessage", coords, message)
+    TriggerEvent("police:client:CallAnim")
+end)
+
+RegisterNetEvent('police:client:EmergencySound')
+AddEventHandler('police:client:EmergencySound', function()
+    PlaySound(-1, "Event_Start_Text", "GTAO_FM_Events_Soundset", 0, 0, 1)
+end)
+
+RegisterNetEvent('police:client:CallAnim')
+AddEventHandler('police:client:CallAnim', function()
+    local isCalling = true
+    local callCount = 5
+    loadAnimDict("cellphone@")   
+    TaskPlayAnim(PlayerPedId(), 'cellphone@', 'cellphone_call_listen_base', 3.0, -1, -1, 49, 0, false, false, false)
+    Citizen.Wait(1000)
+    Citizen.CreateThread(function()
+        while isCalling do
+            Citizen.Wait(1000)
+            callCount = callCount - 1
+            if callCount <= 0 then
+                isCalling = false
+                StopAnimTask(PlayerPedId(), 'cellphone@', 'cellphone_call_listen_base', 1.0)
+            end
+        end
+    end)
 end)
 
 RegisterNetEvent('police:client:ImpoundVehicle')

@@ -208,6 +208,25 @@ AddEventHandler('police:server:HouseRobberyCall', function(coords, message)
     end
 end)
 
+RegisterServerEvent('police:server:SendEmergencyMessage')
+AddEventHandler('police:server:SendEmergencyMessage', function(coords, message)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    local players = QBCore.Functions.GetPlayers()
+    local alertData = {
+        title = "112 Melding - "..Player.PlayerData.charinfo.firstname .. " " .. Player.PlayerData.charinfo.lastname .. " ("..src..")",
+        coords = {x = coords.x, y = coords.y, z = coords.z},
+        description = message,
+    }
+	for k, Player in pairs(players) do
+		if ((Player.PlayerData.job.name == "police" or Player.PlayerData.job.name == "ambulance") and Player.PlayerData.job.onduty) then
+            TriggerClientEvent('chatMessage', k, Player.PlayerData.charinfo.firstname .. " " .. Player.PlayerData.charinfo.lastname .. " ("..src..")", "warning", message)
+            TriggerClientEvent("qb-phone:client:addPoliceAlert", k, alertData)
+            TriggerClientEvent("police:client:EmergencySound", k)
+		end
+    end
+end)
+
 RegisterServerEvent('police:server:SearchPlayer')
 AddEventHandler('police:server:SearchPlayer', function(playerId)
     local src = source
@@ -371,6 +390,15 @@ AddEventHandler('evidence:server:AddCasingToInventory', function(casingId, casin
         end
     else
         TriggerClientEvent('QBCore:Notify', src, "Je moet een leeg bewijszakje bij je hebben", "error")
+    end
+end)
+
+RegisterServerEvent('police:server:showFingerprint')
+AddEventHandler('police:server:showFingerprint', function(playerId)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(playerId)
+    if Player ~= nil then 
+        TriggerClientEvent('chatMessage', source, "SYSTEM", false, "Vingerpatroon: " .. Player.PlayerData.metadata["fingerprint"])
     end
 end)
 
@@ -745,4 +773,33 @@ QBCore.Functions.CreateUseableItem("handcuffs", function(source, item)
 	if Player.Functions.GetItemBySlot(item.slot) ~= nil then
         TriggerClientEvent("police:client:CuffPlayer", source)
     end
+end)
+
+QBCore.Commands.Add("112", "Stuur een melding naar hulpdiensten", {{name="bericht", help="Bericht die je wilt sturen naar de hulpdiensten"}}, true, function(source, args)
+    local message = table.concat(args, " ")
+    local Player = QBCore.Functions.GetPlayer(source)
+    TriggerClientEvent("police:client:SendEmergencyMessage", source, message)
+end)
+
+QBCore.Commands.Add("112a", "Stuur een anonieme melding naar hulpdiensten (geeft geen locatie)", {{name="bericht", help="Bericht die je wilt sturen naar de hulpdiensten"}}, true, function(source, args)
+    local message = table.concat(args, " ")
+    local Player = QBCore.Functions.GetPlayer(source)
+    local players = QBCore.Functions.GetPlayers()
+    TriggerClientEvent("police:client:CallAnim", src)
+    for k, Player in pairs(players) do
+        if ((Player.PlayerData.job.name == "police" or Player.PlayerData.job.name == "ambulance") and Player.PlayerData.job.onduty) then
+            TriggerClientEvent('chatMessage', k, "ANONIEME MELDING", "warning", message)
+            TriggerClientEvent("police:client:EmergencySound", k)
+		end
+    end
+end)
+
+QBCore.Commands.Add("112r", "Stuur een bericht terug naar een melding", {{name="id", help="ID van de melding"}, {name="bericht", help="Bericht die je wilt sturen"}}, true, function(source, args)
+    local Player = QBCore.Functions.GetPlayer(source)
+    local OtherPlayer = QBCore.Functions.GetPlayer(tonumber(args[1]))
+    table.remove(args, 1)
+    local message = table.concat(args, " ")
+    TriggerClientEvent('chatMessage', OtherPlayer.PlayerData.source, "(POLITIE) " ..Player.PlayerData.charinfo.firstname .. " " .. Player.PlayerData.charinfo.lastname, "error", message)
+    TriggerClientEvent("police:client:EmergencySound", OtherPlayer.PlayerData.source)
+    TriggerClientEvent("police:client:CallAnim", OtherPlayer.PlayerData.source)
 end)
