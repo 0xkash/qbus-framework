@@ -11,6 +11,7 @@ AddEventHandler('playerDropped', function(reason)
 	if(src==nil or (QBCore.Players[src] == nil)) then return false end
 	QBCore.Players[src].Functions.Save()
 	QBCore.Players[src] = nil
+	TriggerEvent("qb-log:server:CreateLog", "joinleave", "Dropped", "red", "**".. GetPlayerName(src) .. "** ("..GetPlayerIdentifiers(src)[1]..") left..")
 end)
 
 -- Checking everything before joining
@@ -61,6 +62,7 @@ AddEventHandler('playerConnecting', function(playerName, setKickReason, deferral
         CancelEvent()
         return false
 	end
+	TriggerEvent("qb-log:server:CreateLog", "joinleave", "Queue", "orange", "**"..name .. "** ("..GetPlayerIdentifiers(src)[1]..") in queue..")
 	TriggerEvent("connectqueue:playerConnect", src, setKickReason, deferrals)
 end)
 
