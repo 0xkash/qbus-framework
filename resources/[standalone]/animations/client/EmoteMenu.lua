@@ -81,13 +81,8 @@ function AddEmoteMenu(menu)
     local submenu = _menuPool:AddSubMenu(menu, "Animaties", "", "", Menuthing, Menuthing)
     local dancemenu = _menuPool:AddSubMenu(submenu, "🕺 Dans Animaties", "", "", Menuthing, Menuthing)
     local propmenu = _menuPool:AddSubMenu(submenu, "📦 Prop Animaties", "", "", Menuthing, Menuthing)
-    --local favmenu = _menuPool:AddSubMenu(submenu, "🌟 Keybind", "Kies een animatie om te binden.", "", Menuthing, Menuthing)
-    unbind2item = NativeUI.CreateItem("Reset keybind", "Reset keybind")
     --favmenu:AddItem(unbind2item)
-    table.insert(FavEmoteTable, "Reset keybind")
-    table.insert(FavEmoteTable, "Reset keybind")
     table.insert(EmoteTable, "🕺 Dance Animaties")
-    table.insert(EmoteTable, "🌟 Keybind")
     table.insert(EmoteTable, "🕺 Dance Animaties")
 
     for a,b in pairsByKeys(AnimationList.Emotes) do
@@ -117,18 +112,6 @@ function AddEmoteMenu(menu)
       table.insert(FavEmoteTable, a)
     end
 
-    --[[favmenu.OnItemSelect = function(sender, item, index)
-      if FavEmoteTable[index] == "Reset keybind" then
-        FavoriteEmote = ""
-        QBCore.Functions.Notify("Reset keybind")
-      return end 
-
-      if Config.FavKeybindEnabled then
-        FavoriteEmote = FavEmoteTable[index+1]
-        QBCore.Functions.Notify(firstToUpper(FavoriteEmote).." is nu gebind!")
-      end
-    end]]
-
     dancemenu.OnItemSelect = function(sender, item, index)
       EmoteMenuStart(DanceTable[index], "dances")
     end
@@ -138,8 +121,8 @@ function AddEmoteMenu(menu)
     end
 
     submenu.OnItemSelect = function(sender, item, index)
-     if EmoteTable[index] ~= "🌟 Keybind" then
-      EmoteMenuStart(EmoteTable[index], "emotes")
+     if EmoteTable[index - 1] ~= "🌟 Keybind" then
+      EmoteMenuStart(EmoteTable[index - 1], "emotes")
     end
   end
 end

@@ -1006,6 +1006,7 @@ $(document).on('click', '.incoming-call-answer', function(e){
     $.post('http://qb-phone/AnswerCall');
     $(".incoming-call").css({"display":"none"});
     $(".busy-call").css({"display":"block"});
+    qbPhone.Close();
 })
 $(document).on('click', '.incoming-call-deny', function(e){
     e.preventDefault(); 
