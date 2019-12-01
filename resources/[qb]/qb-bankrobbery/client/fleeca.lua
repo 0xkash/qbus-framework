@@ -16,6 +16,7 @@ local closestBank = nil
 local inRange
 local requiredItemsShowed = false
 local copsCalled = false
+local PlayerJob = {}
 
 CurrentCops = 0
 
@@ -28,6 +29,11 @@ Citizen.CreateThread(function()
     end
 end)
 
+RegisterNetEvent('QBCore:Client:OnJobUpdate')
+AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
+    PlayerJob = JobInfo
+end)
+
 RegisterNetEvent('police:SetCopCount')
 AddEventHandler('police:SetCopCount', function(amount)
     CurrentCops = amount
@@ -35,6 +41,7 @@ end)
 
 RegisterNetEvent("QBCore:Client:OnPlayerLoaded")
 AddEventHandler("QBCore:Client:OnPlayerLoaded", function()
+    PlayerJob = QBCore.Functions.GetPlayerData().job
     ResetBankDoors()
 end)
 
@@ -149,9 +156,8 @@ AddEventHandler('electronickit:UseElectronickit', function()
             if not isBusy then
                 if closestBank ~= nil then
                     local dist = GetDistanceBetweenCoords(pos, Config.SmallBanks[closestBank]["coords"]["x"], Config.SmallBanks[closestBank]["coords"]["y"], Config.SmallBanks[closestBank]["coords"]["z"])
-    
                     if dist < 1.5 then
-                        if CurrentCops >= 4 then
+                        if CurrentCops >= 0 then
                             if not Config.SmallBanks[closestBank]["isOpened"] then 
                                 QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
                                     if result then 
@@ -399,54 +405,56 @@ end)
 
 RegisterNetEvent('qb-bankrobbery:client:robberyCall')
 AddEventHandler('qb-bankrobbery:client:robberyCall', function(type, key, streetLabel, coords)
-    local cameraId = 4
-    local bank = "Fleeca"
-    if type == "small" then
-        cameraId = Config.SmallBanks[key]["camId"]
-        bank = "Fleeca"
-        PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
-        TriggerEvent("chatMessage", "112-MELDING", "error", "Poging bankoverval bij "..bank.. " " ..streetLabel.." (CAMERA ID: "..cameraId..")")
-    elseif type == "paleto" then
-        cameraId = Config.BigBanks["paleto"]["camId"]
-        bank = "Blaine County Savings"
-        PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
-        Citizen.Wait(100)
-        PlaySoundFrontend( -1, "Beep_Red", "DLC_HEIST_HACKING_SNAKE_SOUNDS", 1 )
-        Citizen.Wait(100)
-        PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
-        Citizen.Wait(100)
-        PlaySoundFrontend( -1, "Beep_Red", "DLC_HEIST_HACKING_SNAKE_SOUNDS", 1 )
-        TriggerEvent("chatMessage", "112-MELDING", "error", "Groot alarm! Poging bankoverval bij "..bank.. " Paleto Bay (CAMERA ID: "..cameraId..")")
-    elseif type == "pacific" then
-        bank = "Pacific Standard Bank"
-        PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
-        Citizen.Wait(100)
-        PlaySoundFrontend( -1, "Beep_Red", "DLC_HEIST_HACKING_SNAKE_SOUNDS", 1 )
-        Citizen.Wait(100)
-        PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
-        Citizen.Wait(100)
-        PlaySoundFrontend( -1, "Beep_Red", "DLC_HEIST_HACKING_SNAKE_SOUNDS", 1 )
-        TriggerEvent("chatMessage", "112-MELDING", "error", "Groot alarm! Poging bankoverval bij "..bank.. " Alta St (CAMERA ID: 1/2/3)")
-    end
-    local transG = 250
-    local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
-    SetBlipSprite(blip, 487)
-    SetBlipColour(blip, 4)
-    SetBlipDisplay(blip, 4)
-    SetBlipAlpha(blip, transG)
-    SetBlipScale(blip, 1.2)
-    SetBlipFlashes(blip, true)
-    BeginTextCommandSetBlipName('STRING')
-    AddTextComponentString("112: Bankoverval")
-    EndTextCommandSetBlipName(blip)
-    while transG ~= 0 do
-        Wait(180 * 4)
-        transG = transG - 1
+    if PlayerJob.name == "police" and PlayerJob.onduty then 
+        local cameraId = 4
+        local bank = "Fleeca"
+        if type == "small" then
+            cameraId = Config.SmallBanks[key]["camId"]
+            bank = "Fleeca"
+            PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
+            TriggerEvent("chatMessage", "112-MELDING", "error", "Poging bankoverval bij "..bank.. " " ..streetLabel.." (CAMERA ID: "..cameraId..")")
+        elseif type == "paleto" then
+            cameraId = Config.BigBanks["paleto"]["camId"]
+            bank = "Blaine County Savings"
+            PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
+            Citizen.Wait(100)
+            PlaySoundFrontend( -1, "Beep_Red", "DLC_HEIST_HACKING_SNAKE_SOUNDS", 1 )
+            Citizen.Wait(100)
+            PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
+            Citizen.Wait(100)
+            PlaySoundFrontend( -1, "Beep_Red", "DLC_HEIST_HACKING_SNAKE_SOUNDS", 1 )
+            TriggerEvent("chatMessage", "112-MELDING", "error", "Groot alarm! Poging bankoverval bij "..bank.. " Paleto Bay (CAMERA ID: "..cameraId..")")
+        elseif type == "pacific" then
+            bank = "Pacific Standard Bank"
+            PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
+            Citizen.Wait(100)
+            PlaySoundFrontend( -1, "Beep_Red", "DLC_HEIST_HACKING_SNAKE_SOUNDS", 1 )
+            Citizen.Wait(100)
+            PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
+            Citizen.Wait(100)
+            PlaySoundFrontend( -1, "Beep_Red", "DLC_HEIST_HACKING_SNAKE_SOUNDS", 1 )
+            TriggerEvent("chatMessage", "112-MELDING", "error", "Groot alarm! Poging bankoverval bij "..bank.. " Alta St (CAMERA ID: 1/2/3)")
+        end
+        local transG = 250
+        local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
+        SetBlipSprite(blip, 487)
+        SetBlipColour(blip, 4)
+        SetBlipDisplay(blip, 4)
         SetBlipAlpha(blip, transG)
-        if transG == 0 then
-            SetBlipSprite(blip, 2)
-            RemoveBlip(blip)
-            return
+        SetBlipScale(blip, 1.2)
+        SetBlipFlashes(blip, true)
+        BeginTextCommandSetBlipName('STRING')
+        AddTextComponentString("112: Bankoverval")
+        EndTextCommandSetBlipName(blip)
+        while transG ~= 0 do
+            Wait(180 * 4)
+            transG = transG - 1
+            SetBlipAlpha(blip, transG)
+            if transG == 0 then
+                SetBlipSprite(blip, 2)
+                RemoveBlip(blip)
+                return
+            end
         end
     end
 end)

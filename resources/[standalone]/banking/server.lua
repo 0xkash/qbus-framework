@@ -8,7 +8,7 @@ AddEventHandler('bank:withdraw', function(amount)
     local src = source
     local ply = QBCore.Functions.GetPlayer(src)
     local bankamount = ply.PlayerData.money["bank"]
-    
+    local amount = tonumber(amount)
     if bankamount >= amount then
       ply.Functions.RemoveMoney('bank', amount)
       TriggerEvent("qb-log:server:CreateLog", "banking", "Withdraw", "red", "**"..GetPlayerName(src) .. "** heeft €"..amount.." opgenomen van zijn bank.")

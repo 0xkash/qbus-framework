@@ -14,6 +14,7 @@ QBCore = nil
 
 local phoneMeta = {}
 local isLoggedIn = false
+local PlayerJob = {}
 
 local callData = {
     number = nil,
@@ -255,7 +256,7 @@ end)
 
 RegisterNetEvent('qb-phone:client:addPoliceAlert')
 AddEventHandler('qb-phone:client:addPoliceAlert', function(alertData)
-    if PlayerJob.name == 'police' and PlayerJob.onduty then 
+    if PlayerJob.name == 'police' and PlayerJob.onduty then
         SendNUIMessage({
             task = "newPoliceAlert",
             alert = alertData,
@@ -326,6 +327,7 @@ RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     isLoggedIn = true
     setPhoneMeta()
+    PlayerJob = QBCore.Functions.GetPlayerData().job
     QBCore.Functions.TriggerCallback('qb-phone:server:getUserContacts', function(result)
         playerContacts = result
     end)

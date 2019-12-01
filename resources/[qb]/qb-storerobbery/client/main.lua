@@ -12,12 +12,9 @@ Keys = {
 QBCore = nil
 
 Citizen.CreateThread(function() 
-    while true do
-        Citizen.Wait(10)
-        if QBCore == nil then
-            TriggerEvent("QBCore:GetObject", function(obj) QBCore = obj end)    
-            Citizen.Wait(200)
-        end
+    while QBCore == nil do
+        TriggerEvent("QBCore:GetObject", function(obj) QBCore = obj end)    
+        Citizen.Wait(200)
     end
 end)
 
@@ -28,6 +25,7 @@ local currentRegister   = 0
 local currentSafe = 0
 local copsCalled = false
 local CurrentCops = 0
+local PlayerJob = {}
 
 Citizen.CreateThread(function()
     while true do
@@ -123,6 +121,16 @@ Citizen.CreateThread(function()
     end
 end)
 
+RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
+AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+    PlayerJob = QBCore.Functions.GetPlayerData().job
+end)
+
+RegisterNetEvent('QBCore:Client:OnJobUpdate')
+AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
+    PlayerJob = JobInfo
+end)
+
 RegisterNetEvent('police:SetCopCount')
 AddEventHandler('police:SetCopCount', function(amount)
     CurrentCops = amount
@@ -183,6 +191,7 @@ end
 
 function setupRegister()
     QBCore.Functions.TriggerCallback('qb-storerobbery:server:getRegisterStatus', function(Registers)
+        print("lmao?")
         for k, v in pairs(Registers) do
             Config.Registers[k].robbed = Registers[k].robbed
         end
@@ -320,32 +329,34 @@ end)
 
 RegisterNetEvent('qb-storerobbery:client:robberyCall')
 AddEventHandler('qb-storerobbery:client:robberyCall', function(type, key, streetLabel, coords)
-    local cameraId = 4
-    if type == "safe" then
-        cameraId = Config.Safes[key].camId
-    else
-        cameraId = Config.Registers[key].camId
-    end
-    PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
-    TriggerEvent("chatMessage", "112-MELDING", "error", "Iemand probeert een winkel te overvallen bij "..streetLabel.." (CAMERA ID: "..cameraId..")")
-    local transG = 250
-    local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
-    SetBlipSprite(blip, 458)
-    SetBlipColour(blip, 1)
-    SetBlipDisplay(blip, 4)
-    SetBlipAlpha(blip, transG)
-    SetBlipScale(blip, 1.0)
-    BeginTextCommandSetBlipName('STRING')
-    AddTextComponentString("112: Winkeloverval")
-    EndTextCommandSetBlipName(blip)
-    while transG ~= 0 do
-        Wait(180 * 4)
-        transG = transG - 1
+    if PlayerJob.name == "police" and PlayerJob.onduty then 
+        local cameraId = 4
+        if type == "safe" then
+            cameraId = Config.Safes[key].camId
+        else
+            cameraId = Config.Registers[key].camId
+        end
+        PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
+        TriggerEvent("chatMessage", "112-MELDING", "error", "Iemand probeert een winkel te overvallen bij "..streetLabel.." (CAMERA ID: "..cameraId..")")
+        local transG = 250
+        local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
+        SetBlipSprite(blip, 458)
+        SetBlipColour(blip, 1)
+        SetBlipDisplay(blip, 4)
         SetBlipAlpha(blip, transG)
-        if transG == 0 then
-            SetBlipSprite(blip, 2)
-            RemoveBlip(blip)
-            return
+        SetBlipScale(blip, 1.0)
+        BeginTextCommandSetBlipName('STRING')
+        AddTextComponentString("112: Winkeloverval")
+        EndTextCommandSetBlipName(blip)
+        while transG ~= 0 do
+            Wait(180 * 4)
+            transG = transG - 1
+            SetBlipAlpha(blip, transG)
+            if transG == 0 then
+                SetBlipSprite(blip, 2)
+                RemoveBlip(blip)
+                return
+            end
         end
     end
 end)

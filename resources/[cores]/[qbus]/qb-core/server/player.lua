@@ -113,7 +113,7 @@ QBCore.Player.CreatePlayer = function(PlayerData)
 			self.PlayerData.job.payment = QBCore.Shared.Jobs[job].payment
 			self.PlayerData.job.onduty = QBCore.Shared.Jobs[job].defaultDuty
 			self.Functions.UpdatePlayerData()
-			TriggerClientEvent("--", self.PlayerData.source, self.PlayerData.job)
+			TriggerClientEvent("QBCore:Client:OnJobUpdate", self.PlayerData.source, self.PlayerData.job)
 			--TriggerEvent("QBCore:Server:OnJobUpdate", self.PlayerData.job)
 		end
 	end

@@ -199,12 +199,8 @@ AddEventHandler('police:server:VehicleCall', function(coords, msg)
         coords = {x = coords.x, y = coords.y, z = coords.z},
         description = msg,
     }
-	for k, Player in pairs(players) do
-        if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
-            TriggerClientEvent("police:client:VehicleCall", k, coords, msg)
-            TriggerClientEvent("qb-phone:client:addPoliceAlert", k, alertData)
-		end
-    end
+    TriggerClientEvent("police:client:VehicleCall", -1, coords, msg)
+    TriggerClientEvent("qb-phone:client:addPoliceAlert", -1, alertData)
 end)
 
 RegisterServerEvent('police:server:HouseRobberyCall')
@@ -216,12 +212,8 @@ AddEventHandler('police:server:HouseRobberyCall', function(coords, message)
         coords = {x = coords.x, y = coords.y, z = coords.z},
         description = message,
     }
-	for k, Player in pairs(players) do
-		if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
-            TriggerClientEvent("police:client:HouseRobberyCall", k, coords, message)
-            TriggerClientEvent("qb-phone:client:addPoliceAlert", k, alertData)
-		end
-    end
+    TriggerClientEvent("police:client:HouseRobberyCall", -1, coords, message)
+    TriggerClientEvent("qb-phone:client:addPoliceAlert", -1, alertData)
 end)
 
 RegisterServerEvent('police:server:SendEmergencyMessage')
@@ -234,10 +226,10 @@ AddEventHandler('police:server:SendEmergencyMessage', function(coords, message)
         coords = {x = coords.x, y = coords.y, z = coords.z},
         description = message,
     }
+    TriggerClientEvent("qb-phone:client:addPoliceAlert", -1, alertData)
 	for k, Player in pairs(players) do
 		if ((Player.PlayerData.job.name == "police" or Player.PlayerData.job.name == "ambulance") and Player.PlayerData.job.onduty) then
             TriggerClientEvent('chatMessage', k, MainPlayer.PlayerData.charinfo.firstname .. " " .. MainPlayer.PlayerData.charinfo.lastname .. " ("..src..")", "warning", message)
-            TriggerClientEvent("qb-phone:client:addPoliceAlert", k, alertData)
             TriggerClientEvent("police:client:EmergencySound", k)
 		end
     end
@@ -472,14 +464,8 @@ AddEventHandler('police:server:SendPoliceEmergencyAlert', function(streetLabel, 
         coords = {x = coords.x, y = coords.y, z = coords.z},
         description = "Noodknop ingedrukt door ".. callsign .. " bij "..streetLabel,
     }
-    for k, Player in pairs(players) do
-        if Player ~= nil then 
-            if ((Player.PlayerData.job.name == "police" or Player.PlayerData.job.name == "ambulance") and Player.PlayerData.job.onduty) then
-                TriggerClientEvent("police:client:PoliceEmergencyAlert", Player.PlayerData.source, callsign, streetLabel, coords)
-                TriggerClientEvent("qb-phone:client:addPoliceAlert", Player.PlayerData.source, alertData)
-            end
-        end
-    end
+    TriggerClientEvent("police:client:PoliceEmergencyAlert", -1, callsign, streetLabel, coords)
+    TriggerClientEvent("qb-phone:client:addPoliceAlert", -1, alertData)
 end)
 
 QBCore.Functions.CreateCallback('police:server:isPlayerDead', function(source, cb, playerId)
