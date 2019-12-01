@@ -5,6 +5,7 @@ hotbarOpen = false
 
 local inventoryTest = {}
 local currentWeapon = nil
+local currentOtherInventory = nil
 
 local Drops = {}
 local CurrentDrop = 0
@@ -273,11 +274,8 @@ AddEventHandler("inventory:client:OpenInventory", function(inventory, other)
     if not IsEntityDead(GetPlayerPed(-1)) then
         ToggleHotbar(false)
         SetNuiFocus(true, true)
-        if other ~= nil and other.name == "none-inv" then
-            CurrentDrop = 0
-            CurrentVehicle = nil
-            CurrentGlovebox = nil
-            CurrentStash = nil
+        if other ~= nil then
+            currentOtherInventory = other.name
         end
         SendNUIMessage({
             action = "open",
@@ -436,6 +434,15 @@ RegisterNUICallback('getCombineItem', function(data, cb)
 end)
 
 RegisterNUICallback("CloseInventory", function(data, cb)
+    if currentOtherInventory == "none-inv" then
+        CurrentDrop = 0
+        CurrentVehicle = nil
+        CurrentGlovebox = nil
+        CurrentStash = nil
+        SetNuiFocus(false, false)
+        inInventory = false
+        return
+    end
     if CurrentVehicle ~= nil then
         CloseTrunk()
         TriggerServerEvent("inventory:server:SaveInventory", "trunk", CurrentVehicle)

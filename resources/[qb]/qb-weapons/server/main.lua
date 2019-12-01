@@ -67,7 +67,6 @@ AddEventHandler('weapons:server:SaveWeaponAmmo', function()
                 QBCore.Functions.ExecuteSql("UPDATE `playerammo` SET ammo='"..json.encode(WeaponAmmo[Player.PlayerData.citizenid]).."' WHERE `citizenid` = '"..Player.PlayerData.citizenid.."'")
             end
         end)
-        QBCore.ShowSuccess(GetCurrentResourceName(), Player.PlayerData.name .." WEAPON AMMO SAVED!")
     end
 end)
 
