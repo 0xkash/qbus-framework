@@ -943,7 +943,6 @@ AddEventHandler('qb-phone:client:HangupCall', function()
         
                 PhonePlayOut()
             elseif callData.outgoingCall then
-        
                 TriggerServerEvent('qb-phone:server:HangupCall', callData)
                 QBCore.Functions.Notify('Het gesprek is beëindigd')
         
