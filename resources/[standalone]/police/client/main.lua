@@ -382,6 +382,26 @@ AddEventHandler('police:client:PoliceAlertMessage', function(msg, coords, blipTy
     end
 end)
 
+RegisterNetEvent('police:server:SendEmergencyMessageCheck')
+AddEventHandler('police:server:SendEmergencyMessageCheck', function(MainPlayer)
+    local PlayerData = QBCore.Functions.GetPlayerData()
+
+    if ((PlayerData.job.name == "police" or PlayerData.job.name == "ambulance") and PlayerData.job.onduty) then
+        TriggerEvent('chatMessage', "112 MELDING - " .. MainPlayer.PlayerData.charinfo.firstname .. " " .. MainPlayer.PlayerData.charinfo.lastname .. " ("..src..")", "warning", message)
+        TriggerEvent("police:client:EmergencySound")
+    end
+end)
+
+RegisterNetEvent('police:client:Send112AMessage')
+AddEventHandler('police:client:Send112AMessage', function(message)
+    local PlayerData = QBCore.Functions.GetPlayerData()
+
+    if ((PlayerData.job.name == "police" or PlayerData.job.name == "ambulance") and PlayerData.job.onduty) then
+        TriggerEvent('chatMessage', "ANONIEME MELDING", "warning", message)
+        TriggerEvent("police:client:EmergencySound")
+    end
+end)
+
 RegisterNetEvent('police:client:SendToJail')
 AddEventHandler('police:client:SendToJail', function(time)
     TriggerServerEvent("police:server:SetHandcuffStatus", false)
