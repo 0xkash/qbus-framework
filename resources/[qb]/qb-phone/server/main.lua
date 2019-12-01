@@ -48,28 +48,29 @@ QBCore.Functions.CreateCallback('qb-phone:server:getUserContacts', function(sour
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     local playerContacts = {}
-
-    QBCore.Functions.ExecuteSql("SELECT * FROM `player_contacts` WHERE `citizenid` = '"..Player.PlayerData.citizenid.."'", function(result)
-        if result[1] ~= nil then
-            for i = 1, (#result), 1 do
-                local status = false
-                QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `charinfo` LIKE '%"..result[i].number.."%'", function(player)
-                    for i=1, (#player), 1 do
-                        local ply = QBCore.Functions.GetPlayerByCitizenId(player[i].citizenid)
-                        if ply then
-                            status = true
+    if Player ~= nil then 
+        QBCore.Functions.ExecuteSql("SELECT * FROM `player_contacts` WHERE `citizenid` = '"..Player.PlayerData.citizenid.."'", function(result)
+            if result[1] ~= nil then
+                for i = 1, (#result), 1 do
+                    local status = false
+                    QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `charinfo` LIKE '%"..result[i].number.."%'", function(player)
+                        for i=1, (#player), 1 do
+                            local ply = QBCore.Functions.GetPlayerByCitizenId(player[i].citizenid)
+                            if ply then
+                                status = true
+                            end
                         end
-                    end
-                    table.insert(playerContacts, {
-                        name = result[i].name,
-                        number = result[i].number,
-                        status = status,
-                    })
-                end)
+                        table.insert(playerContacts, {
+                            name = result[i].name,
+                            number = result[i].number,
+                            status = status,
+                        })
+                    end)
+                end
             end
-        end
-        cb(playerContacts)
-    end)
+            cb(playerContacts)
+        end)
+    end
 end)
 
 RegisterServerEvent('qb-phone:server:addContact')
