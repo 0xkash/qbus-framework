@@ -443,7 +443,7 @@ AddEventHandler('qb-phone:server:sendMessage', function(chatData)
         local targetPly = QBCore.Functions.GetPlayerByCitizenId(target[1].citizenid)
 
         if targetPly ~= nil then
-            TriggerClientEvent('qb-phone:client:recieveMessage', target.PlayerData.source, chatData, ply.PlayerData.charinfo.phone)
+            TriggerClientEvent('qb-phone:client:recieveMessage', targetPly.PlayerData.source, chatData, ply.PlayerData.charinfo.phone)
         else
             QBCore.Functions.ExecuteSql("UPDATE `phone_messages` SET `messages` = '"..json.encode(chatData.messages).."' WHERE `citizenid` = '"..target[1].citizenid.."' AND `number` = '"..ply.PlayerData.charinfo.phone.."'")
         end

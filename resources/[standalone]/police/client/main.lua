@@ -52,10 +52,10 @@ end)
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     isLoggedIn = true
-    TriggerServerEvent("police:server:UpdateCurrentCops")
     PlayerJob = QBCore.Functions.GetPlayerData().job
     onDuty = QBCore.Functions.GetPlayerData().job.onduty
     TriggerServerEvent("police:server:UpdateBlips")
+    TriggerServerEvent("police:server:UpdateCurrentCops")
 end)
 local tabletProp = nil
 RegisterNetEvent('police:client:toggleDatabank')
@@ -176,161 +176,25 @@ end)
 
 RegisterNetEvent('police:client:PoliceEmergencyAlert')
 AddEventHandler('police:client:PoliceEmergencyAlert', function(callsign, streetLabel, coords)
-    PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
-    Citizen.Wait(100)
-    PlaySoundFrontend( -1, "Beep_Red", "DLC_HEIST_HACKING_SNAKE_SOUNDS", 1 )
-    Citizen.Wait(100)
-    PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
-    Citizen.Wait(100)
-    PlaySoundFrontend( -1, "Beep_Red", "DLC_HEIST_HACKING_SNAKE_SOUNDS", 1 )
-    TriggerEvent("chatMessage", "MELDING", "error", "Assistentie collega, noodknop ingedrukt door ".. callsign .. " bij "..streetLabel)
-    local transG = 250
-    local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
-    SetBlipSprite(blip, 487)
-    SetBlipColour(blip, 4)
-    SetBlipDisplay(blip, 4)
-    SetBlipAlpha(blip, transG)
-    SetBlipScale(blip, 1.2)
-    SetBlipFlashes(blip, true)
-    BeginTextCommandSetBlipName('STRING')
-    AddTextComponentString("Assistentie Collega")
-    EndTextCommandSetBlipName(blip)
-    while transG ~= 0 do
-        Wait(180 * 4)
-        transG = transG - 1
-        SetBlipAlpha(blip, transG)
-        if transG == 0 then
-            SetBlipSprite(blip, 2)
-            RemoveBlip(blip)
-            return
-        end
-    end
-end)
-
-RegisterNetEvent('police:client:GunShotAlert')
-AddEventHandler('police:client:GunShotAlert', function(streetLabel, isAutomatic, fromVehicle, coords, vehicleInfo)
-    local msg = ""
-    local blipSprite = 313
-    local blipText = "Melding: Schoten gelost"
-    if fromVehicle then
-        if isAutomatic then
-            blipText = "Melding: Schoten gelost (automatisch)"
-            blipSprite = 313
-            msg = "Schoten gelost (automatisch vuurwapen) uit een voertuig. Model: "..vehicleInfo.name..", kenteken: "..vehicleInfo.plate..", locatie: "..streetLabel
-        else
-            msg = "Schoten gelost uit een voertuig. Model: "..vehicleInfo.name..", kenteken: "..vehicleInfo.plate..", locatie: "..streetLabel
-        end
-    else
-        if isAutomatic then
-            blipText = "Melding: Schoten gelost (automatisch)"
-            blipSprite = 313
-            msg = "Schoten gelost (automatisch vuurwapen). Locatie: "..streetLabel
-        else
-            msg = "Schoten gelost. Locatie: "..streetLabel
-        end
-    end
-    TriggerEvent("chatMessage", "MELDING", "error", msg)
-    PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
-    local transG = 250
-    local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
-    SetBlipSprite(blip, blipSprite)
-    SetBlipColour(blip, 0)
-    SetBlipDisplay(blip, 4)
-    SetBlipAlpha(blip, transG)
-    SetBlipScale(blip, 0.8)
-    SetBlipAsShortRange(blip, false)
-    BeginTextCommandSetBlipName('STRING')
-    AddTextComponentString(blipText)
-    EndTextCommandSetBlipName(blip)
-    while transG ~= 0 do
-        Wait(180 * 4)
-        transG = transG - 1
-        SetBlipAlpha(blip, transG)
-        if transG == 0 then
-            SetBlipSprite(blip, 2)
-            RemoveBlip(blip)
-            return
-        end
-    end
-end)
-
-RegisterNetEvent('police:client:VehicleCall')
-AddEventHandler('police:client:VehicleCall', function(coords, msg)
-    TriggerEvent("chatMessage", "MELDING", "error", msg)
-    PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
-    local transG = 250
-    local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
-    SetBlipSprite(blip, 380)
-    SetBlipColour(blip, 1)
-    SetBlipDisplay(blip, 4)
-    SetBlipAlpha(blip, transG)
-    SetBlipScale(blip, 1.0)
-    SetBlipAsShortRange(blip, false)
-    BeginTextCommandSetBlipName('STRING')
-    AddTextComponentString("Melding: Voertuig inbraak")
-    EndTextCommandSetBlipName(blip)
-    while transG ~= 0 do
-        Wait(180 * 4)
-        transG = transG - 1
-        SetBlipAlpha(blip, transG)
-        if transG == 0 then
-            SetBlipSprite(blip, 2)
-            RemoveBlip(blip)
-            return
-        end
-    end
-end)
-
-RegisterNetEvent('police:client:HouseRobberyCall')
-AddEventHandler('police:client:HouseRobberyCall', function(coords, msg)
-    TriggerEvent("chatMessage", "MELDING", "error", msg)
-    PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
-    local transG = 250
-    local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
-    SetBlipSprite(blip, 411)
-    SetBlipColour(blip, 1)
-    SetBlipDisplay(blip, 4)
-    SetBlipAlpha(blip, transG)
-    SetBlipScale(blip, 0.7)
-    SetBlipAsShortRange(blip, false)
-    BeginTextCommandSetBlipName('STRING')
-    AddTextComponentString("Melding: Inbraak huis")
-    EndTextCommandSetBlipName(blip)
-    while transG ~= 0 do
-        Wait(180 * 4)
-        transG = transG - 1
-        SetBlipAlpha(blip, transG)
-        if transG == 0 then
-            SetBlipSprite(blip, 2)
-            RemoveBlip(blip)
-            return
-        end
-    end
-end)
-
-RegisterNetEvent('112:client:SendPoliceAlert')
-AddEventHandler('112:client:SendPoliceAlert', function(notifyType, msg, type, blipSettings)
-    if notifyType == "flagged" then
-        TriggerEvent("chatMessage", "MELDING", "error", msg)
-        RadarSound()
-    elseif notifyType == "player" then
-        PlaySound(-1, "Event_Start_Text", "GTAO_FM_Events_Soundset", 0, 0, 1)
-    else
+    if (PlayerJob.name == 'police' or PlayerJob.name == 'ambulance') and PlayerJob.onduty then
         PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
-        TriggerEvent("chatMessage", "112-MELDING", "error", msg)
-    end
-
-    if blipSettings ~= nil then
+        Citizen.Wait(100)
+        PlaySoundFrontend( -1, "Beep_Red", "DLC_HEIST_HACKING_SNAKE_SOUNDS", 1 )
+        Citizen.Wait(100)
+        PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
+        Citizen.Wait(100)
+        PlaySoundFrontend( -1, "Beep_Red", "DLC_HEIST_HACKING_SNAKE_SOUNDS", 1 )
+        TriggerEvent("chatMessage", "MELDING", "error", "Assistentie collega, noodknop ingedrukt door ".. callsign .. " bij "..streetLabel)
         local transG = 250
-        local blip = AddBlipForCoord(blipSettings.x, blipSettings.y, blipSettings.z)
-        SetBlipSprite(blip, blipSettings.sprite)
-        SetBlipColour(blip, blipSettings.color)
+        local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
+        SetBlipSprite(blip, 487)
+        SetBlipColour(blip, 4)
         SetBlipDisplay(blip, 4)
         SetBlipAlpha(blip, transG)
-        SetBlipScale(blip, blipSettings.scale)
-        SetBlipAsShortRange(blip, false)
+        SetBlipScale(blip, 1.2)
+        SetBlipFlashes(blip, true)
         BeginTextCommandSetBlipName('STRING')
-        AddTextComponentString(blipSettings.text)
+        AddTextComponentString("Assistentie Collega")
         EndTextCommandSetBlipName(blip)
         while transG ~= 0 do
             Wait(180 * 4)
@@ -345,27 +209,175 @@ AddEventHandler('112:client:SendPoliceAlert', function(notifyType, msg, type, bl
     end
 end)
 
+RegisterNetEvent('police:client:GunShotAlert')
+AddEventHandler('police:client:GunShotAlert', function(streetLabel, isAutomatic, fromVehicle, coords, vehicleInfo)
+    if PlayerJob.name == 'police' and PlayerJob.onduty then        
+        local msg = ""
+        local blipSprite = 313
+        local blipText = "Melding: Schoten gelost"
+        if fromVehicle then
+            if isAutomatic then
+                blipText = "Melding: Schoten gelost (automatisch)"
+                blipSprite = 313
+                msg = "Schoten gelost (automatisch vuurwapen) uit een voertuig. Model: "..vehicleInfo.name..", kenteken: "..vehicleInfo.plate..", locatie: "..streetLabel
+            else
+                msg = "Schoten gelost uit een voertuig. Model: "..vehicleInfo.name..", kenteken: "..vehicleInfo.plate..", locatie: "..streetLabel
+            end
+        else
+            if isAutomatic then
+                blipText = "Melding: Schoten gelost (automatisch)"
+                blipSprite = 313
+                msg = "Schoten gelost (automatisch vuurwapen). Locatie: "..streetLabel
+            else
+                msg = "Schoten gelost. Locatie: "..streetLabel
+            end
+        end
+        TriggerEvent("chatMessage", "MELDING", "error", msg)
+        PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
+        local transG = 250
+        local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
+        SetBlipSprite(blip, blipSprite)
+        SetBlipColour(blip, 0)
+        SetBlipDisplay(blip, 4)
+        SetBlipAlpha(blip, transG)
+        SetBlipScale(blip, 0.8)
+        SetBlipAsShortRange(blip, false)
+        BeginTextCommandSetBlipName('STRING')
+        AddTextComponentString(blipText)
+        EndTextCommandSetBlipName(blip)
+        while transG ~= 0 do
+            Wait(180 * 4)
+            transG = transG - 1
+            SetBlipAlpha(blip, transG)
+            if transG == 0 then
+                SetBlipSprite(blip, 2)
+                RemoveBlip(blip)
+                return
+            end
+        end
+    end
+end)
+
+RegisterNetEvent('police:client:VehicleCall')
+AddEventHandler('police:client:VehicleCall', function(coords, msg)
+    if PlayerJob.name == 'police' and PlayerJob.onduty then
+        TriggerEvent("chatMessage", "MELDING", "error", msg)
+        PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
+        local transG = 250
+        local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
+        SetBlipSprite(blip, 380)
+        SetBlipColour(blip, 1)
+        SetBlipDisplay(blip, 4)
+        SetBlipAlpha(blip, transG)
+        SetBlipScale(blip, 1.0)
+        SetBlipAsShortRange(blip, false)
+        BeginTextCommandSetBlipName('STRING')
+        AddTextComponentString("Melding: Voertuig inbraak")
+        EndTextCommandSetBlipName(blip)
+        while transG ~= 0 do
+            Wait(180 * 4)
+            transG = transG - 1
+            SetBlipAlpha(blip, transG)
+            if transG == 0 then
+                SetBlipSprite(blip, 2)
+                RemoveBlip(blip)
+                return
+            end
+        end
+    end
+end)
+
+RegisterNetEvent('police:client:HouseRobberyCall')
+AddEventHandler('police:client:HouseRobberyCall', function(coords, msg)
+    if PlayerJob.name == 'police' and PlayerJob.onduty then
+        TriggerEvent("chatMessage", "MELDING", "error", msg)
+        PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
+        local transG = 250
+        local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
+        SetBlipSprite(blip, 411)
+        SetBlipColour(blip, 1)
+        SetBlipDisplay(blip, 4)
+        SetBlipAlpha(blip, transG)
+        SetBlipScale(blip, 0.7)
+        SetBlipAsShortRange(blip, false)
+        BeginTextCommandSetBlipName('STRING')
+        AddTextComponentString("Melding: Inbraak huis")
+        EndTextCommandSetBlipName(blip)
+        while transG ~= 0 do
+            Wait(180 * 4)
+            transG = transG - 1
+            SetBlipAlpha(blip, transG)
+            if transG == 0 then
+                SetBlipSprite(blip, 2)
+                RemoveBlip(blip)
+                return
+            end
+        end
+    end
+end)
+
+RegisterNetEvent('112:client:SendPoliceAlert')
+AddEventHandler('112:client:SendPoliceAlert', function(notifyType, msg, type, blipSettings)
+    if PlayerJob.name == 'police' and PlayerJob.onduty then
+        if notifyType == "flagged" then
+            TriggerEvent("chatMessage", "MELDING", "error", msg)
+            RadarSound()
+        elseif notifyType == "player" then
+            PlaySound(-1, "Event_Start_Text", "GTAO_FM_Events_Soundset", 0, 0, 1)
+        else
+            PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
+            TriggerEvent("chatMessage", "112-MELDING", "error", msg)
+        end
+    
+        if blipSettings ~= nil then
+            local transG = 250
+            local blip = AddBlipForCoord(blipSettings.x, blipSettings.y, blipSettings.z)
+            SetBlipSprite(blip, blipSettings.sprite)
+            SetBlipColour(blip, blipSettings.color)
+            SetBlipDisplay(blip, 4)
+            SetBlipAlpha(blip, transG)
+            SetBlipScale(blip, blipSettings.scale)
+            SetBlipAsShortRange(blip, false)
+            BeginTextCommandSetBlipName('STRING')
+            AddTextComponentString(blipSettings.text)
+            EndTextCommandSetBlipName(blip)
+            while transG ~= 0 do
+                Wait(180 * 4)
+                transG = transG - 1
+                SetBlipAlpha(blip, transG)
+                if transG == 0 then
+                    SetBlipSprite(blip, 2)
+                    RemoveBlip(blip)
+                    return
+                end
+            end
+        end
+    end
+end)
+
 RegisterNetEvent('police:client:PoliceAlertMessage')
 AddEventHandler('police:client:PoliceAlertMessage', function(msg, coords, blipType)
-    PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
-    TriggerEvent("chatMessage", "112-MELDING", "error", msg)
-    local transG = 100
-    local blip = AddBlipForRadius(coords.x, coords.y, coords.z, 100.0)
-    SetBlipSprite(blip, 9)
-    SetBlipColour(blip, 1)
-    SetBlipAlpha(blip, transG)
-    SetBlipAsShortRange(blip, false)
-    BeginTextCommandSetBlipName('STRING')
-    AddTextComponentString("112 - Verdachte situatie "..blipType)
-    EndTextCommandSetBlipName(blip)
-    while transG ~= 0 do
-        Wait(180 * 4)
-        transG = transG - 1
+    if PlayerJob.name == 'police' and PlayerJob.onduty then
+        PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
+        TriggerEvent("chatMessage", "112-MELDING", "error", msg)
+        local transG = 100
+        local blip = AddBlipForRadius(coords.x, coords.y, coords.z, 100.0)
+        SetBlipSprite(blip, 9)
+        SetBlipColour(blip, 1)
         SetBlipAlpha(blip, transG)
-        if transG == 0 then
-            SetBlipSprite(blip, 2)
-            RemoveBlip(blip)
-            return
+        SetBlipAsShortRange(blip, false)
+        BeginTextCommandSetBlipName('STRING')
+        AddTextComponentString("112 - Verdachte situatie "..blipType)
+        EndTextCommandSetBlipName(blip)
+        while transG ~= 0 do
+            Wait(180 * 4)
+            transG = transG - 1
+            SetBlipAlpha(blip, transG)
+            if transG == 0 then
+                SetBlipSprite(blip, 2)
+                RemoveBlip(blip)
+                return
+            end
         end
     end
 end)

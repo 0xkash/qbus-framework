@@ -48,6 +48,11 @@ Citizen.CreateThread(function()
     end
 end)
 
+RegisterNetEvent('QBCore:Client:OnJobUpdate')
+AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
+    PlayerJob = JobInfo
+end)
+
 RegisterNUICallback('getMessages', function(data, cb)
     local chats = {}
     for k, v in pairs(messages) do
@@ -250,10 +255,12 @@ end)
 
 RegisterNetEvent('qb-phone:client:addPoliceAlert')
 AddEventHandler('qb-phone:client:addPoliceAlert', function(alertData)
-    SendNUIMessage({
-        task = "newPoliceAlert",
-        alert = alertData,
-    })
+    if PlayerJob.name == 'police' and PlayerJob.onduty then 
+        SendNUIMessage({
+            task = "newPoliceAlert",
+            alert = alertData,
+        })
+    end
 end)
 
 RegisterNUICallback('setAlertWaypoint', function(data)
@@ -306,7 +313,7 @@ end)
 
 Citizen.CreateThread(function()
     while true do
-        Citizen.Wait(60 * 1000 * 3)
+        Citizen.Wait(60 * 1000 * 5)
         if isLoggedIn then
             QBCore.Functions.TriggerCallback('qb-phone:server:getUserContacts', function(result)
                 playerContacts = result

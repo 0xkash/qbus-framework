@@ -128,8 +128,10 @@ end)
 
 RegisterNetEvent('police:client:removeObject')
 AddEventHandler('police:client:removeObject', function(objectId)
-    DeleteObject(ObjectList[objectId].object)
-    ObjectList[objectId] = nil
+    if PlayerJob.name == "police" then 
+        DeleteObject(ObjectList[objectId].object)
+        ObjectList[objectId] = nil
+    end
 end)
 
 RegisterNetEvent('police:client:spawnObject')

@@ -33,11 +33,16 @@ Citizen.CreateThread(function()
         if IsPedInAnyVehicle(GetPlayerPed(-1), false) and GetPedInVehicleSeat(GetVehiclePedIsIn(GetPlayerPed(-1), true), -1) == GetPlayerPed(-1) and QBCore ~= nil then
             local plate = GetVehicleNumberPlateText(GetVehiclePedIsIn(GetPlayerPed(-1), true))
             if LastVehicle ~= GetVehiclePedIsIn(GetPlayerPed(-1), false) then
-                if HasKey then
-                    SetVehicleEngineOn(veh, true, false, true)
-                else
-                    SetVehicleEngineOn(veh, false, false, true)
-                end
+                QBCore.Functions.TriggerCallback('vehiclekeys:CheckHasKey', function(result)
+                    if result then
+                        HasKey = true
+                        SetVehicleEngineOn(veh, true, false, true)
+                    else
+                        HasKey = false
+                        SetVehicleEngineOn(veh, false, false, true)
+                    end
+                    LastVehicle = GetVehiclePedIsIn(GetPlayerPed(-1), false)
+                end, plate)
             end
         end
 

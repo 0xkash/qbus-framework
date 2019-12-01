@@ -298,6 +298,14 @@ Config.Items = {
             type = "item",
             slot = 15,
         },
+        [16] = {
+            name = "radio",
+            price = 0,
+            amount = 50,
+            info = {},
+            type = "item",
+            slot = 16,
+        },
     }
 }
 

@@ -92,7 +92,9 @@ QBCore.Functions.Notify = function(text, textype, length) -- [text] = message, [
 end
 
 QBCore.Functions.TriggerCallback = function(name, cb, ...)
-    QBCore.ServerCallbacks[name] = cb
+	if QBCore.ServerCallbacks[name] == nil then 
+		QBCore.ServerCallbacks[name] = cb
+	end
     TriggerServerEvent("QBCore:Server:TriggerCallback", name, ...)
 end
 

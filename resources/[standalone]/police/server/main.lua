@@ -473,10 +473,12 @@ AddEventHandler('police:server:SendPoliceEmergencyAlert', function(streetLabel, 
         description = "Noodknop ingedrukt door ".. callsign .. " bij "..streetLabel,
     }
     for k, Player in pairs(players) do
-		if ((Player.PlayerData.job.name == "police" or Player.PlayerData.job.name == "ambulance") and Player.PlayerData.job.onduty) then
-            TriggerClientEvent("police:client:PoliceEmergencyAlert", k, callsign, streetLabel, coords)
-            TriggerClientEvent("qb-phone:client:addPoliceAlert", k, alertData)
-		end
+        if Player ~= nil then 
+            if ((Player.PlayerData.job.name == "police" or Player.PlayerData.job.name == "ambulance") and Player.PlayerData.job.onduty) then
+                TriggerClientEvent("police:client:PoliceEmergencyAlert", Player.PlayerData.source, callsign, streetLabel, coords)
+                TriggerClientEvent("qb-phone:client:addPoliceAlert", Player.PlayerData.source, alertData)
+            end
+        end
     end
 end)
 

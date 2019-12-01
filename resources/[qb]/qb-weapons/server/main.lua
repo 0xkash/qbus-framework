@@ -74,12 +74,15 @@ end)
 QBCore.Functions.CreateCallback("weapon:server:GetWeaponAmmo", function(source, cb, ammotype)
     local Player = QBCore.Functions.GetPlayer(source)
     local ammotype = tostring(ammotype):upper()
-    if WeaponAmmo[Player.PlayerData.citizenid] ~= nil and next(WeaponAmmo[Player.PlayerData.citizenid]) ~= nil then
-        local amount = tonumber(WeaponAmmo[Player.PlayerData.citizenid][ammotype]) ~= 0 and tonumber(WeaponAmmo[Player.PlayerData.citizenid][ammotype]) or 0
-        cb(amount)
-    else
-        cb(0)
+    if Player ~= nil then 
+        if WeaponAmmo[Player.PlayerData.citizenid] ~= nil and next(WeaponAmmo[Player.PlayerData.citizenid]) ~= nil then
+            local amount = tonumber(WeaponAmmo[Player.PlayerData.citizenid][ammotype]) ~= 0 and tonumber(WeaponAmmo[Player.PlayerData.citizenid][ammotype]) or 0
+            cb(amount)
+        else
+            cb(0)
+        end
     end
+    cb(0)
 end)
 
 QBCore.Functions.CreateUseableItem("pistol_ammo", function(source, item)
