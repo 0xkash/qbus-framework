@@ -125,6 +125,6 @@ AddEventHandler('qb-clothing:server:GiveStarterItems', function()
             info.birthdate = Player.PlayerData.charinfo.birthdate
             info.type = "A1-A2-A | AM-B | C1-C-CE"
         end
-        Player.Functions.AddItem(v.item, v.amount, false, info)
+        Player.Functions.AddItem(v.item, 1, false, info)
     end
 end)
