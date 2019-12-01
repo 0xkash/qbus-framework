@@ -216,7 +216,7 @@ end)
 Citizen.CreateThread(function()
     while true do
 
-        if isLoggedIn then
+        -- if isLoggedIn then
 
             local ped = GetPlayerPed(-1)
             local pos = GetEntityCoords(ped)
@@ -259,7 +259,7 @@ Citizen.CreateThread(function()
                 Citizen.Wait(2000)
             end
 
-        end
+        -- end
 
         Citizen.Wait(3)
     end
@@ -499,14 +499,14 @@ end)
 
 function enableCam()
     -- Camera
-    local x,y,z = table.unpack(GetEntityCoords(GetPlayerPed(-1)))
+    local coords = GetOffsetFromEntityInWorldCoords(GetPlayerPed(-1), 0, 2.0, 0)
     RenderScriptCams(false, false, 0, 1, 0)
     DestroyCam(cam, false)
     if(not DoesCamExist(cam)) then
         cam = CreateCam('DEFAULT_SCRIPTED_CAMERA', true)
         SetCamActive(cam, true)
         RenderScriptCams(true, false, 0, true, true)
-        SetCamCoord(cam, x, y+3.0, z+0.3)
+        SetCamCoord(cam, coords.x, coords.y, coords.z + 0.5)
         SetCamRot(cam, 0.0, 0.0, GetEntityHeading(GetPlayerPed(-1)) + 180)
     end
     
@@ -517,16 +517,19 @@ end
 
 RegisterNUICallback('setupCam', function(data)
     local value = data.value
-    local x,y,z = table.unpack(GetEntityCoords(GetPlayerPed(-1)))
 
     if value == 1 then
-        SetCamCoord(cam, x+0.3, y+1.0, z+0.5)
+        local coords = GetOffsetFromEntityInWorldCoords(GetPlayerPed(-1), 0, 0.75, 0)
+        SetCamCoord(cam, coords.x, coords.y, coords.z + 0.65)
     elseif value == 2 then
-        SetCamCoord(cam, x+0.3, y+1.0, z+0.2)
+        local coords = GetOffsetFromEntityInWorldCoords(GetPlayerPed(-1), 0, 1.0, 0)
+        SetCamCoord(cam, coords.x, coords.y, coords.z + 0.2)
     elseif value == 3 then
-        SetCamCoord(cam, x+0.3, y+1.0, z-0.5)
+        local coords = GetOffsetFromEntityInWorldCoords(GetPlayerPed(-1), 0, 1.0, 0)
+        SetCamCoord(cam, coords.x, coords.y, coords.z + -0.5)
     else
-        SetCamCoord(cam, x+0.5, y+2.5, z+0.3)
+        local coords = GetOffsetFromEntityInWorldCoords(GetPlayerPed(-1), 0, 2.0, 0)
+        SetCamCoord(cam, coords.x, coords.y, coords.z + 0.5)
     end
 end)
 
