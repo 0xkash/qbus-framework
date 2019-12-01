@@ -54,6 +54,15 @@ function closeRadial(bool)
     inRadialMenu = bool
 end
 
+function getNearestVeh()
+    local pos = GetEntityCoords(GetPlayerPed(-1))
+    local entityWorld = GetOffsetFromEntityInWorldCoords(GetPlayerPed(-1), 0.0, 20.0, 0.0)
+
+    local rayHandle = CastRayPointToPoint(pos.x, pos.y, pos.z, entityWorld.x, entityWorld.y, entityWorld.z, 10, GetPlayerPed(-1), 0)
+    local _, _, _, _, vehicleHandle = GetRaycastResult(rayHandle)
+    return vehicleHandle
+end
+
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(3)
@@ -100,16 +109,50 @@ AddEventHandler('qb-radialmenu:client:openDoor', function(data)
     if IsPedInAnyVehicle(ped, false) then
         closestVehicle = GetVehiclePedIsIn(ped)
     else
-        closestVehicle = QBCore.Functions.GetClosestVehicle(GetEntityCoords(ped), 3.0)
+        closestVehicle = getNearestVeh()
     end
 
     if closestVehicle ~= 0 then
-        if GetVehicleDoorAngleRatio(closestVehicle, door) > 0 then
-            SetVehicleDoorShut(closestVehicle, door, false)
+        if closestVehicle ~= GetVehiclePedIsIn(ped) then
+            local plate = GetVehicleNumberPlateText(closestVehicle)
+            if GetVehicleDoorAngleRatio(closestVehicle, door) > 0.0 then
+                if not IsVehicleSeatFree(closestVehicle, -1) then
+                    TriggerServerEvent('qb-radialmenu:trunk:server:Door', false, plate, door)
+                else
+                    SetVehicleDoorShut(closestVehicle, door, false)
+                end
+            else
+                if not IsVehicleSeatFree(closestVehicle, -1) then
+                    TriggerServerEvent('qb-radialmenu:trunk:server:Door', true, plate, door)
+                else
+                    SetVehicleDoorOpen(closestVehicle, door, false, false)
+                end
+            end
         else
-            SetVehicleDoorOpen(closestVehicle, door, false, false)
+            if GetVehicleDoorAngleRatio(closestVehicle, door) > 0.0 then
+                SetVehicleDoorShut(closestVehicle, door, false)
+            else
+                SetVehicleDoorOpen(closestVehicle, door, false, false)
+            end
         end
     else
         QBCore.Functions.Notify('Er is geen voertuig te bekennen...', 'error', 2500)
+    end
+end)
+
+RegisterNetEvent('qb-radialmenu:trunk:client:Door')
+AddEventHandler('qb-radialmenu:trunk:client:Door', function(plate, door, open)
+    local veh = GetVehiclePedIsIn(GetPlayerPed(-1))
+
+    if veh ~= 0 then
+        local pl = GetVehicleNumberPlateText(veh)
+
+        if pl == plate then
+            if open then
+                SetVehicleDoorOpen(veh, door, false, false)
+            else
+                SetVehicleDoorShut(veh, door, false)
+            end
+        end
     end
 end)

@@ -34,9 +34,18 @@ end
 
 local cam = nil
 
+function getNearestVeh()
+    local pos = GetEntityCoords(GetPlayerPed(-1))
+    local entityWorld = GetOffsetFromEntityInWorldCoords(GetPlayerPed(-1), 0.0, 20.0, 0.0)
+
+    local rayHandle = CastRayPointToPoint(pos.x, pos.y, pos.z, entityWorld.x, entityWorld.y, entityWorld.z, 10, GetPlayerPed(-1), 0)
+    local _, _, _, _, vehicleHandle = GetRaycastResult(rayHandle)
+    return vehicleHandle
+end
+
 function TrunkCam(bool)
     local ped = GetPlayerPed(-1)
-    local vehicle = GetClosestVehicle(GetEntityCoords(ped), 5.0, 0, 70)
+    local vehicle = getNearestVeh()
     local drawPos = GetOffsetFromEntityInWorldCoords(vehicle, 0, -5.5, 0)
 
     local vehHeading = GetEntityHeading(vehicle)
@@ -51,23 +60,6 @@ function TrunkCam(bool)
             SetCamRot(cam, -2.5, 0.0, vehHeading, 0.0)
             RenderScriptCams(true, false, 0, true, true)
         end
-        Citizen.CreateThread(function()
-            while true do
-                local ped = GetPlayerPed(-1)
-                local vehicle = GetClosestVehicle(GetEntityCoords(ped), 5.0, 0, 70)
-                local drawPos = GetOffsetFromEntityInWorldCoords(vehicle, 0, -5.5, 0)
-            
-                local vehHeading = GetEntityHeading(vehicle)
-        
-                if cam ~= nil then
-                    SetCamRot(cam, -2.5, 0.0, vehHeading, 0.0)
-                else
-                    break
-                end
-        
-                Citizen.Wait(3)
-            end
-        end)
     else
         RenderScriptCams(false, false, 0, 1, 0)
         DestroyCam(cam, false)
@@ -75,10 +67,29 @@ function TrunkCam(bool)
     end
 end
 
+Citizen.CreateThread(function()
+    while true do
+        local ped = GetPlayerPed(-1)
+        local vehicle = getNearestVeh()
+        local drawPos = GetOffsetFromEntityInWorldCoords(vehicle, 0, -5.5, 0)
+    
+        local vehHeading = GetEntityHeading(vehicle)
+
+        if cam ~= nil then
+            SetCamRot(cam, -2.5, 0.0, vehHeading, 0.0)
+            SetCamCoord(cam, drawPos.x, drawPos.y, drawPos.z + 2)
+        else
+            Citizen.Wait(1000)
+        end
+
+        Citizen.Wait(1)
+    end
+end)
+
 RegisterNetEvent('qb-smallresources:trunk:client:getInTrunk')
 AddEventHandler('qb-smallresources:trunk:client:getInTrunk', function()
     local ped = GetPlayerPed(-1)
-    local closestVehicle = GetClosestVehicle(GetEntityCoords(ped), 5.0, 0, 70)
+    local closestVehicle = getNearestVeh()
     local plate = GetVehicleNumberPlateText(closestVehicle)
 
     QBCore.Functions.TriggerCallback('qb-smallresources:trunk:server:getTrunkBusy', function(isBusy)
@@ -104,6 +115,8 @@ AddEventHandler('qb-smallresources:trunk:client:getInTrunk', function()
             else
                 QBCore.Functions.Notify('Je ligt al in de kofferbak', 'error', 2500)
             end
+        else
+            QBCore.Functions.Notify('Geen voertuig te bekennen..', 'error', 2500)
         end
     end, plate)
 end)
@@ -113,7 +126,7 @@ Citizen.CreateThread(function()
 
         if inTrunk then
             local ped = GetPlayerPed(-1)
-            local vehicle = GetClosestVehicle(GetEntityCoords(ped), 5.0, 0, 70)
+            local vehicle = getNearestVeh()
             local drawPos = GetOffsetFromEntityInWorldCoords(vehicle, 0, -2.5, 0)
             local plate = GetVehicleNumberPlateText(vehicle)
 
@@ -137,12 +150,20 @@ Citizen.CreateThread(function()
             if GetVehicleDoorAngleRatio(vehicle, 5) > 0 then
                 DrawText3Ds(drawPos.x, drawPos.y, drawPos.z + 0.5, '[G] Kofferbak te sluiten')
                 if IsControlJustPressed(0, Keys["G"]) then
-                    SetVehicleDoorShut(vehicle, 5, false)
+                    if not IsVehicleSeatFree(vehicle, -1) then
+                        TriggerServerEvent('qb-radialmenu:trunk:server:Door', false, plate, 5)
+                    else
+                        SetVehicleDoorShut(vehicle, 5, false)
+                    end
                 end
             else
                 DrawText3Ds(drawPos.x, drawPos.y, drawPos.z + 0.5, '[G] Kofferbak te openen')
                 if IsControlJustPressed(0, Keys["G"]) then
-                    SetVehicleDoorOpen(vehicle, 5, false)
+                    if not IsVehicleSeatFree(vehicle, -1) then
+                        TriggerServerEvent('qb-radialmenu:trunk:server:Door', true, plate, 5)
+                    else
+                        SetVehicleDoorOpen(vehicle, 5, false, false)
+                    end
                 end
             end
         end
