@@ -10,69 +10,9 @@ Citizen.CreateThread(function()
     end
 end)
 
-    -- {
-    --     id    = 'givekey',
-    --     title = 'Conny Links',
-    --     icon = '#citizen',
-    --     type = 'client',
-    --     event = 'qb-houses:client:giveHouseKey',
-    --     shouldClose = true,
-    -- },
-
 local inRadialMenu = false
 
 function setupSubItems()
-    -- local closestPlayers = QBCore.Functions.GetPlayersFromCoords()
-    -- local closestHousePlayers = {}
-    -- local closestVehiclePlayers = {}
-
-    -- for k, v in pairs(closestPlayers) do
-    --     table.insert(closestHousePlayers, {
-    --         id = GetPlayerServerId(v),
-    --         title = GetPlayerName(PlayerId(v)),
-    --         icon = '#citizen',
-    --         type = 'client',
-    --         event = 'qb-houses:client:giveHouseKey',
-    --         shouldClose = true,
-    --     })
-
-    --     table.insert(closestVehiclePlayers, {
-    --         id = GetPlayerServerId(v),
-    --         title = GetPlayerName(PlayerId(v)),
-    --         icon = '#citizen',
-    --         type = 'client',
-    --         event = 'qb-houses:client:giveVehicleKey',
-    --         shouldClose = true,
-    --     })
-    -- end
-
-    -- if next(closestVehiclePlayers) ~= nil then
-    --     Config.MenuItems[3].items[1].items = closestVehiclePlayers
-    -- else
-    --     Config.MenuItems[3].items[1] = 
-    --     {
-    --         id    = 'givekey',
-    --         title = 'Geef Voertuig Sleutel',
-    --         icon = '#vehiclekey',
-    --         type = 'client',
-    --         event = 'qb-radialmenu:client:noPlayers',
-    --         shouldClose = true,
-    --     }
-    -- end
-
-    -- if next(closestHousePlayers) ~= nil then
-    --     Config.MenuItems[2].items[1].items[1].items = closestHousePlayers
-    -- else
-    --     Config.MenuItems[2].items[1].items[1] = 
-    --     {
-    --         id    = 'givehousekey',
-    --         title = 'Geef Huis Sleutel',
-    --         icon = '#vehiclekey',
-    --         type = 'client',
-    --         event = 'qb-radialmenu:client:noPlayers',
-    --         shouldClose = true,
-    --     }
-    -- end
     QBCore.Functions.GetPlayerData(function(PlayerData)
         if PlayerData.metadata["isdead"] then
             if PlayerData.job.name == "police" or PlayerData.job.name == "ambulance" then
@@ -109,6 +49,11 @@ function openRadial(bool)
     inRadialMenu = bool
 end
 
+function closeRadial(bool)    
+    SetNuiFocus(false, false)
+    inRadialMenu = bool
+end
+
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(3)
@@ -121,7 +66,7 @@ Citizen.CreateThread(function()
 end)
 
 RegisterNUICallback('closeRadial', function()
-    openRadial(false)
+    closeRadial()
 end)
 
 RegisterNUICallback('selectItem', function(data)

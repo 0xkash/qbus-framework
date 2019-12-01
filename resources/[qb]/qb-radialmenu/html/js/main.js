@@ -31,7 +31,7 @@ function createMenu(items) {
         menuItems   : items,
         onClick     : function(item) {
             if (item.shouldClose) {
-                $.post('http://qb-radialmenu/closeRadial')
+                QBRadialMenu.close();
             }
             
             if (item.event !== null) {
@@ -53,7 +53,7 @@ function createMenu(items) {
 $(document).on('keydown', function() {
     switch(event.keyCode) {
         case 27: // ESC
-            $.post('http://qb-radialmenu/closeRadial')
+            QBRadialMenu.close();
             break;
     }
 });
