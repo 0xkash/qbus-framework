@@ -557,7 +557,7 @@ function SetBedCam()
     loadAnimDict(inBedDict)
 
     TaskPlayAnim(player, inBedDict , inBedAnim, 8.0, 1.0, -1, 1, 0, 0, 0, 0 )
-    SetEntityHeading(player, bedOccupyingData.h + 180)
+    SetEntityHeading(player, bedOccupyingData.h)
 
     cam = CreateCam("DEFAULT_SCRIPTED_CAMERA", 1)
     SetCamActive(cam, true)

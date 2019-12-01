@@ -6,22 +6,21 @@ Config.Locations = {
     ["vehicle"] = { x = 294.578, y = -574.761, z = 43.179, h = 35.792},
     ["vehicledown"] = { x = 364.565, y = -591.97, z = 28.68, h = 336.130},
     ["beds"] = {
-        [1] = {x = 309.32, y = -577.41, z = 43.53, h = 242.0, taken = false, model = 1631638868 },
-        [2] = {x = 309.32, y = -577.41, z = 43.53, h = 74.5, taken = false, model = 1631638868}, 
-        [3] = {x = 307.78, y = -581.71, z = 43.53, h = 245.5, taken = false, model = 1631638868}, 
-        [4] = {x = 311.13, y = -582.89, z = 43.53, h = 244.5, taken = false, model = 1631638868}, 
-        [5] = {x = 313.96, y = -579.05, z = 43.53, h = 247.0, taken = false, model = 1631638868}, 
-        [6] = {x = 314.58, y = -584.09, z = 43.53, h = 245.5, taken = false, model = 1631638868}, 
-        [7] = {x = 317.74, y = -585.29, z = 43.53, h = 247.5, taken = false, model = 1631638868}, 
-        [8] = {x = 319.47, y = -581.04, z = 43.53, h = 243.5, taken = false, model = 1631638868}, 
-        [9] = {x = 324.12, y = -582.79, z = 43.53, h = 69.5, taken = false, model = 1631638868}, 
-        [10] = {x = 322.68, y = -587.15, z = 43.53, h = 68.0, taken = false, model = 1631638868}, 
+        [1] = {x = 309.32, y = -577.41, z = 43.53, h = 164.5, taken = false, model = 1631638868 },
+        [2] = {x = 309.32, y = -577.41, z = 43.53, h = 164.5, taken = false, model = 1631638868}, 
+        [3] = {x = 307.78, y = -581.71, z = 43.53, h = 164.5, taken = false, model = 1631638868}, 
+        [4] = {x = 311.13, y = -582.89, z = 43.53, h = 164.5, taken = false, model = 1631638868}, 
+        [5] = {x = 313.96, y = -579.05, z = 43.53, h = 164.5, taken = false, model = 1631638868}, 
+        [6] = {x = 314.58, y = -584.09, z = 43.53, h = 164.5, taken = false, model = 1631638868}, 
+        [7] = {x = 317.74, y = -585.29, z = 43.53, h = 164.5, taken = false, model = 1631638868}, 
+        [8] = {x = 319.47, y = -581.04, z = 43.53, h = 164.5, taken = false, model = 1631638868}, 
+        [9] = {x = 324.12, y = -582.79, z = 43.53, h = 164.5, taken = false, model = 1631638868}, 
+        [10] = {x = 322.68, y = -587.15, z = 43.53, h = 164.5, taken = false, model = 1631638868}, 
     }
 }
 
 Config.Vehicles = {
-    ["ambulance"] = "Ambulance",
-    ["firetruck"] = "Brandweer",
+    ["asprinter"] = "Mercedes-Benz Sprinter Otaris Light 2018",
 }
 
 Config.DeathTime = 300

@@ -545,6 +545,8 @@ Config.Stores = {
 
 Config.ClothingRooms = {
     [1] = {requiredJob = "police", x = 454.45, y = -988.93, z = 30.68, cameraLocation = {x = 454.51, y = -990.36, z = 30.68, h = 3.5}},
+    [2] = {requiredJob = "doctor", x = 300.16, y = -598.93, z = 43.28, cameraLocation = {x = 301.09, y = -596.09, z = 43.28, h = 157.5}},
+    [3] = {requiredJob = "ambulance", x = 300.16, y = -598.93, z = 43.28, cameraLocation = {x = 301.09, y = -596.09, z = 43.28, h = 157.5}},
 }
 
 Config.Outfits = {

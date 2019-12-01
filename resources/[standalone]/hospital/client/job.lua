@@ -4,32 +4,6 @@ Citizen.CreateThread(function()
         if isLoggedIn then
             if PlayerJob.name == "doctor" or PlayerJob.name == "ambulance" then
                 local pos = GetEntityCoords(GetPlayerPed(-1))
-                if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["clothing"].x, Config.Locations["clothing"].y, Config.Locations["clothing"].z, true) < 5) then
-                    if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["clothing"].x, Config.Locations["clothing"].y, Config.Locations["clothing"].z, true) < 1.5) then
-                        QBCore.Functions.DrawText3D(Config.Locations["clothing"].x, Config.Locations["clothing"].y, Config.Locations["clothing"].z, "~g~E~w~ - Omkleden | ~g~H~w~ - Outfit opslaan | ~g~G~w~ - Outfits")
-                        if IsControlJustReleased(0, Keys["E"]) then
-                            if PlayerData.charinfo.gender == 0 then
-                                TriggerEvent("maleclothesstart", false)
-                            else
-                                TriggerEvent("femaleclothesstart", false)
-                            end
-                            DoScreenFadeIn(50)
-                        elseif IsControlJustReleased(0, Keys["H"]) then
-                            DisplayOnscreenKeyboard(1, "FMMC_KEY_TIP9N", "", "", "", "", "", 20)
-                            while UpdateOnscreenKeyboard() ~= 1 and UpdateOnscreenKeyboard() ~= 2 do
-                                Citizen.Wait(7)
-                            end
-                            local outfitName = GetOnscreenKeyboardResult()
-                            TriggerEvent("clothes:client:SaveOutfit", false, outfitName)
-                        elseif IsControlJustPressed(0, Keys["G"]) then
-                            MenuOutfits()
-                            Menu.hidden = not Menu.hidden
-                        end
-                        Menu.renderGUI()
-                    elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["clothing"].x, Config.Locations["clothing"].y, Config.Locations["clothing"].z, true) < 4.5) then
-                        QBCore.Functions.DrawText3D(Config.Locations["clothing"].x, Config.Locations["clothing"].y, Config.Locations["clothing"].z, "Omkleden")
-                    end
-                end
         
                 if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["duty"].x, Config.Locations["duty"].y, Config.Locations["duty"].z, true) < 5) then
                     if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["duty"].x, Config.Locations["duty"].y, Config.Locations["duty"].z, true) < 1.5) then

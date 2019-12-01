@@ -216,7 +216,7 @@ end)
 Citizen.CreateThread(function()
     while true do
 
-        if isLoggedIn then
+        -- if isLoggedIn then
 
             local ped = GetPlayerPed(-1)
             local pos = GetEntityCoords(ped)
@@ -259,7 +259,7 @@ Citizen.CreateThread(function()
                 Citizen.Wait(2000)
             end
 
-        end
+        -- end
 
         Citizen.Wait(3)
     end
@@ -498,7 +498,6 @@ RegisterNUICallback("PlaySound", function(data, cb)
 end)
 
 function enableCam()
-    SetEntityHeading(GetPlayerPed(-1), heading)
     -- Camera
     RenderScriptCams(false, false, 0, 1, 0)
     DestroyCam(cam, false)
@@ -506,14 +505,15 @@ function enableCam()
         cam = CreateCam('DEFAULT_SCRIPTED_CAMERA', true)
         SetCamCoord(cam, GetEntityCoords(GetPlayerPed(-1)))
         SetCamRot(cam, 0.0, 0.0, 0.0)
-        SetCamActive(cam,  true)
-        RenderScriptCams(true,  false,  0,  true,  true)
+        SetCamActive(cam, true)
+        RenderScriptCams(true, false, 0, true, true)
         SetCamCoord(cam, GetEntityCoords(GetPlayerPed(-1)))
     end
+    
     local x,y,z = table.unpack(GetEntityCoords(GetPlayerPed(-1)))
     if customCamLocation == nil then
         SetCamCoord(cam, x+0.5, y+2.5, z+0.3)
-        SetCamRot(cam, 0.0, 0.0, 160.0)
+        SetCamRot(cam, 0.0, 0.0, GetEntityHeading(GetPlayerPed(-1)) + 180)
     else
         SetCamCoord(cam, customCamLocation.x, customCamLocation.y, customCamLocation.z)
     end
