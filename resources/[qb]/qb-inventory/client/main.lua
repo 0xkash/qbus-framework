@@ -453,7 +453,7 @@ RegisterNUICallback("CloseInventory", function(data, cb)
     elseif CurrentStash ~= nil then
         TriggerServerEvent("inventory:server:SaveInventory", "stash", CurrentStash)
         CurrentStash = nil
-    elseif CurrentDrop ~= 0 then
+    else
         TriggerServerEvent("inventory:server:SaveInventory", "drop", CurrentDrop)
         CurrentDrop = 0
     end

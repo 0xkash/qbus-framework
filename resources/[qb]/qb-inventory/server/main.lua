@@ -198,11 +198,11 @@ AddEventHandler('inventory:server:SaveInventory', function(type, id)
 		SaveStashItems(id, Stashes[id].items)
 	elseif type == "drop" then
 		if Drops[id] ~= nil then
-			Drops[id].isOpen = false
-			if next(Drops[id].items) == nil then
+			if Drops[id].items == nil or next(Drops[id].items) == nil then
 				Drops[id] = nil
 				TriggerClientEvent("inventory:client:RemoveDropItem", -1, id)
 			end
+			Drops[id].isOpen = false
 		end
 	end
 end)
