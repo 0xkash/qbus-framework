@@ -230,7 +230,7 @@ Citizen.CreateThread(function()
         Citizen.Wait(1)
         if DropsNear ~= nil then
             for k, v in pairs(DropsNear) do
-                if v ~= nil then
+                if DropsNear[k] ~= nil then
                     DrawMarker(20, v.coords.x, v.coords.y, v.coords.z - 0.1, 0.0, 0.0, 0.0, 180.0, 0.0, 0.0, 0.5, 0.5, 0.5, 209, 165, 33, 100, false, true, 2, false, false, false, false)
                 end
             end
@@ -240,24 +240,26 @@ end)
 
 Citizen.CreateThread(function()
     while true do
-        if next(Drops) ~= nil then
+        if Drops ~= nil and next(Drops) ~= nil then
             local pos = GetEntityCoords(GetPlayerPed(-1), true)
             for k, v in pairs(Drops) do
-                if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, v.coords.x, v.coords.y, v.coords.z, true) < 7.5 then
-                    DropsNear[k] = v
-                    if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, v.coords.x, v.coords.y, v.coords.z, true) < 1.5 then
-                        CurrentDrop = k
+                if Drops[k] ~= nil then 
+                    if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, v.coords.x, v.coords.y, v.coords.z, true) < 7.5 then
+                        DropsNear[k] = v
+                        if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, v.coords.x, v.coords.y, v.coords.z, true) < 2 then
+                            CurrentDrop = k
+                        else
+                            CurrentDrop = nil
+                        end
                     else
-                        CurrentDrop = nil
+                        DropsNear[k] = nil
                     end
-                else
-                    DropsNear[k] = nil
                 end
             end
         else
             DropsNear = {}
         end
-        Citizen.Wait(1000)
+        Citizen.Wait(500)
     end
 end)
 
@@ -271,6 +273,12 @@ AddEventHandler("inventory:client:OpenInventory", function(inventory, other)
     if not IsEntityDead(GetPlayerPed(-1)) then
         ToggleHotbar(false)
         SetNuiFocus(true, true)
+        if other ~= nil and other.name == "none-inv" then
+            CurrentDrop = 0
+            CurrentVehicle = nil
+            CurrentGlovebox = nil
+            CurrentStash = nil
+        end
         SendNUIMessage({
             action = "open",
             inventory = inventory,
@@ -359,7 +367,7 @@ end)
 RegisterNetEvent("inventory:client:AddDropItem")
 AddEventHandler("inventory:client:AddDropItem", function(dropId, player)
     local coords = GetEntityCoords(GetPlayerPed(GetPlayerFromServerId(player)))
-    local forward = GetEntityForwardVector(GetPlayerPed(-1))
+    local forward = GetEntityForwardVector(GetPlayerPed(GetPlayerFromServerId(player)))
 	local x, y, z = table.unpack(coords + forward * 0.5)
     Drops[dropId] = {
         id = dropId,
@@ -374,7 +382,6 @@ end)
 RegisterNetEvent("inventory:client:RemoveDropItem")
 AddEventHandler("inventory:client:RemoveDropItem", function(dropId)
     Drops[dropId] = nil
-    CurrentDrop = 0
 end)
 
 RegisterNetEvent("inventory:client:DropItemAnim")
@@ -439,7 +446,7 @@ RegisterNUICallback("CloseInventory", function(data, cb)
     elseif CurrentStash ~= nil then
         TriggerServerEvent("inventory:server:SaveInventory", "stash", CurrentStash)
         CurrentStash = nil
-    else
+    elseif CurrentDrop ~= 0 then
         TriggerServerEvent("inventory:server:SaveInventory", "drop", CurrentDrop)
         CurrentDrop = 0
     end
