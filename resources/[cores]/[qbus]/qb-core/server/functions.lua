@@ -58,7 +58,15 @@ QBCore.Functions.GetPlayerByCitizenId = function(citizenid)
 end
 
 QBCore.Functions.GetPlayers = function()
-	return QBCore.Players
+	local players = {}
+	if QBCore.Players ~= nil then 
+		for k, v in pairs(QBCore.Players) do
+			if (QBCore.Players[k] ~= nil) then
+				table.insert(players, QBCore.Players[k])
+			end
+		end
+	end
+	return players
 end
 
 QBCore.Functions.CreateCallback = function(name, cb)
