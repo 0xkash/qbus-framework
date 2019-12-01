@@ -8,13 +8,11 @@ AddEventHandler('bank:withdraw', function(amount)
     local src = source
     local ply = QBCore.Functions.GetPlayer(src)
     local bankamount = ply.PlayerData.money["bank"]
+    
     if bankamount >= amount then
-        ply.Functions.RemoveMoney('bank', amount)
-        TriggerEvent("qb-log:server:CreateLog", "banking", "Withdraw", "red", "**"..GetPlayerName(src) .. "** heeft €"..amount.." opgenomen van zijn bank.")
-        ply.Functions.AddMoney('cash', amount)
-      else
-        TriggerClientEvent('QBCore:Notify', src, 'Je hebt niet voldoende geld op je bank..', 'error')
-      end
+      ply.Functions.RemoveMoney('bank', amount)
+      TriggerEvent("qb-log:server:CreateLog", "banking", "Withdraw", "red", "**"..GetPlayerName(src) .. "** heeft €"..amount.." opgenomen van zijn bank.")
+      ply.Functions.AddMoney('cash', amount)
     else
       TriggerClientEvent('QBCore:Notify', src, 'Je hebt niet voldoende geld op je bank..', 'error')
     end
