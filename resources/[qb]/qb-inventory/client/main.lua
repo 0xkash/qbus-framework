@@ -95,12 +95,39 @@ Citizen.CreateThread(function()
                     if CurrentVehicle ~= nil then
                         local maxweight = 0
                         local slots = 0
-                        if QBCore.Shared.VehicleModels[GetEntityModel(curVeh)] ~= nil then
-                            maxweight = QBCore.Shared.VehicleModels[GetEntityModel(curVeh)]["trunkspace"]
-                            slots = QBCore.Shared.VehicleModels[GetEntityModel(curVeh)]["trunkslots"]
+                        if GetVehicleClass(curVeh) == 0 then
+                            maxweight = 38000
+                            slots = 30
+                        elseif GetVehicleClass(curVeh) == 1 then
+                            maxweight = 50000
+                            slots = 40
+                        elseif GetVehicleClass(curVeh) == 2 then
+                            maxweight = 75000
+                            slots = 50
+                        elseif GetVehicleClass(curVeh) == 3 then
+                            maxweight = 42000
+                            slots = 35
+                        elseif GetVehicleClass(curVeh) == 4 then
+                            maxweight = 38000
+                            slots = 30
+                        elseif GetVehicleClass(curVeh) == 5 then
+                            maxweight = 30000
+                            slots = 25
+                        elseif GetVehicleClass(curVeh) == 6 then
+                            maxweight = 30000
+                            slots = 25
+                        elseif GetVehicleClass(curVeh) == 7 then
+                            maxweight = 30000
+                            slots = 25
+                        elseif GetVehicleClass(curVeh) == 8 then
+                            maxweight = 15000
+                            slots = 15
+                        elseif GetVehicleClass(curVeh) == 9 then
+                            maxweight = 60000
+                            slots = 35
                         else
                             maxweight = 60000
-                            slots = 40
+                            slots = 35
                         end
                         local other = {
                             maxweight = maxweight,
