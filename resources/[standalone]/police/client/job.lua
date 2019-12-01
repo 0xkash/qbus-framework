@@ -201,6 +201,7 @@ end)
 RegisterNetEvent('police:client:SendEmergencyMessage')
 AddEventHandler('police:client:SendEmergencyMessage', function(message)
     local coords = GetEntityCoords(GetPlayerPed(-1))
+    
     TriggerServerEvent("police:server:SendEmergencyMessage", coords, message)
     TriggerEvent("police:client:CallAnim")
 end)
