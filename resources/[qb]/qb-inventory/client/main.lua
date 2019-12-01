@@ -441,6 +441,7 @@ RegisterNUICallback("CloseInventory", function(data, cb)
         CurrentStash = nil
         SetNuiFocus(false, false)
         inInventory = false
+        ClearPedTasks(GetPlayerPed(-1))
         return
     end
     if CurrentVehicle ~= nil then

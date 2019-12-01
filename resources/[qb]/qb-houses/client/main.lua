@@ -188,7 +188,7 @@ Citizen.CreateThread(function()
         local inRange = false
 
         if closesthouse ~= nil then
-            if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z, true) < 30)then
+            if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z, false) < 30)then
                 inRange = true
                 if hasKey then
                     -- ENTER HOUSE
@@ -207,7 +207,6 @@ Citizen.CreateThread(function()
                         end
                     end
 
-
                     if CurrentDoorBell ~= 0 then
                         if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.enter.x + POIOffsets.exit.x, Config.Houses[closesthouse].coords.enter.y + POIOffsets.exit.y, Config.Houses[closesthouse].coords.enter.z - Config.MinZOffset + POIOffsets.exit.z, true) < 1.5)then
                             DrawText3Ds(Config.Houses[closesthouse].coords.enter.x + POIOffsets.exit.x, Config.Houses[closesthouse].coords.enter.y + POIOffsets.exit.y, Config.Houses[closesthouse].coords.enter.z - Config.MinZOffset + POIOffsets.exit.z + 0.35, '~g~G~w~ - Om deur open te doen')
@@ -220,6 +219,7 @@ Citizen.CreateThread(function()
                     -- EXIT HOUSE
                     if inside then
                         if not entering then
+                            print(" ?????????????????????????????????")
                             if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.enter.x + POIOffsets.exit.x, Config.Houses[closesthouse].coords.enter.y + POIOffsets.exit.y, Config.Houses[closesthouse].coords.enter.z - Config.MinZOffset + POIOffsets.exit.z, true) < 1.5)then
                                 DrawText3Ds(Config.Houses[closesthouse].coords.enter.x + POIOffsets.exit.x, Config.Houses[closesthouse].coords.enter.y + POIOffsets.exit.y, Config.Houses[closesthouse].coords.enter.z - Config.MinZOffset + POIOffsets.exit.z, '~g~E~w~ - Om huis te verlaten')
                                 if IsControlJustPressed(0, Keys["E"]) then
@@ -516,6 +516,7 @@ function enterOwnedHouse(house)
     SetWeatherTypeNow('EXTRASUNNY')
     SetWeatherTypeNowPersist('EXTRASUNNY')
     NetworkOverrideClockTime(23, 0, 0)
+    print(" ENTERING FALSE BOI")
     entering = false
 end
 
