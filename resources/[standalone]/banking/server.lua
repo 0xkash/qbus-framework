@@ -9,8 +9,12 @@ AddEventHandler('bank:withdraw', function(amount)
     local ply = QBCore.Functions.GetPlayer(src)
 
     if ply.Functions.RemoveMoney('bank', amount) then
+      if ply.PlayerData.money.bank >= amount then
         TriggerEvent("qb-log:server:CreateLog", "banking", "Withdraw", "red", "**"..GetPlayerName(src) .. "** heeft €"..amount.." opgenomen van zijn bank.")
         ply.Functions.AddMoney('cash', amount)
+      else
+        TriggerClientEvent('QBCore:Notify', src, 'Je hebt niet voldoende geld op je bank..', 'error')
+      end
     else
       TriggerClientEvent('QBCore:Notify', src, 'Je hebt niet voldoende geld op je bank..', 'error')
     end
@@ -22,8 +26,8 @@ AddEventHandler('bank:deposit', function(amount)
     local ply = QBCore.Functions.GetPlayer(src)
 
     if ply.Functions.RemoveMoney('cash', amount) then
-        TriggerEvent("qb-log:server:CreateLog", "banking", "Deposit", "green", "**"..GetPlayerName(src) .. "** heeft €"..amount.." op zijn bank gezet.")
-        ply.Functions.AddMoney('bank', amount)
+      TriggerEvent("qb-log:server:CreateLog", "banking", "Deposit", "green", "**"..GetPlayerName(src) .. "** heeft €"..amount.." op zijn bank gezet.")
+      ply.Functions.AddMoney('bank', amount)
     else
       TriggerClientEvent('QBCore:Notify', src, 'Je hebt niet voldoende geld op zak..', 'error')
     end
