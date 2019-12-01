@@ -78,6 +78,7 @@ PermissionLevels = {
 }
 
 isNoclip = false
+isFreeze = false
 
 myPermissionRank = "user"
 
@@ -272,7 +273,15 @@ Citizen.CreateThread(function()
                 local target = GetPlayerServerId(currentPlayer)
                 TriggerServerEvent('qb-admin:server:revivePlayer', target)
             end
-            
+            if WarMenu.CheckBox("Noclip", isNoclip, function(checked) isNoclip = checked end) then
+                local target = GetPlayerServerId(currentPlayer)
+                TriggerServerEvent("qb-admin:server:togglePlayerNoclip", target)
+            end
+            if WarMenu.CheckBox("Freeze", isFreeze, function(checked) isFreeze = checked end) then
+                local target = GetPlayerServerId(currentPlayer)
+                TriggerServerEvent("qb-admin:server:Freeze", target, isFreeze)
+            end
+
             WarMenu.Display()
         elseif WarMenu.IsMenuOpened('teleportOptions') then
             if WarMenu.MenuButton('Goto', currentPlayer) then
@@ -301,10 +310,6 @@ Citizen.CreateThread(function()
             end
             WarMenu.Display()
         elseif WarMenu.IsMenuOpened('adminOptions') then
-            if WarMenu.CheckBox("Noclip", isNoclip, function(checked) isNoclip = checked end) then
-                local target = GetPlayerServerId(currentPlayer)
-                TriggerServerEvent("qb-admin:server:togglePlayerNoclip", target)
-            end
             if WarMenu.ComboBox('Ban lengte', bans, currentBanIndex, selectedBanIndex, function(currentIndex, selectedIndex)
                 currentBanIndex = currentIndex
                 selectedBanIndex = selectedIndex
@@ -363,20 +368,9 @@ AddEventHandler('qb-admin:client:bringTp', function(coords)
     SetEntityCoords(ped, coords.x, coords.y, coords.z)
 end)
 
+RegisterNetEvent('qb-admin:client:Freeze')
+AddEventHandler('qb-admin:client:Freeze', function(toggle)
+    local ped = GetPlayerPed(-1)
 
--- if WarMenu.MenuButton('Slay', currentPlayer) then
---     local target = GetPlayerPed(currentPlayer)
---     local ply = GetPlayerPed(-1)
---     SetEntityHealth(target, 0)
--- end
--- if WarMenu.MenuButton('Goto', currentPlayer) then
---     local target = GetPlayerPed(currentPlayer)
---     local ply = GetPlayerPed(-1)
---     SetEntityCoords(ply, GetEntityCoords(target))
--- end
--- if WarMenu.MenuButton('Bring', currentPlayer) then
---     local target = GetPlayerPed(currentPlayer)
---     local ply = GetPlayerPed(-1)
-
---     SetEntityCoords(target, GetEntityCoords(ply))
--- end
+    FreezeEntityPosition(ped, toggle)
+end)

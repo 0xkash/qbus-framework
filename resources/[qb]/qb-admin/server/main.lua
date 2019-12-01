@@ -30,6 +30,11 @@ AddEventHandler('qb-admin:server:kickPlayer', function(playerId, reason)
     end
 end)
 
+RegisterServerEvent('qb-admin:server:Freeze')
+AddEventHandler('qb-admin:server:Freeze', function(playerId, toggle)
+    TriggerClientEvent('qb-admin:client:Freeze', playerId, toggle)
+end)
+
 RegisterServerEvent('qb-admin:server:serverKick')
 AddEventHandler('qb-admin:server:serverKick', function(reason)
     local src = source
