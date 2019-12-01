@@ -44,7 +44,7 @@ AddEventHandler('qb-occasions:server:sellVehicle', function(vehiclePrice, vehicl
     local Player = QBCore.Functions.GetPlayer(src)
     QBCore.Functions.ExecuteSql("DELETE FROM `player_vehicles` WHERE `plate` = '"..vehicleData.plate.."' AND `vehicle` = '"..vehicleData.model.."'")
     QBCore.Functions.ExecuteSql("INSERT INTO `occasion_vehicles` (`seller`, `price`, `description`, `plate`, `model`, `mods`, `occasionId`) VALUES ('"..Player.PlayerData.citizenid.."', '"..vehiclePrice.."', '"..vehicleData.desc.."', '"..vehicleData.plate.."', '"..vehicleData.model.."', '"..json.encode(vehicleData.mods).."', '"..generateOID().."')")
-    TriggerEvent("qb-log:server:CreateLog", "vehicleshop", "Voertuig te koop", "red", "**"..GetPlayerName(src) .. "** heeft een " .. QBCore.Shared.VehicleModels[vehicleData.model]["name"] .. " te koop gezet voor "..vehiclePrice)
+    TriggerEvent("qb-log:server:CreateLog", "vehicleshop", "Voertuig te koop", "red", "**"..GetPlayerName(src) .. "** heeft een " .. vehicleData.model .. " te koop gezet voor "..vehiclePrice)
 
     TriggerClientEvent('qb-occasion:client:refreshVehicles', -1)
 end)
