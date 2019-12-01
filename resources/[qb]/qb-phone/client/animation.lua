@@ -1,6 +1,6 @@
 local myPedId = nil
 
-local phoneProp = 0
+phoneProp = 0
 local phoneModel = `prop_npc_phone_02`
 
 -- prop_cs_hand_radio
@@ -53,8 +53,8 @@ function newPhoneProp()
 	end
 	phoneProp = CreateObject(phoneModel, 1.0, 1.0, 1.0, 1, 1, 0)
 
-	local bone = GetPedBoneIndex(myPedId, 28422)
-	AttachEntityToEntity(phoneProp, myPedId, bone, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1, 1, 0, 0, 2, 1)
+	local bone = GetPedBoneIndex(GetPlayerPed(-1), 28422)
+	AttachEntityToEntity(phoneProp, GetPlayerPed(-1), bone, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1, 1, 0, 0, 2, 1)
 end
 
 function deletePhone()
@@ -89,7 +89,7 @@ function PhonePlayAnim(status, freeze, force)
 	if freeze == true then
 		flag = 14
 	end
-	TaskPlayAnim(myPedId, dict, anim, 3.0, -1, -1, flag, 0, false, false, false)
+	TaskPlayAnim(myPedId, dict, anim, 3.0, 3.0, -1, flag, 0, false, false, false)
 
 	if status ~= 'out' and currentStatus == 'out' then
 		Citizen.Wait(380)
@@ -109,7 +109,7 @@ function PhonePlayAnim(status, freeze, force)
 end
 
 function PhonePlayOut()
-	PhonePlayAnim('out')
+	PhonePlayAnim('out', false, true)
 end
 
 function PhonePlayText()

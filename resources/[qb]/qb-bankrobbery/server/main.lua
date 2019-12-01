@@ -165,31 +165,27 @@ RegisterServerEvent('qb-bankrobbery:server:callCops')
 AddEventHandler('qb-bankrobbery:server:callCops', function(type, bank, streetLabel, coords)
     local players = QBCore.Functions.GetPlayers()
     local cameraId = 4
-    local bank = "Fleeca"
+    local bankLabel = "Fleeca"
     local msg = ""
     if type == "small" then
-        cameraId = Config.SmallBanks[key]["camId"]
-        bank = "Fleeca"
-        msg = "Poging bankoverval bij "..bank.. " " ..streetLabel.." (CAMERA ID: "..cameraId..")"
+        cameraId = Config.SmallBanks[bank]["camId"]
+        bankLabel = "Fleeca"
+        msg = "Poging bankoverval bij "..bankLabel.. " " ..streetLabel.." (CAMERA ID: "..cameraId..")"
     elseif type == "paleto" then
         cameraId = Config.BigBanks["paleto"]["camId"]
-        bank = "Blaine County Savings"
-        msg = "Groot alarm! Poging bankoverval bij "..bank.. " Paleto Bay (CAMERA ID: "..cameraId..")"
+        bankLabel = "Blaine County Savings"
+        msg = "Groot alarm! Poging bankoverval bij "..bankLabel.. " Paleto Bay (CAMERA ID: "..cameraId..")"
     elseif type == "pacific" then
-        bank = "Pacific Standard Bank"
-        msg = "Groot alarm! Poging bankoverval bij "..bank.. " Alta St (CAMERA ID: 1/2/3)"
+        bankLabel = "Pacific Standard Bank"
+        msg = "Groot alarm! Poging bankoverval bij "..bankLabel.. " Alta St (CAMERA ID: 1/2/3)"
     end
     local alertData = {
         title = "Bankoverval",
         coords = {x = coords.x, y = coords.y, z = coords.z},
         description = msg,
     }
-    for source, Player in pairs(players) do
-		if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
-            TriggerClientEvent("qb-bankrobbery:client:robberyCall", Player.PlayerData.source, type, bank, streetLabel, coords)
-            TriggerClientEvent("qb-phone:client:addPoliceAlert", Player.PlayerData.source, alertData)
-		end
-	end
+    TriggerClientEvent("qb-bankrobbery:client:robberyCall", -1, type, bank, streetLabel, coords)
+    TriggerClientEvent("qb-phone:client:addPoliceAlert", -1, alertData)
 end)
 
 RegisterServerEvent('qb-bankrobbery:server:SetStationStatus')

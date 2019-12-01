@@ -64,12 +64,8 @@ AddEventHandler('qb-storerobbery:server:callCops', function(type, safe, streetLa
         coords = {x = coords.x, y = coords.y, z = coords.z},
         description = "Iemand probeert een winkel te overvallen bij "..streetLabel.." (CAMERA ID: "..cameraId..")"
     }
-    for source, Player in pairs(players) do
-		if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
-            TriggerClientEvent("qb-storerobbery:client:robberyCall", Player.PlayerData.source, type, safe, streetLabel, coords)
-            TriggerClientEvent("qb-phone:client:addPoliceAlert", Player.PlayerData.source, alertData)
-		end
-	end
+    TriggerClientEvent("qb-storerobbery:client:robberyCall", -1, type, safe, streetLabel, coords)
+    TriggerClientEvent("qb-phone:client:addPoliceAlert", -1, alertData)
 end)
 
 Citizen.CreateThread(function()

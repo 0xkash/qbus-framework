@@ -52,6 +52,7 @@ Config.ArmoryWhitelist = {
     "IIX30678",
     "BPT79951",
     "DKA19196",
+    "DVH09193",
 }
 
 Config.Helicopter = "polmav"
