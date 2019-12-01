@@ -158,16 +158,12 @@ QBCore.Functions.GetPlayers = function()
 end
 
 QBCore.Functions.GetClosestVehicle = function(coords, radius)
-    local coords = coords ~= nil and coords or QBCore.Functions.GetCoords(GetPlayerPed(-1))
-    local radius = radius ~= nil and radius or 10.0
-    local entityWorld = GetOffsetFromEntityInWorldCoords(GetPlayerPed(-1), 0.0, radius, 0.0)
-    local rayHandle = CastRayPointToPoint(coords.x, coords.y, coords.z, entityWorld.x, entityWorld.y, entityWorld.z, 10, GetPlayerPed(-1), 0)
-    local a, b, c, d, targetVehicle = GetRaycastResult(rayHandle)
+	local pos = GetEntityCoords(GetPlayerPed(-1))
+    local entityWorld = GetOffsetFromEntityInWorldCoords(GetPlayerPed(-1), 0.0, 20.0, 0.0)
 
-    if targetVehicle ~= nil then
-       return targetVehicle
-    end
-    return 0
+    local rayHandle = CastRayPointToPoint(pos.x, pos.y, pos.z, entityWorld.x, entityWorld.y, entityWorld.z, 10, GetPlayerPed(-1), 0)
+    local _, _, _, _, vehicleHandle = GetRaycastResult(rayHandle)
+    return vehicleHandle
 end
 
 QBCore.Functions.GetClosestPed = function(coords, ignoreList)

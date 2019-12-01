@@ -572,6 +572,7 @@ function enterNonOwnedHouse(house)
     SetWeatherTypeNow('EXTRASUNNY')
     SetWeatherTypeNowPersist('EXTRASUNNY')
     NetworkOverrideClockTime(23, 0, 0)
+    entering = false
     inOwned = true
 end
 

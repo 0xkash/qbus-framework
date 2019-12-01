@@ -542,7 +542,7 @@ RegisterServerEvent('qb-phone:server:HangupCall')
 AddEventHandler('qb-phone:server:HangupCall', function(callData)
     local src = source
     local ply = QBCore.Functions.GetPlayer(src)
-    if callData ~= nil then 
+    if callData ~= nil and callData.number ~= nil then 
         QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `charinfo` LIKE '%"..callData.number.."%'", function(result)
             if result[1] ~= nil then
                 local target = result[1]
