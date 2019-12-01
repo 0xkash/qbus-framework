@@ -91,13 +91,14 @@ Citizen.CreateThread(function()
                 if sellDist <= 1.5 and IsPedInAnyVehicle(ped) then
                     DrawText3Ds(Config.SellVehicle["x"], Config.SellVehicle["y"], Config.SellVehicle["z"], '~g~E~w~ - Voertuig te koop zetten')
                     if IsControlJustPressed(0, Keys["E"]) then
+                        local VehiclePlate = GetVehicleNumberPlateText(GetVehiclePedIsIn(ped))
                         QBCore.Functions.TriggerCallback('qb-garage:server:checkVehicleOwner', function(owned)
-                            -- if owned then
+                            if owned then
                                 openSellContract(true)
-                            -- else
-                                -- QBCore.Functions.Notify('Dit is niet jou voertuig?', 'error', 3500)
-                            -- end
-                        end, GetVehicleNumberPlateText(GetVehiclePedIsUsing(GetPlayerPed(-1))))
+                            else
+                                QBCore.Functions.Notify('Dit is niet jou voertuig?', 'error', 3500)
+                            end
+                        end, VehiclePlate)
                     end
                 end
             end
@@ -189,8 +190,16 @@ RegisterNUICallback('buyVehicle', function()
     DoScreenFadeOut(250)
     Citizen.Wait(500)
     TriggerServerEvent('qb-occasions:server:buyVehicle', vehData)
-    QBCore.Functions.SpawnVehicle(vehData["model"], function(veh)
+end)
 
+DoScreenFadeIn(250)
+
+RegisterNetEvent('qb-occasions:client:BuyFinished')
+AddEventHandler('qb-occasions:client:BuyFinished', function()
+    print('1')
+    local vehData = Config.OccasionSlots[currentVehicle]
+    print(json.encode(vehData))
+    QBCore.Functions.SpawnVehicle(vehData["model"], function(veh)
         SetVehicleNumberPlateText(veh, vehData["plate"])
         SetEntityHeading(veh, Config.BuyVehicle.h)
         TaskWarpPedIntoVehicle(GetPlayerPed(-1), veh, -1)
