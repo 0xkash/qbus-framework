@@ -541,17 +541,18 @@ RegisterServerEvent('qb-phone:server:HangupCall')
 AddEventHandler('qb-phone:server:HangupCall', function(callData)
     local src = source
     local ply = QBCore.Functions.GetPlayer(src)
-
-    QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `charinfo` LIKE '%"..callData.number.."%'", function(result)
-        if result[1] ~= nil then
-            local target = result[1]
-            local targetPlayer = QBCore.Functions.GetPlayerByCitizenId(target.citizenid)
-
-            if targetPlayer ~= nil then
-                TriggerClientEvent('qb-phone:client:HangupCallOther', targetPlayer.PlayerData.source, callData)
+    if callData ~= nil then 
+        QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `charinfo` LIKE '%"..callData.number.."%'", function(result)
+            if result[1] ~= nil then
+                local target = result[1]
+                local targetPlayer = QBCore.Functions.GetPlayerByCitizenId(target.citizenid)
+    
+                if targetPlayer ~= nil then
+                    TriggerClientEvent('qb-phone:client:HangupCallOther', targetPlayer.PlayerData.source, callData)
+                end
             end
-        end
-    end)
+        end)
+    end
 end)
 
 QBCore.Functions.CreateCallback('qb-phone:server:doesChatExists', function(source, cb, number)

@@ -20,6 +20,11 @@ AddEventHandler('playerConnecting', function(playerName, setKickReason, deferral
 	local src = source
 	deferrals.update("\nChecking name...")
 	local name = GetPlayerName(src)
+	if name == nil then 
+		QBCore.Functions.Kick(src, 'Gelieve geen lege steam naam te gebruiken.', setKickReason, deferrals)
+        CancelEvent()
+        return false
+	end
 	if(string.match(name, "[*%%'=`\"]")) then
         QBCore.Functions.Kick(src, 'Je hebt in je naam een teken('..string.match(name, "[*%%'=`\"]")..') zitten wat niet is toegestaan.\nGelieven deze uit je steam-naam te halen.', setKickReason, deferrals)
         CancelEvent()

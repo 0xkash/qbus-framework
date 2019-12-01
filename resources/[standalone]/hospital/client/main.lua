@@ -368,10 +368,10 @@ RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     exports.spawnmanager:setAutoSpawn(false)
     isLoggedIn = true
-    PlayerJob = QBCore.Functions.GetPlayerData().job
-    onDuty = QBCore.Functions.GetPlayerData().job.onduty
     QBCore.Functions.GetPlayerData(function(PlayerData)
         isDead = PlayerData.metadata["isdead"]
+        PlayerJob = PlayerData.job
+        onDuty = PlayerData.job.onduty
         SetPedArmour(GetPlayerPed(-1), PlayerData.metadata["armor"])
     end)
 end)
