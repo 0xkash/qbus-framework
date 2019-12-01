@@ -297,9 +297,9 @@ QBClothing.Open = function(data) {
     $(".clothing-menu-clothing-container").css("display", "none");
     $(".clothing-menu-accessories-container").css("display", "none");
     $(".clothing-menu-container").css({"display":"block"}).animate({right: 0,}, 200);
-    QBClothing.SetMaxValues(data.maxValues)
+    QBClothing.SetMaxValues(data.maxValues);
     $(".clothing-menu-header").html("");
-    QBClothing.SetCurrentValues(data.currentClothing)
+    QBClothing.SetCurrentValues(data.currentClothing);
     $(".clothing-menu-roomOutfits-container").html("");
     $(".clothing-menu-myOutfits-container").html("");
     $.each(data.menus, function(i, menu){
@@ -377,21 +377,22 @@ $(document).on('click', '.clothing-menu-myOutfit-option-button-remove', function
 
 QBClothing.Close = function() {
     $.post('http://qb-clothing/close');
-    $(".clothing-menu-container").css({"display":"block"}).animate({right: "-25vw",}, 200, function(){
-        $(".clothing-menu-container").css({"display":"none"});
-    });
-
     $(".clothing-menu-roomOutfits-container").css("display", "none");
     $(".clothing-menu-myOutfits-container").css("display", "none");
     $(".clothing-menu-character-container").css("display", "none");
     $(".clothing-menu-clothing-container").css("display", "none");
     $(".clothing-menu-accessories-container").css("display", "none");
+    $(".clothing-menu-header").html("");
 
     $(selectedCam).removeClass('selected-cam');
+    $(selectedTab).removeClass("selected");
     selectedCam = null;
     selectedTab = null;
     lastCategory = null;
     $.post('http://qb-clothing/PlaySound');
+    $(".clothing-menu-container").css({"display":"block"}).animate({right: "-25vw",}, 200, function(){
+        $(".clothing-menu-container").css({"display":"none"});
+    });
 }
 
 QBClothing.SetMaxValues = function(maxValues) {
