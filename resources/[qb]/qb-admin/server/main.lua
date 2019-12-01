@@ -60,15 +60,14 @@ AddEventHandler('qb-admin:server:revivePlayer', function(target)
 	TriggerClientEvent('hospital:client:Revive', target)
 end)
 
-QBCore.Commands.Add("admin", "Open het admin menu!", {}, false, function(source, args)
+QBCore.Commands.Add("announce", "Stuur een bericht naar iedereen", {}, false, function(source, args)
     local msg = table.concat(args, " ")
     for i = 1, 3, 1 do
-        Citizen.Wait(250)
         TriggerClientEvent('chatMessage', -1, "SYSTEM", "error", msg)
     end
 end, "admin")
 
-QBCore.Commands.Add("announce", "Stuur een bericht naar iedereen", {}, false, function(source, args)
+QBCore.Commands.Add("admin", "Open admin menu", {}, false, function(source, args)
     TriggerClientEvent('qb-admin:client:openMenu', source, group)
 end, "admin")
 
