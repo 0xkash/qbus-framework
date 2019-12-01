@@ -325,7 +325,7 @@ function Hotwire()
             flags = 16,
         }, {}, {}, function() -- Done
             StopAnimTask(GetPlayerPed(-1), "anim@amb@clubhouse@tutorial@bkr_tut_ig3@", "machinic_loop_mechandplayer", 1.0)
-            if (math.random(0, 100) < 15) then
+            if (math.random(0, 100) < 10) then
                 HasKey = true
                 QBCore.Functions.Notify("Hotwire gelukt!")
             else

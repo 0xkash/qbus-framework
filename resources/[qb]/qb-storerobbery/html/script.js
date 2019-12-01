@@ -34,6 +34,7 @@ Padlock.Open = function(data) {
 
 Padlock.Close = function() {
     $("#padlock").css("display", "none");
+    $.post('http://qb-storerobbery/PadLockClose');
 }
 
 Keypad.Open = function(data) {

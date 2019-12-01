@@ -280,6 +280,10 @@ RegisterNUICallback('PadLockSuccess', function()
     end
 end)
 
+RegisterNUICallback('PadLockClose', function()
+    SetNuiFocus(false, false)
+end)
+
 RegisterNUICallback("CombinationFail", function(data, cb)
     PlaySound(-1, "Place_Prop_Fail", "DLC_Dmod_Prop_Editor_Sounds", 0, 0, 1)
 end)

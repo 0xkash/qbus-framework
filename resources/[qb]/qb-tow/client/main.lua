@@ -81,10 +81,11 @@ AddEventHandler('jobs:client:ToggleNpc', function()
             SetBlipRoute(CurrentBlip, true)
             SetBlipRouteColour(CurrentBlip, 3)
         else
+            local CurrentBlip = RemoveBlip()
+            RemoveBlip(CurrentBlip)
             CurrentLocation = {}
             CurrentBlip = nil
             VehicleSpawned = false
-            RemoveBlip(CurrentBlip)
         end
     end
 end)
