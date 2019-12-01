@@ -50,22 +50,23 @@ QBCore.Functions.CreateCallback('qb-phone:server:getUserContacts', function(sour
     local playerContacts = {}
 
     QBCore.Functions.ExecuteSql("SELECT * FROM `player_contacts` WHERE `citizenid` = '"..Player.PlayerData.citizenid.."'", function(result)
-        for i = 1, (#result), 1 do
-            local status = false
-            QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `charinfo` LIKE '%"..result[i].number.."%'", function(player)
-                for i=1, (#player), 1 do
-                    local ply = QBCore.Functions.GetPlayerByCitizenId(player[i].citizenid)
-                    if ply then
-                        status = true
-                        print(result[i].number..' is online')
+        if result[1] ~= nil then
+            for i = 1, (#result), 1 do
+                local status = false
+                QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `charinfo` LIKE '%"..result[i].number.."%'", function(player)
+                    for i=1, (#player), 1 do
+                        local ply = QBCore.Functions.GetPlayerByCitizenId(player[i].citizenid)
+                        if ply then
+                            status = true
+                        end
                     end
-                end
-                table.insert(playerContacts, {
-                    name = result[i].name,
-                    number = result[i].number,
-                    status = status,
-                })
-            end)
+                    table.insert(playerContacts, {
+                        name = result[i].name,
+                        number = result[i].number,
+                        status = status,
+                    })
+                end)
+            end
         end
         cb(playerContacts)
     end)

@@ -5,7 +5,7 @@ TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 
 QBCore.Commands.Add("skin", "Ooohja toch", {}, false, function(source, args)
 	TriggerClientEvent("qb-clothing:client:openMenu", source)
-end)
+end, "admin")
 
 RegisterServerEvent("qb-clothing:saveSkin")
 AddEventHandler('qb-clothing:saveSkin', function(model, skin)
@@ -103,4 +103,14 @@ end)
 
 QBCore.Commands.Add("m", "Zet je masker op of af..", {}, false, function(source, args)
 	TriggerClientEvent("qb-clothing:client:adjustfacewear", source, 4)
+end)
+
+RegisterServerEvent('qb-clothing:server:GiveStarterItems')
+AddEventHandler('qb-clothing:server:GiveStarterItems', function()
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+
+    for k, v in pairs(QBCore.Shared.StarterItems) do
+        Player.Functions.AddItem(v.item, v.amount)
+    end
 end)

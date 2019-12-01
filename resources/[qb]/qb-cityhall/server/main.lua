@@ -32,7 +32,7 @@ RegisterServerEvent('qb-cityhall:server:ApplyJob')
 AddEventHandler('qb-cityhall:server:ApplyJob', function(job)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    local JobInfo = QBCore.Player.GetJobInfo(job)
+    local JobInfo = QBCore.Shared.Jobs[job]
 
     Player.Functions.SetJob(job)
 

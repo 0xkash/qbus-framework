@@ -13,7 +13,7 @@ QBCore = nil
 
 
 local phoneMeta = {}
-local isLoggedIn = true
+local isLoggedIn = false
 
 local callData = {
     number = nil,
@@ -318,17 +318,6 @@ end)
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     isLoggedIn = true
-    setPhoneMeta()
-    QBCore.Functions.TriggerCallback('qb-phone:server:getUserContacts', function(result)
-        playerContacts = result
-    end)
-    QBCore.Functions.TriggerCallback('qb-phone:server:getPlayerMessages', function(result)
-        messages = result
-    end)
-end)
-
-Citizen.CreateThread(function()
-    Wait(500)
     setPhoneMeta()
     QBCore.Functions.TriggerCallback('qb-phone:server:getUserContacts', function(result)
         playerContacts = result
