@@ -96,29 +96,31 @@ end)
 
 RegisterNetEvent('112:client:SendAlert')
 AddEventHandler('112:client:SendAlert', function(msg, blipSettings)
-    PlaySound(-1, "Event_Start_Text", "GTAO_FM_Events_Soundset", 0, 0, 1)
-    TriggerEvent("chatMessage", "112-MELDING", "error", msg)
-
-    if blipSettings ~= nil then
-        local transG = 250
-        local blip = AddBlipForCoord(blipSettings.x, blipSettings.y, blipSettings.z)
-        SetBlipSprite(blip, blipSettings.sprite)
-        SetBlipColour(blip, blipSettings.color)
-        SetBlipDisplay(blip, 4)
-        SetBlipAlpha(blip, transG)
-        SetBlipScale(blip, blipSettings.scale)
-        SetBlipAsShortRange(blip, false)
-        BeginTextCommandSetBlipName('STRING')
-        AddTextComponentString(blipSettings.text)
-        EndTextCommandSetBlipName(blip)
-        while transG ~= 0 do
-            Wait(180 * 4)
-            transG = transG - 1
+    if (PlayerJob.name == "police" or PlayerJob.name == "ambulance") and PlayerJob.onduty then
+        PlaySound(-1, "Event_Start_Text", "GTAO_FM_Events_Soundset", 0, 0, 1)
+        TriggerEvent("chatMessage", "112-MELDING", "error", msg)
+    
+        if blipSettings ~= nil then
+            local transG = 250
+            local blip = AddBlipForCoord(blipSettings.x, blipSettings.y, blipSettings.z)
+            SetBlipSprite(blip, blipSettings.sprite)
+            SetBlipColour(blip, blipSettings.color)
+            SetBlipDisplay(blip, 4)
             SetBlipAlpha(blip, transG)
-            if transG == 0 then
-                SetBlipSprite(blip, 2)
-                RemoveBlip(blip)
-                return
+            SetBlipScale(blip, blipSettings.scale)
+            SetBlipAsShortRange(blip, false)
+            BeginTextCommandSetBlipName('STRING')
+            AddTextComponentString(blipSettings.text)
+            EndTextCommandSetBlipName(blip)
+            while transG ~= 0 do
+                Wait(180 * 4)
+                transG = transG - 1
+                SetBlipAlpha(blip, transG)
+                if transG == 0 then
+                    SetBlipSprite(blip, 2)
+                    RemoveBlip(blip)
+                    return
+                end
             end
         end
     end
