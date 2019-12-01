@@ -185,10 +185,8 @@ Citizen.CreateThread(function()
             local pos = GetEntityCoords(GetPlayerPed(-1))
             if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["checking"].x, Config.Locations["checking"].y, Config.Locations["checking"].z, true) < 7.5) then
                 if not doctorsSet then
-                    QBCore.Functions.TriggerCallback('hospital:GetDoctors', function(result)
-                        doctorCount = result
-                        doctorsSet = true
-                    end)
+                    doctorCount = 0
+                    doctorsSet = true
                 end
             else
                 doctorsSet = false
