@@ -48,7 +48,8 @@ Config.Locations = {
 }
 
 Config.ArmoryWhitelist = {
-    "DVH09193",
+    "PAE31194",
+    "IIX30678",
 }
 
 Config.Helicopter = "polmav"
