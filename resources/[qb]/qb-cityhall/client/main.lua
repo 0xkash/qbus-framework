@@ -65,6 +65,20 @@ end)
 local inRange = false
 
 Citizen.CreateThread(function()
+    CityhallBlip = AddBlipForCoord(Config.Cityhall.coords.x, Config.Cityhall.coords.y, Config.Cityhall.coords.z)
+
+    SetBlipSprite (CityhallBlip, 487)
+    SetBlipDisplay(CityhallBlip, 4)
+    SetBlipScale  (CityhallBlip, 0.65)
+    SetBlipAsShortRange(CityhallBlip, true)
+    SetBlipColour(CityhallBlip, 0)
+
+    BeginTextCommandSetBlipName("STRING")
+    AddTextComponentSubstringPlayerName("Gemeentehuis")
+    EndTextCommandSetBlipName(CityhallBlip)
+end)
+
+Citizen.CreateThread(function()
     while true do
 
         local ped = GetPlayerPed(-1)
@@ -77,7 +91,7 @@ Citizen.CreateThread(function()
             inRange = true
             DrawMarker(2, Config.Cityhall.coords.x, Config.Cityhall.coords.y, Config.Cityhall.coords.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.2, 155, 152, 234, 155, false, false, false, true, false, false, false)
             if dist < 1.5 then
-                qbCityhall.DrawText3Ds(Config.Cityhall.coords, '~g~E~w~ - To yeet dafuqq')
+                qbCityhall.DrawText3Ds(Config.Cityhall.coords, '~g~E~w~ - Gemeentehuis openen')
                 if IsControlJustPressed(0, Keys["E"]) then
                     qbCityhall.Open()
                 end

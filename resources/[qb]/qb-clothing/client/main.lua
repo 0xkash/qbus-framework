@@ -499,22 +499,18 @@ end)
 
 function enableCam()
     -- Camera
+    local x,y,z = table.unpack(GetEntityCoords(GetPlayerPed(-1)))
     RenderScriptCams(false, false, 0, 1, 0)
     DestroyCam(cam, false)
     if(not DoesCamExist(cam)) then
         cam = CreateCam('DEFAULT_SCRIPTED_CAMERA', true)
-        SetCamCoord(cam, GetEntityCoords(GetPlayerPed(-1)))
-        SetCamRot(cam, 0.0, 0.0, 0.0)
         SetCamActive(cam, true)
         RenderScriptCams(true, false, 0, true, true)
-        SetCamCoord(cam, GetEntityCoords(GetPlayerPed(-1)))
+        SetCamCoord(cam, x, y+3.0, z+0.3)
+        SetCamRot(cam, 0.0, 0.0, GetEntityHeading(GetPlayerPed(-1)) + 180)
     end
     
-    local x,y,z = table.unpack(GetEntityCoords(GetPlayerPed(-1)))
-    if customCamLocation == nil then
-        SetCamCoord(cam, x+0.5, y+2.5, z+0.3)
-        SetCamRot(cam, 0.0, 0.0, GetEntityHeading(GetPlayerPed(-1)) + 180)
-    else
+    if customCamLocation ~= nil then
         SetCamCoord(cam, customCamLocation.x, customCamLocation.y, customCamLocation.z)
     end
 end
@@ -980,6 +976,7 @@ AddEventHandler("qb-clothes:loadSkin", function(new, model, data)
                         {menu = "accessoires", label = "Accessoires", selected = false}
                     })
                     DoScreenFadeIn(50)
+                    TriggerServerEvent('qb-clothing:server:GiveStarterItems')
                 end)
 			end)
 		end)
