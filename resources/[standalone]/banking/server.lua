@@ -9,6 +9,7 @@ AddEventHandler('bank:withdraw', function(amount)
     local ply = QBCore.Functions.GetPlayer(src)
 
     if ply.Functions.RemoveMoney('bank', amount) then
+        TriggerEvent("qb-log:server:CreateLog", "banking", "Withdraw", "red", "**"..GetPlayerName(src) .. "** heeft €"..amount.." opgenomen van zijn bank.")
         ply.Functions.AddMoney('cash', amount)
     else
       TriggerClientEvent('QBCore:Notify', src, 'Je hebt niet voldoende geld op je bank..', 'error')
@@ -21,6 +22,7 @@ AddEventHandler('bank:deposit', function(amount)
     local ply = QBCore.Functions.GetPlayer(src)
 
     if ply.Functions.RemoveMoney('cash', amount) then
+        TriggerEvent("qb-log:server:CreateLog", "banking", "Deposit", "green", "**"..GetPlayerName(src) .. "** heeft €"..amount.." op zijn bank gezet.")
         ply.Functions.AddMoney('bank', amount)
     else
       TriggerClientEvent('QBCore:Notify', src, 'Je hebt niet voldoende geld op zak..', 'error')
@@ -64,6 +66,8 @@ AddEventHandler('banking:server:giveCash', function(trgtId, amount)
 
   Player.Functions.RemoveMoney('cash', amount)
   Target.Functions.AddMoney('cash', amount)
+
+  TriggerEvent("qb-log:server:CreateLog", "banking", "Geef contant", "blue", "**"..GetPlayerName(src) .. "** heeft €"..amount.." gegeven aan **" .. GetPlayerName(trgtId) .. "**")
   
   TriggerClientEvent('QBCore:Notify', trgtId, "Je hebt €"..amount.." gekregen van "..Player.PlayerData.charinfo.firstname.."!", 'success')
   TriggerClientEvent('QBCore:Notify', src, "Je hebt €"..amount.." gegeven aan "..Target.PlayerData.charinfo.firstname.."!", 'success')

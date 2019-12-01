@@ -24,6 +24,7 @@ AddEventHandler('qb-vehicleshop:server:buyVehicle', function(vehicleData, garage
         QBCore.Functions.ExecuteSql("INSERT INTO `player_vehicles` (`steam`, `citizenid`, `vehicle`, `hash`, `mods`, `plate`, `garage`) VALUES ('"..pData.PlayerData.steam.."', '"..cid.."', '"..vData["model"].."', '"..GetHashKey(vData["model"]).."', '{}', '"..GeneratePlate().."', '"..garage.."')")
         TriggerClientEvent("QBCore:Notify", src, "Gelukt! Je voertuig is afgeleverd bij "..QB.GarageLabel[garage], "success", 5000)
         pData.Functions.RemoveMoney('bank', vData["price"])
+        TriggerEvent("qb-log:server:CreateLog", "vehicleshop", "Voertuig gekocht (garage)", "green", "**"..GetPlayerName(src) .. "** heeft een " .. vData["name"] .. " gekocht voor €" .. vData["price"])
     else
 		TriggerClientEvent("QBCore:Notify", src, "Je hebt niet voldoende geld, je mist €"..format_thousand(vData["price"] - balance), "error", 5000)
     end
@@ -43,6 +44,7 @@ AddEventHandler('qb-vehicleshop:server:buyShowroomVehicle', function(vehicle, cl
         TriggerClientEvent("QBCore:Notify", src, "Gelukt! Je voertuig staat buiten te op je te wachten.", "success", 5000)
         TriggerClientEvent('qb-vehicleshop:client:buyShowroomVehicle', src, vehicle, plate)
         pData.Functions.RemoveMoney('bank', vehiclePrice)
+        TriggerEvent("qb-log:server:CreateLog", "vehicleshop", "Voertuig gekocht (showroom)", "green", "**"..GetPlayerName(src) .. "** heeft een " .. vData["name"] .. " gekocht voor €" .. vData["price"])
     else
 		TriggerClientEvent("QBCore:Notify", src, "Je hebt niet voldoende geld, je mist €"..format_thousand(vehiclePrice - balance), "error", 5000)
     end
