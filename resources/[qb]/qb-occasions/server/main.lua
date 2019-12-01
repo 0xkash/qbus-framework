@@ -57,6 +57,7 @@ AddEventHandler('qb-occasions:server:buyVehicle', function(vehicleData)
     local ownerCid = vehicleData['owner']
 
     QBCore.Functions.ExecuteSql("SELECT * FROM `occasion_vehicles` WHERE `plate` = '"..vehicleData['plate'].."' AND `occasionId` = '"..vehicleData["oid"].."'", function(result)
+        local bankAmount = Player.PlayerData.money["bank"]
         if Player.Functions.RemoveMoney('cash', result[1].price) then
             QBCore.Functions.ExecuteSql("INSERT INTO `player_vehicles` (`steam`, `citizenid`, `vehicle`, `hash`, `mods`, `plate`, `state`) VALUES ('"..Player.PlayerData.steam.."', '"..Player.PlayerData.citizenid.."', '"..vehicleData["model"].."', '"..GetHashKey(vehicleData["model"]).."', '"..vehicleData["mods"].."', '"..vehicleData["plate"].."', '0')")
             QBCore.Functions.ExecuteSql("DELETE FROM `occasion_vehicles` WHERE `occasionId` = '"..vehicleData["oid"].."'")
@@ -76,7 +77,8 @@ AddEventHandler('qb-occasions:server:buyVehicle', function(vehicleData)
                 TriggerEvent("qb-log:server:CreateLog", "vehicleshop", "Occasion gekocht", "green", "**"..GetPlayerName(src) .. "** heeft een occasian gekocht voor "..result[1].price .. " van **"..result[1].citizenid.."**")
             end)
             TriggerClientEvent('qb-occasion:client:refreshVehicles', -1)
-        elseif Player.Functions.RemoveMoney('bank', result[1].price) then
+        elseif bankAmount >= result[1].price then
+            Player.Functions.RemoveMoney('bank', result[1].price)
             QBCore.Functions.ExecuteSql("INSERT INTO `player_vehicles` (`steam`, `citizenid`, `vehicle`, `hash`, `mods`, `plate`, `state`) VALUES ('"..Player.PlayerData.steam.."', '"..Player.PlayerData.citizenid.."', '"..vehicleData["model"].."', '"..GetHashKey(vehicleData["model"]).."', '"..vehicleData["mods"].."', '"..vehicleData["plate"].."', '0')")
             QBCore.Functions.ExecuteSql("DELETE FROM `occasion_vehicles` WHERE `occasionId` = '"..vehicleData["oid"].."'")
             TriggerClientEvent('qb-occasions:client:BuyFinished', src)
