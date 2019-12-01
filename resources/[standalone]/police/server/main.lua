@@ -624,6 +624,24 @@ QBCore.Functions.CreateCallback('police:GetCops', function(source, cb)
 	cb(amount)
 end)
 
+QBCore.Commands.Add("setpolice", "Geef de politie baan aan iemand ", {{name="id", help="Speler ID"}}, true, function(source, args)
+    local Player = QBCore.Functions.GetPlayer(tonumber(args[1]))
+    if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) and IsHighCommand(Player.PlayerData.citizenid) then
+        Player.Functions.SetJob("police")
+    end
+end)
+
+
+function IsHighCommand(citizenid)
+    local retval = false
+    for k, v in pairs(Config.ArmoryWhitelist) do
+        if v == citizenid then
+            retval = true
+        end
+    end
+    return retval
+end
+
 QBCore.Commands.Add("pobject", "Plaats/Verwijder een object", {{name="type", help="Type object dat je wilt of 'delete' om te verwijderen"}}, true, function(source, args)
     local Player = QBCore.Functions.GetPlayer(source)
     local type = args[1]:lower()

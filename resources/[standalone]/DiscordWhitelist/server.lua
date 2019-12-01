@@ -3,13 +3,12 @@
 ----------------------------------------
 
 --- Config ---
-notWhitelisted = "Je bent geen tester voor de server." -- Message displayed when they are not whitelist with the role
+notWhitelisted = "Helaas... Je bent geen tester voor de server." -- Message displayed when they are not whitelist with the role
 noDiscord = "Je moet discord open hebben staan om de server te joinen." -- Message displayed when discord is not found
 
 roles = { -- Role nickname(s) needed to pass the whitelist
     "Tester",
 }
-
 
 --- Code ---
 

@@ -407,6 +407,18 @@ AddEventHandler("inventory:client:ShowId", function(sourceId, citizenid, charact
     end
 end)
 
+RegisterNetEvent("inventory:client:ShowDriverLicense")
+AddEventHandler("inventory:client:ShowDriverLicense", function(sourceId, citizenid, character)
+    local sourcePos = GetEntityCoords(GetPlayerPed(GetPlayerFromServerId(sourceId)), false)
+    local pos = GetEntityCoords(GetPlayerPed(-1), false)
+    if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, sourcePos.x, sourcePos.y, sourcePos.z, true) < 2.0) then
+        TriggerEvent('chat:addMessage', {
+            template = '<div class="chat-message advert"><div class="chat-message-body"><strong>{0}:</strong><br><br> <strong>Voornaam:</strong> {1} <br><strong>Achternaam:</strong> {2} <br><strong>Geboortedag:</strong> {3} <br><strong>Rijbwijzen:</strong> {4}</div></div>',
+            args = {'Rijbwijs', character.firstname, character.lastname, character.birthdate, character.type}
+        })
+    end
+end)
+
 RegisterNetEvent("inventory:client:SetCurrentStash")
 AddEventHandler("inventory:client:SetCurrentStash", function(stash)
     CurrentStash = stash

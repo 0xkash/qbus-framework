@@ -106,7 +106,7 @@ end)
 Citizen.CreateThread(function()
     while true do
         if isLoggedIn and QBHud.Show and QBCore ~= nil then
-            QBCore.Functions.TriggerCallback('hospital:GetPlayerBleeding', function(playerBleeding)
+            --[[QBCore.Functions.TriggerCallback('hospital:GetPlayerBleeding', function(playerBleeding)
                 if playerBleeding == 0 then
                     bleedingPercentage = 0
                 elseif playerBleeding == 1 then
@@ -118,7 +118,7 @@ Citizen.CreateThread(function()
                 elseif playerBleeding == 4 then
                     bleedingPercentage = 100
                 end
-            end)
+            end)]]--
         end
 
         Citizen.Wait(2500)

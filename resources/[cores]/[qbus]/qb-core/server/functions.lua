@@ -62,12 +62,16 @@ QBCore.Functions.GetPlayers = function()
 end
 
 QBCore.Functions.CreateCallback = function(name, cb)
-	QBCore.ServerCallbacks[name] = cb
+	if QBCore.ServerCallbacks[name] == nil then 
+		QBCore.ServerCallbacks[name] = cb
+	end
 end
 
 QBCore.Functions.TriggerCallback = function(name, source, cb, ...)
-	if QBCore.ServerCallbacks[name] ~= nil then
-		QBCore.ServerCallbacks[name](source, cb, ...)
+	if name ~= nil and source ~= nil and cb ~= nil then 
+		if QBCore.ServerCallbacks[name] ~= nil then
+			QBCore.ServerCallbacks[name](source, cb, ...)
+		end
 	end
 end
 

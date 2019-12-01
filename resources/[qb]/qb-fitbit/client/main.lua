@@ -91,7 +91,7 @@ end)
 Citizen.CreateThread(function()
     while true do
 
-        Citizen.Wait(3 * 60 * 1000)
+        Citizen.Wait(5 * 60 * 1000)
         
         if QBCore ~= nil then
             if isLoggedIn then

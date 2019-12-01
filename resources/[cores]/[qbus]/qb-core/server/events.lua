@@ -7,11 +7,11 @@ end)
 AddEventHandler('playerDropped', function(reason) 
 	local src = source
 	print("Dropped: "..GetPlayerName(src))
+	TriggerEvent("qb-log:server:CreateLog", "joinleave", "Dropped", "red", "**".. GetPlayerName(src) .. "** ("..GetPlayerIdentifiers(src)[1]..") left..")
 	if reason ~= "Reconnecting" and src > 60000 then return false end
 	if(src==nil or (QBCore.Players[src] == nil)) then return false end
 	QBCore.Players[src].Functions.Save()
 	QBCore.Players[src] = nil
-	TriggerEvent("qb-log:server:CreateLog", "joinleave", "Dropped", "red", "**".. GetPlayerName(src) .. "** ("..GetPlayerIdentifiers(src)[1]..") left..")
 end)
 
 -- Checking everything before joining
@@ -237,8 +237,11 @@ end)
 QBCore.Functions.CreateCallback('QBCore:HasItem', function(source, cb, itemName)
 	local retval = false
 	local Player = QBCore.Functions.GetPlayer(source)
-	if Player.Functions.GetItemByName(itemName) ~= nil then
-		retval = true
+	if Player ~= nil then 
+		if Player.Functions.GetItemByName(itemName) ~= nil then
+			retval = true
+		end
 	end
-    cb(retval)
+	
+	cb(retval)
 end)	
