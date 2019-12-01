@@ -64,9 +64,11 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 				secondInv.inventory = GetStashItems(id)
 				Stashes[id] = {}
 				Stashes[id].items = GetStashItems(id)
+				Stashes[id].isOpen = true
 			else
 				Stashes[id] = {}
 				Stashes[id].items = {}
+				Stashes[id].isOpen = true
 			end
 
 			if Stashes[id] ~= nil and Stashes[id].isOpen then
@@ -75,8 +77,8 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 				secondInv.maxweight = 1000000
 				secondInv.inventory = {}
 				secondInv.slots = 0
+				Stashes[id].isOpen = true
 			end
-			Stashes[id].isOpen = true
 		elseif name == "trunk" then
 			secondInv.name = "trunk-"..id
 			secondInv.label = "Trunk-"..id
@@ -87,11 +89,14 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 				secondInv.inventory = GetOwnedVehicleItems(id)
 				Trunks[id] = {}
 				Trunks[id].items = GetOwnedVehicleItems(id)
+				Trunks[id].isOpen = true
 			elseif Trunks[id] ~= nil and not Trunks[id].isOpen then
 				secondInv.inventory = Trunks[id].items
+				Trunks[id].isOpen = true
 			else
 				Trunks[id] = {}
 				Trunks[id].items = {}
+				Trunks[id].isOpen = true
 			end
 
 			if Trunks[id] ~= nil and Trunks[id].isOpen then
@@ -101,7 +106,6 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 				secondInv.inventory = {}
 				secondInv.slots = 0
 			end
-			Trunks[id].isOpen = true
 		elseif name == "glovebox" then
 			secondInv.name = "glovebox-"..id
 			secondInv.label = "Glovebox-"..id
@@ -110,13 +114,16 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 			secondInv.slots = 5
 			if Gloveboxes[id] ~= nil and not Gloveboxes[id].isOpen then
 				secondInv.inventory = Gloveboxes[id].items
+				Gloveboxes[id].isOpen = true
 			elseif IsVehicleOwned(id) and next(GetOwnedVehicleGloveboxItems(id)) ~= nil then
 				secondInv.inventory = GetOwnedVehicleGloveboxItems(id)
 				Gloveboxes[id] = {}
 				Gloveboxes[id].items = GetOwnedVehicleGloveboxItems(id)
+				Gloveboxes[id].isOpen = true
 			else
 				Gloveboxes[id] = {}
 				Gloveboxes[id].items = {}
+				Gloveboxes[id].isOpen = true
 			end
 			if Gloveboxes[id] ~= nil and Gloveboxes[id].isOpen then
 				secondInv.name = "none-inv"
@@ -125,7 +132,6 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 				secondInv.inventory = {}
 				secondInv.slots = 0
 			end
-			Gloveboxes[id].isOpen = true
 		elseif name == "shop" then
 			secondInv.name = "itemshop-"..id
 			secondInv.label = other.label
@@ -160,6 +166,7 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 				secondInv.maxweight = 100000
 				secondInv.inventory = Drops[id].items
 				secondInv.slots = 30
+				Drops[id].isOpen = true
 			else
 				secondInv.name = "none-inv"
 				secondInv.label = "Dropped-None"
@@ -167,7 +174,6 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 				secondInv.inventory = {}
 				secondInv.slots = 0
 			end
-			Drops[id].isOpen = true
 		end
 		TriggerClientEvent("inventory:client:OpenInventory", src, Player.PlayerData.items, secondInv)
 	else
@@ -192,11 +198,11 @@ AddEventHandler('inventory:server:SaveInventory', function(type, id)
 		SaveStashItems(id, Stashes[id].items)
 	elseif type == "drop" then
 		if Drops[id] ~= nil then
-			Drops[id].isOpen = false
-			if next(Drops[id].items) == nil then
+			if Drops[id].items == nil or next(Drops[id].items) == nil then
 				Drops[id] = nil
 				TriggerClientEvent("inventory:client:RemoveDropItem", -1, id)
 			end
+			Drops[id].isOpen = false
 		end
 	end
 end)

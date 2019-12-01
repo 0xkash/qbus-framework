@@ -46,7 +46,7 @@ end)
 RegisterNetEvent('QBCore:Client:OnJobUpdate')
 AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
     PlayerJob = JobInfo
-    TriggerServerEvent("police:server:UpdateBlips")
+    --TriggerServerEvent("police:server:UpdateBlips")
 end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
@@ -54,7 +54,7 @@ AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     isLoggedIn = true
     PlayerJob = QBCore.Functions.GetPlayerData().job
     onDuty = QBCore.Functions.GetPlayerData().job.onduty
-    TriggerServerEvent("police:server:UpdateBlips")
+    --TriggerServerEvent("police:server:UpdateBlips")
     TriggerServerEvent("police:server:UpdateCurrentCops")
 end)
 local tabletProp = nil
@@ -118,13 +118,13 @@ end)
 local DutyBlips = {}
 RegisterNetEvent('police:client:UpdateBlips')
 AddEventHandler('police:client:UpdateBlips', function()
-    if DutyBlips ~= nil then 
-        for k, v in pairs(DutyBlips) do
-            RemoveBlip(v)
+    if PlayerJob ~= nil and (PlayerJob.name == 'police' or PlayerJob.name == 'ambulance') and PlayerJob.onduty then
+        if DutyBlips ~= nil then 
+            for k, v in pairs(DutyBlips) do
+                RemoveBlip(v)
+            end
         end
-    end
-	DutyBlips = {}
-	if PlayerJob ~= nil and PlayerJob.name == 'police' or PlayerJob.name == 'ambulance' and PlayerJob.onduty then
+        DutyBlips = {}
         QBCore.Functions.TriggerCallback('police:GetDutyPlayers', function(players)
             if players ~= nil then
                 for k, data in pairs(players) do

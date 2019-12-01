@@ -227,11 +227,13 @@ AddEventHandler('police:server:SendEmergencyMessage', function(coords, message)
         description = message,
     }
     TriggerClientEvent("qb-phone:client:addPoliceAlert", -1, alertData)
-	for k, Player in pairs(players) do
-		if ((Player.PlayerData.job.name == "police" or Player.PlayerData.job.name == "ambulance") and Player.PlayerData.job.onduty) then
-            TriggerClientEvent('chatMessage', k, MainPlayer.PlayerData.charinfo.firstname .. " " .. MainPlayer.PlayerData.charinfo.lastname .. " ("..src..")", "warning", message)
-            TriggerClientEvent("police:client:EmergencySound", k)
-		end
+    for k, Player in pairs(players) do
+        if Player ~= nil then 
+            if ((Player.PlayerData.job.name == "police" or Player.PlayerData.job.name == "ambulance") and Player.PlayerData.job.onduty) then
+                TriggerClientEvent('chatMessage', Player.PlayerData.source, "112 MELDING - " .. MainPlayer.PlayerData.charinfo.firstname .. " " .. MainPlayer.PlayerData.charinfo.lastname .. " ("..src..")", "warning", message)
+                TriggerClientEvent("police:client:EmergencySound", Player.PlayerData.source)
+            end
+        end
     end
 end)
 
@@ -871,12 +873,14 @@ QBCore.Commands.Add("112a", "Stuur een anonieme melding naar hulpdiensten (geeft
     local message = table.concat(args, " ")
     local Player = QBCore.Functions.GetPlayer(source)
     local players = QBCore.Functions.GetPlayers()
-    TriggerClientEvent("police:client:CallAnim", src)
+    TriggerClientEvent("police:client:CallAnim", source)
     for k, Player in pairs(players) do
-        if ((Player.PlayerData.job.name == "police" or Player.PlayerData.job.name == "ambulance") and Player.PlayerData.job.onduty) then
-            TriggerClientEvent('chatMessage', k, "ANONIEME MELDING", "warning", message)
-            TriggerClientEvent("police:client:EmergencySound", k)
-		end
+        if Player ~= nil then 
+            if ((Player.PlayerData.job.name == "police" or Player.PlayerData.job.name == "ambulance") and Player.PlayerData.job.onduty) then
+                TriggerClientEvent('chatMessage', k, "ANONIEME MELDING", "warning", message)
+                TriggerClientEvent("police:client:EmergencySound", k)
+            end
+        end
     end
 end)
 
@@ -887,7 +891,7 @@ QBCore.Commands.Add("112r", "Stuur een bericht terug naar een melding", {{name="
     local message = table.concat(args, " ")
     TriggerClientEvent('chatMessage', OtherPlayer.PlayerData.source, "(POLITIE) " ..Player.PlayerData.charinfo.firstname .. " " .. Player.PlayerData.charinfo.lastname, "error", message)
     TriggerClientEvent("police:client:EmergencySound", OtherPlayer.PlayerData.source)
-    TriggerClientEvent("police:client:CallAnim", OtherPlayer.PlayerData.source)
+    TriggerClientEvent("police:client:CallAnim", source)
 end)
 
 QBCore.Commands.Add("enkelband", "Doe een enkelband om bij het dichtsbijzijnde persoon.", {}, false, function(source, args)

@@ -368,10 +368,10 @@ RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     exports.spawnmanager:setAutoSpawn(false)
     isLoggedIn = true
-    PlayerJob = QBCore.Functions.GetPlayerData().job
-    onDuty = QBCore.Functions.GetPlayerData().job.onduty
     QBCore.Functions.GetPlayerData(function(PlayerData)
         isDead = PlayerData.metadata["isdead"]
+        PlayerJob = PlayerData.job
+        onDuty = PlayerData.job.onduty
         SetPedArmour(GetPlayerPed(-1), PlayerData.metadata["armor"])
     end)
 end)
@@ -469,6 +469,13 @@ function ResetPartial()
         if v.isDamaged and v.severity <= 2 then
             v.isDamaged = false
             v.severity = 0
+        end
+    end
+
+    for k, v in pairs(injured) do
+        if v.severity <= 2 then
+            v.severity = 0
+            table.remove(injured, k)
         end
     end
 
