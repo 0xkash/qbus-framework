@@ -383,7 +383,7 @@ AddEventHandler('police:client:PoliceAlertMessage', function(msg, coords, blipTy
 end)
 
 RegisterNetEvent('police:server:SendEmergencyMessageCheck')
-AddEventHandler('police:server:SendEmergencyMessageCheck', function(MainPlayer)
+AddEventHandler('police:server:SendEmergencyMessageCheck', function(MainPlayer, message)
     local PlayerData = QBCore.Functions.GetPlayerData()
 
     if ((PlayerData.job.name == "police" or PlayerData.job.name == "ambulance") and PlayerData.job.onduty) then
