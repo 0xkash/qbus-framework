@@ -121,8 +121,8 @@ function AddEmoteMenu(menu)
     end
 
     submenu.OnItemSelect = function(sender, item, index)
-     if EmoteTable[index - 1] ~= "🌟 Keybind" then
-      EmoteMenuStart(EmoteTable[index - 1], "emotes")
+     if EmoteTable[index] ~= "🌟 Keybind" then
+      EmoteMenuStart(EmoteTable[index], "emotes")
     end
   end
 end

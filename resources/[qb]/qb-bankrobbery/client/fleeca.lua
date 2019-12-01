@@ -157,7 +157,7 @@ AddEventHandler('electronickit:UseElectronickit', function()
                 if closestBank ~= nil then
                     local dist = GetDistanceBetweenCoords(pos, Config.SmallBanks[closestBank]["coords"]["x"], Config.SmallBanks[closestBank]["coords"]["y"], Config.SmallBanks[closestBank]["coords"]["z"])
                     if dist < 1.5 then
-                        if CurrentCops >= 0 then
+                        if CurrentCops >= 4 then
                             if not Config.SmallBanks[closestBank]["isOpened"] then 
                                 QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
                                     if result then 

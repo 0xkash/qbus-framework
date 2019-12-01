@@ -143,7 +143,7 @@ AddEventHandler('lockpicks:UseLockpick', function()
         local pos = GetEntityCoords(ped)
         local dist = GetDistanceBetweenCoords(pos, Config.Registers[k].x, Config.Registers[k].y, Config.Registers[k].z)
         if dist <= 1 and not Config.Registers[k].robbed then
-            if CurrentCops >= 0 then
+            if CurrentCops >= 3 then
                 QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
                     if result then
                         lockpick(true)
