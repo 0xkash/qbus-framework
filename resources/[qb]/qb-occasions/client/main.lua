@@ -197,6 +197,7 @@ DoScreenFadeIn(250)
 RegisterNetEvent('qb-occasions:client:BuyFinished')
 AddEventHandler('qb-occasions:client:BuyFinished', function()
     local vehData = Config.OccasionSlots[currentVehicle]
+    print(json.encode(vehData))
     QBCore.Functions.SpawnVehicle(vehData["model"], function(veh)
         SetVehicleNumberPlateText(veh, vehData["plate"])
         SetEntityHeading(veh, Config.BuyVehicle.h)
