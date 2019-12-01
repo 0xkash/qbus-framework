@@ -1070,3 +1070,10 @@ QBCore.Functions.CreateUseableItem("id_card", function(source, item)
         TriggerClientEvent("inventory:client:ShowId", -1, source, Player.PlayerData.citizenid, item.info)
     end
 end)
+
+QBCore.Functions.CreateUseableItem("driver_license", function(source, item)
+    local Player = QBCore.Functions.GetPlayer(source)
+	if Player.Functions.GetItemBySlot(item.slot) ~= nil then
+        TriggerClientEvent("inventory:client:ShowDriverLicense", -1, source, Player.PlayerData.citizenid, item.info)
+    end
+end)
