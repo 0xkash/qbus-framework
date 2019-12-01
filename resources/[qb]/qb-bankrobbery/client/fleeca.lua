@@ -312,6 +312,7 @@ function ResetBankDoors()
 end
 
 function openLocker(bankId, lockerId)
+    local pos = GetEntityCoords(GetPlayerPed(-1))
     if math.random(1, 100) <= 65 and not IsWearingHandshoes() then
         TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
     end

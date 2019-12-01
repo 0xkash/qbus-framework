@@ -209,6 +209,7 @@ AddEventHandler('lockpicks:UseLockpick', function()
                         PoliceCall()
                         TriggerEvent('qb-lockpick:client:openLockpick', lockpickFinish)
                         if math.random(1, 100) <= 65 and not IsWearingHandshoes() then
+                            local pos = GetEntityCoords(GetPlayerPed(-1))
                             TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
                         end
                     else

@@ -472,6 +472,13 @@ function ResetPartial()
         end
     end
 
+    for k, v in pairs(injured) do
+        if v.severity <= 2 then
+            v.severity = 0
+            table.remove(injured, k)
+        end
+    end
+
     if isBleeding <= 2 then
         isBleeding = 0
         bleedTickTimer = 0

@@ -137,7 +137,7 @@ function smashVitrine(k)
     local pedWeapon = GetSelectedPedWeapon(ped)
 
     if math.random(1, 100) <= 65 and not IsWearingHandshoes() then
-        TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
+        TriggerServerEvent("evidence:server:CreateFingerDrop", plyCoords)
     end
 
     QBCore.Functions.Progressbar("smash_vitrine", "Vitrine aan het inslaan..", Config.WhitelistedWeapons[pedWeapon]["timeOut"], false, true, {
