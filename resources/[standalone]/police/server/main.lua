@@ -858,7 +858,7 @@ end)
 QBCore.Commands.Add("112", "Stuur een melding naar hulpdiensten", {{name="bericht", help="Bericht die je wilt sturen naar de hulpdiensten"}}, true, function(source, args)
     local message = table.concat(args, " ")
     local Player = QBCore.Functions.GetPlayer(source)
-    TriggerClientEvent("police:client:SendEmergencyMessage", source, message)
+    TriggerClientEvent("police:client:SendEmergencyMessage", -1, message)
 end)
 
 QBCore.Commands.Add("112a", "Stuur een anonieme melding naar hulpdiensten (geeft geen locatie)", {{name="bericht", help="Bericht die je wilt sturen naar de hulpdiensten"}}, true, function(source, args)
