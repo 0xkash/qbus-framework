@@ -979,7 +979,6 @@ AddEventHandler("qb-clothes:loadSkin", function(new, model, data)
                         {menu = "accessoires", label = "Accessoires", selected = false}
                     })
                     DoScreenFadeIn(50)
-                    TriggerServerEvent('qb-clothing:server:GiveStarterItems')
                 end)
 			end)
 		end)

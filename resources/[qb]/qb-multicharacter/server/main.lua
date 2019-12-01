@@ -39,6 +39,7 @@ AddEventHandler('qb-multicharacter:server:createCharacter', function(data)
 
         TriggerClientEvent("qb-multicharacter:client:closeNUI", src)
         TriggerClientEvent('apartments:client:setupSpawnUI', src, newData)
+        TriggerServerEvent('qb-clothing:server:GiveStarterItems')
 	end
 end)
 
