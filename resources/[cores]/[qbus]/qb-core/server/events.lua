@@ -237,8 +237,11 @@ end)
 QBCore.Functions.CreateCallback('QBCore:HasItem', function(source, cb, itemName)
 	local retval = false
 	local Player = QBCore.Functions.GetPlayer(source)
-	if Player.Functions.GetItemByName(itemName) ~= nil then
-		retval = true
+	if Player ~= nil then 
+		if Player.Functions.GetItemByName(itemName) ~= nil then
+			retval = true
+		end
 	end
-    cb(retval)
+	
+	cb(retval)
 end)	
