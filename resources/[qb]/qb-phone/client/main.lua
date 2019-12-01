@@ -39,6 +39,22 @@ local playerContacts = {}
 
 local messages = {}
 
+Citizen.CreateThread(function()
+    while true do 
+        Citizen.Wait(1)
+        if callData.inCall then 
+            if not (IsEntityPlayingAnim(GetPlayerPed(-1), "cellphone@", "cellphone_call_listen_base", 3)) then 
+                PhonePlayAnim('call', false, true)
+                if phoneProp == 0 then
+                    newPhoneProp()
+                end
+            end
+        else
+            Citizen.Wait(2500)
+        end
+    end
+end)
+
 Citizen.CreateThread(function() 
     while true do
         Citizen.Wait(10)
@@ -922,6 +938,7 @@ AddEventHandler('qb-phone:client:HangupCallOther', function(cData)
             })
         end
 
+        Citizen.Wait(500)
         PhonePlayOut()
     end
 end)
@@ -932,46 +949,20 @@ AddEventHandler('qb-phone:client:HangupCall', function()
         if result then
             if callData.inCall then
                 exports.tokovoip_script:removePlayerFromRadio(callData.callId)
-        
-                TriggerServerEvent('qb-phone:server:HangupCall', callData)
-                QBCore.Functions.Notify('Het gesprek is beëindigd')
-        
-                callData.number = nil
-                callData.name = nil
-                callData.callId = 0
-                callData.inCall = false
-                callData.incomingCall = false
-                callData.outgoingCall = false
-        
-                PhonePlayOut()
-            elseif callData.outgoingCall then
-        
-                TriggerServerEvent('qb-phone:server:HangupCall', callData)
-                QBCore.Functions.Notify('Het gesprek is beëindigd')
-        
-                callData.number = nil
-                callData.name = nil
-                callData.callId = 0
-                callData.inCall = false
-                callData.incomingCall = false
-                callData.outgoingCall = false
-        
-                PhonePlayOut()
-            elseif callData.incomingCall then
-                TriggerServerEvent('qb-phone:server:HangupCall', callData)
-                QBCore.Functions.Notify('Het gesprek is beëindigd')
-        
-                callData.number = nil
-                callData.name = nil
-                callData.callId = 0
-                callData.inCall = false
-                callData.incomingCall = false
-                callData.outgoingCall = false
-        
-                PhonePlayOut()
             else
                 QBCore.Functions.Notify('Je zit niet in een gesprek..', 'error')
             end
+
+            TriggerServerEvent('qb-phone:server:HangupCall', callData)
+            QBCore.Functions.Notify('Het gesprek is beëindigd')
+    
+            callData.number = nil
+            callData.name = nil
+            callData.callId = 0
+            callData.inCall = false
+            callData.incomingCall = false
+            callData.outgoingCall = false
+            PhonePlayOut()
         
             if inPhone then
                 SendNUIMessage({

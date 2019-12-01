@@ -614,8 +614,11 @@ end)
 
 QBCore.Commands.Add("setpolice", "Geef de politie baan aan iemand ", {{name="id", help="Speler ID"}}, true, function(source, args)
     local Player = QBCore.Functions.GetPlayer(tonumber(args[1]))
-    if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) and IsHighCommand(Player.PlayerData.citizenid) then
-        Player.Functions.SetJob("police")
+    local Myself = QBCore.Functions.GetPlayer(source)
+    if Player ~= nil then 
+        if (Myself.PlayerData.job.name == "police" and Myself.PlayerData.job.onduty) and IsHighCommand(Myself.PlayerData.citizenid) then
+            Player.Functions.SetJob("police")
+        end
     end
 end)
 
