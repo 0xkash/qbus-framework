@@ -1,10 +1,9 @@
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(1)
-        if isLoggedIn then
+        if isLoggedIn and QBCore ~= nil then
+            local pos = GetEntityCoords(GetPlayerPed(-1))
             if PlayerJob.name == "doctor" or PlayerJob.name == "ambulance" then
-                local pos = GetEntityCoords(GetPlayerPed(-1))
-        
                 if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["duty"].x, Config.Locations["duty"].y, Config.Locations["duty"].z, true) < 5) then
                     if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["duty"].x, Config.Locations["duty"].y, Config.Locations["duty"].z, true) < 1.5) then
                         if onDuty then
@@ -60,8 +59,67 @@ Citizen.CreateThread(function()
                         Menu.renderGUI()
                     end
                 end
-            else
-                Citizen.Wait(1000)
+
+                if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["helicopter"].x, Config.Locations["helicopter"].y, Config.Locations["helicopter"].z, true) < 7.5) then
+                    if onDuty then
+                        DrawMarker(2, Config.Locations["helicopter"].x, Config.Locations["helicopter"].y, Config.Locations["helicopter"].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
+                        if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["helicopter"].x, Config.Locations["helicopter"].y, Config.Locations["helicopter"].z, true) < 1.5) then
+                            if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
+                                QBCore.Functions.DrawText3D(Config.Locations["helicopter"].x, Config.Locations["helicopter"].y, Config.Locations["helicopter"].z, "~g~E~w~ - Helikopter opbergen")
+                            else
+                                QBCore.Functions.DrawText3D(Config.Locations["helicopter"].x, Config.Locations["helicopter"].y, Config.Locations["helicopter"].z, "~g~E~w~ - Helikopter pakken")
+                            end
+                            if IsControlJustReleased(0, Keys["E"]) then
+                                if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
+                                    QBCore.Functions.DeleteVehicle(GetVehiclePedIsIn(GetPlayerPed(-1)))
+                                else
+                                    local coords = Config.Locations["helicopter"]
+                                    QBCore.Functions.SpawnVehicle(Config.Helicopter, function(veh)
+                                        SetVehicleNumberPlateText(veh, "LIFE"..tostring(math.random(1000, 9999)))
+                                        SetEntityHeading(veh, coords.h)
+                                        exports['LegacyFuel']:SetFuel(veh, 100.0)
+                                        closeMenuFull()
+                                        TaskWarpPedIntoVehicle(GetPlayerPed(-1), veh, -1)
+                                        TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
+                                        SetVehicleEngineOn(veh, true, true)
+                                    end, coords, true)
+                                end
+                            end
+                        end  
+                    end
+                end
+            end
+            if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["main"].x, Config.Locations["main"].y, Config.Locations["main"].z, true) < 1.5) then
+                DrawText3D(Config.Locations["main"].x, Config.Locations["main"].y, Config.Locations["main"].z, "~g~E~w~ - Om naar het dak te gaan")
+                if IsControlJustReleased(0, Keys["E"]) then
+                    DoScreenFadeOut(500)
+                    while not IsScreenFadedOut() do
+                        Citizen.Wait(10)
+                    end
+
+                    SetEntityCoords(PlayerPedId(), Config.Locations["roof"].x, Config.Locations["roof"].y, Config.Locations["roof"].z, 0, 0, 0, false)
+                    SetEntityHeading(PlayerPedId(), Config.Locations["roof"].h)
+
+                    Citizen.Wait(100)
+
+                    DoScreenFadeIn(1000)
+                end
+            end
+            if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["roof"].x, Config.Locations["roof"].y, Config.Locations["roof"].z, true) < 1.5) then
+                DrawText3D(Config.Locations["roof"].x, Config.Locations["roof"].y, Config.Locations["roof"].z, "~g~E~w~ - Om naar de lobby te gaan")
+                if IsControlJustReleased(0, Keys["E"]) then
+                    DoScreenFadeOut(500)
+                    while not IsScreenFadedOut() do
+                        Citizen.Wait(10)
+                    end
+
+                    SetEntityCoords(PlayerPedId(), Config.Locations["main"].x, Config.Locations["main"].y, Config.Locations["main"].z, 0, 0, 0, false)
+                    SetEntityHeading(PlayerPedId(), Config.Locations["main"].h)
+
+                    Citizen.Wait(100)
+
+                    DoScreenFadeIn(1000)
+                end
             end
         else
             Citizen.Wait(1000)

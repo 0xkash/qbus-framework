@@ -22,6 +22,7 @@ files {
     'stream/[police]/pyamahamotor/PYAMAHAMOTOR.xml',
     'stream/[dienst]/sneeuwschuiver/sneeuwschuiver.xml',
     'stream/[ambulance]/asprinter/asprinter.xml',
+    'stream/[ambulance]/aeklasse/AEKLASSE.xml',
 }
  
 data_file 'HANDLING_FILE' 'handling.meta'

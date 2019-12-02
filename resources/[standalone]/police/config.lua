@@ -55,7 +55,7 @@ Config.ArmoryWhitelist = {
     "DVH09193",
 }
 
-Config.Helicopter = "polmav"
+Config.Helicopter = "pzulu"
 
 Config.SecurityCameras = {
     hideradar = false,
