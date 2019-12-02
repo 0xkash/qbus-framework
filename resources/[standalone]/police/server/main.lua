@@ -220,21 +220,13 @@ RegisterServerEvent('police:server:SendEmergencyMessage')
 AddEventHandler('police:server:SendEmergencyMessage', function(coords, message)
     local src = source
     local MainPlayer = QBCore.Functions.GetPlayer(src)
-    local players = QBCore.Functions.GetPlayers()
     local alertData = {
         title = "112 Melding - "..MainPlayer.PlayerData.charinfo.firstname .. " " .. MainPlayer.PlayerData.charinfo.lastname .. " ("..src..")",
         coords = {x = coords.x, y = coords.y, z = coords.z},
         description = message,
     }
     TriggerClientEvent("qb-phone:client:addPoliceAlert", -1, alertData)
-    for k, Player in pairs(players) do
-        if Player ~= nil then 
-            if ((Player.PlayerData.job.name == "police" or Player.PlayerData.job.name == "ambulance") and Player.PlayerData.job.onduty) then
-                TriggerClientEvent('chatMessage', Player.PlayerData.source, "112 MELDING - " .. MainPlayer.PlayerData.charinfo.firstname .. " " .. MainPlayer.PlayerData.charinfo.lastname .. " ("..src..")", "warning", message)
-                TriggerClientEvent("police:client:EmergencySound", Player.PlayerData.source)
-            end
-        end
-    end
+    TriggerClientEvent('police:server:SendEmergencyMessageCheck', -1, MainPlayer, message)
 end)
 
 RegisterServerEvent('police:server:SearchPlayer')
@@ -872,16 +864,9 @@ end)
 QBCore.Commands.Add("112a", "Stuur een anonieme melding naar hulpdiensten (geeft geen locatie)", {{name="bericht", help="Bericht die je wilt sturen naar de hulpdiensten"}}, true, function(source, args)
     local message = table.concat(args, " ")
     local Player = QBCore.Functions.GetPlayer(source)
-    local players = QBCore.Functions.GetPlayers()
     TriggerClientEvent("police:client:CallAnim", source)
-    for k, Player in pairs(players) do
-        if Player ~= nil then 
-            if ((Player.PlayerData.job.name == "police" or Player.PlayerData.job.name == "ambulance") and Player.PlayerData.job.onduty) then
-                TriggerClientEvent('chatMessage', k, "ANONIEME MELDING", "warning", message)
-                TriggerClientEvent("police:client:EmergencySound", k)
-            end
-        end
-    end
+
+    TriggerClientEvent('police:client:Send112AMessage', -1, message)
 end)
 
 QBCore.Commands.Add("112r", "Stuur een bericht terug naar een melding", {{name="id", help="ID van de melding"}, {name="bericht", help="Bericht die je wilt sturen"}}, true, function(source, args)

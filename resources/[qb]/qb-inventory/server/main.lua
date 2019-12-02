@@ -60,17 +60,6 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 			secondInv.maxweight = 1000000
 			secondInv.inventory = {}
 			secondInv.slots = 100
-			if next(GetStashItems(id)) ~= nil then
-				secondInv.inventory = GetStashItems(id)
-				Stashes[id] = {}
-				Stashes[id].items = GetStashItems(id)
-				Stashes[id].isOpen = true
-			else
-				Stashes[id] = {}
-				Stashes[id].items = {}
-				Stashes[id].isOpen = true
-			end
-
 			if Stashes[id] ~= nil and Stashes[id].isOpen then
 				secondInv.name = "none-inv"
 				secondInv.label = "Stash-None"
@@ -78,6 +67,17 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 				secondInv.inventory = {}
 				secondInv.slots = 0
 				Stashes[id].isOpen = true
+			else
+				if next(GetStashItems(id)) ~= nil then
+					secondInv.inventory = GetStashItems(id)
+					Stashes[id] = {}
+					Stashes[id].items = GetStashItems(id)
+					Stashes[id].isOpen = true
+				else
+					Stashes[id] = {}
+					Stashes[id].items = {}
+					Stashes[id].isOpen = true
+				end
 			end
 		elseif name == "trunk" then
 			secondInv.name = "trunk-"..id
@@ -85,26 +85,26 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 			secondInv.maxweight = other.maxweight ~= nil and other.maxweight or 60000
 			secondInv.inventory = {}
 			secondInv.slots = other.slots ~= nil and other.slots or 50
-			if IsVehicleOwned(id) and next(GetOwnedVehicleItems(id)) ~= nil then
-				secondInv.inventory = GetOwnedVehicleItems(id)
-				Trunks[id] = {}
-				Trunks[id].items = GetOwnedVehicleItems(id)
-				Trunks[id].isOpen = true
-			elseif Trunks[id] ~= nil and not Trunks[id].isOpen then
-				secondInv.inventory = Trunks[id].items
-				Trunks[id].isOpen = true
-			else
-				Trunks[id] = {}
-				Trunks[id].items = {}
-				Trunks[id].isOpen = true
-			end
-
 			if Trunks[id] ~= nil and Trunks[id].isOpen then
 				secondInv.name = "none-inv"
 				secondInv.label = "Trunk-None"
 				secondInv.maxweight = other.maxweight ~= nil and other.maxweight or 60000
 				secondInv.inventory = {}
 				secondInv.slots = 0
+			else
+				if IsVehicleOwned(id) and next(GetOwnedVehicleItems(id)) ~= nil then
+					secondInv.inventory = GetOwnedVehicleItems(id)
+					Trunks[id] = {}
+					Trunks[id].items = GetOwnedVehicleItems(id)
+					Trunks[id].isOpen = true
+				elseif Trunks[id] ~= nil and not Trunks[id].isOpen then
+					secondInv.inventory = Trunks[id].items
+					Trunks[id].isOpen = true
+				else
+					Trunks[id] = {}
+					Trunks[id].items = {}
+					Trunks[id].isOpen = true
+				end
 			end
 		elseif name == "glovebox" then
 			secondInv.name = "glovebox-"..id
@@ -112,25 +112,26 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 			secondInv.maxweight = 10000
 			secondInv.inventory = {}
 			secondInv.slots = 5
-			if Gloveboxes[id] ~= nil and not Gloveboxes[id].isOpen then
-				secondInv.inventory = Gloveboxes[id].items
-				Gloveboxes[id].isOpen = true
-			elseif IsVehicleOwned(id) and next(GetOwnedVehicleGloveboxItems(id)) ~= nil then
-				secondInv.inventory = GetOwnedVehicleGloveboxItems(id)
-				Gloveboxes[id] = {}
-				Gloveboxes[id].items = GetOwnedVehicleGloveboxItems(id)
-				Gloveboxes[id].isOpen = true
-			else
-				Gloveboxes[id] = {}
-				Gloveboxes[id].items = {}
-				Gloveboxes[id].isOpen = true
-			end
 			if Gloveboxes[id] ~= nil and Gloveboxes[id].isOpen then
 				secondInv.name = "none-inv"
 				secondInv.label = "Glovebox-None"
 				secondInv.maxweight = 10000
 				secondInv.inventory = {}
 				secondInv.slots = 0
+			else
+				if Gloveboxes[id] ~= nil and not Gloveboxes[id].isOpen then
+					secondInv.inventory = Gloveboxes[id].items
+					Gloveboxes[id].isOpen = true
+				elseif IsVehicleOwned(id) and next(GetOwnedVehicleGloveboxItems(id)) ~= nil then
+					secondInv.inventory = GetOwnedVehicleGloveboxItems(id)
+					Gloveboxes[id] = {}
+					Gloveboxes[id].items = GetOwnedVehicleGloveboxItems(id)
+					Gloveboxes[id].isOpen = true
+				else
+					Gloveboxes[id] = {}
+					Gloveboxes[id].items = {}
+					Gloveboxes[id].isOpen = true
+				end
 			end
 		elseif name == "shop" then
 			secondInv.name = "itemshop-"..id
@@ -198,11 +199,11 @@ AddEventHandler('inventory:server:SaveInventory', function(type, id)
 		SaveStashItems(id, Stashes[id].items)
 	elseif type == "drop" then
 		if Drops[id] ~= nil then
+			Drops[id].isOpen = false
 			if Drops[id].items == nil or next(Drops[id].items) == nil then
 				Drops[id] = nil
 				TriggerClientEvent("inventory:client:RemoveDropItem", -1, id)
 			end
-			Drops[id].isOpen = false
 		end
 	end
 end)
@@ -1068,7 +1069,7 @@ QBCore.Commands.Add("giveitem", "Geef een item aan een speler", {{name="id", hel
 					info.nationality = Player.PlayerData.charinfo.nationality
 				end
 
-				if Player.Functions.AddItem(itemData["name"], amount, nil, info) then
+				if Player.Functions.AddItem(itemData["name"], amount, false, info) then
 					TriggerClientEvent('QBCore:Notify', source, "Je hebt " ..GetPlayerName(tonumber(args[1])).." " .. itemData["name"] .. " ("..amount.. ") gegeven", "success")
 				else
 					TriggerClientEvent('QBCore:Notify', source,  "Kan item niet geven!", "error")

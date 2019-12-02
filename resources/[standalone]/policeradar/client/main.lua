@@ -105,29 +105,31 @@ local radarInfo =
 RegisterNetEvent('wk:toggleRadar')
 AddEventHandler('wk:toggleRadar', function()
     QBCore.Functions.GetPlayerData(function(PlayerData)
-        local ped = GetPlayerPed( -1 )
-        if ( IsPedSittingInAnyVehicle( ped ) ) then 
-            local vehicle = GetVehiclePedIsIn( ped, false )
-
-            if (IsPoliceVehicle(vehicle)) then
-                radarEnabled = not radarEnabled
-
-                ResetFrontAntenna()
-                ResetRearAntenna()
-
-                SendNUIMessage({
-                    toggleradar = true, 
-                    fwdxmit = radarInfo.fwdXmit, 
-                    fwdmode = radarInfo.fwdMode, 
-                    bwdxmit = radarInfo.bwdXmit, 
-                    bwdmode = radarInfo.bwdMode
-                })
+        if PlayerData.job.name == "police" then
+            local ped = GetPlayerPed( -1 )
+            if ( IsPedSittingInAnyVehicle( ped ) ) then 
+                local vehicle = GetVehiclePedIsIn( ped, false )
+    
+                if (IsPoliceVehicle(vehicle)) then
+                    radarEnabled = not radarEnabled
+    
+                    ResetFrontAntenna()
+                    ResetRearAntenna()
+    
+                    SendNUIMessage({
+                        toggleradar = true, 
+                        fwdxmit = radarInfo.fwdXmit, 
+                        fwdmode = radarInfo.fwdMode, 
+                        bwdxmit = radarInfo.bwdXmit, 
+                        bwdmode = radarInfo.bwdMode
+                    })
+                else 
+                    QBCore.Functions.Notify( "Je moet in een politie voertuig zitten!", "error")
+                end 
             else 
-                QBCore.Functions.Notify( "Je moet in een politie voertuig zitten!", "error")
+                QBCore.Functions.Notify( "Je moet in een voertuig zitten!", "error")
             end 
-        else 
-            QBCore.Functions.Notify( "Je moet in een voertuig zitten!", "error")
-        end 
+        end
     end)
 end)
 

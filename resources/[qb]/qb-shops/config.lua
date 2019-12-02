@@ -513,7 +513,7 @@ Config.Locations = {
             [1] = {
                 ["x"] = 810.2, 
                 ["y"] = -2157.3, 
-                ["z"] = 28.6
+                ["z"] = 29.6
             }
         },
         ["products"] = Config.Products["weapons"],
@@ -549,7 +549,7 @@ Config.Locations = {
             [1] = {
                 ["x"] = 252.3, 
                 ["y"] = -50.0, 
-                ["z"] = 68.9
+                ["z"] = 69.9
             }
         },
         ["products"] = Config.Products["weapons"],

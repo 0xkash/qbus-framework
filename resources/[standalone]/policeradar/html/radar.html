@@ -21,9 +21,9 @@
 	<!-- Police Radar -->
 	<div id="policeradar" style="display: none;">
 		<!-- <div id="policeradar"> -->
-		<div class="antennalabel antennalabeltop">Front Antenna</div>
+		<div class="antennalabel antennalabeltop">ANPR VOOR</div>
 
-		<div class="logo">WraithRS</div>
+		<div class="logo"></div>
 
 		<div class="main">
 			<div class="container">
@@ -48,7 +48,7 @@
 						<div class="speednumber text"></div>
 					</div>
 
-					<div class="label">FWD</div>
+					<div class="label">ANPR VOOR</div>
 				</div>
 
 				<div class="patrolcontainer">
@@ -58,7 +58,7 @@
 						<div class="speednumber text"></div>
 					</div>
 
-					<div class="label">BWD</div>
+					<div class="label">ANPR ACHTER</div>
 				</div>
 			</div>
 
@@ -82,7 +82,7 @@
 						<div class="speednumber text"></div>
 					</div>
 
-					<div class="label">FWD FAST</div>
+					<div class="label">ANPR VOOR TOP</div>
 				</div>
 
 				<div class="patrolcontainer" style="margin-bottom: 20px;">
@@ -92,34 +92,22 @@
 						<div class="speednumber text"></div>
 					</div>
 
-					<div class="label">BWD FAST</div>
-				</div>
-			</div>
-
-			<div class="container">
-				<div class="patrolcontainer">
-					<div class="speedfastcontainer patrol" data-target="patrolspeed">
-						<div class="speednumber text"></div>
-						<div class="speednumber text"></div>
-						<div class="speednumber text"></div>
-					</div>
-
-					<div class="label">PATROL SPEED</div>
+					<div class="label">ANPR ACHTER TOP</div>
 				</div>
 			</div>
 		</div>
 
-		<div class="antennalabel antennalabelbottom">Rear Antenna</div>
+		<div class="antennalabel antennalabelbottom">ANPR ACHTER</div>
 
 		<!-- License Plate Reader -->
 		<div id="platereader">
 			<div class="container">
 				<div id="fwdPlate" class="pReader fwdPlate"></div>
-				<div class="label">FWD PLATE</div>
+				<div class="label">KENTEKEN VOOR</div>
 			</div>
 			<div class="container">
 				<div id="bwdPlate" class="pReader bwdPlate"></div>
-				<div class="label">BWD PLATE</div>
+				<div class="label">KENTEKEN ACHTER</div>
 			</div>
 		</div>
 		<!-- -==================- -->
@@ -127,34 +115,21 @@
 
 	<!-- Police Radar - Remote control -->
 	<div id="policeradarrc" style="display: none;">
-		<div class="container">
-			<button class="toggle" data-action="radar_toggle">TOGGLE RADAR</button>
-		</div>
-
-		<div class="label">FRONT ANTENNA</div>
 
 		<div class="container">
-			<button class="rowbutton frontopp" data-action="radar_frontopp">OPP</button>
-			<button class="rowbutton frontxmit" data-action="radar_frontxmit">XMIT</button>
-			<button class="rowbutton frontsame" data-action="radar_frontsame">SAME</button>
-		</div>
-
-		<div class="breakline"></div>
-
-		<div class="container">
-			<button class="rowbutton rearopp" data-action="radar_rearopp">OPP</button>
-			<button class="rowbutton rearxmit" data-action="radar_rearxmit">XMIT</button>
-			<button class="rowbutton rearsame" data-action="radar_rearsame">SAME</button>
-		</div>
-
-		<div class="label">REAR ANTENNA</div>
-
-		<div class="container">
-			<button class="limit" data-action="radar_setlimit">SET FAST LIMIT</button>
+			<button class="rowbutton" data-action="radar_frontxmit">TOGGLE VOOR</button>
 		</div>
 
 		<div class="container">
-			<button class="close" data-action="close">CLOSE</button>
+			<button class="rowbutton" data-action="radar_rearxmit">TOGGLE ACHTER</button>
+		</div>
+
+		<div class="container">
+			<button class="limit" data-action="radar_setlimit">ZET SNELHEIDSLIMIET</button>
+		</div>
+
+		<div class="container">
+			<button class="close" data-action="close">SLUITEN</button>
 		</div>
 	</div>
 </body>

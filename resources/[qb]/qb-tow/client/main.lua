@@ -118,7 +118,8 @@ AddEventHandler('qb-tow:client:TowVehicle', function()
                             flags = 16,
                         }, {}, {}, function() -- Done
                             StopAnimTask(GetPlayerPed(-1), "mini@repair", "fixing_a_ped", 1.0)
-                            AttachEntityToEntity(targetVehicle, vehicle, 20, -0.5, -5.0, 1.0, 0.0, 0.0, 0.0, false, false, false, false, 20, true)
+                            AttachEntityToEntity(targetVehicle, vehicle, GetEntityBoneIndexByName(vehicle, 'bodyshell'), 0.0, -1.5 + -0.85, 0.0 + 1.15, 0, 0, 0, 1, 1, 0, 1, 0, 1)
+                            FreezeEntityPosition(targetVehicle, true)
                             CurrentTow = targetVehicle
                             if NpcOn then
                                 RemoveBlip(CurrentBlip)
@@ -144,8 +145,9 @@ AddEventHandler('qb-tow:client:TowVehicle', function()
                 flags = 16,
             }, {}, {}, function() -- Done
                 StopAnimTask(GetPlayerPed(-1), "mini@repair", "fixing_a_ped", 1.0)
-                AttachEntityToEntity(CurrentTow, vehicle, 20, -0.0, -15.0, 1.0, 0.0, 0.0, 0.0, false, false, false, false, 20, true)
+                AttachEntityToEntity(CurrentTow, vehicle, GetEntityBoneIndexByName(vehicle, 'bodyshell'), 0.0, -1.5 + -0.85, 0.0 + 1.15, 0, 0, 0, 1, 1, 0, 1, 0, 1)
                 DetachEntity(CurrentTow, true, true)
+                FreezeEntityPosition(CurrentTow, false)
                 if NpcOn then
                     local targetPos = GetEntityCoords(CurrentTow)
                     if GetDistanceBetweenCoords(targetPos.x, targetPos.y, targetPos.z, Config.Locations["vehicle"].coords.x, Config.Locations["vehicle"].coords.y, Config.Locations["vehicle"].coords.z, true) < 25.0 then

@@ -30,6 +30,11 @@ AddEventHandler('qb-admin:server:kickPlayer', function(playerId, reason)
     end
 end)
 
+RegisterServerEvent('qb-admin:server:Freeze')
+AddEventHandler('qb-admin:server:Freeze', function(playerId, toggle)
+    TriggerClientEvent('qb-admin:client:Freeze', playerId, toggle)
+end)
+
 RegisterServerEvent('qb-admin:server:serverKick')
 AddEventHandler('qb-admin:server:serverKick', function(reason)
     local src = source
@@ -60,15 +65,15 @@ AddEventHandler('qb-admin:server:revivePlayer', function(target)
 	TriggerClientEvent('hospital:client:Revive', target)
 end)
 
-QBCore.Commands.Add("admin", "Open het admin menu!", {}, false, function(source, args)
+QBCore.Commands.Add("announce", "Stuur een bericht naar iedereen", {}, false, function(source, args)
     local msg = table.concat(args, " ")
     for i = 1, 3, 1 do
-        Citizen.Wait(250)
         TriggerClientEvent('chatMessage', -1, "SYSTEM", "error", msg)
     end
 end, "admin")
 
-QBCore.Commands.Add("announce", "Stuur een bericht naar iedereen", {}, false, function(source, args)
+QBCore.Commands.Add("admin", "Open admin menu", {}, false, function(source, args)
+    local group = QBCore.Functions.GetPermission(source)
     TriggerClientEvent('qb-admin:client:openMenu', source, group)
 end, "admin")
 
@@ -92,4 +97,9 @@ AddEventHandler('qb-admin:server:setPermissions', function(targetId, group)
     QBCore.Functions.AddPermission(targetId, group.rank)
 
     TriggerClientEvent('QBCore:Notify', targetId, 'Je permissie groep is gezet naar '..group.label)
+end)
+
+RegisterServerEvent('qb-admin:server:OpenSkinMenu')
+AddEventHandler('qb-admin:server:OpenSkinMenu', function(targetId)
+    TriggerClientEvent("qb-clothing:client:openMenu", targetId)
 end)

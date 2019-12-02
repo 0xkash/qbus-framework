@@ -15,7 +15,7 @@ local toggle_lock_on = 22 -- control id to lock onto a vehicle with the camera. 
 
 -- Script starts here
 local helicam = false
-local polmav_hash = GetHashKey("polmav")
+local polmav_hash = GetHashKey("pzulu")
 local fov = (fov_max+fov_min)*0.5
 local vision_state = 0 -- 0 is normal, 1 is nightmode, 2 is thermal vision
 
@@ -45,7 +45,6 @@ Citizen.CreateThread(function()
 						end
 						
 						if IsControlJustPressed(0, toggle_rappel) then -- Initiate rappel
-							Citizen.Trace("try to rappel")
 							if GetPedInVehicleSeat(heli, 1) == lPed or GetPedInVehicleSeat(heli, 2) == lPed then
 								PlaySoundFrontend(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)
 								TaskRappelFromHeli(GetPlayerPed(-1), 1)
@@ -197,7 +196,6 @@ RegisterNetEvent('heli:spotlight')
 AddEventHandler('heli:spotlight', function(serverID, state)
 	local heli = GetVehiclePedIsIn(GetPlayerPed(GetPlayerFromServerId(serverID)), false)
 	SetVehicleSearchlight(heli, state, false)
-	Citizen.Trace("Set heli light state to "..tostring(state).." for serverID: "..serverID)
 end)
 
 function IsPlayerInPolmav()

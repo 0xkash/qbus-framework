@@ -594,7 +594,7 @@ Config.Outfits = {
                     ["pants"]       = { item = 97, texture = 0},  -- Broek
                     ["arms"]        = { item = 0, texture = 0},  -- Armen
                     ["t-shirt"]     = { item = 56, texture = 0},  -- T Shirt
-                    ["vest"]        = { item = 7, texture = 3},  -- Body Vest
+                    ["vest"]        = { item = 7, texture = 1},  -- Body Vest
                     ["torso2"]      = { item = 2, texture = 0},  -- Jas / Vesten
                     ["shoes"]       = { item = 24, texture = 0},  -- Schoenen
                     ["decals"]      = { item = 7, texture = 0},  -- Decals
@@ -612,7 +612,7 @@ Config.Outfits = {
                     ["pants"]       = { item = 97, texture = 0},  -- Broek
                     ["arms"]        = { item = 4, texture = 0},  -- Armen
                     ["t-shirt"]     = { item = 56, texture = 0},  -- T Shirt
-                    ["vest"]        = { item = 7, texture = 3},  -- Body Vest
+                    ["vest"]        = { item = 7, texture = 1},  -- Body Vest
                     ["torso2"]      = { item = 3, texture = 0},  -- Jas / Vesten
                     ["shoes"]       = { item = 24, texture = 0},  -- Schoenen
                     ["decals"]      = { item = 7, texture = 0},  -- Decals

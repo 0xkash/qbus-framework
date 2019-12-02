@@ -69,9 +69,9 @@ $(function() {
 			updatePlate("bwdPlate", item.bwdPlate);
 		}
 
-		if (item.patrolspeed) {
+		/*if (item.patrolspeed) {
 			updateSpeed("patrolspeed", item.patrolspeed);
-		}
+		}*/
 
 		if (item.fwdspeed) {
 			updateSpeed("fwdspeed", item.fwdspeed);
