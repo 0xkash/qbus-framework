@@ -291,6 +291,8 @@ QBClothing.Open = function(data) {
         hasTracker = false;
     }
 
+    $(".change-camera-buttons").fadeIn(150);
+
     $(".clothing-menu-roomOutfits-container").css("display", "none");
     $(".clothing-menu-myOutfits-container").css("display", "none");
     $(".clothing-menu-character-container").css("display", "none");
@@ -377,6 +379,7 @@ $(document).on('click', '.clothing-menu-myOutfit-option-button-remove', function
 
 QBClothing.Close = function() {
     $.post('http://qb-clothing/close');
+    $(".change-camera-buttons").fadeOut(150);
     $(".clothing-menu-roomOutfits-container").css("display", "none");
     $(".clothing-menu-myOutfits-container").css("display", "none");
     $(".clothing-menu-character-container").css("display", "none");
@@ -469,6 +472,16 @@ $(document).on('click', '#cancel-outfit-save', function(e){
     $(".clothing-menu-container").css({"display":"block"}).animate({right: 0,}, 200);
     $(".clothing-menu-save-outfit-name").fadeOut(150);
     $.post('http://qb-clothing/PlaySound');
+});
+
+$(document).on('click', '.change-camera-button', function(e){
+    e.preventDefault();
+
+    var rotationType = $(this).data('rotation');
+
+    $.post('http://qb-clothing/rotateCam', JSON.stringify({
+        type: rotationType
+    }))
 });
 
 // QBClothing.Open()

@@ -121,6 +121,8 @@ isFreeze = false
 isSpectating = false
 showNames = false
 showBlips = false
+isInvisible = false
+hasGodmode = false
 
 lastSpectateCoord = nil
 
@@ -161,6 +163,7 @@ Citizen.CreateThread(function()
         "weatherOptions",
         "adminOptions",
         "adminOpt",
+        "selfOptions",
     }
 
     local bans = {
@@ -222,6 +225,7 @@ Citizen.CreateThread(function()
     WarMenu.CreateSubMenu('playerMan', 'admin')
     WarMenu.CreateSubMenu('serverMan', 'admin')
     WarMenu.CreateSubMenu('adminOpt', 'admin')
+    WarMenu.CreateSubMenu('selfOptions', 'adminOpt')
 
     WarMenu.CreateSubMenu('weatherOptions', 'serverMan')
 
@@ -235,10 +239,40 @@ Citizen.CreateThread(function()
 
     while true do
         if WarMenu.IsMenuOpened('admin') then
+            WarMenu.MenuButton('Admin Options', 'adminOpt')
             WarMenu.MenuButton('Player Management', 'playerMan')
             WarMenu.MenuButton('Server Management', 'serverMan')
-            WarMenu.MenuButton('Admin Options', 'adminOpt')
 
+            WarMenu.Display()
+        elseif WarMenu.IsMenuOpened('adminOpt') then
+            WarMenu.MenuButton('Self Options', 'selfOptions')
+            WarMenu.CheckBox("Show Player Names", showNames, function(checked) showNames = checked end)
+            if WarMenu.CheckBox("Show Player Blips", showBlips, function(checked) showBlips = checked end) then
+                toggleBlips()
+            end
+
+            WarMenu.Display()
+        elseif WarMenu.IsMenuOpened('selfOptions') then
+            if WarMenu.CheckBox("Noclip", isNoclip, function(checked) isNoclip = checked end) then
+                local target = PlayerId()
+                local targetId = GetPlayerServerId(target)
+                TriggerServerEvent("qb-admin:server:togglePlayerNoclip", targetId)
+            end
+            if WarMenu.Button('Revive') then
+                local target = PlayerId()
+                local targetId = GetPlayerServerId(target)
+                TriggerServerEvent('qb-admin:server:revivePlayer', targetId)
+            end
+            if WarMenu.CheckBox("Invisible", isInvisible, function(checked) isInvisible = checked end) then
+                local myPed = GetPlayerPed(-1)
+                
+                if isInvisible then
+                    SetEntityVisible(myPed, false, false)
+                else
+                    SetEntityVisible(myPed, true, false)
+                end
+            end
+            
             WarMenu.Display()
         elseif WarMenu.IsMenuOpened('playerMan') then
             local players = getPlayers()
@@ -419,11 +453,6 @@ Citizen.CreateThread(function()
             end
             
             WarMenu.Display()
-        elseif WarMenu.IsMenuOpened('adminOpt') then
-            WarMenu.CheckBox("Show Player Names", showNames, function(checked) showNames = checked end)
-            WarMenu.CheckBox("Show Player Blips", showBlips, function(checked) showBlips = checked end)
-
-            WarMenu.Display()
         end
 
         Citizen.Wait(0)
@@ -439,6 +468,7 @@ function SpectatePlayer(targetPed, toggle)
         lastSpectateCoord = GetEntityCoords(myPed)
         DoScreenFadeOut(150)
         SetTimeout(250, function()
+            SetEntityVisible(myPed, false)
             SetEntityCoords(myPed, GetOffsetFromEntityInWorldCoords(targetPed, 0.0, 0.45, 0.0))
             AttachEntityToEntity(myPed, targetPed, 11816, 0.45, 0.45, 0.0, 0.0, 0.0, 0.0, false, false, false, false, 2, true)
             DoScreenFadeIn(150)
@@ -487,42 +517,44 @@ end)
 
 local PlayerBlips = {}
 
-Citizen.CreateThread(function()
-    while true do
+function toggleBlips()
+    Citizen.CreateThread(function()
+        -- while true do
 
-        if showBlips then
-            local Players = getPlayers()
+            if showBlips then
+                local Players = getPlayers()
 
-            for k, v in pairs(Players) do
-                local playerPed = v["ped"]
-                local playerName = v["name"]
+                for k, v in pairs(Players) do
+                    local playerPed = v["ped"]
+                    local playerName = v["name"]
 
-                RemoveBlip(PlayerBlips[k])
-
-                local PlayerBlip = AddBlipForEntity(playerPed)
-
-                SetBlipSprite(PlayerBlip, 1)
-                SetBlipColour(PlayerBlip, 0)
-                SetBlipScale  (PlayerBlip, 0.75)
-                SetBlipAsShortRange(PlayerBlip, true)
-                BeginTextCommandSetBlipName("STRING")
-                AddTextComponentString('['..v["serverid"]..'] '..playerName)
-                EndTextCommandSetBlipName(PlayerBlip)
-                PlayerBlips[k] = PlayerBlip
-            end
-        else
-            if next(PlayerBlips) ~= nil then
-                for k, v in pairs(PlayerBlips) do
                     RemoveBlip(PlayerBlips[k])
-                end
-                PlayerBlips = {}
-            end
-            Citizen.Wait(1000)
-        end
 
-        Citizen.Wait(100)
-    end
-end)
+                    local PlayerBlip = AddBlipForEntity(playerPed)
+
+                    SetBlipSprite(PlayerBlip, 1)
+                    SetBlipColour(PlayerBlip, 0)
+                    SetBlipScale  (PlayerBlip, 0.75)
+                    SetBlipAsShortRange(PlayerBlip, true)
+                    BeginTextCommandSetBlipName("STRING")
+                    AddTextComponentString('['..v["serverid"]..'] '..playerName)
+                    EndTextCommandSetBlipName(PlayerBlip)
+                    PlayerBlips[k] = PlayerBlip
+                end
+            else
+                if next(PlayerBlips) ~= nil then
+                    for k, v in pairs(PlayerBlips) do
+                        RemoveBlip(PlayerBlips[k])
+                    end
+                    PlayerBlips = {}
+                end
+                Citizen.Wait(1000)
+            end
+
+            -- Citizen.Wait(100)
+        -- end
+    end)
+end
 
 RegisterNetEvent('qb-admin:client:bringTp')
 AddEventHandler('qb-admin:client:bringTp', function(coords)
