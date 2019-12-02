@@ -147,8 +147,7 @@ function requestDelivery()
         ["itemData"] = Config.DeliveryItems[item]
     }
     TriggerServerEvent('qb-drugs:server:giveDeliveryItems', amount)
-    SetTimeout(math.random(1000, 2000), function()
-        print('mail send')
+    SetTimeout(math.random(10000, 30000), function()
         TriggerServerEvent('qb-phone:server:sendNewMail', {
             sender = Config.Dealers[currentDealer]["name"],
             subject = "Aflever Locatie",
