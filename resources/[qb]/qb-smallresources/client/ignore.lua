@@ -71,13 +71,25 @@ function EnumeratePeds()
 end
 
 Citizen.CreateThread(function()
-	while true do
-		for veh in EnumerateVehicles() do
-			if Config.BlacklistedVehs[GetEntityModel(veh)] then
-				DeleteEntity(veh)
-			end
-		end
-        Citizen.Wait(500)
+    while true do
+    	Citizen.Wait(7)
+	    local playerPed = GetPlayerPed(-1)
+		local pos = GetEntityCoords(playerPed) 
+		SetGarbageTrucks(0)
+		SetAllLowPriorityVehicleGeneratorsActive(0.0)
+		SetPedDensityMultiplierThisFrame(0.5)
+    	SetScenarioPedDensityMultiplierThisFrame(0.0, 0.0)
+		SetParkedVehicleDensityMultiplierThisFrame(1.0)
+		SetVehicleDensityMultiplierThisFrame(0.05)
+		RemoveVehiclesFromGeneratorsInArea(335.2616 - 300.0, -1432.455 - 300.0, 46.51 - 300.0, 335.2616 + 300.0, -1432.455 + 300.0, 46.51 + 300.0); -- ziekenhuis
+		RemoveVehiclesFromGeneratorsInArea(441.8465 - 300.0, -987.99 - 300.0, 30.68 - 300.0, 441.8465 + 300.0, -987.99 + 300.0, 30.68 + 300.0); -- politie bureau
+		RemoveVehiclesFromGeneratorsInArea(316.79 - 300.0, -592.36 - 300.0, 43.28 - 300.0, 316.79 + 300.0, -592.36 + 300.0, 43.28 + 300.0); -- pillbox
+		RemoveVehiclesFromGeneratorsInArea(-2150.44 - 500.0, 3075.99 - 500.0, 32.8 - 500.0, -2150.44 + 500.0, -3075.99 + 500.0, 32.8 + 500.0); -- military
+		RemoveVehiclesFromGeneratorsInArea(-1108.35 - 300.0, 4920.64 - 300.0, 217.2 - 300.0, -1108.35 + 300.0, 4920.64 + 300.0, 217.2 + 300.0); -- nudist
+		RemoveVehiclesFromGeneratorsInArea(-458.24 - 300.0, 6019.81 - 300.0, 31.34 - 300.0, -458.24 + 300.0, 6019.81 + 300.0, 31.34 + 300.0); -- politie bureau paleto
+		RemoveVehiclesFromGeneratorsInArea(1854.82 - 300.0, 3679.4 - 300.0, 33.82 - 300.0, 1854.82 + 300.0, 3679.4 + 300.0, 33.82 + 300.0); -- politie bureau sandy
+
+
 	end
 end)
 
@@ -95,7 +107,7 @@ Citizen.CreateThread(function()
 	while true do
 
 		SetWeaponDamageModifier(GetHashKey('WEAPON_UNARMED'), 0.25)
-		SetWeaponDamageModifier(GetHashKey('WEAPON_NIGHTSTICK'), 0.25)
+		SetWeaponDamageModifier(GetHashKey('WEAPON_NIGHTSTICK'), 0.3)
 
 		Citizen.Wait(6)
 	end
