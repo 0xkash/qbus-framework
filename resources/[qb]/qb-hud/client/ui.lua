@@ -25,11 +25,10 @@ Citizen.CreateThread(function()
     while true do 
         if isLoggedIn and QBHud.Show then
             speed = GetEntitySpeed(GetVehiclePedIsIn(GetPlayerPed(-1), false)) * 3.6
-            local pos = GetEntityCoords(player)
+            local pos = GetEntityCoords(GetPlayerPed(-1))
             local time = CalculateTimeToDisplay()
             local street1, street2 = GetStreetNameAtCoord(pos.x, pos.y, pos.z, Citizen.ResultAsInteger(), Citizen.ResultAsInteger())
             local fuel = exports['LegacyFuel']:GetFuel(GetVehiclePedIsIn(GetPlayerPed(-1)))
-
             QBCore.Functions.GetPlayerData(function(PlayerData)
                 SendNUIMessage({
                     action = "hudtick",

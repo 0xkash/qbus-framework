@@ -387,12 +387,33 @@ AddEventHandler('police:client:PoliceAlertMessage', function(msg, coords, blipTy
 end)
 
 RegisterNetEvent('police:server:SendEmergencyMessageCheck')
-AddEventHandler('police:server:SendEmergencyMessageCheck', function(MainPlayer, message)
+AddEventHandler('police:server:SendEmergencyMessageCheck', function(MainPlayer, message, coords)
     local PlayerData = QBCore.Functions.GetPlayerData()
 
     if ((PlayerData.job.name == "police" or PlayerData.job.name == "ambulance") and PlayerData.job.onduty) then
         TriggerEvent('chatMessage', "112 MELDING - " .. MainPlayer.PlayerData.charinfo.firstname .. " " .. MainPlayer.PlayerData.charinfo.lastname .. " ("..MainPlayer.PlayerData.source..")", "warning", message)
         TriggerEvent("police:client:EmergencySound")
+        local transG = 250
+        local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
+        SetBlipSprite(blip, 280)
+        SetBlipColour(blip, 4)
+        SetBlipDisplay(blip, 4)
+        SetBlipAlpha(blip, transG)
+        SetBlipScale(blip, 0.9)
+        SetBlipAsShortRange(blip, false)
+        BeginTextCommandSetBlipName('STRING')
+        AddTextComponentString("Gewond persoon")
+        EndTextCommandSetBlipName(blip)
+        while transG ~= 0 do
+            Wait(180 * 4)
+            transG = transG - 1
+            SetBlipAlpha(blip, transG)
+            if transG == 0 then
+                SetBlipSprite(blip, 2)
+                RemoveBlip(blip)
+                return
+            end
+        end
     end
 end)
 

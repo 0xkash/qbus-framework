@@ -82,9 +82,14 @@ Citizen.CreateThread(function()
                                 trunkpos = GetOffsetFromEntityInWorldCoords(vehicle, 0, 2.5, 0)
                             end
                             if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, trunkpos) < 2.0) and not IsPedInAnyVehicle(GetPlayerPed(-1)) then
-                                CurrentVehicle = GetVehicleNumberPlateText(vehicle)
-                                curVeh = vehicle
-                                CurrentGlovebox = nil
+                                if GetVehicleDoorLockStatus(vehicle) <= 2 then
+                                    CurrentVehicle = GetVehicleNumberPlateText(vehicle)
+                                    curVeh = vehicle
+                                    CurrentGlovebox = nil
+                                else
+                                    QBCore.Functions.Notify("Voertuig staat op slot..", "error")
+                                    return
+                                end
                             else
                                 CurrentVehicle = nil
                             end

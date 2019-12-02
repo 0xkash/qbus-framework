@@ -226,7 +226,7 @@ AddEventHandler('police:server:SendEmergencyMessage', function(coords, message)
         description = message,
     }
     TriggerClientEvent("qb-phone:client:addPoliceAlert", -1, alertData)
-    TriggerClientEvent('police:server:SendEmergencyMessageCheck', -1, MainPlayer, message)
+    TriggerClientEvent('police:server:SendEmergencyMessageCheck', -1, MainPlayer, message, coords)
 end)
 
 RegisterServerEvent('police:server:SearchPlayer')

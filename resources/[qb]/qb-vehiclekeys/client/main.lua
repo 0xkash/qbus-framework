@@ -189,7 +189,7 @@ function LockVehicle()
                 local vehLockStatus = GetVehicleDoorLockStatus(veh)
                 loadAnimDict("anim@mp_player_intmenu@key_fob@")
                 TaskPlayAnim(GetPlayerPed(-1), 'anim@mp_player_intmenu@key_fob@', 'fob_click' ,3.0, 3.0, -1, 49, 0, false, false, false)
-                if(vehLockStatus < 2)then
+                if(vehLockStatus <= 2)then
                     Citizen.Wait(750)
                     ClearPedTasks(GetPlayerPed(-1))
                     vehLockStatus = 4
