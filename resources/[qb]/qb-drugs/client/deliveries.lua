@@ -145,8 +145,6 @@ function requestDelivery()
         ["dealer"] = currentDealer,
         ["itemData"] = randomDeliveryItemOnRep()
     }
-    print('yeeey')
-    print(json.encode(waitingDelivery["itemData"]))
     TriggerServerEvent('qb-drugs:server:giveDeliveryItems', amount)
     SetTimeout(math.random(10000, 30000), function()
         print('mail send')
