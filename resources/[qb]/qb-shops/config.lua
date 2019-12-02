@@ -112,6 +112,14 @@ Config.Products = {
             type = "item",
             slot = 6,
         },
+        [7] = {
+            name = "radio",
+            price = 850,
+            amount = 50,
+            info = {},
+            type = "item",
+            slot = 7,
+        },
     },
     ["coffeeshop"] = {
         [1] = {
