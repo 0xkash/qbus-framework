@@ -361,10 +361,10 @@ end)
 RegisterServerEvent('police:server:UpdateCurrentCops')
 AddEventHandler('police:server:UpdateCurrentCops', function()
     local players = QBCore.Functions.GetPlayers()
-	local amount = 0
-	for source, Player in pairs(players) do
+    local amount = 0
+    for source, Player in pairs(players) do
 		if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
-			amount = amount + 1
+            amount = amount + 1
 		end
     end
     TriggerClientEvent("police:SetCopCount", -1, amount)

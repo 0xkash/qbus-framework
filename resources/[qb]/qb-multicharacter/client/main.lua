@@ -179,4 +179,7 @@ function skyCam(bool)
     end
 end
 
-skyCam(false)
+RegisterNetEvent('qb-multicharacter:client:GiveStarterItems')
+AddEventHandler('qb-multicharacter:client:GiveStarterItems', function()
+    TriggerServerEvent('qb-multicharacter:server:GiveStarterItems')
+end)

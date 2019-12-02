@@ -39,8 +39,15 @@ AddEventHandler('qb-multicharacter:server:createCharacter', function(data)
 
         TriggerClientEvent("qb-multicharacter:client:closeNUI", src)
         TriggerClientEvent('apartments:client:setupSpawnUI', src, newData)
-        TriggerEvent('qb-clothing:server:GiveStarterItems')
+        TriggerClientEvent('qb-multicharacter:server:GiveStarterItems', src)
 	end
+end)
+
+RegisterServerEvent('qb-multicharacter:server:GiveStarterItems')
+AddEventHandler('qb-multicharacter:server:GiveStarterItems', function()
+    local src = source
+
+    TriggerClientEvent('qb-clothing:server:GiveStarterItems', src)
 end)
 
 RegisterServerEvent('qb-multicharacter:server:deleteCharacter')
