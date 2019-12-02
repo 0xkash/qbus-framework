@@ -148,7 +148,7 @@ function requestDelivery()
     print('yeeey')
     print(json.encode(waitingDelivery["itemData"]))
     TriggerServerEvent('qb-drugs:server:giveDeliveryItems', amount)
-    SetTimeout(math.random(0, 500), function()
+    SetTimeout(math.random(10000, 30000), function()
         print('mail send')
         TriggerServerEvent('qb-phone:server:sendNewMail', {
             sender = Config.Dealers[currentDealer]["name"],
