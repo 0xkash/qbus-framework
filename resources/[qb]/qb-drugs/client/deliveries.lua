@@ -138,15 +138,16 @@ end)
 function requestDelivery()
     local location = math.random(1, #Config.DeliveryLocations)
     local amount = math.random(1, 3)
+    local item = randomDeliveryItemOnRep()
     waitingDelivery = {
         ["coords"] = Config.DeliveryLocations[location]["coords"],
         ["locationLabel"] = Config.DeliveryLocations[location]["label"],
         ["amount"] = amount,
         ["dealer"] = currentDealer,
-        ["itemData"] = randomDeliveryItemOnRep()
+        ["itemData"] = Config.DeliveryItems[item]
     }
     TriggerServerEvent('qb-drugs:server:giveDeliveryItems', amount)
-    SetTimeout(math.random(20000, 30000), function()
+    SetTimeout(math.random(10000, 30000), function()
         TriggerServerEvent('qb-phone:server:sendNewMail', {
             sender = Config.Dealers[currentDealer]["name"],
             subject = "Aflever Locatie",
@@ -174,9 +175,7 @@ function randomDeliveryItemOnRep()
             local item = math.random(1, #availableItems)
 
             retval = item
-            return retval
         end
-        return retval
     end
     return retval
 end
