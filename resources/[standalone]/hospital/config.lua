@@ -5,6 +5,9 @@ Config.Locations = {
     ["duty"]= {x = 304.27, y = -600.33, z = 43.28, h = 0.0},
     ["vehicle"] = { x = 294.578, y = -574.761, z = 43.179, h = 35.792},
     ["vehicledown"] = { x = 364.565, y = -591.97, z = 28.68, h = 336.130},
+    ["helicopter"] = {x = 351.58, y = -587.45, z = 74.16, h = 160.5},
+    ["roof"] = {x = 338.5, y = -583.85, z = 74.16, h = 245.5},
+    ["main"] = {x = 332.28, y = -595.64, z = 43.28, h = 68.5},
     ["beds"] = {
         [1] = {x = 309.32, y = -577.41, z = 43.53, h = 164.5, taken = false, model = 1631638868 },
         [2] = {x = 309.32, y = -577.41, z = 43.53, h = 164.5, taken = false, model = 1631638868}, 
@@ -20,8 +23,11 @@ Config.Locations = {
 }
 
 Config.Vehicles = {
-    ["asprinter"] = "Mercedes-Benz Sprinter Otaris Light 2018",
+    ["asprinter"] = "Mercedes-Benz Sprinter",
+    ["aeklasse"] = "Mercedes-Benz E-Klasse",
 }
+
+Config.Helicopter = "alifeliner"
 
 Config.DeathTime = 300
 Config.CheckTime = 10

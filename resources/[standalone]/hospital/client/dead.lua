@@ -13,7 +13,7 @@ Citizen.CreateThread(function()
 			local playerPed = PlayerPedId()
 			if IsEntityDead(playerPed) and not isDead then
 				local killer, killerWeapon = NetworkGetEntityKillerOfPlayer(player)
-                local killerServerId = NetworkGetPlayerIndexFromPed(killer)
+                --local killerServerId = NetworkGetPlayerIndexFromPed(killer)
                 deathTime = Config.DeathTime
 
                 OnDeath()
