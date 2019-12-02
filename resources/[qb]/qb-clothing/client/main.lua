@@ -216,7 +216,7 @@ end)
 Citizen.CreateThread(function()
     while true do
 
-        -- if isLoggedIn then
+        if isLoggedIn then
 
             local ped = GetPlayerPed(-1)
             local pos = GetEntityCoords(ped)
@@ -259,7 +259,7 @@ Citizen.CreateThread(function()
                 Citizen.Wait(2000)
             end
 
-        -- end
+        end
 
         Citizen.Wait(3)
     end
@@ -295,6 +295,7 @@ Citizen.CreateThread(function()
                                             {menu = "character", label = "Karakter", selected = false},
                                             {menu = "accessoires", label = "Accessoires", selected = false}
                                         })
+                                        
                                     end)
                                 end
                             end
@@ -514,6 +515,22 @@ function enableCam()
         SetCamCoord(cam, customCamLocation.x, customCamLocation.y, customCamLocation.z)
     end
 end
+
+RegisterNUICallback('rotateCam', function(data)
+    local rotType = data.type
+    local ped = GetPlayerPed(-1)
+    local coords = GetOffsetFromEntityInWorldCoords(ped, 0, 2.0, 0)
+
+    if rotType == "left" then
+        SetEntityHeading(ped, GetEntityHeading(ped) - 10)
+        SetCamCoord(cam, coords.x, coords.y, coords.z + 0.5)
+        SetCamRot(cam, 0.0, 0.0, GetEntityHeading(ped) + 180)
+    else
+        SetEntityHeading(ped, GetEntityHeading(ped) + 10)
+        SetCamCoord(cam, coords.x, coords.y, coords.z + 0.5)
+        SetCamRot(cam, 0.0, 0.0, GetEntityHeading(ped) + 180)
+    end
+end)
 
 RegisterNUICallback('setupCam', function(data)
     local value = data.value
@@ -973,11 +990,14 @@ AddEventHandler("qb-clothes:loadSkin", function(new, model, data)
 		Citizen.CreateThread(function()
             QBCore.Functions.GetPlayerData(function(PlayerData)
                 SetTimeout(3000, function()
+                    local skin = "mp_m_freemode_01"
                     openMenu({
                         {menu = "character", label = "Karakter", selected = true},
                         {menu = "clothing", label = "Uiterlijk", selected = false},
                         {menu = "accessoires", label = "Accessoires", selected = false}
                     })
+                    if PlayerData.charinfo.gender == 1 then skin = "mp_f_freemode_01" end
+                    ChangeToSkinNoUpdate(skin)
                     DoScreenFadeIn(50)
                 end)
 			end)
