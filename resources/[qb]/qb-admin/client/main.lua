@@ -12,6 +12,45 @@ end)
 
 --- CODE
 
+QBAdmin = {}
+QBAdmin.Functions = {}
+
+QBAdmin.Functions.DrawText3D = function(x, y, z, text)
+	SetTextScale(0.35, 0.35)
+    SetTextFont(4)
+    SetTextProportional(1)
+    SetTextColour(255, 255, 255, 215)
+    SetTextEntry("STRING")
+    SetTextCentre(true)
+    AddTextComponentString(text)
+    SetDrawOrigin(x,y,z, 0)
+    DrawText(0.0, 0.0)
+    local factor = (string.len(text)) / 370
+    DrawRect(0.0, 0.0+0.0125, 0.017+ factor, 0.03, 0, 0, 0, 75)
+    ClearDrawOrigin()
+end
+
+QBAdmin.Functions.GetClosestPlayer = function()
+    local closestPlayers = QBCore.Functions.GetPlayersFromCoords()
+    local closestDistance = -1
+    local closestPlayer = -1
+    local coords = GetEntityCoords(GetPlayerPed(-1))
+
+    for i=1, #closestPlayers, 1 do
+        if closestPlayers[i] ~= PlayerId() then
+            local pos = GetEntityCoords(GetPlayerPed(closestPlayers[i]))
+            local distance = GetDistanceBetweenCoords(pos.x, pos.y, pos.z, coords.x, coords.y, coords.z, true)
+
+            if closestDistance == -1 or closestDistance > distance then
+                closestPlayer = closestPlayers[i]
+                closestDistance = distance
+            end
+        end
+	end
+
+	return closestPlayer, closestDistance
+end
+
 AvailableWeatherTypes = {
     {label = "Extra Sunny",         weather = 'EXTRASUNNY',}, 
     {label = "Clear",               weather = 'CLEAR',}, 
@@ -79,6 +118,11 @@ PermissionLevels = {
 
 isNoclip = false
 isFreeze = false
+isSpectating = false
+showNames = false
+showBlips = false
+
+lastSpectateCoord = nil
 
 myPermissionRank = "user"
 
@@ -116,6 +160,7 @@ Citizen.CreateThread(function()
         "permissionOptions",
         "weatherOptions",
         "adminOptions",
+        "adminOpt",
     }
 
     local bans = {
@@ -176,6 +221,7 @@ Citizen.CreateThread(function()
     WarMenu.CreateMenu('admin', 'Qbus Admin')
     WarMenu.CreateSubMenu('playerMan', 'admin')
     WarMenu.CreateSubMenu('serverMan', 'admin')
+    WarMenu.CreateSubMenu('adminOpt', 'admin')
 
     WarMenu.CreateSubMenu('weatherOptions', 'serverMan')
 
@@ -191,6 +237,7 @@ Citizen.CreateThread(function()
         if WarMenu.IsMenuOpened('admin') then
             WarMenu.MenuButton('Player Management', 'playerMan')
             WarMenu.MenuButton('Server Management', 'serverMan')
+            WarMenu.MenuButton('Admin Options', 'adminOpt')
 
             WarMenu.Display()
         elseif WarMenu.IsMenuOpened('playerMan') then
@@ -281,6 +328,23 @@ Citizen.CreateThread(function()
                 local target = GetPlayerServerId(currentPlayer)
                 TriggerServerEvent("qb-admin:server:Freeze", target, isFreeze)
             end
+            if WarMenu.CheckBox("Spectate", isSpectating, function(checked) isSpectating = checked end) then
+                local target = GetPlayerFromServerId(GetPlayerServerId(currentPlayer))
+                local targetPed = GetPlayerPed(target)
+                local targetCoords = GetEntityCoords(targetPed)
+
+                SpectatePlayer(targetPed, isSpectating)
+            end
+            if WarMenu.MenuButton("Open Inventory", currentPlayer) then
+                local targetId = GetPlayerServerId(currentPlayer)
+
+                OpenTargetInventory(targetId)
+            end
+            if WarMenu.MenuButton("Give Clothing Menu", currentPlayer) then
+                local targetId = GetPlayerServerId(currentPlayer)
+
+                TriggerServerEvent('qb-admin:server:OpenSkinMenu', targetId)
+            end
 
             WarMenu.Display()
         elseif WarMenu.IsMenuOpened('teleportOptions') then
@@ -355,9 +419,108 @@ Citizen.CreateThread(function()
             end
             
             WarMenu.Display()
+        elseif WarMenu.IsMenuOpened('adminOpt') then
+            WarMenu.CheckBox("Show Player Names", showNames, function(checked) showNames = checked end)
+            WarMenu.CheckBox("Show Player Blips", showBlips, function(checked) showBlips = checked end)
+
+            WarMenu.Display()
         end
 
         Citizen.Wait(0)
+    end
+end)
+
+function SpectatePlayer(targetPed, toggle)
+    local myPed = GetPlayerPed(-1)
+
+    if toggle then
+        SetEntityVisible(myPed, false)
+        SetEntityInvincible(myPed, true)
+        lastSpectateCoord = GetEntityCoords(myPed)
+        DoScreenFadeOut(150)
+        SetTimeout(250, function()
+            SetEntityCoords(myPed, GetOffsetFromEntityInWorldCoords(targetPed, 0.0, 0.45, 0.0))
+            AttachEntityToEntity(myPed, targetPed, 11816, 0.45, 0.45, 0.0, 0.0, 0.0, 0.0, false, false, false, false, 2, true)
+            DoScreenFadeIn(150)
+        end)
+    else
+        DoScreenFadeOut(150)
+        DetachEntity(myPed, true, false)
+        SetTimeout(250, function()
+            SetEntityCoords(myPed, lastSpectateCoord)
+            SetEntityVisible(myPed, true)
+            SetEntityInvincible(myPed, false)
+            DoScreenFadeIn(150)
+            lastSpectateCoord = nil
+        end)
+    end
+end
+
+function OpenTargetInventory(targetId)
+    WarMenu.CloseMenu()
+
+    TriggerServerEvent("inventory:server:OpenInventory", "otherplayer", targetId)
+end
+
+Citizen.CreateThread(function()
+    while true do
+
+        if showNames then
+            local player, distance = QBAdmin.Functions.GetClosestPlayer()
+            if player ~= -1 and distance < 2.5 then
+                local PlayerId = GetPlayerServerId(player)
+                local PlayerPed = GetPlayerPed(player)
+                local PlayerName = GetPlayerName(player)
+                local PlayerCoords = GetEntityCoords(PlayerPed)
+
+                QBAdmin.Functions.DrawText3D(PlayerCoords.x, PlayerCoords.y, PlayerCoords.z + 1.0, '['..PlayerId..'] '..PlayerName)
+            else
+                Citizen.Wait(500)
+            end
+        else
+            Citizen.Wait(1000)
+        end
+
+        Citizen.Wait(3)
+    end
+end)
+
+local PlayerBlips = {}
+
+Citizen.CreateThread(function()
+    while true do
+
+        if showBlips then
+            local Players = getPlayers()
+
+            for k, v in pairs(Players) do
+                local playerPed = v["ped"]
+                local playerName = v["name"]
+
+                RemoveBlip(PlayerBlips[k])
+
+                local PlayerBlip = AddBlipForEntity(playerPed)
+
+                SetBlipSprite(PlayerBlip, 1)
+                SetBlipColour(PlayerBlip, 0)
+                SetBlipScale  (PlayerBlip, 0.75)
+                SetBlipAsShortRange(PlayerBlip, true)
+                BeginTextCommandSetBlipName("STRING")
+                AddTextComponentString('['..v["serverid"]..'] '..playerName)
+                EndTextCommandSetBlipName(PlayerBlip)
+                PlayerBlips[k] = PlayerBlip
+            end
+        else
+            if next(PlayerBlips) ~= nil then
+                for k, v in pairs(PlayerBlips) do
+                    RemoveBlip(PlayerBlips[k])
+                end
+                PlayerBlips = {}
+            end
+            Citizen.Wait(1000)
+        end
+
+        Citizen.Wait(100)
     end
 end)
 
@@ -372,5 +535,12 @@ RegisterNetEvent('qb-admin:client:Freeze')
 AddEventHandler('qb-admin:client:Freeze', function(toggle)
     local ped = GetPlayerPed(-1)
 
-    FreezeEntityPosition(ped, toggle)
+    local veh = GetVehiclePedIsIn(ped)
+
+    if veh ~= 0 then
+        FreezeEntityPosition(ped, toggle)
+        FreezeEntityPosition(veh, toggle)
+    else
+        FreezeEntityPosition(ped, toggle)
+    end
 end)

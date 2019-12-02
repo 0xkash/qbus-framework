@@ -87,8 +87,9 @@ Citizen.CreateThread(function ()
         local model = GetHashKey(Config['delivery'].warehouseObjects[math.random(1, #Config['delivery'].warehouseObjects)])
         RequestModel(model)
         while not HasModelLoaded(model) do Citizen.Wait(0) end
-        local obj = CreateObject(model, pickuploc.x, pickuploc.y, pickuploc.z, true, true, true)
+        local obj = CreateObject(model, pickuploc.x, pickuploc.y, pickuploc.z, false, true, true)
         PlaceObjectOnGroundProperly(obj)
+        FreezeEntityPosition(obj, false)
         FreezeEntityPosition(obj, true)
     end
     while true do

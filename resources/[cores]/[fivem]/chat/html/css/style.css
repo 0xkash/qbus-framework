@@ -70,9 +70,11 @@ textarea {
   box-sizing: border-box;
   padding: 0.65vw;
   color: #ffffff;
-  background-color: rgba(0, 0, 0, 0.62);
-  width: 100%;
-  border: 1px solid rgba(0,0,0,0.8);
+  background-color: #2f3640b6;
+  width: 80%;
+  min-height: 4.3vh;
+  max-height: 4.3vh;
+  border: 1px solid #333b46;
   overflow: hidden;
   text-overflow: ellipsis;
   resize: none;
@@ -93,24 +95,24 @@ textarea:focus, input:focus {
   font-size: 0.9rem;
   box-sizing: border-box;
   color: white;
-  background-color: rgba(0, 0, 0, 0.62);
-  border: 1px solid #000000;
-  width: 100%;
+  background-color: #2f3640b6;
+  border: 1px solid #333b46;
+  width: 80%;
 }
 
 .help {
   margin-top: -10px;
-  color: #000000;
+  color: #ffffffe7;
 }
 
 .disabled {
   margin-top: -10px;
-  color: #000000;
+  color: #ffffff93;
 }
 
 .suggestion {
   margin-bottom: 5px;
-  color: #ffffff;
+  color: #ffffffec;
 }
 
 .chat-message {

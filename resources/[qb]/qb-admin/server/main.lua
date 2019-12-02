@@ -73,6 +73,7 @@ QBCore.Commands.Add("announce", "Stuur een bericht naar iedereen", {}, false, fu
 end, "admin")
 
 QBCore.Commands.Add("admin", "Open admin menu", {}, false, function(source, args)
+    local group = QBCore.Functions.GetPermission(source)
     TriggerClientEvent('qb-admin:client:openMenu', source, group)
 end, "admin")
 
@@ -96,4 +97,9 @@ AddEventHandler('qb-admin:server:setPermissions', function(targetId, group)
     QBCore.Functions.AddPermission(targetId, group.rank)
 
     TriggerClientEvent('QBCore:Notify', targetId, 'Je permissie groep is gezet naar '..group.label)
+end)
+
+RegisterServerEvent('qb-admin:server:OpenSkinMenu')
+AddEventHandler('qb-admin:server:OpenSkinMenu', function(targetId)
+    TriggerClientEvent("qb-clothing:client:openMenu", targetId)
 end)
