@@ -52,11 +52,15 @@ end)
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     isLoggedIn = true
+    print('daar')
     PlayerJob = QBCore.Functions.GetPlayerData().job
     onDuty = QBCore.Functions.GetPlayerData().job.onduty
     --TriggerServerEvent("police:server:UpdateBlips")
+    print('hier')
     TriggerServerEvent("police:server:UpdateCurrentCops")
+    print('hier123123')
 end)
+
 local tabletProp = nil
 RegisterNetEvent('police:client:toggleDatabank')
 AddEventHandler('police:client:toggleDatabank', function()

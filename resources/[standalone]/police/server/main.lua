@@ -360,9 +360,13 @@ end)
 
 RegisterServerEvent('police:server:UpdateCurrentCops')
 AddEventHandler('police:server:UpdateCurrentCops', function()
+    print('ik Print')
+    print(json.encode(players))
     local players = QBCore.Functions.GetPlayers()
-	local amount = 0
-	for source, Player in pairs(players) do
+    local amount = 0
+
+    for source, Player in pairs(players) do
+        print(json.encode(players[source]))
 		if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
 			amount = amount + 1
 		end
