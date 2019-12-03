@@ -79,7 +79,7 @@ var moneyTimeout = null;
         if (data.street2 != "" && data.street2 != undefined) {
             $(".ui-car-street").html(data.direction + ' | ' + data.street1 + ' | ' + data.street2);
         } else {
-            $(".ui-car-street").html(data.direction + ' |' + data.street1);
+            $(".ui-car-street").html(data.direction + ' | ' + data.street1);
         }
     };
 

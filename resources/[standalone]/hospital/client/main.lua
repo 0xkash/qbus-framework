@@ -275,7 +275,7 @@ AddEventHandler('hospital:client:Revive', function()
         loadAnimDict(inBedDict)
         TaskPlayAnim(player, inBedDict , inBedAnim, 8.0, 1.0, -1, 1, 0, 0, 0, 0 )
         SetEntityInvincible(GetPlayerPed(-1), true)
-        SetEntityHeading(player, bedOccupyingData.h + 180)
+        SetEntityHeading(player, bedOccupyingData.h - 180.0)
         canLeaveBed = true
     end
 
@@ -558,6 +558,8 @@ function SetBedCam()
 
     SetEntityCoords(player, bedOccupyingData.x, bedOccupyingData.y, bedOccupyingData.z + 0.02)
     SetEntityInvincible(PlayerPedId(), true)
+    Citizen.Wait(500)
+    FreezeEntityPosition(player, true)
 
     loadAnimDict(inBedDict)
 
@@ -587,7 +589,7 @@ function LeaveBed()
     
     FreezeEntityPosition(player, false)
     SetEntityInvincible(player, false)
-    SetEntityHeading(player, bedOccupyingData.h - 90)
+    SetEntityHeading(player, bedOccupyingData.h + 90)
     TaskPlayAnim(player, getOutDict , getOutAnim, 100.0, 1.0, -1, 8, -1, 0, 0, 0)
     Citizen.Wait(4000)
     ClearPedTasks(player)

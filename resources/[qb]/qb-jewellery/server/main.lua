@@ -51,29 +51,33 @@ end)
 RegisterServerEvent('qb-jewellery:server:PoliceAlertMessage')
 AddEventHandler('qb-jewellery:server:PoliceAlertMessage', function(msg, coords, blip)
     local src = source
-    local players = QBCore.Functions.GetPlayers()
 
-	for k, Player in pairs(players) do
-        if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
-            if blip then
-                if not alarmTriggered then
-                    TriggerClientEvent("qb-jewellery:client:PoliceAlertMessage", k, msg, coords, blip)
-                    alarmTriggered = true
+    for k, v in pairs(QBCore.Functions.GetPlayers()) do
+        local Player = QBCore.Functions.GetPlayer(v)
+        if Player ~= nil then 
+            if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
+                if blip then
+                    if not alarmTriggered then
+                        TriggerClientEvent("qb-jewellery:client:PoliceAlertMessage", v, msg, coords, blip)
+                        alarmTriggered = true
+                    end
+                else
+                    TriggerClientEvent("qb-jewellery:client:PoliceAlertMessage", v, msg, coords, blip)
                 end
-            else
-                TriggerClientEvent("qb-jewellery:client:PoliceAlertMessage", k, msg, coords, blip)
             end
-		end
+        end
     end
 end)
 
 QBCore.Functions.CreateCallback('qb-jewellery:server:getCops', function(source, cb)
-	local players = QBCore.Functions.GetPlayers()
 	local amount = 0
-	for source, Player in pairs(players) do
-		if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
-			amount = amount + 1
-		end
+    for k, v in pairs(QBCore.Functions.GetPlayers()) do
+        local Player = QBCore.Functions.GetPlayer(v)
+        if Player ~= nil then 
+            if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
+                amount = amount + 1
+            end
+        end
 	end
 	cb(amount)
 end)

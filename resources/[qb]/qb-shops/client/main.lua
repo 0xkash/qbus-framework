@@ -66,8 +66,8 @@ AddEventHandler('qb-shops:client:UpdateShop', function(shop, itemData, amount)
 end)
 
 RegisterNetEvent('qb-shops:client:SetShopItems')
-AddEventHandler('qb-shops:client:SetShopItems', function(shop, itemData, amount)
-    Config.Locations[shop]["products"][itemData.slot].amount = Config.Locations[shop]["products"][itemData.slot].amount - amount
+AddEventHandler('qb-shops:client:SetShopItems', function(shop, shopProducts)
+    Config.Locations[shop]["products"] = shopProducts
 end)
 
 RegisterNetEvent('qb-shops:client:RestockShopItems')

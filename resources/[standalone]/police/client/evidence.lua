@@ -100,9 +100,10 @@ AddEventHandler("evidence:client:ClearBlooddropsInArea", function()
 end)
 
 RegisterNetEvent('evidence:client:AddCasing')
-AddEventHandler('evidence:client:AddCasing', function(casingId, weapon, coords)
+AddEventHandler('evidence:client:AddCasing', function(casingId, weapon, coords, serie)
     Casings[casingId] = {
 		type = weapon,
+		serie = serie ~= nil and serie or "Serie nummer niet zichtbaar..",
 		coords = {
 			x = coords.x,
 			y = coords.y, 
@@ -195,8 +196,8 @@ Citizen.CreateThread(function()
 		if CurrentCasing ~= nil and CurrentCasing ~= 0 then 
 			local pos = GetEntityCoords(GetPlayerPed(-1))
 			if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Casings[CurrentCasing].coords.x, Casings[CurrentCasing].coords.y, Casings[CurrentCasing].coords.z, true) < 1.5 then
-				DrawText3D(Casings[CurrentCasing].coords.x, Casings[CurrentCasing].coords.y, Casings[CurrentCasing].coords.z, "~g~7~w~ - Kogelhuls ~b~#"..Casings[CurrentCasing].type)
-				if IsControlJustReleased(0, Keys["7"]) or IsDisabledControlJustReleased(0, Keys["7"]) then
+				DrawText3D(Casings[CurrentCasing].coords.x, Casings[CurrentCasing].coords.y, Casings[CurrentCasing].coords.z, "~g~G~w~ - Kogelhuls ~b~#"..Casings[CurrentCasing].type)
+				if IsControlJustReleased(0, Keys["G"]) then
 					local s1, s2 = Citizen.InvokeNative(0x2EB41072B4C1E4C0, Casings[CurrentCasing].coords.x, Casings[CurrentCasing].coords.y, Casings[CurrentCasing].coords.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
 					local street1 = GetStreetNameFromHashKey(s1)
 					local street2 = GetStreetNameFromHashKey(s2)
@@ -210,6 +211,7 @@ Citizen.CreateThread(function()
 						street = streetLabel:gsub("%'", ""),
 						ammolabel = Config.AmmoLabels[QBCore.Shared.Weapons[Casings[CurrentCasing].type]["ammotype"]],
 						ammotype = Casings[CurrentCasing].type,
+						serie = Casings[CurrentCasing].serie,
 					}
 					TriggerServerEvent("evidence:server:AddCasingToInventory", CurrentCasing, info)
 				end
@@ -219,8 +221,8 @@ Citizen.CreateThread(function()
 		if CurrentBlooddrop ~= nil and CurrentBlooddrop ~= 0 then 
 			local pos = GetEntityCoords(GetPlayerPed(-1))
 			if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Blooddrops[CurrentBlooddrop].coords.x, Blooddrops[CurrentBlooddrop].coords.y, Blooddrops[CurrentBlooddrop].coords.z, true) < 1.5 then
-				DrawText3D(Blooddrops[CurrentBlooddrop].coords.x, Blooddrops[CurrentBlooddrop].coords.y, Blooddrops[CurrentBlooddrop].coords.z, "~g~7~w~ - Bloed ~b~#"..DnaHash(Blooddrops[CurrentBlooddrop].citizenid))
-				if IsControlJustReleased(0, Keys["7"]) or IsDisabledControlJustReleased(0, Keys["7"]) then
+				DrawText3D(Blooddrops[CurrentBlooddrop].coords.x, Blooddrops[CurrentBlooddrop].coords.y, Blooddrops[CurrentBlooddrop].coords.z, "~g~G~w~ - Bloed ~b~#"..DnaHash(Blooddrops[CurrentBlooddrop].citizenid))
+				if IsControlJustReleased(0, Keys["G"]) then
 					local s1, s2 = Citizen.InvokeNative(0x2EB41072B4C1E4C0, Blooddrops[CurrentBlooddrop].coords.x, Blooddrops[CurrentBlooddrop].coords.y, Blooddrops[CurrentBlooddrop].coords.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
 					local street1 = GetStreetNameFromHashKey(s1)
 					local street2 = GetStreetNameFromHashKey(s2)
@@ -243,8 +245,8 @@ Citizen.CreateThread(function()
 		if CurrentFingerprint ~= nil and CurrentFingerprint ~= 0 then 
 			local pos = GetEntityCoords(GetPlayerPed(-1))
 			if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Fingerprints[CurrentFingerprint].coords.x, Fingerprints[CurrentFingerprint].coords.y, Fingerprints[CurrentFingerprint].coords.z, true) < 1.5 then
-				DrawText3D(Fingerprints[CurrentFingerprint].coords.x, Fingerprints[CurrentFingerprint].coords.y, Fingerprints[CurrentFingerprint].coords.z, "~g~7~w~ - Vingerafdruk ")
-				if IsControlJustReleased(0, Keys["7"]) or IsDisabledControlJustReleased(0, Keys["7"]) then
+				DrawText3D(Fingerprints[CurrentFingerprint].coords.x, Fingerprints[CurrentFingerprint].coords.y, Fingerprints[CurrentFingerprint].coords.z, "~g~G~w~ - Vingerafdruk ")
+				if IsControlJustReleased(0, Keys["G"]) then
 					local s1, s2 = Citizen.InvokeNative(0x2EB41072B4C1E4C0, Fingerprints[CurrentFingerprint].coords.x, Fingerprints[CurrentFingerprint].coords.y, Fingerprints[CurrentFingerprint].coords.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
 					local street1 = GetStreetNameFromHashKey(s1)
 					local street2 = GetStreetNameFromHashKey(s2)

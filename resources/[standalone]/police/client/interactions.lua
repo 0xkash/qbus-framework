@@ -242,9 +242,16 @@ RegisterNetEvent('police:client:CuffPlayer')
 AddEventHandler('police:client:CuffPlayer', function()
     local player, distance = GetClosestPlayer()
     if player ~= -1 and distance < 2.5 then
-        local playerId = GetPlayerServerId(player)
-        TriggerServerEvent("police:server:CuffPlayer", playerId, false)
-        HandCuffAnimation()
+        QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
+            if result then 
+                local playerId = GetPlayerServerId(player)
+                TriggerServerEvent("police:server:CuffPlayer", playerId, false)
+                HandCuffAnimation()
+            else
+                QBCore.Functions.Notify("Je hebt geen handboeien bij je", "error")
+            end
+        end, "handcuffs")
+        
     else
         QBCore.Functions.Notify("Niemand in de buurt!", "error")
     end

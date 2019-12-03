@@ -506,11 +506,13 @@ end)
 
 RegisterServerEvent('qb-phone:server:addPoliceAlert')
 AddEventHandler('qb-phone:server:addPoliceAlert', function(alertData)
-    local players = QBCore.Functions.GetPlayers()
-    for source, Player in pairs(players) do
-        if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
-            TriggerClientEvent("qb-phone:client:addPoliceAlert", Player.PlayerData.source, alertData)
-		end
+    for k, v in pairs(QBCore.Functions.GetPlayers()) do
+        local Player = QBCore.Functions.GetPlayer(v)
+        if Player ~= nil then 
+            if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
+                TriggerClientEvent("qb-phone:client:addPoliceAlert", Player.PlayerData.source, alertData)
+            end
+        end
 	end
 end)
 

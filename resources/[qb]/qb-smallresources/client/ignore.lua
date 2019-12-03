@@ -105,6 +105,15 @@ end)
 
 Citizen.CreateThread(function()
 	while true do
+		Citizen.Wait(1)
+		if IsPedBeingStunned(GetPlayerPed(-1)) then
+			SetPedMinGroundTimeForStungun(GetPlayerPed(-1), 7500)
+		end
+	end
+end)
+
+Citizen.CreateThread(function()
+	while true do
 
 		SetWeaponDamageModifier(GetHashKey('WEAPON_UNARMED'), 0.25)
 		SetWeaponDamageModifier(GetHashKey('WEAPON_NIGHTSTICK'), 0.3)
@@ -133,21 +142,17 @@ if Config.RemoveWeaponDrops then
 end
 
 Citizen.CreateThread(function()
-    while true do
-        Citizen.Wait(7)
-        local PlayerPed = PlayerPedId()
-		if GetPlayerWantedLevel(PlayerId()) ~= 0 then
-			SetPlayerWantedLevel(PlayerId(), 0, false)
-			SetPlayerWantedLevelNow(PlayerId(), false)
-		end
-        --Display vehicle Rewards
-        DisablePlayerVehicleRewards(PlayerPed)
-        -- Disable Wanted level
-		for i = 1, 20 do
+	while true do
+		Wait(0)
+		for i = 1, 12 do
 			EnableDispatchService(i, false)
 		end
-    end
+		SetPlayerWantedLevel(PlayerId(), 0, false)
+		SetPlayerWantedLevelNow(PlayerId(), false)
+		SetPlayerWantedLevelNoDrop(PlayerId(), 0, false)
+	end
 end)
+
 
 Citizen.CreateThread(function()
     while true do

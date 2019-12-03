@@ -52,7 +52,6 @@ end)
 
 RegisterServerEvent('qb-storerobbery:server:callCops')
 AddEventHandler('qb-storerobbery:server:callCops', function(type, safe, streetLabel, coords)
-    local players = QBCore.Functions.GetPlayers()
     local cameraId = 4
     if type == "safe" then
         cameraId = Config.Safes[safe].camId
