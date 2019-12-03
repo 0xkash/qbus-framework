@@ -39,8 +39,7 @@ RegisterServerEvent('qb-admin:server:serverKick')
 AddEventHandler('qb-admin:server:serverKick', function(reason)
     local src = source
     if QBCore.Functions.HasPermission(src, permissions["kickall"]) then
-        local players = QBCore.Functions.GetPlayers()
-        for k, Player in pairs(players) do
+        for k, v in pairs(QBCore.Functions.GetPlayers()) do
             if k ~= src then 
                 DropPlayer(k, "Je bent gekicked uit de server:\n"..reason.."\n\n🔸 Kijk op onze discord voor meer informatie: https://discord.gg/Ttr6fY6")
             end
@@ -79,14 +78,16 @@ end, "admin")
 
 QBCore.Commands.Add("report", "Stuur een report naar admins (alleen wanneer nodig, MAAK HIER GEEN MISBRUIK VAN)", {{name="bericht", help="Bericht die je wilt sturen"}}, true, function(source, args)
     local msg = table.concat(args, " ")
-    local players = QBCore.Functions.GetPlayers()
 
-	for k, Player in pairs(players) do
-        if QBCore.Functions.HasPermission(k, "god") then
-            if QBCore.Config.Server.PermissionList[GetPlayerIdentifiers(k)[1]].optin then 
-                TriggerClientEvent('chatMessage', k, "REPORT - " .. GetPlayerName(source) .. " ("..source..")", "report", msg)
+    for k, v in pairs(QBCore.Functions.GetPlayers()) do
+        local Player = QBCore.Functions.GetPlayer(k)
+        if Player ~= nil then 
+            if QBCore.Functions.HasPermission(k, "god") then
+                if QBCore.Config.Server.PermissionList[GetPlayerIdentifiers(k)[1]].optin then 
+                    TriggerClientEvent('chatMessage', k, "REPORT - " .. GetPlayerName(source) .. " ("..source..")", "report", msg)
+                end
             end
-		end
+        end
     end
     TriggerClientEvent('chatMessage', source, "REPORT VERSTUURD", "normal", msg)
 end)

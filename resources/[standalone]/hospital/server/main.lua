@@ -106,10 +106,12 @@ end)
 RegisterServerEvent('hospital:server:SendDoctorAlert')
 AddEventHandler('hospital:server:SendDoctorAlert', function()
 	local src = source
-	local players = QBCore.Functions.GetPlayers()
-	for k, Player in pairs(players) do
-		if (Player.PlayerData.job.name == "doctor" and Player.PlayerData.job.onduty) then
-			TriggerClientEvent("hospital:client:SendAlert", k, "Er is een dokter nodig bij Pillbox Ziekenhuis")
+	for k, v in pairs(QBCore.Functions.GetPlayers()) do
+		local Player = QBCore.Functions.GetPlayer(k)
+		if Player ~= nil then 
+			if (Player.PlayerData.job.name == "doctor" and Player.PlayerData.job.onduty) then
+				TriggerClientEvent("hospital:client:SendAlert", k, "Er is een dokter nodig bij Pillbox Ziekenhuis")
+			end
 		end
 	end
 end)
@@ -117,7 +119,6 @@ end)
 RegisterServerEvent('hospital:server:MakeDeadCall')
 AddEventHandler('hospital:server:MakeDeadCall', function(blipSettings, gender, street1, street2)
 	local src = source
-	local players = QBCore.Functions.GetPlayers()
 	local genderstr = "Man"
 
 	if gender == 1 then genderstr = "Vrouw" end
@@ -130,11 +131,13 @@ AddEventHandler('hospital:server:MakeDeadCall', function(blipSettings, gender, s
 end)
 
 QBCore.Functions.CreateCallback('hospital:GetDoctors', function(source, cb)
-	local players = QBCore.Functions.GetPlayers()
 	local amount = 0
-	for source, Player in pairs(players) do
-		if (Player.PlayerData.job.name == "doctor" and Player.PlayerData.job.onduty) then
-			amount = amount + 1
+	for k, v in pairs(QBCore.Functions.GetPlayers()) do
+		local Player = QBCore.Functions.GetPlayer(k)
+		if Player ~= nil then 
+			if (Player.PlayerData.job.name == "doctor" and Player.PlayerData.job.onduty) then
+				amount = amount + 1
+			end
 		end
 	end
 	cb(amount)

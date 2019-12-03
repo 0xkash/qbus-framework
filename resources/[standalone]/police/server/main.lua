@@ -149,51 +149,55 @@ end)
 RegisterServerEvent('police:server:FlaggedPlateTriggered')
 AddEventHandler('police:server:FlaggedPlateTriggered', function(camId, plate, street1, street2, blipSettings)
     local src = source
-    local players = QBCore.Functions.GetPlayers()
-
-	for k, Player in pairs(players) do
-		if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
-			if street2 ~= nil then
-				TriggerClientEvent("112:client:SendPoliceAlert", k, "flagged", "Flitser #"..camId.." - Gemarkeerd voertuig ("..plate..") gesignaleerd bij ".. street1 .. " | " .. street2, blipSettings)
-			else
-				TriggerClientEvent("112:client:SendPoliceAlert", k, "flagged", "Flitser #"..camId.." - Gemarkeerd voertuig ("..plate..") gesignaleerd bij ".. street1, blipSettings)
-			end
-		end
+    for k, v in pairs(QBCore.Functions.GetPlayers()) do
+        local Player = QBCore.Functions.GetPlayer(k)
+        if Player ~= nil then
+            if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
+                if street2 ~= nil then
+                    TriggerClientEvent("112:client:SendPoliceAlert", k, "flagged", "Flitser #"..camId.." - Gemarkeerd voertuig ("..plate..") gesignaleerd bij ".. street1 .. " | " .. street2, blipSettings)
+                else
+                    TriggerClientEvent("112:client:SendPoliceAlert", k, "flagged", "Flitser #"..camId.." - Gemarkeerd voertuig ("..plate..") gesignaleerd bij ".. street1, blipSettings)
+                end
+            end
+        end
 	end
 end)
 
 RegisterServerEvent('police:server:PoliceAlertMessage')
 AddEventHandler('police:server:PoliceAlertMessage', function(msg, coords)
     local src = source
-    local players = QBCore.Functions.GetPlayers()
 
-	for k, Player in pairs(players) do
-		if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
-            TriggerClientEvent("police:client:PoliceAlertMessage", k, msg, coords)
-        elseif Player.Functions.GetItemByName("radioscanner") ~= nil and math.random(1, 100) <= 50 then
-            TriggerClientEvent("police:client:PoliceAlertMessage", k, msg, coords)
-		end
+    for k, v in pairs(QBCore.Functions.GetPlayers()) do
+        local Player = QBCore.Functions.GetPlayer(k)
+        if Player ~= nil then 
+            if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
+                TriggerClientEvent("police:client:PoliceAlertMessage", k, msg, coords)
+            elseif Player.Functions.GetItemByName("radioscanner") ~= nil and math.random(1, 100) <= 50 then
+                TriggerClientEvent("police:client:PoliceAlertMessage", k, msg, coords)
+            end
+        end
     end
 end)
 
 RegisterServerEvent('police:server:GunshotAlert')
 AddEventHandler('police:server:GunshotAlert', function(streetLabel, isAutomatic, fromVehicle, coords, vehicleInfo)
     local src = source
-    local players = QBCore.Functions.GetPlayers()
 
-	for k, Player in pairs(players) do
-		if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
-            TriggerClientEvent("police:client:GunShotAlert", k, streetLabel, isAutomatic, fromVehicle, coords, vehicleInfo)
-        elseif Player.Functions.GetItemByName("radioscanner") ~= nil and math.random(1, 100) <= 50 then
-            TriggerClientEvent("police:client:GunShotAlert", k, streetLabel, isAutomatic, fromVehicle, coords, vehicleInfo)
-		end
+    for k, v in pairs(QBCore.Functions.GetPlayers()) do
+        local Player = QBCore.Functions.GetPlayer(k)
+        if Player ~= nil then 
+            if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
+                TriggerClientEvent("police:client:GunShotAlert", k, streetLabel, isAutomatic, fromVehicle, coords, vehicleInfo)
+            elseif Player.Functions.GetItemByName("radioscanner") ~= nil and math.random(1, 100) <= 50 then
+                TriggerClientEvent("police:client:GunShotAlert", k, streetLabel, isAutomatic, fromVehicle, coords, vehicleInfo)
+            end
+        end
     end
 end)
 
 RegisterServerEvent('police:server:VehicleCall')
 AddEventHandler('police:server:VehicleCall', function(coords, msg)
     local src = source
-    local players = QBCore.Functions.GetPlayers()
     local alertData = {
         title = "Voertuigdiefstal",
         coords = {x = coords.x, y = coords.y, z = coords.z},
@@ -206,7 +210,6 @@ end)
 RegisterServerEvent('police:server:HouseRobberyCall')
 AddEventHandler('police:server:HouseRobberyCall', function(coords, message)
     local src = source
-    local players = QBCore.Functions.GetPlayers()
     local alertData = {
         title = "Huisinbraak",
         coords = {x = coords.x, y = coords.y, z = coords.z},
@@ -369,12 +372,14 @@ end)
 
 RegisterServerEvent('police:server:UpdateCurrentCops')
 AddEventHandler('police:server:UpdateCurrentCops', function()
-    local players = QBCore.Functions.GetPlayers()
     local amount = 0
-    for source, Player in pairs(players) do
-		if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
-            amount = amount + 1
-		end
+    for k, v in pairs(QBCore.Functions.GetPlayers()) do
+        local Player = QBCore.Functions.GetPlayer(k)
+        if Player ~= nil then 
+            if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
+                amount = amount + 1
+            end
+        end
     end
     TriggerClientEvent("police:SetCopCount", -1, amount)
 end)
@@ -444,7 +449,6 @@ end)
 RegisterServerEvent('police:server:SendTrackerLocation')
 AddEventHandler('police:server:SendTrackerLocation', function(coords, requestId)
     local Target = QBCore.Functions.GetPlayer(source)
-    local players = QBCore.Functions.GetPlayers()
     local TrackerMeta = Target.PlayerData.metadata["tracker"]
 
     local msg = "De locatie van "..Target.PlayerData.charinfo.firstname.." "..Target.PlayerData.charinfo.lastname.." staat aangegeven op uw kaart."
@@ -461,7 +465,6 @@ end)
 
 RegisterServerEvent('police:server:SendPoliceEmergencyAlert')
 AddEventHandler('police:server:SendPoliceEmergencyAlert', function(streetLabel, coords, callsign)
-    local players = QBCore.Functions.GetPlayers()
     local alertData = {
         title = "Assistentie collega",
         coords = {x = coords.x, y = coords.y, z = coords.z},
@@ -506,16 +509,18 @@ QBCore.Functions.CreateCallback('police:IsSilencedWeapon', function(source, cb, 
 end)
 
 QBCore.Functions.CreateCallback('police:GetDutyPlayers', function(source, cb)
-    local players = QBCore.Functions.GetPlayers()
     local dutyPlayers = {}
-	for k, Player in pairs(players) do
-		if ((Player.PlayerData.job.name == "police" or Player.PlayerData.job.name == "ambulance") and Player.PlayerData.job.onduty) then
-            table.insert(dutyPlayers, {
-                source = Player.PlayerData.source,
-                label = Player.PlayerData.metadata["callsign"],
-                job = Player.PlayerData.job.name,
-            })
-		end
+    for k, v in pairs(QBCore.Functions.GetPlayers()) do
+        local Player = QBCore.Functions.GetPlayer(k)
+        if Player ~= nil then 
+            if ((Player.PlayerData.job.name == "police" or Player.PlayerData.job.name == "ambulance") and Player.PlayerData.job.onduty) then
+                table.insert(dutyPlayers, {
+                    source = Player.PlayerData.source,
+                    label = Player.PlayerData.metadata["callsign"],
+                    job = Player.PlayerData.job.name,
+                })
+            end
+        end
     end
     cb(dutyPlayers)
 end)
@@ -605,12 +610,15 @@ QBCore.Functions.CreateCallback('police:IsPlateFlagged', function(source, cb, pl
 end)
 
 QBCore.Functions.CreateCallback('police:GetCops', function(source, cb)
-	local players = QBCore.Functions.GetPlayers()
-	local amount = 0
-	for source, Player in pairs(players) do
-		if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
-			amount = amount + 1
-		end
+    local amount = 0
+    
+    for k, v in pairs(QBCore.Functions.GetPlayers()) do
+        local Player = QBCore.Functions.GetPlayer(src)
+        if Player ~= nil then 
+            if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
+                amount = amount + 1
+            end
+        end
     end
 	cb(amount)
 end)

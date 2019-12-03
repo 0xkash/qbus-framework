@@ -163,7 +163,6 @@ end)
 
 RegisterServerEvent('qb-bankrobbery:server:callCops')
 AddEventHandler('qb-bankrobbery:server:callCops', function(type, bank, streetLabel, coords)
-    local players = QBCore.Functions.GetPlayers()
     local cameraId = 4
     local bankLabel = "Fleeca"
     local msg = ""
