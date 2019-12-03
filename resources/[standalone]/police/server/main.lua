@@ -891,9 +891,11 @@ QBCore.Commands.Add("112r", "Stuur een bericht terug naar een melding", {{name="
     local OtherPlayer = QBCore.Functions.GetPlayer(tonumber(args[1]))
     table.remove(args, 1)
     local message = table.concat(args, " ")
-    TriggerClientEvent('chatMessage', OtherPlayer.PlayerData.source, "(POLITIE) " ..Player.PlayerData.charinfo.firstname .. " " .. Player.PlayerData.charinfo.lastname, "error", message)
-    TriggerClientEvent("police:client:EmergencySound", OtherPlayer.PlayerData.source)
-    TriggerClientEvent("police:client:CallAnim", source)
+    if OtherPlayer ~= nil then 
+        TriggerClientEvent('chatMessage', OtherPlayer.PlayerData.source, "(POLITIE) " ..Player.PlayerData.charinfo.firstname .. " " .. Player.PlayerData.charinfo.lastname, "error", message)
+        TriggerClientEvent("police:client:EmergencySound", OtherPlayer.PlayerData.source)
+        TriggerClientEvent("police:client:CallAnim", source)
+    end
 end)
 
 QBCore.Commands.Add("enkelband", "Doe een enkelband om bij het dichtsbijzijnde persoon.", {}, false, function(source, args)

@@ -264,26 +264,27 @@ QBCore.Functions.CreateCallback('qb-phone:server:getVehicleSearch', function(sou
         if result[1] ~= nil then
             for k, v in pairs(result) do
                 QBCore.Functions.ExecuteSql('SELECT * FROM `players` WHERE `citizenid` = "'..result[k].citizenid..'"', function(player)
-                    local charinfo = json.decode(player[1].charinfo)
-                    local vehicleInfo = QBCore.Shared.VehicleModels[tonumber(result[k].hash)]
-                    if vehicleInfo ~= nil then 
-                        table.insert(searchData, {
-                            plate = result[k].plate,
-                            status = true,
-                            owner = charinfo.firstname .. " " .. charinfo.lastname,
-                            citizenid = result[k].citizenid,
-                            label = vehicleInfo["brand"] .. " " .. vehicleInfo["name"]
-                        })
-                    else
-                        table.insert(searchData, {
-                            plate = result[k].plate,
-                            status = true,
-                            owner = charinfo.firstname .. " " .. charinfo.lastname,
-                            citizenid = result[k].citizenid,
-                            label = "Naam niet gevonden.."
-                        })
+                    if player[1] ~= nil then 
+                        local charinfo = json.decode(player[1].charinfo)
+                        local vehicleInfo = QBCore.Shared.VehicleModels[tonumber(result[k].hash)]
+                        if vehicleInfo ~= nil then 
+                            table.insert(searchData, {
+                                plate = result[k].plate,
+                                status = true,
+                                owner = charinfo.firstname .. " " .. charinfo.lastname,
+                                citizenid = result[k].citizenid,
+                                label = vehicleInfo["brand"] .. " " .. vehicleInfo["name"]
+                            })
+                        else
+                            table.insert(searchData, {
+                                plate = result[k].plate,
+                                status = true,
+                                owner = charinfo.firstname .. " " .. charinfo.lastname,
+                                citizenid = result[k].citizenid,
+                                label = "Naam niet gevonden.."
+                            })
+                        end
                     end
-                    
                 end)
             end
         end
