@@ -105,6 +105,15 @@ end)
 
 Citizen.CreateThread(function()
 	while true do
+		Citizen.Wait(1)
+		if IsPedBeingStunned(GetPlayerPed(-1)) then
+			SetPedMinGroundTimeForStungun(GetPlayerPed(-1), 7500)
+		end
+	end
+end)
+
+Citizen.CreateThread(function()
+	while true do
 
 		SetWeaponDamageModifier(GetHashKey('WEAPON_UNARMED'), 0.25)
 		SetWeaponDamageModifier(GetHashKey('WEAPON_NIGHTSTICK'), 0.3)

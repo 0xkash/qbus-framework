@@ -43,7 +43,6 @@ AddEventHandler('qb-garages:client:takeOutDepot', function(vehicle)
 
             SetVehicleNumberPlateText(veh, vehicle.plate)
             SetEntityHeading(veh, Depots[currentGarage].takeVehicle.h)
-            print(Depots[currentGarage].takeVehicle.h)
             TaskWarpPedIntoVehicle(GetPlayerPed(-1), veh, -1)
             exports['LegacyFuel']:SetFuel(veh, vehicle.fuel)
             doCarDamage(veh, vehicle)
@@ -89,11 +88,11 @@ Citizen.CreateThread(function()
     for k, v in pairs(Depots) do
         Depot = AddBlipForCoord(Depots[k].takeVehicle.x, Depots[k].takeVehicle.y, Depots[k].takeVehicle.z)
 
-        SetBlipSprite (Depot, 365)
+        SetBlipSprite (Depot, 68)
         SetBlipDisplay(Depot, 4)
-        SetBlipScale  (Depot, 0.65)
+        SetBlipScale  (Depot, 0.7)
         SetBlipAsShortRange(Depot, true)
-        SetBlipColour(Depot, 3)
+        SetBlipColour(Depot, 5)
 
         BeginTextCommandSetBlipName("STRING")
         AddTextComponentSubstringPlayerName(Depots[k].label)

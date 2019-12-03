@@ -82,7 +82,7 @@ Citizen.CreateThread(function()
     Citizen.Wait(2500)
     prevPos = GetEntityCoords(PlayerPedId(), true)
     while true do
-        if isBleeding > 0 then
+        if tonumber(isBleeding) > 0 then
             local player = PlayerPedId()
             if bleedTickTimer >= Config.BleedTickRate and not isInHospitalBed then
                 if not isDead then
