@@ -233,6 +233,7 @@ Citizen.CreateThread(function()
 					steam = v.steam,
 					license = v.license,
 					permission = v.permission,
+					optin = true,
 				}
 			end
 		end

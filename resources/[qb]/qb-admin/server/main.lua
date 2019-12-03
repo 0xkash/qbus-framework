@@ -77,6 +77,39 @@ QBCore.Commands.Add("admin", "Open admin menu", {}, false, function(source, args
     TriggerClientEvent('qb-admin:client:openMenu', source, group)
 end, "admin")
 
+QBCore.Commands.Add("report", "Stuur een report naar admins (alleen wanneer nodig, MAAK HIER GEEN MISBRUIK VAN)", {{name="bericht", help="Bericht die je wilt sturen"}}, true, function(source, args)
+    local msg = table.concat(args, " ")
+    local players = QBCore.Functions.GetPlayers()
+
+	for k, Player in pairs(players) do
+        if QBCore.Functions.HasPermission(k, "god") then
+            if QBCore.Config.Server.PermissionList[GetPlayerIdentifiers(k)[1]].optin then 
+                TriggerClientEvent('chatMessage', k, "REPORT - " .. GetPlayerName(source) .. " ("..source..")", "report", msg)
+            end
+		end
+    end
+    TriggerClientEvent('chatMessage', source, "REPORT VERSTUURD", "normal", msg)
+end)
+
+QBCore.Commands.Add("reportr", "Toggle inkomende reports uit of aan", {}, false, function(source, args)
+    local playerId = tonumber(args[1])
+    table.remove(args, 1)
+    local msg = table.concat(args, " ")
+    TriggerClientEvent('chatMessage', playerId, "ADMIN - "..GetPlayerName(source), "warning", msg)
+    TriggerClientEvent('QBCore:Notify', source, "Reactie gestuurd")
+end, "admin")
+
+QBCore.Commands.Add("reporttoggle", "Toggle inkomende reports uit of aan", {}, false, function(source, args)
+    local identifier = GetPlayerIdentifiers(source)[1]
+    local optin = QBCore.Config.Server.PermissionList[identifier].optin
+    QBCore.Config.Server.PermissionList[identifier].optin = not optin
+    if QBCore.Config.Server.PermissionList[identifier].optin then
+        TriggerClientEvent('QBCore:Notify', source, "Je krijgt WEL reports", "success")
+    else
+        TriggerClientEvent('QBCore:Notify', source, "Je krijgt GEEN reports", "error")
+    end
+end, "admin")
+
 RegisterServerEvent('qb-admin:server:bringTp')
 AddEventHandler('qb-admin:server:bringTp', function(targetId, coords)
     TriggerClientEvent('qb-admin:client:bringTp', targetId, coords)
@@ -95,7 +128,6 @@ end)
 RegisterServerEvent('qb-admin:server:setPermissions')
 AddEventHandler('qb-admin:server:setPermissions', function(targetId, group)
     QBCore.Functions.AddPermission(targetId, group.rank)
-
     TriggerClientEvent('QBCore:Notify', targetId, 'Je permissie groep is gezet naar '..group.label)
 end)
 
