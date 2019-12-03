@@ -37,10 +37,10 @@ AddEventHandler('prison:server:SecurityLockdown', function()
     local src = source
     TriggerClientEvent("prison:client:SetLockDown", -1, true)
     for k, v in pairs(QBCore.Functions.GetPlayers()) do
-        local Player = QBCore.Functions.GetPlayer(k)
+        local Player = QBCore.Functions.GetPlayer(v)
         if Player ~= nil then 
             if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
-                TriggerClientEvent("prison:client:PrisonBreakAlert", k)
+                TriggerClientEvent("prison:client:PrisonBreakAlert", v)
             end
         end
 	end
@@ -52,10 +52,10 @@ AddEventHandler('prison:server:SetGateHit', function(key)
     TriggerClientEvent("prison:client:SetGateHit", -1, key, true)
     if math.random(1, 100) <= 50 then
         for k, v in pairs(QBCore.Functions.GetPlayers()) do
-            local Player = QBCore.Functions.GetPlayer(k)
+            local Player = QBCore.Functions.GetPlayer(v)
             if Player ~= nil then 
                 if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
-                    TriggerClientEvent("prison:client:PrisonBreakAlert", k)
+                    TriggerClientEvent("prison:client:PrisonBreakAlert", v)
                 end
             end
         end

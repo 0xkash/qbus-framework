@@ -53,16 +53,16 @@ AddEventHandler('qb-jewellery:server:PoliceAlertMessage', function(msg, coords, 
     local src = source
 
     for k, v in pairs(QBCore.Functions.GetPlayers()) do
-        local Player = QBCore.Functions.GetPlayer(k)
+        local Player = QBCore.Functions.GetPlayer(v)
         if Player ~= nil then 
             if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
                 if blip then
                     if not alarmTriggered then
-                        TriggerClientEvent("qb-jewellery:client:PoliceAlertMessage", k, msg, coords, blip)
+                        TriggerClientEvent("qb-jewellery:client:PoliceAlertMessage", v, msg, coords, blip)
                         alarmTriggered = true
                     end
                 else
-                    TriggerClientEvent("qb-jewellery:client:PoliceAlertMessage", k, msg, coords, blip)
+                    TriggerClientEvent("qb-jewellery:client:PoliceAlertMessage", v, msg, coords, blip)
                 end
             end
         end
@@ -72,7 +72,7 @@ end)
 QBCore.Functions.CreateCallback('qb-jewellery:server:getCops', function(source, cb)
 	local amount = 0
     for k, v in pairs(QBCore.Functions.GetPlayers()) do
-        local Player = QBCore.Functions.GetPlayer(k)
+        local Player = QBCore.Functions.GetPlayer(v)
         if Player ~= nil then 
             if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
                 amount = amount + 1
