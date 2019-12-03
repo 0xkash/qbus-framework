@@ -187,8 +187,6 @@ end)
 
 RegisterNUICallback('buyVehicle', function()
     local vehData = Config.OccasionSlots[currentVehicle]
-    DoScreenFadeOut(250)
-    Citizen.Wait(500)
     TriggerServerEvent('qb-occasions:server:buyVehicle', vehData)
 end)
 
@@ -196,9 +194,9 @@ DoScreenFadeIn(250)
 
 RegisterNetEvent('qb-occasions:client:BuyFinished')
 AddEventHandler('qb-occasions:client:BuyFinished', function()
-    print('1')
     local vehData = Config.OccasionSlots[currentVehicle]
-    print(json.encode(vehData))
+    DoScreenFadeOut(250)
+    Citizen.Wait(500)
     QBCore.Functions.SpawnVehicle(vehData["model"], function(veh)
         SetVehicleNumberPlateText(veh, vehData["plate"])
         SetEntityHeading(veh, Config.BuyVehicle.h)
