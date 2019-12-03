@@ -360,10 +360,12 @@ AddEventHandler('evidence:server:CreateCasing', function(weapon, coords)
     local casingId = CreateCasingId()
     local weaponInfo = QBCore.Shared.Weapons[weapon]
     local serieNumber = nil
-    local weaponItem = Player.Functions.GetItemByName(weaponInfo["name"])
-    if weaponItem ~= nil then
-        if weaponItem.info ~= nil and  weaponItem.info ~= "" then 
-            serieNumber = weaponItem.info.serie
+    if weaponInfo ~= nil then 
+        local weaponItem = Player.Functions.GetItemByName(weaponInfo["name"])
+        if weaponItem ~= nil then
+            if weaponItem.info ~= nil and  weaponItem.info ~= "" then 
+                serieNumber = weaponItem.info.serie
+            end
         end
     end
     TriggerClientEvent("evidence:client:AddCasing", -1, casingId, weapon, coords, serieNumber)
