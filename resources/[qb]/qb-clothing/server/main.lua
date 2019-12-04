@@ -104,27 +104,3 @@ end)
 QBCore.Commands.Add("masker", "Zet je masker op of af..", {}, false, function(source, args)
 	TriggerClientEvent("qb-clothing:client:adjustfacewear", source, 4)
 end)
-
-RegisterServerEvent('qb-clothing:server:GiveStarterItems')
-AddEventHandler('qb-clothing:server:GiveStarterItems', function()
-    local src = source
-    local Player = QBCore.Functions.GetPlayer(src)
-
-    for k, v in pairs(QBCore.Shared.StarterItems) do
-        local info = {}
-        if v.item == "id_card" then
-            info.citizenid = Player.PlayerData.citizenid
-            info.firstname = Player.PlayerData.charinfo.firstname
-            info.lastname = Player.PlayerData.charinfo.lastname
-            info.birthdate = Player.PlayerData.charinfo.birthdate
-            info.gender = Player.PlayerData.charinfo.gender
-            info.nationality = Player.PlayerData.charinfo.nationality
-        elseif v.item == "driver_license" then
-            info.firstname = Player.PlayerData.charinfo.firstname
-            info.lastname = Player.PlayerData.charinfo.lastname
-            info.birthdate = Player.PlayerData.charinfo.birthdate
-            info.type = "A1-A2-A | AM-B | C1-C-CE"
-        end
-        Player.Functions.AddItem(v.item, 1, false, info)
-    end
-end)

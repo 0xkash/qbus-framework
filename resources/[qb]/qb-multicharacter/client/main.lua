@@ -154,6 +154,7 @@ RegisterNUICallback('createNewCharacter', function(data)
     end
 
     TriggerServerEvent('qb-multicharacter:server:createCharacter', cData)
+    TriggerServerEvent('qb-multicharacter:server:GiveStarterItems')
     Citizen.Wait(500)
 end)
 
@@ -178,8 +179,3 @@ function skyCam(bool)
         FreezeEntityPosition(GetPlayerPed(-1), false)
     end
 end
-
-RegisterNetEvent('qb-multicharacter:client:GiveStarterItems')
-AddEventHandler('qb-multicharacter:client:GiveStarterItems', function()
-    TriggerServerEvent('qb-multicharacter:server:GiveStarterItems')
-end)

@@ -27,7 +27,6 @@
 
 Citizen.CreateThread(function()
 	while true do
-		Citizen.Wait(0)
 		HideHudComponentThisFrame(1)
 		HideHudComponentThisFrame(2)
 		HideHudComponentThisFrame(3)
@@ -43,5 +42,7 @@ Citizen.CreateThread(function()
 		HideHudComponentThisFrame(22)
 		
 		DisplayAmmoThisFrame(true)
+
+		Citizen.Wait(4)
 	end
 end) 

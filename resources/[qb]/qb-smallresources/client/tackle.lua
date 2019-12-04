@@ -1,13 +1,18 @@
+
+
 Citizen.CreateThread(function()
     while true do 
-        Citizen.Wait(1)
         if QBCore ~= nil then
-            if IsControlJustPressed(1, Keys["LEFTALT"]) and not spacePressed then
-                if not IsPedInAnyVehicle(GetPlayerPed(-1), false) and GetEntitySpeed(GetPlayerPed(-1)) > 2.5 then
+            if not IsPedInAnyVehicle(GetPlayerPed(-1), false) and GetEntitySpeed(GetPlayerPed(-1)) > 2.5 then
+                if IsControlJustPressed(1, Keys["LEFTALT"]) and not spacePressed then
                     Tackle()
                 end
+            else
+                Citizen.Wait(250)
             end
         end
+
+        Citizen.Wait(1)
     end
 end)
 
@@ -35,13 +40,14 @@ function TackleAnim()
             Citizen.Wait(1)
         end
         if IsEntityPlayingAnim(GetPlayerPed(-1), "swimming@first_person@diving", "dive_run_fwd_-45_loop", 3) then
+            ClearPedTasksImmediately(GetPlayerPed(-1))
             ClearPedSecondaryTask(GetPlayerPed(-1))
         else
             TaskPlayAnim(GetPlayerPed(-1), "swimming@first_person@diving", "dive_run_fwd_-45_loop", 8.0, -8, -1, 49, 0, 0, 0, 0)
             Citizen.Wait(300)
+            ClearPedTasksImmediately(GetPlayerPed(-1))
             ClearPedSecondaryTask(GetPlayerPed(-1))
-            SetPedToRagdoll(GetPlayerPed(-1), 150, 150, 0, 0, 0, 0) 
-        end		
-
+            SetPedToRagdoll(GetPlayerPed(-1), 150, 150, 0, 0, 0, 0)
+        end
     end
 end

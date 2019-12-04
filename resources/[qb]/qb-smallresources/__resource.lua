@@ -29,7 +29,7 @@ client_scripts {
 	'client/engine.lua',
 }
 
-this_is_a_map 'yes'
+-- this_is_a_map 'yes'
 
 data_file 'FIVEM_LOVES_YOU_341B23A2F0E0F131' 'popgroups.ymt'
 

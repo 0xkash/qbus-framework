@@ -32,7 +32,6 @@ local oldvalped = false
 
 Citizen.CreateThread(function()
     while true do
-        Wait(0)
 
         if once then
             once = false
@@ -103,5 +102,7 @@ Citizen.CreateThread(function()
 
             end
         end
+
+        Citizen.Wait(0)
     end
 end)

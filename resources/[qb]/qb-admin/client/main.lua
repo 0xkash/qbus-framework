@@ -272,6 +272,11 @@ Citizen.CreateThread(function()
                     SetEntityVisible(myPed, true, false)
                 end
             end
+            if WarMenu.CheckBox("Godmode", hasGodmode, function(checked) hasGodmode = checked end) then
+                local myPlayer = PlayerId()
+                
+                SetPlayerInvincible(myPlayer, hasGodmode)
+            end
             
             WarMenu.Display()
         elseif WarMenu.IsMenuOpened('playerMan') then

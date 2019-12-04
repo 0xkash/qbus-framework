@@ -189,7 +189,7 @@ AddEventHandler('apartments:client:SpawnInApartment', function(apartmentId, apar
         end
     end
     ClosestHouse = apartment
-    EnterApartment(apartment, apartmentId)
+    EnterApartment(apartment, apartmentId, true)
     IsOwned = true
 end)
 
@@ -225,7 +225,7 @@ AddEventHandler('apartments:client:RingDoor', function(player, house)
     QBCore.Functions.Notify("Iemand belt aan de deur!")
 end)
 
-function EnterApartment(house, apartmentId)
+function EnterApartment(house, apartmentId, new)
     TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_open", 0.1)
     openHouseAnim()
     Citizen.Wait(250)
@@ -287,6 +287,13 @@ function EnterApartment(house, apartmentId)
             
 
             TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_close", 0.1)
+        end
+        if new ~= nil then
+            if new then
+                SetTimeout(1000, function()
+                    TriggerEvent('qb-clothes:client:CreateFirstCharacter')
+                end)
+            end
         end
     end, apartmentId)
 end
