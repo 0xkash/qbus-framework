@@ -4,7 +4,22 @@ TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 
 local SafeCodes = {
     [1] = math.random(1000, 9999),
-    [2] = {math.random(0, 39), math.random(0, 39), math.random(0, 39), math.random(0, 39), math.random(0, 39)}
+    [2] = {math.random(0, 39), math.random(0, 39), math.random(0, 39), math.random(0, 39), math.random(0, 39)},
+    [3] = {math.random(0, 39), math.random(0, 39), math.random(0, 39), math.random(0, 39), math.random(0, 39)},
+    [4] = math.random(1000, 9999),
+    [5] = math.random(1000, 9999),
+    [6] = {math.random(0, 39), math.random(0, 39), math.random(0, 39), math.random(0, 39), math.random(0, 39)},
+    [7] = math.random(1000, 9999),
+    [8] = math.random(1000, 9999),
+    [9] = math.random(1000, 9999),
+    [10] = {math.random(0, 39), math.random(0, 39), math.random(0, 39), math.random(0, 39), math.random(0, 39)},
+    [11] = math.random(1000, 9999),
+    [12] = math.random(1000, 9999),
+    [13] = math.random(1000, 9999),
+    [14] = {math.random(0, 39), math.random(0, 39), math.random(0, 39), math.random(0, 39), math.random(0, 39)},
+    [15] = math.random(1000, 9999),
+    [16] = math.random(1000, 9999),
+    [17] = math.random(1000, 9999),
 }
 
 RegisterServerEvent('qb-storerobbery:server:takeMoney')
@@ -25,7 +40,7 @@ AddEventHandler('qb-storerobbery:server:takeMoney', function(register)
                 label = "Kluis code: "..tostring(code[1]).."-"..tostring(code[2]).."-"..tostring(code[3]).."-"..tostring(code[4]).."-"..tostring(code[5])
             }
         end
-        Player.Functions.AddItem("stickynote", 1, nil, info)
+        Player.Functions.AddItem("stickynote", 1, false, info)
         TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items["stickynote"], "add")
     end
 end)
@@ -47,7 +62,17 @@ RegisterServerEvent('qb-storerobbery:server:SafeReward')
 AddEventHandler('qb-storerobbery:server:SafeReward', function(safe)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    Player.Functions.AddMoney('cash', math.random(500, 800))
+    Player.Functions.AddMoney('cash', math.random(800, 2000))
+    local luck = math.random(1, 100)
+    if luck <= 2 then
+        Player.Functions.AddItem("rolex", math.random(2, 5))
+        TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items["rolex"], "add")
+        if luck == 1 then
+            Citizen.Wait(500)
+            Player.Functions.AddItem("goldbar", math.random(1, 2))
+            TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items["goldbar"], "add")
+        end
+    end
 end)
 
 RegisterServerEvent('qb-storerobbery:server:callCops')

@@ -66,6 +66,7 @@ QBCore.Player.CheckPlayerData = function(source, PlayerData)
 	PlayerData.metadata["bloodtype"] = PlayerData.metadata["bloodtype"] ~= nil and PlayerData.metadata["bloodtype"] or QBCore.Config.Player.Bloodtypes[math.random(1, #QBCore.Config.Player.Bloodtypes)]
 	PlayerData.metadata["dealerrep"] = PlayerData.metadata["dealerrep"] ~= nil and PlayerData.metadata["dealerrep"] or 0
 	PlayerData.metadata["craftingrep"] = PlayerData.metadata["craftingrep"] ~= nil and PlayerData.metadata["craftingrep"] or 0
+	PlayerData.metadata["currentapartment"] = PlayerData.metadata["currentapartment"] ~= nil and PlayerData.metadata["currentapartment"] or nil
 	PlayerData.metadata["jobrep"] = PlayerData.metadata["jobrep"] ~= nil and PlayerData.metadata["jobrep"] or {
 		["tow"] = 0,
 		["trucker"] = 0,
@@ -318,8 +319,10 @@ end
 
 QBCore.Player.Logout = function(source)
 	TriggerClientEvent('QBCore:Client:OnPlayerUnload', source)
+	TriggerClientEvent("QBCore:Player:UpdatePlayerData", source)
+	Citizen.Wait(1500)
 	-- TriggerEvent('QBCore:Server:OnPlayerUnload')
-	QBCore.Players[source].Functions.Save()
+	--QBCore.Players[source].Functions.Save()
 	QBCore.Players[source] = nil
 end
 
