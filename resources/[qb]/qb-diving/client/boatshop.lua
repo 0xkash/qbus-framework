@@ -98,18 +98,22 @@ Citizen.CreateThread(function()
                 DrawMarker(2, QBBoatshop.Locations["berths"][ClosestBerth]["coords"]["boat"]["x"], QBBoatshop.Locations["berths"][ClosestBerth]["coords"]["boat"]["y"], QBBoatshop.Locations["berths"][ClosestBerth]["coords"]["boat"]["z"] + 1.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.4, 0.5, -0.30, 15, 255, 55, 255, false, false, false, true, false, false, false)
 
                 if not Buying then
-                    DrawText3D(BuyLocation.x, BuyLocation.y, BuyLocation.z + 0.3, '[G] '..QBBoatshop.ShopBoats[currentBoat]["label"]..' kopen voor €'..QBBoatshop.ShopBoats[currentBoat]["price"])
-                    if IsControlJustPressed(0, Keys["G"]) then
+                    DrawText3D(BuyLocation.x, BuyLocation.y, BuyLocation.z + 0.3, '~g~E~w~ - '..QBBoatshop.ShopBoats[currentBoat]["label"]..' kopen voor ~b~€'..QBBoatshop.ShopBoats[currentBoat]["price"])
+                    if IsControlJustPressed(0, Keys["E"]) then
                         Buying = true
                     end
                 else
-                    DrawText3D(BuyLocation.x, BuyLocation.y, BuyLocation.z + 0.3, 'Weet je het zeker? [7] Ja / [8] Nee (€'..QBBoatshop.ShopBoats[currentBoat]["price"]..',-)')
+                    DrawText3D(BuyLocation.x, BuyLocation.y, BuyLocation.z + 0.3, 'Weet je het zeker? ~g~7~w~ Ja / ~r~8~w~ Nee ~b~(€'..QBBoatshop.ShopBoats[currentBoat]["price"]..',-)')
                     if IsControlJustPressed(0, Keys["7"]) or IsDisabledControlJustReleased(0, Keys["7"]) then
                         TriggerServerEvent('qb-diving:server:BuyBoat', QBBoatshop.Locations["berths"][ClosestBerth]["boatModel"], ClosestBerth)
                         Buying = false
                     elseif IsControlJustPressed(0, Keys["8"]) or IsDisabledControlJustReleased(0, Keys["8"]) then
                         Buying = false
                     end
+                end
+            elseif BuyDistance > 2.5 then
+                if Buying then
+                    Buying = false
                 end
             end
         end

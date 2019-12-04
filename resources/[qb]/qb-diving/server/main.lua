@@ -53,3 +53,8 @@ end)
 function InsertBoat(boatModel, Player, plate)
     QBCore.Functions.ExecuteSql("INSERT INTO `player_boats` (`citizenid`, `model`, `plate`) VALUES ('"..Player.PlayerData.citizenid.."', '"..boatModel.."', '"..plate.."')")
 end
+
+QBCore.Functions.CreateUseableItem("jerry_can", function(source, item)
+    local Player = QBCore.Functions.GetPlayer(source)
+    TriggerClientEvent("qb-diving:client:UseJerrycan", source)
+end)

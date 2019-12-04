@@ -41,12 +41,10 @@ function TackleAnim()
         end
         if IsEntityPlayingAnim(GetPlayerPed(-1), "swimming@first_person@diving", "dive_run_fwd_-45_loop", 3) then
             ClearPedTasksImmediately(GetPlayerPed(-1))
-            ClearPedSecondaryTask(GetPlayerPed(-1))
         else
-            TaskPlayAnim(GetPlayerPed(-1), "swimming@first_person@diving", "dive_run_fwd_-45_loop", 8.0, -8, -1, 49, 0, 0, 0, 0)
-            Citizen.Wait(300)
+            TaskPlayAnim(GetPlayerPed(-1), "swimming@first_person@diving", "dive_run_fwd_-45_loop" ,3.0, 3.0, -1, 49, 0, false, false, false)
+            Citizen.Wait(250)
             ClearPedTasksImmediately(GetPlayerPed(-1))
-            ClearPedSecondaryTask(GetPlayerPed(-1))
             SetPedToRagdoll(GetPlayerPed(-1), 150, 150, 0, 0, 0, 0)
         end
     end

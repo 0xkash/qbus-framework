@@ -44,3 +44,24 @@ DrawText3D = function(x, y, z, text)
     DrawRect(0.0, 0.0+0.0125, 0.017+ factor, 0.03, 0, 0, 0, 75)
     ClearDrawOrigin()
 end
+
+RegisterNetEvent('qb-diving:client:UseJerrycan')
+AddEventHandler('qb-diving:client:UseJerrycan', function()
+    local ped = GetPlayerPed(-1)
+    local boat = IsPedInAnyBoat(ped)
+    print('yeey')
+    if boat then
+        QBCore.Functions.Progressbar("reful_boat", "Boot aan het tanken..", 20000, false, true, {
+            disableMovement = true,
+            disableCarMovement = true,
+            disableMouse = false,
+            disableCombat = true,
+        }, {}, {}, {}, function() -- Done
+            print('Klaar')
+        end, function() -- Cancel
+            print('Stop')
+        end)
+    else
+        QBCore.Functions.Notify('Je zit niet in een boot', 'error')
+    end
+end)
