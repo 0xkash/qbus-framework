@@ -109,7 +109,6 @@ AddEventHandler('QBCore:Command:GoToMarker', function()
 	end)
 end)
 
-
 -- Other stuff
 RegisterNetEvent('QBCore:Player:SetPlayerData')
 AddEventHandler('QBCore:Player:SetPlayerData', function(val)
@@ -121,6 +120,12 @@ AddEventHandler('QBCore:Player:UpdatePlayerData', function()
 	local data = {}
 	data.position = QBCore.Functions.GetCoords(GetPlayerPed(-1))
 	TriggerServerEvent('QBCore:UpdatePlayer', data)
+end)
+
+RegisterNetEvent('QBCore:Player:UpdatePlayerPosition')
+AddEventHandler('QBCore:Player:UpdatePlayerPosition', function()
+	local position = QBCore.Functions.GetCoords(GetPlayerPed(-1))
+	TriggerServerEvent('QBCore:UpdatePlayerPosition', position)
 end)
 
 RegisterNetEvent('QBCore:Notify')

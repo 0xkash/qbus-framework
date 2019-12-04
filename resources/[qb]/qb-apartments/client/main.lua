@@ -259,6 +259,7 @@ function EnterApartment(house, apartmentId, new)
                 
 
                 TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_close", 0.1)
+                TriggerServerEvent("QBCore:Server:SetMetaData", "currentapartment", CurrentApartment)
             end, house)
         else
             CurrentOffset = offset
@@ -287,6 +288,7 @@ function EnterApartment(house, apartmentId, new)
             
 
             TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_close", 0.1)
+            TriggerServerEvent("QBCore:Server:SetMetaData", "currentapartment", CurrentApartment)
         end
         if new ~= nil then
             if new then
@@ -317,6 +319,7 @@ function LeaveApartment(house)
         CurrentOffset = 0
         DoScreenFadeIn(1000)
         TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_close", 0.1)
+        TriggerServerEvent("QBCore:Server:SetMetaData", "currentapartment", nil)
     end)
 end
 

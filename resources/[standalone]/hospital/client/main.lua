@@ -369,10 +369,14 @@ AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     exports.spawnmanager:setAutoSpawn(false)
     isLoggedIn = true
     QBCore.Functions.GetPlayerData(function(PlayerData)
-        isDead = PlayerData.metadata["isdead"]
         PlayerJob = PlayerData.job
         onDuty = PlayerData.job.onduty
         SetPedArmour(GetPlayerPed(-1), PlayerData.metadata["armor"])
+        isDead = PlayerData.metadata["isdead"]
+        if isDead then 
+            deathTime = Config.DeathTime
+            DeathTimer()
+        end
     end)
 end)
 
@@ -381,6 +385,9 @@ AddEventHandler('QBCore:Client:OnPlayerUnload', function()
     isLoggedIn = false
     TriggerServerEvent("hospital:server:SetDeathStatus", false)
     TriggerServerEvent("hospital:server:SetArmor", GetPedArmour(GetPlayerPed(-1)))
+    if bedOccupying ~= nil then 
+        TriggerServerEvent("hospital:server:LeaveBed", bedOccupying)
+    end
     isDead = false
     deathTime = 0
     SetEntityInvincible(GetPlayerPed(-1), false)

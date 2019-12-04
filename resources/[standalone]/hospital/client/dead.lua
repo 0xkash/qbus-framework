@@ -3,7 +3,7 @@ local deadAnim = "dead_a"
 local deadCarAnimDict = "veh@low@front_ps@idle_duck"
 local deadCarAnim = "sit"
 
-local deathTime = 0
+deathTime = 0
 
 Citizen.CreateThread(function()
 	while true do
@@ -28,8 +28,9 @@ Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(0)
 		if isDead then
-			DisableAllControlActions(0)
-			EnableControlAction(0, 1, true)
+            DisableAllControlActions(0)
+            EnableControlAction(0, 1, true)
+			EnableControlAction(0, 2, true)
 			EnableControlAction(0, Keys['T'], true)
             EnableControlAction(0, Keys['E'], true)
             EnableControlAction(0, Keys['ESC'], true)
@@ -49,13 +50,16 @@ Citizen.CreateThread(function()
                     TaskPlayAnim(PlayerPedId(), "veh@low@front_ps@idle_duck", "sit", 1.0, 1.0, -1, 1, 0, 0, 0, 0)
                 end
             else
-                loadAnimDict(deadAnimDict)
-                if not IsEntityPlayingAnim(PlayerPedId(), deadAnimDict, deadAnim, 3) and not isInHospitalBed then
-                    TaskPlayAnim(PlayerPedId(), deadAnimDict, deadAnim, 1.0, 1.0, -1, 1, 0, 0, 0, 0)
-                end
-                loadAnimDict(inBedDict)
-                if not IsEntityPlayingAnim(PlayerPedId(), inBedDict, inBedAnim, 3) and isInHospitalBed then
-                    TaskPlayAnim(PlayerPedId(), inBedDict, inBedAnim, 1.0, 1.0, -1, 1, 0, 0, 0, 0)
+                if isInHospitalBed then 
+                    if not IsEntityPlayingAnim(PlayerPedId(), inBedDict, inBedAnim, 3) then
+                        loadAnimDict(inBedDict)
+                        TaskPlayAnim(PlayerPedId(), inBedDict, inBedAnim, 1.0, 1.0, -1, 1, 0, 0, 0, 0)
+                    end
+                else
+                    if not IsEntityPlayingAnim(PlayerPedId(), deadAnimDict, deadAnim, 3) then
+                        loadAnimDict(deadAnimDict)
+                        TaskPlayAnim(PlayerPedId(), deadAnimDict, deadAnim, 1.0, 1.0, -1, 1, 0, 0, 0, 0)
+                    end
                 end
             end
 
