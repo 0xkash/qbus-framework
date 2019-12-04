@@ -58,5 +58,12 @@ QBCore.Functions.CreateUseableItem("jerry_can", function(source, item)
     local Player = QBCore.Functions.GetPlayer(source)
 
     TriggerClientEvent("qb-diving:client:UseJerrycan", source)
-    print('yeey')
+end)
+
+RegisterServerEvent('qb-diving:server:RemoveItem')
+AddEventHandler('qb-diving:server:RemoveItem', function(item, amount)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+
+    Player.Functions.RemoveItem(item, amount)
 end)

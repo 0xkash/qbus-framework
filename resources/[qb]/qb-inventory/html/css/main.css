@@ -79,7 +79,7 @@ input[type=number]::-webkit-outer-spin-button {
     z-index: 105;
 }
 
-.ply-hotbar-inventory > .item-slot > .item-slot-key p {
+.player-inventory > .item-slot > .item-slot-key p {
     position: absolute;
     background: #ffffff;
     color: #000000;
