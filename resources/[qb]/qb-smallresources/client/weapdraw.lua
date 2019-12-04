@@ -89,9 +89,9 @@ end)
 
 Citizen.CreateThread(function()
 	currWeapon = GetSelectedPedWeapon(PlayerPedId())
+	local ped = PlayerPedId()
 	while true do
-		Citizen.Wait(0)
-		if DoesEntityExist( PlayerPedId() ) and not IsEntityDead( PlayerPedId() ) and not IsPedInAnyVehicle(PlayerPedId(-1), true) then
+		if DoesEntityExist(ped) and not IsEntityDead(ped) and not IsPedInAnyVehicle(ped, true) then
 			if currWeapon ~= GetSelectedPedWeapon(PlayerPedId()) then
 				pos = GetEntityCoords(PlayerPedId(), true)
 				rot = GetEntityHeading(PlayerPedId())
@@ -207,18 +207,25 @@ Citizen.CreateThread(function()
 					end
 				end
 			end
+		else
+			Citizen.Wait(250)
 		end
+
+		Citizen.Wait(5)
 	end
 end)
 
 
 Citizen.CreateThread(function()
 	while true do
-		Citizen.Wait(0)
 		if not canFire then
 			DisableControlAction(0, 25, true)
 			DisablePlayerFiring(PlayerPedId(), true)
+		else
+			Citizen.Wait(250)
 		end
+
+		Citizen.Wait(3)
 	end
 end)
 

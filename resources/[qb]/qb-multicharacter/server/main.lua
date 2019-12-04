@@ -37,16 +37,32 @@ AddEventHandler('qb-multicharacter:server:createCharacter', function(data)
 
         TriggerClientEvent("qb-multicharacter:client:closeNUI", src)
         TriggerClientEvent('apartments:client:setupSpawnUI', src, newData)
-        TriggerClientEvent('qb-multicharacter:server:GiveStarterItems', src)
+        GiveStarterItems(src)
 	end
 end)
 
-RegisterServerEvent('qb-multicharacter:server:GiveStarterItems')
-AddEventHandler('qb-multicharacter:server:GiveStarterItems', function()
+function GiveStarterItems(source)
     local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
 
-    TriggerClientEvent('qb-clothing:server:GiveStarterItems', src)
-end)
+    for k, v in pairs(QBCore.Shared.StarterItems) do
+        local info = {}
+        if v.item == "id_card" then
+            info.citizenid = Player.PlayerData.citizenid
+            info.firstname = Player.PlayerData.charinfo.firstname
+            info.lastname = Player.PlayerData.charinfo.lastname
+            info.birthdate = Player.PlayerData.charinfo.birthdate
+            info.gender = Player.PlayerData.charinfo.gender
+            info.nationality = Player.PlayerData.charinfo.nationality
+        elseif v.item == "driver_license" then
+            info.firstname = Player.PlayerData.charinfo.firstname
+            info.lastname = Player.PlayerData.charinfo.lastname
+            info.birthdate = Player.PlayerData.charinfo.birthdate
+            info.type = "A1-A2-A | AM-B | C1-C-CE"
+        end
+        Player.Functions.AddItem(v.item, 1, false, info)
+    end
+end
 
 RegisterServerEvent('qb-multicharacter:server:deleteCharacter')
 AddEventHandler('qb-multicharacter:server:deleteCharacter', function(citizenid)

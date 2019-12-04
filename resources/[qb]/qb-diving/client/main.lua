@@ -21,6 +21,13 @@ Citizen.CreateThread(function()
     end
 end)
 
+RegisterNetEvent("QBCore:Client:OnPlayerLoaded")
+AddEventHandler("QBCore:Client:OnPlayerLoaded", function()
+    QBCore.Functions.TriggerCallback('qb-diving:server:GetBusyDocks', function(Docks)
+        QBBoatshop.Locations["berths"] = Docks
+    end)
+end)
+
 -- Code
 
 DrawText3D = function(x, y, z, text)

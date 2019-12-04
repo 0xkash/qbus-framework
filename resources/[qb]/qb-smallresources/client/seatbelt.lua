@@ -5,9 +5,7 @@ local vehHealth = 0.0
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(1)
-        if IsPedInAnyVehicle(GetPlayerPed(-1)) then
-            --
-        else
+        if not IsPedInAnyVehicle(GetPlayerPed(-1)) then
             seatbeltOn = false
         end
         

@@ -39,117 +39,140 @@ local skinData = {
     ["face"] = {
         item = 0,
         texture = 0,
-        defaultItem = 0,        
+        defaultItem = 0,
+        defaultTexture = 0,        
     },
     ["pants"] = {
         item = 0,
         texture = 0,
-        defaultItem = 0,        
+        defaultItem = 0,
+        defaultTexture = 0,        
     },
     ["hair"] = {
         item = 0,
         texture = 0,
-        defaultItem = 0,        
+        defaultItem = 0,
+        defaultTexture = 0,        
     },
     ["eyebrows"] = {
         item = -1,
-        texture = 0,
-        defaultItem = -1,        
+        texture = 1,
+        defaultItem = -1,
+        defaultTexture = 1,        
     },
     ["beard"] = {
         item = -1,
-        texture = 0,
-        defaultItem = -1,        
+        texture = 1,
+        defaultItem = -1,
+        defaultTexture = 1,        
     },
     ["blush"] = {
         item = -1,
-        texture = 0,
-        defaultItem = -1,        
+        texture = 1,
+        defaultItem = -1,
+        defaultTexture = 1,        
     },
     ["lipstick"] = {
         item = -1,
-        texture = 0,
-        defaultItem = -1,        
+        texture = 1,
+        defaultItem = -1,
+        defaultTexture = 1,        
     },
     ["makeup"] = {
         item = -1,
-        texture = 0,
-        defaultItem = -1,        
+        texture = 1,
+        defaultItem = -1,
+        defaultTexture = 1,        
     },
     ["ageing"] = {
         item = -1,
         texture = 0,
-        defaultItem = -1,        
+        defaultItem = -1,
+        defaultTexture = 0,        
     },
     ["arms"] = {
         item = 0,
         texture = 0,
-        defaultItem = 0,        
+        defaultItem = 0,
+        defaultTexture = 0,        
     },
     ["t-shirt"] = {
-        item = 0,
+        item = 1,
         texture = 0,
-        defaultItem = 0,        
+        defaultItem = 1,
+        defaultTexture = 0,        
     },
     ["torso2"] = {
         item = 0,
         texture = 0,
-        defaultItem = 0,        
+        defaultItem = 0,
+        defaultTexture = 0,        
     },
     ["vest"] = {
-        item = -1,
+        item = 0,
         texture = 0,
-        defaultItem = -1,        
+        defaultItem = 0,
+        defaultTexture = 0,        
     },
     ["bag"] = {
-        item = -1,
+        item = 0,
         texture = 0,
-        defaultItem = -1,        
+        defaultItem = 0,
+        defaultTexture = 0,        
     },
     ["shoes"] = {
         item = 0,
         texture = 0,
-        defaultItem = 0,        
+        defaultItem = 1,
+        defaultTexture = 0,        
     },
     ["mask"] = {
-        item = -1,
+        item = 0,
         texture = 0,
-        defaultItem = -1,        
+        defaultItem = 0,
+        defaultTexture = 0,        
     },
     ["hat"] = {
         item = -1,
         texture = 0,
-        defaultItem = -1,        
+        defaultItem = -1,
+        defaultTexture = 0, 
     },
     ["glass"] = {
-        item = -1,
+        item = 0,
         texture = 0,
-        defaultItem = -1,        
+        defaultItem = 0,
+        defaultTexture = 0,
     },
     ["ear"] = {
         item = -1,
         texture = 0,
-        defaultItem = -1,        
+        defaultItem = -1,
+        defaultTexture = 0,
     },
     ["watch"] = {
         item = -1,
         texture = 0,
-        defaultItem = -1,        
+        defaultItem = -1,
+        defaultTexture = 0,
     },
     ["bracelet"] = {
         item = -1,
         texture = 0,
-        defaultItem = -1,        
+        defaultItem = -1,
+        defaultTexture = 0,
     },
     ["accessory"] = {
-        item = -1,
+        item = 0,
         texture = 0,
-        defaultItem = -1,        
+        defaultItem = 0,
+        defaultTexture = 0,      
     },
     ["decals"] = {
-        item = -1,
+        item = 0,
         texture = 0,
-        defaultItem = -1,        
+        defaultItem = 0,
+        defaultTexture = 0,      
     },
 }
 
@@ -458,7 +481,6 @@ function openMenu(allowedMenus)
 
     local PlayerData = QBCore.Functions.GetPlayerData()
     local trackerMeta = PlayerData.metadata["tracker"]
-
 
     GetMaxValues()
     SendNUIMessage({
@@ -941,7 +963,7 @@ function ChangeToSkinNoUpdate(skin)
 
         for k, v in pairs(skinData) do
             skinData[k].item = skinData[k].defaultItem
-            skinData[k].texture = 0
+            skinData[k].texture = skinData[k].defaultTexture
         end
 
         if skin == "mp_m_freemode_01" or skin == "mp_f_freemode_01" then
@@ -984,28 +1006,23 @@ function SaveSkin()
 	TriggerServerEvent("qb-clothing:saveSkin", model, clothing)
 end
 
+RegisterNetEvent('qb-clothes:client:CreateFirstCharacter')
+AddEventHandler('qb-clothes:client:CreateFirstCharacter', function()
+    QBCore.Functions.GetPlayerData(function(PlayerData)
+        local skin = "mp_m_freemode_01"
+        openMenu({
+            {menu = "character", label = "Karakter", selected = true},
+            {menu = "clothing", label = "Uiterlijk", selected = false},
+            {menu = "accessoires", label = "Accessoires", selected = false}
+        })
+        if PlayerData.charinfo.gender == 1 then skin = "mp_f_freemode_01" end
+        ChangeToSkinNoUpdate(skin)
+        DoScreenFadeIn(50)
+    end)
+end)
+
 RegisterNetEvent("qb-clothes:loadSkin")
 AddEventHandler("qb-clothes:loadSkin", function(new, model, data)
-	local function setDefault()
-		Citizen.CreateThread(function()
-            QBCore.Functions.GetPlayerData(function(PlayerData)
-                SetTimeout(3000, function()
-                    local skin = "mp_m_freemode_01"
-                    openMenu({
-                        {menu = "character", label = "Karakter", selected = true},
-                        {menu = "clothing", label = "Uiterlijk", selected = false},
-                        {menu = "accessoires", label = "Accessoires", selected = false}
-                    })
-                    if PlayerData.charinfo.gender == 1 then skin = "mp_f_freemode_01" end
-                    ChangeToSkinNoUpdate(skin)
-                    DoScreenFadeIn(50)
-                end)
-			end)
-		end)
-    end
-
-    if new then setDefault() return end
-
     model = model ~= nil and tonumber(model) or false
 
 	SetEntityInvincible(GetPlayerPed(-1),true)
