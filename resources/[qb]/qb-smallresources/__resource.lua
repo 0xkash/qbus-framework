@@ -27,12 +27,13 @@ client_scripts {
 	"client/discord.lua",
 	"client/point.lua",
 	'client/engine.lua',
+	"client/calmai.lua"
 }
-
--- this_is_a_map 'yes'
 
 data_file 'FIVEM_LOVES_YOU_341B23A2F0E0F131' 'popgroups.ymt'
 
 files {
     'popgroups.ymt',
+	'events.meta',
+	'relationships.dat',
 }

@@ -44,3 +44,27 @@ DrawText3D = function(x, y, z, text)
     DrawRect(0.0, 0.0+0.0125, 0.017+ factor, 0.03, 0, 0, 0, 75)
     ClearDrawOrigin()
 end
+
+RegisterNetEvent('qb-diving:client:UseJerrycan')
+AddEventHandler('qb-diving:client:UseJerrycan', function()
+    local ped = GetPlayerPed(-1)
+    local boat = IsPedInAnyBoat(ped)
+    if boat then
+        local curVeh = GetVehiclePedIsIn(ped, false)
+        QBCore.Functions.Progressbar("reful_boat", "Boot aan het tanken..", 20000, false, true, {
+            disableMovement = true,
+            disableCarMovement = true,
+            disableMouse = false,
+            disableCombat = true,
+        }, {}, {}, {}, function() -- Done
+            exports['LegacyFuel']:SetFuel(curVeh, 100)
+            QBCore.Functions.Notify('De boot is getankt', 'success')
+            TriggerServerEvent('qb-diving:server:RemoveItem', 'jerry_can', 1)
+            TriggerEvent('inventory:client:ItemBox', QBCore.Shared.Items['jerry_can'], "remove")
+        end, function() -- Cancel
+            QBCore.Functions.Notify('Tanken is geannuleerd!', 'error')
+        end)
+    else
+        QBCore.Functions.Notify('Je zit niet in een boot', 'error')
+    end
+end)
