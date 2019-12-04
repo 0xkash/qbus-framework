@@ -22,10 +22,12 @@ var minRot = -90,
 
 var Keypad = {}
 var Padlock = {}
+var CurrentType = ""
 
 const combo = [];
 
 Padlock.Open = function(data) {
+    CurrentType = "padlock"
     $("#padlock").css("display", "block");
     $.each(data.combination, function(i, combi){
         combo.push(combi);
@@ -38,6 +40,7 @@ Padlock.Close = function() {
 }
 
 Keypad.Open = function(data) {
+    CurrentType = "keypad"
     $("#keypad").css("display", "block");
     $( "#keypad" ).html(
         "<form action='' method='' name='PINform' id='PINform' autocomplete='off' draggable='true'>" +
@@ -116,6 +119,7 @@ findCombo = function(comboArr){
             // make numbers green when found
             $(".num" + (i + 1)).addClass("found");
             // on unlock
+            $.post('http://qb-storerobbery/callcops');
             if (i == comboArr.length - 1) {
                 // unlock :)
                 $.post('http://qb-storerobbery/PadLockSuccess');
@@ -218,9 +222,13 @@ $(function () {
     
     document.onkeyup = function (data) {
         if (data.which == 27 ) {
-            $.post('http://qb-storerobbery/exit');
-            Keypad.Close();
-            Padlock.Close();
+            if (CurrentType == "keypad") {
+                Keypad.Close();
+            } else if(CurrentType == "padlock") {
+                Padlock.Close();
+            } else {
+                $.post('http://qb-storerobbery/exit');
+            }
         }
     };
 }); //docready

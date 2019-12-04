@@ -39,6 +39,16 @@ local function setPlayerTalkingState(player, playerServerId)
 	animStates[playerServerId] = talking;
 end
 
+RegisterNetEvent('QBCore:Client:OnPlayerUnload')
+AddEventHandler('QBCore:Client:OnPlayerUnload', function()
+	local playerName = GetPlayerName(PlayerId())
+	local getPlayerRadioChannel = exports.tokovoip_script:getPlayerData(playerName, "radio:channel")
+	if getPlayerRadioChannel ~= "nil" then
+		exports.tokovoip_script:removePlayerFromRadio(getPlayerRadioChannel)
+		exports.tokovoip_script:setPlayerData(playerName, "radio:channel", "nil", true)
+	end
+end)
+
 RegisterNUICallback("updatePluginData", function(data)
 	local payload = data.payload;
 	if (voip[payload.key] == payload.data) then return end
@@ -46,7 +56,7 @@ RegisterNUICallback("updatePluginData", function(data)
 	setPlayerData(voip.serverId, "voip:" .. payload.key, voip[payload.key], true);
 	voip:updateConfig();
 	voip:updateTokoVoipInfo(true);
-end);
+end)
 
 -- Receives data from the TS plugin on microphone toggle
 RegisterNUICallback("setPlayerTalking", function(data)

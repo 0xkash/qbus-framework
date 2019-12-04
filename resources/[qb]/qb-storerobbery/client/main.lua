@@ -73,7 +73,8 @@ Citizen.CreateThread(function()
                         if not Config.Safes[safe].robbed then
                             DrawText3Ds(Config.Safes[safe].x, Config.Safes[safe].y, Config.Safes[safe].z, '~g~E~w~ - Combinatie proberen')
                             if IsControlJustPressed(0, Keys["E"]) then
-                                if CurrentCops >= 3 then
+                                if CurrentCops >= 0 then
+                                    currentSafe = safe
                                     if math.random(1, 100) <= 65 and not IsWearingHandshoes() then
                                         TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
                                     end
@@ -82,26 +83,13 @@ Citizen.CreateThread(function()
                                         SendNUIMessage({
                                             action = "openKeypad",
                                         })
-                                        currentSafe = safe
                                     else
                                         QBCore.Functions.TriggerCallback('qb-storerobbery:server:getPadlockCombination', function(combination)
                                             SendNUIMessage({
                                                 action = "openPadlock",
                                                 combination = combination, 
                                             })
-                                            currentSafe = safe
                                         end, safe)
-                                    end
-                                    if not copsCalled then
-                                        local s1, s2 = Citizen.InvokeNative(0x2EB41072B4C1E4C0, pos.x, pos.y, pos.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
-                                        local street1 = GetStreetNameFromHashKey(s1)
-                                        local street2 = GetStreetNameFromHashKey(s2)
-                                        local streetLabel = street1
-                                        if street2 ~= nil then 
-                                            streetLabel = streetLabel .. " " .. street2
-                                        end
-                                        TriggerServerEvent("qb-storerobbery:server:callCops", "safe", currentSafe, streetLabel, pos)
-                                        copsCalled = true
                                     end
                                 else
                                     QBCore.Functions.Notify("Niet genoeg politie.. (3 nodig)", "error")
@@ -136,6 +124,22 @@ AddEventHandler('police:SetCopCount', function(amount)
     CurrentCops = amount
 end)
 
+RegisterNetEvent('police:SetCopAlert')
+AddEventHandler('police:SetCopAlert', function()
+    if not copsCalled then
+        local pos = GetEntityCoords(GetPlayerPed(-1))
+        local s1, s2 = Citizen.InvokeNative(0x2EB41072B4C1E4C0, pos.x, pos.y, pos.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
+        local street1 = GetStreetNameFromHashKey(s1)
+        local street2 = GetStreetNameFromHashKey(s2)
+        local streetLabel = street1
+        if street2 ~= nil then 
+            streetLabel = streetLabel .. " " .. street2
+        end
+        TriggerServerEvent("qb-storerobbery:server:callCops", "safe", currentSafe, streetLabel, pos)
+        copsCalled = true
+    end
+end)
+
 RegisterNetEvent('lockpicks:UseLockpick')
 AddEventHandler('lockpicks:UseLockpick', function()
     for k, v in pairs(Config.Registers) do
@@ -148,7 +152,7 @@ AddEventHandler('lockpicks:UseLockpick', function()
                     if result then
                         lockpick(true)
                         currentRegister = k
-                        if math.random(1, 100) <= 100 and not IsWearingHandshoes() then
+                        if math.random(1, 80) <= 100 and not IsWearingHandshoes() then
                             TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
                         end
                         if not copsCalled then
@@ -191,7 +195,6 @@ end
 
 function setupRegister()
     QBCore.Functions.TriggerCallback('qb-storerobbery:server:getRegisterStatus', function(Registers)
-        print("lmao?")
         for k, v in pairs(Registers) do
             Config.Registers[k].robbed = Registers[k].robbed
         end
@@ -264,6 +267,10 @@ RegisterNUICallback('success', function()
     end
 end)
 
+RegisterNUICallback('callcops', function()
+    TriggerEvent("police:SetCopAlert")
+end)
+
 RegisterNUICallback('PadLockSuccess', function()
     if currentSafe ~= 0 then
         if not Config.Safes[currentSafe].robbed then
@@ -311,6 +318,7 @@ RegisterNUICallback('TryCombination', function(data, cb)
             currentSafe = 0
             takeAnim()
         else
+            TriggerEvent("police:SetCopAlert")
             SetNuiFocus(false, false)
             SendNUIMessage({
                 action = "closeKeypad",

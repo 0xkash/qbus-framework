@@ -367,6 +367,15 @@ AddEventHandler("inventory:client:UseWeapon", function(weaponData)
     end
 end)
 
+RegisterNetEvent("inventory:client:CheckWeapon")
+AddEventHandler("inventory:client:CheckWeapon", function(weaponName)
+    if currentWeapon == weaponName then 
+        SetCurrentPedWeapon(GetPlayerPed(-1), GetHashKey("WEAPON_UNARMED"), true)
+        RemoveWeaponFromPed(GetPlayerPed(-1), GetHashKey(currentWeapon))
+        currentWeapon = nil
+    end
+end)
+
 RegisterNetEvent("inventory:client:AddDropItem")
 AddEventHandler("inventory:client:AddDropItem", function(dropId, player)
     local coords = GetEntityCoords(GetPlayerPed(GetPlayerFromServerId(player)))

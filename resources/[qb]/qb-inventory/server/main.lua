@@ -256,6 +256,7 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 			if toInventory == "player" or toInventory == "hotbar" then
 				local toItemData = Player.Functions.GetItemBySlot(toSlot)
 				Player.Functions.RemoveItem(fromItemData.name, fromAmount, fromSlot)
+				TriggerClientEvent("inventory:client:CheckWeapon", src, fromItemData.name)
 				--Player.PlayerData.items[toSlot] = fromItemData
 				if toItemData ~= nil then
 					--Player.PlayerData.items[fromSlot] = toItemData
@@ -273,6 +274,7 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 				local OtherPlayer = QBCore.Functions.GetPlayer(playerId)
 				local toItemData = OtherPlayer.PlayerData.items[toSlot]
 				Player.Functions.RemoveItem(fromItemData.name, fromAmount, fromSlot)
+				TriggerClientEvent("inventory:client:CheckWeapon", src, fromItemData.name)
 				--Player.PlayerData.items[toSlot] = fromItemData
 				if toItemData ~= nil then
 					--Player.PlayerData.items[fromSlot] = toItemData
@@ -291,6 +293,7 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 				local plate = QBCore.Shared.SplitStr(toInventory, "-")[2]
 				local toItemData = Trunks[plate].items[toSlot]
 				Player.Functions.RemoveItem(fromItemData.name, fromAmount, fromSlot)
+				TriggerClientEvent("inventory:client:CheckWeapon", src, fromItemData.name)
 				--Player.PlayerData.items[toSlot] = fromItemData
 				if toItemData ~= nil then
 					--Player.PlayerData.items[fromSlot] = toItemData
@@ -309,6 +312,7 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 				local plate = QBCore.Shared.SplitStr(toInventory, "-")[2]
 				local toItemData = Gloveboxes[plate].items[toSlot]
 				Player.Functions.RemoveItem(fromItemData.name, fromAmount, fromSlot)
+				TriggerClientEvent("inventory:client:CheckWeapon", src, fromItemData.name)
 				--Player.PlayerData.items[toSlot] = fromItemData
 				if toItemData ~= nil then
 					--Player.PlayerData.items[fromSlot] = toItemData
@@ -327,6 +331,7 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 				local stashId = QBCore.Shared.SplitStr(toInventory, "-")[2]
 				local toItemData = Stashes[stashId].items[toSlot]
 				Player.Functions.RemoveItem(fromItemData.name, fromAmount, fromSlot)
+				TriggerClientEvent("inventory:client:CheckWeapon", src, fromItemData.name)
 				--Player.PlayerData.items[toSlot] = fromItemData
 				if toItemData ~= nil then
 					--Player.PlayerData.items[fromSlot] = toItemData
@@ -349,6 +354,7 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 				else
 					local toItemData = Drops[toInventory].items[toSlot]
 					Player.Functions.RemoveItem(fromItemData.name, fromAmount, fromSlot)
+					TriggerClientEvent("inventory:client:CheckWeapon", src, fromItemData.name)
 					--Player.PlayerData.items[toSlot] = fromItemData
 					if toItemData ~= nil then
 						--Player.PlayerData.items[fromSlot] = toItemData
@@ -1004,6 +1010,7 @@ function CreateNewDrop(source, fromSlot, toSlot, itemAmount)
 	local Player = QBCore.Functions.GetPlayer(source)
 	local itemData = Player.Functions.GetItemBySlot(fromSlot)
 	if Player.Functions.RemoveItem(itemData.name, itemAmount, itemData.slot) then
+		TriggerClientEvent("inventory:client:CheckWeapon", source, itemData.name)
 		local itemInfo = QBCore.Shared.Items[itemData.name:lower()]
 		local dropId = CreateDropId()
 		Drops[dropId] = {}

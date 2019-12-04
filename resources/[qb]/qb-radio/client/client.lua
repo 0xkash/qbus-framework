@@ -42,7 +42,11 @@ RegisterNUICallback('joinRadio', function(data, cb)
           exports.tokovoip_script:removePlayerFromRadio(getPlayerRadioChannel)
           exports.tokovoip_script:setPlayerData(playerName, "radio:channel", tonumber(data.channel), true);
           exports.tokovoip_script:addPlayerToRadio(tonumber(data.channel), "Radio", "radio")
-          QBCore.Functions.Notify(Config.messages['joined_to_radio'] .. data.channel .. '.00 MHz </b>', 'success')
+          if SplitStr(data.channel, ".")[2] ~= nil and SplitStr(data.channel, ".")[2] ~= "" then 
+            QBCore.Functions.Notify(Config.messages['joined_to_radio'] .. data.channel .. ' MHz </b>', 'success')
+          else
+            QBCore.Functions.Notify(Config.messages['joined_to_radio'] .. data.channel .. '.00 MHz </b>', 'success')
+          end
         elseif not (PlayerData.job.name == 'police' or PlayerData.job.name == 'ambulance') then
           QBCore.Functions.Notify(Config.messages['restricted_channel_error'], 'error')
         end
@@ -52,10 +56,18 @@ RegisterNUICallback('joinRadio', function(data, cb)
         exports.tokovoip_script:removePlayerFromRadio(getPlayerRadioChannel)
         exports.tokovoip_script:setPlayerData(playerName, "radio:channel", tonumber(data.channel), true);
         exports.tokovoip_script:addPlayerToRadio(tonumber(data.channel), "Radio", "radio")
-        QBCore.Functions.Notify(Config.messages['joined_to_radio'] .. data.channel .. '.00 MHz </b>', 'success')
+        if SplitStr(data.channel, ".")[2] ~= nil and SplitStr(data.channel, ".")[2] ~= "" then 
+          QBCore.Functions.Notify(Config.messages['joined_to_radio'] .. data.channel .. ' MHz </b>', 'success')
+        else
+          QBCore.Functions.Notify(Config.messages['joined_to_radio'] .. data.channel .. '.00 MHz </b>', 'success')
+        end
       end
     else
-      QBCore.Functions.Notify(Config.messages['you_on_radio'] .. data.channel .. '.00 MHz </b>', 'error')
+      if SplitStr(data.channel, ".")[2] ~= nil and SplitStr(data.channel, ".")[2] ~= "" then 
+        QBCore.Functions.Notify(Config.messages['you_on_radio'] .. data.channel .. ' MHz </b>', 'error')
+      else
+        QBCore.Functions.Notify(Config.messages['you_on_radio'] .. data.channel .. '.00 MHz </b>', 'error')
+      end
     end
   else
     QBCore.Functions.Notify('Deze frequentie is niet beschikbaar.', 'error')
@@ -66,13 +78,17 @@ end)
 RegisterNUICallback('leaveRadio', function(data, cb)
   local playerName = GetPlayerName(PlayerId())
   local getPlayerRadioChannel = exports.tokovoip_script:getPlayerData(playerName, "radio:channel")
-
   if getPlayerRadioChannel == "nil" then
     QBCore.Functions.Notify(Config.messages['not_on_radio'], 'error')
   else
     exports.tokovoip_script:removePlayerFromRadio(getPlayerRadioChannel)
     exports.tokovoip_script:setPlayerData(playerName, "radio:channel", "nil", true)
-    QBCore.Functions.Notify(Config.messages['you_leave'] .. getPlayerRadioChannel .. '.00 MHz </b>', 'error')
+    if SplitStr(getPlayerRadioChannel, ".")[2] ~= nil and SplitStr(getPlayerRadioChannel, ".")[2] ~= "" then 
+      QBCore.Functions.Notify(Config.messages['you_leave'] .. getPlayerRadioChannel .. ' MHz </b>', 'error')
+    else
+      QBCore.Functions.Notify(Config.messages['you_leave'] .. getPlayerRadioChannel .. '.00 MHz </b>', 'error')
+    end
+    
   end
   cb('ok')
 end)
@@ -99,3 +115,14 @@ AddEventHandler('qb-radio:onRadioDrop', function(source)
     QBCore.Functions.Notify(Config.messages['you_leave'] .. getPlayerRadioChannel .. '.00 MHz </b>', 'error')
   end
 end)
+
+function SplitStr(inputstr, sep)
+	if sep == nil then
+			sep = "%s"
+	end
+	local t={}
+	for str in string.gmatch(inputstr, "([^"..sep.."]+)") do
+			table.insert(t, str)
+	end
+	return t
+end
