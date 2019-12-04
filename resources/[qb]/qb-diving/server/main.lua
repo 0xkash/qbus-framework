@@ -56,5 +56,7 @@ end
 
 QBCore.Functions.CreateUseableItem("jerry_can", function(source, item)
     local Player = QBCore.Functions.GetPlayer(source)
+
     TriggerClientEvent("qb-diving:client:UseJerrycan", source)
+    print('yeey')
 end)

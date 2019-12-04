@@ -49,7 +49,8 @@ RegisterNetEvent('qb-diving:client:UseJerrycan')
 AddEventHandler('qb-diving:client:UseJerrycan', function()
     local ped = GetPlayerPed(-1)
     local boat = IsPedInAnyBoat(ped)
-    print('yeey')
+    print('LOL')
+
     if boat then
         QBCore.Functions.Progressbar("reful_boat", "Boot aan het tanken..", 20000, false, true, {
             disableMovement = true,
