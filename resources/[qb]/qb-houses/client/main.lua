@@ -219,7 +219,6 @@ Citizen.CreateThread(function()
                     -- EXIT HOUSE
                     if inside then
                         if not entering then
-                            print(" ?????????????????????????????????")
                             if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.enter.x + POIOffsets.exit.x, Config.Houses[closesthouse].coords.enter.y + POIOffsets.exit.y, Config.Houses[closesthouse].coords.enter.z - Config.MinZOffset + POIOffsets.exit.z, true) < 1.5)then
                                 DrawText3Ds(Config.Houses[closesthouse].coords.enter.x + POIOffsets.exit.x, Config.Houses[closesthouse].coords.enter.y + POIOffsets.exit.y, Config.Houses[closesthouse].coords.enter.z - Config.MinZOffset + POIOffsets.exit.z, '~g~E~w~ - Om huis te verlaten')
                                 if IsControlJustPressed(0, Keys["E"]) then
@@ -516,7 +515,6 @@ function enterOwnedHouse(house)
     SetWeatherTypeNow('EXTRASUNNY')
     SetWeatherTypeNowPersist('EXTRASUNNY')
     NetworkOverrideClockTime(23, 0, 0)
-    print(" ENTERING FALSE BOI")
     entering = false
 end
 
@@ -752,7 +750,6 @@ AddEventHandler('qb-houses:client:refreshLocations', function(house, location, t
     if closesthouse == house then
         if inside then
             if type == 1 then
-                print("stashLocation SETTTT")
                 stashLocation = json.decode(location)
             elseif type == 2 then
                 outfitLocation = json.decode(location)
