@@ -51,6 +51,11 @@ QBAdmin.Functions.GetClosestPlayer = function()
 	return closestPlayer, closestDistance
 end
 
+RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
+AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+    TriggerServerEvent("qb-admin:server:loadPermissions")
+end)
+
 AvailableWeatherTypes = {
     {label = "Extra Sunny",         weather = 'EXTRASUNNY',}, 
     {label = "Clear",               weather = 'CLEAR',}, 

@@ -197,6 +197,22 @@ QBCore.Functions.GetPermission = function(source)
 	return retval
 end
 
+QBCore.Functions.IsOptin = function(source)
+	local retval = false
+	local steamid = GetPlayerIdentifiers(source)[1]
+	if QBCore.Functions.HasPermission(source, "admin") then
+		retval = QBCore.Config.Server.PermissionList[steamid].optin
+	end
+	return retval
+end
+
+QBCore.Functions.ToggleOptin = function(source)
+	local steamid = GetPlayerIdentifiers(source)[1]
+	if QBCore.Functions.HasPermission(source, "admin") then
+		QBCore.Config.Server.PermissionList[steamid].optin = not QBCore.Config.Server.PermissionList[steamid].optin
+	end
+end
+
 QBCore.Functions.IsPlayerBanned = function (source)
 	local retval = false
 	local message = ""

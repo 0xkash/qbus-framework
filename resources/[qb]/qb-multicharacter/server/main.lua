@@ -14,7 +14,6 @@ AddEventHandler('qb-multicharacter:server:loadUserData', function(cData)
     if QBCore.Player.Login(src, cData.citizenid) then
         print('^2[qb-core]^7 '..GetPlayerName(src)..' (Citizen ID: '..cData.citizenid..') has succesfully loaded!')
         QBCore.Commands.Refresh(src)
-        
         loadHouseData()
 		--TriggerEvent('QBCore:Server:OnPlayerLoaded')-
         --TriggerClientEvent('QBCore:Client:OnPlayerLoaded', src)
@@ -34,7 +33,6 @@ AddEventHandler('qb-multicharacter:server:createCharacter', function(data)
     if QBCore.Player.Login(src, false, newData) then
         print('^2[qb-core]^7 '..GetPlayerName(src)..' has succesfully loaded!')
         QBCore.Commands.Refresh(src)
-        
         loadHouseData()
 
         TriggerClientEvent("qb-multicharacter:client:closeNUI", src)

@@ -78,12 +78,11 @@ end, "admin")
 
 QBCore.Commands.Add("report", "Stuur een report naar admins (alleen wanneer nodig, MAAK HIER GEEN MISBRUIK VAN)", {{name="bericht", help="Bericht die je wilt sturen"}}, true, function(source, args)
     local msg = table.concat(args, " ")
-
     for k, v in pairs(QBCore.Functions.GetPlayers()) do
         local Player = QBCore.Functions.GetPlayer(v)
         if Player ~= nil then 
-            if QBCore.Functions.HasPermission(v, "god") then
-                if QBCore.Config.Server.PermissionList[GetPlayerIdentifiers(v)[1]].optin then 
+            if QBCore.Functions.HasPermission(v, "admin") then
+                if QBCore.Functions.IsOptin(source) then 
                     TriggerClientEvent('chatMessage', v, "REPORT - " .. GetPlayerName(source) .. " ("..source..")", "report", msg)
                 end
             end
@@ -101,10 +100,8 @@ QBCore.Commands.Add("reportr", "Toggle inkomende reports uit of aan", {}, false,
 end, "admin")
 
 QBCore.Commands.Add("reporttoggle", "Toggle inkomende reports uit of aan", {}, false, function(source, args)
-    local identifier = GetPlayerIdentifiers(source)[1]
-    local optin = QBCore.Config.Server.PermissionList[identifier].optin
-    QBCore.Config.Server.PermissionList[identifier].optin = not optin
-    if QBCore.Config.Server.PermissionList[identifier].optin then
+    QBCore.Functions.ToggleOptin(source)
+    if QBCore.Functions.IsOptin(source) then
         TriggerClientEvent('QBCore:Notify', source, "Je krijgt WEL reports", "success")
     else
         TriggerClientEvent('QBCore:Notify', source, "Je krijgt GEEN reports", "error")
