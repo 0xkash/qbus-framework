@@ -83,7 +83,7 @@ QBCore.Commands.Add("report", "Stuur een report naar admins (alleen wanneer nodi
         local Player = QBCore.Functions.GetPlayer(v)
         if Player ~= nil then 
             if QBCore.Functions.HasPermission(v, "god") then
-                if QBCore.Config.Server.PermissionList[GetPlayerIdentifiers(k)[1]].optin then 
+                if QBCore.Config.Server.PermissionList[GetPlayerIdentifiers(v)[1]].optin then 
                     TriggerClientEvent('chatMessage', v, "REPORT - " .. GetPlayerName(source) .. " ("..source..")", "report", msg)
                 end
             end
