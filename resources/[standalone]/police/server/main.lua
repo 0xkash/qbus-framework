@@ -9,6 +9,23 @@ BloodDrops = {}
 FingerDrops = {}
 local Objects = {}
 
+RegisterServerEvent('police:server:CheckBills')
+AddEventHandler('police:server:CheckBills', function()
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    QBCore.Functions.ExecuteSql("SELECT * FROM `bills` WHERE `citizenid` = '"..Player.PlayerData.citizenid.."' AND `type` = 'police'", function(result)
+        if result[1] ~= nil then
+            local totalAmount = 0
+			for k, v in pairs(result) do
+				totalAmount = totalAmount + tonumber(v.amount)
+            end
+            Player.Functions.RemoveMoney("bank", totalAmount)
+            QBCore.Functions.ExecuteSql("DELETE FROM `bills` WHERE `citizenid` = '"..Player.PlayerData.citizenid.."' AND `type` = 'police'")
+            TriggerClientEvent('police:client:sendBillingMail', src, totalAmount)
+		end
+	end)
+end)
+
 RegisterServerEvent('police:server:CuffPlayer')
 AddEventHandler('police:server:CuffPlayer', function(playerId, isSoftcuff)
     local src = source
@@ -256,6 +273,26 @@ AddEventHandler('police:server:SeizeCash', function(playerId)
         Player.Functions.AddItem("moneybag", 1, false, info)
         TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items["moneybag"], "add")
         TriggerClientEvent('QBCore:Notify', SearchedPlayer.PlayerData.source, "Jouw cash in beslag genomen..")
+    end
+end)
+
+RegisterServerEvent('police:server:SeizeDriverLicense')
+AddEventHandler('police:server:SeizeDriverLicense', function(playerId)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    local SearchedPlayer = QBCore.Functions.GetPlayer(playerId)
+    if SearchedPlayer ~= nil then
+        local driverLicense = SearchedPlayer.PlayerData.metadata["licences"]["driver"]
+        if driverLicense then
+            local licenses = {
+                ["driver"] = false,
+                ["business"] = SearchedPlayer.PlayerData.metadata["licences"]["business"]
+            }
+            SearchedPlayer.Functions.SetMetaData("licences", licenses)
+            TriggerClientEvent('QBCore:Notify', SearchedPlayer.PlayerData.source, "Jouw rijbewijs in beslag genomen..")
+        else
+            TriggerClientEvent('QBCore:Notify', src, "Kan rijbewijs niet afnemen..", "error")
+        end
     end
 end)
 
@@ -730,21 +767,6 @@ QBCore.Commands.Add("clearcasings", "Haal kogelhulsen in de buurt weg (zorg ervo
     end
 end)
 
-QBCore.Commands.Add("boete", "Schrijf een boete uit voor een persoon", {{name="id", help="Speler ID"},{name="prijs", help="Prijs van de boete"}}, true, function(source, args)
-    local Player = QBCore.Functions.GetPlayer(source)
-    if Player.PlayerData.job.name == "police" then
-        local playerId = tonumber(args[1])
-        local price = tonumber(args[2])
-        if price > 0 then
-            TriggerClientEvent("police:client:BillCommand", source, playerId, price)
-        else
-            TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Prijs moet hoger zijn dan 0")
-        end
-    else
-        TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Dit command is voor hulpdiensten!")
-    end
-end)
-
 QBCore.Commands.Add("jail", "Stuur een persoon naar de gevangenis", {{name="id", help="Speler ID"},{name="tijd", help="Tijd hoelang hij moet rotten >:)"}}, true, function(source, args)
 	local Player = QBCore.Functions.GetPlayer(source)
     if Player.PlayerData.job.name == "police" then
@@ -981,6 +1003,13 @@ QBCore.Commands.Add("noodknop", "Stuur een bericht terug naar een melding", {}, 
     local Player = QBCore.Functions.GetPlayer(source)
     if ((Player.PlayerData.job.name == "police" or Player.PlayerData.job.name == "ambulance") and Player.PlayerData.job.onduty) then
         TriggerClientEvent("police:client:SendPoliceEmergencyAlert", source)
+    end
+end)
+
+QBCore.Commands.Add("neemrijbewijs", "Neem een rijbewijs af van iemand", {}, false, function(source, args)
+    local Player = QBCore.Functions.GetPlayer(source)
+    if ((Player.PlayerData.job.name == "police") and Player.PlayerData.job.onduty) then
+        TriggerClientEvent("police:client:SeizeDriverLicense", source)
     end
 end)
 

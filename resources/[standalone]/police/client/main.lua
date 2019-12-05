@@ -56,6 +56,24 @@ AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     onDuty = QBCore.Functions.GetPlayerData().job.onduty
     TriggerServerEvent("police:server:UpdateBlips")
     TriggerServerEvent("police:server:UpdateCurrentCops")
+    TriggerServerEvent("police:server:CheckBills")
+end)
+
+RegisterNetEvent('police:client:sendBillingMail')
+AddEventHandler('police:client:sendBillingMail', function(amount)
+    SetTimeout(math.random(2500, 4000), function()
+        local gender = "meneer"
+        if QBCore.Functions.GetPlayerData().charinfo.gender == 1 then
+            gender = "mevrouw"
+        end
+        local charinfo = QBCore.Functions.GetPlayerData().charinfo
+        TriggerServerEvent('qb-phone:server:sendNewMail', {
+            sender = "Centraal Justitieel Incassobureau",
+            subject = "Automatisch Incasso",
+            message = "Beste " .. gender .. " " .. charinfo.lastname .. ",<br /><br />Het Centraal Justitieel Incassobureau (CJIB) heeft de boetes die u heeft ontvangen van de politie in rekening gebracht.<br />Er is <strong>€"..amount.."</strong> van uw rekening afgetrokken.<br /><br />Met vriendelijke groet,<br />Dhr. I.K. Graai",
+            button = {}
+        })
+    end)
 end)
 
 local tabletProp = nil

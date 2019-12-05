@@ -106,6 +106,18 @@ AddEventHandler('police:client:SeizeCash', function()
     end
 end)
 
+RegisterNetEvent('police:client:SeizeDriverLicense')
+AddEventHandler('police:client:SeizeDriverLicense', function()
+    local player, distance = GetClosestPlayer()
+    if player ~= -1 and distance < 2.5 then
+        local playerId = GetPlayerServerId(player)
+        TriggerServerEvent("police:server:SeizeDriverLicense", playerId)
+    else
+        QBCore.Functions.Notify("Niemand in de buurt!", "error")
+    end
+end)
+
+
 RegisterNetEvent('police:client:RobPlayer')
 AddEventHandler('police:client:RobPlayer', function()
     local player, distance = GetClosestPlayer()

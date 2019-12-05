@@ -85,15 +85,26 @@ Citizen.CreateThread(function()
         local pos = GetEntityCoords(ped)
         inRange = false
 
-        local dist = GetDistanceBetweenCoords(pos, Config.Cityhall.coords.x, Config.Cityhall.coords.y, Config.Cityhall.coords.z)
+        local dist = GetDistanceBetweenCoords(pos, Config.Cityhall.coords.x, Config.Cityhall.coords.y, Config.Cityhall.coords.z, true)
 
         if dist < 20 then
             inRange = true
             DrawMarker(2, Config.Cityhall.coords.x, Config.Cityhall.coords.y, Config.Cityhall.coords.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.2, 155, 152, 234, 155, false, false, false, true, false, false, false)
-            if dist < 1.5 then
+            if GetDistanceBetweenCoords(pos, Config.Cityhall.coords.x, Config.Cityhall.coords.y, Config.Cityhall.coords.z, true) < 1.5 then
                 qbCityhall.DrawText3Ds(Config.Cityhall.coords, '~g~E~w~ - Gemeentehuis openen')
                 if IsControlJustPressed(0, Keys["E"]) then
                     qbCityhall.Open()
+                end
+            end
+            DrawMarker(2, Config.DriverTest.coords.x, Config.DriverTest.coords.y, Config.DriverTest.coords.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.2, 155, 152, 234, 155, false, false, false, true, false, false, false)
+            if GetDistanceBetweenCoords(pos, Config.DriverTest.coords.x, Config.DriverTest.coords.y, Config.DriverTest.coords.z, true) < 1.5 then
+                qbCityhall.DrawText3Ds(Config.DriverTest.coords, '~g~E~w~ - Rijles aanvragen')
+                if IsControlJustPressed(0, Keys["E"]) then
+                    if QBCore.Functions.GetPlayerData().metadata["licences"]["driver"] then
+                        QBCore.Functions.Notify("Je hebt al je rijbewijs gehaald, vraag het hiernaast aan")
+                    else
+                        TriggerServerEvent("qb-cityhall:server:sendDriverTest")
+                    end
                 end
             end
         end
@@ -104,6 +115,23 @@ Citizen.CreateThread(function()
 
         Citizen.Wait(2)
     end
+end)
+
+RegisterNetEvent('qb-cityhall:client:sendDriverEmail')
+AddEventHandler('qb-cityhall:client:sendDriverEmail', function(charinfo)
+    SetTimeout(math.random(2500, 4000), function()
+        local gender = "meneer"
+        if QBCore.Functions.GetPlayerData().charinfo.gender == 1 then
+            gender = "mevrouw"
+        end
+        local charinfo = QBCore.Functions.GetPlayerData().charinfo
+        TriggerServerEvent('qb-phone:server:sendNewMail', {
+            sender = "Gemeente",
+            subject = "Aanvraag Rijles",
+            message = "Beste " .. gender .. " " .. charinfo.lastname .. ",<br /><br />Wij hebben zojuist een bericht gehad dat er iemand rijles wilt volgen.<br />Mocht u bereid zijn om les te geven kunt u contact opnemen:<br />Naam: <strong>".. charinfo.firstname .. " " .. charinfo.lastname .. "</strong><br />Telefoonnummer: <strong>"..charinfo.phone.."</strong><br/><br/>Met vriendelijke groet,<br />Gemeente Los Santos",
+            button = {}
+        })
+    end)
 end)
 
 local idTypes = {
