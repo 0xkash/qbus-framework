@@ -115,8 +115,8 @@ Citizen.CreateThread(function()
             local weapon = GetDamagingWeapon(ped)
 
             if hit and bodypart ~= 'NONE' then
+                local checkDamage = true
                 if damageDone >= Config.HealthDamage then
-                    local checkDamage = true
                     if weapon ~= nil then
                         if armorDamaged and (bodypart == 'SPINE' or bodypart == 'UPPER_BODY') or weapon == Config.WeaponClasses['NOTHING'] then
                             checkDamage = false -- Don't check damage if the it was a body shot and the weapon class isn't that strong
@@ -130,7 +130,10 @@ Citizen.CreateThread(function()
                         end
                     end
                 elseif Config.AlwaysBleedChanceWeapons[weapon] then
-                    if math.random(100) < Config.AlwaysBleedChance then
+                    if armorDamaged and (bodypart == 'SPINE' or bodypart == 'UPPER_BODY') or weapon == Config.WeaponClasses['NOTHING'] then
+                        checkDamage = false -- Don't check damage if the it was a body shot and the weapon class isn't that strong
+                    end
+                    if math.random(100) < Config.AlwaysBleedChance and checkDamage then
                         ApplyBleed(1)
                     end
                 end

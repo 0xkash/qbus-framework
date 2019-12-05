@@ -74,7 +74,7 @@ QBCore.Commands.Add("addpriority", "Geef queue prioriteit", {{name="id", help="I
 	else
 		TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Speler is niet online!")	
 	end
-end, "admin")
+end, "god")
 
 QBCore.Commands.Add("removepriority", "Haal prioriteit weg van iemand", {{name="id", help="ID van de speler"}}, true, function(source, args)
 	local Player = QBCore.Functions.GetPlayer(tonumber(args[1]))
@@ -84,7 +84,7 @@ QBCore.Commands.Add("removepriority", "Haal prioriteit weg van iemand", {{name="
 	else
 		TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Speler is niet online!")	
 	end
-end, "admin")
+end, "god")
 
 function AddPriority(source, level)
 	local Player = QBCore.Functions.GetPlayer(source)

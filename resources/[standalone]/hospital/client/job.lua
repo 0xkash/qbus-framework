@@ -20,6 +20,19 @@ Citizen.CreateThread(function()
                         QBCore.Functions.DrawText3D(Config.Locations["duty"].x, Config.Locations["duty"].y, Config.Locations["duty"].z, "In/Uit dienst")
                     end  
                 end
+
+                if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["armory"].x, Config.Locations["armory"].y, Config.Locations["armory"].z, true) < 4.5) then
+                    if onDuty then
+                        if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["armory"].x, Config.Locations["armory"].y, Config.Locations["armory"].z, true) < 1.5) then
+                            QBCore.Functions.DrawText3D(Config.Locations["armory"].x, Config.Locations["armory"].y, Config.Locations["armory"].z, "~g~E~w~ - Kluis")
+                            if IsControlJustReleased(0, Keys["E"]) then
+                                TriggerServerEvent("inventory:server:OpenInventory", "shop", "hospital", Config.Items)
+                            end
+                        elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["armory"].x, Config.Locations["armory"].y, Config.Locations["armory"].z, true) < 2.5) then
+                            QBCore.Functions.DrawText3D(Config.Locations["armory"].x, Config.Locations["armory"].y, Config.Locations["armory"].z, "Kluis")
+                        end  
+                    end
+                end
         
                 if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["vehicle"].x, Config.Locations["vehicle"].y, Config.Locations["vehicle"].z, true) < 4.5) then
                     DrawMarker(2, Config.Locations["vehicle"].x, Config.Locations["vehicle"].y, Config.Locations["vehicle"].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)

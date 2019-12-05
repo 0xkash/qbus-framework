@@ -55,11 +55,17 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 	if name ~= nil and id ~= nil then
 		local secondInv = {}
 		if name == "stash" then
+			local maxweight = 1000000
+			local slots = 50
+			if other ~= nil then 
+				maxweight = other.maxweight ~= nil and other.maxweight or 1000000
+				slots = other.slots ~= nil and other.slots or 50
+			end
 			secondInv.name = "stash-"..id
 			secondInv.label = "Stash-"..id
-			secondInv.maxweight = 1000000
+			secondInv.maxweight = maxweight
 			secondInv.inventory = {}
-			secondInv.slots = 100
+			secondInv.slots = slots
 			if Stashes[id] ~= nil and Stashes[id].isOpen then
 				secondInv.name = "none-inv"
 				secondInv.label = "Stash-None"
