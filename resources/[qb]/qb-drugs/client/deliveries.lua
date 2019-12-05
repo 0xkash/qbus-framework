@@ -76,6 +76,7 @@ function buyDealerStuff()
     local repItems = {}
     repItems.label = Config.Dealers[currentDealer]["name"]
     repItems.items = {}
+    repItems.slots = 30
 
     for k, v in pairs(Config.Dealers[currentDealer]["products"]) do
         if QBCore.Functions.GetPlayerData().metadata["dealerrep"] >= Config.Dealers[currentDealer]["products"][k].minrep then

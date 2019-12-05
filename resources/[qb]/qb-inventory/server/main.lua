@@ -1074,6 +1074,9 @@ QBCore.Commands.Add("giveitem", "Geef een item aan een speler", {{name="id", hel
 					info.birthdate = Player.PlayerData.charinfo.birthdate
 					info.gender = Player.PlayerData.charinfo.gender
 					info.nationality = Player.PlayerData.charinfo.nationality
+				elseif itemData["type"] == "weapon" then
+					amount = 1
+					info.serie = tostring(Config.RandomInt(2) .. Config.RandomStr(3) .. Config.RandomInt(1) .. Config.RandomStr(2) .. Config.RandomInt(3) .. Config.RandomStr(4))
 				end
 
 				if Player.Functions.AddItem(itemData["name"], amount, false, info) then

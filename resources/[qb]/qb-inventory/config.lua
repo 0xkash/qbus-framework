@@ -1,3 +1,28 @@
+Config = {}
+
+local StringCharset = {}
+local NumberCharset = {}
+
+for i = 48,  57 do table.insert(NumberCharset, string.char(i)) end
+for i = 65,  90 do table.insert(StringCharset, string.char(i)) end
+for i = 97, 122 do table.insert(StringCharset, string.char(i)) end
+
+Config.RandomStr = function(length)
+	if length > 0 then
+		return Config.RandomStr(length-1) .. StringCharset[math.random(1, #StringCharset)]
+	else
+		return ''
+	end
+end
+
+Config.RandomInt = function(length)
+	if length > 0 then
+		return Config.RandomInt(length-1) .. NumberCharset[math.random(1, #NumberCharset)]
+	else
+		return ''
+	end
+end
+
 Keys = {
     ["ESC"] = 322, ["F1"] = 288, ["F2"] = 289, ["F3"] = 170, ["F5"] = 166, ["F6"] = 167, ["F7"] = 168, ["F8"] = 169, ["F9"] = 56, ["F10"] = 57,
     ["~"] = 243, ["1"] = 157, ["2"] = 158, ["3"] = 160, ["4"] = 164, ["5"] = 165, ["6"] = 159, ["7"] = 161, ["8"] = 162, ["9"] = 163, ["-"] = 84, ["="] = 83, ["BACKSPACE"] = 177,

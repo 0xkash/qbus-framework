@@ -68,6 +68,7 @@ AddEventHandler('jobs:client:ToggleNpc', function()
             return
         end
         NpcOn = not NpcOn
+        print(NpcOn)
         if NpcOn then
             local randomLocation = getRandomVehicleLocation()
             CurrentLocation.x = Config.Locations["towspots"][randomLocation].coords.x
@@ -81,10 +82,11 @@ AddEventHandler('jobs:client:ToggleNpc', function()
             SetBlipRoute(CurrentBlip, true)
             SetBlipRouteColour(CurrentBlip, 3)
         else
-            local CurrentBlip = RemoveBlip()
-            RemoveBlip(CurrentBlip)
-            CurrentLocation = {}
-            CurrentBlip = nil
+            if DoesBlipExist(CurrentBlip) then
+                RemoveBlip(CurrentBlip)
+                CurrentLocation = {}
+                CurrentBlip = nil
+            end
             VehicleSpawned = false
         end
     end
@@ -123,7 +125,7 @@ AddEventHandler('qb-tow:client:TowVehicle', function()
                             CurrentTow = targetVehicle
                             if NpcOn then
                                 RemoveBlip(CurrentBlip)
-                                QBCore.Functions.Notify("Breng het voertuig naar Hayes Depot!", "success")
+                                QBCore.Functions.Notify("Breng het voertuig naar Hayes Depot!", "success", 5000)
                             end
                             QBCore.Functions.Notify("Voertuig getakeld!")
                         end, function() -- Cancel

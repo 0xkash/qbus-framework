@@ -30,7 +30,7 @@ Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(0)
 		if isLoggedIn then
-			if QBCore.Functions.GetPlayerData().job.name == "police" and QBCore.Functions.GetPlayerData().job.onduty then
+			if PlayerJob.name == 'police' and onDuty then
 				if IsPlayerInPolmav() then
 					local lPed = GetPlayerPed(-1)
 					local heli = GetVehiclePedIsIn(lPed)

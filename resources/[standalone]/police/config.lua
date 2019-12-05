@@ -156,6 +156,7 @@ Config.CarItems = {
 
 Config.Items = {
     label = "Politie Wapenkluis",
+    slots = 250,
     items = {
         [1] = {
             name = "weapon_pistol_mk2",

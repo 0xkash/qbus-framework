@@ -242,6 +242,23 @@ AddEventHandler('police:server:SearchPlayer', function(playerId)
     end
 end)
 
+RegisterServerEvent('police:server:SeizeCash')
+AddEventHandler('police:server:SeizeCash', function(playerId)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    local SearchedPlayer = QBCore.Functions.GetPlayer(playerId)
+    if SearchedPlayer ~= nil then 
+        local moneyAmount = SearchedPlayer.PlayerData.money["cash"]
+        local info = {
+            cash = moneyAmount,
+        }
+        SearchedPlayer.Functions.RemoveMoney("cash", moneyAmount)
+        Player.Functions.AddItem("moneybag", 1, false, info)
+        TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items["moneybag"], "add")
+        TriggerClientEvent('QBCore:Notify', SearchedPlayer.PlayerData.source, "Jouw cash in beslag genomen..")
+    end
+end)
+
 RegisterServerEvent('police:server:RobPlayer')
 AddEventHandler('police:server:RobPlayer', function(playerId)
     local src = source
@@ -782,6 +799,15 @@ QBCore.Commands.Add("clearblood", "Haal bloed in de buurt weg (zorg ervoor dat j
     end
 end)
 
+QBCore.Commands.Add("seizecash", "Pak contant geld af van de dichtsbijzijnde persoon", {}, false, function(source, args)
+	local Player = QBCore.Functions.GetPlayer(source)
+    if Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty then
+        TriggerClientEvent("police:client:SeizeCash", source)
+    else
+        TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Dit command is voor hulpdiensten!")
+    end
+end)
+
 QBCore.Commands.Add("sc", "Boei iemand maar laat hem wel lopen", {}, false, function(source, args)
 	local Player = QBCore.Functions.GetPlayer(source)
     if Player.PlayerData.job.name == "police" then
@@ -955,5 +981,18 @@ QBCore.Commands.Add("noodknop", "Stuur een bericht terug naar een melding", {}, 
     local Player = QBCore.Functions.GetPlayer(source)
     if ((Player.PlayerData.job.name == "police" or Player.PlayerData.job.name == "ambulance") and Player.PlayerData.job.onduty) then
         TriggerClientEvent("police:client:SendPoliceEmergencyAlert", source)
+    end
+end)
+
+QBCore.Functions.CreateUseableItem("moneybag", function(source, item)
+    local Player = QBCore.Functions.GetPlayer(source)
+    if Player.Functions.GetItemBySlot(item.slot) ~= nil then
+        if item.info ~= nil and item.info ~= "" then
+            if Player.PlayerData.job.name ~= "police" then
+                if Player.Functions.RemoveItem("moneybag", 1, item.slot) then
+                    Player.Functions.AddMoney("cash", tonumber(item.info.cash))
+                end
+            end
+        end
     end
 end)

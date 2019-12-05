@@ -4,7 +4,7 @@ local recoils = {
 	[1593441988] = 0.2, -- COMBAT PISTOL
 	[584646201] = 0.3, -- AP PISTOL
 	[2578377531] = 0.6, -- PISTOL .50
-	[324215364] = 0.4, -- MICRO SMG
+	[324215364] = 0.5, -- MICRO SMG
 	[736523883] = 0.4, -- SMG
 	[2024373456] = 0.1, -- SMG MK2
 	[4024951519] = 0.1, -- ASSAULT SMG
@@ -88,8 +88,6 @@ Citizen.CreateThread(function()
 					until tv >= recoils[wep]
 				end
 			end
-		else
-			Citizen.Wait(250)
 		end
 
 		Citizen.Wait(0)

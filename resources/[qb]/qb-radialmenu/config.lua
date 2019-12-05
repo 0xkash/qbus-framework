@@ -341,6 +341,24 @@ Config.JobInteractions = {
             shouldClose = true,
         },
     },
+    ["tow"] = {
+        {
+            id    = 'togglenpc',
+            title = 'Toggle NPC',
+            icon = '#general',
+            type = 'client',
+            event = 'jobs:client:ToggleNpc',
+            shouldClose = true,
+        },
+        {
+            id    = 'towvehicle',
+            title = 'Takel Voertuig',
+            icon = '#vehicle',
+            type = 'client',
+            event = 'qb-tow:client:TowVehicle',
+            shouldClose = true,
+        },
+    },
     ["police"] = {
         {
             id    = 'emergencybutton',

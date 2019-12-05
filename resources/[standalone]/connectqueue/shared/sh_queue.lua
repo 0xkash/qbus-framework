@@ -877,12 +877,3 @@ commands.commands = function()
         Queue:DebugPrint(tostring(cmd))
     end
 end
-
-AddEventHandler("rconCommand", function(command, args)
-    if command == "queue" and commands[args[1]] then
-        command = args[1]
-        table_remove(args, 1)
-        commands[command](args)
-        CancelEvent()
-    end
-end)

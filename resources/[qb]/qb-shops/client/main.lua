@@ -46,6 +46,7 @@ Citizen.CreateThread(function()
                             local ShopItems = {}
                             ShopItems.label = Config.Locations[shop]["label"]
                             ShopItems.items = Config.Locations[shop]["products"]
+                            ShopItems.slots = 30
                             TriggerServerEvent("inventory:server:OpenInventory", "shop", "Itemshop_"..shop, ShopItems)
                         end
                     end
