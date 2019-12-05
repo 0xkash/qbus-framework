@@ -119,6 +119,6 @@ QBCore.Functions.CreateCallback('qb-storerobbery:server:getRegisterStatus', func
     cb(Config.Registers)
 end)
 
-QBCore.Functions.CreateCallback('qb-storerobbery:server:getRegisterStatus', function(source, cb)
+QBCore.Functions.CreateCallback('qb-storerobbery:server:getSafeStatus', function(source, cb)
     cb(Config.Safes)
 end)

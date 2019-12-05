@@ -67,3 +67,16 @@ AddEventHandler('qb-diving:server:RemoveItem', function(item, amount)
 
     Player.Functions.RemoveItem(item, amount)
 end)
+
+QBCore.Functions.CreateCallback('qb-diving:server:GetMyBoats', function(source, cb)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+
+    QBCore.Functions.ExecuteSql("SELECT * FROM `player_boats` WHERE `citizenid` = '"..Player.PlayerData.citizenid.."'", function(result)
+        if result[1] ~= nil then
+            cb(result)
+        else
+            cb(nil)
+        end
+    end)
+end)

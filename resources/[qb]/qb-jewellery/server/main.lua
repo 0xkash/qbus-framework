@@ -34,6 +34,7 @@ RegisterServerEvent('qb-jewellery:server:setTimeout')
 AddEventHandler('qb-jewellery:server:setTimeout', function()
     if not timeOut then
         timeOut = true
+        TriggerEvent('qb-scoreboard:server:SetActivityBusy', "jewellery", true)
         Citizen.CreateThread(function()
             Citizen.Wait(Config.Timeout)
 
@@ -41,6 +42,7 @@ AddEventHandler('qb-jewellery:server:setTimeout', function()
                 Config.Locations[k]["isOpened"] = false
                 TriggerClientEvent('qb-jewellery:client:setVitrineState', -1, 'isOpened', false, k)
                 TriggerClientEvent('qb-jewellery:client:setAlertState', -1, false)
+                TriggerEvent('qb-scoreboard:server:SetActivityBusy', "jewellery", false)
             end
             timeOut = false
             alarmTriggered = false
