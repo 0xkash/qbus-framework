@@ -6,7 +6,13 @@ local CurrentDivingLocation = {
     }
 }
 
-
+RegisterNetEvent('qb-diving:client:NewLocations')
+AddEventHandler('qb-diving:client:NewLocations', function()
+    QBCore.Functions.TriggerCallback('qb-diving:server:GetDivingConfig', function(Config, Area)
+        QBDiving.Locations = Config
+        TriggerEvent('qb-diving:client:SetDivingLocation', Area)
+    end)
+end)
 
 RegisterNetEvent('qb-diving:client:SetDivingLocation')
 AddEventHandler('qb-diving:client:SetDivingLocation', function(DivingLocation)
@@ -63,36 +69,37 @@ Citizen.CreateThread(function()
             end
 
             if inRange then
-                for _,CoralLocation in pairs(QBDiving.Locations[CurrentDivingLocation.Area].coords.Coral) do
+                for cur, CoralLocation in pairs(QBDiving.Locations[CurrentDivingLocation.Area].coords.Coral) do
                     CoralDistance = GetDistanceBetweenCoords(Pos, CoralLocation.coords.x, CoralLocation.coords.y, CoralLocation.coords.z, true)
 
                     if CoralDistance ~= nil then
                         if CoralDistance <= 20 then
-                            DrawMarker(32, CoralLocation.coords.x, CoralLocation.coords.y, CoralLocation.coords.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.4, 1.0, 0.4, 255, 223, 0, 255, true, false, false, false, false, false, false)
-                            if CoralDistance <= 1.5 then
-                                DrawText3D(CoralLocation.coords.x, CoralLocation.coords.y, CoralLocation.coords.z, '[E] Koraal verzamelen')
-                                if IsControlJustPressed(0, Keys["E"]) then
-                                    loadAnimDict("pickup_object")
-                                    local times = math.random(2, 5)
-                                    FreezeEntityPosition(Ped, true)
-                                    QBCore.Functions.Progressbar("take_coral", "Koraal aan het verzamelen..", times * 1000, false, true, {
-                                        disableMovement = true,
-                                        disableCarMovement = true,
-                                        disableMouse = false,
-                                        disableCombat = true,
-                                    }, {
-                                        animDict = "anim@gangops@facility@servers@",
-                                        anim = "hotwire",
-                                        flags = 16,
-                                    }, {}, {}, function() -- Done
-                                        print('Yeey')
-                                        ClearPedTasks(Ped)
-                                        FreezeEntityPosition(Ped, false)
-                                    end, function() -- Cancel
-                                        print('Neey')
-                                        ClearPedTasks(Ped)
-                                        FreezeEntityPosition(Ped, false)
-                                    end)
+                            if not CoralLocation.PickedUp then
+                                DrawMarker(32, CoralLocation.coords.x, CoralLocation.coords.y, CoralLocation.coords.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.4, 1.0, 0.4, 255, 223, 0, 255, true, false, false, false, false, false, false)
+                                if CoralDistance <= 1.5 then
+                                    DrawText3D(CoralLocation.coords.x, CoralLocation.coords.y, CoralLocation.coords.z, '[E] Koraal verzamelen')
+                                    if IsControlJustPressed(0, Keys["E"]) then
+                                        -- loadAnimDict("pickup_object")
+                                        local times = math.random(2, 5)
+                                        FreezeEntityPosition(Ped, true)
+                                        QBCore.Functions.Progressbar("take_coral", "Koraal aan het verzamelen..", times * 1000, false, true, {
+                                            disableMovement = true,
+                                            disableCarMovement = true,
+                                            disableMouse = false,
+                                            disableCombat = true,
+                                        }, {
+                                            animDict = "weapons@first_person@aim_rng@generic@projectile@thermal_charge@",
+                                            anim = "plant_floor",
+                                            flags = 16,
+                                        }, {}, {}, function() -- Done
+                                            TakeCoral(cur)
+                                            ClearPedTasks(Ped)
+                                            FreezeEntityPosition(Ped, false)
+                                        end, function() -- Cancel
+                                            ClearPedTasks(Ped)
+                                            FreezeEntityPosition(Ped, false)
+                                        end)
+                                    end
                                 end
                             end
                         end
@@ -107,4 +114,14 @@ Citizen.CreateThread(function()
 
         Citizen.Wait(3)
     end
+end)
+
+function TakeCoral(coral)
+    QBDiving.Locations[CurrentDivingLocation.Area].coords.Coral[coral].PickedUp = true
+    TriggerServerEvent('qb-diving:server:TakeCoral', CurrentDivingLocation.Area, coral, true)
+end
+
+RegisterNetEvent('qb-diving:client:UpdateCoral')
+AddEventHandler('qb-diving:client:UpdateCoral', function(Area, Coral, Bool)
+    QBDiving.Locations[Area].coords.Coral[Coral].PickedUp = Bool
 end)

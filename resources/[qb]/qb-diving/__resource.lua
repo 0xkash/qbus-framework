@@ -11,4 +11,6 @@ client_scripts {
     'client/main.lua',
     'client/boatshop.lua',
     'client/diving.lua',
+    'client/garage.lua',
+    'client/gui.lua',
 }

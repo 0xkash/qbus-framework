@@ -42,6 +42,7 @@ AddEventHandler('qb-bankrobbery:server:setBankState', function(bankId, state)
 
     if not robberyBusy then
         robberyBusy = true
+        TriggerEvent('qb-scoreboard:server:SetActivityBusy', "bankrobbery", true)
     end
 end)
 
@@ -157,6 +158,8 @@ AddEventHandler('qb-bankrobbery:server:setTimeout', function()
                 end
             end
             timeOut = false
+            robberyBusy = false
+            TriggerEvent('qb-scoreboard:server:SetActivityBusy', "bankrobbery", false)
         end)
     end
 end)

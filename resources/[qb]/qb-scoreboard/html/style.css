@@ -8,7 +8,7 @@
 .scoreboard-block {
     display: none;
     position: absolute;
-    height: 40vh;
+    height: 30vh;
     width: 40vh;
     background: white;
     right: 5vh;
@@ -37,7 +37,7 @@
     position: relative;
     height: 30vh;
     width: 36vh;
-    top: 44%;
+    top: 55%;
     transform: translateY(-50%);
     margin: 0 auto;
 }
@@ -95,7 +95,7 @@
 }
 
 .fa-clock {
-    color: rgb(228, 169, 42);
+    color: rgb(255, 190, 50);
 }
 
 .sb-logo {

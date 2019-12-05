@@ -1,6 +1,25 @@
 QBBoatshop = QBBoatshop or {}
 QBDiving = QBDiving or {}
 
+QBBoatshop.Docks = {
+    [1] = {
+        label = "LSYMC Boothuis",
+        coords = {
+            take = {
+                x = -794.66, 
+                y = -1510.83, 
+                z = 1.59,
+            },
+            put = {
+                x = -793.58, 
+                y = -1501.4, 
+                z = 0.12,
+                h = 111.5,
+            }
+        }
+    }
+}
+
 QBBoatshop.Locations = {
     ["berths"] = {
         [1] = {
@@ -259,5 +278,74 @@ QBDiving.Locations = {
             }
         },
         TotalCoral = 2
+    },
+    [2] = {
+        label = "Ha locatie 2",
+        coords = {
+            Area = {
+                x = -3288.2, 
+                y = -67.58,
+                z = 2.79,
+            },
+            Coral = {
+                [1] = {
+                    coords = {
+                        x = -3275.03, 
+                        y = -38.58, 
+                        z = -19.21,
+                    },
+                    PickedUp = false
+                },
+                [2] = {
+                    coords = {
+                        x = -3273.73, 
+                        y = -76.0, 
+                        z = -26.81,
+                    },
+                    PickedUp = false
+                }
+            }
+        },
+        TotalCoral = 2
+    },
+    [3] = {
+        label = "Heyyy locatie 3",
+        coords = {
+            Area = {
+                x = -3367.24, 
+                y = 1617.89, 
+                z = 1.39,
+            },
+            Coral = {
+                [1] = {
+                    coords = {
+                        x = -3388.01, 
+                        y = 1635.88, 
+                        z = -39.41,
+                    },
+                    PickedUp = false
+                },
+                [2] = {
+                    coords = {
+                        x = -3354.19, 
+                        y = 1549.3, 
+                        z = -38.21,
+                    },
+                    PickedUp = false
+                }
+            }
+        },
+        TotalCoral = 2
+    }
+}
+
+QBDiving.CoralTypes = {
+    [1] = {
+        item = "dendrogyra_coral",
+        maxAmount = 2,
+    },
+    [2] = {
+        item = "antipatharia_coral",
+        maxAmount = 2,
     }
 }

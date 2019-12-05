@@ -22,10 +22,10 @@ var selectedItem = null;
 $(document).on("mouseenter", ".item-slot", function(e){
     e.preventDefault();
     if ($(this).data("item") != null) {
-        $(".ply-iteminfo-container").fadeIn(250);
+        $(".ply-iteminfo-container").fadeIn(150);
         FormatItemInfo($(this).data("item"));
     } else {
-        $(".ply-iteminfo-container").fadeOut(250);
+        $(".ply-iteminfo-container").fadeOut(100);
     }
 });
 
