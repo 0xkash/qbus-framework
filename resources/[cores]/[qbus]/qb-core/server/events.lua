@@ -232,6 +232,7 @@ AddEventHandler('QBCore:ToggleDuty', function()
 		Player.Functions.SetJobDuty(true)
 		TriggerClientEvent('QBCore:Notify', src, "Je bent nu in dienst!")
 	end
+	TriggerClientEvent("QBCore:Client:SetDuty", src, Player.PlayerData.job.onduty)
 end)
 
 Citizen.CreateThread(function()

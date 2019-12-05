@@ -19,7 +19,11 @@ local channels = TokoVoipConfig.channels;
 function addPlayerToRadio(channelId, playerServerId, type)
 	if (not channels[channelId]) then
 		if type == "radio" then
-			channels[channelId] = {id = channelId, name = "Frequentie " .. channelId .. ".00 MHz", subscribers = {}};
+			if SplitStr(channelId, ".")[2] ~= nil and SplitStr(channelId, ".")[2] ~= "" then 
+				channels[channelId] = {id = channelId, name = "Frequentie " .. channelId, subscribers = {}};
+			else
+				channels[channelId] = {id = channelId, name = "Frequentie " .. channelId .. ".00 MHz", subscribers = {}};
+			end
 		else
 			channels[channelId] = {id = channelId, name = "Ingesprek, ID: " .. channelId, subscribers = {}};
 		end
@@ -96,3 +100,14 @@ AddEventHandler('rconCommand', function(commandName, args)
 		CancelEvent();
 	end
 end)
+
+function SplitStr(inputstr, sep)
+	if sep == nil then
+			sep = "%s"
+	end
+	local t={}
+	for str in string.gmatch(inputstr, "([^"..sep.."]+)") do
+			table.insert(t, str)
+	end
+	return t
+end

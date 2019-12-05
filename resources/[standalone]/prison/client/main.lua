@@ -37,6 +37,7 @@ Citizen.CreateThread(function()
 			jailTime = jailTime - 1
 			if jailTime <= 0 then
 				jailTime = 0
+				QBCore.Functions.Notify("Je tijd zit erop! Check jezelf uit bij het bezoekers centrum", "success", 10000)
 			end
 			TriggerServerEvent("prison:server:SetJailStatus", jailTime)
 		else

@@ -52,7 +52,7 @@ Citizen.CreateThread(function()
 						end
 					end
 					
-					if IsControlJustPressed(0, toggle_spotlight)  and GetPedInVehicleSeat(heli, -1) == lPed then
+					if IsControlJustPressed(0, toggle_spotlight) and GetPedInVehicleSeat(heli, -1) == lPed or GetPedInVehicleSeat(heli, 0) == lPed then
 						spotlight_state = not spotlight_state
 						TriggerServerEvent("heli:spotlight", spotlight_state)
 						PlaySoundFrontend(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)
@@ -80,6 +80,11 @@ Citizen.CreateThread(function()
 							if IsControlJustPressed(0, toggle_helicam) then -- Toggle Helicam
 								PlaySoundFrontend(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false)
 								helicam = false
+								isScanned = false
+								scanValue = 0
+								SendNUIMessage({
+									type = "disablescan",
+								})
 								SendNUIMessage({
 									type = "heliclose",
 								})

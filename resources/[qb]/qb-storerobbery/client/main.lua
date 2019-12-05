@@ -26,6 +26,7 @@ local currentSafe = 0
 local copsCalled = false
 local CurrentCops = 0
 local PlayerJob = {}
+local onDuty = false
 
 Citizen.CreateThread(function()
     while true do
@@ -112,6 +113,12 @@ end)
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     PlayerJob = QBCore.Functions.GetPlayerData().job
+    onDuty = QBCore.Functions.GetPlayerData().onduty
+end)
+
+RegisterNetEvent('QBCore:Client:SetDuty')
+AddEventHandler('QBCore:Client:SetDuty', function(duty)
+    onDuty = duty
 end)
 
 RegisterNetEvent('QBCore:Client:OnJobUpdate')
@@ -341,7 +348,7 @@ end)
 
 RegisterNetEvent('qb-storerobbery:client:robberyCall')
 AddEventHandler('qb-storerobbery:client:robberyCall', function(type, key, streetLabel, coords)
-    if PlayerJob.name == "police" and PlayerJob.onduty then 
+    if PlayerJob.name == "police" and onDuty then 
         local cameraId = 4
         if type == "safe" then
             cameraId = Config.Safes[key].camId

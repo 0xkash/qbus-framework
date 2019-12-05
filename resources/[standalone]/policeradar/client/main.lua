@@ -10,6 +10,8 @@ Keys = {
 	["NENTER"] = 201, ["N4"] = 108, ["N5"] = 60, ["N6"] = 107, ["N+"] = 96, ["N-"] = 97, ["N7"] = 117, ["N8"] = 61, ["N9"] = 118
 }
 
+local plateChecked = nil
+
 QBCore = nil
 Citizen.CreateThread(function() 
     while true do
@@ -290,6 +292,24 @@ function ManageVehicleRadar()
 
                             SendNUIMessage( { lockfwdfast = true } )
                         end 
+                        if plateChecked ~= fwdPlate then
+                            QBCore.Functions.TriggerCallback('police:IsPlateFlagged', function(result)
+                                if result then
+                                    PlaySoundFrontend( -1, "Beep_Green", "DLC_HEIST_HACKING_SNAKE_SOUNDS", 1 )
+                                    Citizen.Wait(100)
+                                    PlaySoundFrontend( -1, "Beep_Red", "DLC_HEIST_HACKING_SNAKE_SOUNDS", 1 )
+                                    Citizen.Wait(100)
+                                    PlaySoundFrontend( -1, "Beep_Green", "DLC_HEIST_HACKING_SNAKE_SOUNDS", 1 )
+                                    Citizen.Wait(100)
+                                    PlaySoundFrontend( -1, "Beep_Red", "DLC_HEIST_HACKING_SNAKE_SOUNDS", 1 )
+                                    Citizen.Wait(100)   
+                                    radarInfo.fwdFastSpeed = fwdVehSpeed 
+                                    radarInfo.fwdFastLocked = true 
+                                    SendNUIMessage( { lockfwdfast = true } )
+                                end
+                                plateChecked = fwdPlate
+                            end, fwdPlate)
+                        end
 
                         radarInfo.fwdFast = FormatSpeed( radarInfo.fwdFastSpeed )
 
@@ -328,6 +348,25 @@ function ManageVehicleRadar()
 
                             SendNUIMessage( { lockbwdfast = true } )
                         end 
+                        if plateChecked ~= bwdPlate then
+                            QBCore.Functions.TriggerCallback('police:IsPlateFlagged', function(result)
+                                if result then
+                                    PlaySoundFrontend( -1, "Beep_Green", "DLC_HEIST_HACKING_SNAKE_SOUNDS", 1 )
+                                    Citizen.Wait(100)
+                                    PlaySoundFrontend( -1, "Beep_Red", "DLC_HEIST_HACKING_SNAKE_SOUNDS", 1 )
+                                    Citizen.Wait(100)
+                                    PlaySoundFrontend( -1, "Beep_Green", "DLC_HEIST_HACKING_SNAKE_SOUNDS", 1 )
+                                    Citizen.Wait(100)
+                                    PlaySoundFrontend( -1, "Beep_Red", "DLC_HEIST_HACKING_SNAKE_SOUNDS", 1 )
+                                    Citizen.Wait(100)  
+                                    radarInfo.bwdFastSpeed = bwdVehSpeed 
+                                    radarInfo.bwdFastLocked = true 
+                                    SendNUIMessage( { lockbwdfast = true } )
+                                end
+                                plateChecked = bwdPlate
+                            end, bwdPlate)
+                            
+                        end
 
                         radarInfo.bwdFast = FormatSpeed( radarInfo.bwdFastSpeed )
 
