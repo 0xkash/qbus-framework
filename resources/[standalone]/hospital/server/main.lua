@@ -260,3 +260,33 @@ QBCore.Commands.Add("kill", "Vermoord een speler of jezelf", {{name="id", help="
 		TriggerClientEvent('hospital:client:KillPlayer', source)
 	end
 end, "god")
+
+QBCore.Commands.Add("setambulance", "Geef de ambulance baan aan iemand ", {{name="id", help="Speler ID"}}, true, function(source, args)
+    local Player = QBCore.Functions.GetPlayer(tonumber(args[1]))
+    local Myself = QBCore.Functions.GetPlayer(source)
+    if Player ~= nil then 
+        if ((Myself.PlayerData.job.name == "ambulance" or Myself.PlayerData.job.name == "doctor") and Myself.PlayerData.job.onduty) and IsHighCommand(Myself.PlayerData.citizenid) then
+            Player.Functions.SetJob("ambulance")
+        end
+    end
+end)
+
+QBCore.Commands.Add("setdoctor", "Geef de doctor baan aan iemand ", {{name="id", help="Speler ID"}}, true, function(source, args)
+    local Player = QBCore.Functions.GetPlayer(tonumber(args[1]))
+    local Myself = QBCore.Functions.GetPlayer(source)
+    if Player ~= nil then 
+        if ((Myself.PlayerData.job.name == "ambulance" or Myself.PlayerData.job.name == "doctor") and Myself.PlayerData.job.onduty) and IsHighCommand(Myself.PlayerData.citizenid) then
+            Player.Functions.SetJob("doctor")
+        end
+    end
+end)
+
+function IsHighCommand(citizenid)
+    local retval = false
+    for k, v in pairs(Config.Whitelist) do
+        if v == citizenid then
+            retval = true
+        end
+    end
+    return retval
+end

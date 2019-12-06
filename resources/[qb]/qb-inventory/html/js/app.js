@@ -52,7 +52,7 @@ $(document).on("mouseenter", ".item-slot", function(e){
                         attachmentString += attachment.label + ", "
                     }
                 });
-                $(".item-info-description").html('<p><strong>Serienummer: </strong><span>' + itemData.info.serie + '</span></p><p><strong>Attachments: </strong><span>' + attachmentString + '</span></p><p>' + itemData.description + '</p>');
+                $(".item-info-description").html('<p><strong>Serienummer: </strong><span>' + itemData.info.serie + '</span></p><p><strong>Attachments: </strong><span>' + attachmentString + '</span></p>');
             } else{
                 $(".item-info-description").html('<p><strong>Serienummer: </strong><span>' + itemData.info.serie + '</span></p><p>' + itemData.description + '</p>');
             }
@@ -71,6 +71,9 @@ $(document).on("mouseenter", ".item-slot", function(e){
         } else if (itemData.name == "stickynote") {
             $(".item-info-title").html('<p>'+itemData.label+'</p>')
             $(".item-info-description").html('<p>'+ itemData.info.label + '</p>');
+        } else if (itemData.name == "moneybag") {
+            $(".item-info-title").html('<p>'+itemData.label+'</p>')
+            $(".item-info-description").html('<p><strong>Aantal contant: </strong><span>€' + itemData.info.cash + '</span></p>');
         } else {
             $(".item-info-title").html('<p>'+itemData.label+'</p>')
             $(".item-info-description").html('<p>' + itemData.description + '</p>')

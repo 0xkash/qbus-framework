@@ -32,6 +32,7 @@ end)
 RegisterNetEvent('QBCore:Client:OnJobUpdate')
 AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
     PlayerJob = JobInfo
+    onDuty = PlayerJob.onduty
 end)
 
 RegisterNetEvent('police:SetCopCount')
@@ -42,7 +43,13 @@ end)
 RegisterNetEvent("QBCore:Client:OnPlayerLoaded")
 AddEventHandler("QBCore:Client:OnPlayerLoaded", function()
     PlayerJob = QBCore.Functions.GetPlayerData().job
+    onDuty = QBCore.Functions.GetPlayerData().onduty
     ResetBankDoors()
+end)
+
+RegisterNetEvent('QBCore:Client:SetDuty')
+AddEventHandler('QBCore:Client:SetDuty', function(duty)
+    onDuty = duty
 end)
 
 Citizen.CreateThread(function()
@@ -406,7 +413,7 @@ end)
 
 RegisterNetEvent('qb-bankrobbery:client:robberyCall')
 AddEventHandler('qb-bankrobbery:client:robberyCall', function(type, key, streetLabel, coords)
-    if PlayerJob.name == "police" and PlayerJob.onduty then 
+    if PlayerJob.name == "police" and onDuty then 
         local cameraId = 4
         local bank = "Fleeca"
         if type == "small" then

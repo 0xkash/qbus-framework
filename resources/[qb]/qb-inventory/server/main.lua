@@ -55,11 +55,17 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 	if name ~= nil and id ~= nil then
 		local secondInv = {}
 		if name == "stash" then
+			local maxweight = 1000000
+			local slots = 50
+			if other ~= nil then 
+				maxweight = other.maxweight ~= nil and other.maxweight or 1000000
+				slots = other.slots ~= nil and other.slots or 50
+			end
 			secondInv.name = "stash-"..id
 			secondInv.label = "Stash-"..id
-			secondInv.maxweight = 1000000
+			secondInv.maxweight = maxweight
 			secondInv.inventory = {}
-			secondInv.slots = 100
+			secondInv.slots = slots
 			if Stashes[id] ~= nil and Stashes[id].isOpen then
 				secondInv.name = "none-inv"
 				secondInv.label = "Stash-None"
@@ -85,7 +91,7 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 			secondInv.maxweight = other.maxweight ~= nil and other.maxweight or 60000
 			secondInv.inventory = {}
 			secondInv.slots = other.slots ~= nil and other.slots or 50
-			if Trunks[id] ~= nil and Trunks[id].isOpen then
+			if (Trunks[id] ~= nil and Trunks[id].isOpen) or (QBCore.Shared.SplitStr(id, "PLZI")[2] ~= nil or QBCore.Shared.SplitStr(id, "PLZI")[2] ~= "") and Player.PlayerData.job.name ~= "police" then
 				secondInv.name = "none-inv"
 				secondInv.label = "Trunk-None"
 				secondInv.maxweight = other.maxweight ~= nil and other.maxweight or 60000
@@ -1074,6 +1080,9 @@ QBCore.Commands.Add("giveitem", "Geef een item aan een speler", {{name="id", hel
 					info.birthdate = Player.PlayerData.charinfo.birthdate
 					info.gender = Player.PlayerData.charinfo.gender
 					info.nationality = Player.PlayerData.charinfo.nationality
+				elseif itemData["type"] == "weapon" then
+					amount = 1
+					info.serie = tostring(Config.RandomInt(2) .. Config.RandomStr(3) .. Config.RandomInt(1) .. Config.RandomStr(2) .. Config.RandomInt(3) .. Config.RandomStr(4))
 				end
 
 				if Player.Functions.AddItem(itemData["name"], amount, false, info) then

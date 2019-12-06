@@ -3,6 +3,734 @@
 <CVehicleModelInfoVariation>
   <variationData>
   <Item>
+			<modelName>deliveryt1</modelName>
+			<colors>
+			<Item>
+				<indices content="char_array">
+					134
+					134
+					156
+					156
+				</indices>
+				<liveries>
+					<Item value="true" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+				</liveries>
+			</Item>
+			<Item>
+				<indices content="char_array">
+					134
+					134
+					156
+					156
+				</indices>
+				<liveries>
+					<Item value="false" />
+					<Item value="true" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+				</liveries>
+			</Item>
+			<Item>
+				<indices content="char_array">
+					134
+					134
+					156
+					156
+				</indices>
+				<liveries>
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="true" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+				</liveries>
+			</Item>
+			<Item>
+				<indices content="char_array">
+					134
+					134
+					156
+					156
+				</indices>
+				<liveries>
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="true" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+				</liveries>
+			</Item>
+			<Item>
+				<indices content="char_array">
+					134
+					134
+					156
+					156
+				</indices>
+				<liveries>
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="true" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+				</liveries>
+			</Item>
+			</colors>
+			<kits>
+				<Item>157_massacaro2_modkit</Item>
+			</kits>
+			<windowsWithExposedEdges />
+			<plateProbabilities>
+				<Probabilities />
+			</plateProbabilities>
+			<lightSettings value="1" />
+			<sirenSettings value="1" />
+		</Item>
+			<Item>
+			<modelName>deliveryt2</modelName>
+			<colors>
+			<Item>
+				<indices content="char_array">
+					134
+					134
+					156
+					156
+				</indices>
+				<liveries>
+					<Item value="true" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+				</liveries>
+			</Item>
+			<Item>
+				<indices content="char_array">
+					134
+					134
+					156
+					156
+				</indices>
+				<liveries>
+					<Item value="false" />
+					<Item value="true" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+				</liveries>
+			</Item>
+			<Item>
+				<indices content="char_array">
+					134
+					134
+					156
+					156
+				</indices>
+				<liveries>
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="true" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+				</liveries>
+			</Item>
+			<Item>
+				<indices content="char_array">
+					134
+					134
+					156
+					156
+				</indices>
+				<liveries>
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="true" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+				</liveries>
+			</Item>
+			<Item>
+				<indices content="char_array">
+					134
+					134
+					156
+					156
+				</indices>
+				<liveries>
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="true" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+				</liveries>
+			</Item>
+			</colors>
+			<kits>
+				<Item>157_massacaro2_modkit</Item>
+			</kits>
+			<windowsWithExposedEdges />
+			<plateProbabilities>
+				<Probabilities />
+			</plateProbabilities>
+			<lightSettings value="1" />
+			<sirenSettings value="1" />
+		</Item>
+			<Item>
+			<modelName>deliveryt3</modelName>
+			<colors>
+			<Item>
+				<indices content="char_array">
+					134
+					134
+					156
+					156
+				</indices>
+				<liveries>
+					<Item value="true" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+				</liveries>
+			</Item>
+			<Item>
+				<indices content="char_array">
+					134
+					134
+					156
+					156
+				</indices>
+				<liveries>
+					<Item value="false" />
+					<Item value="true" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+				</liveries>
+			</Item>
+			<Item>
+				<indices content="char_array">
+					134
+					134
+					156
+					156
+				</indices>
+				<liveries>
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="true" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+				</liveries>
+			</Item>
+			<Item>
+				<indices content="char_array">
+					134
+					134
+					156
+					156
+				</indices>
+				<liveries>
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="true" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+				</liveries>
+			</Item>
+			<Item>
+				<indices content="char_array">
+					134
+					134
+					156
+					156
+				</indices>
+				<liveries>
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="true" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+				</liveries>
+			</Item>
+			</colors>
+			<kits>
+				<Item>157_massacaro2_modkit</Item>
+			</kits>
+			<windowsWithExposedEdges />
+			<plateProbabilities>
+				<Probabilities />
+			</plateProbabilities>
+			<lightSettings value="1" />
+			<sirenSettings value="1" />
+		</Item>
+			<Item>
+			<modelName>deliveryt4</modelName>
+			<colors>
+			<Item>
+				<indices content="char_array">
+					134
+					134
+					156
+					156
+				</indices>
+				<liveries>
+					<Item value="true" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+				</liveries>
+			</Item>
+			<Item>
+				<indices content="char_array">
+					134
+					134
+					156
+					156
+				</indices>
+				<liveries>
+					<Item value="false" />
+					<Item value="true" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+				</liveries>
+			</Item>
+			<Item>
+				<indices content="char_array">
+					134
+					134
+					156
+					156
+				</indices>
+				<liveries>
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="true" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+				</liveries>
+			</Item>
+			<Item>
+				<indices content="char_array">
+					134
+					134
+					156
+					156
+				</indices>
+				<liveries>
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="true" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+				</liveries>
+			</Item>
+			<Item>
+				<indices content="char_array">
+					134
+					134
+					156
+					156
+				</indices>
+				<liveries>
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="true" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+				</liveries>
+			</Item>
+			</colors>
+			<kits>
+				<Item>157_massacaro2_modkit</Item>
+			</kits>
+			<windowsWithExposedEdges />
+			<plateProbabilities>
+				<Probabilities />
+			</plateProbabilities>
+			<lightSettings value="1" />
+			<sirenSettings value="1" />
+		</Item>
+			<Item>
+			<modelName>deliveryt5</modelName>
+			<colors>
+			<Item>
+				<indices content="char_array">
+					134
+					134
+					156
+					156
+				</indices>
+				<liveries>
+					<Item value="true" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+				</liveries>
+			</Item>
+			<Item>
+				<indices content="char_array">
+					134
+					134
+					156
+					156
+				</indices>
+				<liveries>
+					<Item value="false" />
+					<Item value="true" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+				</liveries>
+			</Item>
+			<Item>
+				<indices content="char_array">
+					134
+					134
+					156
+					156
+				</indices>
+				<liveries>
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="true" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+				</liveries>
+			</Item>
+			<Item>
+				<indices content="char_array">
+					134
+					134
+					156
+					156
+				</indices>
+				<liveries>
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="true" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+				</liveries>
+			</Item>
+			<Item>
+				<indices content="char_array">
+					134
+					134
+					156
+					156
+				</indices>
+				<liveries>
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="true" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+				</liveries>
+			</Item>
+			</colors>
+			<kits>
+				<Item>157_massacaro2_modkit</Item>
+			</kits>
+			<windowsWithExposedEdges />
+			<plateProbabilities>
+				<Probabilities />
+			</plateProbabilities>
+			<lightSettings value="1" />
+			<sirenSettings value="1" />
+		</Item>
+			<Item>
+			<modelName>deliverytrailer1</modelName>
+			<colors>
+			<Item>
+				<indices content="char_array">
+					134
+					134
+					156
+					156
+				</indices>
+				<liveries>
+					<Item value="true" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+				</liveries>
+			</Item>
+			<Item>
+				<indices content="char_array">
+					134
+					134
+					156
+					156
+				</indices>
+				<liveries>
+					<Item value="false" />
+					<Item value="true" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+				</liveries>
+			</Item>
+			<Item>
+				<indices content="char_array">
+					134
+					134
+					156
+					156
+				</indices>
+				<liveries>
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="true" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+				</liveries>
+			</Item>
+			<Item>
+				<indices content="char_array">
+					134
+					134
+					156
+					156
+				</indices>
+				<liveries>
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="true" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+				</liveries>
+			</Item>
+			<Item>
+				<indices content="char_array">
+					134
+					134
+					156
+					156
+				</indices>
+				<liveries>
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="true" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+				</liveries>
+			</Item>
+			</colors>
+			<kits>
+				<Item>157_massacaro2_modkit</Item>
+			</kits>
+			<windowsWithExposedEdges />
+			<plateProbabilities>
+				<Probabilities />
+			</plateProbabilities>
+			<lightSettings value="1" />
+			<sirenSettings value="1" />
+		</Item>
+			<Item>
+			<modelName>deliverytrailer2</modelName>
+			<colors>
+			<Item>
+				<indices content="char_array">
+					156
+					156
+					156
+					156
+				</indices>
+				<liveries>
+					<Item value="true" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+				</liveries>
+			</Item>
+			<Item>
+				<indices content="char_array">
+					134
+					134
+					156
+					156
+				</indices>
+				<liveries>
+					<Item value="false" />
+					<Item value="true" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+				</liveries>
+			</Item>
+			<Item>
+				<indices content="char_array">
+					156
+					156
+					156
+					156
+				</indices>
+				<liveries>
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="true" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+				</liveries>
+			</Item>
+			<Item>
+				<indices content="char_array">
+					156
+					156
+					156
+					156
+				</indices>
+				<liveries>
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="true" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+				</liveries>
+			</Item>
+			<Item>
+				<indices content="char_array">
+					156
+					156
+					156
+					156
+				</indices>
+				<liveries>
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="true" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+					<Item value="false" />
+				</liveries>
+			</Item>
+			</colors>
+			<kits>
+				<Item>157_massacaro2_modkit</Item>
+			</kits>
+			<windowsWithExposedEdges />
+			<plateProbabilities>
+				<Probabilities />
+			</plateProbabilities>
+			<lightSettings value="1" />
+			<sirenSettings value="1" />
+		</Item>
+  <Item>
   <modelName>dsimerc</modelName>
   <colors>
     <Item>
@@ -1187,6 +1915,39 @@
 		</Item>
     <Item>
 			<modelName>pzulu</modelName>
+			<colors>
+				<Item>
+					<!-- nobel white -->
+					<indices content="char_array">
+            134
+            134
+            134
+            156
+            7
+            111
+					</indices>
+					<liveries>
+					</liveries>
+				</Item>
+			</colors>
+			<windowsWithExposedEdges />
+			<plateProbabilities>
+				<Probabilities>
+					<Item>
+						<Name>Standard White</Name>
+						<Value value="80"/>
+					</Item>
+					<Item>
+						<Name>White Plate 2</Name>
+						<Value value="20"/>
+					</Item>
+				</Probabilities>
+			</plateProbabilities>
+			<lightSettings value="1" />
+			<sirenSettings value="666" />
+		</Item>
+    <Item>
+			<modelName>pboot</modelName>
 			<colors>
 				<Item>
 					<!-- nobel white -->

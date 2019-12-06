@@ -46,19 +46,34 @@ end)
 RegisterNetEvent('QBCore:Client:OnJobUpdate')
 AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
     PlayerJob = JobInfo
-    --TriggerServerEvent("police:server:UpdateBlips")
+    TriggerServerEvent("police:server:UpdateBlips")
 end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     isLoggedIn = true
-    print('daar')
     PlayerJob = QBCore.Functions.GetPlayerData().job
     onDuty = QBCore.Functions.GetPlayerData().job.onduty
-    --TriggerServerEvent("police:server:UpdateBlips")
-    print('hier')
+    TriggerServerEvent("police:server:UpdateBlips")
     TriggerServerEvent("police:server:UpdateCurrentCops")
-    print('hier123123')
+    TriggerServerEvent("police:server:CheckBills")
+end)
+
+RegisterNetEvent('police:client:sendBillingMail')
+AddEventHandler('police:client:sendBillingMail', function(amount)
+    SetTimeout(math.random(2500, 4000), function()
+        local gender = "meneer"
+        if QBCore.Functions.GetPlayerData().charinfo.gender == 1 then
+            gender = "mevrouw"
+        end
+        local charinfo = QBCore.Functions.GetPlayerData().charinfo
+        TriggerServerEvent('qb-phone:server:sendNewMail', {
+            sender = "Centraal Justitieel Incassobureau",
+            subject = "Automatisch Incasso",
+            message = "Beste " .. gender .. " " .. charinfo.lastname .. ",<br /><br />Het Centraal Justitieel Incassobureau (CJIB) heeft de boetes die u heeft ontvangen van de politie in rekening gebracht.<br />Er is <strong>€"..amount.."</strong> van uw rekening afgetrokken.<br /><br />Met vriendelijke groet,<br />Dhr. I.K. Graai",
+            button = {}
+        })
+    end)
 end)
 
 local tabletProp = nil
@@ -121,24 +136,22 @@ AddEventHandler('QBCore:Client:OnPlayerUnload', function()
 end)
 local DutyBlips = {}
 RegisterNetEvent('police:client:UpdateBlips')
-AddEventHandler('police:client:UpdateBlips', function()
-    if PlayerJob ~= nil and (PlayerJob.name == 'police' or PlayerJob.name == 'ambulance') and PlayerJob.onduty then
+AddEventHandler('police:client:UpdateBlips', function(players)
+    if PlayerJob ~= nil and (PlayerJob.name == 'police' or PlayerJob.name == 'ambulance') and onDuty then
         if DutyBlips ~= nil then 
             for k, v in pairs(DutyBlips) do
                 RemoveBlip(v)
             end
         end
         DutyBlips = {}
-        QBCore.Functions.TriggerCallback('police:GetDutyPlayers', function(players)
-            if players ~= nil then
-                for k, data in pairs(players) do
-                    local id = GetPlayerFromServerId(data.source)
-                    if NetworkIsPlayerActive(id) and GetPlayerPed(id) ~= PlayerPedId() then
-                        CreateDutyBlips(id, data.label, data.job)
-                    end
+        if players ~= nil then
+            for k, data in pairs(players) do
+                local id = GetPlayerFromServerId(data.source)
+                if NetworkIsPlayerActive(id) and GetPlayerPed(id) ~= PlayerPedId() then
+                    CreateDutyBlips(id, data.label, data.job)
                 end
             end
-		end)
+        end
 	end
 end)
 
@@ -180,7 +193,7 @@ end)
 
 RegisterNetEvent('police:client:PoliceEmergencyAlert')
 AddEventHandler('police:client:PoliceEmergencyAlert', function(callsign, streetLabel, coords)
-    if (PlayerJob.name == 'police' or PlayerJob.name == 'ambulance') and PlayerJob.onduty then
+    if (PlayerJob.name == 'police' or PlayerJob.name == 'ambulance') and onDuty then
         PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
         Citizen.Wait(100)
         PlaySoundFrontend( -1, "Beep_Red", "DLC_HEIST_HACKING_SNAKE_SOUNDS", 1 )
@@ -215,7 +228,7 @@ end)
 
 RegisterNetEvent('police:client:GunShotAlert')
 AddEventHandler('police:client:GunShotAlert', function(streetLabel, isAutomatic, fromVehicle, coords, vehicleInfo)
-    if PlayerJob.name == 'police' and PlayerJob.onduty then        
+    if PlayerJob.name == 'police' and onDuty then        
         local msg = ""
         local blipSprite = 313
         local blipText = "Melding: Schoten gelost"
@@ -264,7 +277,7 @@ end)
 
 RegisterNetEvent('police:client:VehicleCall')
 AddEventHandler('police:client:VehicleCall', function(coords, msg)
-    if PlayerJob.name == 'police' and PlayerJob.onduty then
+    if PlayerJob.name == 'police' and onDuty then
         TriggerEvent("chatMessage", "MELDING", "error", msg)
         PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
         local transG = 250
@@ -293,7 +306,7 @@ end)
 
 RegisterNetEvent('police:client:HouseRobberyCall')
 AddEventHandler('police:client:HouseRobberyCall', function(coords, msg)
-    if PlayerJob.name == 'police' and PlayerJob.onduty then
+    if PlayerJob.name == 'police' and onDuty then
         TriggerEvent("chatMessage", "MELDING", "error", msg)
         PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
         local transG = 250
@@ -322,7 +335,7 @@ end)
 
 RegisterNetEvent('112:client:SendPoliceAlert')
 AddEventHandler('112:client:SendPoliceAlert', function(notifyType, msg, type, blipSettings)
-    if PlayerJob.name == 'police' and PlayerJob.onduty then
+    if PlayerJob.name == 'police' and onDuty then
         if notifyType == "flagged" then
             TriggerEvent("chatMessage", "MELDING", "error", msg)
             RadarSound()
@@ -361,7 +374,7 @@ end)
 
 RegisterNetEvent('police:client:PoliceAlertMessage')
 AddEventHandler('police:client:PoliceAlertMessage', function(msg, coords, blipType)
-    if PlayerJob.name == 'police' and PlayerJob.onduty then
+    if PlayerJob.name == 'police' and onDuty then
         PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
         TriggerEvent("chatMessage", "112-MELDING", "error", msg)
         local transG = 100
@@ -390,7 +403,7 @@ RegisterNetEvent('police:server:SendEmergencyMessageCheck')
 AddEventHandler('police:server:SendEmergencyMessageCheck', function(MainPlayer, message, coords)
     local PlayerData = QBCore.Functions.GetPlayerData()
 
-    if ((PlayerData.job.name == "police" or PlayerData.job.name == "ambulance") and PlayerData.job.onduty) then
+    if ((PlayerData.job.name == "police" or PlayerData.job.name == "ambulance") and onDuty) then
         TriggerEvent('chatMessage', "112 MELDING - " .. MainPlayer.PlayerData.charinfo.firstname .. " " .. MainPlayer.PlayerData.charinfo.lastname .. " ("..MainPlayer.PlayerData.source..")", "warning", message)
         TriggerEvent("police:client:EmergencySound")
         local transG = 250
@@ -421,7 +434,7 @@ RegisterNetEvent('police:client:Send112AMessage')
 AddEventHandler('police:client:Send112AMessage', function(message)
     local PlayerData = QBCore.Functions.GetPlayerData()
 
-    if ((PlayerData.job.name == "police" or PlayerData.job.name == "ambulance") and PlayerData.job.onduty) then
+    if ((PlayerData.job.name == "police" or PlayerData.job.name == "ambulance") and onDuty) then
         TriggerEvent('chatMessage', "ANONIEME MELDING", "warning", message)
         TriggerEvent("police:client:EmergencySound")
     end

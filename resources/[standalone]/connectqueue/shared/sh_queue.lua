@@ -100,7 +100,7 @@ function Queue:GetQueueList()
 end
 
 function Queue:GetPriorityList()
-    return _Queue.Priority
+    return Config.Priority
 end
 
 function Queue:GetPlayerList()
@@ -150,12 +150,9 @@ function Queue:IsPriority(ids)
     local prio = false
     local tempPower, tempEnd = Queue:HasTempPriority(ids)
     local prioList = Queue:GetPriorityList()
-
     for _, id in ipairs(ids) do
         id = string_lower(id)
-
         if prioList[id] then prio = prioList[id] break end
-
         if string_sub(id, 1, 5) == "steam" then
             local steamid = Queue:HexIdToSteamId(id)
             if prioList[steamid] then prio = prioList[steamid] break end
@@ -877,12 +874,3 @@ commands.commands = function()
         Queue:DebugPrint(tostring(cmd))
     end
 end
-
-AddEventHandler("rconCommand", function(command, args)
-    if command == "queue" and commands[args[1]] then
-        command = args[1]
-        table_remove(args, 1)
-        commands[command](args)
-        CancelEvent()
-    end
-end)

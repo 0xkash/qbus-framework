@@ -290,7 +290,7 @@ function CheckDamage(ped, bone, weapon, damageDone)
 
         if not BodyParts[Config.Bones[bone]].isDamaged then
             BodyParts[Config.Bones[bone]].isDamaged = true
-            BodyParts[Config.Bones[bone]].severity = 1
+            BodyParts[Config.Bones[bone]].severity = math.random(1, 3)
             table.insert(injured, {
                 part = Config.Bones[bone],
                 label = BodyParts[Config.Bones[bone]].label,

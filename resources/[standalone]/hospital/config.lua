@@ -6,6 +6,7 @@ Config.Locations = {
     ["vehicle"] = { x = 294.578, y = -574.761, z = 43.179, h = 35.792},
     ["vehicledown"] = { x = 364.565, y = -591.97, z = 28.68, h = 336.130},
     ["helicopter"] = {x = 351.58, y = -587.45, z = 74.16, h = 160.5},
+    ["armory"] = {x = 306.26, y = -601.7, z = 43.28, h = 90.654},
     ["roof"] = {x = 338.5, y = -583.85, z = 74.16, h = 245.5},
     ["main"] = {x = 332.28, y = -595.64, z = 43.28, h = 68.5},
     ["beds"] = {
@@ -22,7 +23,26 @@ Config.Vehicles = {
     ["aeklasse"] = "Mercedes-Benz E-Klasse",
 }
 
+Config.Whitelist = {
+    "DVH09193",
+}
+
 Config.Helicopter = "alifeliner"
+
+Config.Items = {
+    label = "Ziekenhuis Kluis",
+    slots = 30,
+    items = {
+        [1] = {
+            name = "radio",
+            price = 0,
+            amount = 50,
+            info = {},
+            type = "item",
+            slot = 1,
+        },
+    }
+}
 
 Config.DeathTime = 300
 Config.CheckTime = 10
@@ -40,7 +60,7 @@ Config.RegenRate = 0.0
     HealthDamage : How Much Damage To Direct HP Must Be Applied Before Checks For Damage Happens
     ArmorDamage : How Much Damage To Armor Must Be Applied Before Checks For Damage Happens | NOTE: This will in turn make stagger effect with armor happen only after that damage occurs
 ]]
-Config.HealthDamage = 5
+Config.HealthDamage = 2
 Config.ArmorDamage = 5
 
 --[[
@@ -49,7 +69,7 @@ Config.ArmorDamage = 5
 ]]
 Config.MaxInjuryChanceMulti = 3
 Config.ForceInjury = 35
-Config.AlwaysBleedChance = 100
+Config.AlwaysBleedChance = 70
 
 --[[
     Message Timer : How long it will take to display limb/bleed message

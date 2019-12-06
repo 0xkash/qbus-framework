@@ -68,7 +68,7 @@ Citizen.CreateThread(function()
 		RemoveVehiclesFromGeneratorsInArea(-458.24 - 300.0, 6019.81 - 300.0, 31.34 - 300.0, -458.24 + 300.0, 6019.81 + 300.0, 31.34 + 300.0); -- politie bureau paleto
 		RemoveVehiclesFromGeneratorsInArea(1854.82 - 300.0, 3679.4 - 300.0, 33.82 - 300.0, 1854.82 + 300.0, 3679.4 + 300.0, 33.82 + 300.0); -- politie bureau sandy
 	
-    	Citizen.Wait(500)
+    	Citizen.Wait(10)
 	end
 end)
 

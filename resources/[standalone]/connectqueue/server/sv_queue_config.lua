@@ -1,12 +1,12 @@
 Config = {}
 
+QBCore = nil
+TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
+
 -- priority list can be any identifier. (hex steamid, steamid32, ip) Integer = power over other people with priority
 -- a lot of the steamid converting websites are broken rn and give you the wrong steamid. I use https://steamid.xyz/ with no problems.
 -- you can also give priority through the API, read the examples/readme.
-Config.Priority = {
-    ["steam:11000011376add8"] = 99,
-    ["steam:110000117fd5be8"] = 99,
-}
+Config.Priority = {}
 
 -- require people to run steam
 Config.RequireSteam = true
@@ -54,3 +54,52 @@ Config.Language = {
     wlonly = "\xE2\x9D\x97[Queue] Je moet een whitelist hebben om de server te joinen..",
     steam = "\xE2\x9D\x97 [Queue] Error: Steam moet aan staan.."
 }
+
+Citizen.CreateThread(function()
+	QBCore.Functions.ExecuteSql("SELECT * FROM `queue`", function(result)
+		if result[1] ~= nil then
+			for k, v in pairs(result) do
+				Config.Priority[v.steam] = tonumber(v.priority)
+			end
+		end
+	end)
+end)
+
+QBCore.Commands.Add("addpriority", "Geef queue prioriteit", {{name="id", help="ID van de speler"}, {name="priority", help="Priority level"}}, true, function(source, args)
+    local Player = QBCore.Functions.GetPlayer(tonumber(args[1]))
+	local level = tonumber(args[2])
+	if Player ~= nil then
+        AddPriority(Player.PlayerData.source, level)
+        TriggerClientEvent('chatMessage', source, "SYSTEM", "normal", "Je hebt " .. GetPlayerName(Player.PlayerData.source) .. " prioriteit gegeven ("..level..")")	
+	else
+		TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Speler is niet online!")	
+	end
+end, "god")
+
+QBCore.Commands.Add("removepriority", "Haal prioriteit weg van iemand", {{name="id", help="ID van de speler"}}, true, function(source, args)
+	local Player = QBCore.Functions.GetPlayer(tonumber(args[1]))
+	if Player ~= nil then
+        RemovePriority(Player.PlayerData.source)
+        TriggerClientEvent('chatMessage', source, "SYSTEM", "normal", "Je hebt prioriteit weggehaald bij " .. GetPlayerName(Player.PlayerData.source))	
+	else
+		TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Speler is niet online!")	
+	end
+end, "god")
+
+function AddPriority(source, level)
+	local Player = QBCore.Functions.GetPlayer(source)
+	if Player ~= nil then 
+		Config.Priority[GetPlayerIdentifiers(source)[1]] = level
+		QBCore.Functions.ExecuteSql("DELETE FROM `queue` WHERE `steam` = '"..GetPlayerIdentifiers(source)[1].."'")
+		QBCore.Functions.ExecuteSql("INSERT INTO `queue` (`name`, `steam`, `license`, `priority`) VALUES ('"..GetPlayerName(source).."', '"..GetPlayerIdentifiers(source)[1].."', '"..GetPlayerIdentifiers(source)[2].."', '"..level.."')")
+		Player.Functions.UpdatePlayerData()
+	end
+end
+
+function RemovePriority(source)
+	local Player = QBCore.Functions.GetPlayer(source)
+	if Player ~= nil then 
+		Config.Priority[GetPlayerIdentifiers(source)[1]] = nil
+		QBCore.Functions.ExecuteSql("DELETE FROM `queue` WHERE `steam` = '"..GetPlayerIdentifiers(source)[1].."'")
+	end
+end

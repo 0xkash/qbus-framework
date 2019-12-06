@@ -27,7 +27,6 @@
 	margin: auto;
 
 	color: white;
-	background: rgba(20, 20, 20, 0.97);
 	background: linear-gradient(to bottom, rgb(50, 50, 50), rgb(25, 25, 25));
 	border-radius: 10px;
 
@@ -160,8 +159,7 @@
 }
 
 #policeradar .container .target {
-	background: rgb(200, 0, 0);
-	background: linear-gradient(to bottom, rgb(220, 0, 40), rgb(90, 0, 0));
+	background: linear-gradient(to bottom, #007be7, #004780);
 }
 
 #policeradar .container .patrol {
@@ -303,7 +301,6 @@
 	margin: auto;
 
 	color: white;
-	background: rgba(20, 20, 20, 0.97);
 	background: linear-gradient(to bottom, rgb(50, 50, 50), rgb(25, 25, 25));
 	border-radius: 10px;
 
@@ -311,7 +308,6 @@
 	grid-column-gap: 10px;
 	grid-row-gap: 10px;
 	grid-template-columns: repeat(2, 2fr);
-	background-color: #2196f3;
 	padding: 2%;
 }
 
@@ -328,7 +324,7 @@
 		"pReader"
 		"label";
 	background-color: #2196f3;
-	background: linear-gradient(to bottom, rgb(220, 0, 40), rgb(90, 0, 0));
+	background: linear-gradient(to bottom, #007be7, #004780);
 }
 
 #platereader .pReader {

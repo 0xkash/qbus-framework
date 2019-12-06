@@ -14,10 +14,24 @@ Citizen.CreateThread(function()
                         if IsControlJustReleased(0, Keys["E"]) then
                             onDuty = not onDuty
                             TriggerServerEvent("QBCore:ToggleDuty")
+                            TriggerServerEvent("police:server:UpdateBlips")
                         end
                     elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["duty"].x, Config.Locations["duty"].y, Config.Locations["duty"].z, true) < 4.5) then
                         QBCore.Functions.DrawText3D(Config.Locations["duty"].x, Config.Locations["duty"].y, Config.Locations["duty"].z, "In/Uit dienst")
                     end  
+                end
+
+                if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["armory"].x, Config.Locations["armory"].y, Config.Locations["armory"].z, true) < 4.5) then
+                    if onDuty then
+                        if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["armory"].x, Config.Locations["armory"].y, Config.Locations["armory"].z, true) < 1.5) then
+                            QBCore.Functions.DrawText3D(Config.Locations["armory"].x, Config.Locations["armory"].y, Config.Locations["armory"].z, "~g~E~w~ - Kluis")
+                            if IsControlJustReleased(0, Keys["E"]) then
+                                TriggerServerEvent("inventory:server:OpenInventory", "shop", "hospital", Config.Items)
+                            end
+                        elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["armory"].x, Config.Locations["armory"].y, Config.Locations["armory"].z, true) < 2.5) then
+                            QBCore.Functions.DrawText3D(Config.Locations["armory"].x, Config.Locations["armory"].y, Config.Locations["armory"].z, "Kluis")
+                        end  
+                    end
                 end
         
                 if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["vehicle"].x, Config.Locations["vehicle"].y, Config.Locations["vehicle"].z, true) < 4.5) then
@@ -154,7 +168,7 @@ end)
 
 RegisterNetEvent('112:client:SendAlert')
 AddEventHandler('112:client:SendAlert', function(msg, blipSettings)
-    if (PlayerJob.name == "police" or PlayerJob.name == "ambulance") and PlayerJob.onduty then
+    if (PlayerJob.name == "police" or PlayerJob.name == "ambulance") and onDuty then
         PlaySound(-1, "Event_Start_Text", "GTAO_FM_Events_Soundset", 0, 0, 1)
         TriggerEvent("chatMessage", "112-MELDING", "error", msg)
     

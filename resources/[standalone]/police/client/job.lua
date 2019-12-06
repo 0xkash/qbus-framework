@@ -28,7 +28,10 @@ Citizen.CreateThread(function()
                         QBCore.Functions.DrawText3D(Config.Locations["evidence"].x, Config.Locations["evidence"].y, Config.Locations["evidence"].z, "~g~E~w~ - Bewijskast")
                         if IsControlJustReleased(0, Keys["E"]) then
                             TriggerEvent("inventory:client:SetCurrentStash", "policeevidence")
-                            TriggerServerEvent("inventory:server:OpenInventory", "stash", "policeevidence")
+                            TriggerServerEvent("inventory:server:OpenInventory", "stash", "policeevidence", {
+                                maxweight = 4000000,
+                                slots = 300,
+                            })
                         end
                     elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["evidence"].x, Config.Locations["evidence"].y, Config.Locations["evidence"].z, true) < 2.5) then
                         QBCore.Functions.DrawText3D(Config.Locations["evidence"].x, Config.Locations["evidence"].y, Config.Locations["evidence"].z, "Bewijskast")

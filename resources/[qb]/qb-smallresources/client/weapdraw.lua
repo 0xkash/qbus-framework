@@ -88,9 +88,8 @@ Citizen.CreateThread(function()
 end)
 
 Citizen.CreateThread(function()
-	currWeapon = GetSelectedPedWeapon(PlayerPedId())
-	local ped = PlayerPedId()
 	while true do
+		local ped = PlayerPedId()
 		if DoesEntityExist(ped) and not IsEntityDead(ped) and not IsPedInAnyVehicle(ped, true) then
 			if currWeapon ~= GetSelectedPedWeapon(PlayerPedId()) then
 				pos = GetEntityCoords(PlayerPedId(), true)

@@ -133,7 +133,7 @@ Config.Radars = {
 Config.CarItems = {
     [1] = {
         name = "armor",
-        amount = 5,
+        amount = 2,
         info = {},
         type = "item",
         slot = 1,
@@ -156,6 +156,7 @@ Config.CarItems = {
 
 Config.Items = {
     label = "Politie Wapenkluis",
+    slots = 30,
     items = {
         [1] = {
             name = "weapon_pistol_mk2",

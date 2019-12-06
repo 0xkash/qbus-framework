@@ -218,9 +218,13 @@ QBCore.Functions.IsPlayerBanned = function (source)
 	local message = ""
 	QBCore.Functions.ExecuteSql("SELECT * FROM `bans` WHERE `steam` = '"..GetPlayerIdentifiers(source)[1].."' OR `license` = '"..GetPlayerIdentifiers(source)[2].."' OR `ip` = '"..GetPlayerIdentifiers(source)[3].."'", function(result)
 		if result[1] ~= nil then 
-			retval = true
-			local timeTable = os.date("*t", tonumber(result[1].expire))
-			message = "Je bent verbannen van de server:\n"..result[1].reason.."\nJe ban verloopt "..timeTable.day.. "/" .. timeTable.month .. "/" .. timeTable.year .. " " .. timeTable.hour.. ":" .. timeTable.min .. "\n"
+			if os.time() < result[1].expire then
+				retval = true
+				local timeTable = os.date("*t", tonumber(result[1].expire))
+				message = "Je bent verbannen van de server:\n"..result[1].reason.."\nJe ban verloopt "..timeTable.day.. "/" .. timeTable.month .. "/" .. timeTable.year .. " " .. timeTable.hour.. ":" .. timeTable.min .. "\n"
+			else
+				QBCore.Functions.ExecuteSql("DELETE FROM `bans` WHERE `id` = "..result[1].id)
+			end
 		end
 	end)
 	return retval, message
