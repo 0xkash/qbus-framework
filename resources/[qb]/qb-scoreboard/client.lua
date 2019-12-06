@@ -15,6 +15,20 @@ end)
 local scoreboardOpen = false
 
 
+DrawText3D = function(x, y, z, text)
+	SetTextScale(0.35, 0.35)
+    SetTextFont(4)
+    SetTextProportional(1)
+    SetTextColour(255, 255, 255, 215)
+    SetTextEntry("STRING")
+    SetTextCentre(true)
+    AddTextComponentString(text)
+    SetDrawOrigin(x,y,z, 0)
+    DrawText(0.0, 0.0)
+    local factor = (string.len(text)) / 370
+    DrawRect(0.0, 0.0+0.0125, 0.017+ factor, 0.03, 0, 0, 0, 75)
+    ClearDrawOrigin()
+end
 
 Citizen.CreateThread(function()
     while true do
@@ -38,6 +52,18 @@ Citizen.CreateThread(function()
                     action = "close",
                 })
                 scoreboardOpen = false
+            end
+        end
+
+        if scoreboardOpen then
+            local player, distance = QBAdmin.Functions.GetClosestPlayer()
+            if player ~= -1 and distance < 2.5 then
+                local PlayerId = GetPlayerServerId(player)
+                local PlayerPed = GetPlayerPed(player)
+                local PlayerName = GetPlayerName(player)
+                local PlayerCoords = GetEntityCoords(PlayerPed)
+
+                DrawText3D(PlayerCoords.x, PlayerCoords.y, PlayerCoords.z + 1.0, '['..PlayerId..']')
             end
         end
 

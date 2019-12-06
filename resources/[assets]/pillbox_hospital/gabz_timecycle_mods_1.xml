@@ -1,5 +1,5 @@
 <timecycle_modifier_data version="1.000000">
-  <modifier name="GabzPillbox" numMods="1" userFlags="0">
+  <modifier name="GabzPillbox" numMods="24" userFlags="0">
     <light_directional_amb_col_r>0.000 1.000</light_directional_amb_col_r>
     <light_directional_amb_col_g>0.000 1.000</light_directional_amb_col_g>
     <light_directional_amb_col_b>0.000 1.000</light_directional_amb_col_b>
