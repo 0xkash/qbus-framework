@@ -180,8 +180,9 @@ function RobVehicle(target)
 end
 
 function LockVehicle()
-    local veh = QBCore.Functions.GetClosestVehicle()
+    -- local veh = QBCore.Functions.GetClosestVehicle()
     local pos = GetEntityCoords(GetPlayerPed(-1), true)
+    local veh = GetClosestVehicle(pos.x, pos.y, pos.z, 5.0, 0, 70)
     local vehpos = GetEntityCoords(veh, false)
     if veh ~= nil and GetDistanceBetweenCoords(pos.x, pos.y, pos.z, vehpos.x, vehpos.y, vehpos.z, true) < 7.5 then
         QBCore.Functions.TriggerCallback('vehiclekeys:CheckHasKey', function(result)
