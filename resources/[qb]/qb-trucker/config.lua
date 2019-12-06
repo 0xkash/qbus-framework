@@ -109,5 +109,5 @@ Config.Locations = {
 }
 
 Config.Vehicles = {
-    ["pounder"] = "Vrachtwagen",
+    ["deliveryt1"] = "Dumbo Delivery",
 }

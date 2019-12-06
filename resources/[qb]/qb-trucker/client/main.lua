@@ -138,63 +138,74 @@ Citizen.CreateThread(function()
                             if not hasBox then
                                 local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1), true)
                                 if isTruckerVehicle(vehicle) and CurrentPlate == GetVehicleNumberPlateText(vehicle) then
-                                    local trunkpos = GetOffsetFromEntityInWorldCoords(vehicle, 0, -8.5, 0)
-                                    DrawText3D(trunkpos.x, trunkpos.y, trunkpos.z, "Producten pakken")
+                                    local trunkpos = GetOffsetFromEntityInWorldCoords(vehicle, 0, -2.5, 0)
                                     if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, trunkpos.x, trunkpos.y, trunkpos.z, true) < 1.5 and not isWorking then
+                                        DrawText3D(trunkpos.x, trunkpos.y, trunkpos.z, "~g~E~w~ - Producten pakken")
+                                        if IsControlJustReleased(0, Keys["E"]) then
+                                            isWorking = true
+                                            QBCore.Functions.Progressbar("work_carrybox", "Doos producten pakken..", 2000, false, true, {
+                                                disableMovement = true,
+                                                disableCarMovement = true,
+                                                disableMouse = false,
+                                                disableCombat = true,
+                                            }, {
+                                                animDict = "anim@gangops@facility@servers@",
+                                                anim = "hotwire",
+                                                flags = 16,
+                                            }, {}, {}, function() -- Done
+                                                isWorking = false
+                                                StopAnimTask(GetPlayerPed(-1), "anim@gangops@facility@servers@", "hotwire", 1.0)
+                                                TriggerEvent('animations:client:EmoteCommandStart', {"box"})
+                                                hasBox = true
+                                            end, function() -- Cancel
+                                                isWorking = false
+                                                StopAnimTask(GetPlayerPed(-1), "anim@gangops@facility@servers@", "hotwire", 1.0)
+                                                QBCore.Functions.Notify("Geannuleerd..", "error")
+                                            end)
+                                        end
+                                    else
+                                        DrawText3D(trunkpos.x, trunkpos.y, trunkpos.z, "Producten pakken")
+                                    end
+                                end
+                            elseif hasBox then
+                                if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, CurrentLocation.x, CurrentLocation.y, CurrentLocation.z, true) < 1.5 and not isWorking then
+                                    DrawText3D(CurrentLocation.x, CurrentLocation.y, CurrentLocation.z, "~g~E~w~ - Producten afleveren")
+                                    if IsControlJustReleased(0, Keys["E"]) then
                                         isWorking = true
-                                        QBCore.Functions.Progressbar("work_carrybox", "Doos producten pakken..", 2000, false, true, {
+                                        TriggerEvent('animations:client:EmoteCommandStart', {"c"})
+                                        Citizen.Wait(500)
+                                        TriggerEvent('animations:client:EmoteCommandStart', {"bumbin"})
+                                        QBCore.Functions.Progressbar("work_dropbox", "Doos producten afleveren..", 2000, false, true, {
                                             disableMovement = true,
                                             disableCarMovement = true,
                                             disableMouse = false,
                                             disableCombat = true,
-                                        }, {
-                                            animDict = "anim@gangops@facility@servers@",
-                                            anim = "hotwire",
-                                            flags = 16,
-                                        }, {}, {}, function() -- Done
+                                        }, {}, {}, {}, function() -- Done
                                             isWorking = false
-                                            StopAnimTask(GetPlayerPed(-1), "anim@gangops@facility@servers@", "hotwire", 1.0)
-                                            TriggerEvent('animations:client:EmoteCommandStart', {"box"})
-                                            hasBox = true
+                                            ClearPedTasks(GetPlayerPed(-1))
+                                            hasBox = false
+                                            currentCount = currentCount + 1
+                                            if currentCount == CurrentLocation.dropcount then
+                                                table.insert(LocationsDone, CurrentLocation.id)
+                                                TriggerServerEvent("qb-shops:server:RestockShopItems", CurrentLocation.store)
+                                                QBCore.Functions.Notify("Je hebt alle producten afgeleverd, op naar het volgende punt")
+                                                if DoesBlipExist(CurrentBlip) then
+                                                    RemoveBlip(CurrentBlip)
+                                                    CurrentBlip = nil
+                                                end
+                                                CurrentLocation = nil
+                                                currentCount = 0
+                                                JobsDone = JobsDone + 1
+                                                getNewLocation()
+                                            end
                                         end, function() -- Cancel
                                             isWorking = false
-                                            StopAnimTask(GetPlayerPed(-1), "anim@gangops@facility@servers@", "hotwire", 1.0)
+                                            ClearPedTasks(GetPlayerPed(-1))
                                             QBCore.Functions.Notify("Geannuleerd..", "error")
                                         end)
                                     end
-                                end
-                            elseif hasBox then
-                                DrawText3D(CurrentLocation.x, CurrentLocation.y, CurrentLocation.z, "Producten afleveren")
-                                if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, CurrentLocation.x, CurrentLocation.y, CurrentLocation.z, true) < 1.5 and not isWorking then
-                                    isWorking = true
-                                    TriggerEvent('animations:client:EmoteCommandStart', {"c"})
-                                    Citizen.Wait(500)
-                                    TriggerEvent('animations:client:EmoteCommandStart', {"bumbin"})
-                                    QBCore.Functions.Progressbar("work_dropbox", "Doos producten afleveren..", 2000, false, true, {
-                                        disableMovement = true,
-                                        disableCarMovement = true,
-                                        disableMouse = false,
-                                        disableCombat = true,
-                                    }, {}, {}, {}, function() -- Done
-                                        isWorking = false
-                                        ClearPedTasks(GetPlayerPed(-1))
-                                        hasBox = false
-                                        currentCount = currentCount + 1
-                                        if currentCount == CurrentLocation.dropcount then
-                                            table.insert(LocationsDone, CurrentLocation.id)
-                                            TriggerServerEvent("qb-shops:server:RestockShopItems", CurrentLocation.store)
-                                            QBCore.Functions.Notify("Je hebt alle producten afgeleverd, op naar het volgende punt")
-                                            CurrentLocation = nil
-                                            currentCount = 0
-                                            JobsDone = JobsDone + 1
-                                            RemoveBlip(CurrentBlip)
-                                            getNewLocation()
-                                        end
-                                    end, function() -- Cancel
-                                        isWorking = false
-                                        ClearPedTasks(GetPlayerPed(-1))
-                                        QBCore.Functions.Notify("Geannuleerd..", "error")
-                                    end)
+                                else
+                                    DrawText3D(CurrentLocation.x, CurrentLocation.y, CurrentLocation.z, "Producten afleveren")
                                 end
                             end
                         end

@@ -31,6 +31,23 @@ AddEventHandler('hospital:server:SendToBed', function(data)
 	TriggerClientEvent('QBCore:Notify', src, "Alle bedden zijn bezet!", "error")
 end)
 
+RegisterServerEvent('hospital:server:RespawnAtHospital')
+AddEventHandler('hospital:server:RespawnAtHospital', function()
+	local src = source
+	local Player = QBCore.Functions.GetPlayer(src)
+	for k, v in pairs(Config.Locations["beds"]) do
+		if not v.taken then
+			v.taken = true
+			bedsTaken[source] = k
+			TriggerClientEvent('hospital:client:SendToBed', src, k, v, true)
+			Player.Functions.RemoveMoney("bank", Config.BillCost)
+			TriggerClientEvent('hospital:client:SendBillEmail', src, Config.BillCost)
+			return
+		end
+	end
+	TriggerClientEvent('QBCore:Notify', src, "Actie niet mogelijk..", "error")
+end)
+
 RegisterServerEvent('hospital:server:LeaveBed')
 AddEventHandler('hospital:server:LeaveBed', function(id)
     Config.Locations["beds"][id].taken = false

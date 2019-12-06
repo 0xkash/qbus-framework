@@ -70,10 +70,8 @@ Citizen.CreateThread(function()
 			if doorID.distance then
 				maxDistance = doorID.distance
 			end
-
 			if distance < 50 then
 				awayFromDoors = false
-
 				if doorID.doors then
 					for _,v in ipairs(doorID.doors) do
 						FreezeEntityPosition(v.object, doorID.locked)
