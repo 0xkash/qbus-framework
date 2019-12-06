@@ -213,7 +213,7 @@ Citizen.CreateThread(function()
                             disableCombat = true,
                         }, {}, {}, {}, function() -- Done
                             TriggerEvent('animations:client:EmoteCommandStart', {"c"})
-                            TriggerEvent("hospital:client:RespawnAtHospital")
+                            TriggerServerEvent("hospital:server:SendToBed")
                         end, function() -- Cancel
                             TriggerEvent('animations:client:EmoteCommandStart', {"c"})
                             QBCore.Functions.Notify("Niet ingecheckt!", "error")
@@ -359,7 +359,24 @@ end)
 
 RegisterNetEvent('hospital:client:RespawnAtHospital')
 AddEventHandler('hospital:client:RespawnAtHospital', function()
-    TriggerServerEvent("hospital:server:SendToBed")
+    TriggerServerEvent("hospital:server:RespawnAtHospital")
+end)
+
+RegisterNetEvent('hospital:client:SendBillEmail')
+AddEventHandler('hospital:client:SendBillEmail', function(amount)
+    SetTimeout(math.random(2500, 4000), function()
+        local gender = "meneer"
+        if QBCore.Functions.GetPlayerData().charinfo.gender == 1 then
+            gender = "mevrouw"
+        end
+        local charinfo = QBCore.Functions.GetPlayerData().charinfo
+        TriggerServerEvent('qb-phone:server:sendNewMail', {
+            sender = "Pillbox",
+            subject = "Ziekenhuis Kosten",
+            message = "Beste " .. gender .. " " .. charinfo.lastname .. ",<br /><br />Hierbij ontvangt u een e-mail met de kosten van het laatste ziekenhuis bezoek.<br />De uiteindelijke kosten zijn geworden: <strong>€"..amount.."</strong><br /><br />Nog veel beterschap gewenst!",
+            button = {}
+        })
+    end)
 end)
 
 RegisterNetEvent('QBCore:Client:OnJobUpdate')

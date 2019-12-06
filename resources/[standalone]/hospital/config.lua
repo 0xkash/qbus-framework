@@ -44,7 +44,8 @@ Config.Items = {
     }
 }
 
-Config.DeathTime = 300
+Config.BillCost = 2000
+Config.DeathTime = 10
 Config.CheckTime = 10
 
 --[[
