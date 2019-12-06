@@ -4915,17 +4915,17 @@ QBShared.Jobs = {
 	},
 	["police"] = {
 		label = "Politie",
-		payment = 100,
+		payment = 200,
 		defaultDuty = true,
 	},
 	["doctor"] = {
 		label = "Dokter",
-		payment = 150,
+		payment = 250,
 		defaultDuty = true,
 	},
 	["ambulance"] = {
 		label = "Ambulance",
-		payment = 150,
+		payment = 250,
 		defaultDuty = true,
 	},
 	["trucker"] = {

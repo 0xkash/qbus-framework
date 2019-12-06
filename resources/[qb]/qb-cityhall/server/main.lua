@@ -2,7 +2,7 @@ QBCore = nil
 TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 
 local DrivingSchools = {
-    "DVH09193",
+    "PAE31194",
 }
 
 RegisterServerEvent('qb-cityhall:server:requestId')

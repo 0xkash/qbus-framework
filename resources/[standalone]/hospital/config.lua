@@ -24,7 +24,7 @@ Config.Vehicles = {
 }
 
 Config.Whitelist = {
-    "DVH09193",
+    "GAA35566",
 }
 
 Config.Helicopter = "alifeliner"
