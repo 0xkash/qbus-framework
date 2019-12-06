@@ -38,6 +38,21 @@ Citizen.CreateThread(function()
                     end
                 end
 
+                if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["trash"].x, Config.Locations["trash"].y, Config.Locations["trash"].z, true) < 5) then
+                    if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["trash"].x, Config.Locations["trash"].y, Config.Locations["trash"].z, true) < 1.5) then
+                        QBCore.Functions.DrawText3D(Config.Locations["trash"].x, Config.Locations["trash"].y, Config.Locations["trash"].z, "~g~E~w~ - Prullenbak")
+                        if IsControlJustReleased(0, Keys["E"]) then
+                            TriggerEvent("inventory:client:SetCurrentStash", "policetrash")
+                            TriggerServerEvent("inventory:server:OpenInventory", "stash", "policetrash", {
+                                maxweight = 4000000,
+                                slots = 300,
+                            })
+                        end
+                    elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["trash"].x, Config.Locations["trash"].y, Config.Locations["trash"].z, true) < 2.5) then
+                        QBCore.Functions.DrawText3D(Config.Locations["trash"].x, Config.Locations["trash"].y, Config.Locations["trash"].z, "Prullenbak")
+                    end
+                end
+
                 if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["vehicle"].x, Config.Locations["vehicle"].y, Config.Locations["vehicle"].z, true) < 7.5) then
                     if onDuty then
                         DrawMarker(2, Config.Locations["vehicle"].x, Config.Locations["vehicle"].y, Config.Locations["vehicle"].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
