@@ -92,3 +92,9 @@ Config.PhoneApps = {
         slot = 16,
     },
 }
+
+Config.PhoneCells = {
+    "prop_phonebox_04",
+    "prop_phonebox_03",
+    "prop_phonebox_02",
+}
