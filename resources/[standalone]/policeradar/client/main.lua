@@ -109,7 +109,7 @@ AddEventHandler('wk:toggleRadar', function()
     QBCore.Functions.GetPlayerData(function(PlayerData)
         if PlayerData.job.name == "police" then
             local ped = GetPlayerPed( -1 )
-            if ( IsPedSittingInAnyVehicle( ped ) ) then 
+            if (IsPedInAnyVehicle( ped ) ) then 
                 local vehicle = GetVehiclePedIsIn( ped, false )
     
                 if (IsPoliceVehicle(vehicle)) then
@@ -249,7 +249,7 @@ function ManageVehicleRadar()
         if ( IsPedSittingInAnyVehicle( ped ) ) then 
             local vehicle = GetVehiclePedIsIn( ped, false )
 
-            if ( GetPedInVehicleSeat( vehicle, -1 ) == ped and GetVehicleClass( vehicle ) == 18 ) then 
+            if (IsPoliceVehicle( vehicle )) then 
                 -- Patrol speed 
                 local vehicleSpeed = round( GetVehSpeed( vehicle ), 0 )
 
