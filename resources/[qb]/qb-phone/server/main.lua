@@ -498,7 +498,7 @@ QBCore.Functions.CreateCallback('qb-phone:server:getPlayerMessages', function(so
 end)
 
 RegisterServerEvent('qb-phone:server:CallContact')
-AddEventHandler('qb-phone:server:CallContact', function(callData, caller)
+AddEventHandler('qb-phone:server:CallContact', function(callData, caller, anonymous)
     local src = source
     local ply = QBCore.Functions.GetPlayer(src)
 
@@ -508,7 +508,11 @@ AddEventHandler('qb-phone:server:CallContact', function(callData, caller)
             local targetPlayer = QBCore.Functions.GetPlayerByCitizenId(target.citizenid)
 
             if targetPlayer ~= nil then
-                TriggerClientEvent('qb-phone:client:IncomingCall', targetPlayer.PlayerData.source, callData, caller)
+                if anonymous then
+                    TriggerClientEvent('qb-phone:client:IncomingCall', targetPlayer.PlayerData.source, callData, "Anoniem")
+                else
+                    TriggerClientEvent('qb-phone:client:IncomingCall', targetPlayer.PlayerData.source, callData, caller)
+                end
             end
         end
     end)
@@ -530,6 +534,7 @@ QBCore.Commands.Add("opnemen", "Inkomend oproep beantwoorden", {}, false, functi
     local Player = QBCore.Functions.GetPlayer(source)
 	TriggerClientEvent('qb-phone:client:AnswerCall', source)
 end)
+
 
 RegisterServerEvent('qb-phone:server:AnswerCall')
 AddEventHandler('qb-phone:server:AnswerCall', function(callData)
@@ -584,9 +589,30 @@ QBCore.Commands.Add("ophangen", "Oproep beeindigen", {}, false, function(source,
 	TriggerClientEvent('qb-phone:client:HangupCall', source)
 end)
 
-QBCore.Commands.Add("bel", "Oproep beeindigen", {}, true, function(source, args)
+QBCore.Commands.Add("bel", "Oproep starten", {}, true, function(source, args)
     local Player = QBCore.Functions.GetPlayer(source)
     if args[1] ~= nil then
         TriggerClientEvent('qb-phone:client:CallNumber', source, args[1])
+    end
+end)
+
+QBCore.Commands.Add("payphone", "Oproep starten", {}, true, function(source, args)
+    local Player = QBCore.Functions.GetPlayer(source)
+    if args[1] ~= nil then
+        TriggerClientEvent('qb-phone:client:CallPayPhone', source, args[1])
+    end
+end)
+
+RegisterServerEvent('qb-phone:server:PayPayPhone')
+AddEventHandler('qb-phone:server:PayPayPhone', function(amount, number)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+
+    if Player ~= nil then
+        if Player.Functions.RemoveMoney('cash', amount) then
+            TriggerClientEvent('qb-phone:client:CallPayPhoneYes', src, number)
+        else
+            TriggerClientEvent('QBCore:Notify', src, 'Je hebt niet voldoende cash op zak..', 'error')
+        end
     end
 end)

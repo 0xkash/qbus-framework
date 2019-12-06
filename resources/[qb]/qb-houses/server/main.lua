@@ -328,11 +328,20 @@ AddEventHandler('qb-houses:server:giveHouseKey', function(target, house)
 	local src = source
 	local tPlayer = QBCore.Functions.GetPlayer(target)
 
-	table.insert(housekeyholders[house], tPlayer.PlayerData.citizenid)
-	Wait(250)
-	QBCore.Functions.ExecuteSql("UPDATE `player_houses` SET `keyholders` = '"..json.encode(housekeyholders[house]).."' WHERE `house` = '"..house.."'")
-	TriggerClientEvent('qb-houses:client:refreshHouse', tPlayer.PlayerData.source)
-	TriggerClientEvent('QBCore:Notify', tPlayer.PlayerData.source, 'Je hebt de sleuteltjes van '..Config.Houses[house].adress..' ontvagen', 'success', 2500)
+	if tPlayer ~= nil then
+		if housekeyholders[house] ~= nil then
+			if typeof(housekeyholders[house]) ~= "table" then
+				housekeyholders[house] = json.decode(housekeyholders[house])
+			end
+			table.insert(housekeyholders[house], tPlayer.PlayerData.citizenid)
+			Wait(250)
+			QBCore.Functions.ExecuteSql("UPDATE `player_houses` SET `keyholders` = '"..json.encode(housekeyholders[house]).."' WHERE `house` = '"..house.."'")
+			TriggerClientEvent('qb-houses:client:refreshHouse', tPlayer.PlayerData.source)
+			TriggerClientEvent('QBCore:Notify', tPlayer.PlayerData.source, 'Je hebt de sleuteltjes van '..Config.Houses[house].adress..' ontvagen', 'success', 2500)
+		end
+	else
+		TriggerClientEvent('QBCore:Notify', src, 'Er is iets mis gegaan.. Probeer het opnieuw!', 'error', 2500)
+	end
 end)
 
 RegisterServerEvent('qb-houses:server:setLocation')

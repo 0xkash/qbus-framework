@@ -108,6 +108,37 @@ QBCore.Commands.Add("reporttoggle", "Toggle inkomende reports uit of aan", {}, f
     end
 end, "admin")
 
+RegisterCommand("kickall", function(source, args, rawCommand)
+    local src = source
+    
+    if src > 0 then
+        local reason = table.concat(args, ' ')
+        local Player = QBCore.Functions.GetPlayer(src)
+
+        if QBCore.Functions.HasPermission(src, "god") then
+            if args[1] ~= nil then
+                for k, v in pairs(QBCore.Functions.GetPlayers()) do
+                    local Player = QBCore.Functions.GetPlayer(v)
+                    if Player ~= nil then 
+                        DropPlayer(Player.PlayerData.source, reason)
+                    end
+                end
+            else
+                TriggerClientEvent('chatMessage', src, 'SYSTEM', 'error', 'Geef een reden op..')
+            end
+        else
+            TriggerClientEvent('chatMessage', src, 'SYSTEM', 'error', 'Dit kan jij niet zomaar doen kindje..')
+        end
+    else
+        for k, v in pairs(QBCore.Functions.GetPlayers()) do
+            local Player = QBCore.Functions.GetPlayer(v)
+            if Player ~= nil then 
+                DropPlayer(Player.PlayerData.source, "Server restart, kijk op discord voor meer informatie! (discord.gg/KeHgZcZ)")
+            end
+        end
+    end
+end, false)
+
 RegisterServerEvent('qb-admin:server:bringTp')
 AddEventHandler('qb-admin:server:bringTp', function(targetId, coords)
     TriggerClientEvent('qb-admin:client:bringTp', targetId, coords)

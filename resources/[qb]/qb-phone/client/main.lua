@@ -70,6 +70,139 @@ AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
     PlayerJob = JobInfo
 end)
 
+local inPayPhoneRange = false
+
+function DrawText3D(x, y, z, text)
+	SetTextScale(0.35, 0.35)
+    SetTextFont(4)
+    SetTextProportional(1)
+    SetTextColour(255, 255, 255, 215)
+    SetTextEntry("STRING")
+    SetTextCentre(true)
+    AddTextComponentString(text)
+    SetDrawOrigin(x,y,z, 0)
+    DrawText(0.0, 0.0)
+    local factor = (string.len(text)) / 370
+    DrawRect(0.0, 0.0+0.0125, 0.017+ factor, 0.03, 0, 0, 0, 75)
+    ClearDrawOrigin()
+end
+
+Citizen.CreateThread(function()
+    while true do
+        local ply = GetPlayerPed(-1)
+        local plyCoords = GetEntityCoords(ply, 0)
+        inPayPhoneRange = false
+
+        for k, v in pairs(Config.PhoneCells) do
+            local closestObj = GetClosestObjectOfType(plyCoords.x, plyCoords.y, plyCoords.z, 3.0, v, false, 0, 0)
+            local objCoords = GetEntityCoords(closestObj)
+            if closestObj ~= 0 then
+                local dist = GetDistanceBetweenCoords(plyCoords.x, plyCoords.y, plyCoords.z, objCoords.x, objCoords.y, objCoords.z, true)
+                if dist <= 10 then
+                    if not IsPedInAnyVehicle(ply) then
+                        inPayPhoneRange = true
+                        local objHealth = GetObjectFragmentDamageHealth(closestObj, true)
+                        if objHealth > 0.95 then
+                            if dist <= 1.5 then
+                                DrawText3D(objCoords.x, objCoords.y, objCoords.z + 0.98, '~g~E~w~ Om telefooncel te gebruiken')
+                                DrawText3D(objCoords.x, objCoords.y, objCoords.z + 0.78, '/payphone ~b~nummer~w~')
+                                if IsControlJustPressed(0, Keys["E"]) then
+                                    SendNUIMessage({
+                                        task = "OpenPayPhone"
+                                    })
+                                    SetNuiFocus(true, true)
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+
+        if not inPayPhoneRange then
+            Citizen.Wait(1000)
+        end
+
+        Citizen.Wait(3)
+    end
+end)
+
+RegisterNUICallback('closePayPhone', function()
+    SetNuiFocus(false, false)
+end)
+
+function loadAnimDict(dict)
+	RequestAnimDict(dict)
+	while not HasAnimDictLoaded(dict) do
+		Citizen.Wait(1)
+	end
+end
+
+RegisterNetEvent('qb-phone:client:CallPayPhone')
+AddEventHandler('qb-phone:client:CallPayPhone', function(num)
+    TriggerServerEvent('qb-phone:server:PayPayPhone', 20, num)
+end)
+
+RegisterNetEvent('qb-phone:client:CallPayPhoneYes')
+AddEventHandler('qb-phone:client:CallPayPhoneYes', function(num)
+    if inPayPhoneRange then
+        local number = tostring(num)
+        local lib = "cellphone@str"
+        local anim = "cellphone_call_listen_a"
+        local myPedId = GetPlayerPed(-1)
+        SetNuiFocus(false, false)
+
+        local callTime = 0
+        
+        local pData = QBCore.Functions.GetPlayerData()
+
+        callData.number = number
+        callData.name = number
+        callData.callId = math.random(500, 1000) + math.random(1, 120)
+        callData.inCall = false
+        callData.incomingCall = false
+        callData.outgoingCall = true
+
+        QBCore.Functions.Notify('Oproep gestart met '..callData.name, 'primary', 2500)
+
+        PhonePlayAnim('call', true, true)
+
+        Citizen.CreateThread(function()
+            for i = 1, 10, 1 do
+                if callData.outgoingCall then
+                    Citizen.Wait(3000)
+                    TriggerServerEvent("InteractSound_SV:PlayOnSource", "demo", 0.1)
+                    QBCore.Functions.Notify('Oproep is bezig, /ophangen om gesprek te stoppen', 'primary', 2000)
+                    callTime = i
+                    if callTime == 10 then
+                        Citizen.Wait(3000)
+                        QBCore.Functions.Notify('Er word niet opgenomen..', 'error', 3500)
+                        callData.number = nil
+                        callData.name = nil
+                        callData.callId = 0
+                        callData.inCall = false
+                        callData.incomingCall = false
+                        callData.outgoingCall = false
+
+                        PhonePlayAnim('out', false, true)
+                        break
+                    end
+                else
+                    break
+                end
+            end
+        end)
+
+        TriggerServerEvent('qb-phone:server:CallContact', callData, "06"..math.random(11111111, 99999999), true)
+    else
+        QBCore.Functions.Notify('Je bent niet bij een telefooncel in de buurt', 'error', 2500)
+    end
+end)
+
+RegisterNUICallback('CallPayPhone', function(data)
+    TriggerEvent('qb-phone:client:CallPayPhone', tostring(data.number))
+end)
+
 RegisterNUICallback('getMessages', function(data, cb)
     local chats = {}
     for k, v in pairs(messages) do
@@ -852,7 +985,9 @@ function inComingCall()
         callData.name = name
 
         local number = callData.number
-        if callData.name ~= nil then number = callData.name end
+        if callData.number ~= "Anoniem" then
+            if callData.name ~= nil then number = callData.name end
+        end
         Citizen.CreateThread(function()
             for i = 1, 10, 1 do
                 if callData.incomingCall then

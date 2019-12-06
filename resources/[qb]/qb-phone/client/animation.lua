@@ -54,7 +54,12 @@ function newPhoneProp()
 	phoneProp = CreateObject(phoneModel, 1.0, 1.0, 1.0, 1, 1, 0)
 
 	local bone = GetPedBoneIndex(GetPlayerPed(-1), 28422)
-	AttachEntityToEntity(phoneProp, GetPlayerPed(-1), bone, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1, 1, 0, 0, 2, 1)
+	if phoneModel == `prop_cs_phone_01` then
+		AttachEntityToEntity(phoneProp, GetPlayerPed(-1), bone, 0.0, 0.0, 0.0, 50.0, 320.0, 50.0, 1, 1, 0, 0, 2, 1)
+		print('yeee')
+	else
+		AttachEntityToEntity(phoneProp, GetPlayerPed(-1), bone, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1, 1, 0, 0, 2, 1)
+	end
 end
 
 function deletePhone()
@@ -67,7 +72,14 @@ end
 --[[
 	out || text || Call ||
 --]]
-function PhonePlayAnim(status, freeze, force)
+function PhonePlayAnim(status, freeze, force, model)
+
+	if model ~= nil then
+		phoneModel = model
+	else
+		phoneModel = `prop_npc_phone_02`
+	end
+
 	if currentStatus == status and force ~= true then
 		return
 	end

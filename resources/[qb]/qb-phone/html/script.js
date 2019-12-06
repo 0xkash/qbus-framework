@@ -34,6 +34,34 @@ $(document).on('keydown', function() {
     }
 });
 
+qbPhone.OpenPayPhone = function() {
+    $(".payphone-input").text("");
+    $(".payphone").fadeIn(150);
+}
+
+$(document).on('click', '.payphone-dial', function(e){
+    var dialNumber = $(this).data('number');
+    var NumberInput = $(".payphone-input");
+    var CurNumber = $(".payphone-input").text();
+
+    if (dialNumber == "remove") {
+        NumberInput.text("");
+    } else {
+        NumberInput.text(CurNumber + dialNumber);
+    }
+});
+
+$(document).on('click', '.payphone-call', function(e){
+    var CurNumber = $(".payphone-input").text();
+    
+    if (CurNumber != "") {
+        $.post('http://qb-phone/CallPayPhone', JSON.stringify({
+            number: CurNumber
+        }));
+        $(".payphone").fadeOut(150);
+    }
+});
+
 $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();
 
@@ -126,6 +154,10 @@ $(document).ready(function(){
             suggestedNumber = eventData.number
             $(".suggestedContact").css({"bottom":"40%"});
             $(".suggestedContact").fadeIn(250);
+        }
+
+        if (eventData.task == "OpenPayPhone") {
+            qbPhone.OpenPayPhone();
         }
     });
 
@@ -837,6 +869,8 @@ qbPhone.Open = function(cid) {
 }
 
 qbPhone.Close = function() {
+    $(".payphone").fadeOut(150);
+    $.post('http://qb-phone/closePayPhone');
     inPhone = false;
     $('.phone-container').css({'display':'block'}).animate({
         top: "100%",
