@@ -23,6 +23,8 @@ var currentMailEvent = null;
 var currentMailData = null;
 var mailId = null;
 
+var CurrentBankTab = "accounts"
+
 $(document).on('keydown', function() {
     switch(event.keyCode) {
         case 27:
@@ -31,6 +33,18 @@ $(document).on('keydown', function() {
         case 13:
             qbPhone.SendMessage();
             break;
+    }
+});
+
+$(document).on('click', '.bank-app-header-tab', function(e){
+    var PressedTab = $(this).data('tab');
+
+    if (PressedTab !== CurrentBankTab) {
+        $(".bank-"+CurrentBankTab+"-tab").css({"display":"none"});
+        $(".bank-app-header").find('[data-tab="'+CurrentBankTab+'"]').removeClass('bank-header-selected');
+        CurrentBankTab = PressedTab;
+        $(".bank-app-header").find('[data-tab="'+CurrentBankTab+'"]').addClass('bank-header-selected');
+        $(".bank-"+CurrentBankTab+"-tab").css({"display":"block"});
     }
 });
 
@@ -750,22 +764,22 @@ $(document).on('click', '.back-transfer-btn', function(e){
 });
 
 $(document).on('click', '.bank-transfer-btn', function(e){
-    $('.transfer-money-container').css({"display":"block"}).animate({top: "25.5%",}, 250);
+    $('.transfer-money-container').css({"display":"block"}).animate({top: "18.5%",}, 150);
 });
 
 $(document).on('click', '.submit-transfer-btn', function(e){
     var ibanVal = $(".iban-input").val();
     var amountVal = $(".euro-amount-input").val();
-    var balance = $("#balance").val();
+    var balance = $(".account-balance").val();
 
     if (ibanVal != "" && amountVal != "") {
         if (!isNaN(amountVal)) {
             if (balance - amountVal < 0) {
-                qbPhone.Notify('Maze Bank', 'error', 'Je hebt niet genoeg saldo', 3500)
+                qbPhone.Notify('QBank', 'error', 'Je hebt niet genoeg saldo', 3500)
             } else {
                 $('.transfer-money-container').css({"display":"block"}).animate({top: "103%",}, 250, function(){
                     $('.transfer-money-container').css({'display':'none'});
-                    qbPhone.Notify('Maze Bank', 'success', 'Je hebt € '+amountVal+' overgemaakt naar '+ibanVal+'!', 3500)
+                    qbPhone.Notify('QBank', 'success', 'Je hebt € '+amountVal+' overgemaakt naar '+ibanVal+'!', 3500)
 
                     $.post('http://qb-phone/transferMoney', JSON.stringify({
                         amount: amountVal,
@@ -774,10 +788,10 @@ $(document).on('click', '.submit-transfer-btn', function(e){
                 });
             }
         } else {
-            qbPhone.Notify('Maze Bank', 'error', 'De hoeveelheid moet bestaan uit cijfers.', 3500)
+            qbPhone.Notify('QBank', 'error', 'De hoeveelheid moet bestaan uit cijfers.', 3500)
         }
     } else {
-        qbPhone.Notify('Maze Bank', 'error', 'Je hebt niet alle gegevens ingevuld.', 3500)
+        qbPhone.Notify('QBank', 'error', 'Je hebt niet alle gegevens ingevuld.', 3500)
     }
 });
 
@@ -1191,10 +1205,9 @@ qbPhone.Notify = function(title, type, message, wait) {
 }
 
 qbPhone.setBankData = function(playerData) {
-    $(".welcome-title").html("<p>Hallo, "+playerData.charinfo.firstname+" "+playerData.charinfo.lastname+"!</p>");
-    $("#balance").html(playerData.money.bank);
-    $("#balance").val(playerData.money.bank);
-    $("#iban").html(playerData.charinfo.account);
+    $(".account-name").html(playerData.charinfo.firstname+" "+playerData.charinfo.lastname);
+    $(".account-balance").html("&euro; "+playerData.money.bank+",-");
+    $(".account-number").html(playerData.charinfo.account);
 }
 
 qbPhone.setGarageVehicles = function(vehicles) {
@@ -1447,9 +1460,9 @@ qbPhone.CallScreen = function(callData) {
 }
 
 updateNewBalance = function() {
-    var balance = $("#balance").val();
+    var balance = $(".account-balance").val();
     var minAmount = $(".euro-amount-input").val();
     $("#new-balance").html(balance - minAmount);
 }
 
-//qbPhone.Open();
+// qbPhone.Open();

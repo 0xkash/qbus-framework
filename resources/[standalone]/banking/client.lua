@@ -276,11 +276,25 @@ end)
 
 RegisterNUICallback('withdrawSubmit', function(data, cb)
   TriggerServerEvent('bank:withdraw', data.amount)
+  SetTimeout(500, function()
+    local PlayerData = QBCore.Functions.GetPlayerData()
+    SendNUIMessage({
+      updateBalance = true,
+      PlayerData = PlayerData
+    })
+  end)
   cb('ok')
 end)
 
 RegisterNUICallback('depositSubmit', function(data, cb)
   TriggerServerEvent('bank:deposit', data.amount)
+  SetTimeout(500, function()
+    local PlayerData = QBCore.Functions.GetPlayerData()
+    SendNUIMessage({
+      updateBalance = true,
+      PlayerData = PlayerData
+    })
+  end)
   cb('ok')
 end)
 
