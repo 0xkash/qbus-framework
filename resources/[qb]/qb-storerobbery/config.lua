@@ -76,7 +76,9 @@ Config.MaleNoHandshoes = {
     [13] = true,
     [14] = true,
     [15] = true,
+    [16] = true,
     [18] = true,
+    [26] = true,
     [52] = true,
     [53] = true,
     [54] = true,
@@ -95,7 +97,6 @@ Config.MaleNoHandshoes = {
     [125] = true,
     [132] = true,
 }
-
 Config.FemaleNoHandshoes = {
     [0] = true,
     [1] = true,
