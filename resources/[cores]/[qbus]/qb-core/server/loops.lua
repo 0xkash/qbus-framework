@@ -11,10 +11,3 @@ Citizen.CreateThread(function() -- save player
 		TriggerClientEvent("QBCore:Player:UpdatePlayerData", -1)
 	end
 end)
-
-Citizen.CreateThread(function() -- save player
-	while true do
-		Citizen.Wait((1000 * 60) * 3) -- every 3 mins
-		TriggerClientEvent("QBCore:Player:UpdatePlayerPosition", -1)
-	end
-end)
