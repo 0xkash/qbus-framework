@@ -30,6 +30,27 @@ DrawText3D = function(x, y, z, text)
     ClearDrawOrigin()
 end
 
+GetClosestPlayer = function()
+    local closestPlayers = QBCore.Functions.GetPlayersFromCoords()
+    local closestDistance = -1
+    local closestPlayer = -1
+    local coords = GetEntityCoords(GetPlayerPed(-1))
+
+    for i=1, #closestPlayers, 1 do
+        if closestPlayers[i] ~= PlayerId() then
+            local pos = GetEntityCoords(GetPlayerPed(closestPlayers[i]))
+            local distance = GetDistanceBetweenCoords(pos.x, pos.y, pos.z, coords.x, coords.y, coords.z, true)
+
+            if closestDistance == -1 or closestDistance > distance then
+                closestPlayer = closestPlayers[i]
+                closestDistance = distance
+            end
+        end
+	end
+
+	return closestPlayer, closestDistance
+end
+
 Citizen.CreateThread(function()
     while true do
 
@@ -56,7 +77,7 @@ Citizen.CreateThread(function()
         end
 
         if scoreboardOpen then
-            local player, distance = QBAdmin.Functions.GetClosestPlayer()
+            local player, distance = GetClosestPlayer()
             if player ~= -1 and distance < 2.5 then
                 local PlayerId = GetPlayerServerId(player)
                 local PlayerPed = GetPlayerPed(player)
