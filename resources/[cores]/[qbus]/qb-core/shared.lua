@@ -2551,7 +2551,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/0/07/FaggioMod-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
-		["shop"] = "pdm",
+		["shop"] = "custom",
 	},
 	["sgrx"] = {
 		["name"] = "SGRX",
@@ -2563,7 +2563,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/0/07/FaggioMod-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
-		["shop"] = "pdm",
+		["shop"] = "custom",
 	},
 	["sentinelc1"] = {
 		["name"] = "Sentinel Custom XR",
@@ -2587,7 +2587,7 @@ QBShared.Vehicles = {
 		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/0/07/FaggioMod-GTAO-front.png",
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
-		["shop"] = "pdm",
+		["shop"] = "custom",
 	}
 }
 

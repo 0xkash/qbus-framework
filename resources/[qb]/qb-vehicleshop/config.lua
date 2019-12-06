@@ -33,8 +33,8 @@ QB.ShowroomVehicles = {
     },
     [4] = {
         coords = {x = -51.21, y = -1096.77, z = 25.44, h = 254.5},
-        defaultVehicle = "schwarzer2",
-        chosenVehicle = "schwarzer2",
+        defaultVehicle = "vigero",
+        chosenVehicle = "vigero",
         inUse = false,
     },
     [5] = {

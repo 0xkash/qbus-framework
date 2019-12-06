@@ -35,12 +35,32 @@ vehicleCategorys = {
         label = "Sedans",
         vehicles = {}
     },
+    ["muscle"] = {
+        label = "Muscle",
+        vehicles = {}
+    },
+    ["suvs"] = {
+        label = "SUV",
+        vehicles = {}
+    },
+    ["compacts"] = {
+        label = "Compacts",
+        vehicles = {}
+    },
+    ["vans"] = {
+        label = "Vans",
+        vehicles = {}
+    },
     ["super"] = {
         label = "Super",
         vehicles = {}
     },
     ["sports"] = {
         label = "Sports",
+        vehicles = {}
+    },
+    ["sportsclassics"] = {
+        label = "Sports Classics",
         vehicles = {}
     },
     ["motorcycles"] = {
