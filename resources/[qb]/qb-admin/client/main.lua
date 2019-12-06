@@ -336,16 +336,7 @@ Citizen.CreateThread(function()
                 local time = ServerTimes[currentBanIndex]
                 TriggerServerEvent("qb-weathersync:server:setTime", time.hour, time.minute)
             end
-            if WarMenu.MenuButton('Kick All', "serverMan") then
-                DisplayOnscreenKeyboard(1, "Reden", "", "Reden", "", "", "", 128 + 1)
-				while UpdateOnscreenKeyboard() ~= 1 and UpdateOnscreenKeyboard() ~= 2 do
-					Citizen.Wait(7)
-				end
-                local reason = GetOnscreenKeyboardResult()
-                if reason ~= nil and reason ~= "" then
-                    TriggerServerEvent("qb-admin:server:serverKick", reason)
-                end
-            end
+            
             WarMenu.Display()
         elseif WarMenu.IsMenuOpened(currentPlayer) then
             WarMenu.MenuButton('Player Options', 'playerOptions')

@@ -17,7 +17,7 @@ AddEventHandler('qb-diving:server:TakeCoral', function(Area, Coral, Bool)
 
     if Amount > 1 then
         for i = 1, Amount, 1 do
-            Player.Functions.AddItem(ItemData["name"], Amount)
+            Player.Functions.AddItem(ItemData["name"], 1)
             TriggerClientEvent('inventory:client:ItemBox', src, ItemData, "add")
             Citizen.Wait(250)
         end

@@ -76,6 +76,12 @@ $(document).ready(function(){
       openContainer();
       openMain();
     }
+
+    if(item.updateBalance) {
+      $('.currentBalance').html('&euro;'+addCommas(item.PlayerData.money.bank));
+      console.log(item.PlayerData.money.bank)
+    }
+
     if(item.openBank == false) {
       closeContainer();
       closeMain();
