@@ -87,7 +87,7 @@ Citizen.CreateThread(function()
 		local ped = GetPlayerPed(-1)
 		
 		if IsPedBeingStunned(ped) then
-			SetPedMinGroundTimeForStungun(GetPlayerPed(-1), 7500)
+			SetPedMinGroundTimeForStungun(GetPlayerPed(-1), math.random(4000, 7000))
 		else
 			Citizen.Wait(1000)
 		end

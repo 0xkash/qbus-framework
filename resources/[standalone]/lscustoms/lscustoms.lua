@@ -593,7 +593,7 @@ local function DriveInGarage()
 			end
 			Citizen.Wait(100)
 			
-			if IsVehicleDamaged(veh) then
+			if IsVehicleDamaged(veh) or GetVehicleBodyHealth(veh) < 980 or GetVehicleEngineHealth(veh) < 980 then -- hieromate
 				LSCMenu:Open("main")
 			else
 				LSCMenu:Open("categories")
@@ -1291,9 +1291,9 @@ end
 function CanPurchase(price, canpurchase)
 	if canpurchase then
 		if LSCMenu.currentmenu == "main" then
-			LSCMenu:showNotification("Your vehicle has been repaired.")
+			LSCMenu:showNotification("Je voertuig is gerepareerd.")
 		else
-			LSCMenu:showNotification("Item purchased.")
+			LSCMenu:showNotification("Item gekocht.")
 		end
 		TriggerServerEvent("InteractSound_SV:PlayOnSource", "airwrench", 0.1)
 		editCount = editCount + 1
