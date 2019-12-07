@@ -1,8 +1,7 @@
 QBCore = nil
 TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 
-local DropPrice = math.random(250, 500)
-local PaymentTax = 18
+local PaymentTax = 15
 
 RegisterNetEvent('qb-tow:server:11101110')
 AddEventHandler('qb-tow:server:11101110', function(drops)
@@ -10,6 +9,7 @@ AddEventHandler('qb-tow:server:11101110', function(drops)
     local Player = QBCore.Functions.GetPlayer(src)
     local drops = tonumber(drops)
     local bonus = 0
+    local DropPrice = math.random(450, 800)
     if drops > 5 then 
         bonus = math.ceil((DropPrice / 100) * 5)
     elseif drops > 10 then
