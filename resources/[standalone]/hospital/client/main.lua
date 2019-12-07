@@ -567,6 +567,8 @@ function ResetAll()
         limbs = BodyParts,
         isBleeding = tonumber(isBleeding)
     })
+    TriggerServerEvent("QBCore:Server:SetMetaData", "hunger", 100)
+    TriggerServerEvent("QBCore:Server:SetMetaData", "thirst", 100)
 end
 
 function SetBedCam()
