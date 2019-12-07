@@ -91,7 +91,7 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 			secondInv.maxweight = other.maxweight ~= nil and other.maxweight or 60000
 			secondInv.inventory = {}
 			secondInv.slots = other.slots ~= nil and other.slots or 50
-			if (Trunks[id] ~= nil and Trunks[id].isOpen) or (QBCore.Shared.SplitStr(id, "PLZI")[2] ~= nil or QBCore.Shared.SplitStr(id, "PLZI")[2] ~= "") and Player.PlayerData.job.name ~= "police" then
+			if (Trunks[id] ~= nil and Trunks[id].isOpen) or (QBCore.Shared.SplitStr(id, "PLZI")[2] ~= nil and Player.PlayerData.job.name ~= "police") then
 				secondInv.name = "none-inv"
 				secondInv.label = "Trunk-None"
 				secondInv.maxweight = other.maxweight ~= nil and other.maxweight or 60000

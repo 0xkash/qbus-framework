@@ -54,7 +54,8 @@ AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     isLoggedIn = true
     PlayerJob = QBCore.Functions.GetPlayerData().job
     onDuty = QBCore.Functions.GetPlayerData().job.onduty
-    isHandcuffed = QBCore.Functions.GetPlayerData().metadata["ishandcuffed"]
+    isHandcuffed = false
+    TriggerServerEvent("QBCore:Server:SetMetaData", "ishandcuffed", false)
     TriggerServerEvent("police:server:UpdateBlips")
     TriggerServerEvent("police:server:UpdateCurrentCops")
     TriggerServerEvent("police:server:CheckBills")
@@ -404,7 +405,7 @@ RegisterNetEvent('police:server:SendEmergencyMessageCheck')
 AddEventHandler('police:server:SendEmergencyMessageCheck', function(MainPlayer, message, coords)
     local PlayerData = QBCore.Functions.GetPlayerData()
 
-    if ((PlayerData.job.name == "police" or PlayerData.job.name == "ambulance") and onDuty) then
+    if ((PlayerData.job.name == "police" or PlayerData.job.name == "ambulance" or PlayerData.job.name == "doctor") and onDuty) then
         TriggerEvent('chatMessage', "112 MELDING - " .. MainPlayer.PlayerData.charinfo.firstname .. " " .. MainPlayer.PlayerData.charinfo.lastname .. " ("..MainPlayer.PlayerData.source..")", "warning", message)
         TriggerEvent("police:client:EmergencySound")
         local transG = 250
@@ -416,7 +417,7 @@ AddEventHandler('police:server:SendEmergencyMessageCheck', function(MainPlayer, 
         SetBlipScale(blip, 0.9)
         SetBlipAsShortRange(blip, false)
         BeginTextCommandSetBlipName('STRING')
-        AddTextComponentString("Gewond persoon")
+        AddTextComponentString("112 Melding")
         EndTextCommandSetBlipName(blip)
         while transG ~= 0 do
             Wait(180 * 4)
