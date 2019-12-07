@@ -33,14 +33,17 @@ AddEventHandler('police:server:CuffPlayer', function(playerId, isSoftcuff)
     local CuffedPlayer = QBCore.Functions.GetPlayer(playerId)
     if CuffedPlayer ~= nil then
         if Player.Functions.GetItemByName("handcuffs") ~= nil or Player.PlayerData.job.name == "police" then
+            TriggerClientEvent("police:client:GetCuffed", CuffedPlayer.PlayerData.source, Player.PlayerData.source, isSoftcuff)
+            --[[
             if not CuffedPlayer.PlayerData.metadata["ishandcuffed"] then
-                TriggerClientEvent("police:client:GetCuffed", CuffedPlayer.PlayerData.source, Player.PlayerData.source, isSoftcuff)
+                
                 table.insert(cuffedPlayers, {
                     target = CuffedPlayer.PlayerData.citizenid,
                     cuffer = Player.PlayerData.citizenid
                 })
-                print('cuff')
             else
+                TriggerClientEvent("police:client:GetCuffed", CuffedPlayer.PlayerData.source, Player.PlayerData.source, isSoftcuff)
+
                 for k, v in pairs(cuffedPlayers) do
                     if cuffedPlayers[k].target == CuffedPlayer.PlayerData.citizenid and cuffedPlayers[k].cuffer == Player.PlayerData.citizenid then
                         TriggerClientEvent("police:client:GetCuffed", CuffedPlayer.PlayerData.source, Player.PlayerData.source, isSoftcuff)
@@ -53,6 +56,8 @@ AddEventHandler('police:server:CuffPlayer', function(playerId, isSoftcuff)
                     end
                 end
             end
+            ]]
+            
         end
     end
 end)
