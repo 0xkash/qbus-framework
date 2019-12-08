@@ -233,12 +233,12 @@ QBBoatshop.ShopBoats = {
     ["dinghy"] = {
         ["model"] = "dinghy",
         ["label"] = "Dinghy",
-        ["price"] = 10000
+        ["price"] = 40000
     },
     ["speeder"] = {
         ["model"] = "speeder",
         ["label"] = "Speeder",
-        ["price"] = 10000
+        ["price"] = 60000
     }
 }
 
@@ -306,6 +306,7 @@ QBDiving.Locations = {
                 }
             }
         },
+        DefaultCoral = 2,
         TotalCoral = 2
     },
     [3] = {
@@ -335,7 +336,92 @@ QBDiving.Locations = {
                 }
             }
         },
+        DefaultCoral = 2,
         TotalCoral = 2
+    },
+    [4] = {
+        label = "Heyyy locatie 4",
+        coords = {
+            Area = {
+                x = 3002.5, 
+                y = -1538.28, 
+                z = -27.36, 
+            },
+            Coral = {
+                [1] = {
+                    coords = {
+                        x = 2978.05, 
+                        y = -1509.07, 
+                        z = -24.96, 
+                    },
+                    PickedUp = false
+                },
+                [2] = {
+                    coords = {
+                        x = 3004.42, 
+                        y = -1576.95, 
+                        z = -29.36, 
+                    },
+                    PickedUp = false
+                },
+                [3] = {
+                    coords = {
+                        x = 2951.65, 
+                        y = -1560.69, 
+                        z = -28.36, 
+                    },
+                    PickedUp = false
+                },
+            }
+        },
+        DefaultCoral = 3,
+        TotalCoral = 3
+    },
+    [5] = {
+        label = "Heyyy locatie 5",
+        coords = {
+            Area = {
+                x = 3421.58, 
+                y = 1975.68, 
+                z = 0.86, 
+            },
+            Coral = {
+                [1] = {
+                    coords = {
+                        x = 3421.69, 
+                        y = 1976.54, 
+                        z = -50.64, 
+                    },
+                    PickedUp = false
+                },
+                [2] = {
+                    coords = {
+                        x = 3424.07, 
+                        y = 1957.46, 
+                        z = -53.04, 
+                    },
+                    PickedUp = false
+                },
+                [3] = {
+                    coords = {
+                        x = 3434.65, 
+                        y = 1993.73, 
+                        z = -49.84, 
+                    },
+                    PickedUp = false
+                },
+                [4] = {
+                    coords = {
+                        x = 3415.42, 
+                        y = 1965.25, 
+                        z = -52.04,
+                    },
+                    PickedUp = false
+                },
+            }
+        },
+        DefaultCoral = 4,
+        TotalCoral = 4
     }
 }
 
@@ -343,9 +429,21 @@ QBDiving.CoralTypes = {
     [1] = {
         item = "dendrogyra_coral",
         maxAmount = 2,
+        price = 400
     },
     [2] = {
         item = "antipatharia_coral",
         maxAmount = 2,
+        price = 350
+    }
+}
+
+QBDiving.SellLocations = {
+    [1] = {
+        ["coords"] = {
+            ["x"] = -1686.9, 
+            ["y"] = -1072.23, 
+            ["z"] = 13.15
+        }
     }
 }

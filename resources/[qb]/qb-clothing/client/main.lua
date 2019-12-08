@@ -1226,6 +1226,12 @@ AddEventHandler('qb-clothing:client:loadOutfit', function(oData)
         SetPedComponentVariation(ped, 6, data["shoes"].item, data["shoes"].texture, 0)
     end
 
+    -- Shoes
+    if data["bag"] ~= nil then
+        SetPedComponentVariation(ped, 6, data["bag"].item, 0, 2)
+        SetPedComponentVariation(ped, 6, data["bag"].item, data["bag"].texture, 0)
+    end
+
     -- Badge
     if data["badge"] ~= nil then
         SetPedComponentVariation(ped, 10, data["decals"].item, 0, 2)
