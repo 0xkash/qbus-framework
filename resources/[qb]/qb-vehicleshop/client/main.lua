@@ -40,7 +40,7 @@ vehicleCategorys = {
         vehicles = {}
     },
     ["suvs"] = {
-        label = "SUV",
+        label = "SUVs",
         vehicles = {}
     },
     ["compacts"] = {
@@ -67,6 +67,10 @@ vehicleCategorys = {
         label = "Motoren",
         vehicles = {}
     },
+    ["offroad"] = {
+        label = "Offroad",
+        vehicles = {}
+    },
 }
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
@@ -83,6 +87,7 @@ Citizen.CreateThread(function()
             end
         end
     end
+    print(json.encode(vehicleCategorys["suvs"].vehicles))
 end)
 
 function openVehicleShop(bool)

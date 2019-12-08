@@ -50,7 +50,7 @@ Citizen.CreateThread(function()
 
         vehshop.menu[k] = {
             title = k,
-            name = k,
+            name = v.label,
             buttons = v.vehicles
         }
     end
@@ -167,7 +167,7 @@ function ButtonSelected(button)
 			OpenMenu('super')
 		elseif btn == "Muscle" then
 			OpenMenu('muscle')
-		elseif btn == "Off-Road" then
+		elseif btn == "Offroad" then
 			OpenMenu('offroad')
 		elseif btn == "SUVs" then
 			OpenMenu('suvs')
@@ -272,7 +272,7 @@ end
 Citizen.CreateThread(function()
     Citizen.Wait(1000)
     for i = 1, #QB.ShowroomVehicles, 1 do
-        local oldVehicle = GetClosestVehicle(QB.ShowroomVehicles[i].coords.x, QB.ShowroomVehicles[i].coords.y, QB.ShowroomVehicles[i].coords.z, 1.0, 0, 70)
+        local oldVehicle = GetClosestVehicle(QB.ShowroomVehicles[i].coords.x, QB.ShowroomVehicles[i].coords.y, QB.ShowroomVehicles[i].coords.z, 3.0, 0, 70)
         if oldVehicle ~= 0 then
             QBCore.Functions.DeleteVehicle(oldVehicle)
         end
@@ -500,7 +500,7 @@ end)
 RegisterNetEvent('qb-vehicleshop:client:setShowroomVehicle')
 AddEventHandler('qb-vehicleshop:client:setShowroomVehicle', function(showroomVehicle, k)
     if QB.ShowroomVehicles[k].chosenVehicle ~= showroomVehicle then
-        QBCore.Functions.DeleteVehicle(GetClosestVehicle(QB.ShowroomVehicles[k].coords.x, QB.ShowroomVehicles[k].coords.y, QB.ShowroomVehicles[k].coords.z, 1.0, 0, 70))
+        QBCore.Functions.DeleteVehicle(GetClosestVehicle(QB.ShowroomVehicles[k].coords.x, QB.ShowroomVehicles[k].coords.y, QB.ShowroomVehicles[k].coords.z, 3.0, 0, 70))
         modelLoaded = false
         Wait(250)
         local model = GetHashKey(showroomVehicle)
