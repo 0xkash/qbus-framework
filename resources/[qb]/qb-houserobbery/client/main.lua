@@ -270,8 +270,10 @@ function lockpickFinish(success)
         QBCore.Functions.Notify('Het is gelukt!', 'success', 2500)
     else
         local itemInfo = QBCore.Shared.Items["lockpick"]
-        TriggerServerEvent("QBCore:Server:RemoveItem", "lockpick", 1)
-        TriggerEvent('inventory:client:ItemBox', itemInfo, "remove")
+        if math.random(1, 100) < 40 then
+            TriggerServerEvent("QBCore:Server:RemoveItem", "lockpick", 1)
+            TriggerEvent('inventory:client:ItemBox', itemInfo, "remove")
+        end
         QBCore.Functions.Notify('Het is niet gelukt..', 'error', 2500)
     end
 end

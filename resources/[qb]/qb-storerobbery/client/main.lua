@@ -113,7 +113,7 @@ end)
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     PlayerJob = QBCore.Functions.GetPlayerData().job
-    onDuty = QBCore.Functions.GetPlayerData().onduty
+    onDuty = true
 end)
 
 RegisterNetEvent('QBCore:Client:SetDuty')
@@ -124,6 +124,7 @@ end)
 RegisterNetEvent('QBCore:Client:OnJobUpdate')
 AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
     PlayerJob = JobInfo
+    onDuty = true
 end)
 
 RegisterNetEvent('police:SetCopCount')
@@ -303,8 +304,10 @@ RegisterNUICallback("CombinationFail", function(data, cb)
 end)
 
 RegisterNUICallback('fail', function()
-    TriggerServerEvent("QBCore:Server:RemoveItem", "lockpick", 1)
-    TriggerEvent('inventory:client:ItemBox', QBCore.Shared.Items["lockpick"], "remove")
+    if math.random(1, 100) < 40 then
+        TriggerServerEvent("QBCore:Server:RemoveItem", "lockpick", 1)
+        TriggerEvent('inventory:client:ItemBox', QBCore.Shared.Items["lockpick"], "remove")
+    end
     lockpick(false)
 end)
 

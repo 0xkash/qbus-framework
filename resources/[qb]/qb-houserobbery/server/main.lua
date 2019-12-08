@@ -30,18 +30,24 @@ AddEventHandler('qb-houserobbery:server:searchCabin', function(cabin, house)
 
         for i = 1, itemCount, 1 do
             local randomItem = Config.Rewards[Config.Houses[house]["furniture"][cabin]["type"]][math.random(1, #Config.Rewards[Config.Houses[house]["furniture"][cabin]["type"]])]
-            -- local weaponChance = math.random(1, 100)
             local itemInfo = QBCore.Shared.Items[randomItem]
-
-            if not itemInfo["unqiue"] then
-                local itemAmount = math.random(1, 5)
-                Player.Functions.AddItem(randomItem, itemAmount)
-                TriggerClientEvent('QBCore:Notify', src, '+'..itemAmount..' '..itemInfo["label"], 'success', 3500)
-            else
+            if math.random(1, 100) == 69 then
+                randomItem = "trojan_usb"
+                itemInfo = QBCore.Shared.Items[randomItem]
                 Player.Functions.AddItem(randomItem, 1)
+                TriggerClientEvent('inventory:client:ItemBox', src, itemInfo, "add")
+            else
+                if not itemInfo["unqiue"] then
+                    local itemAmount = math.random(1, 3)
+                    Player.Functions.AddItem(randomItem, itemAmount)
+                    TriggerClientEvent('QBCore:Notify', src, '+'..itemAmount..' '..itemInfo["label"], 'success', 3500)
+                else
+                    Player.Functions.AddItem(randomItem, 1)
+                end
+                
+                TriggerClientEvent('inventory:client:ItemBox', src, itemInfo, "add")
             end
-
-            TriggerClientEvent('inventory:client:ItemBox', src, itemInfo, "add")
+            -- local weaponChance = math.random(1, 100)
         end
     else
         TriggerClientEvent('QBCore:Notify', src, 'Het kastje is leeg broooo', 'error', 3500)
