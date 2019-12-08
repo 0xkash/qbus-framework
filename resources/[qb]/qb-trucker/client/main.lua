@@ -103,6 +103,7 @@ Citizen.CreateThread(function()
                         if IsControlJustReleased(0, Keys["E"]) then
                             if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
                                 DeleteVehicle(GetVehiclePedIsIn(GetPlayerPed(-1)))
+                                TriggerServerEvent('qb-trucker:server:DoBail', false)
                             else
                                 MenuGarage()
                                 Menu.hidden = not Menu.hidden
@@ -317,6 +318,7 @@ function TakeOutVehicle(vehicleInfo)
         SetVehicleEngineOn(veh, true, true)
         CurrentPlate = GetVehicleNumberPlateText(veh)
         getNewLocation()
+        TriggerServerEvent('qb-trucker:server:DoBail', true)
     end, coords, true)
 end
 

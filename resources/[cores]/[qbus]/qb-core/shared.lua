@@ -2735,7 +2735,7 @@ QBShared.Vehicles = {
 }
 
 QBShared.VehicleModels = {
-	[GetHaskKey("bifta")] = {
+	[GetHashKey("bifta")] = {
 		["name"] = 'Bifta', 
 		["brand"] = "Annis",
 		["price"] = 12000,
@@ -2747,7 +2747,7 @@ QBShared.VehicleModels = {
 		["trunkslots"] = 80,
 		["shop"] = "pdm",
 	},
-	[GetHaskKey("bfinjection")] = {
+	[GetHashKey("bfinjection")] = {
 		["name"] = 'Bf Injection', 
 		["brand"] = "Annis",
 		["price"] = 16000,
@@ -2759,7 +2759,7 @@ QBShared.VehicleModels = {
 		["trunkslots"] = 80,
 		["shop"] = "pdm",
 	},
-	[GetHaskKey("blazer")] = {
+	[GetHashKey("blazer")] = {
 		["name"] = 'Blazer', 
 		["price"] = 6500,
 		["category"] = "offroad",
@@ -2770,7 +2770,7 @@ QBShared.VehicleModels = {
 		["trunkslots"] = 80,
 		["shop"] = "pdm",
 	},
-	[GetHaskKey("blazer4")] = {
+	[GetHashKey("blazer4")] = {
 		["name"] = 'Blazer Sport',
 		["brand"] = "Annis",
 		["price"] = 8500,
@@ -2782,7 +2782,7 @@ QBShared.VehicleModels = {
 		["trunkslots"] = 80,
 		["shop"] = "pdm",
 	},
-	[GetHaskKey("brawler")] = {
+	[GetHashKey("brawler")] = {
 		["name"] = 'Brawler', 
 		["brand"] = "Annis",
 		["price"] = 45000,
@@ -2794,7 +2794,7 @@ QBShared.VehicleModels = {
 		["trunkslots"] = 80,
 		["shop"] = "pdm",
 	},
-	[GetHaskKey("dubsta3")] = {
+	[GetHashKey("dubsta3")] = {
 		["name"] = 'Bubsta 6x6', 
 		["brand"] = "Annis",
 		["price"] = 120000,
@@ -2806,7 +2806,7 @@ QBShared.VehicleModels = {
 		["trunkslots"] = 80,
 		["shop"] = "pdm",
 	},
-	[GetHaskKey("dune")] = {
+	[GetHashKey("dune")] = {
 		["name"] = 'Dune Buggy', 
 		["brand"] = "Annis",
 		["price"] = 8000,
@@ -2818,7 +2818,7 @@ QBShared.VehicleModels = {
 		["trunkslots"] = 80,
 		["shop"] = "pdm",
 	},
-	[GetHaskKey("guardian")] = {
+	[GetHashKey("guardian")] = {
 		["name"] = 'Guardian', 
 		["brand"] = "Annis",
 		["price"] = 45000,
@@ -2830,7 +2830,7 @@ QBShared.VehicleModels = {
 		["trunkslots"] = 80,
 		["shop"] = "pdm",
 	},
-	[GetHaskKey("rebel2")] = {
+	[GetHashKey("rebel2")] = {
 		["name"] = 'Rebel', 
 		["brand"] = "Annis",
 		["price"] = 35000,
@@ -2842,7 +2842,7 @@ QBShared.VehicleModels = {
 		["trunkslots"] = 80,
 		["shop"] = "pdm",
 	},
-	[GetHaskKey("sandking")] = {
+	[GetHashKey("sandking")] = {
 		["name"] = 'Sandking', 
 		["brand"] = "Annis",
 		["price"] = 55000,
@@ -2854,7 +2854,7 @@ QBShared.VehicleModels = {
 		["trunkslots"] = 80,
 		["shop"] = "pdm",
 	},
-	[GetHaskKey("trophytruck")] = {
+	[GetHashKey("trophytruck")] = {
 		["name"] = 'Trophy Truck', 
 		["brand"] = "Annis",
 		["price"] = 60000,
@@ -2866,7 +2866,7 @@ QBShared.VehicleModels = {
 		["trunkslots"] = 80,
 		["shop"] = "pdm",
 	},
-	[GetHaskKey("trophytruck2")] = {
+	[GetHashKey("trophytruck2")] = {
 		["name"] = 'Trophy Truck Limited', 
 		["price"] = 80000,
 		["category"] = "offroad",
@@ -5189,7 +5189,7 @@ QBShared.VehicleModels = {
 		["trunkspace"] = 100000,
 		["trunkslots"] = 80,
 		["shop"] = "pdm",
-	}
+	},
 }
 
 QBShared.Jobs = {

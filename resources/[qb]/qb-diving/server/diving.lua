@@ -1,5 +1,4 @@
 local CurrentDivingArea = math.random(1, #QBDiving.Locations)
-local LastLocation = 0
 
 QBCore.Functions.CreateCallback('qb-diving:server:GetDivingConfig', function(source, cb)
     cb(QBDiving.Locations, CurrentDivingArea)
@@ -25,19 +24,17 @@ AddEventHandler('qb-diving:server:TakeCoral', function(Area, Coral, Bool)
     end
 
     if (QBDiving.Locations[Area].TotalCoral - 1) == 0 then
-        local newLocation = math.random(1, #QBDiving.Locations)
-        while (newLocation == CurrentDivingArea) do
-            Citizen.Wait(100)
-            newLocation = math.random(1, #QBDiving.Locations)
-        end
-        LastLocation = Area
-        CurrentDivingArea = newLocation
-        
-
-        for k, v in pairs(QBDiving.Locations[Area].coords.Coral) do
+        for k, v in pairs(QBDiving.Locations[CurrentDivingArea].coords.Coral) do
             v.PickedUp = false
         end
-        QBDiving.Locations[Area].TotalCoral = QBDiving.Locations[Area].DefaultCoral
+        QBDiving.Locations[CurrentDivingArea].TotalCoral = QBDiving.Locations[CurrentDivingArea].DefaultCoral
+
+        local newLocation = math.random(1, #QBDiving.Locations)
+        while (newLocation == CurrentDivingArea) do
+            Citizen.Wait(3)
+            newLocation = math.random(1, #QBDiving.Locations)
+        end
+        CurrentDivingArea = newLocation
         
         TriggerClientEvent('qb-diving:client:NewLocations', -1)
     else

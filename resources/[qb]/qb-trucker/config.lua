@@ -11,6 +11,8 @@ Keys = {
 
 Config = {}
 
+Config.BailPrice = 1000
+
 Config.Locations = {
     ["main"] = {
         label = "Vrachtwagen Loods",

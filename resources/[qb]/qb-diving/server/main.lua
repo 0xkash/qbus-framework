@@ -74,11 +74,24 @@ AddEventHandler('qb-diving:server:RemoveItem', function(item, amount)
     Player.Functions.RemoveItem(item, amount)
 end)
 
-QBCore.Functions.CreateCallback('qb-diving:server:GetMyBoats', function(source, cb)
+QBCore.Functions.CreateCallback('qb-diving:server:GetMyBoats', function(source, cb, dock)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
 
-    QBCore.Functions.ExecuteSql("SELECT * FROM `player_boats` WHERE `citizenid` = '"..Player.PlayerData.citizenid.."'", function(result)
+    QBCore.Functions.ExecuteSql("SELECT * FROM `player_boats` WHERE `citizenid` = '"..Player.PlayerData.citizenid.."' AND `boathouse` = '"..dock.."'", function(result)
+        if result[1] ~= nil then
+            cb(result)
+        else
+            cb(nil)
+        end
+    end)
+end)
+
+QBCore.Functions.CreateCallback('qb-diving:server:GetDepotBoats', function(source, cb, dock)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+
+    QBCore.Functions.ExecuteSql("SELECT * FROM `player_boats` WHERE `citizenid` = '"..Player.PlayerData.citizenid.."' AND `state` = '0'", function(result)
         if result[1] ~= nil then
             cb(result)
         else
@@ -88,11 +101,15 @@ QBCore.Functions.CreateCallback('qb-diving:server:GetMyBoats', function(source, 
 end)
 
 RegisterServerEvent('qb-diving:server:SetBoatState')
-AddEventHandler('qb-diving:server:SetBoatState', function(plate, state)
+AddEventHandler('qb-diving:server:SetBoatState', function(plate, state, boathouse)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
 
     QBCore.Functions.ExecuteSql("UPDATE `player_boats` SET `state` = '"..state.."' WHERE `plate` = '"..plate.."' AND `citizenid` = '"..Player.PlayerData.citizenid.."'")
+    
+    if state == 1 then
+        QBCore.Functions.ExecuteSql("UPDATE `player_boats` SET `boathouse` = '"..boathouse.."' WHERE `plate` = '"..plate.."' AND `citizenid` = '"..Player.PlayerData.citizenid.."'")
+    end
 end)
 
 RegisterServerEvent('qb-diving:server:CallCops')

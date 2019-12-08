@@ -2,7 +2,7 @@ QBBoatshop = QBBoatshop or {}
 QBDiving = QBDiving or {}
 
 QBBoatshop.Docks = {
-    [1] = {
+    ["lsymc"] = {
         label = "LSYMC Boothuis",
         coords = {
             take = {
@@ -17,7 +17,42 @@ QBBoatshop.Docks = {
                 h = 111.5,
             }
         }
-    }
+    },
+    ["millars"] = {
+        label = "Millars Boothuis",
+        coords = {
+            take = {
+                x = 1299.24, 
+                y = 4216.69, 
+                z = 33.9, 
+            },
+            put = {
+                x = 1297.82, 
+                y = 4209.61, 
+                z = 30.12, 
+                h = 253.5,
+            }
+        }
+    },
+}
+
+QBBoatshop.Depots = {
+    [1] = {
+        label = "LSYMC Opslag",
+        coords = {
+            take = {
+                x = -772.98, 
+                y = -1430.76, 
+                z = 1.59, 
+            },
+            put = {
+                x = -729.77, 
+                y = -1355.49, 
+                z = 1.19, 
+                h = 142.5,
+            }
+        }
+    },
 }
 
 QBBoatshop.Locations = {
@@ -422,7 +457,99 @@ QBDiving.Locations = {
         },
         DefaultCoral = 4,
         TotalCoral = 4
-    }
+    },
+    [6] = {
+        label = "Heyyy locatie 6",
+        coords = {
+            Area = {
+                x = 2720.14, 
+                y = -2136.28, 
+                z = 0.74, 
+            },
+            Coral = {
+                [1] = {
+                    coords = {
+                        x = 2724.0, 
+                        y = -2134.95, 
+                        z = -19.33, 
+                    },
+                    PickedUp = false
+                },
+                [2] = {
+                    coords = {
+                        x = 2710.68, 
+                        y = -2156.06, 
+                        z = -18.63, 
+                    },
+                    PickedUp = false
+                },
+                [3] = {
+                    coords = {
+                        x = 2702.84, 
+                        y = -2139.29, 
+                        z = -18.51, 
+                    },
+                    PickedUp = false
+                },
+                [4] = {
+                    coords = {
+                        x = 2736.27, 
+                        y = -2153.91, 
+                        z = -20.88, 
+                    },
+                    PickedUp = false
+                },
+            }
+        },
+        DefaultCoral = 4,
+        TotalCoral = 4
+    },
+    [7] = {
+        label = "Heyyy locatie 7",
+        coords = {
+            Area = {
+                x = 536.69, 
+                y = 7253.75, 
+                z = 1.69, 
+            },
+            Coral = {
+                [1] = {
+                    coords = {
+                        x = 542.31, 
+                        y = 7245.37, 
+                        z = -30.01, 
+                    },
+                    PickedUp = false
+                },
+                [2] = {
+                    coords = {
+                        x = 528.21, 
+                        y = 7223.26, 
+                        z = -29.51, 
+                    },
+                    PickedUp = false
+                },
+                [3] = {
+                    coords = {
+                        x = 510.36, 
+                        y = 7254.97, 
+                        z = -32.11, 
+                    },
+                    PickedUp = false
+                },
+                [4] = {
+                    coords = {
+                        x = 525.37, 
+                        y = 7259.12, 
+                        z = -30.51, 
+                    },
+                    PickedUp = false
+                },
+            }
+        },
+        DefaultCoral = 4,
+        TotalCoral = 4
+    },
 }
 
 QBDiving.CoralTypes = {
