@@ -293,3 +293,62 @@
 .payphone-call:hover {
     background-color: rgba(221, 221, 221, 0.9);
 }
+
+.suggestedBank {
+    display: none;
+    position: absolute;
+    bottom: 20%;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    background: rgb(255, 255, 255);
+    width: 80%;
+    height: 18%;
+    border-radius: 1vh;
+    box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.25);
+}
+
+.suggestedBank-header {
+    position: relative;
+    text-align: center;
+    color: black;
+    font-size: 1.2vh;
+    padding-top: 1vh;
+}
+
+.suggestedBank-header > p {
+    font-size: 1.2vh;
+}
+
+.suggestedBank-buttons {
+    position: absolute;
+    bottom: 0.3vh;
+    width: 100%;
+    height: 35%;
+}
+
+.suggestedBank-button {
+    position: relative;
+    float: left;
+    width: 40%;
+    left: 1.3vh;
+    margin-right: 0.7vh;
+    border-radius: 0.6vh;
+    text-align: center;
+    background: rgb(45, 45, 95);
+    height: 70%;
+    transition: all 0.1s ease-in-out;
+}
+
+.suggestedBank-button:hover {
+    background: rgb(62, 62, 131);
+}
+
+.suggestedBank-button > p {
+    font-size: 0.9vh;
+    color: white;
+    font-family: sans-serif;
+    line-height: 2.3vh;
+    font-weight: bold;
+    letter-spacing: 0.1vh;
+}

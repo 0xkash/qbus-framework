@@ -428,6 +428,11 @@ AddEventHandler('qb-phone:server:giveNumber', function(targetId, playerData)
     TriggerClientEvent('qb-phone:server:newContactNotify', targetId, playerData.charinfo.phone)
 end)
 
+RegisterServerEvent('qb-phone:server:giveBankAccount')
+AddEventHandler('qb-phone:server:giveBankAccount', function(targetId, playerData)
+    TriggerClientEvent('qb-phone:server:newBankNotify', targetId, playerData.charinfo.account)
+end)
+
 RegisterServerEvent('qb-phone:server:createChatOther')
 AddEventHandler('qb-phone:server:createChatOther', function(chatData, senderPhone)
     local src = source
