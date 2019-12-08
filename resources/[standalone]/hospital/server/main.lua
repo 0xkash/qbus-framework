@@ -6,29 +6,10 @@ local PlayerWeaponWounds = {}
 local bedsTaken = {}
 
 RegisterServerEvent('hospital:server:SendToBed')
-AddEventHandler('hospital:server:SendToBed', function(data)
+AddEventHandler('hospital:server:SendToBed', function(bedId)
 	local src = source
-	if data == nil then
-		for k, v in pairs(Config.Locations["beds"]) do
-			if not v.taken then
-				v.taken = true
-				bedsTaken[source] = k
-				TriggerClientEvent('hospital:client:SendToBed', src, k, v, true)
-				return
-			end
-		end
-	else
-		if not Config.Locations["beds"][data].taken then
-			Config.Locations["beds"][data].taken = true
-			bedsTaken[source] = k
-			TriggerClientEvent('hospital:client:SendToBed', src, data, Config.Locations["beds"][data], false)
-			return
-		else
-			TriggerClientEvent('QBCore:Notify', src, "Bed is bezet!", "error")
-			return
-		end
-	end
-	TriggerClientEvent('QBCore:Notify', src, "Alle bedden zijn bezet!", "error")
+	TriggerClientEvent('hospital:client:SendToBed', src, bedId, Config.Locations["beds"][bedId], true)
+	TriggerClientEvent('hospital:client:SetBed', -1, bedId, true)
 end)
 
 RegisterServerEvent('hospital:server:RespawnAtHospital')
@@ -36,21 +17,17 @@ AddEventHandler('hospital:server:RespawnAtHospital', function()
 	local src = source
 	local Player = QBCore.Functions.GetPlayer(src)
 	for k, v in pairs(Config.Locations["beds"]) do
-		if not v.taken then
-			v.taken = true
-			bedsTaken[source] = k
-			TriggerClientEvent('hospital:client:SendToBed', src, k, v, true)
-			Player.Functions.RemoveMoney("bank", Config.BillCost)
-			TriggerClientEvent('hospital:client:SendBillEmail', src, Config.BillCost)
-			return
-		end
+		TriggerClientEvent('hospital:client:SendToBed', src, k, v, true)
+		TriggerClientEvent('hospital:client:SetBed', -1, k, true)
+		Player.Functions.RemoveMoney("bank", Config.BillCost)
+		TriggerClientEvent('hospital:client:SendBillEmail', src, Config.BillCost)
+		return
 	end
-	TriggerClientEvent('QBCore:Notify', src, "Actie niet mogelijk..", "error")
 end)
 
 RegisterServerEvent('hospital:server:LeaveBed')
 AddEventHandler('hospital:server:LeaveBed', function(id)
-    Config.Locations["beds"][id].taken = false
+    TriggerClientEvent('hospital:client:SetBed', -1, id, false)
 end)
 
 RegisterServerEvent('hospital:server:SyncInjuries')

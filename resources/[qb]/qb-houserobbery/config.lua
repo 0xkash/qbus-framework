@@ -14,15 +14,20 @@ Config = {}
 
 Config.Rewards = {
     ["cabin"] = {
-        "joint",
-        "tosti",
         "plastic",
+        "diamond_ring",
+        "goldchain",
     },
     ["kitchen"] = {
         "tosti",
+        "sandwich",
+        "goldchain",
     },
     ["chest"] = {
         "plastic",
+        "rolex",
+        "diamond_ring",
+        "goldchain",
     },
 }
 

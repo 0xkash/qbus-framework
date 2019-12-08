@@ -113,7 +113,7 @@ end)
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     PlayerJob = QBCore.Functions.GetPlayerData().job
-    onDuty = QBCore.Functions.GetPlayerData().onduty
+    onDuty = true
 end)
 
 RegisterNetEvent('QBCore:Client:SetDuty')
@@ -124,6 +124,7 @@ end)
 RegisterNetEvent('QBCore:Client:OnJobUpdate')
 AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
     PlayerJob = JobInfo
+    onDuty = true
 end)
 
 RegisterNetEvent('police:SetCopCount')

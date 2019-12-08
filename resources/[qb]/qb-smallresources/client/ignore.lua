@@ -84,6 +84,7 @@ end)
 
 Citizen.CreateThread(function()
 	while true do
+		Citizen.Wait(1)
 		local ped = GetPlayerPed(-1)
 		
 		if IsPedBeingStunned(ped) then

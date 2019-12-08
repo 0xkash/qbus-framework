@@ -213,7 +213,12 @@ Citizen.CreateThread(function()
                             disableCombat = true,
                         }, {}, {}, {}, function() -- Done
                             TriggerEvent('animations:client:EmoteCommandStart', {"c"})
-                            TriggerServerEvent("hospital:server:SendToBed")
+                            local bedId = GetAvailableBed()
+                            if bedId ~= nil then 
+                                TriggerServerEvent("hospital:server:SendToBed", bedId)
+                            else
+                                QBCore.Functions.Notify("Bedden bezet..", "error")
+                            end
                         end, function() -- Cancel
                             TriggerEvent('animations:client:EmoteCommandStart', {"c"})
                             QBCore.Functions.Notify("Niet ingecheckt!", "error")
@@ -233,7 +238,11 @@ Citizen.CreateThread(function()
                 if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["beds"][closestBed].x, Config.Locations["beds"][closestBed].y, Config.Locations["beds"][closestBed].z, true) < 1.5) then
                     QBCore.Functions.DrawText3D(Config.Locations["beds"][closestBed].x, Config.Locations["beds"][closestBed].y, Config.Locations["beds"][closestBed].z + 0.3, "~g~E~w~ - Om in bed te liggen")
                     if IsControlJustReleased(0, Keys["E"]) then
-                        TriggerServerEvent("hospital:server:SendToBed", closestBed)
+                        if GetAvailableBed(closestBed) ~= nil then 
+                            TriggerServerEvent("hospital:server:SendToBed", closestBed)
+                        else
+                            QBCore.Functions.Notify("Bedden bezet..", "error")
+                        end
                     end
                 end
             end
@@ -242,6 +251,22 @@ Citizen.CreateThread(function()
         end
     end
 end)
+
+function GetAvailableBed(bedId)
+    local retval = nil
+    if bedId == nil then 
+        for k, v in pairs(Config.Locations["beds"]) do
+            if not Config.Locations["beds"][k].taken then
+                retval = k
+            end
+        end
+    else
+        if not Config.Locations["beds"][bedId].taken then
+            retval = bedId
+        end
+    end
+    return retval
+end
 
 Citizen.CreateThread(function()
     while true do
@@ -354,6 +379,11 @@ AddEventHandler('hospital:client:SendToBed', function(id, data, isRevive)
             canLeaveBed = true
         end
     end)
+end)
+
+RegisterNetEvent('hospital:client:SetBed')
+AddEventHandler('hospital:client:SetBed', function(id, isTaken)
+    Config.Locations["beds"][id].taken = isTaken
 end)
 
 
