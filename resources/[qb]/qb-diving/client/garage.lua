@@ -68,6 +68,8 @@ function RemoveVehicle()
     if Boat then
         local CurVeh = GetVehiclePedIsIn(ped)
 
+        TriggerServerEvent('qb-diving:server:SetBoatState', GetVehicleNumberPlateText(CurVeh), 1)
+
         QBCore.Functions.DeleteVehicle(CurVeh)
         SetEntityCoords(ped, QBBoatshop.Docks[ClosestDock].coords.take.x, QBBoatshop.Docks[ClosestDock].coords.take.y, QBBoatshop.Docks[ClosestDock].coords.take.z)
     end
@@ -129,6 +131,7 @@ function TakeOutVehicle(vehicle)
             TaskWarpPedIntoVehicle(GetPlayerPed(-1), veh, -1)
             TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
             SetVehicleEngineOn(veh, true, true)
+            TriggerServerEvent('qb-diving:server:SetBoatState', GetVehicleNumberPlateText(veh), 0)
         end, QBBoatshop.Docks[CurrentDock].coords.put, true)
     else
         QBCore.Functions.Notify("De boot is niet in het boothuis", "error", 4500)

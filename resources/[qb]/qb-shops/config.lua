@@ -139,6 +139,16 @@ Config.Products = {
             slot = 2,
         },
     },
+    ["gearshop"] = {
+        [1] = {
+            name = "diving_gear",
+            price = 2500,
+            amount = 10,
+            info = {},
+            type = "item",
+            slot = 1,
+        },
+    },
     ["weapons"] = {
         [1] = {
             name = "weapon_knife",
@@ -609,5 +619,17 @@ Config.Locations = {
             }
         },
         ["products"] = Config.Products["weapons"],
+    },
+    ["seaword1"] = {
+        ["label"] = "Sea Word",
+        ["type"] = "sea",
+        ["coords"] = {
+            [1] = {
+                ["x"] = -1686.9, 
+                ["y"] = -1072.23, 
+                ["z"] = 13.15
+            }
+        },
+        ["products"] = Config.Products["gearshop"],
     },
 }

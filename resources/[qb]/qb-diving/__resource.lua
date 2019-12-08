@@ -13,4 +13,5 @@ client_scripts {
     'client/diving.lua',
     'client/garage.lua',
     'client/gui.lua',
+    'client/shop.lua'
 }

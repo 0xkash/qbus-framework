@@ -87,6 +87,9 @@ Citizen.CreateThread(function()
         if Config.Locations[store]["products"] == Config.Products["normal"] then
             SetBlipSprite(StoreBlip, 52)
             SetBlipScale(StoreBlip, 0.6)
+        elseif Config.Locations[store]["products"] == Config.Products["gearshop"] then
+            SetBlipSprite(StoreBlip, 52)
+            SetBlipScale(StoreBlip, 0.6)
         elseif Config.Locations[store]["products"] == Config.Products["hardware"] then
             SetBlipSprite(StoreBlip, 402)
             SetBlipScale(StoreBlip, 0.8)
