@@ -20,6 +20,15 @@ end)
 local sellItemsSet = false
 local sellPrice = 0
 Citizen.CreateThread(function()
+	local blip = AddBlipForCoord(Config.PawnLocation.x, Config.PawnLocation.y, Config.PawnLocation.z)
+	SetBlipSprite(blip, 431)
+	SetBlipDisplay(blip, 4)
+	SetBlipScale(blip, 0.7)
+	SetBlipAsShortRange(blip, true)
+	SetBlipColour(blip, 5)
+	BeginTextCommandSetBlipName("STRING")
+	AddTextComponentSubstringPlayerName("Pawnshop")
+	EndTextCommandSetBlipName(blip)
 	while true do 
 		Citizen.Wait(1)
 		local inRange = false

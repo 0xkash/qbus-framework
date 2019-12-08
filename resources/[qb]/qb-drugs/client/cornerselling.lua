@@ -101,12 +101,11 @@ Citizen.CreateThread(function()
         if cornerselling then
             local player = GetPlayerPed(-1)
             local coords = GetEntityCoords(player)
-            for _, zone in pairs(Config.CornerSellingZones) do
-                local zoneDist = GetDistanceBetweenCoords(coords, zone["coords"]["x"], zone["coords"]["y"], zone["coords"]["z"], true)
-                if zoneDist < 150 then
+            --for _, zone in pairs(Config.CornerSellingZones) do
+                --local zoneDist = GetDistanceBetweenCoords(coords, zone["coords"]["x"], zone["coords"]["y"], zone["coords"]["z"], true)
+                --if zoneDist < 150 then
                     local hours = GetClockHours()
-
-                    if hours > zone["time"]["min"] and hours < 24 or hours < zone["time"]["max"] and hours > 0 then
+                    if hours > 1 and hours < 6 or hours > 12 and hours < 19 then
                         if not hasTarget then
                             local PlayerPeds = {}
                             if next(PlayerPeds) == nil then
@@ -117,20 +116,20 @@ Citizen.CreateThread(function()
                             end
                             
                             local closestPed, closestDistance = QBCore.Functions.GetClosestPed(coords, PlayerPeds)
-
+    
                             if closestDistance < 15.0 and closestPed ~= 0 then
-                                SellToPed(closestPed)
+                                SellToPed(closestPed, chance)
                             end
                         end
-
+    
                         local startDist = GetDistanceBetweenCoords(startLocation, GetEntityCoords(GetPlayerPed(-1)))
-
+    
                         if startDist > 10 then
                             toFarAway()
                         end
                     end
-                end
-            end
+                --end
+            --end
         end
 
         if not cornerselling then
@@ -146,7 +145,7 @@ AddEventHandler('qb-drugs:client:refreshAvailableDrugs', function(items)
     availableDrugs = items
 end)
 
-function SellToPed(ped)
+function SellToPed(ped, chance)
     hasTarget = true
     for i = 1, #lastPed, 1 do
         if lastPed[i] == ped then
@@ -157,7 +156,7 @@ function SellToPed(ped)
 
     local succesChance = math.random(1, 20)
 
-    local scamChance = math.random(1, 3)
+    local scamChance = math.random(1, 5)
 
     local getRobbed = math.random(1, 20)
 
@@ -177,7 +176,7 @@ function SellToPed(ped)
     end
     
     local randomPrice = math.random(11, 20) * bagAmount
-    if scamChance == 3 then
+    if scamChance == 5 then
        randomPrice = math.random(3, 11) * bagAmount
     end
 
@@ -250,8 +249,8 @@ function SellToPed(ped)
                 table.insert(lastPed, ped)
                 break
             else
-                if pedDist < 1.5 then
-                    DrawText3D(pedCoords.x, pedCoords.y, pedCoords.z, '[E] '..bagAmount..'x '..currentOfferDrug.label..' voor €'..randomPrice..'? / [G] Aanbod afwijzen')
+                if pedDist < 1.5 and math.random(1, 100) <= chance then
+                    QBCore.Functions.DrawText3D(pedCoords.x, pedCoords.y, pedCoords.z, '[E] '..bagAmount..'x '..currentOfferDrug.label..' voor €'..randomPrice..'? / [G] Aanbod afwijzen')
                     if IsControlJustPressed(0, Keys["E"]) then
                         QBCore.Functions.Notify('Aanbod geaccepteerd!', 'success')
                         TriggerServerEvent('qb-drugs:server:sellCornerDrugs', availableDrugs[drugType].item, bagAmount, randomPrice)
@@ -279,6 +278,12 @@ function SellToPed(ped)
                         table.insert(lastPed, ped)
                         break
                     end
+                else
+                    hasTarget = false
+                    SetPedKeepTask(ped, false)
+                    SetEntityAsNoLongerNeeded(ped)
+                    ClearPedTasksImmediately(ped)
+                    table.insert(lastPed, ped)
                 end
             end
             

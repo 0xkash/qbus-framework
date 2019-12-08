@@ -14,11 +14,11 @@ Citizen.CreateThread(function()
 			if IsEntityDead(playerPed) and not isDead then
 				local killer, killerWeapon = NetworkGetEntityKillerOfPlayer(player)
                 local killerId = NetworkGetPlayerIndexFromPed(killer)
-                local killerName = killerId ~= -1 and GetPlayerName(killerId) or "Zichzelf of NPC"
+                local killerName = killerId ~= -1 and GetPlayerName(killerId) .. " " .. "("..GetPlayerServerId(killerId)..")" or "Zichzelf of NPC"
                 local weaponLabel = QBCore.Shared.Weapons[killerWeapon] ~= nil and QBCore.Shared.Weapons[killerWeapon]["label"] or "Unknown"
                 local weaponName = QBCore.Shared.Weapons[killerWeapon] ~= nil and QBCore.Shared.Weapons[killerWeapon]["name"] or "Unknown_Weapon"
-                TriggerServerEvent("qb-log:server:CreateLog", "death", GetPlayerName(player) .. " is dood", "red", "**".. killerName .. "** heeft ".. GetPlayerName(player) .." vermoord met **".. weaponLabel .. "** (" .. weaponName .. ")")
-
+                TriggerServerEvent("qb-log:server:CreateLog", "death", GetPlayerName(player) .. " ("..GetPlayerServerId(player)..") is dood", "red", "**".. killerName .. "** heeft ".. GetPlayerName(player) .." vermoord met **".. weaponLabel .. "** (" .. weaponName .. ")")
+ 
                 deathTime = Config.DeathTime
 
                 OnDeath()
