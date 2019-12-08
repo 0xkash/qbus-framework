@@ -64,7 +64,7 @@ Config.RegenRate = 0.0
     HealthDamage : How Much Damage To Direct HP Must Be Applied Before Checks For Damage Happens
     ArmorDamage : How Much Damage To Armor Must Be Applied Before Checks For Damage Happens | NOTE: This will in turn make stagger effect with armor happen only after that damage occurs
 ]]
-Config.HealthDamage = 2
+Config.HealthDamage = 5
 Config.ArmorDamage = 5
 
 --[[
