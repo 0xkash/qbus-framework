@@ -15,6 +15,9 @@ Config.Locations = {
         [3] = {x = 314.58, y = -584.09, z = 43.53, h = 335.65, taken = false, model = 1631638868},
         [4] = {x = 317.74, y = -585.29, z = 43.53, h = 335.65, taken = false, model = 1631638868},
         [5] = {x = 319.47, y = -581.04, z = 43.53, h = 164.5, taken = false, model = 1631638868}, 
+        [6] = {x = 366.43, y = -581.54, z = 43.28, h = 66.5, taken = false, model = 1631638868}, 
+        [7] = {x = 364.93, y = -585.86, z = 43.28, h = 67.5, taken = false, model = 1631638868}, 
+        [8] = {x = 363.82, y = -589.09, z = 43.28, h = 68.5, taken = false, model = 1631638868},
     }
 }
 
@@ -61,7 +64,7 @@ Config.RegenRate = 0.0
     HealthDamage : How Much Damage To Direct HP Must Be Applied Before Checks For Damage Happens
     ArmorDamage : How Much Damage To Armor Must Be Applied Before Checks For Damage Happens | NOTE: This will in turn make stagger effect with armor happen only after that damage occurs
 ]]
-Config.HealthDamage = 2
+Config.HealthDamage = 5
 Config.ArmorDamage = 5
 
 --[[

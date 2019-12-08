@@ -71,6 +71,14 @@ Config.MenuItems = {
                         shouldClose = true,
                     },
                     {
+                        id    = 'playeroutvehicle',
+                        title = 'Haal uit voertuig',
+                        icon = '#general',
+                        type = 'client',
+                        event = 'police:client:SetPlayerOutVehicle',
+                        shouldClose = true,
+                    },
+                    {
                         id    = 'stealplayer',
                         title = 'Beroven',
                         icon = '#general',

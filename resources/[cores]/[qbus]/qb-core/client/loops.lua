@@ -17,3 +17,14 @@ Citizen.CreateThread(function()
 		end
 	end
 end)
+
+Citizen.CreateThread(function()
+	while true do
+		Citizen.Wait(math.random(1000, 3000))
+		if isLoggedIn then
+			if QBCore.Functions.GetPlayerData().metadata["hunger"] <= 0 or QBCore.Functions.GetPlayerData().metadata["thirst"] <= 0 then
+				SetEntityHealth(GetPlayerPed(-1), GetEntityHealth(GetPlayerPed(-1)) - math.random(1, 10))
+			end
+		end
+	end
+end)

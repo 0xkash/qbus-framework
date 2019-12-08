@@ -14,15 +14,20 @@ Config = {}
 
 Config.Rewards = {
     ["cabin"] = {
-        "joint",
-        "tosti",
         "plastic",
+        "diamond_ring",
+        "goldchain",
     },
     ["kitchen"] = {
         "tosti",
+        "sandwich",
+        "goldchain",
     },
     ["chest"] = {
         "plastic",
+        "rolex",
+        "diamond_ring",
+        "goldchain",
     },
 }
 
@@ -1038,7 +1043,9 @@ Config.MaleNoHandshoes = {
     [13] = true,
     [14] = true,
     [15] = true,
+    [16] = true,
     [18] = true,
+    [26] = true,
     [52] = true,
     [53] = true,
     [54] = true,

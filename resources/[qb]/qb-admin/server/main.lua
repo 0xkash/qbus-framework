@@ -78,16 +78,8 @@ end, "admin")
 
 QBCore.Commands.Add("report", "Stuur een report naar admins (alleen wanneer nodig, MAAK HIER GEEN MISBRUIK VAN)", {{name="bericht", help="Bericht die je wilt sturen"}}, true, function(source, args)
     local msg = table.concat(args, " ")
-    for k, v in pairs(QBCore.Functions.GetPlayers()) do
-        local Player = QBCore.Functions.GetPlayer(v)
-        if Player ~= nil then 
-            if QBCore.Functions.HasPermission(v, "admin") then
-                if QBCore.Functions.IsOptin(source) then 
-                    TriggerClientEvent('chatMessage', v, "REPORT - " .. GetPlayerName(source) .. " ("..source..")", "report", msg)
-                end
-            end
-        end
-    end
+
+    TriggerClientEvent('qb-admin:client:SendReport', -1, GetPlayerName(source), source, msg)
     TriggerClientEvent('chatMessage', source, "REPORT VERSTUURD", "normal", msg)
 end)
 
@@ -163,4 +155,16 @@ end)
 RegisterServerEvent('qb-admin:server:OpenSkinMenu')
 AddEventHandler('qb-admin:server:OpenSkinMenu', function(targetId)
     TriggerClientEvent("qb-clothing:client:openMenu", targetId)
+end)
+
+RegisterServerEvent('qb-admin:server:SendReport')
+AddEventHandler('qb-admin:server:SendReport', function(name, targetSrc, msg)
+    local src = source
+    local Players = QBCore.Functions.GetPlayers()
+
+    if QBCore.Functions.HasPermission(src, "admin") then
+        if QBCore.Functions.IsOptin(src) then
+            TriggerClientEvent('chatMessage', src, "REPORT - "..name.." ("..targetSrc..")", "report", msg)
+        end
+    end
 end)

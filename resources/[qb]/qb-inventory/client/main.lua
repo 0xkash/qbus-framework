@@ -433,7 +433,7 @@ AddEventHandler("inventory:client:ShowDriverLicense", function(sourceId, citizen
     if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, sourcePos.x, sourcePos.y, sourcePos.z, true) < 2.0) then
         TriggerEvent('chat:addMessage', {
             template = '<div class="chat-message advert"><div class="chat-message-body"><strong>{0}:</strong><br><br> <strong>Voornaam:</strong> {1} <br><strong>Achternaam:</strong> {2} <br><strong>Geboortedag:</strong> {3} <br><strong>Rijbwijzen:</strong> {4}</div></div>',
-            args = {'Rijbwijs', character.firstname, character.lastname, character.birthdate, character.type}
+            args = {'Rijbewijs', character.firstname, character.lastname, character.birthdate, character.type}
         })
     end
 end)

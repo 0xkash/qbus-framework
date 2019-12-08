@@ -13,7 +13,12 @@ Citizen.CreateThread(function()
 			local playerPed = PlayerPedId()
 			if IsEntityDead(playerPed) and not isDead then
 				local killer, killerWeapon = NetworkGetEntityKillerOfPlayer(player)
-                --local killerServerId = NetworkGetPlayerIndexFromPed(killer)
+                local killerId = NetworkGetPlayerIndexFromPed(killer)
+                local killerName = killerId ~= -1 and GetPlayerName(killerId) or "Zichzelf of NPC"
+                local weaponLabel = QBCore.Shared.Weapons[killerWeapon] ~= nil and QBCore.Shared.Weapons[killerWeapon]["label"] or "Unknown"
+                local weaponName = QBCore.Shared.Weapons[killerWeapon] ~= nil and QBCore.Shared.Weapons[killerWeapon]["name"] or "Unknown_Weapon"
+                TriggerServerEvent("qb-log:server:CreateLog", "death", GetPlayerName(player) .. " is dood", "red", "**".. killerName .. "** heeft ".. GetPlayerName(player) .." vermoord met **".. weaponLabel .. "** (" .. weaponName .. ")")
+
                 deathTime = Config.DeathTime
 
                 OnDeath()
@@ -35,6 +40,7 @@ Citizen.CreateThread(function()
             EnableControlAction(0, Keys['E'], true)
             EnableControlAction(0, Keys['ESC'], true)
             EnableControlAction(0, Keys['F1'], true)
+            EnableControlAction(0, Keys['HOME'], true)
 
             if not isInHospitalBed then 
                 if deathTime > 0 then
