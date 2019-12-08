@@ -577,3 +577,8 @@ AddEventHandler('qb-admin:client:Freeze', function(toggle)
         FreezeEntityPosition(ped, toggle)
     end
 end)
+
+RegisterNetEvent('qb-admin:client:SendReport')
+AddEventHandler('qb-admin:client:SendReport', function(name, src, msg)
+    TriggerServerEvent('qb-admin:server:SendReport', name, src, msg)
+end)
