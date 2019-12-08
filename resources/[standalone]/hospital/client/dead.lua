@@ -17,7 +17,7 @@ Citizen.CreateThread(function()
                 local killerName = killerId ~= -1 and GetPlayerName(killerId) or "Zichzelf of NPC"
                 local weaponLabel = QBCore.Shared.Weapons[killerWeapon] ~= nil and QBCore.Shared.Weapons[killerWeapon]["label"] or "Unknown"
                 local weaponName = QBCore.Shared.Weapons[killerWeapon] ~= nil and QBCore.Shared.Weapons[killerWeapon]["name"] or "Unknown_Weapon"
-                TriggerServerEvent("qb-log:server:CreateLog", "death", GetPlayerName(player) .. " is dood", "red", "**".. killerName .. "** heeft een hem vermoord met **".. weaponLabel .. "** (" .. weaponName .. ")")
+                TriggerServerEvent("qb-log:server:CreateLog", "death", GetPlayerName(player) .. " is dood", "red", "**".. killerName .. "** heeft ".. GetPlayerName(player) .." vermoord met **".. weaponLabel .. "** (" .. weaponName .. ")")
 
                 deathTime = Config.DeathTime
 
