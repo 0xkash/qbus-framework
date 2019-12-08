@@ -28,10 +28,8 @@ const combo = [];
 
 Padlock.Open = function(data) {
     CurrentType = "padlock"
-    for (let i = 0; i < comboArr.length; ++i) {
-        if ($(".num" + (i + 1)).hasClass("found")) {
-            $(".num" + (i + 1)).removeClass("found");
-        }
+    if ($(".combonum").hasClass("found")) {
+        $(".combonum").removeClass("found");
     }
     combo = [];
     $("#padlock").css("display", "block");
