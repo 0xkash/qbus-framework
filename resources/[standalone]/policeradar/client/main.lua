@@ -479,43 +479,51 @@ end )
 Citizen.CreateThread( function()
     while true do 
         -- These control pressed natives must be the disabled check ones. 
+        if QBCore ~= nil then 
+            -- LCtrl is pressed and M has just been pressed 
+            if ( IsDisabledControlPressed( 0, Keys["LEFTCTRL"] ) and IsDisabledControlJustPressed( 0, Keys["7"] ) ) then 
+                if QBCore.Functions.GetPlayerData().job.name == "police" and QBCore.Functions.GetPlayerData().job.onduty then
+                    TriggerEvent( 'wk:radarRC' )
+                end
+            end 
 
-        -- LCtrl is pressed and M has just been pressed 
-        if ( IsDisabledControlPressed( 0, Keys["LEFTCTRL"] ) and IsDisabledControlJustPressed( 0, Keys["7"] ) ) then 
-            TriggerEvent( 'wk:radarRC' )
-        end 
+            -- LCtrl is not being pressed and M has just been pressed 
+            if ( not IsDisabledControlPressed( 0, Keys["LEFTCTRL"] ) and IsDisabledControlJustPressed( 0, Keys["7"] ) ) then 
+                if QBCore.Functions.GetPlayerData().job.name == "police" and QBCore.Functions.GetPlayerData().job.onduty then
+                    ResetFrontFast()
+                    ResetRearFast()
+                end
+            end 
 
-        -- LCtrl is not being pressed and M has just been pressed 
-        if ( not IsDisabledControlPressed( 0, Keys["LEFTCTRL"] ) and IsDisabledControlJustPressed( 0, Keys["7"] ) ) then 
-            ResetFrontFast()
-            ResetRearFast()
-        end 
-
-        if ( not IsDisabledControlPressed( 0, Keys["LEFTCTRL"] ) and IsDisabledControlJustPressed( 0, Keys["8"] ) ) then 
-            radarInfo.plateLocked = not radarInfo.plateLocked
-            if (radarInfo.plateLocked) then
-                SendNUIMessage( { lockPlate = true } )
-                radarInfo.lockedPlate = radarInfo.fwdPlate
-            else
-                SendNUIMessage( { unlockPlate = true } )
+            if ( not IsDisabledControlPressed( 0, Keys["LEFTCTRL"] ) and IsDisabledControlJustPressed( 0, Keys["8"] ) ) then 
+                if QBCore.Functions.GetPlayerData().job.name == "police" and QBCore.Functions.GetPlayerData().job.onduty then
+                    radarInfo.plateLocked = not radarInfo.plateLocked
+                    if (radarInfo.plateLocked) then
+                        SendNUIMessage( { lockPlate = true } )
+                        radarInfo.lockedPlate = radarInfo.fwdPlate
+                    else
+                        SendNUIMessage( { unlockPlate = true } )
+                    end
+                end
             end
+
+            local ped = GetPlayerPed( -1 )
+            local inVeh = IsPedSittingInAnyVehicle( ped )
+            local veh = nil 
+
+            if ( inVeh ) then
+                veh = GetVehiclePedIsIn( ped, false )
+            end 
+
+            if ( ( (not inVeh or (inVeh and GetVehicleClass( veh ) ~= 18)) and radarEnabled and not hidden) or IsPauseMenuActive() and radarEnabled ) then 
+                hidden = true 
+                SendNUIMessage( { hideradar = true } )
+            elseif ( inVeh and GetVehicleClass( veh ) == 18 and radarEnabled and hidden ) then 
+                hidden = false 
+                SendNUIMessage( { hideradar = false } )
+            end 
         end
-
-        local ped = GetPlayerPed( -1 )
-        local inVeh = IsPedSittingInAnyVehicle( ped )
-        local veh = nil 
-
-        if ( inVeh ) then
-            veh = GetVehiclePedIsIn( ped, false )
-        end 
-
-        if ( ( (not inVeh or (inVeh and GetVehicleClass( veh ) ~= 18)) and radarEnabled and not hidden) or IsPauseMenuActive() and radarEnabled ) then 
-            hidden = true 
-            SendNUIMessage( { hideradar = true } )
-        elseif ( inVeh and GetVehicleClass( veh ) == 18 and radarEnabled and hidden ) then 
-            hidden = false 
-            SendNUIMessage( { hideradar = false } )
-        end 
+        
 
         Citizen.Wait( 0 )
     end 
