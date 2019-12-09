@@ -3,7 +3,6 @@ TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 
 Citizen.CreateThread(function()
     while true do 
-        Citizen.Wait(2500)
         GenerateVehicleList()
         Citizen.Wait((1000 * 60) * 60)
     end

@@ -98,18 +98,20 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 				secondInv.inventory = {}
 				secondInv.slots = 0
 			else
-				if IsVehicleOwned(id) and next(GetOwnedVehicleItems(id)) ~= nil then
-					secondInv.inventory = GetOwnedVehicleItems(id)
-					Trunks[id] = {}
-					Trunks[id].items = GetOwnedVehicleItems(id)
-					Trunks[id].isOpen = true
-				elseif Trunks[id] ~= nil and not Trunks[id].isOpen then
-					secondInv.inventory = Trunks[id].items
-					Trunks[id].isOpen = true
-				else
-					Trunks[id] = {}
-					Trunks[id].items = {}
-					Trunks[id].isOpen = true
+				if id ~= nil then 
+					if IsVehicleOwned(id) and next(GetOwnedVehicleItems(id)) ~= nil then
+						secondInv.inventory = GetOwnedVehicleItems(id)
+						Trunks[id] = {}
+						Trunks[id].items = GetOwnedVehicleItems(id)
+						Trunks[id].isOpen = true
+					elseif Trunks[id] ~= nil and not Trunks[id].isOpen then
+						secondInv.inventory = Trunks[id].items
+						Trunks[id].isOpen = true
+					else
+						Trunks[id] = {}
+						Trunks[id].items = {}
+						Trunks[id].isOpen = true
+					end
 				end
 			end
 		elseif name == "glovebox" then
