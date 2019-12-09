@@ -307,6 +307,11 @@ function VehicleList(isDown)
 end
 
 function TakeOutVehicle(vehicleInfo)
+    TriggerServerEvent('qb-trucker:server:DoBail', true, vehicleInfo)
+end
+
+RegisterNetEvent('qb-trucker:client:DoBail')
+AddEventHandler('qb-trucker:client:DoBail', function(vehicleInfo)
     local coords = Config.Locations["vehicle"].coords
     QBCore.Functions.SpawnVehicle(vehicleInfo, function(veh)
         SetVehicleNumberPlateText(veh, "TRUK"..tostring(math.random(1000, 9999)))
@@ -318,9 +323,8 @@ function TakeOutVehicle(vehicleInfo)
         SetVehicleEngineOn(veh, true, true)
         CurrentPlate = GetVehicleNumberPlateText(veh)
         getNewLocation()
-        TriggerServerEvent('qb-trucker:server:DoBail', true)
     end, coords, true)
-end
+end)
 
 function closeMenuFull()
     Menu.hidden = true
