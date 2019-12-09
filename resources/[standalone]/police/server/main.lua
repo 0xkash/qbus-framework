@@ -495,7 +495,7 @@ end)
 RegisterServerEvent('police:server:showFingerprintId')
 AddEventHandler('police:server:showFingerprintId', function(sessionId)
     local src = source
-    local Player = QBCore.Functions.GetPlayer(sessionId)
+    local Player = QBCore.Functions.GetPlayer(src)
     local fid = Player.PlayerData.metadata["fingerprint"]
 
     TriggerClientEvent('police:client:showFingerprintId', sessionId, fid)
