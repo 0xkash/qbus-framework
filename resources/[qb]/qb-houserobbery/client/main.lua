@@ -202,7 +202,7 @@ end
 RegisterNetEvent('lockpicks:UseLockpick')
 AddEventHandler('lockpicks:UseLockpick', function()
     QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
-        if CurrentCops >= 2 then
+        if CurrentCops >= 0 then
             if closestHouse ~= nil then
                 if result then
                     if not Config.Houses[closestHouse]["opened"] then
@@ -219,6 +219,8 @@ AddEventHandler('lockpicks:UseLockpick', function()
                     QBCore.Functions.Notify('Het lijkt erop dat je iets mist...', 'error', 3500)
                 end
             end
+        else
+            QBCore.Functions.Notify('Niet genoeg agenten..', 'error', 3500)
         end
     end, "screwdriverset")
 end)

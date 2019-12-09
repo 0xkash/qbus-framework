@@ -128,6 +128,15 @@ AddEventHandler('QBCore:Player:UpdatePlayerPosition', function()
 	TriggerServerEvent('QBCore:UpdatePlayerPosition', position)
 end)
 
+RegisterNetEvent('QBCore:Client:LocalOutOfCharacter')
+AddEventHandler('QBCore:Client:LocalOutOfCharacter', function(playerId, playerName, message)
+	local sourcePos = GetEntityCoords(GetPlayerPed(GetPlayerFromServerId(playerId)), false)
+    local pos = GetEntityCoords(GetPlayerPed(-1), false)
+    if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, sourcePos.x, sourcePos.y, sourcePos.z, true) < 20.0) then
+		TriggerEvent("chatMessage", "OOC | " .. playerName, "normal", message)
+    end
+end)
+
 RegisterNetEvent('QBCore:Notify')
 AddEventHandler('QBCore:Notify', function(text, type, length)
 	QBCore.Functions.Notify(text, type, length)

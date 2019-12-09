@@ -1,6 +1,12 @@
 QBBoatshop = QBBoatshop or {}
 QBDiving = QBDiving or {}
 
+QBBoatshop.PoliceBoat = {
+    x = -800.67, 
+    y = -1494.54, 
+    z = 1.59,
+}
+
 QBBoatshop.Docks = {
     ["lsymc"] = {
         label = "LSYMC Boothuis",

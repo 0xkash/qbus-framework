@@ -33,6 +33,8 @@ AddEventHandler("QBCore:Client:OnPlayerLoaded", function()
         TriggerEvent('qb-diving:client:SetDivingLocation', Area)
     end)
 
+    PlayerJob = QBCore.Functions.GetPlayerData().job
+
     isLoggedIn = true
 end)
 

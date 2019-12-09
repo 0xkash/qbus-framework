@@ -18,10 +18,10 @@ AddEventHandler('qb-houserobbery:server:searchCabin', function(cabin, house)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     local luck = math.random(1, 10)
-    local itemFound = math.random(1, 2)
+    local itemFound = math.random(1, 4)
     local itemCount = 1
 
-    if itemFound == 1 then
+    if itemFound < 4 then
         if luck == 10 then
             itemCount = 3
         elseif luck >= 6 and luck <= 9 then
