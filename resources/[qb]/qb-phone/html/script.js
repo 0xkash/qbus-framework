@@ -12,6 +12,7 @@ var curBg = "bg-1";
 var selectedContact = null;
 
 var suggestedNumber = null;
+var suggestedBank = null;
 
 var currentChatNumber = null;
 
@@ -170,6 +171,12 @@ $(document).ready(function(){
             $(".suggestedContact").fadeIn(250);
         }
 
+        if (suggestedBankAccountNotify) {
+            suggestedBank = eventData.nr
+            $(".suggestedBank").css({"bottom":"40%"});
+            $(".suggestedBank").fadeIn(250);
+        }
+
         if (eventData.task == "OpenPayPhone") {
             qbPhone.OpenPayPhone();
         }
@@ -228,6 +235,38 @@ $(document).on('click', '#suggestedContact-deny', function(e){
     $(".suggestedContact").fadeOut(250);
     $(".suggestedContact").css({"bottom":"-40%"});
 })
+
+$(document).on('click', '#suggestedBank-accept', function(e){
+    e.preventDefault();
+
+    $(".suggestedBank").fadeOut(250);
+    $(".suggestedBank").css({"bottom":"-40%"});
+    
+    $.post('http://qb-phone/getBankData');
+
+    $(".bank-app").css({'display':'block'}).animate({
+        top: "3%",
+    }, 250, function(){
+        $('.transfer-money-container').css({"display":"block"}).animate({top: "18.5%",}, 250);
+        setTimeout(function(){
+            $(".iban-input").val(suggestedBank);
+            $(".euro-amount-input").val("");
+        }, 100)
+    });
+
+    qbPhone.succesSound();
+
+    currentApp = ".bank-app";
+})
+
+$(document).on('click', '#suggestedBank-deny', function(e){
+    e.preventDefault();
+
+    suggestedBank = null;
+
+    $(".suggestedBank").fadeOut(250);
+    $(".suggestedBank").css({"bottom":"-40%"});
+});
 
 $(document).on('click', '.app', function(e){
     e.preventDefault();
@@ -770,7 +809,7 @@ $(document).on('click', '.bank-transfer-btn', function(e){
 $(document).on('click', '.submit-transfer-btn', function(e){
     var ibanVal = $(".iban-input").val();
     var amountVal = $(".euro-amount-input").val();
-    var balance = $(".account-balance").val();
+    var balance = parseInt($(".account-balance").data('balance'));
 
     if (ibanVal != "" && amountVal != "") {
         if (!isNaN(amountVal)) {
@@ -1164,7 +1203,7 @@ qbPhone.setupPlayerContacts = function(contacts) {
 var timeout = null;
 
 qbPhone.Notify = function(title, type, message, wait) {
-    if (allowNotifys) {
+    // if (allowNotifys) {
         if (timeout != undefined) {
             clearTimeout(timeout);
         }
@@ -1201,12 +1240,13 @@ qbPhone.Notify = function(title, type, message, wait) {
                 });
             }, wait)
         }
-    }
+    // }
 }
 
 qbPhone.setBankData = function(playerData) {
     $(".account-name").html(playerData.charinfo.firstname+" "+playerData.charinfo.lastname);
     $(".account-balance").html("&euro; "+playerData.money.bank+",-");
+    $(".account-balance").data('balance', playerData.money.bank)
     $(".account-number").html(playerData.charinfo.account);
 }
 
@@ -1460,7 +1500,7 @@ qbPhone.CallScreen = function(callData) {
 }
 
 updateNewBalance = function() {
-    var balance = $(".account-balance").val();
+    var balance = parseInt($(".account-balance").data('balance'));
     var minAmount = $(".euro-amount-input").val();
     $("#new-balance").html(balance - minAmount);
 }

@@ -295,12 +295,35 @@ AddEventHandler('qb-phone:client:giveNumber', function(data)
     end
 end)
 
+RegisterNetEvent('qb-phone:client:giveBankAccount')
+AddEventHandler('qb-phone:client:giveBankAccount', function(data)
+    local ped = GetPlayerPed(-1)
+    local PlayerData = QBCore.Functions.GetPlayerData()
+
+    local player, distance = GetClosestPlayer()
+    if player ~= -1 and distance < 2.5 then
+        local playerId = GetPlayerServerId(player)
+        TriggerServerEvent('qb-phone:server:giveBankAccount', playerId, PlayerData)
+    else
+        QBCore.Functions.Notify("Niemand in de buurt!", "error")
+    end
+end)
+
 RegisterNetEvent('qb-phone:server:newContactNotify')
 AddEventHandler('qb-phone:server:newContactNotify', function(number)
     QBCore.Functions.Notify('[M] Je hebt een nieuw voorgesteld contactpersoon!')
     SendNUIMessage({
         task = "suggestedNumberNotify",
         number = number
+    })
+end)
+
+RegisterNetEvent('qb-phone:server:newBankNotify')
+AddEventHandler('qb-phone:server:newBankNotify', function(nr)
+    QBCore.Functions.Notify('[M] Je hebt een nieuw voorgesteld bankrekening nr.!')
+    SendNUIMessage({
+        task = "suggestedBankAccountNotify",
+        nr = nr
     })
 end)
 

@@ -53,6 +53,7 @@ Config.ArmoryWhitelist = {
     "IIX30678",
     "ZDK51919",
     "OBG68397",
+    "HHV33808",
 }
 
 Config.Helicopter = "pzulu"

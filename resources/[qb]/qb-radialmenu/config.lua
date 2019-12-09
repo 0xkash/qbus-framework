@@ -46,7 +46,7 @@ Config.MenuItems = {
                 title = 'Geef Bank nr.',
                 icon = '#banknr',
                 type = 'client',
-                event = 'qb-radialmenu:client:giveidkaart',
+                event = 'qb-phone:client:giveBankAccount',
                 shouldClose = true,
             },
             {

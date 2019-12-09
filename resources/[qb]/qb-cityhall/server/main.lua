@@ -58,6 +58,8 @@ end)
 
 RegisterServerEvent('qb-cityhall:server:ApplyJob')
 AddEventHandler('qb-cityhall:server:ApplyJob', function(job)
+
+    print(json.encode(QBCore.Shared.Jobs))
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     local JobInfo = QBCore.Shared.Jobs[job]
