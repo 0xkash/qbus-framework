@@ -123,9 +123,12 @@ Citizen.CreateThread(function()
                                 if #LocationsDone == #Config.Locations["stores"] then
                                     LocationsDone = {}
                                 end
-                                RemoveBlip(CurrentBlip)
+                                if CurrentBlip ~= nil then
+                                    RemoveBlip(CurrentBlip)
+                                    CurrentBlip = nil
+                                end
                             else
-                                QBCore.Functions.Notify("Je hebt nog geen werk gericht..", "error")
+                                QBCore.Functions.Notify("Je hebt nog geen werk verricht..", "error")
                             end
                         end
                     elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["main"].coords.x, Config.Locations["main"].coords.y, Config.Locations["main"].coords.z, true) < 2.5) then
@@ -190,7 +193,7 @@ Citizen.CreateThread(function()
                                                 table.insert(LocationsDone, CurrentLocation.id)
                                                 TriggerServerEvent("qb-shops:server:RestockShopItems", CurrentLocation.store)
                                                 QBCore.Functions.Notify("Je hebt alle producten afgeleverd, op naar het volgende punt")
-                                                if DoesBlipExist(CurrentBlip) then
+                                                if CurrentBlip ~= nil then
                                                     RemoveBlip(CurrentBlip)
                                                     CurrentBlip = nil
                                                 end
@@ -238,6 +241,10 @@ function getNewLocation()
         SetBlipRouteColour(CurrentBlip, 3)
     else
         QBCore.Functions.Notify("Je bent alle winkels langs gegaan.. Tijd voor je loonstrook!")
+        if CurrentBlip ~= nil then
+            RemoveBlip(CurrentBlip)
+            CurrentBlip = nil
+        end
     end
 end
 
@@ -318,6 +325,7 @@ function TakeOutVehicle(vehicleInfo)
         SetVehicleEngineOn(veh, true, true)
         CurrentPlate = GetVehicleNumberPlateText(veh)
         getNewLocation()
+        QBCore.Functions.Notify("Je route is ingesteld op je navigatie!")
         TriggerServerEvent('qb-trucker:server:DoBail', true)
     end, coords, true)
 end

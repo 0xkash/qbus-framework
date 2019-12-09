@@ -805,13 +805,17 @@ Citizen.CreateThread(function()
     while true do
 
         if IsControlJustPressed(0, Keys["M"]) then
-            QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
-                if result then
-                    openPhone(true)
-                else
-                    QBCore.Functions.Notify('Je hebt geen Telefoon', 'error')
-                end
-            end, "phone")
+            local isHandcuffed = QBCore.Functions.GetPlayerData().metadata["ishandcuffed"]
+
+            if not isHandcuffed then
+                QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
+                    if result then
+                        openPhone(true)
+                    else
+                        QBCore.Functions.Notify('Je hebt geen Telefoon', 'error')
+                    end
+                end, "phone")
+            end
         end
 
         Citizen.Wait(5)

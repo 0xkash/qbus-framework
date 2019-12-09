@@ -154,9 +154,3 @@ RegisterNetEvent("QBCore:Client:UseItem")
 AddEventHandler('QBCore:Client:UseItem', function(item)
 	TriggerServerEvent("QBCore:Server:UseItem", item)
 end)
-
-RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
-AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
-	ShutdownLoadingScreenNui()
-	isLoggedIn = true
-end)

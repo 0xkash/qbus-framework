@@ -25,6 +25,7 @@ isLoggedIn = false
 inJail = false
 jailTime = 0
 currentJob = "electrician"
+CellsBlip = nil
 
 --[[
 	Decrease jailtime every minute
@@ -45,6 +46,23 @@ Citizen.CreateThread(function()
 		end
 	end
 end)
+
+function CreateCellsBlip()
+	if CellsBlip ~= nil then
+		RemoveBlip(CellsBlip)
+	end
+	CellsBlip = AddBlipForCoord(Config.Locations["yard"].coords.x, Config.Locations["yard"].coords.y, Config.Locations["yard"].coords.z)
+
+	SetBlipSprite (CellsBlip, 402)
+	SetBlipDisplay(CellsBlip, 4)
+	SetBlipScale  (CellsBlip, 0.8)
+	SetBlipAsShortRange(CellsBlip, true)
+	SetBlipColour(CellsBlip, 1)
+
+	BeginTextCommandSetBlipName("STRING")
+	AddTextComponentSubstringPlayerName("Cellen")
+	EndTextCommandSetBlipName(CellsBlip)
+end
 
 --[[
 	Locations n stuff
@@ -194,6 +212,8 @@ AddEventHandler('prison:client:Enter', function(time)
 	TriggerServerEvent("prison:server:SaveJailItems", jailTime)
 
 	TriggerServerEvent("InteractSound_SV:PlayOnSource", "jail", 0.5)
+
+	CreateCellsBlip()
 	
 	Citizen.Wait(2000)
 
@@ -211,6 +231,8 @@ AddEventHandler('prison:client:Leave', function()
 		TriggerEvent("chatMessage", "SYSTEM", "warning", "Je hebt je bezit weer terug ontvangen..")
 		inJail = false
 		RemoveBlip(currentBlip)
+		RemoveBlip(CellsBlip)
+		CellsBlip = nil
 		QBCore.Functions.Notify("Je bent vrij! Geniet ervan :)")
 		DoScreenFadeOut(500)
 		while not IsScreenFadedOut() do
