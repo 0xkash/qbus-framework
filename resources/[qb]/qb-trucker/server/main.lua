@@ -11,11 +11,9 @@ AddEventHandler('qb-trucker:server:DoBail', function(bool)
     local Player = QBCore.Functions.GetPlayer(src)
 
     if bool then
-        if Player.PlayerData.money.cash >= Config.BailPrice then
-            Bail[Player.PlayerData.citizenid] = Config.BailPrice
-            Player.Functions.RemoveMoney('cash', Config.BailPrice)
-            TriggerClientEvent('QBCore:Notify', src, 'Je hebt de borg van 1000,- betaald', 'success')
-        end
+        Bail[Player.PlayerData.citizenid] = Config.BailPrice
+        Player.Functions.RemoveMoney('cash', Config.BailPrice)
+        TriggerClientEvent('QBCore:Notify', src, 'Je hebt de borg van 1000,- betaald', 'success')
     else
         if Bail[Player.PlayerData.citizenid] ~= nil then
             Player.Functions.AddMoney('cash', Bail[Player.PlayerData.citizenid])
