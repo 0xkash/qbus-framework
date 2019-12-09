@@ -11,6 +11,7 @@ body {
 
 .container {
   height: 100vh;
+  display:none;
 }
 
 #radio {

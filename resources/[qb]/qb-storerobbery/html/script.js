@@ -24,13 +24,11 @@ var Keypad = {}
 var Padlock = {}
 var CurrentType = ""
 
-const combo = [];
+var combo = [];
 
 Padlock.Open = function(data) {
     CurrentType = "padlock"
-    if ($(".combonum").hasClass("found")) {
-        $(".combonum").removeClass("found");
-    }
+    $(".combonum").removeClass("found");
     combo = [];
     $("#padlock").css("display", "block");
     $.each(data.combination, function(i, combi){
