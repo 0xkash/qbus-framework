@@ -48,13 +48,15 @@ Citizen.CreateThread(function()
 
         if not HasKey and IsPedInAnyVehicle(GetPlayerPed(-1), false) and GetPedInVehicleSeat(GetVehiclePedIsIn(GetPlayerPed(-1), false), -1) == GetPlayerPed(-1) and QBCore ~= nil and not IsHotwiring then
             local veh = GetVehiclePedIsIn(GetPlayerPed(-1), false)
+            SetVehicleEngineOn(veh, false, false, true)
+            --[[local veh = GetVehiclePedIsIn(GetPlayerPed(-1), false)
             local vehpos = GetOffsetFromEntityInWorldCoords(veh, 0, 1.5, 0.5)
             QBCore.Functions.DrawText3D(vehpos.x, vehpos.y, vehpos.z, "~g~H~w~ - Hotwire")
             SetVehicleEngineOn(veh, false, false, true)
 
             if IsControlJustPressed(0, Keys["H"]) then
                 Hotwire()
-            end
+            end]]--
         end
 
         if IsControlJustPressed(0, Keys["L"]) then
@@ -290,7 +292,7 @@ function LockpickIgnition()
         }, {}, {}, function() -- Done
             StopAnimTask(GetPlayerPed(-1), "anim@amb@clubhouse@tutorial@bkr_tut_ig3@", "machinic_loop_mechandplayer", 1.0)
             IsHotwiring = false
-            if math.random(1, 100) <= 75 then
+            if math.random(1, 100) <= 65 then
                 QBCore.Functions.Notify("Lockpick gelukt!")
                 HasKey = true
                 TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(vehicle))
@@ -347,9 +349,9 @@ end
 
 function PoliceCall()
     local pos = GetEntityCoords(GetPlayerPed(-1))
-    local chance = 50
+    local chance = 40
     if GetClockHours() >= 1 and GetClockHours() <= 6 then
-        chance = 10
+        chance = 5
     end
     if math.random(1, 100) <= chance then
         local closestPed = GetNearbyPed()

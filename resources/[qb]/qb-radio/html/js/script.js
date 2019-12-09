@@ -34,9 +34,13 @@ $(document).on('click', '#disconnect', function(e){
 });
 
 SlideUp = function() {
+    $(".container").css("display", "block");
     $("#radio").css({"display":"block"}).animate({bottom: "6vh",}, 250);
 }
 
 SlideDown = function() {
     $("#radio").animate({bottom: "-80vh",}, 400);
+    setTimeout(function() {
+        $(".container").css("display", "none");
+    }, 400);
 }

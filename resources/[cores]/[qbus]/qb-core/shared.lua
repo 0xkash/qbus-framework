@@ -2736,9 +2736,31 @@ QBShared.Vehicles = {
 		["trunkslots"] = 80,
 		["shop"] = "pdm",
 	},
+	["kamacho"] = {
+		["name"] = 'Kamacho', 
+		["price"] = 200000,
+		["category"] = "offroad",
+		["model"] = "kamacho",
+		["hash"] = GetHashKey("kamacho"),
+		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/0/07/FaggioMod-GTAO-front.png",
+		["trunkspace"] = 100000,
+		["trunkslots"] = 80,
+		["shop"] = "pdm",
+	},
 }
 
 QBShared.VehicleModels = {
+	[GetHashKey("kamacho")] = {
+		["name"] = 'Kamacho', 
+		["price"] = 200000,
+		["category"] = "offroad",
+		["model"] = "kamacho",
+		["hash"] = GetHashKey("kamacho"),
+		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/4/47/Kamacho-GTAO-front.png",
+		["trunkspace"] = 100000,
+		["trunkslots"] = 80,
+		["shop"] = "pdm",
+	},
 	[GetHashKey("bifta")] = {
 		["name"] = 'Bifta', 
 		["brand"] = "Annis",

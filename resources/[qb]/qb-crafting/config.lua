@@ -12,6 +12,7 @@ Config.CraftingItems = {
         type = "item",
         slot = 1,
         threshold = 0,
+        points = 1,
     },
     [2] = {
         name = "screwdriverset",
@@ -24,6 +25,7 @@ Config.CraftingItems = {
         type = "item",
         slot = 2,
         threshold = 0,
+        points = 2,
     },
     [3] = {
         name = "electronickit",
@@ -37,6 +39,7 @@ Config.CraftingItems = {
         type = "item",
         slot = 3,
         threshold = 0,
+        points = 3,
     },
     [4] = {
         name = "radioscanner",
@@ -50,6 +53,7 @@ Config.CraftingItems = {
         type = "item",
         slot = 4,
         threshold = 0,
+        points = 4,
     },
     [5] = {
         name = "gatecrack",
@@ -65,6 +69,7 @@ Config.CraftingItems = {
         type = "item",
         slot = 5,
         threshold = 200,
+        points = 5,
     },
     [6] = {
         name = "handcuffs",
@@ -78,6 +83,7 @@ Config.CraftingItems = {
         type = "item",
         slot = 6,
         threshold = 250,
+        points = 6,
     },
     [7] = {
         name = "repairkit",
@@ -91,6 +97,7 @@ Config.CraftingItems = {
         type = "item",
         slot = 7,
         threshold = 300,
+        points = 7,
     },
     [8] = {
         name = "pistol_ammo",
@@ -104,6 +111,7 @@ Config.CraftingItems = {
         type = "item",
         slot = 8,
         threshold = 350,
+        points = 8,
     },
     [9] = {
         name = "ironoxide",
@@ -116,6 +124,7 @@ Config.CraftingItems = {
         type = "item",
         slot = 9,
         threshold = 400,
+        points = 9,
     },
     [10] = {
         name = "aluminumoxide",
@@ -128,6 +137,7 @@ Config.CraftingItems = {
         type = "item",
         slot = 10,
         threshold = 400,
+        points = 10,
     },
     [11] = {
         name = "armor",
@@ -142,5 +152,6 @@ Config.CraftingItems = {
         type = "item",
         slot = 11,
         threshold = 450,
+        points = 11,
     },
 }

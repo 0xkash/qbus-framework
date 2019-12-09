@@ -34,7 +34,7 @@ AddEventHandler('inventory:server:combineItem', function(item, fromItem, toItem)
 end)
 
 RegisterServerEvent("inventory:server:CraftItems")
-AddEventHandler('inventory:server:CraftItems', function(itemName, itemCosts, amount, toSlot)
+AddEventHandler('inventory:server:CraftItems', function(itemName, itemCosts, amount, toSlot, points)
 	local src = source
 	local Player = QBCore.Functions.GetPlayer(src)
 	local amount = tonumber(amount)
@@ -43,7 +43,7 @@ AddEventHandler('inventory:server:CraftItems', function(itemName, itemCosts, amo
 			Player.Functions.RemoveItem(k, (v*amount))
 		end
 		Player.Functions.AddItem(itemName, amount, toSlot)
-		Player.Functions.SetMetaData("craftingrep", Player.PlayerData.metadata["craftingrep"]+1)
+		Player.Functions.SetMetaData("craftingrep", Player.PlayerData.metadata["craftingrep"]+(points*amount))
 		TriggerClientEvent("inventory:client:UpdatePlayerInventory", src, false)
 	end
 end)
@@ -98,18 +98,20 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 				secondInv.inventory = {}
 				secondInv.slots = 0
 			else
-				if IsVehicleOwned(id) and next(GetOwnedVehicleItems(id)) ~= nil then
-					secondInv.inventory = GetOwnedVehicleItems(id)
-					Trunks[id] = {}
-					Trunks[id].items = GetOwnedVehicleItems(id)
-					Trunks[id].isOpen = true
-				elseif Trunks[id] ~= nil and not Trunks[id].isOpen then
-					secondInv.inventory = Trunks[id].items
-					Trunks[id].isOpen = true
-				else
-					Trunks[id] = {}
-					Trunks[id].items = {}
-					Trunks[id].isOpen = true
+				if id ~= nil then 
+					if IsVehicleOwned(id) and next(GetOwnedVehicleItems(id)) ~= nil then
+						secondInv.inventory = GetOwnedVehicleItems(id)
+						Trunks[id] = {}
+						Trunks[id].items = GetOwnedVehicleItems(id)
+						Trunks[id].isOpen = true
+					elseif Trunks[id] ~= nil and not Trunks[id].isOpen then
+						secondInv.inventory = Trunks[id].items
+						Trunks[id].isOpen = true
+					else
+						Trunks[id] = {}
+						Trunks[id].items = {}
+						Trunks[id].isOpen = true
+					end
 				end
 			end
 		elseif name == "glovebox" then
@@ -600,7 +602,7 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 	elseif fromInventory == "crafting" then
 		local itemData = CraftItems[fromSlot]
 		if hasCraftItems(src, itemData.costs, fromAmount) then
-			TriggerClientEvent("inventory:client:CraftItems", src, itemData.name, itemData.costs, fromAmount, toSlot)
+			TriggerClientEvent("inventory:client:CraftItems", src, itemData.name, itemData.costs, fromAmount, toSlot, itemData.points)
 		else
 			TriggerClientEvent("inventory:client:UpdatePlayerInventory", src, true)
 			TriggerClientEvent('QBCore:Notify', src, "Je hebt niet de juiste items..", "error")

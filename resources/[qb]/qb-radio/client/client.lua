@@ -47,7 +47,7 @@ RegisterNUICallback('joinRadio', function(data, cb)
           else
             QBCore.Functions.Notify(Config.messages['joined_to_radio'] .. data.channel .. '.00 MHz </b>', 'success')
           end
-        elseif not (PlayerData.job.name == 'police' or PlayerData.job.name == 'ambulance') then
+        else
           QBCore.Functions.Notify(Config.messages['restricted_channel_error'], 'error')
         end
       end

@@ -7,9 +7,8 @@ local blackoutActive = false
 
 Citizen.CreateThread(function()
     while true do
-        Citizen.Wait(5000)
+        Citizen.Wait(1000 * 60 * 10)
         if blackoutActive then
-            Citizen.Wait(1000 * 60 * 10)
             TriggerEvent("qb-weathersync:server:toggleBlackout")
             TriggerClientEvent("police:client:EnableAllCameras", -1)
             TriggerClientEvent("qb-bankrobbery:client:enableAllBankSecurity", -1)

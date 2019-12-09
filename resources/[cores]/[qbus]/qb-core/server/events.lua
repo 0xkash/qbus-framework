@@ -112,6 +112,9 @@ AddEventHandler('QBCore:UpdatePlayer', function(data)
 		Player.Functions.SetMetaData("thirst", newThirst)
 		Player.Functions.SetMetaData("hunger", newHunger)
 
+		Player.Functions.AddMoney("bank", Player.PlayerData.job.payment)
+		TriggerClientEvent('QBCore:Notify', src, "Je hebt je salaris ontvangen van €"..Player.PlayerData.job.payment)
+
 		Player.Functions.Save()
 	end
 end)

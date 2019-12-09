@@ -104,12 +104,15 @@ RegisterServerEvent('qb-diving:server:SetBoatState')
 AddEventHandler('qb-diving:server:SetBoatState', function(plate, state, boathouse)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-
-    QBCore.Functions.ExecuteSql("UPDATE `player_boats` SET `state` = '"..state.."' WHERE `plate` = '"..plate.."' AND `citizenid` = '"..Player.PlayerData.citizenid.."'")
+    QBCore.Functions.ExecuteSql("SELECT * FROM `player_boats` WHERE `plate` = '"..plate.."'", function(result)
+        if result[1] ~= nil then
+            QBCore.Functions.ExecuteSql("UPDATE `player_boats` SET `state` = '"..state.."' WHERE `plate` = '"..plate.."' AND `citizenid` = '"..Player.PlayerData.citizenid.."'")
     
-    if state == 1 then
-        QBCore.Functions.ExecuteSql("UPDATE `player_boats` SET `boathouse` = '"..boathouse.."' WHERE `plate` = '"..plate.."' AND `citizenid` = '"..Player.PlayerData.citizenid.."'")
-    end
+            if state == 1 then
+                QBCore.Functions.ExecuteSql("UPDATE `player_boats` SET `boathouse` = '"..boathouse.."' WHERE `plate` = '"..plate.."' AND `citizenid` = '"..Player.PlayerData.citizenid.."'")
+            end
+        end
+    end)
 end)
 
 RegisterServerEvent('qb-diving:server:CallCops')

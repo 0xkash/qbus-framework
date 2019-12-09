@@ -104,7 +104,7 @@
 				<Probabilities />
 			</plateProbabilities>
 			<lightSettings value="1" />
-			<sirenSettings value="1" />
+			<sirenSettings value="0" />
 		</Item>
 			<Item>
 			<modelName>deliveryt2</modelName>
@@ -208,7 +208,7 @@
 				<Probabilities />
 			</plateProbabilities>
 			<lightSettings value="1" />
-			<sirenSettings value="1" />
+			<sirenSettings value="0" />
 		</Item>
 			<Item>
 			<modelName>deliveryt3</modelName>
@@ -312,7 +312,7 @@
 				<Probabilities />
 			</plateProbabilities>
 			<lightSettings value="1" />
-			<sirenSettings value="1" />
+			<sirenSettings value="0" />
 		</Item>
 			<Item>
 			<modelName>deliveryt4</modelName>
@@ -416,7 +416,7 @@
 				<Probabilities />
 			</plateProbabilities>
 			<lightSettings value="1" />
-			<sirenSettings value="1" />
+			<sirenSettings value="0" />
 		</Item>
 			<Item>
 			<modelName>deliveryt5</modelName>
@@ -520,7 +520,7 @@
 				<Probabilities />
 			</plateProbabilities>
 			<lightSettings value="1" />
-			<sirenSettings value="1" />
+			<sirenSettings value="0" />
 		</Item>
 			<Item>
 			<modelName>deliverytrailer1</modelName>
@@ -624,7 +624,7 @@
 				<Probabilities />
 			</plateProbabilities>
 			<lightSettings value="1" />
-			<sirenSettings value="1" />
+			<sirenSettings value="0" />
 		</Item>
 			<Item>
 			<modelName>deliverytrailer2</modelName>
@@ -728,7 +728,7 @@
 				<Probabilities />
 			</plateProbabilities>
 			<lightSettings value="1" />
-			<sirenSettings value="1" />
+			<sirenSettings value="0" />
 		</Item>
   <Item>
   <modelName>dsimerc</modelName>
@@ -2013,66 +2013,44 @@
 			<sirenSettings value="666" />
 		</Item>
     <Item>
-			<modelName>pschafter</modelName>
-			<colors>
-				<Item>
-					<!-- nobel white -->
-					<indices content="char_array">
-            134
-            134
-            134
+      <modelName>pschafter</modelName>
+      <colors>
+        <Item>
+          <indices content="char_array">
+            0
+            0
             156
-            7
-            111
-					</indices>
-					<liveries>
-					</liveries>
-				</Item>
-			</colors>
-			<windowsWithExposedEdges />
-			<plateProbabilities>
-				<Probabilities>
-					<Item>
-						<Name>Standard White</Name>
-						<Value value="80"/>
-					</Item>
-					<Item>
-						<Name>White Plate 2</Name>
-						<Value value="20"/>
-					</Item>
-				</Probabilities>
-			</plateProbabilities>
-			<lightSettings value="1" />
-			<sirenSettings value="666" />
-		</Item>
-    <Item>
-      <modelName>pbklasse</modelName>
-			<colors>
-				<Item>
-					<indices content="char_array">
-						111
-					  111
-					  122
-					  156
-					</indices>
-					<liveries />
-				</Item>
-			</colors>
-			<kits>
-				<Item>0_default_modkit</Item>
-			</kits>
-			<windowsWithExposedEdges />
-			<plateProbabilities>
-				<Probabilities>
-					<Item>
-						<Name>police guv plate</Name>
-						<Value value="100" />
-					</Item>
-				</Probabilities>
-			</plateProbabilities>
-			<lightSettings value="72"/>
-			<sirenSettings value="666"/>
-		</Item>
+            156 
+			48
+			156
+          </indices>
+          <liveries>
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+          </liveries>
+        </Item>
+      </colors>
+      <kits>
+        <Item>123_schafter3_modkit</Item>
+      </kits>
+      <windowsWithExposedEdges />
+      <plateProbabilities>
+        <Probabilities>
+          <Item>
+            <Name>Standard White</Name>
+            <Value value="100" />
+          </Item>
+        </Probabilities>
+      </plateProbabilities>
+      <lightSettings value="45" />
+      <sirenSettings value="666" />
+    </Item>
     <Item>
 			<modelName>ptouran</modelName>
 			<colors>

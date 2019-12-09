@@ -311,7 +311,7 @@ AddEventHandler("inventory:client:UpdatePlayerInventory", function(isError)
 end)
 
 RegisterNetEvent("inventory:client:CraftItems")
-AddEventHandler("inventory:client:CraftItems", function(itemName, itemCosts, amount, toSlot)
+AddEventHandler("inventory:client:CraftItems", function(itemName, itemCosts, amount, toSlot, points)
     SendNUIMessage({
         action = "close",
     })
@@ -327,7 +327,7 @@ AddEventHandler("inventory:client:CraftItems", function(itemName, itemCosts, amo
 		flags = 16,
 	}, {}, {}, function() -- Done
 		StopAnimTask(GetPlayerPed(-1), "mini@repair", "fixing_a_player", 1.0)
-        TriggerServerEvent("inventory:server:CraftItems", itemName, itemCosts, amount, toSlot)
+        TriggerServerEvent("inventory:server:CraftItems", itemName, itemCosts, amount, toSlot, points)
         TriggerEvent('inventory:client:ItemBox', QBCore.Shared.Items[itemName], 'add')
         isCrafting = false
 	end, function() -- Cancel

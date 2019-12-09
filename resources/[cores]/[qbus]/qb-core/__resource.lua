@@ -19,7 +19,7 @@ client_scripts {
 	"shared.lua",
 	"client/main.lua",
 	"client/functions.lua",
-	"client/loops.lua",
+	--"client/loops.lua",
 	"client/events.lua",
 	"client/debug.lua",
 }
