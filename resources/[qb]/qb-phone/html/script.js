@@ -171,7 +171,7 @@ $(document).ready(function(){
             $(".suggestedContact").fadeIn(250);
         }
 
-        if (suggestedBankAccountNotify) {
+        if (eventData.task ==  "suggestedBankAccountNotify") {
             suggestedBank = eventData.nr
             $(".suggestedBank").css({"bottom":"40%"});
             $(".suggestedBank").fadeIn(250);
@@ -818,12 +818,15 @@ $(document).on('click', '.submit-transfer-btn', function(e){
             } else {
                 $('.transfer-money-container').css({"display":"block"}).animate({top: "103%",}, 250, function(){
                     $('.transfer-money-container').css({'display':'none'});
-                    qbPhone.Notify('QBank', 'success', 'Je hebt € '+amountVal+' overgemaakt naar '+ibanVal+'!', 3500)
+                    qbPhone.Notify('QBank', 'success', 'Je hebt € '+amountVal+' overgemaakt naar '+ibanVal+'!', 3500);
 
                     $.post('http://qb-phone/transferMoney', JSON.stringify({
                         amount: amountVal,
                         iban: ibanVal
-                    }))
+                    }));
+
+                    $(".account-balance").html("&euro; "+parseInt((balance - amountVal))+",-");
+                    $(".account-balance").data('balance', parseInt((balance - amountVal)));
                 });
             }
         } else {
@@ -1244,9 +1247,10 @@ qbPhone.Notify = function(title, type, message, wait) {
 }
 
 qbPhone.setBankData = function(playerData) {
+    console.log(playerData.money.bank)
     $(".account-name").html(playerData.charinfo.firstname+" "+playerData.charinfo.lastname);
     $(".account-balance").html("&euro; "+playerData.money.bank+",-");
-    $(".account-balance").data('balance', playerData.money.bank)
+    $(".account-balance").data('balance', playerData.money.bank);
     $(".account-number").html(playerData.charinfo.account);
 }
 

@@ -51,6 +51,40 @@ GetClosestPlayer = function()
 	return closestPlayer, closestDistance
 end
 
+GetPlayers = function()
+    local players = {}
+    for _, player in ipairs(GetActivePlayers()) do
+        local ped = GetPlayerPed(player)
+        if DoesEntityExist(ped) then
+            table.insert(players, player)
+        end
+    end
+    return players
+end
+
+GetPlayersFromCoords = function(coords, distance)
+    local players = GetPlayers()
+    local closePlayers = {}
+
+    if coords == nil then
+		coords = GetEntityCoords(GetPlayerPed(-1))
+    end
+    if distance == nil then
+        distance = 5.0
+    end
+    for _, player in pairs(players) do
+		local target = GetPlayerPed(player)
+		local targetCoords = GetEntityCoords(target)
+		local targetdistance = GetDistanceBetweenCoords(targetCoords, coords.x, coords.y, coords.z, true)
+		if targetdistance <= distance then
+			table.insert(closePlayers, player)
+		end
+    end
+    
+    return closePlayers
+end
+
+
 Citizen.CreateThread(function()
     while true do
 
@@ -77,8 +111,7 @@ Citizen.CreateThread(function()
         end
 
         if scoreboardOpen then
-            local player, distance = GetClosestPlayer()
-            if player ~= -1 and distance < 2.5 then
+            for _, player in pairs(GetPlayersFromCoords(GetEntityCoords(GetPlayerPed(-1)), 5.0)) do
                 local PlayerId = GetPlayerServerId(player)
                 local PlayerPed = GetPlayerPed(player)
                 local PlayerName = GetPlayerName(player)
