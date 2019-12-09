@@ -933,6 +933,25 @@ QBCore.Commands.Add("beslag", "Neem een voertuig in beslag", {}, false, function
     end
 end)
 
+QBCore.Commands.Add("paytow", "Betaal een bergnet medewerker", {{name="id", help="ID van een speler"}}, true, function(source, args)
+	local Player = QBCore.Functions.GetPlayer(source)
+    if Player.PlayerData.job.name == "police" or Player.PlayerData.job.name == "ambulance" then
+        local playerId = tonumber(args[1])
+        local OtherPlayer = QBCore.Functions.GetPlayer(playerId)
+        if OtherPlayer ~= nil then
+            if OtherPlayer.PlayerData.job.name == "tow" then
+                OtherPlayer.Functions.AddMoney("bank", 500)
+                TriggerClientEvent('chatMessage', OtherPlayer.PlayerData.source, "SYSTEM", "warning", "Je hebt €500,- ontvangen voor je dienst!")
+                TriggerClientEvent('QBCore:Notify', source, 'Je hebt een bergnet medewerker betaald')
+            else
+                TriggerClientEvent('QBCore:Notify', source, 'Persoon is geen bergnet medewerker', "error")
+            end
+        end
+    else
+        TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Dit command is voor hulpdiensten!")
+    end
+end)
+
 QBCore.Commands.Add("radar", "Toggle snelheidsradar :)", {}, false, function(source, args)
 	local Player = QBCore.Functions.GetPlayer(source)
     if Player.PlayerData.job.name == "police" then
