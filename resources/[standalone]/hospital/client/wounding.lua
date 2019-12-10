@@ -56,6 +56,9 @@ WeaponDamageList = {
 	["WEAPON_FIRE"] = "Veel brandwonden",
 }
 
+onPainKillers = false
+painkillerAmount = 0
+
 CurrentDamageList = {}
 
 Citizen.CreateThread(function()
@@ -83,7 +86,7 @@ Citizen.CreateThread(function()
     prevPos = GetEntityCoords(PlayerPedId(), true)
     while true do
         Citizen.Wait(1000)
-        if isBleeding > 0 then
+        if isBleeding > 0 and not onPainKillers then
             local player = PlayerPedId()
             if bleedTickTimer >= Config.BleedTickRate and not isInHospitalBed then
                 if not isDead then
@@ -164,7 +167,7 @@ Citizen.CreateThread(function()
 end)
 
 function ProcessDamage(ped)
-    if not isDead then
+    if not isDead and not onPainKillers then
         for k, v in pairs(injured) do
             if (v.part == 'LLEG' and v.severity > 1) or (v.part == 'RLEG' and v.severity > 1) or (v.part == 'LFOOT' and v.severity > 2) or (v.part == 'RFOOT' and v.severity > 2) then
                 if legCount >= Config.LegInjuryTimer then
@@ -361,6 +364,74 @@ function ApplyImmediateEffects(ped, bone, weapon, damageDone)
         end
     end
 end
+
+RegisterNetEvent('hospital:client:UseBandage')
+AddEventHandler('hospital:client:UseBandage', function()
+    QBCore.Functions.Progressbar("use_bandage", "Verband omdoen..", 4000, false, true, {
+        disableMovement = false,
+        disableCarMovement = false,
+		disableMouse = false,
+		disableCombat = true,
+    }, {
+		animDict = "anim@amb@business@weed@weed_inspecting_high_dry@",
+		anim = "weed_inspecting_high_base_inspector",
+		flags = 49,
+    }, {}, {}, function() -- Done
+        StopAnimTask(GetPlayerPed(-1), "anim@amb@business@weed@weed_inspecting_high_dry@", "weed_inspecting_high_base_inspector", 1.0)
+        TriggerServerEvent("QBCore:Server:RemoveItem", "bandage", 1)
+        TriggerEvent("inventory:client:ItemBox", QBCore.Shared.Items["bandage"], "remove")
+        print("health: " ..GetEntityHealth(GetPlayerPed(-1)))
+        print("new health: " ..GetEntityHealth(GetPlayerPed(-1)) + 5)
+        SetEntityHealth(GetPlayerPed(-1), GetEntityHealth(GetPlayerPed(-1)) + 5)
+        if math.random(1, 100) < 7 then
+            ResetPartial()
+        end
+    end, function() -- Cancel
+        StopAnimTask(GetPlayerPed(-1), "anim@amb@business@weed@weed_inspecting_high_dry@", "weed_inspecting_high_base_inspector", 1.0)
+        QBCore.Functions.Notify("Mislukt", "error")
+    end)
+end)
+
+RegisterNetEvent('hospital:client:UsePainkillers')
+AddEventHandler('hospital:client:UsePainkillers', function()
+    QBCore.Functions.Progressbar("use_bandage", "Pijnstillers innemen", 3000, false, true, {
+        disableMovement = false,
+        disableCarMovement = false,
+		disableMouse = false,
+		disableCombat = true,
+    }, {
+		animDict = "mp_suicide",
+		anim = "pill",
+		flags = 49,
+    }, {}, {}, function() -- Done
+        StopAnimTask(GetPlayerPed(-1), "mp_suicide", "pill", 1.0)
+        TriggerServerEvent("QBCore:Server:RemoveItem", "painkillers", 1)
+        TriggerEvent("inventory:client:ItemBox", QBCore.Shared.Items["painkillers"], "remove")
+        onPainKillers = true
+        if painkillerAmount < 3 then
+            painkillerAmount = painkillerAmount + 1
+        end
+    end, function() -- Cancel
+        StopAnimTask(GetPlayerPed(-1), "mp_suicide", "pill", 1.0)
+        QBCore.Functions.Notify("Mislukt", "error")
+    end)
+end)
+
+Citizen.CreateThread(function()
+    while true do 
+        Citizen.Wait(1)
+        if onPainKillers then
+            painkillerAmount = painkillerAmount - 1
+            Citizen.Wait(Config.PainkillerInterval * 1000)
+            if painkillerAmount <= 0 then
+                painkillerAmount = 0
+                onPainKillers = false
+            end
+        else
+            Citizen.Wait(3000)
+        end
+    end
+end)
 
 function ProcessRunStuff(ped)
     if IsInjuryCausingLimp() then

@@ -51,6 +51,8 @@ Config.BillCost = 2000
 Config.DeathTime = 300
 Config.CheckTime = 10
 
+Config.PainkillerInterval = 60 -- seconds
+
 --[[
     GENERAL SETTINGS | THESE WILL AFFECT YOUR ENTIRE SERVER SO BE SURE TO SET THESE CORRECTLY
     MaxHp : Maximum HP Allowed, set to -1 if you want to disable mythic_hospital from setting this

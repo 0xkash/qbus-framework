@@ -275,6 +275,20 @@ QBCore.Commands.Add("setdoctor", "Geef de doctor baan aan iemand ", {{name="id",
     end
 end)
 
+QBCore.Functions.CreateUseableItem("bandage", function(source, item)
+	local Player = QBCore.Functions.GetPlayer(source)
+	if Player.Functions.GetItemByName(item.name) ~= nil then
+		TriggerClientEvent("hospital:client:UseBandage", source)
+	end
+end)
+
+QBCore.Functions.CreateUseableItem("painkillers", function(source, item)
+	local Player = QBCore.Functions.GetPlayer(source)
+	if Player.Functions.GetItemByName(item.name) ~= nil then
+		TriggerClientEvent("hospital:client:UsePainkillers", source)
+	end
+end)
+
 function IsHighCommand(citizenid)
     local retval = false
     for k, v in pairs(Config.Whitelist) do

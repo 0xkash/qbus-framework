@@ -25,8 +25,6 @@ AddEventHandler("consumables:client:UseArmor", function()
     }, {}, {}, {}, function() -- Done
         TriggerEvent("inventory:client:ItemBox", QBCore.Shared.Items["armor"], "remove")
         SetPedArmour(GetPlayerPed(-1), 100)
-    end, function() -- Cancel
-        
     end)
 end)
 
@@ -42,7 +40,6 @@ AddEventHandler("consumables:client:Eat", function(itemName)
         TriggerEvent("inventory:client:ItemBox", QBCore.Shared.Items[itemName], "remove")
         TriggerEvent('animations:client:EmoteCommandStart', {"c"})
         TriggerServerEvent("QBCore:Server:SetMetaData", "hunger", QBCore.Functions.GetPlayerData().metadata["hunger"] + Consumeables[itemName])
-    end, function() -- Cancel
     end)
 end)
 
@@ -58,7 +55,5 @@ AddEventHandler("consumables:client:Drink", function(itemName)
         TriggerEvent("inventory:client:ItemBox", QBCore.Shared.Items[itemName], "remove")
         TriggerEvent('animations:client:EmoteCommandStart', {"c"})
         TriggerServerEvent("QBCore:Server:SetMetaData", "thirst", QBCore.Functions.GetPlayerData().metadata["thirst"] + Consumeables[itemName])
-    end, function() -- Cancel
-        
     end)
 end)
