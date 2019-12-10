@@ -15,7 +15,7 @@ AddEventHandler('qb-trucker:server:DoBail', function(bool, vehInfo)
             Bail[Player.PlayerData.citizenid] = Config.BailPrice
             Player.Functions.RemoveMoney('cash', Config.BailPrice)
             TriggerClientEvent('QBCore:Notify', src, 'Je hebt de borg van 1000,- betaald', 'success')
-            TriggerClientEvent('qb-trucker:client:DoBail', vehInfo)
+            TriggerClientEvent('qb-trucker:client:SpawnVehicle', src, vehInfo)
         else
             TriggerClientEvent('QBCore:Notify', src, 'Je hebt niet genoeg contant, de borg is 1000,-', 'error')
         end

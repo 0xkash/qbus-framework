@@ -19,7 +19,6 @@ client_scripts {
 	"client/seatbelt.lua",
 	"client/cruise.lua",
 	"client/recoil.lua",
-	"client/trunk.lua",
 	"client/removeentities.lua",
 	"client/crouchprone.lua",
 	"client/tackle.lua",

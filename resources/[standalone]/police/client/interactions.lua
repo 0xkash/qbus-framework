@@ -344,7 +344,10 @@ AddEventHandler('police:client:GetKidnappedDragger', function(playerId)
             local dragger = GetPlayerPed(-1)
             ClearPedSecondaryTask(dragger)
             ClearPedTasksImmediately(dragger)
+            isEscorting = false
         end
+
+        TriggerEvent('qb-kidnapping:client:SetKidnapping', isEscorting)
     end)
 end)
 
