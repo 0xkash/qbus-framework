@@ -104,8 +104,8 @@ Citizen.CreateThread(function()
             --for _, zone in pairs(Config.CornerSellingZones) do
                 --local zoneDist = GetDistanceBetweenCoords(coords, zone["coords"]["x"], zone["coords"]["y"], zone["coords"]["z"], true)
                 --if zoneDist < 150 then
-                    -- local hours = GetClockHours()
-                    if hours > 1 and hours < 6 then
+                    local hours = GetClockHours()
+                    if hours > 1 and hours < 6 or hours > 12 and hours < 19 then
                         if not hasTarget then
                             local PlayerPeds = {}
                             if next(PlayerPeds) == nil then
