@@ -105,7 +105,7 @@ Citizen.CreateThread(function()
                 --local zoneDist = GetDistanceBetweenCoords(coords, zone["coords"]["x"], zone["coords"]["y"], zone["coords"]["z"], true)
                 --if zoneDist < 150 then
                     -- local hours = GetClockHours()
-                    -- if hours > 1 and hours < 6 or hours > 12 and hours < 19 then
+                    if hours > 1 and hours < 6 then
                         if not hasTarget then
                             local PlayerPeds = {}
                             if next(PlayerPeds) == nil then
@@ -127,7 +127,7 @@ Citizen.CreateThread(function()
                         if startDist > 10 then
                             toFarAway()
                         end
-                    -- end
+                    end
                 --end
             --end
         end
@@ -145,7 +145,7 @@ AddEventHandler('qb-drugs:client:refreshAvailableDrugs', function(items)
     availableDrugs = items
 end)
 
-function SellToPed(ped, chance)
+function SellToPed(ped)
     hasTarget = true
     for i = 1, #lastPed, 1 do
         if lastPed[i] == ped then
@@ -249,8 +249,8 @@ function SellToPed(ped, chance)
                 table.insert(lastPed, ped)
                 break
             else
-                if pedDist < 1.5 and chance <= 80 then
-                    QBCore.Functions.DrawText3D(pedCoords.x, pedCoords.y, pedCoords.z, '[E] '..bagAmount..'x '..currentOfferDrug.label..' voor €'..randomPrice..'? / [G] Aanbod afwijzen')
+                if pedDist < 1.5 then
+                    QBCore.Functions.DrawText3D(pedCoords.x, pedCoords.y, pedCoords.z, '~g~E~w~ '..bagAmount..'x '..currentOfferDrug.label..' voor €'..randomPrice..'? / ~g~G~w~ Aanbod afwijzen')
                     if IsControlJustPressed(0, Keys["E"]) then
                         QBCore.Functions.Notify('Aanbod geaccepteerd!', 'success')
                         TriggerServerEvent('qb-drugs:server:sellCornerDrugs', availableDrugs[drugType].item, bagAmount, randomPrice)

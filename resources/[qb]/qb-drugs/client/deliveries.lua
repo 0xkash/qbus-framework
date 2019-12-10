@@ -10,6 +10,10 @@ local interacting = false
 
 local deliveryTimeout = 0
 
+local isHealingPerson = false
+local healAnimDict = "mini@cpr@char_a@cpr_str"
+local healAnim = "cpr_pumpchest"
+
 Citizen.CreateThread(function()
     while true do
         local ped = GetPlayerPed(-1)
@@ -23,7 +27,7 @@ Citizen.CreateThread(function()
             if dealerDist <= 6 then
                 nearDealer = true
 
-                if dealerDist <= 1.5 then
+                if dealerDist <= 1.5 and not isHealingPerson then
                     if not interacting then
                         if not dealerIsHome then
                             DrawText3D(dealer["coords"]["x"], dealer["coords"]["y"], dealer["coords"]["z"], '[E] Om te kloppen')
@@ -33,19 +37,52 @@ Citizen.CreateThread(function()
                                 knockDealerDoor()
                             end
                         elseif dealerIsHome then
-                            DrawText3D(dealer["coords"]["x"], dealer["coords"]["y"], dealer["coords"]["z"], '[E] Om in te kopen / [G] Opdracht doen')
+                            if dealer["name"] == "Ouweheer" then
+                                DrawText3D(dealer["coords"]["x"], dealer["coords"]["y"], dealer["coords"]["z"], '[E] Om in te kopen / [G] Help je maat')
+                            else
+                                DrawText3D(dealer["coords"]["x"], dealer["coords"]["y"], dealer["coords"]["z"], '[E] Om in te kopen / [G] Opdracht doen')
+                            end
                             if IsControlJustPressed(0, Keys["E"]) then
                                 buyDealerStuff()
                             end
 
                             if IsControlJustPressed(0, Keys["G"]) then
-                                if waitingDelivery == nil then
-                                    TriggerEvent("chatMessage", "Dealer "..Config.Dealers[currentDealer]["name"], "normal", 'Hier heb je de producten, houd je mail in de gaten betreft de bestelling!')
-                                    requestDelivery()
-                                    interacting = false
-                                    dealerIsHome = false
+                                if dealer["name"] == "Ouweheer" then
+                                    local player, distance = GetClosestPlayer()
+                                    if player ~= -1 and distance < 5.0 then
+                                        local playerId = GetPlayerServerId(player)
+                                        isHealingPerson = true
+                                        QBCore.Functions.Progressbar("hospital_revive", "Persoon omhoog helpen..", 5000, false, true, {
+                                            disableMovement = false,
+                                            disableCarMovement = false,
+                                            disableMouse = false,
+                                            disableCombat = true,
+                                        }, {
+                                            animDict = healAnimDict,
+                                            anim = healAnim,
+                                            flags = 16,
+                                        }, {}, {}, function() -- Done
+                                            isHealingPerson = false
+                                            StopAnimTask(GetPlayerPed(-1), healAnimDict, "exit", 1.0)
+                                            QBCore.Functions.Notify("Je hebt de persoon geholpen!")
+                                            TriggerServerEvent("hospital:server:RevivePlayer", playerId)
+                                        end, function() -- Cancel
+                                            isHealingPerson = false
+                                            StopAnimTask(GetPlayerPed(-1), healAnimDict, "exit", 1.0)
+                                            QBCore.Functions.Notify("Mislukt!", "error")
+                                        end)
+                                    else
+                                        QBCore.Functions.Notify("Er is niemand in de buurt..", "error")
+                                    end
                                 else
-                                    TriggerEvent("chatMessage", "Dealer "..Config.Dealers[currentDealer]["name"], "error", 'Je hebt nog een levering open staan. Waar wacht je op?')
+                                    if waitingDelivery == nil then
+                                        TriggerEvent("chatMessage", "Dealer "..Config.Dealers[currentDealer]["name"], "normal", 'Hier heb je de producten, houd je mail in de gaten betreft de bestelling!')
+                                        requestDelivery()
+                                        interacting = false
+                                        dealerIsHome = false
+                                    else
+                                        TriggerEvent("chatMessage", "Dealer "..Config.Dealers[currentDealer]["name"], "error", 'Je hebt nog een levering open staan. Waar wacht je op?')
+                                    end
                                 end
                             end
                         end
@@ -55,12 +92,35 @@ Citizen.CreateThread(function()
         end
 
         if not nearDealer then
+            dealerIsHome = false
+            currentDealer = nil
             Citizen.Wait(2000)
         end
 
         Citizen.Wait(3)
     end
 end)
+
+function GetClosestPlayer()
+    local closestPlayers = QBCore.Functions.GetPlayersFromCoords()
+    local closestDistance = -1
+    local closestPlayer = -1
+    local coords = GetEntityCoords(GetPlayerPed(-1))
+
+    for i=1, #closestPlayers, 1 do
+        if closestPlayers[i] ~= PlayerId() then
+            local pos = GetEntityCoords(GetPlayerPed(closestPlayers[i]))
+            local distance = GetDistanceBetweenCoords(pos.x, pos.y, pos.z, coords.x, coords.y, coords.z, true)
+
+            if closestDistance == -1 or closestDistance > distance then
+                closestPlayer = closestPlayers[i]
+                closestDistance = distance
+            end
+        end
+	end
+
+	return closestPlayer, closestDistance
+end
 
 knockDealerDoor = function()
     local hours = GetClockHours()
@@ -106,7 +166,11 @@ function knockDoorAnim(home)
         TaskPlayAnim(PlayerPed, knockAnimLib, "exit", 3.0, 3.0, -1, 1, 0, false, false, false)
         knockingDoor = false
         Citizen.Wait(1000)
-        TriggerEvent("chatMessage", "Dealer "..Config.Dealers[currentDealer]["name"], "normal", 'Yow '..myData.charinfo.firstname..', wat kan ik voor je betekenen?')
+        if Config.Dealers[currentDealer]["name"] == "Ouweheer" then
+            TriggerEvent("chatMessage", "Dealer "..Config.Dealers[currentDealer]["name"], "normal", 'Goedendag mijn kind, wat kan ik voor je betekenen?')
+        else
+            TriggerEvent("chatMessage", "Dealer "..Config.Dealers[currentDealer]["name"], "normal", 'Yo '..myData.charinfo.firstname..', wat kan ik voor je betekenen?')
+        end
         -- knockTimeout()
         dealerIsHome = true
     else

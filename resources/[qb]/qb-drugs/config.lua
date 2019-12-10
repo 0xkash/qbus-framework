@@ -725,6 +725,38 @@ Config.Dealers = {
             },
         },
     },
+    [7] = {
+        ["name"] = "Ouweheer",
+        ["coords"] = {
+            ["x"] = -50.25,
+            ["y"] = 1911.21,
+            ["z"] = 195.7,
+        },
+        ["time"] = {
+            ["min"] = 1,
+            ["max"] = 23,
+        },
+        ["products"] = {
+            [1] = {
+                name = "bandage",
+                price = 100,
+                amount = 50,
+                info = {},
+                type = "item",
+                slot = 1,
+                minrep = 0,
+            },
+            [2] = {
+                name = "painkillers",
+                price = 400,
+                amount = 50,
+                info = {},
+                type = "item",
+                slot = 2,
+                minrep = 0,
+            },
+        },
+    },
 }
 
 Config.CornerSellingDrugsList = {

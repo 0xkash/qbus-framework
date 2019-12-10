@@ -15,7 +15,7 @@ AddEventHandler('qb-scrapyard:server:ScrapVehicle', function(listKey)
     if Config.CurrentVehicles[listKey] ~= nil then 
         for i = 1, math.random(4, 8), 1 do
             local item = Config.Items[math.random(1, #Config.Items)]
-            Player.Functions.AddItem(item, math.random(3, 18))
+            Player.Functions.AddItem(item, math.random(23, 35))
             TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[item], 'add')
             Citizen.Wait(500)
         end
@@ -26,7 +26,7 @@ end)
 
 function GenerateVehicleList()
     Config.CurrentVehicles = {}
-    for i = 1, 11, 1 do
+    for i = 1, 20, 1 do
         local randVehicle = Config.Vehicles[math.random(1, #Config.Vehicles)]
         if not IsInList(randVehicle) then
             Config.CurrentVehicles[i] = randVehicle

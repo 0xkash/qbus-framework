@@ -21,7 +21,16 @@ end)
 
 Citizen.CreateThread(function()
 	while true do
-		Citizen.Wait(math.random(5000, 10000))
+		Citizen.Wait((1000 * 60) * 3)
+		if isLoggedIn then
+			TriggerEvent("QBCore:Player:UpdatePlayerPosition")
+		end
+	end
+end)
+
+Citizen.CreateThread(function()
+	while true do
+		Citizen.Wait(math.random(3000, 5000))
 		if isLoggedIn then
 			if QBCore.Functions.GetPlayerData().metadata["hunger"] <= 0 or QBCore.Functions.GetPlayerData().metadata["thirst"] <= 0 then
 				local ped = GetPlayerPed(-1)

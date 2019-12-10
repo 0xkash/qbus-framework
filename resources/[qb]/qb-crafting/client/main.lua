@@ -104,6 +104,7 @@ function ItemsToItemInfo()
 			slot = item.slot,
 			costs = item.costs,
 			threshold = item.threshold,
+			points = item.points,
 		}
 	end
 	Config.CraftingItems = items
