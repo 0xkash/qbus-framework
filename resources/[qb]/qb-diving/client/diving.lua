@@ -217,7 +217,8 @@ AddEventHandler('qb-diving:client:UseGear', function(bool)
             currentGear.enabled = true
             TriggerServerEvent('qb-diving:server:GearItem', "remove")
             ClearPedTasks(GetPlayerPed(-1))
-            QBCore.Functions.Notify('Gelukt! /duikpak om pak uit te trekken')
+            TriggerEvent('chatMessage', "SYSTEM", "error", "/duikpak om je duikpak uit te trekken!")
+            -- QBCore.Functions.Notify('Gelukt! /duikpak om pak uit te trekken')
         end)
     else
         if currentGear.enabled then
