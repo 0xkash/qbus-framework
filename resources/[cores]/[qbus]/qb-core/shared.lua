@@ -403,7 +403,7 @@ QBShared.Vehicles = {
 		["trunkslots"] = 80,
 		["shop"] = "pdm",
 	},
-	["muscle"] = {
+	["hotknife"] = {
 		["name"] = "Hotknife",
 		["brand"] = "Vapid",
 		["model"] = "hotknife",
