@@ -8,6 +8,6 @@ end, "admin")
 QBCore.Functions.CreateUseableItem("repairkit", function(source, item)
     local Player = QBCore.Functions.GetPlayer(source)
 	if Player.Functions.GetItemBySlot(item.slot) ~= nil then
-        TriggerClientEvent("vehicletuning:client:RepairVehicle", source)
+        TriggerClientEvent("vehiclefailure:client:RepairVehicle", source)
     end
 end)
