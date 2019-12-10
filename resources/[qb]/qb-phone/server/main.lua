@@ -31,6 +31,7 @@ AddEventHandler('qb-phone:server:transferBank', function(amount, iban)
         if recieverSteam then
             recieverSteam.Functions.AddMoney('bank', amount)
             sender.Functions.RemoveMoney('bank', amount)
+            TriggerClientEvent('qb-phone:client:RecievedBankNotify', recieverSteam.PlayerData.source, amount, sender.PlayerData.charinfo.account)
         else
             local moneyInfo = json.decode(result[1].money)
             moneyInfo.bank = round((moneyInfo.bank + amount))

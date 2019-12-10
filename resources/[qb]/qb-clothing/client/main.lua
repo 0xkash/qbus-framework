@@ -475,7 +475,6 @@ function GetMaxValues()
 end
 
 function openMenu(allowedMenus)
-
     previousSkinData = json.encode(skinData)
     creatingCharacter = true
 
@@ -733,7 +732,7 @@ function ChangeVariation(data)
     local type = data.type
     local item = data.articleNumber
 
-    PlaySound(-1, "CLICK_BACK", "WEB_NAVIGATION_SOUNDS_PHONE", 0, 0, 1)
+    
 
     if clothingCategory == "pants" then
         if type == "item" then
@@ -951,14 +950,43 @@ function ChangeVariation(data)
     GetMaxValues()
 end
 
+function LoadPlayerModel(model)
+    RequestModel(model)
+    while not HasModelLoaded(model) do
+        Citizen.Wait(10)
+    end
+end
+
+local blockedPeds = {
+    "mp_m_freemode_01",
+    "mp_f_freemode_01",
+    "tony",
+    "g_m_m_chigoon_02_m",
+    "u_m_m_jesus_01",
+    "a_m_y_stbla_m",
+    "ig_terry_m",
+    "a_m_m_ktown_m",
+    "a_m_y_skater_m",
+    "u_m_y_coop",
+    "ig_car3guy1_m",
+}
+
+function isPedAllowedRandom(skin)
+    local retval = false
+    for k, v in pairs(blockedPeds) do
+        if v ~= skin then
+            retval = true
+        end
+    end
+    return retval
+end
+
 function ChangeToSkinNoUpdate(skin)
-	SetEntityInvincible(GetPlayerPed(-1),true)
-	local model = GetHashKey(skin)
+    local ped = GetPlayerPed(-1)
+    local model = GetHashKey(skin)
+    SetEntityInvincible(ped, true)
 	if IsModelInCdimage(model) and IsModelValid(model) then
-		RequestModel(model)
-		while not HasModelLoaded(model) do
-			Citizen.Wait(0)
-		end
+        LoadPlayerModel(model)
         SetPlayerModel(PlayerId(), model)
 
         for k, v in pairs(skinData) do
@@ -966,27 +994,20 @@ function ChangeToSkinNoUpdate(skin)
             skinData[k].texture = skinData[k].defaultTexture
         end
 
-        if skin == "mp_m_freemode_01" or skin == "mp_f_freemode_01" then
-            for i = 0, 11 do
-                SetPedComponentVariation(GetPlayerPed(-1), 1, 1, 1, 1)
-            end
-            SetPedComponentVariation(GetPlayerPed(-1), 1, -1, -1, -1)
+        if isPedAllowedRandom() then
+            SetPedRandomComponentVariation(ped, true)
         end
-
-        if skin ~= "mp_m_freemode_01" and skin ~= "mp_f_freemode_01" and skin ~= "tony" and skin ~= "g_m_m_chigoon_02_m" and skin ~= "u_m_m_jesus_01" and skin ~= "a_m_y_stbla_m" and skin ~= "ig_terry_m" and skin ~= "a_m_m_ktown_m" and skin ~= "a_m_y_skater_m" and skin ~= "u_m_y_coop" and skin ~= "ig_car3guy1_m" then
-			SetPedRandomComponentVariation(GetPlayerPed(-1), true)
-		end
-		
+        
+        SendNUIMessage({action = "toggleChange", allow = true})
 		SetModelAsNoLongerNeeded(model)
 	end
-
-	SetEntityInvincible(GetPlayerPed(-1),false)
-    
+	SetEntityInvincible(ped, false)
     GetMaxValues()
 end
 
 RegisterNUICallback('setCurrentPed', function(data, cb)
     local playerData = QBCore.Functions.GetPlayerData()
+
     if playerData.charinfo.gender == 0 then
         cb(Config.ManPlayerModels[data.ped])
         ChangeToSkinNoUpdate(Config.ManPlayerModels[data.ped])
@@ -1222,8 +1243,12 @@ AddEventHandler('qb-clothing:client:loadOutfit', function(oData)
 
     -- Shoes
     if data["shoes"] ~= nil then
-        SetPedComponentVariation(ped, 6, data["shoes"].item, 0, 2)
-        SetPedComponentVariation(ped, 6, data["shoes"].item, data["shoes"].texture, 0)
+        print('niet nill')
+
+        print(data["shoes"].item)
+        print(data["shoes"].texture)
+        SetPedComponentVariation(ped, 6, 3, 0, 2)
+        SetPedComponentVariation(ped, 6, 3, 3, 0)
     end
 
     -- Shoes

@@ -18,22 +18,6 @@ Config.MenuItems = {
         icon = '#citizen',
         items = {
             {
-                id    = 'givelc',
-                title = 'Geef ID-kaart',
-                icon = '#idkaart',
-                type = 'server',
-                event = 'inventory:server:ShowIdRadial',
-                shouldClose = true,
-            },
-            {
-                id    = 'givedl',
-                title = 'Geef Rijbewijs',
-                icon = '#rijbewijs',
-                type = 'client',
-                event = 'qb-radialmenu:client:giveidkaart',
-                shouldClose = true,
-            },
-            {
                 id    = 'givenum',
                 title = 'Geef Nummer',
                 icon = '#nummer',

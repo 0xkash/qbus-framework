@@ -148,7 +148,6 @@ Config.ManPlayerModels = {
     'ig_trafficwarden',
     'hc_driver',
     'hc_gunman',
-    'hc_hacker',
     'ig_paige',
     'ig_abigail',
     'ig_bankman',

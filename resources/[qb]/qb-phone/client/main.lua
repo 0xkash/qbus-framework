@@ -655,6 +655,21 @@ AddEventHandler('qb-phone:client:newMailNotify', function(mailData)
     end, "phone")
 end)
 
+RegisterNetEvent('qb-phone:client:RecievedBankNotify')
+AddEventHandler('qb-phone:client:RecievedBankNotify', function(amount, iban)
+    QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
+        if result then
+            SendNUIMessage({
+                task = "phoneNotification",
+                message = {
+                    title = '<i class="fas fa-university"></i> QBank',
+                    message = "Je hebt &euro; "..amount..",- ontvangen van "..iban.."!"
+                }
+            })
+        end
+    end, "phone")
+end)
+
 RegisterNUICallback('removeMail', function(data)
     TriggerServerEvent('qb-phone:server:removeMail', data.mailId)
 end)
@@ -790,13 +805,17 @@ Citizen.CreateThread(function()
     while true do
 
         if IsControlJustPressed(0, Keys["M"]) then
-            QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
-                if result then
-                    openPhone(true)
-                else
-                    QBCore.Functions.Notify('Je hebt geen Telefoon', 'error')
-                end
-            end, "phone")
+            local isHandcuffed = QBCore.Functions.GetPlayerData().metadata["ishandcuffed"]
+
+            if not isHandcuffed then
+                QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
+                    if result then
+                        openPhone(true)
+                    else
+                        QBCore.Functions.Notify('Je hebt geen Telefoon', 'error')
+                    end
+                end, "phone")
+            end
         end
 
         Citizen.Wait(5)

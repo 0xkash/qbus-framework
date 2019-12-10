@@ -30,25 +30,58 @@ QBAdmin.Functions.DrawText3D = function(x, y, z, text)
     ClearDrawOrigin()
 end
 
-QBAdmin.Functions.GetClosestPlayer = function()
-    local closestPlayers = QBCore.Functions.GetPlayersFromCoords()
-    local closestDistance = -1
-    local closestPlayer = -1
-    local coords = GetEntityCoords(GetPlayerPed(-1))
+-- QBAdmin.Functions.GetClosestPlayer = function()
+--     local closestPlayers = QBCore.Functions.GetPlayersFromCoords()
+--     local closestDistance = -1
+--     local closestPlayer = -1
+--     local coords = GetEntityCoords(GetPlayerPed(-1))
 
-    for i=1, #closestPlayers, 1 do
-        if closestPlayers[i] ~= PlayerId() then
-            local pos = GetEntityCoords(GetPlayerPed(closestPlayers[i]))
-            local distance = GetDistanceBetweenCoords(pos.x, pos.y, pos.z, coords.x, coords.y, coords.z, true)
+--     for i=1, #closestPlayers, 1 do
+--         if closestPlayers[i] ~= PlayerId() then
+--             local pos = GetEntityCoords(GetPlayerPed(closestPlayers[i]))
+--             local distance = GetDistanceBetweenCoords(pos.x, pos.y, pos.z, coords.x, coords.y, coords.z, true)
 
-            if closestDistance == -1 or closestDistance > distance then
-                closestPlayer = closestPlayers[i]
-                closestDistance = distance
-            end
+--             if closestDistance == -1 or closestDistance > distance then
+--                 closestPlayer = closestPlayers[i]
+--                 closestDistance = distance
+--             end
+--         end
+-- 	end
+
+-- 	return closestPlayer, closestDistance
+-- end
+
+GetPlayers = function()
+    local players = {}
+    for _, player in ipairs(GetActivePlayers()) do
+        local ped = GetPlayerPed(player)
+        if DoesEntityExist(ped) then
+            table.insert(players, player)
         end
-	end
+    end
+    return players
+end
 
-	return closestPlayer, closestDistance
+GetPlayersFromCoords = function(coords, distance)
+    local players = GetPlayers()
+    local closePlayers = {}
+
+    if coords == nil then
+		coords = GetEntityCoords(GetPlayerPed(-1))
+    end
+    if distance == nil then
+        distance = 5.0
+    end
+    for _, player in pairs(players) do
+		local target = GetPlayerPed(player)
+		local targetCoords = GetEntityCoords(target)
+		local targetdistance = GetDistanceBetweenCoords(targetCoords, coords.x, coords.y, coords.z, true)
+		if targetdistance <= distance then
+			table.insert(closePlayers, player)
+		end
+    end
+    
+    return closePlayers
 end
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
@@ -464,6 +497,7 @@ function SpectatePlayer(targetPed, toggle)
     local myPed = GetPlayerPed(-1)
 
     if toggle then
+        showNames = true
         SetEntityVisible(myPed, false)
         SetEntityInvincible(myPed, true)
         lastSpectateCoord = GetEntityCoords(myPed)
@@ -471,10 +505,13 @@ function SpectatePlayer(targetPed, toggle)
         SetTimeout(250, function()
             SetEntityVisible(myPed, false)
             SetEntityCoords(myPed, GetOffsetFromEntityInWorldCoords(targetPed, 0.0, 0.45, 0.0))
-            AttachEntityToEntity(myPed, targetPed, 11816, 0.45, 0.45, 0.0, 0.0, 0.0, 0.0, false, false, false, false, 2, true)
+            AttachEntityToEntity(myPed, targetPed, 11816, 0.0, -1.3, 1.0, 0.0, 0.0, 0.0, false, false, false, false, 2, true)
+            SetEntityVisible(myPed, false)
+            SetEntityInvincible(myPed, true)
             DoScreenFadeIn(150)
         end)
     else
+        showNames = false
         DoScreenFadeOut(150)
         DetachEntity(myPed, true, false)
         SetTimeout(250, function()
@@ -497,16 +534,13 @@ Citizen.CreateThread(function()
     while true do
 
         if showNames then
-            local player, distance = QBAdmin.Functions.GetClosestPlayer()
-            if player ~= -1 and distance < 2.5 then
+            for _, player in pairs(GetPlayersFromCoords(GetEntityCoords(GetPlayerPed(-1)), 5.0)) do
                 local PlayerId = GetPlayerServerId(player)
                 local PlayerPed = GetPlayerPed(player)
                 local PlayerName = GetPlayerName(player)
                 local PlayerCoords = GetEntityCoords(PlayerPed)
 
                 QBAdmin.Functions.DrawText3D(PlayerCoords.x, PlayerCoords.y, PlayerCoords.z + 1.0, '['..PlayerId..'] '..PlayerName)
-            else
-                Citizen.Wait(500)
             end
         else
             Citizen.Wait(1000)

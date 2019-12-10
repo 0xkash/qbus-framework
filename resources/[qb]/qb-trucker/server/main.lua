@@ -6,14 +6,19 @@ local PaymentTax = 15
 local Bail = {}
 
 RegisterServerEvent('qb-trucker:server:DoBail')
-AddEventHandler('qb-trucker:server:DoBail', function(bool)
+AddEventHandler('qb-trucker:server:DoBail', function(bool, vehInfo)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
 
     if bool then
-        Bail[Player.PlayerData.citizenid] = Config.BailPrice
-        Player.Functions.RemoveMoney('cash', Config.BailPrice)
-        TriggerClientEvent('QBCore:Notify', src, 'Je hebt de borg van 1000,- betaald', 'success')
+        if Player.PlayerData.money.cash >= Config.BailPrice then
+            Bail[Player.PlayerData.citizenid] = Config.BailPrice
+            Player.Functions.RemoveMoney('cash', Config.BailPrice)
+            TriggerClientEvent('QBCore:Notify', src, 'Je hebt de borg van 1000,- betaald', 'success')
+            TriggerClientEvent('qb-trucker:client:DoBail', vehInfo)
+        else
+            TriggerClientEvent('QBCore:Notify', src, 'Je hebt niet genoeg contant, de borg is 1000,-', 'error')
+        end
     else
         if Bail[Player.PlayerData.citizenid] ~= nil then
             Player.Functions.AddMoney('cash', Bail[Player.PlayerData.citizenid])
