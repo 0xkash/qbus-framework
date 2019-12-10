@@ -280,7 +280,7 @@ function LockpickIgnition()
         local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1), true)
         IsHotwiring = true
         PoliceCall()
-        QBCore.Functions.Progressbar("lockpick_ignition", "Lockpicken..", math.random(20000, 30000), false, true, {
+        QBCore.Functions.Progressbar("lockpick_ignition", "Lockpicken..", math.random(30000, 40000), false, true, {
             disableMovement = true,
             disableCarMovement = true,
             disableMouse = false,
@@ -349,9 +349,9 @@ end
 
 function PoliceCall()
     local pos = GetEntityCoords(GetPlayerPed(-1))
-    local chance = 40
+    local chance = 25
     if GetClockHours() >= 1 and GetClockHours() <= 6 then
-        chance = 5
+        chance = 3
     end
     if math.random(1, 100) <= chance then
         local closestPed = GetNearbyPed()
