@@ -53,109 +53,94 @@ Citizen.CreateThread(function()
         if currentVehicle ~= nil and currentVehicle ~= false and currentVehicle ~= 0 then
             SetPedHelmet(playerPed, false)
             lastVehicle = GetVehiclePedIsIn(playerPed, false)
-            if driverPed == GetPlayerPed(-1) then
-                if GetVehicleEngineHealth(currentVehicle) < 0.0 then
-                    SetVehicleEngineHealth(currentVehicle,0.0)
+            if GetVehicleEngineHealth(currentVehicle) < 0.0 then
+                SetVehicleEngineHealth(currentVehicle,0.0)
+            end
+            if (GetVehicleHandbrake(currentVehicle) or (GetVehicleSteeringAngle(currentVehicle)) > 25.0 or (GetVehicleSteeringAngle(currentVehicle)) < -25.0) then
+                if handbrake == 0 then
+                    handbrake = 100
+                    TriggerEvent("resethandbrake")
+                else
+                    handbrake = 100
                 end
-                if (GetVehicleHandbrake(currentVehicle) or (GetVehicleSteeringAngle(currentVehicle)) > 25.0 or (GetVehicleSteeringAngle(currentVehicle)) < -25.0) then
-                    if handbrake == 0 then
-                        handbrake = 100
-                        TriggerEvent("resethandbrake")
-                    else
-                        handbrake = 100
-                    end
-                end
+            end
 
-                thisFrameVehicleSpeed = GetEntitySpeed(currentVehicle) * 3.6
-                currentvehicleBodyHealth = GetVehicleBodyHealth(currentVehicle)
-                if currentvehicleBodyHealth == 1000 and frameBodyChange ~= 0 then
-                    frameBodyChange = 0
-                end
-                if frameBodyChange ~= 0 then
-                    if lastFrameVehiclespeed > 110 and thisFrameVehicleSpeed < (lastFrameVehiclespeed * 0.75) and not damagedone then
-                        if frameBodyChange > 18.0 then
-                            if not IsThisModelABike(currentVehicle) then 
-
+            thisFrameVehicleSpeed = GetEntitySpeed(currentVehicle) * 3.6
+            currentvehicleBodyHealth = GetVehicleBodyHealth(currentVehicle)
+            if currentvehicleBodyHealth == 1000 and frameBodyChange ~= 0 then
+                frameBodyChange = 0
+            end
+            if frameBodyChange ~= 0 then
+                if lastFrameVehiclespeed > 110 and thisFrameVehicleSpeed < (lastFrameVehiclespeed * 0.75) and not damagedone then
+                    if frameBodyChange > 18.0 then
+                        if not seatbeltOn and not IsThisModelABike(currentVehicle) then
+                            if math.random(math.ceil(lastFrameVehiclespeed)) > 60 then
+                                EjectFromVehicle()                           
                             end
-                            if not seatbeltOn and not IsThisModelABike(currentVehicle) then
-                                if math.random(math.ceil(lastFrameVehiclespeed)) > 60 then
+                        elseif seatbeltOn and not IsThisModelABike(currentVehicle) then
+                            if lastFrameVehiclespeed > 150 then
+                                if math.random(math.ceil(lastFrameVehiclespeed)) > 150 then
                                     EjectFromVehicle()                           
-                                end
-                            elseif seatbeltOn and not IsThisModelABike(currentVehicle) then
-                                if lastFrameVehiclespeed > 150 then
-                                    if math.random(math.ceil(lastFrameVehiclespeed)) > 150 then
-                                        EjectFromVehicle()                           
-                                    end
-                                end
-                            end
-                        else
-                            if not IsThisModelABike(currentVehicle) then 
-
-                            end     
-
-                            if not seatbeltOn and not IsThisModelABike(currentVehicle) then
-                                if math.random(math.ceil(lastFrameVehiclespeed)) > 60 then
-                                    EjectFromVehicle()                           
-                                end
-                            elseif seatbeltOn and not IsThisModelABike(currentVehicle) then
-                                if lastFrameVehiclespeed > 120 then
-                                    if math.random(math.ceil(lastFrameVehiclespeed)) > 200 then
-                                        EjectFromVehicle()                           
-                                    end
                                 end
                             end
                         end
-                        damagedone = true
-                        SetVehicleEngineHealth(currentVehicle, 0)
-                        SetVehicleEngineOn(currentVehicle, false, true, true)
+                    else
+                        if not seatbeltOn and not IsThisModelABike(currentVehicle) then
+                            if math.random(math.ceil(lastFrameVehiclespeed)) > 60 then
+                                EjectFromVehicle()                           
+                            end
+                        elseif seatbeltOn and not IsThisModelABike(currentVehicle) then
+                            if lastFrameVehiclespeed > 120 then
+                                if math.random(math.ceil(lastFrameVehiclespeed)) > 200 then
+                                    EjectFromVehicle()                           
+                                end
+                            end
+                        end
                     end
-                    if currentvehicleBodyHealth < 350.0 and not damagedone then
-                        damagedone = true
-                        SetVehicleBodyHealth(targetVehicle, 945.0)
-                        SetVehicleEngineHealth(currentVehicle, 0)
-                        SetVehicleEngineOn(currentVehicle, false, true, true)
-                        Citizen.Wait(1000)
-                    end
+                    damagedone = true
+                    SetVehicleEngineHealth(currentVehicle, 0)
+                    SetVehicleEngineOn(currentVehicle, false, true, true)
                 end
-                if lastFrameVehiclespeed < 100 then
-                    Wait(100)
-                    tick = 0
+                if currentvehicleBodyHealth < 350.0 and not damagedone then
+                    damagedone = true
+                    SetVehicleBodyHealth(targetVehicle, 945.0)
+                    SetVehicleEngineHealth(currentVehicle, 0)
+                    SetVehicleEngineOn(currentVehicle, false, true, true)
+                    Citizen.Wait(1000)
                 end
-                frameBodyChange = newvehicleBodyHealth - currentvehicleBodyHealth
-                if tick > 0 then 
-                    tick = tick - 1
-                    if tick == 1 then
-                        lastFrameVehiclespeed = GetEntitySpeed(currentVehicle) * 3.6
-                    end
-                else
-                    if damagedone then
-                        damagedone = false
-                        frameBodyChange = 0
-                        lastFrameVehiclespeed = GetEntitySpeed(currentVehicle) * 3.6
-                    end
-                    lastFrameVehiclespeed2 = GetEntitySpeed(currentVehicle) * 3.6
-                    if lastFrameVehiclespeed2 > lastFrameVehiclespeed then
-                        lastFrameVehiclespeed = GetEntitySpeed(currentVehicle) * 3.6
-                    end
-                    if lastFrameVehiclespeed2 < lastFrameVehiclespeed then
-                        tick = 25
-                    end
-
-                end
-                vels = GetEntityVelocity(currentVehicle)
-                if tick < 0 then 
-                    tick = 0
-                end     
-                newvehicleBodyHealth = GetVehicleBodyHealth(currentVehicle)
-                if not modifierDensity then
-                    modifierDensity = true
+            end
+            if lastFrameVehiclespeed < 100 then
+                Wait(100)
+                tick = 0
+            end
+            frameBodyChange = newvehicleBodyHealth - currentvehicleBodyHealth
+            if tick > 0 then 
+                tick = tick - 1
+                if tick == 1 then
+                    lastFrameVehiclespeed = GetEntitySpeed(currentVehicle) * 3.6
                 end
             else
-                vels = GetEntityVelocity(currentVehicle)
-                if modifierDensity then
-                    modifierDensity = false
+                if damagedone then
+                    damagedone = false
+                    frameBodyChange = 0
+                    lastFrameVehiclespeed = GetEntitySpeed(currentVehicle) * 3.6
                 end
-                Wait(1000)
+                lastFrameVehiclespeed2 = GetEntitySpeed(currentVehicle) * 3.6
+                if lastFrameVehiclespeed2 > lastFrameVehiclespeed then
+                    lastFrameVehiclespeed = GetEntitySpeed(currentVehicle) * 3.6
+                end
+                if lastFrameVehiclespeed2 < lastFrameVehiclespeed then
+                    tick = 25
+                end
+
+            end
+            vels = GetEntityVelocity(currentVehicle)
+            if tick < 0 then 
+                tick = 0
+            end     
+            newvehicleBodyHealth = GetVehicleBodyHealth(currentVehicle)
+            if not modifierDensity then
+                modifierDensity = true
             end
             veloc = GetEntityVelocity(currentVehicle)
         else
