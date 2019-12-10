@@ -47,6 +47,12 @@ AddEventHandler('qb-admin:server:serverKick', function(reason)
     end
 end)
 
+local suffix = {
+    "hihi",
+    "#yolo",
+    "hmm slurpie",
+}
+
 RegisterServerEvent('qb-admin:server:banPlayer')
 AddEventHandler('qb-admin:server:banPlayer', function(playerId, time, reason)
     local src = source
@@ -54,6 +60,7 @@ AddEventHandler('qb-admin:server:banPlayer', function(playerId, time, reason)
         local time = tonumber(time)
         local banTime = tonumber(os.time() + time)----
         local timeTable = os.date("*t", banTime)
+        TriggerClientEvent('chatMessage', -1, "BANHAMMER", "error", GetPlayerName(playerId).." is verbannen voor: "..reason.." "..suffix[math.random(1, #suffix)])
         QBCore.Functions.ExecuteSql("INSERT INTO `bans` (`name`, `steam`, `license`, `discord`,`ip`, `reason`, `expire`) VALUES ('"..GetPlayerName(playerId).."', '"..GetPlayerIdentifiers(playerId)[1].."', '"..GetPlayerIdentifiers(playerId)[2].."', '"..GetPlayerIdentifiers(playerId)[3].."', '"..GetPlayerIdentifiers(playerId)[4].."', '"..reason.."', "..banTime..")")
         DropPlayer(playerId, "Je bent verbannen van de server:\n"..reason.."\n\nJe ban verloopt "..timeTable["day"].. "/" .. timeTable["month"] .. "/" .. timeTable["year"] .. " " .. timeTable["hour"].. ":" .. timeTable["min"] .. "\n🔸 Kijk op onze discord voor meer informatie: https://discord.gg/Ttr6fY6")
     end
@@ -98,7 +105,7 @@ QBCore.Commands.Add("warn", "Geef een persoon een waarschuwing", {{name="ID", he
         TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Je hebt "..GetPlayerName(targetPlayer.PlayerData.source).." gewaarschuwd voor: "..msg)
         QBCore.Functions.ExecuteSql("INSERT INTO `player_warns` (`senderIdentifier`, `targetIdentifier`, `reason`, `warnId`) VALUES ('"..senderPlayer.PlayerData.steam.."', '"..targetPlayer.PlayerData.steam.."', '"..msg.."', '"..warnId.."')")
     else
-        TriggerClientEvent('QBCore:Notify', source, 'Dit persoon is niet in de stad #YOLO, hmm ik ben '..myName..' en ik stink loloololo')
+        TriggerClientEvent('QBCore:Notify', source, 'Dit persoon is niet in de stad #YOLO, hmm ik ben '..myName..' en ik stink loloololo', 'error')
     end 
 end, "admin")
 
