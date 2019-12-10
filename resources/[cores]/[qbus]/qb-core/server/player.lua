@@ -359,7 +359,7 @@ QBCore.Player.SaveInventory = function(source)
 	QBCore.Functions.ExecuteSql("DELETE FROM `playeritems` WHERE `citizenid` = '"..PlayerData.citizenid.."'")
 	if items ~= nil and next(items) ~= nil then
 		for slot, item in pairs(items) do
-			Citizen.Wait(50)
+			Citizen.Wait(20)
 			if items[slot] ~= nil then
 				QBCore.Functions.ExecuteSql("INSERT INTO `playeritems` (`citizenid`, `name`, `amount`, `info`, `type`, `slot`) VALUES ('"..PlayerData.citizenid.."', '"..items[slot].name.."', '"..items[slot].amount.."', '"..json.encode(items[slot].info).."', '"..items[slot].type.."', '"..slot.."')")
 			end

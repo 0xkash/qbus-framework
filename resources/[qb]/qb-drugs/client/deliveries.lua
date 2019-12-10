@@ -93,7 +93,6 @@ Citizen.CreateThread(function()
 
         if not nearDealer then
             dealerIsHome = false
-            currentDealer = nil
             Citizen.Wait(2000)
         end
 
