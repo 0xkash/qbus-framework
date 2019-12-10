@@ -319,7 +319,6 @@ end
 
 RegisterNetEvent('qb-trucker:client:SpawnVehicle')
 AddEventHandler('qb-trucker:client:SpawnVehicle', function(vehicleInfo)
-    print('wuw')
     local coords = Config.Locations["vehicle"].coords
     QBCore.Functions.SpawnVehicle(vehicleInfo, function(veh)
         SetVehicleNumberPlateText(veh, "TRUK"..tostring(math.random(1000, 9999)))
