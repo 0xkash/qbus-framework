@@ -44,6 +44,22 @@ Config.Items = {
             type = "item",
             slot = 1,
         },
+        [2] = {
+            name = "bandage",
+            price = 0,
+            amount = 50,
+            info = {},
+            type = "item",
+            slot = 2,
+        },
+        [3] = {
+            name = "painkillers",
+            price = 0,
+            amount = 50,
+            info = {},
+            type = "item",
+            slot = 3,
+        },
     }
 }
 
