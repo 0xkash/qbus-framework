@@ -72,26 +72,6 @@ Citizen.CreateThread(function()
 	end
 end)
 
-RegisterNetEvent('vehiclefailure:client:RepairVehicle')
-AddEventHandler('vehiclefailure:client:RepairVehicle', function()
-	local vehicle = QBCore.Functions.GetClosestVehicle()
-	if vehicle ~= nil and vehicle ~= 0 then
-		local pos = GetEntityCoords(GetPlayerPed(-1))
-		local vehpos = GetEntityCoords(vehicle)
-		if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, vehpos.x, vehpos.y, vehpos.z, true) < 5.0) and not IsPedInAnyVehicle(GetPlayerPed(-1)) then
-			local drawpos = GetOffsetFromEntityInWorldCoords(vehicle, 0, 2.5, 0)
-			if (IsBackEngine(GetEntityModel(vehicle))) then
-				drawpos = GetOffsetFromEntityInWorldCoords(vehicle, 0, -2.5, 0)
-			end
-			if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, drawpos) < 2.0) and not IsPedInAnyVehicle(GetPlayerPed(-1)) then
-				RepairVehicle(vehicle)
-			else
-				ShowEnginePos = true
-			end
-		end
-	end
-end)
-
 function RepairVehicle(vehicle)
 	if (IsBackEngine(GetEntityModel(vehicle))) then
         SetVehicleDoorOpen(vehicle, 5, false, false)

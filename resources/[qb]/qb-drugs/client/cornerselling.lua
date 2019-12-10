@@ -104,8 +104,8 @@ Citizen.CreateThread(function()
             --for _, zone in pairs(Config.CornerSellingZones) do
                 --local zoneDist = GetDistanceBetweenCoords(coords, zone["coords"]["x"], zone["coords"]["y"], zone["coords"]["z"], true)
                 --if zoneDist < 150 then
-                    local hours = GetClockHours()
-                    if hours > 1 and hours < 6 or hours > 12 and hours < 19 then
+                    -- local hours = GetClockHours()
+                    -- if hours > 1 and hours < 6 or hours > 12 and hours < 19 then
                         if not hasTarget then
                             local PlayerPeds = {}
                             if next(PlayerPeds) == nil then
@@ -118,7 +118,7 @@ Citizen.CreateThread(function()
                             local closestPed, closestDistance = QBCore.Functions.GetClosestPed(coords, PlayerPeds)
     
                             if closestDistance < 15.0 and closestPed ~= 0 then
-                                SellToPed(closestPed, chance)
+                                SellToPed(closestPed, math.random(1, 100))
                             end
                         end
     
@@ -127,7 +127,7 @@ Citizen.CreateThread(function()
                         if startDist > 10 then
                             toFarAway()
                         end
-                    end
+                    -- end
                 --end
             --end
         end
@@ -189,7 +189,7 @@ function SellToPed(ped, chance)
     local pedCoords = GetEntityCoords(ped)
     local pedDist = GetDistanceBetweenCoords(coords, pedCoords)
 
-    if getRobbed >= 17 then
+    if getRobbed == 18 or getRobbed == 9 then
         TaskGoStraightToCoord(ped, coords, 15.0, -1, 0.0, 0.0)
     else
         TaskGoStraightToCoord(ped, coords, 1.2, -1, 0.0, 0.0)
@@ -198,7 +198,7 @@ function SellToPed(ped, chance)
     while pedDist > 1.5 do
         coords = GetEntityCoords(GetPlayerPed(-1), true)
         pedCoords = GetEntityCoords(ped)    
-        if getRobbed >= 17 then
+        if getRobbed == 18 or getRobbed == 9 then
             TaskGoStraightToCoord(ped, coords, 15.0, -1, 0.0, 0.0)
         else
             TaskGoStraightToCoord(ped, coords, 1.2, -1, 0.0, 0.0)
@@ -220,7 +220,7 @@ function SellToPed(ped, chance)
             pedCoords = GetEntityCoords(ped)
             pedDist = GetDistanceBetweenCoords(coords, pedCoords)
 
-            if getRobbed >= 18 then
+            if getRobbed == 18 or getRobbed == 9 then
                 TriggerServerEvent('qb-drugs:server:robCornerDrugs', availableDrugs[drugType].item, bagAmount)
                 QBCore.Functions.Notify('Je bent beroofd van '..bagAmount..' zakje(\'s) '..availableDrugs[drugType].label, 'error')
                 stealingPed = ped
@@ -249,7 +249,7 @@ function SellToPed(ped, chance)
                 table.insert(lastPed, ped)
                 break
             else
-                if pedDist < 1.5 and math.random(1, 100) <= chance then
+                if pedDist < 1.5 and chance <= 80 then
                     QBCore.Functions.DrawText3D(pedCoords.x, pedCoords.y, pedCoords.z, '[E] '..bagAmount..'x '..currentOfferDrug.label..' voor €'..randomPrice..'? / [G] Aanbod afwijzen')
                     if IsControlJustPressed(0, Keys["E"]) then
                         QBCore.Functions.Notify('Aanbod geaccepteerd!', 'success')
