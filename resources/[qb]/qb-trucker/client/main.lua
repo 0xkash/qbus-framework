@@ -10,7 +10,7 @@ Citizen.CreateThread(function()
     end
 end)
 
-isLoggedIn = false
+isLoggedIn = true
 local PlayerJob = {}
 local JobsDone = 0
 local LocationsDone = {}
@@ -313,12 +313,16 @@ function VehicleList(isDown)
     Menu.addButton("Terug", "MenuGarage",nil)
 end
 
+local selectedVeh = nil
+
 function TakeOutVehicle(vehicleInfo)
     TriggerServerEvent('qb-trucker:server:DoBail', true, vehicleInfo)
+    selectedVeh = vehicleInfo
 end
 
 RegisterNetEvent('qb-trucker:client:SpawnVehicle')
-AddEventHandler('qb-trucker:client:SpawnVehicle', function(vehicleInfo)
+AddEventHandler('qb-trucker:client:SpawnVehicle', function()
+    local vehicleInfo = selectedVeh
     local coords = Config.Locations["vehicle"].coords
     QBCore.Functions.SpawnVehicle(vehicleInfo, function(veh)
         SetVehicleNumberPlateText(veh, "TRUK"..tostring(math.random(1000, 9999)))
