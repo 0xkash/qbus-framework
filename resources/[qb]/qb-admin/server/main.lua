@@ -51,6 +51,7 @@ local suffix = {
     "hihi",
     "#yolo",
     "hmm slurpie",
+    "yeet terug naar esx",
 }
 
 RegisterServerEvent('qb-admin:server:banPlayer')

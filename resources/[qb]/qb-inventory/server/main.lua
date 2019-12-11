@@ -74,11 +74,11 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 				secondInv.slots = 0
 				Stashes[id].isOpen = true
 			else
-				local GetStashItems = GetStashItems(id)
-				if next(GetStashItems) ~= nil then
-					secondInv.inventory = GetStashItems
+				local stashItems = GetStashItems(id)
+				if next(stashItems) ~= nil then
+					secondInv.inventory = stashItems
 					Stashes[id] = {}
-					Stashes[id].items = GetStashItems
+					Stashes[id].items = stashItems
 					Stashes[id].isOpen = true
 				else
 					Stashes[id] = {}
@@ -99,12 +99,12 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 				secondInv.inventory = {}
 				secondInv.slots = 0
 			else
-				if id ~= nil then
-					local GetTrunkItems = GetOwnedVehicleItems(id)
-					if IsVehicleOwned(id) and next(GetTrunkItems) ~= nil then
-						secondInv.inventory = GetTrunkItems
+				if id ~= nil then 
+					local ownedItems = GetOwnedVehicleItems(id)
+					if IsVehicleOwned(id) and next(ownedItems) ~= nil then
+						secondInv.inventory = ownedItems
 						Trunks[id] = {}
-						Trunks[id].items = GetTrunkItems
+						Trunks[id].items = ownedItems
 						Trunks[id].isOpen = true
 					elseif Trunks[id] ~= nil and not Trunks[id].isOpen then
 						secondInv.inventory = Trunks[id].items
@@ -129,14 +129,14 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 				secondInv.inventory = {}
 				secondInv.slots = 0
 			else
-				local GetGloveItems = GetOwnedVehicleGloveboxItems(id)
+				local ownedItems = GetOwnedVehicleGloveboxItems(id)
 				if Gloveboxes[id] ~= nil and not Gloveboxes[id].isOpen then
 					secondInv.inventory = Gloveboxes[id].items
 					Gloveboxes[id].isOpen = true
-				elseif IsVehicleOwned(id) and next(GetGloveItems) ~= nil then
-					secondInv.inventory = GetGloveItems
+				elseif IsVehicleOwned(id) and next(ownedItems) ~= nil then
+					secondInv.inventory = ownedItems
 					Gloveboxes[id] = {}
-					Gloveboxes[id].items = GetGloveItems
+					Gloveboxes[id].items = ownedItems
 					Gloveboxes[id].isOpen = true
 				else
 					Gloveboxes[id] = {}
@@ -198,16 +198,19 @@ AddEventHandler('inventory:server:SaveInventory', function(type, id)
 	if type == "trunk" then
 		if (IsVehicleOwned(id)) then
 			SaveOwnedVehicleItems(id, Trunks[id].items)
+			Citizen.Wait(10)
 		end
 		Trunks[id].isOpen = false
 	elseif type == "glovebox" then
 		if (IsVehicleOwned(id)) then
 			SaveOwnedGloveboxItems(id, Gloveboxes[id].items)
+			Citizen.Wait(10)
 		end
 		Gloveboxes[id].isOpen = false
 	elseif type == "stash" then
-		Stashes[id].isOpen = false
 		SaveStashItems(id, Stashes[id].items)
+		Citizen.Wait(10)
+		Stashes[id].isOpen = false
 	elseif type == "drop" then
 		if Drops[id] ~= nil then
 			Drops[id].isOpen = false
@@ -748,7 +751,7 @@ function SaveStashItems(stashId, items)
 	QBCore.Functions.ExecuteSql("DELETE FROM `stashitems` WHERE `stash` = '"..stashId.."'")
 	if items ~= nil then
 		for slot, item in pairs(items) do
-			Citizen.Wait(25)
+			Citizen.Wait(50)
 			if items[slot] ~= nil then
 				QBCore.Functions.ExecuteSql("INSERT INTO `stashitems` (`stash`, `name`, `amount`, `info`, `type`, `slot`) VALUES ('"..stashId.."', '"..items[slot].name.."', '"..items[slot].amount.."', '"..json.encode(items[slot].info).."', '"..items[slot].type.."', '"..slot.."')")
 			end
@@ -829,7 +832,7 @@ function SaveOwnedVehicleItems(plate, items)
 	QBCore.Functions.ExecuteSql("DELETE FROM `trunkitems` WHERE `plate` = '"..plate.."'")
 	if items ~= nil then
 		for slot, item in pairs(items) do
-			Citizen.Wait(25)
+			Citizen.Wait(50)
 			if items[slot] ~= nil then
 				QBCore.Functions.ExecuteSql("INSERT INTO `trunkitems` (`plate`, `name`, `amount`, `info`, `type`, `slot`) VALUES ('"..plate.."', '"..items[slot].name.."', '"..items[slot].amount.."', '"..json.encode(items[slot].info).."', '"..items[slot].type.."', '"..slot.."')")
 			end
@@ -909,7 +912,7 @@ function SaveOwnedGloveboxItems(plate, items)
 	QBCore.Functions.ExecuteSql("DELETE FROM `gloveboxitems` WHERE `plate` = '"..plate.."'")
 	if items ~= nil then
 		for slot, item in pairs(items) do
-			Citizen.Wait(5)
+			Citizen.Wait(50)
 			if items[slot] ~= nil then
 				QBCore.Functions.ExecuteSql("INSERT INTO `gloveboxitems` (`plate`, `name`, `amount`, `info`, `type`, `slot`) VALUES ('"..plate.."', '"..items[slot].name.."', '"..items[slot].amount.."', '"..json.encode(items[slot].info).."', '"..items[slot].type.."', '"..slot.."')")
 			end
@@ -1105,6 +1108,27 @@ QBCore.Commands.Add("giveitem", "Geef een item aan een speler", {{name="id", hel
 		TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Speler is niet online!")
 	end
 end, "admin")
+
+QBCore.Commands.Add("randomitems", "Krijg wat random items (voor testen)", {}, false, function(source, args)
+	local Player = QBCore.Functions.GetPlayer(source)
+	local filteredItems = {}
+	for k, v in pairs(QBCore.Shared.Items) do
+		if QBCore.Shared.Items[k]["type"] ~= "weapon" then
+			table.insert(filteredItems, v)
+		end
+	end
+	for i = 1, 10, 1 do
+		local randitem = filteredItems[math.random(1, #filteredItems)]
+		local amount = math.random(1, 10)
+		if randitem["unique"] then
+			amount = 1
+		end
+		if Player.Functions.AddItem(randitem["name"], amount) then
+			TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items[randitem["name"]], 'add')
+            Citizen.Wait(500)
+		end
+	end
+end, "god")
 
 QBCore.Functions.CreateUseableItem("id_card", function(source, item)
     local Player = QBCore.Functions.GetPlayer(source)

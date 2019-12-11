@@ -8,7 +8,7 @@ server_scripts {
 	"server/main.lua",
 	"server/functions.lua",
 	"server/player.lua",
-	"server/loops.lua",
+	--"server/loops.lua",
 	"server/events.lua",
 	"server/commands.lua",
 	"server/debug.lua",
@@ -19,7 +19,7 @@ client_scripts {
 	"shared.lua",
 	"client/main.lua",
 	"client/functions.lua",
-	--"client/loops.lua",
+	"client/loops.lua",
 	"client/events.lua",
 	"client/debug.lua",
 }

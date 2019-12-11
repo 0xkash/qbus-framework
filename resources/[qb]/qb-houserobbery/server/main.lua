@@ -31,7 +31,7 @@ AddEventHandler('qb-houserobbery:server:searchCabin', function(cabin, house)
         for i = 1, itemCount, 1 do
             local randomItem = Config.Rewards[Config.Houses[house]["furniture"][cabin]["type"]][math.random(1, #Config.Rewards[Config.Houses[house]["furniture"][cabin]["type"]])]
             local itemInfo = QBCore.Shared.Items[randomItem]
-            if math.random(1, 100) == 69 then
+            if math.random(1, 200) == 69 then
                 randomItem = "trojan_usb"
                 itemInfo = QBCore.Shared.Items[randomItem]
                 Player.Functions.AddItem(randomItem, 1)

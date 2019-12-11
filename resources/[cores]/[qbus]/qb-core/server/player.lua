@@ -328,7 +328,7 @@ end
 QBCore.Player.Logout = function(source)
 	TriggerClientEvent('QBCore:Client:OnPlayerUnload', source)
 	TriggerClientEvent("QBCore:Player:UpdatePlayerData", source)
-	Citizen.Wait(1500)
+	Citizen.Wait(200)
 	-- TriggerEvent('QBCore:Server:OnPlayerUnload')
 	--QBCore.Players[source].Functions.Save()
 	QBCore.Players[source] = nil
@@ -359,7 +359,7 @@ QBCore.Player.SaveInventory = function(source)
 	QBCore.Functions.ExecuteSql("DELETE FROM `playeritems` WHERE `citizenid` = '"..PlayerData.citizenid.."'")
 	if items ~= nil and next(items) ~= nil then
 		for slot, item in pairs(items) do
-			Citizen.Wait(20)
+			Citizen.Wait(50)
 			if items[slot] ~= nil then
 				QBCore.Functions.ExecuteSql("INSERT INTO `playeritems` (`citizenid`, `name`, `amount`, `info`, `type`, `slot`) VALUES ('"..PlayerData.citizenid.."', '"..items[slot].name.."', '"..items[slot].amount.."', '"..json.encode(items[slot].info).."', '"..items[slot].type.."', '"..slot.."')")
 			end
