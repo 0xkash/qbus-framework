@@ -40,3 +40,4 @@ resources/[standalone]/vMenu/libSQLite.Interop.so
 resources/[standalone]/vMenu/config/locations.json
 resources/[standalone]/vMenu/config/addons.json
 resources/[standalone]/vMenu/__resource.lua
+ghmattimysql.log
