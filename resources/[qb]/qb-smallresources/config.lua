@@ -56,7 +56,10 @@ Config.BlacklistedVehs = {
     [`POLICET`] = true,
     [`SHERIFF`] = true,
     [`SHERIFF2`] = true,
-    [`FIRETRUK`] = true
+    [`FIRETRUK`] = true,
+    [`MULE`] = true,
+    [`POLMAV`] = true,
+    [`BLIMP`] = true,
 }
 
 Config.BlacklistedPeds = {

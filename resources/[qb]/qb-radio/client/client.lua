@@ -15,19 +15,36 @@ end)
 local radioMenu = false
 
 function enableRadio(enable)
-  SetNuiFocus(true, true)
-  radioMenu = enable
-  SendNUIMessage({
-    type = "enableui",
-    enable = enable
-  })
-
   if enable then
+    SetNuiFocus(enable, enable)
     PhonePlayIn()
-  else
-    PhonePlayOut()
+    SendNUIMessage({
+      type = "open",
+    })
+    radioMenu = enable
   end
 end
+
+Citizen.CreateThread(function()
+  while true do
+    if QBCore ~= nil then
+      QBCore.Functions.TriggerCallback('qb-radio:server:GetItem', function(hasItem)
+        if not hasItem then
+          local playerName = GetPlayerName(PlayerId())
+          local getPlayerRadioChannel = exports.tokovoip_script:getPlayerData(playerName, "radio:channel")
+
+          if getPlayerRadioChannel ~= "nil" then
+            exports.tokovoip_script:removePlayerFromRadio(getPlayerRadioChannel)
+            exports.tokovoip_script:setPlayerData(playerName, "radio:channel", "nil", true)
+            QBCore.Functions.Notify('Je bent verwijderd van je huidige frequentie!', 'error')
+          end
+        end
+      end, "radio")
+    end
+
+    Citizen.Wait(10000)
+  end
+end)
 
 RegisterNUICallback('joinRadio', function(data, cb)
   local _source = source
@@ -94,8 +111,9 @@ RegisterNUICallback('leaveRadio', function(data, cb)
 end)
 
 RegisterNUICallback('escape', function(data, cb)
-  enableRadio(false)
   SetNuiFocus(false, false)
+  radioMenu = false
+  PhonePlayOut()
   cb('ok')
 end)
 
@@ -105,8 +123,8 @@ AddEventHandler('qb-radio:use', function()
 end)
 
 RegisterNetEvent('qb-radio:onRadioDrop')
-AddEventHandler('qb-radio:onRadioDrop', function(source)
-  local playerName = GetPlayerName(source)
+AddEventHandler('qb-radio:onRadioDrop', function()
+  local playerName = GetPlayerName(PlayerId())
   local getPlayerRadioChannel = exports.tokovoip_script:getPlayerData(playerName, "radio:channel")
 
   if getPlayerRadioChannel ~= "nil" then

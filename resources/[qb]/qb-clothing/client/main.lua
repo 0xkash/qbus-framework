@@ -950,10 +950,26 @@ function ChangeVariation(data)
     GetMaxValues()
 end
 
+Citizen.CreateThread(function()
+    Citizen.Wait(1000)
+    for _, skin in pairs(Config.WomanPlayerModels) do
+        LoadPlayerModel(skin)
+    end
+
+    for _, skin in pairs(Config.ManPlayerModels) do
+        LoadPlayerModel(skin)
+    end
+end)
+
 function LoadPlayerModel(model)
-    RequestModel(model)
-    while not HasModelLoaded(model) do
-        Citizen.Wait(10)
+    if IsModelInCdimage(model) and IsModelValid(model) then
+        RequestModel(model)
+        while not HasModelLoaded(model) do
+            print("loading "..model)
+            Citizen.Wait(1)
+        end
+
+        print(model.." loaded!")
     end
 end
 
@@ -986,7 +1002,6 @@ function ChangeToSkinNoUpdate(skin)
     local model = GetHashKey(skin)
     SetEntityInvincible(ped, true)
 	if IsModelInCdimage(model) and IsModelValid(model) then
-        LoadPlayerModel(model)
         SetPlayerModel(PlayerId(), model)
 
         for k, v in pairs(skinData) do
@@ -1002,7 +1017,7 @@ function ChangeToSkinNoUpdate(skin)
 		SetModelAsNoLongerNeeded(model)
 	end
 	SetEntityInvincible(ped, false)
-    GetMaxValues()
+    -- GetMaxValues()
 end
 
 RegisterNUICallback('setCurrentPed', function(data, cb)
@@ -1243,18 +1258,14 @@ AddEventHandler('qb-clothing:client:loadOutfit', function(oData)
 
     -- Shoes
     if data["shoes"] ~= nil then
-        print('niet nill')
-
-        print(data["shoes"].item)
-        print(data["shoes"].texture)
-        SetPedComponentVariation(ped, 6, 3, 0, 2)
-        SetPedComponentVariation(ped, 6, 3, 3, 0)
+        SetPedComponentVariation(ped, 6, data["shoes"].item, 0, 2)
+        SetPedComponentVariation(ped, 6, data["shoes"].item, data["shoes"].texture, 0)
     end
 
-    -- Shoes
+    -- Bag
     if data["bag"] ~= nil then
-        SetPedComponentVariation(ped, 6, data["bag"].item, 0, 2)
-        SetPedComponentVariation(ped, 6, data["bag"].item, data["bag"].texture, 0)
+        SetPedComponentVariation(ped, 5, data["bag"].item, 0, 2)
+        SetPedComponentVariation(ped, 5, data["bag"].item, data["bag"].texture, 0)
     end
 
     -- Badge

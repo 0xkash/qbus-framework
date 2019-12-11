@@ -54,18 +54,29 @@ RegisterNUICallback('setCam', function(data)
 
     local camZPlus1 = 300
     local camZPlus2 = 100
-    local pointCamCoords = 5
+    local pointCamCoords = 75
     local pointCamCoords2 = 0
     local cam1Time = 500
     local cam2Time = 1000
+
+    if DoesCamExist(cam) then
+        DestroyCam(cam, true)
+    end
+
+    if DoesCamExist(cam2) then
+        DestroyCam(cam2, true)
+    end
 
     if type == "current" then
         QBCore.Functions.GetPlayerData(function(PlayerData)
             cam2 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", PlayerData.position.x, PlayerData.position.y, PlayerData.position.z + camZPlus1, 300.00,0.00,0.00, 110.00, false, 0)
             PointCamAtCoord(cam2, PlayerData.position.x, PlayerData.position.y, PlayerData.position.z + pointCamCoords)
             SetCamActiveWithInterp(cam2, cam, cam1Time, true, true)
+            if DoesCamExist(cam) then
+                DestroyCam(cam, true)
+            end
             Citizen.Wait(cam1Time)
-    
+
             cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", PlayerData.position.x, PlayerData.position.y, PlayerData.position.z + camZPlus2, 300.00,0.00,0.00, 110.00, false, 0)
             PointCamAtCoord(cam, PlayerData.position.x, PlayerData.position.y, PlayerData.position.z + pointCamCoords2)
             SetCamActiveWithInterp(cam, cam2, cam2Time, true, true)
@@ -77,6 +88,9 @@ RegisterNUICallback('setCam', function(data)
         cam2 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", campos.x, campos.y, campos.z + camZPlus1, 300.00,0.00,0.00, 110.00, false, 0)
         PointCamAtCoord(cam2, campos.x, campos.y, campos.z + pointCamCoords)
         SetCamActiveWithInterp(cam2, cam, cam1Time, true, true)
+        if DoesCamExist(cam) then
+            DestroyCam(cam, true)
+        end
         Citizen.Wait(cam1Time)
 
         cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", campos.x, campos.y, campos.z + camZPlus2, 300.00,0.00,0.00, 110.00, false, 0)
@@ -89,6 +103,9 @@ RegisterNUICallback('setCam', function(data)
         cam2 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", campos.x, campos.y, campos.z + camZPlus1, 300.00,0.00,0.00, 110.00, false, 0)
         PointCamAtCoord(cam2, campos.x, campos.y, campos.z + pointCamCoords)
         SetCamActiveWithInterp(cam2, cam, cam1Time, true, true)
+        if DoesCamExist(cam) then
+            DestroyCam(cam, true)
+        end
         Citizen.Wait(cam1Time)
 
         cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", campos.x, campos.y, campos.z + camZPlus2, 300.00,0.00,0.00, 110.00, false, 0)
@@ -101,6 +118,9 @@ RegisterNUICallback('setCam', function(data)
         cam2 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", campos.x, campos.y, campos.z + camZPlus1, 300.00,0.00,0.00, 110.00, false, 0)
         PointCamAtCoord(cam2, campos.x, campos.y, campos.z + pointCamCoords)
         SetCamActiveWithInterp(cam2, cam, cam1Time, true, true)
+        if DoesCamExist(cam) then
+            DestroyCam(cam, true)
+        end
         Citizen.Wait(cam1Time)
 
         cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", campos.x, campos.y, campos.z + camZPlus2, 300.00,0.00,0.00, 110.00, false, 0)

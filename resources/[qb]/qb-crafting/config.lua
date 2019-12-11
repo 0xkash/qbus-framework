@@ -68,7 +68,7 @@ Config.CraftingItems = {
         },
         type = "item",
         slot = 5,
-        threshold = 200,
+        threshold = 120,
         points = 5,
     },
     [6] = {
@@ -82,7 +82,7 @@ Config.CraftingItems = {
         },
         type = "item",
         slot = 6,
-        threshold = 250,
+        threshold = 160,
         points = 6,
     },
     [7] = {
@@ -96,7 +96,7 @@ Config.CraftingItems = {
         },
         type = "item",
         slot = 7,
-        threshold = 300,
+        threshold = 200,
         points = 7,
     },
     [8] = {
@@ -110,7 +110,7 @@ Config.CraftingItems = {
         },
         type = "item",
         slot = 8,
-        threshold = 350,
+        threshold = 250,
         points = 8,
     },
     [9] = {
@@ -123,7 +123,7 @@ Config.CraftingItems = {
         },
         type = "item",
         slot = 9,
-        threshold = 400,
+        threshold = 300,
         points = 9,
     },
     [10] = {
@@ -136,7 +136,7 @@ Config.CraftingItems = {
         },
         type = "item",
         slot = 10,
-        threshold = 400,
+        threshold = 300,
         points = 10,
     },
     [11] = {
@@ -151,7 +151,7 @@ Config.CraftingItems = {
         },
         type = "item",
         slot = 11,
-        threshold = 450,
+        threshold = 350,
         points = 11,
     },
 }

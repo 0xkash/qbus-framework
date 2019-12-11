@@ -86,7 +86,7 @@ RegisterServerEvent('qb-drugs:server:callCops')
 AddEventHandler('qb-drugs:server:callCops', function(streetLabel, coords)
     local msg = "Er is een verdachte situatie op "..streetLabel..", mogelijk drugs handel."
     local alertData = {
-        title = "Winkeloverval",
+        title = "Drugshandel",
         coords = {x = coords.x, y = coords.y, z = coords.z},
         description = msg
     }

@@ -329,7 +329,6 @@ function TakeOutImpound(vehicle)
             TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
             SetVehicleEngineOn(veh, true, true)
         end, vehicle.plate)
-        
     end, coords, true)
 end
 

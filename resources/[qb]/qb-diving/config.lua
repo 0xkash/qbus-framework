@@ -7,6 +7,13 @@ QBBoatshop.PoliceBoat = {
     z = 1.59,
 }
 
+QBBoatshop.PoliceBoatSpawn = {
+    x = -793.58, 
+    y = -1501.4, 
+    z = 0.12,
+    h = 111.5,
+}
+
 QBBoatshop.Docks = {
     ["lsymc"] = {
         label = "LSYMC Boothuis",

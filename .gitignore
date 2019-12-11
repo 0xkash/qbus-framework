@@ -10,6 +10,7 @@ start.bat
 mysql.cfg
 server.cfg
 position.cfg
+ghmattimysql.log
 resources/[standalone]/vMenu/__resource.lua
 resources/[standalone]/vMenu/config/addons.json
 resources/[standalone]/vMenu/config/locations.json

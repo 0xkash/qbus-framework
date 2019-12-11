@@ -186,6 +186,7 @@ AddEventHandler('qb-admin:client:openMenu', function(group)
     myPermissionRank = group
 end)
 
+
 local currentPlayerMenu = nil
 local currentPlayer = 0
 
@@ -319,6 +320,7 @@ Citizen.CreateThread(function()
             WarMenu.Display()
         elseif WarMenu.IsMenuOpened('playerMan') then
             local players = getPlayers()
+
             for k, v in pairs(players) do
                 WarMenu.CreateSubMenu(v["id"], 'playerMan', v["serverid"].." | "..v["name"])
             end

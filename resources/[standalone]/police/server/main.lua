@@ -1021,10 +1021,12 @@ QBCore.Commands.Add("enkelbandlocatie", "Haal locatie van persoon met enkelband"
             local citizenid = args[1]
             local Target = QBCore.Functions.GetPlayerByCitizenId(citizenid)
 
-            if Target.PlayerData.metadata["tracker"] then
-                TriggerClientEvent("police:client:SendTrackerLocation", Target.PlayerData.source, source)
-            else
-                TriggerClientEvent('QBCore:Notify', source, 'Dit persoon heeft geen enkelband.', 'error')
+            if Target ~= nil then
+                if Target.PlayerData.metadata["tracker"] then
+                    TriggerClientEvent("police:client:SendTrackerLocation", Target.PlayerData.source, source)
+                else
+                    TriggerClientEvent('QBCore:Notify', source, 'Dit persoon heeft geen enkelband.', 'error')
+                end
             end
         end
     else

@@ -62,7 +62,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 2,
                 minrep = 20,
             },
             [3] = {
@@ -71,7 +71,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 3,
                 minrep = 40,
             },
             [4] = {
@@ -80,7 +80,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 4,
                 minrep = 60,
             },
             [5] = {
@@ -89,7 +89,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 5,
                 minrep = 80,
             },
             [6] = {
@@ -98,7 +98,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 6,
                 minrep = 100,
             },
             [7] = {
@@ -107,7 +107,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 7,
                 minrep = 120,
             },
             [8] = {
@@ -116,7 +116,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 8,
                 minrep = 140,
             },
             [9] = {
@@ -125,7 +125,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 9,
                 minrep = 160,
             },
             [10] = {
@@ -134,7 +134,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 10,
                 minrep = 180,
             },
             [11] = {
@@ -145,7 +145,7 @@ Config.Dealers = {
                     serie = tostring(Config.RandomInt(2) .. Config.RandomStr(3) .. Config.RandomInt(1) .. Config.RandomStr(2) .. Config.RandomInt(3) .. Config.RandomStr(4))
                 },
                 type = "item",
-                slot = 2,
+                slot = 11,
                 minrep = 200,
             },
         },
@@ -177,7 +177,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 2,
                 minrep = 20,
             },
             [3] = {
@@ -186,7 +186,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 3,
                 minrep = 40,
             },
             [4] = {
@@ -195,7 +195,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 4,
                 minrep = 60,
             },
             [5] = {
@@ -204,7 +204,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 5,
                 minrep = 80,
             },
             [6] = {
@@ -213,7 +213,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 6,
                 minrep = 100,
             },
             [7] = {
@@ -222,7 +222,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 7,
                 minrep = 120,
             },
             [8] = {
@@ -231,7 +231,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 8,
                 minrep = 140,
             },
             [9] = {
@@ -240,7 +240,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 9,
                 minrep = 160,
             },
             [10] = {
@@ -249,7 +249,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 10,
                 minrep = 180,
             },
             [11] = {
@@ -260,7 +260,7 @@ Config.Dealers = {
                     serie = tostring(Config.RandomInt(2) .. Config.RandomStr(3) .. Config.RandomInt(1) .. Config.RandomStr(2) .. Config.RandomInt(3) .. Config.RandomStr(4))
                 },
                 type = "item",
-                slot = 2,
+                slot = 11,
                 minrep = 200,
             },
         },
@@ -292,7 +292,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 2,
                 minrep = 20,
             },
             [3] = {
@@ -301,7 +301,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 3,
                 minrep = 40,
             },
             [4] = {
@@ -310,7 +310,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 4,
                 minrep = 60,
             },
             [5] = {
@@ -319,7 +319,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 5,
                 minrep = 80,
             },
             [6] = {
@@ -328,7 +328,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 6,
                 minrep = 100,
             },
             [7] = {
@@ -337,7 +337,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 7,
                 minrep = 120,
             },
             [8] = {
@@ -346,7 +346,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 8,
                 minrep = 140,
             },
             [9] = {
@@ -355,7 +355,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 9,
                 minrep = 160,
             },
             [10] = {
@@ -364,7 +364,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 10,
                 minrep = 180,
             },
             [11] = {
@@ -375,7 +375,7 @@ Config.Dealers = {
                     serie = tostring(Config.RandomInt(2) .. Config.RandomStr(3) .. Config.RandomInt(1) .. Config.RandomStr(2) .. Config.RandomInt(3) .. Config.RandomStr(4))
                 },
                 type = "item",
-                slot = 2,
+                slot = 11,
                 minrep = 200,
             },
         },
@@ -407,7 +407,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 2,
                 minrep = 20,
             },
             [3] = {
@@ -416,7 +416,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 3,
                 minrep = 40,
             },
             [4] = {
@@ -425,7 +425,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 4,
                 minrep = 60,
             },
             [5] = {
@@ -434,7 +434,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 5,
                 minrep = 80,
             },
             [6] = {
@@ -443,7 +443,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 6,
                 minrep = 100,
             },
             [7] = {
@@ -452,7 +452,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 7,
                 minrep = 120,
             },
             [8] = {
@@ -461,7 +461,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 8,
                 minrep = 140,
             },
             [9] = {
@@ -470,7 +470,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 9,
                 minrep = 160,
             },
             [10] = {
@@ -479,7 +479,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 10,
                 minrep = 180,
             },
             [11] = {
@@ -490,7 +490,7 @@ Config.Dealers = {
                     serie = tostring(Config.RandomInt(2) .. Config.RandomStr(3) .. Config.RandomInt(1) .. Config.RandomStr(2) .. Config.RandomInt(3) .. Config.RandomStr(4))
                 },
                 type = "item",
-                slot = 2,
+                slot = 11,
                 minrep = 200,
             },
         },
@@ -522,7 +522,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 2,
                 minrep = 20,
             },
             [3] = {
@@ -531,7 +531,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 3,
                 minrep = 40,
             },
             [4] = {
@@ -540,7 +540,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 4,
                 minrep = 60,
             },
             [5] = {
@@ -549,7 +549,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 5,
                 minrep = 80,
             },
             [6] = {
@@ -558,7 +558,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 6,
                 minrep = 100,
             },
             [7] = {
@@ -567,7 +567,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 7,
                 minrep = 120,
             },
             [8] = {
@@ -576,7 +576,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 8,
                 minrep = 140,
             },
             [9] = {
@@ -585,7 +585,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 9,
                 minrep = 160,
             },
             [10] = {
@@ -594,7 +594,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 10,
                 minrep = 180,
             },
             [11] = {
@@ -605,7 +605,7 @@ Config.Dealers = {
                     serie = tostring(Config.RandomInt(2) .. Config.RandomStr(3) .. Config.RandomInt(1) .. Config.RandomStr(2) .. Config.RandomInt(3) .. Config.RandomStr(4))
                 },
                 type = "item",
-                slot = 2,
+                slot = 11,
                 minrep = 200,
             },
         },
@@ -637,7 +637,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 2,
                 minrep = 20,
             },
             [3] = {
@@ -646,7 +646,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 3,
                 minrep = 40,
             },
             [4] = {
@@ -655,7 +655,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 4,
                 minrep = 60,
             },
             [5] = {
@@ -664,7 +664,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 5,
                 minrep = 80,
             },
             [6] = {
@@ -673,7 +673,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 6,
                 minrep = 100,
             },
             [7] = {
@@ -682,7 +682,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 7,
                 minrep = 120,
             },
             [8] = {
@@ -691,7 +691,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 8,
                 minrep = 140,
             },
             [9] = {
@@ -700,7 +700,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 9,
                 minrep = 160,
             },
             [10] = {
@@ -709,7 +709,7 @@ Config.Dealers = {
                 amount = 150,
                 info = {},
                 type = "item",
-                slot = 1,
+                slot = 10,
                 minrep = 180,
             },
             [11] = {
@@ -720,7 +720,7 @@ Config.Dealers = {
                     serie = tostring(Config.RandomInt(2) .. Config.RandomStr(3) .. Config.RandomInt(1) .. Config.RandomStr(2) .. Config.RandomInt(3) .. Config.RandomStr(4))
                 },
                 type = "item",
-                slot = 2,
+                slot = 12,
                 minrep = 200,
             },
         },
