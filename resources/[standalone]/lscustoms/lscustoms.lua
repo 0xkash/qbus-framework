@@ -613,7 +613,7 @@ local function DriveOutOfGarage(pos)
 		
 		pos = currentpos
 
-		QBCore.Functions.Progressbar("vehicletune_editvehicle", "Bezig met voertuig..", (editCount * 500), false, true, {
+		QBCore.Functions.Progressbar("vehicletune_editvehicle", "Bezig met voertuig..", (editCount * 500), false, false, {
 			disableMovement = true,
 			disableCarMovement = true,
 			disableMouse = false,

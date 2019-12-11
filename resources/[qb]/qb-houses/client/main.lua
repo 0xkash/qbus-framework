@@ -15,7 +15,7 @@ closesthouse = nil
 hasKey = false
 isOwned = false
 
-isLoggedIn = false
+isLoggedIn = true
 local contractOpen = false
 
 local cam = nil
@@ -516,6 +516,7 @@ function enterOwnedHouse(house)
     SetWeatherTypeNowPersist('EXTRASUNNY')
     NetworkOverrideClockTime(23, 0, 0)
     entering = false
+    setHouseLocations()
 end
 
 RegisterNetEvent('qb-houses:client:enterOwnedHouse')
@@ -573,6 +574,7 @@ function enterNonOwnedHouse(house)
     NetworkOverrideClockTime(23, 0, 0)
     entering = false
     inOwned = true
+    setHouseLocations()
 end
 
 function leaveNonOwnedHouse(house)
@@ -698,25 +700,29 @@ function SetClosestHouse()
             QBCore.Functions.TriggerCallback('qb-houses:server:isOwned', function(result)
                 isOwned = result
             end, closesthouse)
-        
-            QBCore.Functions.TriggerCallback('qb-houses:server:getHouseLocations', function(result)
-                if result ~= nil then
-                    if result.stash ~= nil then
-                        stashLocation = json.decode(result.stash)
-                    end
-        
-                    if result.outfit ~= nil then
-                        outfitLocation = json.decode(result.outfit)
-                    end
-        
-                    if result.logout ~= nil then
-                        logoutLocation = json.decode(result.logout)
-                    end
-                end
-            end, closesthouse)
         end
     end
     TriggerEvent('qb-garages:client:setHouseGarage', closesthouse, hasKey)
+end
+
+function setHouseLocations()
+    if closesthouse ~= nil then
+        QBCore.Functions.TriggerCallback('qb-houses:server:getHouseLocations', function(result)
+            if result ~= nil then
+                if result.stash ~= nil then
+                    stashLocation = json.decode(result.stash)
+                end
+
+                if result.outfit ~= nil then
+                    outfitLocation = json.decode(result.outfit)
+                end
+
+                if result.logout ~= nil then
+                    logoutLocation = json.decode(result.logout)
+                end
+            end
+        end, closesthouse)
+    end
 end
 
 RegisterNetEvent('qb-houses:client:setLocation')

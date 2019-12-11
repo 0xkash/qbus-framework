@@ -14,8 +14,7 @@ body {
   display:none;
 }
 
-#radio {
-  display: none;
+.radio-container {
   position: absolute;
   bottom: -56vh;
   right: 15vh;

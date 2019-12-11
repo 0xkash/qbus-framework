@@ -1,6 +1,6 @@
 QBHud = {}
 
-QBHud.Show = false
+QBHud.Show = true
 
 QBHud.Money = {}
 QBHud.Money.ShowConstant = false -- Show money constantly

@@ -84,6 +84,17 @@ end)
 
 Citizen.CreateThread(function()
 	while true do
+
+		for k, v in pairs(Config.BlacklistedPeds) do
+			SetVehicleModelIsSuppressed(k, true)
+		end
+
+		Citizen.Wait(3)
+	end
+end)
+
+Citizen.CreateThread(function()
+	while true do
 		Citizen.Wait(1)
 		local ped = GetPlayerPed(-1)
 		

@@ -69,7 +69,7 @@ Garages = {
     ["haanparking"] = {
         label = "Haan Parking",
         takeVehicle = {x = 78.34, y = 6418.74, z = 31.28},
-        spawnPoint = {x = 84.69, y = 6421.55, z = 31.53, h = 150.5},
+        spawnPoint = {x = 70.71, y = 6425.16, z = 30.92, h = 68.5}, 
         putVehicle = {x = 85.3, y = 6427.52, z = 31.33},
     },
 }

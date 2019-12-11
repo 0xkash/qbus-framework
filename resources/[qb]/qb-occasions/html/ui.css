@@ -24,7 +24,7 @@ body {
 
 .vehicle-description {
     position: absolute;
-    left: 66.8vh;
+    left: 66.5vh;
     bottom: 48vh;
     width: 45vh;
     height: 2vh;
@@ -33,6 +33,10 @@ body {
     background: none;
     font-family: 'Lato';
     transition: background-color 0.1s ease-in-out;
+    overflow:hidden;
+    display:inline-block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 #buy-vehicle-desc {
