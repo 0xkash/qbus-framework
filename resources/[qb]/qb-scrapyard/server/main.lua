@@ -8,6 +8,13 @@ Citizen.CreateThread(function()
     end
 end)
 
+RegisterServerEvent('qb-scrapyard:server:LoadVehicleList')
+AddEventHandler('qb-scrapyard:server:LoadVehicleList', function()
+    local src = source
+    TriggerClientEvent("qb-scapyard:client:setNewVehicles", src, Config.CurrentVehicles)
+end)
+
+
 RegisterServerEvent('qb-scrapyard:server:ScrapVehicle')
 AddEventHandler('qb-scrapyard:server:ScrapVehicle', function(listKey)
     local src = source 
