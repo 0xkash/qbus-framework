@@ -14,9 +14,6 @@ local DropsNear = {}
 local CurrentVehicle = nil
 local CurrentGlovebox = nil
 local CurrentStash = nil
-
-local Timeout = false
-
 local isCrafting = false
 
 local showTrunkPos = false
@@ -278,28 +275,21 @@ end)
 
 RegisterNetEvent("inventory:client:OpenInventory")
 AddEventHandler("inventory:client:OpenInventory", function(inventory, other)
-    if not Timeout then
-        Timeout = true
-        if not IsEntityDead(GetPlayerPed(-1)) then
-            ToggleHotbar(false)
-            SetNuiFocus(true, true)
-            if other ~= nil then
-                currentOtherInventory = other.name
-            end
-            SendNUIMessage({
-                action = "open",
-                inventory = inventory,
-                slots = MaxInventorySlots,
-                other = other,
-                maxweight = QBCore.Config.Player.MaxWeight,
-            })
-            inInventory = true
-            --SetTimecycleModifier('hud_def_blur')
+    if not IsEntityDead(GetPlayerPed(-1)) then
+        ToggleHotbar(false)
+        SetNuiFocus(true, true)
+        if other ~= nil then
+            currentOtherInventory = other.name
         end
-
-        SetTimeout(1000, function()
-            Timeout = false
-        end)
+        SendNUIMessage({
+            action = "open",
+            inventory = inventory,
+            slots = MaxInventorySlots,
+            other = other,
+            maxweight = QBCore.Config.Player.MaxWeight,
+        })
+        inInventory = true
+        --SetTimecycleModifier('hud_def_blur')
     end
 end)
 
@@ -457,10 +447,6 @@ RegisterNUICallback('getCombineItem', function(data, cb)
 end)
 
 RegisterNUICallback("CloseInventory", function(data, cb)
-    Timeout = true
-    SetTimeout(500, function()
-        Timeout = false
-    end)
     if currentOtherInventory == "none-inv" then
         CurrentDrop = 0
         CurrentVehicle = nil

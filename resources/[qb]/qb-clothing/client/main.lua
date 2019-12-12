@@ -961,16 +961,14 @@ Citizen.CreateThread(function()
     end
 end)
 
-function LoadPlayerModel(model)
-    if IsModelInCdimage(model) and IsModelValid(model) then
+function LoadPlayerModel(skin)
+    local model = GetHashKey(skin)
+    -- if IsModelInCdimage(model) and IsModelValid(model) then
         RequestModel(model)
         while not HasModelLoaded(model) do
-            print("loading "..model)
             Citizen.Wait(1)
         end
-
-        print(model.." loaded!")
-    end
+    -- end
 end
 
 local blockedPeds = {
@@ -1017,7 +1015,7 @@ function ChangeToSkinNoUpdate(skin)
 		SetModelAsNoLongerNeeded(model)
 	end
 	SetEntityInvincible(ped, false)
-    -- GetMaxValues()
+    GetMaxValues()
 end
 
 RegisterNUICallback('setCurrentPed', function(data, cb)

@@ -1048,6 +1048,25 @@ QBCore.Commands.Add("neemrijbewijs", "Neem een rijbewijs af van iemand", {}, fal
     end
 end)
 
+QBCore.Commands.Add("neemdna", "Neem een DNA exemplaar af van een persoon (leeg bewijszakje nodig)", {{"id", "ID van persoon"}}, true, function(source, args)
+    local Player = QBCore.Functions.GetPlayer(source)
+    local OtherPlayer = QBCore.Functions.GetPlayer(tonumber(args[1]))
+    if ((Player.PlayerData.job.name == "police") and Player.PlayerData.job.onduty) and OtherPlayer ~= nil then
+        if Player.Functions.RemoveItem("empty_evidence_bag", 1) then
+            local info = {
+                label = "DNA-Monster",
+                type = "dna",
+                dnalabel = DnaHash(OtherPlayer.PlayerData.citizenid),
+            }
+            if Player.Functions.AddItem("filled_evidence_bag", 1, false, info) then
+                TriggerClientEvent("inventory:client:ItemBox", src, QBCore.Shared.Items["filled_evidence_bag"], "add")
+            end
+        else
+            TriggerClientEvent('QBCore:Notify', src, "Je moet een leeg bewijszakje bij je hebben", "error")
+        end
+    end
+end)
+
 QBCore.Functions.CreateUseableItem("moneybag", function(source, item)
     local Player = QBCore.Functions.GetPlayer(source)
     if Player.Functions.GetItemBySlot(item.slot) ~= nil then
@@ -1060,3 +1079,10 @@ QBCore.Functions.CreateUseableItem("moneybag", function(source, item)
         end
     end
 end)
+
+function DnaHash(s)
+    local h = string.gsub(s, ".", function(c)
+		return string.format("%02x", string.byte(c))
+	end)
+    return h
+end
