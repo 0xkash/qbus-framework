@@ -74,6 +74,7 @@ local weapons = {
 local holstered = true
 local canFire = true
 local currWeapon = GetHashKey('WEAPON_UNARMED')
+local currentHoldster = nil
 
 QBCore = nil
 
@@ -90,7 +91,7 @@ end)
 Citizen.CreateThread(function()
 	while true do
 		local ped = PlayerPedId()
-		if DoesEntityExist(ped) and not IsEntityDead(ped) and not IsPedInAnyVehicle(ped, true) then
+		if DoesEntityExist(ped) and not IsEntityDead(ped) then
 			if currWeapon ~= GetSelectedPedWeapon(PlayerPedId()) then
 				pos = GetEntityCoords(PlayerPedId(), true)
 				rot = GetEntityHeading(PlayerPedId())
@@ -98,6 +99,7 @@ Citizen.CreateThread(function()
 				local newWeap = GetSelectedPedWeapon(PlayerPedId())
 				SetCurrentPedWeapon(PlayerPedId(), currWeapon, true)
 				loadAnimDict("reaction@intimidation@1h")
+				loadAnimDict("reaction@intimidation@cop@unarmed")
 				loadAnimDict("rcmjosh4")
 				loadAnimDict("weapons@pistol@")
 				if CheckWeapon(newWeap) then
@@ -105,9 +107,17 @@ Citizen.CreateThread(function()
 						if QBCore.Functions.GetPlayerData().job.name == "police" then
 							--TaskPlayAnim(ped, "rcmjosh4", "josh_leadout_cop2", 8.0, 2.0, -1, 48, 10, 0, 0, 0 )
 							canFire = false
+							currentHoldster = GetPedDrawableVariation(GetPlayerPed(-1), 7)
 							TaskPlayAnimAdvanced(PlayerPedId(), "rcmjosh4", "josh_leadout_cop2", GetEntityCoords(PlayerPedId(), true), 0, 0, rot, 3.0, 3.0, -1, 50, 0, 0, 0)
 							Citizen.Wait(300)
 							SetCurrentPedWeapon(PlayerPedId(), newWeap, true)
+							if currentHoldster == 8 then
+								SetPedComponentVariation(GetPlayerPed(-1), 7, 2, 0, 2)
+							elseif currentHoldster == 1 then
+								SetPedComponentVariation(GetPlayerPed(-1), 7, 3, 0, 2)
+							elseif currentHoldster == 6 then
+								SetPedComponentVariation(GetPlayerPed(-1), 7, 5, 0, 2)
+							end
 							currWeapon = newWeap
 							Citizen.Wait(300)
 							ClearPedTasks(PlayerPedId())
@@ -127,12 +137,21 @@ Citizen.CreateThread(function()
 					elseif newWeap ~= currWeapon and CheckWeapon(currWeapon) then
 						if QBCore.Functions.GetPlayerData().job.name == "police" then
 							canFire = false
-							TaskPlayAnimAdvanced(PlayerPedId(), "weapons@pistol@", "aim_2_holster", GetEntityCoords(PlayerPedId(), true), 0, 0, rot, 3.0, 3.0, -1, 50, 0, 0, 0)
+							TaskPlayAnimAdvanced(PlayerPedId(), "reaction@intimidation@cop@unarmed", "intro", GetEntityCoords(PlayerPedId(), true), 0, 0, rot, 3.0, 3.0, -1, 50, 0, 0, 0)
 							Citizen.Wait(300)
+							SetPedComponentVariation(GetPlayerPed(-1), 7, currentHoldster, 0, 2)
 							SetCurrentPedWeapon(PlayerPedId(), GetHashKey('WEAPON_UNARMED'), true)
+							currentHoldster = GetPedDrawableVariation(GetPlayerPed(-1), 7)
 							TaskPlayAnimAdvanced(PlayerPedId(), "rcmjosh4", "josh_leadout_cop2", GetEntityCoords(PlayerPedId(), true), 0, 0, rot, 3.0, 3.0, -1, 50, 0, 0, 0)
 							Citizen.Wait(300)
 							SetCurrentPedWeapon(PlayerPedId(), newWeap, true)
+							if currentHoldster == 8 then
+								SetPedComponentVariation(GetPlayerPed(-1), 7, 2, 0, 2)
+							elseif currentHoldster == 1 then
+								SetPedComponentVariation(GetPlayerPed(-1), 7, 3, 0, 2)
+							elseif currentHoldster == 6 then
+								SetPedComponentVariation(GetPlayerPed(-1), 7, 5, 0, 2)
+							end
 							currWeapon = newWeap
 							Citizen.Wait(500)
 							ClearPedTasks(PlayerPedId())
@@ -155,9 +174,17 @@ Citizen.CreateThread(function()
 					else
 						if QBCore.Functions.GetPlayerData().job.name == "police" then
 							SetCurrentPedWeapon(PlayerPedId(), GetHashKey('WEAPON_UNARMED'), true)
+							currentHoldster = GetPedDrawableVariation(GetPlayerPed(-1), 7)
 							TaskPlayAnimAdvanced(PlayerPedId(), "rcmjosh4", "josh_leadout_cop2", GetEntityCoords(PlayerPedId(), true), 0, 0, rot, 3.0, 3.0, -1, 50, 0, 0, 0)
 							Citizen.Wait(300)
 							SetCurrentPedWeapon(PlayerPedId(), newWeap, true)
+							if currentHoldster == 8 then
+								SetPedComponentVariation(GetPlayerPed(-1), 7, 2, 0, 2)
+							elseif currentHoldster == 1 then
+								SetPedComponentVariation(GetPlayerPed(-1), 7, 3, 0, 2)
+							elseif currentHoldster == 6 then
+								SetPedComponentVariation(GetPlayerPed(-1), 7, 5, 0, 2)
+							end
 							currWeapon = newWeap
 							Citizen.Wait(300)
 							ClearPedTasks(PlayerPedId())
@@ -179,8 +206,9 @@ Citizen.CreateThread(function()
 					if not holstered and CheckWeapon(currWeapon) then
 						if QBCore.Functions.GetPlayerData().job.name == "police" then
 							canFire = false
-							TaskPlayAnimAdvanced(PlayerPedId(), "weapons@pistol@", "aim_2_holster", GetEntityCoords(PlayerPedId(), true), 0, 0, rot, 3.0, 3.0, -1, 50, 0, 0, 0)
+							TaskPlayAnimAdvanced(PlayerPedId(), "reaction@intimidation@cop@unarmed", "intro", GetEntityCoords(PlayerPedId(), true), 0, 0, rot, 3.0, 3.0, -1, 50, 0, 0, 0)
 							Citizen.Wait(500)
+							SetPedComponentVariation(GetPlayerPed(-1), 7, currentHoldster, 0, 2)
 							SetCurrentPedWeapon(PlayerPedId(), GetHashKey('WEAPON_UNARMED'), true)
 							ClearPedTasks(PlayerPedId())
 							SetCurrentPedWeapon(PlayerPedId(), newWeap, true)
