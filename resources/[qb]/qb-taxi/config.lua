@@ -12,7 +12,7 @@ Keys = {
 Config = Config or {}
 
 Config.AllowedVehicles = {
-   [1] = {model = "qtax", label = "Mercedes-Benz S350"}
+   [1] = {model = "taxi", label = "Taxi"}
 }
 
 Config.Meter = {

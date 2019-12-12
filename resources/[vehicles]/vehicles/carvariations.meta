@@ -3,37 +3,6 @@
 <CVehicleModelInfoVariation>
   <variationData>
   <Item>
-    <modelName>qtax</modelName>
-    <colors>
-      <Item>
-        <!-- nobel white -->
-        <indices content="char_array">
-          134
-          134
-          1
-          156
-        </indices>
-        <liveries>
-        </liveries>
-      </Item>
-    </colors>
-    <windowsWithExposedEdges />
-    <plateProbabilities>
-      <Probabilities>
-        <Item>
-          <Name>Standard White</Name>
-          <Value value="80"/>
-        </Item>
-        <Item>
-          <Name>White Plate 2</Name>
-          <Value value="20"/>
-        </Item>
-      </Probabilities>
-    </plateProbabilities>
-    <lightSettings value="1" />
-    <sirenSettings value="0" />
-  </Item>
-  <Item>
 			<modelName>deliveryt1</modelName>
 			<colors>
 			<Item>
