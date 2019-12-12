@@ -966,11 +966,8 @@ function LoadPlayerModel(skin)
     -- if IsModelInCdimage(model) and IsModelValid(model) then
         RequestModel(model)
         while not HasModelLoaded(model) do
-            print("loading "..skin)
             Citizen.Wait(1)
         end
-
-        print(skin.." loaded!")
     -- end
 end
 
