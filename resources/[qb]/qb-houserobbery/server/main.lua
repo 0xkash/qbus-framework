@@ -3,6 +3,13 @@ TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 
 -- Code
 
+
+RegisterServerEvent('qb-houserobbery:server:loadHouseData')
+AddEventHandler('qb-houserobbery:server:loadHouseData', function()
+    local src = source
+    TriggerClientEvent("qb-houserobbery:client:setHouseData", src, Config.Houses)
+end)
+
 RegisterServerEvent('qb-houserobbery:server:enterHouse')
 AddEventHandler('qb-houserobbery:server:enterHouse', function(house)
     local src = source

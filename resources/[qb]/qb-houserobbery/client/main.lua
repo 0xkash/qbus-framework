@@ -174,6 +174,16 @@ function leaveRobberyHouse(house)
     end)
 end
 
+RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
+AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+    TriggerServerEvent("qb-houserobbery:server:loadHouseData")
+end)
+
+RegisterNetEvent('qb-houserobbery:client:setHouseData')
+AddEventHandler('qb-houserobbery:client:setHouseData', function(houseInfo)
+    Config.Houses = houseInfo
+end)
+
 RegisterNetEvent('police:SetCopCount')
 AddEventHandler('police:SetCopCount', function(amount)
     CurrentCops = amount
