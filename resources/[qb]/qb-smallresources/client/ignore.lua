@@ -127,7 +127,7 @@ end
 Citizen.CreateThread(function()
 	while true do    
 		RemoveWeaponDrops()
-		Citizen.Wait(1000)
+		Citizen.Wait(100)
 	end
 end)
 
