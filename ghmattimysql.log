@@ -1,9 +1,0 @@
-[32m[ghmattimysql][0m Database server connection established.
-[MariaDB:10.4.8-MariaDB] [qb-core] [188ms] DELETE FROM `phone_tweets` : []
-[MariaDB:10.4.8-MariaDB] [qb-core] [190ms] SELECT * FROM `house_plants` : []
-[MariaDB:10.4.8-MariaDB] [qb-core] [190ms] SELECT * FROM `houselocations` : []
-[MariaDB:10.4.8-MariaDB] [qb-core] [188ms] SELECT * FROM `houselocations` : []
-[MariaDB:10.4.8-MariaDB] [qb-core] [186ms] SELECT * FROM `queue` : []
-[MariaDB:10.4.8-MariaDB] [qb-core] [95ms] SELECT * FROM `permissions` : []
-[MariaDB:10.4.8-MariaDB] [qb-houses] [190ms] SELECT * FROM player_houses : []
-[MariaDB:10.4.8-MariaDB] [qb-core] [2ms] SELECT * FROM `bans` WHERE `steam` = 'steam:110000117fd5be8' OR `license` = 'license:b19a466c8a6553b860896f6724db32dfec9d5aad' OR `ip` = 'xbl:2535451537505179' : []

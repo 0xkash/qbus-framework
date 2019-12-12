@@ -13,6 +13,7 @@ end)
 -- Code
 
 local radioMenu = false
+local isLoggedIn = false
 
 function enableRadio(enable)
   if enable then
@@ -25,21 +26,33 @@ function enableRadio(enable)
   end
 end
 
+RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
+AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+    isLoggedIn = true
+end)
+
+RegisterNetEvent('QBCore:Client:OnPlayerUnload')
+AddEventHandler('QBCore:Client:OnPlayerUnload', function()
+    isLoggedIn = false
+end)
+
 Citizen.CreateThread(function()
   while true do
     if QBCore ~= nil then
-      QBCore.Functions.TriggerCallback('qb-radio:server:GetItem', function(hasItem)
-        if not hasItem then
-          local playerName = GetPlayerName(PlayerId())
-          local getPlayerRadioChannel = exports.tokovoip_script:getPlayerData(playerName, "radio:channel")
+      if not isLoggedIn then
+        QBCore.Functions.TriggerCallback('qb-radio:server:GetItem', function(hasItem)
+          if not hasItem then
+            local playerName = GetPlayerName(PlayerId())
+            local getPlayerRadioChannel = exports.tokovoip_script:getPlayerData(playerName, "radio:channel")
 
-          if getPlayerRadioChannel ~= "nil" then
-            exports.tokovoip_script:removePlayerFromRadio(getPlayerRadioChannel)
-            exports.tokovoip_script:setPlayerData(playerName, "radio:channel", "nil", true)
-            QBCore.Functions.Notify('Je bent verwijderd van je huidige frequentie!', 'error')
+            if getPlayerRadioChannel ~= "nil" then
+              exports.tokovoip_script:removePlayerFromRadio(getPlayerRadioChannel)
+              exports.tokovoip_script:setPlayerData(playerName, "radio:channel", "nil", true)
+              QBCore.Functions.Notify('Je bent verwijderd van je huidige frequentie!', 'error')
+            end
           end
-        end
-      end, "radio")
+        end, "radio")
+      end
     end
 
     Citizen.Wait(10000)
