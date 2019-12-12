@@ -684,8 +684,6 @@ var requiredItemOpen = false;
     Inventory.droplabel = "Grond";
     Inventory.dropmaxweight = 100000
 
-    Inventory.timeout = false;
-
     Inventory.Error = function() {
         $.post("http://qb-inventory/PlayDropFail", JSON.stringify({}));
     }
@@ -693,7 +691,6 @@ var requiredItemOpen = false;
     Inventory.Open = function(data) {
         totalWeight = 0;
         totalWeightOther = 0;
-        Inventory.timeout = true;
 
         $(".player-inventory").find(".item-slot").remove();
         $(".ply-hotbar-inventory").find(".item-slot").remove();
@@ -782,24 +779,18 @@ var requiredItemOpen = false;
             otherLabel = Inventory.droplabel;
         }
 
-        setTimeout(function(){
-            Inventory.timeout = false
-        }, 1000);
-
         handleDragDrop();
     };
 
     Inventory.Close = function() {
-        if (!Inventory.timeout) {
-            $(".item-slot").css("border", "1px solid rgba(255, 255, 255, 0.1)");
-            $(".ply-hotbar-inventory").css("display", "block");
-            $(".ply-iteminfo-container").css("display", "none");
-            $("#qbus-inventory").fadeOut(300);
-            $(".combine-option-container").hide();
-            blurInventory(false);
-            $(".item-slot").remove();
-            $.post("http://qb-inventory/CloseInventory", JSON.stringify({}));
-        }
+        $(".item-slot").css("border", "1px solid rgba(255, 255, 255, 0.1)");
+        $(".ply-hotbar-inventory").css("display", "block");
+        $(".ply-iteminfo-container").css("display", "none");
+        $("#qbus-inventory").fadeOut(300);
+        $(".combine-option-container").hide();
+        blurInventory(false);
+        $(".item-slot").remove();
+        $.post("http://qb-inventory/CloseInventory", JSON.stringify({}));
     };
 
     Inventory.Update = function(data) {

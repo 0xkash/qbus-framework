@@ -54,7 +54,7 @@ $(document).on('click', '.clothing-menu-option-item-right', function(e){
                     $("#current-model").html("<p>"+model+"</p>")
                 });
                 canChange = false;
-                // QBClothing.ResetValues()
+                QBClothing.ResetValues()
             } else if (clothingCategory == "hair") {
                 $(inputElem).val(newValue);
                 $.post('http://qb-clothing/updateSkin', JSON.stringify({
