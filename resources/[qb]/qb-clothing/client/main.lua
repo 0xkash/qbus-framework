@@ -950,25 +950,22 @@ function ChangeVariation(data)
     GetMaxValues()
 end
 
-Citizen.CreateThread(function()
-    Citizen.Wait(1000)
-    for _, skin in pairs(Config.WomanPlayerModels) do
-        LoadPlayerModel(skin)
-    end
+-- Citizen.CreateThread(function()
+--     Citizen.Wait(1000)
+--     for _, skin in pairs(Config.WomanPlayerModels) do
+--         LoadPlayerModel(skin)
+--     end
 
-    for _, skin in pairs(Config.ManPlayerModels) do
-        LoadPlayerModel(skin)
-    end
-end)
+--     for _, skin in pairs(Config.ManPlayerModels) do
+--         LoadPlayerModel(skin)
+--     end
+-- end)
 
 function LoadPlayerModel(skin)
-    local model = GetHashKey(skin)
-    -- if IsModelInCdimage(model) and IsModelValid(model) then
-        RequestModel(model)
-        while not HasModelLoaded(model) do
-            Citizen.Wait(1)
-        end
-    -- end
+    RequestModel(model)
+    while not HasModelLoaded(model) do
+        Citizen.Wait(1)
+    end
 end
 
 local blockedPeds = {
@@ -999,7 +996,8 @@ function ChangeToSkinNoUpdate(skin)
     local ped = GetPlayerPed(-1)
     local model = GetHashKey(skin)
     SetEntityInvincible(ped, true)
-	if IsModelInCdimage(model) and IsModelValid(model) then
+    if IsModelInCdimage(model) and IsModelValid(model) then
+        LoadPlayerModel(model)
         SetPlayerModel(PlayerId(), model)
 
         for k, v in pairs(skinData) do
