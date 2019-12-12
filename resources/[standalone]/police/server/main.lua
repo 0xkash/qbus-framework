@@ -1059,10 +1059,10 @@ QBCore.Commands.Add("neemdna", "Neem een DNA exemplaar af van een persoon (leeg 
                 dnalabel = DnaHash(OtherPlayer.PlayerData.citizenid),
             }
             if Player.Functions.AddItem("filled_evidence_bag", 1, false, info) then
-                TriggerClientEvent("inventory:client:ItemBox", src, QBCore.Shared.Items["filled_evidence_bag"], "add")
+                TriggerClientEvent("inventory:client:ItemBox", source, QBCore.Shared.Items["filled_evidence_bag"], "add")
             end
         else
-            TriggerClientEvent('QBCore:Notify', src, "Je moet een leeg bewijszakje bij je hebben", "error")
+            TriggerClientEvent('QBCore:Notify', source, "Je moet een leeg bewijszakje bij je hebben", "error")
         end
     end
 end)
