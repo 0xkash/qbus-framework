@@ -174,6 +174,16 @@ function leaveRobberyHouse(house)
     end)
 end
 
+RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
+AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+    TriggerServerEvent("qb-houserobbery:server:loadHouseData")
+end)
+
+RegisterNetEvent('qb-houserobbery:client:setHouseData')
+AddEventHandler('qb-houserobbery:client:setHouseData', function(houseInfo)
+    Config.Houses = houseInfo
+end)
+
 RegisterNetEvent('police:SetCopCount')
 AddEventHandler('police:SetCopCount', function(amount)
     CurrentCops = amount
@@ -202,9 +212,9 @@ end
 RegisterNetEvent('lockpicks:UseLockpick')
 AddEventHandler('lockpicks:UseLockpick', function()
     QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
-        if CurrentCops >= 0 then
-            if closestHouse ~= nil then
-                if result then
+        if closestHouse ~= nil then
+            if result then
+                if CurrentCops >= 3 then
                     if not Config.Houses[closestHouse]["opened"] then
                         PoliceCall()
                         TriggerEvent('qb-lockpick:client:openLockpick', lockpickFinish)
@@ -216,11 +226,12 @@ AddEventHandler('lockpicks:UseLockpick', function()
                         QBCore.Functions.Notify('De deur is al open..', 'error', 3500)
                     end
                 else
-                    QBCore.Functions.Notify('Het lijkt erop dat je iets mist...', 'error', 3500)
+                    QBCore.Functions.Notify('Niet genoeg agenten..', 'error', 3500)
                 end
+                
+            else
+                QBCore.Functions.Notify('Het lijkt erop dat je iets mist...', 'error', 3500)
             end
-        else
-            QBCore.Functions.Notify('Niet genoeg agenten..', 'error', 3500)
         end
     end, "screwdriverset")
 end)

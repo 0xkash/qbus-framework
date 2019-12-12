@@ -21,6 +21,11 @@ Citizen.CreateThread(function()
 	end
 end)
 
+RegisterNetEvent("QBCore:Client:OnPlayerLoaded")
+AddEventHandler("QBCore:Client:OnPlayerLoaded", function()
+    TriggerServerEvent("qb-scrapyard:server:LoadVehicleList")
+end)
+
 Citizen.CreateThread(function()
 	for id, scrapyard in pairs(Config.Locations) do
 		local blip = AddBlipForCoord(Config.Locations[id]["main"].x, Config.Locations[id]["main"].y, Config.Locations[id]["main"].z)
@@ -85,9 +90,11 @@ function CreateListEmail()
 		emailSend = true
 		local vehicleList = ""
 		for k, v in pairs(Config.CurrentVehicles) do
-			vehicleInfo = QBCore.Shared.Vehicles[v]
-			if vehicleInfo ~= nil then 
-				vehicleList = vehicleList  .. vehicleInfo["brand"] .. " " .. vehicleInfo["name"] .. "<br />"
+			if Config.CurrentVehicles[k] ~= nil then 
+				local vehicleInfo = QBCore.Shared.Vehicles[v]
+				if vehicleInfo ~= nil then 
+					vehicleList = vehicleList  .. vehicleInfo["brand"] .. " " .. vehicleInfo["name"] .. "<br />"
+				end
 			end
 		end
 		SetTimeout(math.random(15000, 20000), function()
@@ -177,7 +184,6 @@ function ScrapVehicleAnim(time)
             TaskPlayAnim(PlayerPedId(), "mp_car_bomb", "car_bomb_mechanic", 3.0, 3.0, -1, 16, 0, 0, 0, 0)
             Citizen.Wait(2000)
 			time = time - 2
-			print(time)
             if time <= 0 then
                 openingDoor = false
                 StopAnimTask(GetPlayerPed(-1), "mp_car_bomb", "car_bomb_mechanic", 1.0)
