@@ -202,7 +202,7 @@ end
 RegisterNetEvent('lockpicks:UseLockpick')
 AddEventHandler('lockpicks:UseLockpick', function()
     QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
-        if CurrentCops >= 0 then
+        if CurrentCops >= 3 then
             if closestHouse ~= nil then
                 if result then
                     if not Config.Houses[closestHouse]["opened"] then
