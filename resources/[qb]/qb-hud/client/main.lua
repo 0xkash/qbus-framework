@@ -11,7 +11,7 @@ Keys = {
     ["LEFT"] = 174, ["RIGHT"] = 175, ["TOP"] = 27, ["DOWN"] = 173,
 }
 
-isLoggedIn = true
+isLoggedIn = false
 
 Citizen.CreateThread(function() 
     while true do
