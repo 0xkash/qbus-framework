@@ -962,7 +962,7 @@ Citizen.CreateThread(function()
 end)
 
 function LoadPlayerModel(model)
-    if IsModelInCdimage(model) and IsModelValid(model) then
+    -- if IsModelInCdimage(model) and IsModelValid(model) then
         RequestModel(model)
         while not HasModelLoaded(model) do
             print("loading "..model)
@@ -970,7 +970,7 @@ function LoadPlayerModel(model)
         end
 
         print(model.." loaded!")
-    end
+    -- end
 end
 
 local blockedPeds = {
