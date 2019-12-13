@@ -31,7 +31,7 @@
       </Probabilities>
     </plateProbabilities>
     <lightSettings value="1" />
-    <sirenSettings value="666" />
+    <sirenSettings value="0" />
   </Item>
   <Item>
 			<modelName>deliveryt1</modelName>
