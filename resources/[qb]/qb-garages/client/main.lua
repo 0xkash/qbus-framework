@@ -408,7 +408,7 @@ Citizen.CreateThread(function()
 
             local putDist = GetDistanceBetweenCoords(pos, Garages[k].putVehicle.x, Garages[k].putVehicle.y, Garages[k].putVehicle.z)
 
-            if putDist <= 15 and IsPedInAnyVehicle(ped) then
+            if putDist <= 25 and IsPedInAnyVehicle(ped) then
                 inGarageRange = true
                 DrawMarker(2, Garages[k].putVehicle.x, Garages[k].putVehicle.y, Garages[k].putVehicle.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 255, 255, 255, 255, false, false, false, true, false, false, false)
                 if putDist <= 1.5 then
@@ -436,7 +436,7 @@ Citizen.CreateThread(function()
         end
 
         if not inGarageRange then
-            Citizen.Wait(5000)
+            Citizen.Wait(1000)
         end
     end
 end)
