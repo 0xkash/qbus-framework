@@ -134,7 +134,7 @@ QBCore.Commands.Add("ooc", "Out Of Character chat bericht (alleen gebruiken wann
 	for k, v in pairs(QBCore.Functions.GetPlayers()) do
 		if QBCore.Functions.HasPermission(v, "admin") then
 			if QBCore.Functions.IsOptin(v) then
-				TriggerClientEvent('chatMessage', src, "OOC | " .. playerName, "normal", message)
+				TriggerClientEvent('chatMessage', v, "OOC | " .. GetPlayerName(source), "normal", message)
 			end
 		end
 	end

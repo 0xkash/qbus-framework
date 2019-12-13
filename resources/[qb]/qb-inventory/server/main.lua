@@ -6,7 +6,6 @@ Trunks = {}
 Gloveboxes = {}
 Stashes = {}
 ShopItems = {}
-CraftItems = {}
 
 RegisterServerEvent("inventory:server:LoadDrops")
 AddEventHandler('inventory:server:LoadDrops', function()
@@ -158,9 +157,6 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 			secondInv.maxweight = 900000
 			secondInv.inventory = other.items
 			secondInv.slots = #other.items
-			if CraftItems == nil or next(CraftItems) == nil then
-				CraftItems = other.items
-			end
 		elseif name == "otherplayer" then
 			local OtherPlayer = QBCore.Functions.GetPlayer(tonumber(id))
 			if OtherPlayer ~= nil then
@@ -606,7 +602,7 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 			end
 		end
 	elseif fromInventory == "crafting" then
-		local itemData = CraftItems[fromSlot]
+		local itemData = Config.CraftingItems[fromSlot]
 		if hasCraftItems(src, itemData.costs, fromAmount) then
 			TriggerClientEvent("inventory:client:CraftItems", src, itemData.name, itemData.costs, fromAmount, toSlot, itemData.points)
 		else
