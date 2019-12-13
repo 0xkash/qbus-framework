@@ -90,6 +90,7 @@ AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     TriggerEvent('qb-houses:client:setupHouseBlips')
     Citizen.Wait(100)
     TriggerEvent('qb-garages:client:setHouseGarage', closesthouse, hasKey)
+    TriggerServerEvent("qb-houses:server:setHouses")
 end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerUnload')
@@ -107,7 +108,7 @@ end)
 RegisterNetEvent('qb-houses:client:setHouseConfig')
 AddEventHandler('qb-houses:client:setHouseConfig', function(houseConfig)
     Config.Houses = houseConfig
-    TriggerEvent("qb-houses:client:refreshHouse")
+    --TriggerEvent("qb-houses:client:refreshHouse")
 end)
 
 RegisterNetEvent('qb-houses:client:lockHouse')
