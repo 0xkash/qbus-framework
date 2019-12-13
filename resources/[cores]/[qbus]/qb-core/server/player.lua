@@ -378,7 +378,6 @@ QBCore.Player.LoadInventory = function(PlayerData)
 			end)
 		end
 	end)
-	
 	return PlayerData
 end
 
@@ -386,18 +385,21 @@ QBCore.Player.SaveInventory = function(source)
 	local PlayerData = QBCore.Players[source].PlayerData
 	local items = PlayerData.items
 	local ItemsJson = {}
-	QBCore.Functions.ExecuteSql("DELETE FROM `playeritems` WHERE `citizenid` = '"..PlayerData.citizenid.."'")
 	if items ~= nil and next(items) ~= nil then
 		for slot, item in pairs(items) do
 			if items[slot] ~= nil then
+				print(items[slot].info)
+				if items[slot].info ~= "" then 
+					items[slot].info = json.encode(items[slot].info) 
+				end
+
 				table.insert(ItemsJson, {
 					name = items[slot].name,
 					amount = items[slot].amount,
-					info = json.encode(items[slot].info),
+					info = items[slot].info,
 					type = items[slot].type,
 					slot = slot,
 				})
-				-- QBCore.Functions.ExecuteSql("INSERT INTO `playeritems` (`citizenid`, `name`, `amount`, `info`, `type`, `slot`) VALUES ('"..PlayerData.citizenid.."', '"..items[slot].name.."', '"..items[slot].amount.."', '"..json.encode(items[slot].info).."', '"..items[slot].type.."', '"..slot.."')")
 			end
 		end
 		QBCore.Functions.ExecuteSql("UPDATE `players` SET `inventory` = '"..json.encode(ItemsJson).."' WHERE `citizenid` = '"..PlayerData.citizenid.."'")
