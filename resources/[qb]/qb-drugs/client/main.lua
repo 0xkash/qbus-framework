@@ -1,4 +1,5 @@
 QBCore = nil
+CurrentCops = 0
 
 Citizen.CreateThread(function()
     while true do
@@ -8,6 +9,11 @@ Citizen.CreateThread(function()
             Citizen.Wait(200)
         end
     end
+end)
+
+RegisterNetEvent('police:SetCopCount')
+AddEventHandler('police:SetCopCount', function(amount)
+    CurrentCops = amount
 end)
 
 -- Code

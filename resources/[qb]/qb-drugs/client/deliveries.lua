@@ -152,7 +152,7 @@ function knockDoorAnim(home)
     local PlayerPed = GetPlayerPed(-1)
     local myData = QBCore.Functions.GetPlayerData()
 
-    if home then
+    if home and CurrentCops >= 3 then
         TriggerServerEvent("InteractSound_SV:PlayOnSource", "knock_door", 0.2)
         Citizen.Wait(100)
         while (not HasAnimDictLoaded(knockAnimLib)) do

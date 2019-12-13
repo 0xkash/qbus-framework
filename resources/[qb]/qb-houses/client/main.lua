@@ -107,6 +107,7 @@ end)
 RegisterNetEvent('qb-houses:client:setHouseConfig')
 AddEventHandler('qb-houses:client:setHouseConfig', function(houseConfig)
     Config.Houses = houseConfig
+    TriggerEvent("qb-houses:client:refreshHouse")
 end)
 
 RegisterNetEvent('qb-houses:client:lockHouse')
@@ -385,9 +386,9 @@ end)
 
 RegisterNetEvent('qb-houses:client:refreshHouse')
 AddEventHandler('qb-houses:client:refreshHouse', function(data)
-    SetClosestHouse()
     Citizen.Wait(100)
-    TriggerEvent('qb-garages:client:setHouseGarage', closesthouse, hasKey)
+    SetClosestHouse()
+    --TriggerEvent('qb-garages:client:setHouseGarage', closesthouse, hasKey)
 end)
 
 RegisterNetEvent('qb-houses:client:SpawnInApartment')
