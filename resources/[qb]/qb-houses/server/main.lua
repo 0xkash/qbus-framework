@@ -125,16 +125,18 @@ QBCore.Functions.CreateCallback('qb-houses:server:hasKey', function(source, cb, 
 	local src = source
 	local Player = QBCore.Functions.GetPlayer(src)
 	local retval = false
-
-	local identifier = Player.PlayerData.steam
-	local CharId = Player.PlayerData.citizenid
-	if hasKey(identifier, CharId, house) then
-		retval = true
-	elseif Player.PlayerData.job.name == "realestate" then
-		retval = true
-	else
-		retval = false
+	if Player ~= nil then 
+		local identifier = Player.PlayerData.steam
+		local CharId = Player.PlayerData.citizenid
+		if hasKey(identifier, CharId, house) then
+			retval = true
+		elseif Player.PlayerData.job.name == "realestate" then
+			retval = true
+		else
+			retval = false
+		end
 	end
+	
 	cb(retval)
 end)
 
