@@ -8,8 +8,8 @@ AddEventHandler("consumables:client:UseJoint", function()
     }, {}, {}, {}, function() -- Done
         TriggerEvent("inventory:client:ItemBox", QBCore.Shared.Items["joint"], "remove")
         TriggerEvent('animations:client:EmoteCommandStart', {"smokeweed"})
-        
         TriggerEvent("evidence:client:SetStatus", "weedsmell", 300)
+        JointEffect()
     end)
 end)
 
@@ -93,3 +93,18 @@ AddEventHandler("consumables:client:Drink", function(itemName)
         TriggerServerEvent("QBCore:Server:SetMetaData", "thirst", QBCore.Functions.GetPlayerData().metadata["thirst"] + Consumeables[itemName])
     end)
 end)
+
+function JointEffect()
+    local onWeed = true
+    local weedTime = Config.JointEffectTime
+    Citizen.CreateThread(function()
+        while onWeed do 
+            SetPlayerHealthRechargeMultiplier(PlayerId(), 1.8)
+            Citizen.Wait(1000)
+            weedTime = weedTime - 1
+            if weedTime <= 0 then
+                onWeed = false
+            end
+        end
+    end)
+end

@@ -151,13 +151,13 @@ AddEventHandler('qb-tow:client:TowVehicle', function()
                 Citizen.Wait(250)
                 AttachEntityToEntity(CurrentTow, vehicle, 20, -0.0, -15.0, 1.0, 0.0, 0.0, 0.0, false, false, false, false, 20, true)
                 DetachEntity(CurrentTow, true, true)
-                CurrentTow = nil
                 if NpcOn then
                     local targetPos = GetEntityCoords(CurrentTow)
                     if GetDistanceBetweenCoords(targetPos.x, targetPos.y, targetPos.z, Config.Locations["vehicle"].coords.x, Config.Locations["vehicle"].coords.y, Config.Locations["vehicle"].coords.z, true) < 25.0 then
                         deliverVehicle(CurrentTow)
                     end
                 end
+                CurrentTow = nil
                 QBCore.Functions.Notify("Voertuig eraf gehaald!")
             end, function() -- Cancel
                 StopAnimTask(GetPlayerPed(-1), "mini@repair", "fixing_a_ped", 1.0)

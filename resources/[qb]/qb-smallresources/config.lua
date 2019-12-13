@@ -23,6 +23,8 @@ Config = {}
 Config.RemoveWeaponDrops = true
 Config.RemoveWeaponDropsTimer = 25
 
+Config.JointEffectTime = 120
+
 Config.BlacklistedScenarios = {
     ['TYPES'] = {
         "WORLD_VEHICLE_MILITARY_PLANES_SMALL",

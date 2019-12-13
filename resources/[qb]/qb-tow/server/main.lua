@@ -9,7 +9,7 @@ AddEventHandler('qb-tow:server:11101110', function(drops)
     local Player = QBCore.Functions.GetPlayer(src)
     local drops = tonumber(drops)
     local bonus = 0
-    local DropPrice = math.random(450, 800)
+    local DropPrice = math.random(450, 700)
     if drops > 5 then 
         bonus = math.ceil((DropPrice / 100) * 5)
     elseif drops > 10 then
