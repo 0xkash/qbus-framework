@@ -129,4 +129,13 @@ end, "admin")
 QBCore.Commands.Add("ooc", "Out Of Character chat bericht (alleen gebruiken wanneer nodig)", {}, false, function(source, args)
 	local message = table.concat(args, " ")
 	TriggerClientEvent("QBCore:Client:LocalOutOfCharacter", -1, source, GetPlayerName(source), message)
+	local Players = QBCore.Functions.GetPlayers()
+
+	for k, v in pairs(QBCore.Functions.GetPlayers()) do
+		if QBCore.Functions.HasPermission(v, "admin") then
+			if QBCore.Functions.IsOptin(v) then
+				TriggerClientEvent('chatMessage', src, "OOC | " .. playerName, "normal", message)
+			end
+		end
+	end
 end)
