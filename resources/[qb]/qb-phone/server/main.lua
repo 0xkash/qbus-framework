@@ -50,7 +50,7 @@ QBCore.Functions.CreateCallback('qb-phone:server:getUserContacts', function(sour
     local Player = QBCore.Functions.GetPlayer(src)
     local playerContacts = {}
     if Player ~= nil then 
-        QBCore.Functions.ExecuteSql("SELECT * FROM `player_contacts` WHERE `citizenid` = '"..Player.PlayerData.citizenid.."'", function(result)
+        QBCore.Functions.ExecuteSql("SELECT * FROM `player_contacts` WHERE `citizenid` = '"..Player.PlayerData.citizenid.."' ORDER BY `name` ASC", function(result)
             if result[1] ~= nil then
                 for i = 1, (#result), 1 do
                     local status = false

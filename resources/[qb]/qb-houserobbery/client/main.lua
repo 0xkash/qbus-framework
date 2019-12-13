@@ -297,11 +297,15 @@ AddEventHandler('qb-houserobbery:client:setHouseState', function(house, state)
     Config.Houses[house]["opened"] = state
 end)
 
+local openingDoor = false
 function searchCabin(cabin)
-    if math.random(1, 100) <= 65 and not IsWearingHandshoes() then
+    if math.random(1, 100) <= 75 and not IsWearingHandshoes() then
+        local pos = GetEntityCoords(GetPlayerPed(-1))
         TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
     end
-    QBCore.Functions.Progressbar("search_cabin", "Kastje aan het doorzoeken..", math.random(4000, 8000), false, true, {
+    local lockpickTime = math.random(15000, 30000)
+    LockpickDoorAnim(lockpickTime)
+    QBCore.Functions.Progressbar("search_cabin", "Kastje aan het doorzoeken..", lockpickTime, false, true, {
         disableMovement = true,
         disableCarMovement = true,
         disableMouse = false,
@@ -317,6 +321,24 @@ function searchCabin(cabin)
     end, function() -- Cancel
         ClearPedTasks(GetPlayerPed(-1))
         QBCore.Functions.Notify("Proces geannuleerd..", "error")
+    end)
+end
+
+function LockpickDoorAnim(time)
+    time = time / 1000
+    loadAnimDict("veh@break_in@0h@p_m_one@")
+    TaskPlayAnim(GetPlayerPed(-1), "veh@break_in@0h@p_m_one@", "low_force_entry_ds" ,3.0, 3.0, -1, 16, 0, false, false, false)
+    openingDoor = true
+    Citizen.CreateThread(function()
+        while openingDoor do
+            TaskPlayAnim(PlayerPedId(), "veh@break_in@0h@p_m_one@", "low_force_entry_ds", 3.0, 3.0, -1, 16, 0, 0, 0, 0)
+            Citizen.Wait(1000)
+            time = time - 1
+            if time <= 0 then
+                openingDoor = false
+                StopAnimTask(GetPlayerPed(-1), "veh@break_in@0h@p_m_one@", "low_force_entry_ds", 1.0)
+            end
+        end
     end)
 end
 

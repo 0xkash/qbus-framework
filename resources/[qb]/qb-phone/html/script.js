@@ -1263,6 +1263,7 @@ qbPhone.setGarageVehicles = function(vehicles) {
             '<div class="garage-vehicle-garage"><p><i class="fas fa-warehouse" id="warehouse-icon"></i> '+vehicle.garage+'</p></div>' +
             '<div class="garage-vehicle-state"><p><i class="fas fa-parking" id="parking-icon"></i> '+vehicle.state+'</p></div>' +
             '<div class="garage-vehicle-stats"><span id="vehicle-engine"><i class="fas fa-shield-alt" id="body-icon"></i> '+(vehicle.body / 10)+'%  |  </span><span id="vehicle-body"><i class="fas fa-car-battery" id="battery-icon"></i> '+(vehicle.engine / 10)+'%  |  </span><span id="vehicle-fuel"><i class="fas fa-gas-pump" id="fuel-icon"></i> '+(vehicle.fuel / 10)+'%</span></div>' +
+            '<div class="garage-vehicle-plate"><p>('+vehicle.plate+')</p></div>' +
         '</div>';
 
         $(".garage-vehicles").append(element);

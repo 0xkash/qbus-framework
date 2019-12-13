@@ -63,7 +63,7 @@ Config.CraftingItems = {
             ["metalscrap"] = 10,
             ["plastic"] = 50,
             ["aluminum"] = 30,
-            ["ironplate"] = 17,
+            ["iron"] = 17,
             ["electronickit"] = 1,
         },
         type = "item",
@@ -118,7 +118,7 @@ Config.CraftingItems = {
         amount = 50,
         info = {},
         costs = {
-            ["ironplate"] = 60,
+            ["iron"] = 60,
             ["glass"] = 30,
         },
         type = "item",
@@ -144,7 +144,7 @@ Config.CraftingItems = {
         amount = 50,
         info = {},
         costs = {
-            ["ironplate"] = 33,
+            ["iron"] = 33,
             ["steel"] = 44,
             ["plastic"] = 55,
             ["aluminum"] = 22,

@@ -185,6 +185,10 @@ function LockVehicle()
     -- local veh = QBCore.Functions.GetClosestVehicle()
     local pos = GetEntityCoords(GetPlayerPed(-1), true)
     local veh = GetClosestVehicle(pos.x, pos.y, pos.z, 5.0, 0, 70)
+    if IsPedInAnyVehicle(GetPlayerPed(-1)) then
+        veh = GetVehiclePedIsIn(GetPlayerPed(-1))
+        print(veh)
+    end
     local vehpos = GetEntityCoords(veh, false)
     if veh ~= nil and GetDistanceBetweenCoords(pos.x, pos.y, pos.z, vehpos.x, vehpos.y, vehpos.z, true) < 7.5 then
         QBCore.Functions.TriggerCallback('vehiclekeys:CheckHasKey', function(result)
@@ -220,7 +224,7 @@ function LockpickDoor()
     if vehicle ~= nil and vehicle ~= 0 then
         local vehpos = GetEntityCoords(vehicle)
         local pos = GetEntityCoords(GetPlayerPed(-1))
-        if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, vehpos.x, vehpos.y, vehpos.z, true) < 5.0 then
+        if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, vehpos.x, vehpos.y, vehpos.z, true) < 1.5 then
             local vehLockStatus = GetVehicleDoorLockStatus(vehicle)
             if (vehLockStatus > 2) then
                 local lockpickTime = math.random(15000, 30000)

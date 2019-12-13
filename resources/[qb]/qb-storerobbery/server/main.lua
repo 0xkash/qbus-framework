@@ -62,10 +62,10 @@ RegisterServerEvent('qb-storerobbery:server:SafeReward')
 AddEventHandler('qb-storerobbery:server:SafeReward', function(safe)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    Player.Functions.AddMoney('cash', math.random(800, 3000))
+    Player.Functions.AddMoney('cash', math.random(1500, 5000))
     local luck = math.random(1, 100)
-    if luck <= 2 then
-        Player.Functions.AddItem("rolex", math.random(2, 5))
+    if luck <= 10 then
+        Player.Functions.AddItem("rolex", math.random(5, 10))
         TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items["rolex"], "add")
         if luck == 1 then
             Citizen.Wait(500)

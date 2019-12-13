@@ -87,6 +87,5 @@ QBCore.Functions.CreateCallback('qb-pawnshop:server:getSellPrice', function(sour
             end
         end
     end
-    print(retval)
     cb(retval)
 end)
