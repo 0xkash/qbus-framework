@@ -501,6 +501,9 @@ Config.ManPlayerModels = {
     'g_m_m_chigoon_02_m',
 }
 
+Config.LoadedManModels = {}
+Config.LoadedWomanModels = {}
+
 Config.Stores = {
     [1] =   {shopType = "clothing", x = 1683.45667,   y = 4823.17725,  z = 42.1631294},
 	[2] =   {shopType = "clothing", x = -712.215881,  y = -155.352982, z = 37.4151268},
