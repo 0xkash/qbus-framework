@@ -118,7 +118,7 @@ Citizen.CreateThread(function()
                             local closestPed, closestDistance = QBCore.Functions.GetClosestPed(coords, PlayerPeds)
     
                             if closestDistance < 15.0 and closestPed ~= 0 then
-                                SellToPed(closestPed, math.random(1, 100))
+                                SellToPed(closestPed)
                             end
                         end
     
@@ -127,7 +127,7 @@ Citizen.CreateThread(function()
                         if startDist > 10 then
                             toFarAway()
                         end
-                    end
+                    -- end
                 --end
             --end
         end

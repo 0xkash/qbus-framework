@@ -630,6 +630,7 @@ local function DriveOutOfGarage(pos)
 			SetVehicleDoorsLocked(veh,0)
 			SetPlayerInvincible(GetPlayerIndex(),false)
 			NetworkLeaveTransition()
+			print(CurrentFuel)
 			exports['LegacyFuel']:SetFuel(veh, CurrentFuel)
 			
 			NetworkFadeInEntity(veh, 1)	

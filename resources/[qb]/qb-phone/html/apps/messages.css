@@ -4,7 +4,7 @@
     display: none;
     /* display: block; */
     position: relative;
-    width: 103.5%;
+    width: 98.5%;
     height: 103.5%;
     /* top: 3%; */
     top: 103.5%;
@@ -34,6 +34,16 @@
     height: 83.4%;
     bottom: 0;
     overflow-y: scroll;
+}
+
+.chats-container::-webkit-scrollbar {
+    display: block;
+}
+
+.chats-container::-webkit-scrollbar-thumb {
+    display: block;
+    background: #c9382d;
+    width: 0.5vh;
 }
 
 .chat {

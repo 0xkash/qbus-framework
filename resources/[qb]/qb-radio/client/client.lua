@@ -39,7 +39,7 @@ end)
 Citizen.CreateThread(function()
   while true do
     if QBCore ~= nil then
-      if not isLoggedIn then
+      if isLoggedIn then
         QBCore.Functions.TriggerCallback('qb-radio:server:GetItem', function(hasItem)
           if not hasItem then
             local playerName = GetPlayerName(PlayerId())
