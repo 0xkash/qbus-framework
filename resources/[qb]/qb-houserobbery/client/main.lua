@@ -315,10 +315,12 @@ function searchCabin(cabin)
         anim = "low_force_entry_ds",
         flags = 16,
     }, {}, {}, function() -- Done
+        openingDoor = false
         ClearPedTasks(GetPlayerPed(-1))
         TriggerServerEvent('qb-houserobbery:server:searchCabin', cabin, currentHouse)
         Config.Houses[currentHouse]["furniture"][cabin]["searched"] = true
     end, function() -- Cancel
+        openingDoor = false
         ClearPedTasks(GetPlayerPed(-1))
         QBCore.Functions.Notify("Proces geannuleerd..", "error")
     end)
