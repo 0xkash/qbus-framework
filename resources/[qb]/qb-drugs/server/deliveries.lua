@@ -23,17 +23,25 @@ AddEventHandler('qb-drugs:server:succesDelivery', function(deliveryData, inTime)
     if inTime then
         if Player.Functions.GetItemByName('weed_brick').amount >= deliveryData["amount"] then
             Player.Functions.RemoveItem('weed_brick', deliveryData["amount"])
-
+            local cops = GetCurrentCops()
+            local price = 3000
+            if cops == 1 then
+                price = 4000
+            elseif cops == 2 then
+                price = 5000
+            elseif cops == 3 then
+                price = 6000
+            end
             if curRep < 10 then
-                Player.Functions.AddMoney('cash', (deliveryData["amount"] * 6000 / 100 * 8))
+                Player.Functions.AddMoney('cash', (deliveryData["amount"] * price / 100 * 8))
             elseif curRep >= 10 then
-                Player.Functions.AddMoney('cash', (deliveryData["amount"] * 6000 / 100 * 10))
+                Player.Functions.AddMoney('cash', (deliveryData["amount"] * price / 100 * 10))
             elseif curRep >= 20 then
-                Player.Functions.AddMoney('cash', (deliveryData["amount"] * 6000 / 100 * 12))
+                Player.Functions.AddMoney('cash', (deliveryData["amount"] * price / 100 * 12))
             elseif curRep >= 30 then
-                Player.Functions.AddMoney('cash', (deliveryData["amount"] * 6000 / 100 * 15))
+                Player.Functions.AddMoney('cash', (deliveryData["amount"] * price / 100 * 15))
             elseif curRep >= 40 then
-                Player.Functions.AddMoney('cash', (deliveryData["amount"] * 6000 / 100 * 18))
+                Player.Functions.AddMoney('cash', (deliveryData["amount"] * price / 100 * 18))
             end
 
             TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items["weed_brick"], "remove")
@@ -100,3 +108,16 @@ AddEventHandler('qb-drugs:server:callCops', function(streetLabel, coords)
         end
 	end
 end)
+
+function GetCurrentCops()
+    local amount = 0
+    for k, v in pairs(QBCore.Functions.GetPlayers()) do
+        local Player = QBCore.Functions.GetPlayer(v)
+        if Player ~= nil then 
+            if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
+                amount = amount + 1
+            end
+        end
+    end
+    return amount
+end
