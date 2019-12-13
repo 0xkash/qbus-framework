@@ -32,6 +32,7 @@ AddEventHandler('qb-drugs:server:succesDelivery', function(deliveryData, inTime)
             elseif cops == 3 then
                 price = 6000
             end
+            print("Drugs PRICE BRO: " .. price)
             if curRep < 10 then
                 Player.Functions.AddMoney('cash', (deliveryData["amount"] * price / 100 * 8))
             elseif curRep >= 10 then
@@ -119,5 +120,6 @@ function GetCurrentCops()
             end
         end
     end
+    print("COPS DRUGS AMOUNT: " .. amount)
     return amount
 end
