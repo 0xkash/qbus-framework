@@ -962,9 +962,9 @@ end
 -- end)
 
 function LoadPlayerModel(skin)
-    RequestModel(model)
-    while not HasModelLoaded(model) do
-        Citizen.Wait(1)
+    RequestModel(skin)
+    while not HasModelLoaded(skin) do
+        Citizen.Wait(0)
     end
 end
 
