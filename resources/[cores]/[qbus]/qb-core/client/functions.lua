@@ -616,7 +616,7 @@ QBCore.Functions.SetVehicleProperties = function(vehicle, props)
 		SetVehicleMod(vehicle, 48, props.modLivery, false)
 		--SetVehicleLivery(vehicle, props.modLivery)
 	end
-	if props.modCustomTyres ~= nil then 
+	if props.modCustomTyres ~= nil and props.modCustomTyres then 
 		SetVehicleMod(vehicle, 23, props.modCustomTyres, true)
 	end
 end
