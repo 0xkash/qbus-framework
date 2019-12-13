@@ -196,7 +196,7 @@ local function DriveInGarage()
 	local pos = currentpos
 	local ped = GetPlayerPed(-1)
 	local veh = GetVehiclePedIsUsing(ped)
-	local CurrentFuel = exports['LegacyFuel']:GetFuel(veh)
+	CurrentFuel = exports['LegacyFuel']:GetFuel(veh)
 	LSCMenu.buttons = {}
 
 	DisplayRadar(false)
@@ -630,6 +630,7 @@ local function DriveOutOfGarage(pos)
 			SetVehicleDoorsLocked(veh,0)
 			SetPlayerInvincible(GetPlayerIndex(),false)
 			NetworkLeaveTransition()
+			print(CurrentFuel)
 			exports['LegacyFuel']:SetFuel(veh, CurrentFuel)
 			
 			NetworkFadeInEntity(veh, 1)	
