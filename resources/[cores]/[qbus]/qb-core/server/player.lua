@@ -354,32 +354,38 @@ QBCore.Player.LoadInventory = function(PlayerData)
 			QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `citizenid` = '"..PlayerData.citizenid.."'", function(result)
 				if result[1] ~= nil then 
 					if result[1].inventory ~= nil then
+						print("inv not nil")
 						result[1].inventory = json.decode(result[1].inventory)
-						for _, item in pairs(result[1].inventory) do
-							if item ~= nil then
-								local itemInfo = QBCore.Shared.Items[item.name:lower()]
-								PlayerData.items[item.slot] = {
-									name = itemInfo["name"], 
-									amount = item.amount, 
-									info = item.info ~= nil and item.info or "", 
-									label = itemInfo["label"], 
-									description = itemInfo["description"] ~= nil and itemInfo["description"] or "", 
-									weight = itemInfo["weight"], 
-									type = itemInfo["type"], 
-									unique = itemInfo["unique"], 
-									useable = itemInfo["useable"], 
-									image = itemInfo["image"], 
-									shouldClose = itemInfo["shouldClose"], 
-									slot = item.slot, 
-									combinable = itemInfo["combinable"]
-								}
+						if result[1].inventory ~= nil and next(result[1].inventory) ~= nil then 
+							print("inv really not nil")
+							for _, item in pairs(result[1].inventory) do
+								if item ~= nil then
+									local itemInfo = QBCore.Shared.Items[item.name:lower()]
+									PlayerData.items[item.slot] = {
+										name = itemInfo["name"], 
+										amount = item.amount, 
+										info = item.info ~= nil and item.info or "", 
+										label = itemInfo["label"], 
+										description = itemInfo["description"] ~= nil and itemInfo["description"] or "", 
+										weight = itemInfo["weight"], 
+										type = itemInfo["type"], 
+										unique = itemInfo["unique"], 
+										useable = itemInfo["useable"], 
+										image = itemInfo["image"], 
+										shouldClose = itemInfo["shouldClose"], 
+										slot = item.slot, 
+										combinable = itemInfo["combinable"]
+									}
+								end
 							end
+							print("done loading inv")
 						end
 					end
 				end
 			end)
 		end
 	end)
+	print("return playerdata bois")
 	return PlayerData
 end
 
