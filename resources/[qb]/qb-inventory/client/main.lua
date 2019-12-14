@@ -341,7 +341,7 @@ AddEventHandler("inventory:client:UseWeapon", function(weaponData)
     local weaponName = tostring(weaponData.name)
     if currentWeapon == weaponName then
         SetCurrentPedWeapon(GetPlayerPed(-1), GetHashKey("WEAPON_UNARMED"), true)
-        RemoveWeaponFromPed(GetPlayerPed(-1), GetHashKey(currentWeapon))
+        RemoveAllPedWeapons(GetPlayerPed(-1), true)
         currentWeapon = nil
     elseif weaponName == "weapon_stickybomb" then
         GiveWeaponToPed(GetPlayerPed(-1), GetHashKey(weaponName), ammo, false, false)
@@ -370,7 +370,7 @@ RegisterNetEvent("inventory:client:CheckWeapon")
 AddEventHandler("inventory:client:CheckWeapon", function(weaponName)
     if currentWeapon == weaponName then 
         SetCurrentPedWeapon(GetPlayerPed(-1), GetHashKey("WEAPON_UNARMED"), true)
-        RemoveWeaponFromPed(GetPlayerPed(-1), GetHashKey(currentWeapon))
+        RemoveAllPedWeapons(GetPlayerPed(-1), true)
         currentWeapon = nil
     end
 end)
