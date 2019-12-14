@@ -355,13 +355,8 @@ QBCore.Player.LoadInventory = function(PlayerData)
 				if result[1].inventory ~= nil then
 					result[1].inventory = json.decode(result[1].inventory)
 					for _, item in pairs(result[1].inventory) do
-						print('yeey')
-						print(item.info)
 						if item ~= nil then
 							local itemInfo = QBCore.Shared.Items[item.name:lower()]
-							print(json.decode(item.info))
-							print(item.info)
-							print(json.decode(item.info).firstname)
 							PlayerData.items[item.slot] = {
 								name = itemInfo["name"], 
 								amount = item.amount, 
