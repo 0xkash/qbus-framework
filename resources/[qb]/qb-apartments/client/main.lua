@@ -119,14 +119,14 @@ Citizen.CreateThread(function()
                         end
                     end
                 elseif not IsOwned then
-                    local pos = GetEntityCoords(GetPlayerPed(-1))
+                    --[[local pos = GetEntityCoords(GetPlayerPed(-1))
                     if(GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Apartments.Locations[ClosestHouse].coords.enter.x, Apartments.Locations[ClosestHouse].coords.enter.y,Apartments.Locations[ClosestHouse].coords.enter.z, true) < 1.2)then
                         QBCore.Functions.DrawText3D(Apartments.Locations[ClosestHouse].coords.enter.x, Apartments.Locations[ClosestHouse].coords.enter.y, Apartments.Locations[ClosestHouse].coords.enter.z, '~g~G~w~ - Verander van appartement')
                         if IsControlJustPressed(0, Keys["G"]) then
                             TriggerServerEvent("apartments:server:UpdateApartment", ClosestHouse)
                             IsOwned = true
                         end
-                    end
+                    end]]--
                 end
             end
         end
