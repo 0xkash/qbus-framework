@@ -356,7 +356,7 @@ QBCore.Player.LoadInventory = function(PlayerData)
 					if result[1].inventory ~= nil then
 						print("inv not nil")
 						result[1].inventory = json.decode(result[1].inventory)
-						if result[1].inventory ~= nil and next(result[1].inventory) ~= nil then 
+						if result[1].inventory ~= nil then 
 							print("inv really not nil")
 							for _, item in pairs(result[1].inventory) do
 								if item ~= nil then

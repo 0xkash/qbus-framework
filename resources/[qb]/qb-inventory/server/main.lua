@@ -752,7 +752,7 @@ function GetStashItems(stashId)
 				if result[1] ~= nil then 
 					if result[1].items ~= nil then
 						result[1].items = json.decode(result[1].items)
-						if result[1].items ~= nil and next(result[1].items) ~= nil then 
+						if result[1].items ~= nil then 
 							for k, item in pairs(result[1].items) do
 								local itemInfo = QBCore.Shared.Items[item.name:lower()]
 								items[item.slot] = {
@@ -863,7 +863,7 @@ function GetOwnedVehicleItems(plate)
 				if result[1] ~= nil then
 					if result[1].items ~= nil then
 						result[1].items = json.decode(result[1].items)
-						if result[1].items ~= nil and next(result[1].items) ~= nil then 
+						if result[1].items ~= nil then 
 							for k, item in pairs(result[1].items) do
 								local itemInfo = QBCore.Shared.Items[item.name:lower()]
 								items[item.slot] = {
@@ -973,7 +973,7 @@ function GetOwnedVehicleGloveboxItems(plate)
 				if result[1] ~= nil then 
 					if result[1].items ~= nil then
 						result[1].items = json.decode(result[1].items)
-						if result[1].items ~= nil and next(result[1].items) ~= nil then 
+						if result[1].items ~= nil then 
 							for k, item in pairs(result[1].items) do
 								local itemInfo = QBCore.Shared.Items[item.name:lower()]
 								items[item.slot] = {
