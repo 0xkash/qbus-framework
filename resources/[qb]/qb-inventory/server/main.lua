@@ -690,6 +690,15 @@ function IsVehicleOwned(plate)
 	return val
 end
 
+local function escape_str(s)
+	local in_char  = {'\\', '"', '/', '\b', '\f', '\n', '\r', '\t'}
+	local out_char = {'\\', '"', '/',  'b',  'f',  'n',  'r',  't'}
+	for i, c in ipairs(in_char) do
+	  s = s:gsub(c, '\\' .. out_char[i])
+	end
+	return s
+end
+
 -- Shop Items
 function SetupShopItems(shop, shopItems)
 	local items = {}
@@ -770,7 +779,7 @@ end
 function SaveStashItems(stashId, items)
 	if items ~= nil then
 		for slot, item in pairs(items) do
-			item.info = json.encode(item.info)
+			item.info = escape_str(json.encode(item.info))
 			item.description = nil
 		end
 
@@ -879,7 +888,7 @@ end
 function SaveOwnedVehicleItems(plate, items)
 	if items ~= nil then
 		for slot, item in pairs(items) do
-			item.info = json.encode(item.info)
+			item.info = escape_str(json.encode(item.info))
 			item.description = nil
 		end
 
@@ -987,7 +996,7 @@ end
 function SaveOwnedGloveboxItems(plate, items)
 	if items ~= nil then
 		for slot, item in pairs(items) do
-			item.info = json.encode(item.info)
+			item.info = escape_str(json.encode(item.info))
 			item.description = nil
 		end
 

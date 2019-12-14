@@ -355,8 +355,13 @@ QBCore.Player.LoadInventory = function(PlayerData)
 				if result[1].inventory ~= nil then
 					result[1].inventory = json.decode(result[1].inventory)
 					for _, item in pairs(result[1].inventory) do
+						print('yeey')
+						print(item.info)
 						if item ~= nil then
 							local itemInfo = QBCore.Shared.Items[item.name:lower()]
+							print(json.decode(item.info))
+							print(item.info)
+							print(json.decode(item.info).firstname)
 							PlayerData.items[item.slot] = {
 								name = itemInfo["name"], 
 								amount = item.amount, 
@@ -381,6 +386,15 @@ QBCore.Player.LoadInventory = function(PlayerData)
 	return PlayerData
 end
 
+local function escape_str(s)
+	local in_char  = {'\\', '"', '/', '\b', '\f', '\n', '\r', '\t'}
+	local out_char = {'\\', '"', '/',  'b',  'f',  'n',  'r',  't'}
+	for i, c in ipairs(in_char) do
+	  s = s:gsub(c, '\\' .. out_char[i])
+	end
+	return s
+end
+
 QBCore.Player.SaveInventory = function(source)
 	local PlayerData = QBCore.Players[source].PlayerData
 	local items = PlayerData.items
@@ -402,9 +416,15 @@ QBCore.Player.SaveInventory = function(source)
 		-- 	end
 		-- end
 		for slot, item in pairs(items) do
-			item.info = json.encode(item.info)
-			item.description = nil
-			Citizen.Wait(1)
+			if items[slot] ~= nil then
+				table.insert(ItemsJson, {
+					name = item.name,
+					amount = item.amount,
+					info = escape_str(json.encode(item.info)),
+					type = item.type,
+					slot = slot,
+				})
+			end
 		end
 
 		QBCore.Functions.ExecuteSql("UPDATE `players` SET `inventory` = '"..json.encode(items).."' WHERE `citizenid` = '"..PlayerData.citizenid.."'")
