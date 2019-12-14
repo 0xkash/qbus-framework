@@ -310,7 +310,6 @@ end
 
 QBCore.Player.Save = function(source)
 	local PlayerData = QBCore.Players[source].PlayerData
-	QBCore.Player.SaveInventory(source)
 	if PlayerData ~= nil then
 		QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `citizenid` = '"..PlayerData.citizenid.."'", function(result)
 			if result[1] == nil then
@@ -318,7 +317,8 @@ QBCore.Player.Save = function(source)
 			else
 				QBCore.Functions.ExecuteSql("UPDATE `players` SET steam='"..PlayerData.steam.."',license='"..PlayerData.license.."',name='"..PlayerData.name.."',money='"..json.encode(PlayerData.money).."',charinfo='"..json.encode(PlayerData.charinfo).."',job='"..json.encode(PlayerData.job).."',position='"..json.encode(PlayerData.position).."',metadata='"..json.encode(PlayerData.metadata).."' WHERE `citizenid` = '"..PlayerData.citizenid.."'")
 			end
-	    end)
+			QBCore.Player.SaveInventory(source)
+		end)
 		QBCore.ShowSuccess(GetCurrentResourceName(), PlayerData.name .." PLAYER SAVED!")
 	else
 		QBCore.ShowError(GetCurrentResourceName(), "ERROR QBCORE.PLAYER.SAVE - PLAYERDATA IS EMPTY!")
@@ -352,31 +352,28 @@ QBCore.Player.LoadInventory = function(PlayerData)
 			QBCore.Functions.ExecuteSql("DELETE FROM `playeritems` WHERE `citizenid` = '"..PlayerData.citizenid.."'")
 		else
 			QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `citizenid` = '"..PlayerData.citizenid.."'", function(result)
-				if result[1].inventory ~= nil then
-					result[1].inventory = json.decode(result[1].inventory)
-					for _, item in pairs(result[1].inventory) do
-						print('yeey')
-						print(item.info)
-						if item ~= nil then
-							local itemInfo = QBCore.Shared.Items[item.name:lower()]
-							print(json.decode(item.info))
-							print(item.info)
-							print(json.decode(item.info).firstname)
-							PlayerData.items[item.slot] = {
-								name = itemInfo["name"], 
-								amount = item.amount, 
-								info = json.decode(item.info) ~= nil and json.decode(item.info) or "", 
-								label = itemInfo["label"], 
-								description = itemInfo["description"] ~= nil and itemInfo["description"] or "", 
-								weight = itemInfo["weight"], 
-								type = itemInfo["type"], 
-								unique = itemInfo["unique"], 
-								useable = itemInfo["useable"], 
-								image = itemInfo["image"], 
-								shouldClose = itemInfo["shouldClose"], 
-								slot = item.slot, 
-								combinable = itemInfo["combinable"]
-							}
+				if result[1] ~= nil then 
+					if result[1].inventory ~= nil then
+						result[1].inventory = json.decode(result[1].inventory)
+						for _, item in pairs(result[1].inventory) do
+							if item ~= nil then
+								local itemInfo = QBCore.Shared.Items[item.name:lower()]
+								PlayerData.items[item.slot] = {
+									name = itemInfo["name"], 
+									amount = item.amount, 
+									info = item.info ~= nil and item.info or "", 
+									label = itemInfo["label"], 
+									description = itemInfo["description"] ~= nil and itemInfo["description"] or "", 
+									weight = itemInfo["weight"], 
+									type = itemInfo["type"], 
+									unique = itemInfo["unique"], 
+									useable = itemInfo["useable"], 
+									image = itemInfo["image"], 
+									shouldClose = itemInfo["shouldClose"], 
+									slot = item.slot, 
+									combinable = itemInfo["combinable"]
+								}
+							end
 						end
 					end
 				end
@@ -405,7 +402,7 @@ QBCore.Player.SaveInventory = function(source)
 				table.insert(ItemsJson, {
 					name = item.name,
 					amount = item.amount,
-					info = escape_str(json.encode(item.info)),
+					info = item.info,
 					type = item.type,
 					slot = slot,
 				})
