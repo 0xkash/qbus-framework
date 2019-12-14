@@ -750,15 +750,15 @@ function GetStashItems(stashId)
 		else
 			print('Old inv is leeg')
 			QBCore.Functions.ExecuteSql("SELECT * FROM `stashitemsnew` WHERE `stash` = '"..stashId.."'", function(result)
-				if result[1] ~= nil then
-					result[1].items = json.decode(result[1].items)
-					if result[1].items ~= nil and next(result[1].items) ~= nil then
+				if result[1] ~= nil then 
+					if result[1].items ~= nil then
+						result[1].items = json.decode(result[1].items)
 						for k, item in pairs(result[1].items) do
 							local itemInfo = QBCore.Shared.Items[item.name:lower()]
 							items[item.slot] = {
 								name = itemInfo["name"],
 								amount = tonumber(item.amount),
-								info = json.decode(item.info) ~= nil and json.decode(item.info) or "",
+								info = item.info ~= nil and item.info or "",
 								label = itemInfo["label"],
 								description = itemInfo["description"] ~= nil and itemInfo["description"] or "",
 								weight = itemInfo["weight"], 
@@ -780,7 +780,6 @@ end
 function SaveStashItems(stashId, items)
 	if items ~= nil then
 		for slot, item in pairs(items) do
-			item.info = escape_str(json.encode(item.info))
 			item.description = nil
 		end
 
@@ -861,15 +860,15 @@ function GetOwnedVehicleItems(plate)
 		else
 			QBCore.Functions.ExecuteSql("SELECT * FROM `trunkitemsnew` WHERE `plate` = '"..plate.."'", function(result)
 				if result[1] ~= nil then
-					result[1].items = json.decode(result[1].items)
-					if result[1].items ~= nil and next(result[1].items) ~= nil then
-
+					if result[1].items ~= nil then
+						result[1].items = json.decode(result[1].items)
+	
 						for k, item in pairs(result[1].items) do
 							local itemInfo = QBCore.Shared.Items[item.name:lower()]
 							items[item.slot] = {
 								name = itemInfo["name"],
 								amount = tonumber(item.amount),
-								info = json.decode(item.info) ~= nil and json.decode(item.info) or "",
+								info = item.info ~= nil and item.info or "",
 								label = itemInfo["label"],
 								description = itemInfo["description"] ~= nil and itemInfo["description"] or "",
 								weight = itemInfo["weight"], 
@@ -891,7 +890,6 @@ end
 function SaveOwnedVehicleItems(plate, items)
 	if items ~= nil then
 		for slot, item in pairs(items) do
-			item.info = escape_str(json.encode(item.info))
 			item.description = nil
 		end
 
@@ -970,16 +968,16 @@ function GetOwnedVehicleGloveboxItems(plate)
 			QBCore.Functions.ExecuteSql("DELETE FROM `gloveboxitems` WHERE `plate` = '"..plate.."'")
 		else
 			QBCore.Functions.ExecuteSql("SELECT * FROM `gloveboxitemsnew` WHERE `plate` = '"..plate.."'", function(result)
-				if result[1] ~= nil then
-					result[1].items = json.decode(result[1].items)
-					if result[1].items ~= nil and next(result[1].items) ~= nil then
-
+				if result[1] ~= nil then 
+					if result[1].items ~= nil then
+						result[1].items = json.decode(result[1].items)
+	
 						for k, item in pairs(result[1].items) do
 							local itemInfo = QBCore.Shared.Items[item.name:lower()]
 							items[item.slot] = {
 								name = itemInfo["name"],
 								amount = tonumber(item.amount),
-								info = json.decode(item.info) ~= nil and json.decode(item.info) or "",
+								info = item.info ~= nil and item.info or "",
 								label = itemInfo["label"],
 								description = itemInfo["description"] ~= nil and itemInfo["description"] or "",
 								weight = itemInfo["weight"], 
@@ -1001,7 +999,6 @@ end
 function SaveOwnedGloveboxItems(plate, items)
 	if items ~= nil then
 		for slot, item in pairs(items) do
-			item.info = escape_str(json.encode(item.info))
 			item.description = nil
 		end
 
