@@ -355,8 +355,13 @@ QBCore.Player.LoadInventory = function(PlayerData)
 				if result[1].inventory ~= nil then
 					result[1].inventory = json.decode(result[1].inventory)
 					for _, item in pairs(result[1].inventory) do
+						print('yeey')
+						print(item.info)
 						if item ~= nil then
 							local itemInfo = QBCore.Shared.Items[item.name:lower()]
+							print(json.decode(item.info))
+							print(item.info)
+							print(json.decode(item.info).firstname)
 							PlayerData.items[item.slot] = {
 								name = itemInfo["name"], 
 								amount = item.amount, 
@@ -381,6 +386,15 @@ QBCore.Player.LoadInventory = function(PlayerData)
 	return PlayerData
 end
 
+local function escape_str(s)
+	local in_char  = {'\\', '"', '/', '\b', '\f', '\n', '\r', '\t'}
+	local out_char = {'\\', '"', '/',  'b',  'f',  'n',  'r',  't'}
+	for i, c in ipairs(in_char) do
+	  s = s:gsub(c, '\\' .. out_char[i])
+	end
+	return s
+end
+
 QBCore.Player.SaveInventory = function(source)
 	local PlayerData = QBCore.Players[source].PlayerData
 	local items = PlayerData.items
@@ -388,16 +402,11 @@ QBCore.Player.SaveInventory = function(source)
 	if items ~= nil and next(items) ~= nil then
 		for slot, item in pairs(items) do
 			if items[slot] ~= nil then
-				print(items[slot].info)
-				if items[slot].info ~= "" then 
-					items[slot].info = json.encode(items[slot].info) 
-				end
-
 				table.insert(ItemsJson, {
-					name = items[slot].name,
-					amount = items[slot].amount,
-					info = items[slot].info,
-					type = items[slot].type,
+					name = item.name,
+					amount = item.amount,
+					info = escape_str(json.encode(item.info)),
+					type = item.type,
 					slot = slot,
 				})
 			end
