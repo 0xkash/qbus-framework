@@ -398,23 +398,8 @@ end
 QBCore.Player.SaveInventory = function(source)
 	local PlayerData = QBCore.Players[source].PlayerData
 	local items = PlayerData.items
+	local ItemsJson = {}
 	if items ~= nil and next(items) ~= nil then
-		-- for slot, item in pairs(items) do
-		-- 	if items[slot] ~= nil then
-		-- 		print(items[slot].info)
-		-- 		if items[slot].info ~= "" then 
-		-- 			items[slot].info = json.encode(items[slot].info) 
-		-- 		end
-
-		-- 		table.insert(ItemsJson, {
-		-- 			name = items[slot].name,
-		-- 			amount = items[slot].amount,
-		-- 			info = items[slot].info,
-		-- 			type = items[slot].type,
-		-- 			slot = slot,
-		-- 		})
-		-- 	end
-		-- end
 		for slot, item in pairs(items) do
 			if items[slot] ~= nil then
 				table.insert(ItemsJson, {
@@ -427,7 +412,7 @@ QBCore.Player.SaveInventory = function(source)
 			end
 		end
 
-		QBCore.Functions.ExecuteSql("UPDATE `players` SET `inventory` = '"..json.encode(items).."' WHERE `citizenid` = '"..PlayerData.citizenid.."'")
+		QBCore.Functions.ExecuteSql("UPDATE `players` SET `inventory` = '"..json.encode(ItemsJson).."' WHERE `citizenid` = '"..PlayerData.citizenid.."'")
 	end
 end
 
