@@ -193,6 +193,12 @@ AddEventHandler('apartments:client:SpawnInApartment', function(apartmentId, apar
     IsOwned = true
 end)
 
+RegisterNetEvent('qb-apartments:client:LastLocationHouse')
+AddEventHandler('qb-apartments:client:LastLocationHouse', function(apartmentType, apartmentId)
+    ClosestHouse = apartmentType
+    EnterApartment(apartmentType, apartmentId, false)
+end)
+
 RegisterNetEvent('apartments:client:SetHomeBlip')
 AddEventHandler('apartments:client:SetHomeBlip', function(home)
     Citizen.CreateThread(function()
@@ -256,6 +262,7 @@ function EnterApartment(house, apartmentId, new)
                 SetWeatherTypeNowPersist('EXTRASUNNY')
                 NetworkOverrideClockTime(23, 0, 0)
                 --TriggerEvent('instances:client:JoinInstance', apartmentId, house)
+                TriggerServerEvent('qb-apartments:server:SetInsideMeta', house, apartmentId, true)
                 
 
                 TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_close", 0.1)
@@ -314,6 +321,7 @@ function LeaveApartment(house)
         SetEntityHeading(GetPlayerPed(-1), Apartments.Locations[house].coords.enter.h)
         Citizen.Wait(1000)
         TriggerServerEvent("apartments:server:RemoveObject", CurrentApartment, house)
+        TriggerServerEvent('qb-apartments:server:SetInsideMeta', CurrentApartment, false)
         CurrentApartment = nil
         InApartment = false
         CurrentOffset = 0

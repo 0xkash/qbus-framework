@@ -81,6 +81,13 @@ QBCore.Player.CheckPlayerData = function(source, PlayerData)
 	PlayerData.metadata["licences"] = PlayerData.metadata["licences"] ~= nil and PlayerData.metadata["licences"] or {
 		["driver"] = true,
 		["business"] = false
+	}	
+	PlayerData.metadata["inside"] = PlayerData.metadata["inside"] ~= nil and PlayerData.metadata["inside"] or {
+		house = nil,
+		apartment = {
+			apartmentType = nil,
+			apartmentId = nil,
+		}
 	}
 
 	PlayerData.job = PlayerData.job ~= nil and PlayerData.job or {}

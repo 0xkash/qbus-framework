@@ -152,6 +152,8 @@ RegisterNUICallback('spawnplayer', function(data)
     local location = tostring(data.spawnloc)
     local type = tostring(data.typeLoc)
     local ped = GetPlayerPed(-1)
+    local PlayerData = QBCore.Functions.GetPlayerData()
+    local insideMeta = PlayerData.metadata["inside"]
 
     print(type)
 
@@ -165,6 +167,14 @@ RegisterNUICallback('spawnplayer', function(data)
             SetEntityHeading(GetPlayerPed(-1), PlayerData.position.a)
             FreezeEntityPosition(GetPlayerPed(-1), false)
         end)
+        if insideMeta.house ~= nil then
+            local houseId = insideMeta.house
+            TriggerEvent('qb-houses:client:LastLocationHouse', houseId)
+        elseif insideMeta.apartment ~= nil then
+            local apartmentType = insideMeta.apartment.apartmentType
+            local apartmentId = insideMeta.apartment.apartmentId
+            TriggerEvent('qb-apartments:client:LastLocationHouse', apartmentType, apartmentId)
+        end
         TriggerServerEvent('QBCore:Server:OnPlayerLoaded')
         TriggerEvent('QBCore:Client:OnPlayerLoaded')
         FreezeEntityPosition(ped, false)

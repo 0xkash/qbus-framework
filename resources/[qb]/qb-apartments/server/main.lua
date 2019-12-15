@@ -207,3 +207,24 @@ QBCore.Functions.CreateCallback('apartments:GetOutfits', function(source, cb)
 		end)
 	end
 end)
+
+RegisterServerEvent('qb-apartments:server:SetInsideMeta')
+AddEventHandler('qb-apartments:server:SetInsideMeta', function(house, insideId, bool)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    local insideMeta = Player.PlayerData.metadata["inside"]
+
+    if bool then
+        insideMeta.apartment.apartmentType = house
+        insideMeta.apartment.apartmentId = insideId
+        insideMeta.house = nil
+
+        Player.Functions.SetMetaData("inside", insideMeta)
+    else
+        insideMeta.apartment.apartmentType = nil
+        insideMeta.apartment.apartmentId = nil
+        insideMeta.house = nil
+
+        Player.Functions.SetMetaData("inside", insideMeta)
+    end
+end)

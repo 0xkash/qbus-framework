@@ -378,3 +378,24 @@ QBCore.Commands.Add("addgarage", "Voeg garage toe bij dichtsbijzijnde huis", {},
 		TriggerClientEvent("qb-houses:client:addGarage", source)
 	end
 end)
+
+RegisterServerEvent('qb-houses:server:SetInsideMeta')
+AddEventHandler('qb-houses:server:SetInsideMeta', function(insideId, bool)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    local insideMeta = Player.PlayerData.metadata["inside"]
+
+    if bool then
+        insideMeta.apartment.apartmentType = nil
+        insideMeta.apartment.apartmentId = nil
+        insideMeta.house = insideId
+
+        Player.Functions.SetMetaData("inside", insideMeta)
+    else
+        insideMeta.apartment.apartmentType = nil
+        insideMeta.apartment.apartmentId = nil
+        insideMeta.house = nil
+
+        Player.Functions.SetMetaData("inside", insideMeta)
+    end
+end)

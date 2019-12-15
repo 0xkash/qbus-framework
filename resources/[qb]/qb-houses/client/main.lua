@@ -508,6 +508,7 @@ function enterOwnedHouse(house)
     POIOffsets = data[2]
     inside = true
     entering = true
+    TriggerServerEvent('qb-houses:server:SetInsideMeta', house, true)
     Citizen.Wait(500)
     SetRainFxIntensity(0.0)
     TriggerEvent('qb-weathersync:client:DisableSync')
@@ -530,6 +531,15 @@ AddEventHandler('qb-houses:client:enterOwnedHouse', function(house)
 	end)
 end)
 
+RegisterNetEvent('qb-houses:client:LastLocationHouse')
+AddEventHandler('qb-houses:client:LastLocationHouse', function(houseId)
+    QBCore.Functions.GetPlayerData(function(PlayerData)
+		if PlayerData.metadata["injail"] == 0 then
+			enterOwnedHouse(houseId)
+		end
+	end)
+end)
+
 function leaveOwnedHouse(house)
     TriggerServerEvent("InteractSound_SV:PlayOnSource", "houses_door_open", 0.25)
     openHouseAnim()
@@ -545,6 +555,7 @@ function leaveOwnedHouse(house)
         SetEntityHeading(GetPlayerPed(-1), Config.Houses[closesthouse].coords.enter.h)
         inside = false
         TriggerEvent('qb-weed:client:leaveHouse')
+        TriggerServerEvent('qb-houses:server:SetInsideMeta', house, false)
     end)
 end
 
@@ -567,6 +578,7 @@ function enterNonOwnedHouse(house)
     entering = true
     Citizen.Wait(500)
     SetRainFxIntensity(0.0)
+    TriggerServerEvent('qb-houses:server:SetInsideMeta', house, true)
     TriggerEvent('qb-weathersync:client:DisableSync')
     TriggerEvent('qb-weed:client:getHousePlants', house)
     Citizen.Wait(100)
@@ -594,6 +606,7 @@ function leaveNonOwnedHouse(house)
         SetEntityHeading(GetPlayerPed(-1), Config.Houses[house].coords.enter.h)
         inOwned = false
         TriggerEvent('qb-weed:client:leaveHouse')
+        TriggerServerEvent('qb-houses:server:SetInsideMeta', house, false)
     end)
 end
 
