@@ -531,6 +531,12 @@ AddEventHandler('qb-houses:client:enterOwnedHouse', function(house)
 	end)
 end)
 
+RegisterNUICallback('HasEnoughMoney', function(data, cb)
+    QBCore.Functions.TriggerCallback('qb-houses:server:HasEnoughMoney', function(hasEnough)
+        
+    end, data.objectData)
+end)
+
 RegisterNetEvent('qb-houses:client:LastLocationHouse')
 AddEventHandler('qb-houses:client:LastLocationHouse', function(houseId)
     QBCore.Functions.GetPlayerData(function(PlayerData)

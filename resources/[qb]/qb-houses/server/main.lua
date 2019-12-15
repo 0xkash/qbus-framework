@@ -332,6 +332,13 @@ AddEventHandler('qb-houses:server:giveHouseKey', function(target, house)
 	local tPlayer = QBCore.Functions.GetPlayer(target)
 
 	if tPlayer ~= nil then
+		for _, cid in pairs(housekeyholders[house]) do
+			if cid == tPlayer.PlayerData.citizenid then
+				TriggerClientEvent('QBCore:Notify', src, 'Dit persoon heeft al de sleutels van dit huis!', 'error', 3500)
+				return
+			end
+		end
+		
 		if housekeyholders[house] ~= nil then
 			if typeof(housekeyholders[house]) ~= "table" then
 				housekeyholders[house] = json.decode(housekeyholders[house])
