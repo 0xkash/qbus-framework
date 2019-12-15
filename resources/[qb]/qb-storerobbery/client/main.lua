@@ -74,7 +74,7 @@ Citizen.CreateThread(function()
                         if not Config.Safes[safe].robbed then
                             DrawText3Ds(Config.Safes[safe].x, Config.Safes[safe].y, Config.Safes[safe].z, '~g~E~w~ - Combinatie proberen')
                             if IsControlJustPressed(0, Keys["E"]) then
-                                if CurrentCops >= 0 then
+                                if CurrentCops >= 3 then
                                     currentSafe = safe
                                     if math.random(1, 100) <= 65 and not IsWearingHandshoes() then
                                         TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
