@@ -218,12 +218,15 @@ AddEventHandler('qb-apartments:server:SetInsideMeta', function(house, insideId, 
         insideMeta.apartment.apartmentType = house
         insideMeta.apartment.apartmentId = insideId
         insideMeta.house = nil
+        print(json.encode(insideMeta.apartment))
 
         Player.Functions.SetMetaData("inside", insideMeta)
     else
         insideMeta.apartment.apartmentType = nil
         insideMeta.apartment.apartmentId = nil
         insideMeta.house = nil
+
+        print(json.encode(insideMeta.apartment))
 
         Player.Functions.SetMetaData("inside", insideMeta)
     end
