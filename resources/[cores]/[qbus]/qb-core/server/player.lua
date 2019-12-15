@@ -354,11 +354,10 @@ QBCore.Player.LoadInventory = function(PlayerData)
 			QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `citizenid` = '"..PlayerData.citizenid.."'", function(result)
 				if result[1] ~= nil then 
 					if result[1].inventory ~= nil then
-						print("inv not nil")
-						result[1].inventory = json.decode(result[1].inventory)
-						if result[1].inventory ~= nil then 
-							print("inv really not nil")
-							for _, item in pairs(result[1].inventory) do
+						plyInventory = json.decode(result[1].inventory)
+						if next(plyInventory) ~= nil then 
+							for _, item in pairs(plyInventory) do
+								print('Item Info: '..json.encode(item))
 								if item ~= nil then
 									local itemInfo = QBCore.Shared.Items[item.name:lower()]
 									PlayerData.items[item.slot] = {
@@ -378,14 +377,12 @@ QBCore.Player.LoadInventory = function(PlayerData)
 									}
 								end
 							end
-							print("done loading inv")
 						end
 					end
 				end
 			end)
 		end
 	end)
-	print("return playerdata bois")
 	return PlayerData
 end
 
