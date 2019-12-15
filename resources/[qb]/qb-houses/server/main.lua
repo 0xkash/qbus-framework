@@ -107,6 +107,7 @@ AddEventHandler('qb-houses:server:buyHouse', function(house)
 		housekeyholders[house] = json.encode(keyyeet)
 		QBCore.Functions.ExecuteSql("UPDATE `houselocations` SET `owned` = 1 WHERE `name` = '"..house.."'")
 		TriggerClientEvent('qb-houses:client:SetClosestHouse', src)
+		pData.Functions.RemoveMoney('bank', price)
 	else
 		TriggerClientEvent('QBCore:Notify', source, "Je hebt niet genoeg geld..", "error")
 	end
