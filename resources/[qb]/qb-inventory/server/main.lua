@@ -51,8 +51,6 @@ RegisterServerEvent("inventory:server:OpenInventory")
 AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 	local src = source
 	local Player = QBCore.Functions.GetPlayer(src)
-
-	print(json.encode(QBCore.Shared.Items))
 	if name ~= nil and id ~= nil then
 		local secondInv = {}
 		if name == "stash" then

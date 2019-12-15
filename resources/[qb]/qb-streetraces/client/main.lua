@@ -121,9 +121,20 @@ AddEventHandler('qb-streetraces:CreateRace', function(amount)
     if DoesBlipExist(WaypointHandle) then
         local cx, cy, cz = table.unpack(Citizen.InvokeNative(0xFA7C7F0AADF25D09, WaypointHandle, Citizen.ReturnResultAnyway(), Citizen.ResultAsVector()))
         unusedBool, groundZ = GetGroundZFor_3dCoord(cx, cy, 99999.0, 1)
-        print(groundZ)
         if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, cx, cy, groundZ, true) > 500.0 then
-            local race = {creator = nil, started = false, startx = pos.x, starty = pos.y, startz = pos.z, endx = cx, endy = cy, endz = groundZ, amount = amount, pot = amount, joined = {}}
+            local race = {
+                creator = nil, 
+                started = false, 
+                startx = pos.x, 
+                starty = pos.y, 
+                startz = pos.z, 
+                endx = cx, 
+                endy = cy, 
+                endz = groundZ, 
+                amount = amount, 
+                pot = amount, 
+                joined = {}
+            }
             TriggerServerEvent("qb-streetraces:NewRace", race)
             QBCore.Functions.Notify("Race gemaakt voor €"..amount..",-!", "success")
         else
@@ -151,6 +162,7 @@ function RaceCountDown()
         local pos = GetEntityCoords(GetPlayerPed(-1), true)
         FreezeEntityPosition(GetVehiclePedIsIn(GetPlayerPed(-1), true), true)
         PlaySound(-1, "slow", "SHORT_PLAYER_SWITCH_SOUND_SET", 0, 0, 1)
+        QBCore.Functions.Notify(RaceCount, 'primary', 800)
         Citizen.Wait(1000)
         RaceCount = RaceCount - 1
     end
