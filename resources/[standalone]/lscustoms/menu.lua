@@ -396,7 +396,7 @@ function Menu:draw()
 									drawRightMenuText("",cfg.font,0,x + (width/2.1),ty,scale,cfg.stext_color.r,cfg.stext_color.g,cfg.stext_color.b,cfg.stext_color.a)
 								else
 									if not btn.purchased then
-										drawRightMenuText("$"..btn.price,cfg.font,0,x + (width/2.1),ty,scale,cfg.stext_color.r,cfg.stext_color.g,cfg.stext_color.b,cfg.stext_color.a)
+										drawRightMenuText("€"..btn.price,cfg.font,0,x + (width/2.1),ty,scale,cfg.stext_color.r,cfg.stext_color.g,cfg.stext_color.b,cfg.stext_color.a)
 									else
 										drawRightMenuText("OWNED",cfg.font,0,x + (width/2.1),ty,scale,cfg.stext_color.r,cfg.stext_color.g,cfg.stext_color.b,cfg.stext_color.a)
 									end
@@ -466,7 +466,7 @@ function Menu:draw()
 							elseif btn.price ~= nil then
 								if btn.price ~= 0 then
 									if not btn.purchased then
-										drawRightMenuText("$"..btn.price,cfg.font,0,x + (width/2.1),ty,scale,cfg.text_color.r,cfg.text_color.g,cfg.text_color.b,cfg.text_color.a)
+										drawRightMenuText("€"..btn.price,cfg.font,0,x + (width/2.1),ty,scale,cfg.text_color.r,cfg.text_color.g,cfg.text_color.b,cfg.text_color.a)
 									else
 										drawRightMenuText("OWNED",cfg.font,0,x + (width/2.1),ty,scale,cfg.text_color.r,cfg.text_color.g,cfg.text_color.b,cfg.text_color.a)
 									end
