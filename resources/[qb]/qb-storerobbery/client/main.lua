@@ -155,7 +155,7 @@ AddEventHandler('lockpicks:UseLockpick', function()
         local pos = GetEntityCoords(ped)
         local dist = GetDistanceBetweenCoords(pos, Config.Registers[k].x, Config.Registers[k].y, Config.Registers[k].z)
         if dist <= 1 and not Config.Registers[k].robbed then
-            if CurrentCops >= 3 then
+            if CurrentCops >= 0 then
                 QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
                     if result then
                         lockpick(true)
@@ -260,13 +260,31 @@ function takeAnim()
     TaskPlayAnim(ped, "amb@prop_human_bum_bin@idle_b", "exit", 8.0, 8.0, -1, 50, 0, false, false, false)
 end
 
+local openingDoor = false
 RegisterNUICallback('success', function()
     if currentRegister ~= 0 then
-        local ped = GetPlayerPed(-1)
-        TriggerServerEvent('qb-storerobbery:server:takeMoney', currentRegister)
-        TriggerServerEvent('qb-storerobbery:server:setRegisterStatus', currentRegister)
         lockpick(false)
-        takeAnim()
+        TriggerServerEvent('qb-storerobbery:server:setRegisterStatus', currentRegister)
+        local lockpickTime = 28000
+        LockpickDoorAnim(lockpickTime)
+        QBCore.Functions.Progressbar("search_register", "Kassa leeghalen..", lockpickTime, false, true, {
+            disableMovement = true,
+            disableCarMovement = true,
+            disableMouse = false,
+            disableCombat = true,
+        }, {
+            animDict = "veh@break_in@0h@p_m_one@",
+            anim = "low_force_entry_ds",
+            flags = 16,
+        }, {}, {}, function() -- Done
+            openingDoor = false
+            ClearPedTasks(GetPlayerPed(-1))
+            TriggerServerEvent('qb-storerobbery:server:takeMoney', currentRegister, true)
+        end, function() -- Cancel
+            openingDoor = false
+            ClearPedTasks(GetPlayerPed(-1))
+            QBCore.Functions.Notify("Proces geannuleerd..", "error")
+        end)
         currentRegister = 0
     else
         SendNUIMessage({
@@ -274,6 +292,25 @@ RegisterNUICallback('success', function()
         })
     end
 end)
+
+function LockpickDoorAnim(time)
+    time = time / 1000
+    loadAnimDict("veh@break_in@0h@p_m_one@")
+    TaskPlayAnim(GetPlayerPed(-1), "veh@break_in@0h@p_m_one@", "low_force_entry_ds" ,3.0, 3.0, -1, 16, 0, false, false, false)
+    openingDoor = true
+    Citizen.CreateThread(function()
+        while openingDoor do
+            TaskPlayAnim(PlayerPedId(), "veh@break_in@0h@p_m_one@", "low_force_entry_ds", 3.0, 3.0, -1, 16, 0, 0, 0, 0)
+            Citizen.Wait(2000)
+            time = time - 2
+            TriggerServerEvent('qb-storerobbery:server:takeMoney', currentRegister, false)
+            if time <= 0 then
+                openingDoor = false
+                StopAnimTask(GetPlayerPed(-1), "veh@break_in@0h@p_m_one@", "low_force_entry_ds", 1.0)
+            end
+        end
+    end)
+end
 
 RegisterNUICallback('callcops', function()
     TriggerEvent("police:SetCopAlert")

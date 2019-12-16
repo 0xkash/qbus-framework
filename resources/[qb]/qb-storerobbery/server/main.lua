@@ -23,25 +23,27 @@ local SafeCodes = {
 }
 
 RegisterServerEvent('qb-storerobbery:server:takeMoney')
-AddEventHandler('qb-storerobbery:server:takeMoney', function(register)
+AddEventHandler('qb-storerobbery:server:takeMoney', function(register, isDone)
     local src   = source
     local Player = QBCore.Functions.GetPlayer(src)
 
-    Player.Functions.AddMoney('cash', Config.RegisterEarnings)
-    if math.random(1, 100) <= 2 then
-        local code = SafeCodes[Config.Registers[register].safeKey]
-        local info = {}
-        if Config.Safes[Config.Registers[register].safeKey].type == "keypad" then
-            info = {
-                label = "Kluis code: "..tostring(code)
-            }
-        else
-            info = {
-                label = "Kluis code: "..tostring(code[1]).."-"..tostring(code[2]).."-"..tostring(code[3]).."-"..tostring(code[4]).."-"..tostring(code[5])
-            }
+    Player.Functions.AddMoney('cash', math.random(25, 69))
+    if isDone then
+        if math.random(1, 100) <= 10 then
+            local code = SafeCodes[Config.Registers[register].safeKey]
+            local info = {}
+            if Config.Safes[Config.Registers[register].safeKey].type == "keypad" then
+                info = {
+                    label = "Kluis code: "..tostring(code)
+                }
+            else
+                info = {
+                    label = "Kluis code: "..tostring(code[1]).."-"..tostring(code[2]).."-"..tostring(code[3]).."-"..tostring(code[4]).."-"..tostring(code[5])
+                }
+            end
+            Player.Functions.AddItem("stickynote", 1, false, info)
+            TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items["stickynote"], "add")
         end
-        Player.Functions.AddItem("stickynote", 1, false, info)
-        TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items["stickynote"], "add")
     end
 end)
 
