@@ -236,9 +236,14 @@ function EnterApartment(house, apartmentId, new)
     openHouseAnim()
     Citizen.Wait(250)
     QBCore.Functions.TriggerCallback('apartments:GetApartmentOffset', function(offset)
+        print(offset)
         if offset == nil or offset == 0 then
             QBCore.Functions.TriggerCallback('apartments:GetApartmentOffsetNewOffset', function(newoffset)
                 CurrentOffset = newoffset
+                print(newoffset)
+
+                print(house)
+                print(CurrentOffset)
                 TriggerServerEvent("apartments:server:AddObject", apartmentId, house, CurrentOffset)
                 
                 local coords = { x = Apartments.Locations[house].coords.enter.x, y = Apartments.Locations[house].coords.enter.y, z = Apartments.Locations[house].coords.enter.z - CurrentOffset}
