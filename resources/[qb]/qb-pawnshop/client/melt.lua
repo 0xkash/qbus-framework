@@ -1,4 +1,5 @@
 local enablePickup = false
+local openingDoor = false
 Citizen.CreateThread(function()
 	while true do 
 		Citizen.Wait(1)
@@ -39,6 +40,59 @@ Citizen.CreateThread(function()
 		end
 	end
 end)
+local sellItemsSet = false
+local hasGold = false
+Citizen.CreateThread(function()
+	while true do 
+		Citizen.Wait(1)
+		local inRange = false
+		local pos = GetEntityCoords(GetPlayerPed(-1))
+		if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.SellGold.x, Config.SellGold.y, Config.SellGold.z, true) < 3.0 then
+			inRange = true
+            if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.SellGold.x, Config.SellGold.y, Config.SellGold.z, true) < 1.5 then
+                if GetClockHours() >= 9 and GetClockHours() <= 18 then
+                    if not sellItemsSet then 
+						hasGold = HasPlayerGold()
+						sellItemsSet = true
+                    elseif sellItemsSet and hasGold then
+                        DrawText3D(Config.SellGold.x, Config.SellGold.y, Config.SellGold.z, "~g~E~w~ - Verkoop goudstaven")
+                        if IsControlJustReleased(0, Keys["E"]) then
+                            local lockpickTime = 20000
+                            ScrapAnim(lockpickTime)
+                            QBCore.Functions.Progressbar("sell_gold", "Goud verkopen..", lockpickTime, false, true, {
+                                disableMovement = true,
+                                disableCarMovement = true,
+                                disableMouse = false,
+                                disableCombat = true,
+                            }, {
+                                animDict = "veh@break_in@0h@p_m_one@",
+                                anim = "low_force_entry_ds",
+                                flags = 16,
+                            }, {}, {}, function() -- Done
+                                openingDoor = false
+                                ClearPedTasks(GetPlayerPed(-1))
+                                TriggerServerEvent('qb-pawnshop:server:sellGold')
+                            end, function() -- Cancel
+                                openingDoor = false
+                                ClearPedTasks(GetPlayerPed(-1))
+                                QBCore.Functions.Notify("Proces geannuleerd..", "error")
+                            end)
+                        end
+                    else
+                        DrawText3D(Config.SellGold.x, Config.SellGold.y, Config.SellGold.z, "Je hebt geen goud bij je..")
+                    end
+                    
+                else
+                    DrawText3D(Config.SellGold.x, Config.SellGold.y, Config.SellGold.z, "Pawnshop gesloten..")
+                end
+			end
+		end
+        if not inRange then
+            sellItemsSet = false
+			Citizen.Wait(2500)
+		end
+	end
+end)
 
 function ScrapAnim(time)
     local time = time / 1000
@@ -56,6 +110,16 @@ function ScrapAnim(time)
             end
         end
     end)
+end
+
+function HasPlayerGold()
+	local retval = false
+	QBCore.Functions.TriggerCallback('qb-pawnshop:server:hasGold', function(result)
+		retval = result
+	end)
+    Citizen.Wait(500)
+    print(retval)
+	return retval
 end
 
 function loadAnimDict(dict)
