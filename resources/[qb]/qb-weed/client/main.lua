@@ -2,7 +2,6 @@ local isLoggedIn = true
 local housePlants = {}
 local insideHouse = false
 local currentHouse = nil
-local ClosestPlantTarget = nil
 
 QBCore = nil
 
@@ -109,13 +108,10 @@ Citizen.CreateThread(function()
 
                     local plyDistance = GetDistanceBetweenCoords(GetEntityCoords(ped), plantData["plantCoords"]["x"], plantData["plantCoords"]["y"], plantData["plantCoords"]["z"], false)
 
-                    if plyDistance < 0.6 then
+                    if plyDistance < 0.8 then
                         if plantData["plantStats"]["health"] > 0 then
                             if plantData["plantStage"] ~= plantData["plantStats"]["highestStage"] then
                                 QBWeed.DrawText3Ds(plantData["plantCoords"]["x"], plantData["plantCoords"]["y"], plantData["plantCoords"]["z"], 'Soort: '..plantData["plantSort"]["label"]..'~w~ ['..plantData["plantStats"]["gender"]..'] | Voeding: ~b~'..plantData["plantStats"]["food"]..'% ~w~ | Gezondheid: ~b~'..plantData["plantStats"]["health"]..'%')
-                                if ClosestPlantTarget ~= k then
-                                    ClosestPlantTarget = k
-                                end
                             else
                                 QBWeed.DrawText3Ds(plantData["plantCoords"]["x"], plantData["plantCoords"]["y"], plantData["plantCoords"]["z"] + 0.2, 'De plant is volgroeid ~g~E~w~ om te oogsten..')
                                 QBWeed.DrawText3Ds(plantData["plantCoords"]["x"], plantData["plantCoords"]["y"], plantData["plantCoords"]["z"], 'Soort: ~g~'..plantData["plantSort"]["label"]..'~w~ ['..plantData["plantStats"]["gender"]..'] | Voeding: ~b~'..plantData["plantStats"]["food"]..'% ~w~ | Gezondheid: ~b~'..plantData["plantStats"]["health"]..'%')
@@ -163,10 +159,6 @@ Citizen.CreateThread(function()
                                     QBCore.Functions.Notify("Proces geannuleerd..", "error")
                                 end)
                             end
-                        end
-                    else
-                        if ClosestPlantTarget ~= nil then
-                            ClosestPlantTarget = nil
                         end
                     end
                 end
@@ -233,7 +225,7 @@ AddEventHandler('qb-weed:client:placePlant', function(type, item)
     local ClosestPlant = 0
     for k, v in pairs(QBWeed.Props) do
         if ClosestPlant == 0 then
-            ClosestPlant = GetClosestObjectOfType(plyCoords.x, plyCoords.y, plyCoords.z, 0.5, GetHashKey(v), false, false, false)
+            ClosestPlant = GetClosestObjectOfType(plyCoords.x, plyCoords.y, plyCoords.z, 0.8, GetHashKey(v), false, false, false)
         end
     end
 
@@ -271,36 +263,38 @@ end)
 
 RegisterNetEvent('qb-weed:client:foodPlant')
 AddEventHandler('qb-weed:client:foodPlant', function(item)
+    local plantData = {}
     if currentHouse ~= nil then
-        if ClosestPlantTarget ~= nil then
-            local ped = GetPlayerPed(-1)
+        local ped = GetPlayerPed(-1)
+        for k, v in pairs(housePlants[currentHouse]) do
             local gender = "M"
-            if housePlants[currentHouse][ClosestPlantTarget].gender == "woman" then 
+            if housePlants[currentHouse][k].gender == "woman" then 
                 gender = "V" 
             end
 
-            local plantData = {
-                ["plantCoords"] = {["x"] = json.decode(housePlants[currentHouse][ClosestPlantTarget].coords).x, ["y"] = json.decode(housePlants[currentHouse][ClosestPlantTarget].coords).y, ["z"] = json.decode(housePlants[currentHouse][ClosestPlantTarget].coords).z},
-                ["plantStage"] = housePlants[currentHouse][ClosestPlantTarget].stage,
-                ["plantProp"] = GetHashKey(QBWeed.Plants[housePlants[currentHouse][ClosestPlantTarget].sort]["stages"][housePlants[currentHouse][ClosestPlantTarget].stage]),
+            plantData = {
+                ["plantCoords"] = {["x"] = json.decode(housePlants[currentHouse][k].coords).x, ["y"] = json.decode(housePlants[currentHouse][k].coords).y, ["z"] = json.decode(housePlants[currentHouse][k].coords).z},
+                ["plantStage"] = housePlants[currentHouse][k].stage,
+                ["plantProp"] = GetHashKey(QBWeed.Plants[housePlants[currentHouse][k].sort]["stages"][housePlants[currentHouse][k].stage]),
                 ["plantSort"] = {
-                    ["name"] = housePlants[currentHouse][ClosestPlantTarget].sort,
-                    ["label"] = QBWeed.Plants[housePlants[currentHouse][ClosestPlantTarget].sort]["label"],
+                    ["name"] = housePlants[currentHouse][k].sort,
+                    ["label"] = QBWeed.Plants[housePlants[currentHouse][k].sort]["label"],
                 },
                 ["plantStats"] = {
-                    ["food"] = housePlants[currentHouse][ClosestPlantTarget].food,
-                    ["health"] = housePlants[currentHouse][ClosestPlantTarget].health,
-                    ["progress"] = housePlants[currentHouse][ClosestPlantTarget].progress,
-                    ["stage"] = housePlants[currentHouse][ClosestPlantTarget].stage,
-                    ["highestStage"] = QBWeed.Plants[housePlants[currentHouse][ClosestPlantTarget].sort]["highestStage"],
+                    ["food"] = housePlants[currentHouse][k].food,
+                    ["health"] = housePlants[currentHouse][k].health,
+                    ["progress"] = housePlants[currentHouse][k].progress,
+                    ["stage"] = housePlants[currentHouse][k].stage,
+                    ["highestStage"] = QBWeed.Plants[housePlants[currentHouse][k].sort]["highestStage"],
                     ["gender"] = gender,
-                    ["plantId"] = housePlants[currentHouse][ClosestPlantTarget].plantid,
+                    ["plantId"] = housePlants[currentHouse][k].plantid,
                 }
             }
+        end
 
-            -- plyDistance = GetDistanceBetweenCoords(GetEntityCoords(ped), plantData["plantCoords"]["x"], plantData["plantCoords"]["y"], plantData["plantCoords"]["z"], false)
-            -- end
+        local plyDistance = GetDistanceBetweenCoords(GetEntityCoords(ped), plantData["plantCoords"]["x"], plantData["plantCoords"]["y"], plantData["plantCoords"]["z"], false)
 
+        if plyDistance < 0.8 then
             if plantData["plantStats"]["food"] == 100 then
                 QBCore.Functions.Notify('De plant heeft geen voeding nodig..', 'error', 3500)
             else
@@ -323,7 +317,7 @@ AddEventHandler('qb-weed:client:foodPlant', function(item)
                 end)
             end
         else
-            QBCore.Functions.Notify("Geen plant in de buurt? rip oink..", "error")
+            QBCore.Functions.Notify("Geen plant a sah..", "error")
         end
     end
 end)
