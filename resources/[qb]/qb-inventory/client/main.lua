@@ -456,6 +456,7 @@ RegisterNUICallback("CloseInventory", function(data, cb)
         SetNuiFocus(false, false)
         inInventory = false
         ClearPedTasks(GetPlayerPed(-1))
+        TransitionFromBlurred(250)
         return
     end
     if CurrentVehicle ~= nil then
