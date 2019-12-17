@@ -629,7 +629,11 @@ RegisterNUICallback('removeContact', function(data)
 end)
 
 RegisterNUICallback('transferMoney', function(data)
-    TriggerServerEvent('qb-phone:server:transferBank', data.amount, data.iban)
+    if data.amount > 0 then
+        TriggerServerEvent('qb-phone:server:transferBank', data.amount, data.iban)
+    else
+        QBCore.Functions.Notify('Bedrag moet hoger zijn dan 0', 'error')
+    end
 end)
 
 RegisterNUICallback('getUserMails', function()
@@ -694,6 +698,39 @@ RegisterNUICallback('getTweets', function()
             tweets = tweets
         })
     end)
+end)
+
+RegisterNetEvent('qb-phone:client:InPhoneNotify')
+AddEventHandler('qb-phone:client:InPhoneNotify', function(title, type, text)
+    SendNUIMessage({
+        task = "phoneNotify",
+        title = title,
+        type = type, 
+        text = text,
+    })
+end)
+
+RegisterNetEvent('qb-phone:client:setupCompanies')
+AddEventHandler('qb-phone:client:setupCompanies', function()
+    SendNUIMessage({
+        task = "setupCompanies",
+        companies = exports['qb-companies']:GetCompanies()
+    })
+end)
+
+RegisterNUICallback('getCompanies', function()
+    SendNUIMessage({
+        task = "setupCompanies",
+        companies = exports['qb-companies']:GetCompanies()
+    })
+end)
+
+RegisterNUICallback('removeCompany', function(data)
+    TriggerServerEvent("qb-companies:server:removeCompany", data.name)
+end)
+
+RegisterNUICallback('quitCompany', function(data)
+    TriggerServerEvent("qb-companies:server:quitCompany", data.name)
 end)
 
 RegisterNUICallback('getAds', function()

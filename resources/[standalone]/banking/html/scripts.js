@@ -127,9 +127,13 @@ $(document).ready(function(){
   // Handle Form Submits
   $("#withdraw-form").submit(function(e) {
       e.preventDefault();
-      $.post('http://banking/withdrawSubmit', JSON.stringify({
-          amount: $("#withdraw-form #amount").val()
-      }));
+      var amount = parseInt($("#withdraw-form #amount").val());
+
+      if (amount >= 0 ) {
+        $.post('http://banking/withdrawSubmit', JSON.stringify({
+            amount: $("#withdraw-form #amount").val()
+        }));
+      }
 
       closeAll();
       openMain();
@@ -138,9 +142,13 @@ $(document).ready(function(){
   });
   $("#deposit-form").submit(function(e) {
       e.preventDefault();
-      $.post('http://banking/depositSubmit', JSON.stringify({
-          amount: $("#deposit-form #amount").val()
-      }));
+      var amount = parseInt($("#deposit-form #amount").val());
+
+      if (amount >= 0 ) {
+        $.post('http://banking/depositSubmit', JSON.stringify({
+            amount: $("#deposit-form #amount").val()
+        }));
+      }
 
       closeAll();
       openMain();

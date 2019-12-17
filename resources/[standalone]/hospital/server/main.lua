@@ -91,9 +91,7 @@ AddEventHandler('hospital:server:RevivePlayer', function(playerId)
 	local Player = QBCore.Functions.GetPlayer(src)
 	local Patient = QBCore.Functions.GetPlayer(playerId)
 	if Patient ~= nil then
-		if Player.PlayerData.job.name == "doctor" then
-			TriggerClientEvent('hospital:client:Revive', Patient.PlayerData.source)
-		end
+		TriggerClientEvent('hospital:client:Revive', Patient.PlayerData.source)
 	end
 end)
 
