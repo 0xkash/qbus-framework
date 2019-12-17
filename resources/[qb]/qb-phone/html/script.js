@@ -808,26 +808,34 @@ $(document).on('click', '.bank-transfer-btn', function(e){
 
 $(document).on('click', '.submit-transfer-btn', function(e){
     var ibanVal = $(".iban-input").val();
-    var amountVal = $(".euro-amount-input").val();
+    var amountVal = parseInt($(".euro-amount-input").val());
     var balance = parseInt($(".account-balance").data('balance'));
+
+    console.log(balance)
+    console.log(amountVal)
+    console.log(balance - amountVal)
 
     if (ibanVal != "" && amountVal != "") {
         if (!isNaN(amountVal)) {
             if (balance - amountVal < 0) {
-                qbPhone.Notify('QBank', 'error', 'Je hebt niet genoeg saldo', 3500)
+                qbPhone.Notify('QBank', 'error', 'Je hebt niet genoeg saldo', 3500);
             } else {
-                $('.transfer-money-container').css({"display":"block"}).animate({top: "103%",}, 250, function(){
-                    $('.transfer-money-container').css({'display':'none'});
-                    qbPhone.Notify('QBank', 'success', 'Je hebt € '+amountVal+' overgemaakt naar '+ibanVal+'!', 3500);
-
-                    $.post('http://qb-phone/transferMoney', JSON.stringify({
-                        amount: amountVal,
-                        iban: ibanVal
-                    }));
-
-                    $(".account-balance").html("&euro; "+parseInt((balance - amountVal))+",-");
-                    $(".account-balance").data('balance', parseInt((balance - amountVal)));
-                });
+                if (amountVal > 0) {
+                    $('.transfer-money-container').css({"display":"block"}).animate({top: "103%",}, 250, function(){
+                        $('.transfer-money-container').css({'display':'none'});
+                        qbPhone.Notify('QBank', 'success', 'Je hebt € '+amountVal+' overgemaakt naar '+ibanVal+'!', 3500);
+    
+                        $.post('http://qb-phone/transferMoney', JSON.stringify({
+                            amount: amountVal,
+                            iban: ibanVal
+                        }));
+    
+                        $(".account-balance").html("&euro; "+parseInt((balance - amountVal))+",-");
+                        $(".account-balance").data('balance', parseInt((balance - amountVal)));
+                    });
+                } else {
+                    qbPhone.Notify('QBank', 'error', 'Hoeveelheid mag niet lager zijn dan 0', 3500);
+                }
             }
         } else {
             qbPhone.Notify('QBank', 'error', 'De hoeveelheid moet bestaan uit cijfers.', 3500)

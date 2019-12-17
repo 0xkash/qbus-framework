@@ -508,7 +508,7 @@ AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     end)
 end)
 
---[[Citizen.CreateThread(function()
+Citizen.CreateThread(function()
     Citizen.Wait(250)
     isLoggedIn = true
     setPhoneMeta()
@@ -519,7 +519,7 @@ end)
     QBCore.Functions.TriggerCallback('qb-phone:server:getPlayerMessages', function(result)
         messages = result
     end)
-end)]]--
+end)
 
 function setPhoneMeta()
     phoneMeta = QBCore.Functions.GetPlayerData().metadata["phone"]
@@ -629,7 +629,11 @@ RegisterNUICallback('removeContact', function(data)
 end)
 
 RegisterNUICallback('transferMoney', function(data)
-    TriggerServerEvent('qb-phone:server:transferBank', data.amount, data.iban)
+    if data.amount > 0 then
+        TriggerServerEvent('qb-phone:server:transferBank', data.amount, data.iban)
+    else
+        QBCore.Functions.Notify('Bedrag moet hoger zijn dan 0', 'error')
+    end
 end)
 
 RegisterNUICallback('getUserMails', function()
