@@ -191,7 +191,7 @@ AddEventHandler('inventory:server:OpenInventory', function(name, id, other)
 				secondInv.maxweight = 100000
 				secondInv.inventory = {}
 				secondInv.slots = 0
-				Drops[id].label = secondInv.label
+				--Drops[id].label = secondInv.label
 			end
 		end
 		TriggerClientEvent("inventory:client:OpenInventory", src, Player.PlayerData.items, secondInv)
