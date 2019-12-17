@@ -175,12 +175,13 @@ RegisterNetEvent('qb-weed:client:leaveHouse')
 AddEventHandler('qb-weed:client:leaveHouse', function()
     despawnHousePlants()
     SetTimeout(1000, function()
-        insideHouse = false
-        housePlants[currentHouse] = nil
-        currentHouse = nil
+        if currentHouse ~= nil then
+            insideHouse = false
+            housePlants[currentHouse] = nil
+            currentHouse = nil
+        end
     end)
 end)
-
 
 RegisterNetEvent('qb-weed:client:refreshHousePlants')
 AddEventHandler('qb-weed:client:refreshHousePlants', function(house)
