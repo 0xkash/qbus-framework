@@ -318,12 +318,12 @@ function GetHouseStreetCount(street)
 	return count
 end
 
-RegisterServerEvent('qb-houses:server:logOut')
-AddEventHandler('qb-houses:server:logOut', function()
+RegisterServerEvent('qb-houses:server:LogoutLocation')
+AddEventHandler('qb-houses:server:LogoutLocation', function()
 	local src = source
 	QBCore.Player.Logout(src)
-	Wait(100)
-	TriggerClientEvent('qb-multicharacter:client:chooseChar', src)
+	Citizen.Wait(100)
+    TriggerClientEvent('qb-multicharacter:client:chooseChar', src)
 end)
 
 RegisterServerEvent('qb-houses:server:giveHouseKey')

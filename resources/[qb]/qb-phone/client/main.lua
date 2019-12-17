@@ -629,7 +629,11 @@ RegisterNUICallback('removeContact', function(data)
 end)
 
 RegisterNUICallback('transferMoney', function(data)
-    TriggerServerEvent('qb-phone:server:transferBank', data.amount, data.iban)
+    if data.amount > 0 then
+        TriggerServerEvent('qb-phone:server:transferBank', data.amount, data.iban)
+    else
+        QBCore.Functions.Notify('Bedrag moet hoger zijn dan 0', 'error')
+    end
 end)
 
 RegisterNUICallback('getUserMails', function()

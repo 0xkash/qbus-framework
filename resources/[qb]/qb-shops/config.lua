@@ -145,6 +145,14 @@ Config.Products = {
             info = {},
             type = "item",
             slot = 3,
+        },
+        [4] = {
+            name = "empty_weed_bag",
+            price = 2,
+            amount = 1000,
+            info = {},
+            type = "item",
+            slot = 4,
         }
     },
     ["gearshop"] = {
