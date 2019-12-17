@@ -48,6 +48,25 @@ AddEventHandler("qb-pawnshop:server:getGoldBars", function()
     end
 end)
 
+RegisterServerEvent("qb-pawnshop:server:sellGold")
+AddEventHandler("qb-pawnshop:server:sellGold", function()
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    local price = 0
+    if Player.PlayerData.items ~= nil and next(Player.PlayerData.items) ~= nil then 
+        for k, v in pairs(Player.PlayerData.items) do 
+            if Player.PlayerData.items[k] ~= nil then 
+                if Player.PlayerData.items[k].name == "goldbar" then 
+                    price = price + (math.random(9500, 20000) * Player.PlayerData.items[k].amount)
+                    Player.Functions.RemoveItem(Player.PlayerData.items[k].name, Player.PlayerData.items[k].amount, k)
+                end
+            end
+        end
+        Player.Functions.AddMoney("cash", price)
+        TriggerClientEvent('QBCore:Notify', src, "Je hebt je items verkocht")
+    end
+end)
+
 RegisterServerEvent("qb-pawnshop:server:meltItems")
 AddEventHandler("qb-pawnshop:server:meltItems", function()
     local src = source
@@ -86,6 +105,16 @@ QBCore.Functions.CreateCallback('qb-pawnshop:server:getSellPrice', function(sour
                 end
             end
         end
+    end
+    cb(retval)
+end)
+
+QBCore.Functions.CreateCallback('qb-pawnshop:server:hasGold', function(source, cb)
+	local retval = false
+    local Player = QBCore.Functions.GetPlayer(source)
+    local gold = Player.Functions.GetItemByName('goldbar')
+    if gold ~= nil and gold.amount > 0 then
+        retval = true
     end
     cb(retval)
 end)

@@ -149,12 +149,18 @@ AddEventHandler('qb-weed:server:harvestPlant', function(house, amount, plantName
 
     if weedBag ~= nil then
         if weedBag.amount >= sndAmount then
-            Player.Functions.AddItem('weed_'..plantName..'_seed', amount)
-            Player.Functions.AddItem('weed_'..plantName, sndAmount)
-            Player.Functions.RemoveItem('empty_weed_bag', 1)
-            QBCore.Functions.ExecuteSql("DELETE FROM `house_plants` WHERE plantid = '"..plantId.."' AND building = '"..house.."'")
-            TriggerClientEvent('QBCore:Notify', source, 'De plant is geoogst', 'success', 3500)
-            TriggerClientEvent('qb-weed:client:refreshHousePlants', -1, house)
+            QBCore.Functions.ExecuteSql("SELECT * FROM `house_plants` WHERE plantid = '"..plantId.."' AND building = '"..house.."'", function(result)
+                if result[1] ~= nil then
+                    Player.Functions.AddItem('weed_'..plantName..'_seed', amount)
+                    Player.Functions.AddItem('weed_'..plantName, sndAmount)
+                    Player.Functions.RemoveItem('empty_weed_bag', 1)
+                    QBCore.Functions.ExecuteSql("DELETE FROM `house_plants` WHERE plantid = '"..plantId.."' AND building = '"..house.."'")
+                    TriggerClientEvent('QBCore:Notify', source, 'De plant is geoogst', 'success', 3500)
+                    TriggerClientEvent('qb-weed:client:refreshHousePlants', -1, house)
+                else
+                    TriggerClientEvent('QBCore:Notify', source, 'Deze plant bestaat niet meer?', 'error', 3500)
+                end
+            end)
         else
             TriggerClientEvent('QBCore:Notify', source, 'Je hebt niet genoeg hersluitbare zakjes', 'error', 3500)
         end
@@ -178,5 +184,6 @@ AddEventHandler('qb-weed:server:foodPlant', function(house, amount, plantName, p
         Player.Functions.RemoveItem('weed_nutrition', 1)
     end)
 
+    Citizen.Wait(250)
     TriggerClientEvent('qb-weed:client:refreshHousePlants', -1, house)
 end)

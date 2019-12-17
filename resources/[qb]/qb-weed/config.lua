@@ -98,3 +98,13 @@ QBWeed.Plants = {
         ["highestStage"] = "stage-g"
     },
 }
+
+QBWeed.Props = {
+    ["stage-a"] = "bkr_prop_weed_01_small_01c",
+    ["stage-b"] = "bkr_prop_weed_01_small_01b",
+    ["stage-c"] = "bkr_prop_weed_01_small_01a",
+    ["stage-d"] = "bkr_prop_weed_lrg_01b",
+    ["stage-e"] = "bkr_prop_weed_med_01b",
+    ["stage-f"] = "bkr_prop_weed_lrg_01a",
+    ["stage-g"] = "bkr_prop_weed_lrg_01b",
+}

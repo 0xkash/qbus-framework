@@ -308,17 +308,17 @@ Citizen.CreateThread(function()
                             if(GetDistanceBetweenCoords(pos, logoutLocation.x, logoutLocation.y, logoutLocation.z, true) < 1.5)then
                                 DrawText3Ds(logoutLocation.x, logoutLocation.y, logoutLocation.z, '~g~E~w~ - Uitloggen')
                                 if IsControlJustPressed(0, Keys["E"]) then
+                                    DoScreenFadeOut(250)
+                                    while not IsScreenFadedOut() do
+                                        Citizen.Wait(10)
+                                    end
                                     exports['qb-interior']:DespawnInterior(houseObj, function()
-                                        DoScreenFadeIn(500)
-                                        while not IsScreenFadedOut() do
-                                            Citizen.Wait(10)
-                                        end
                                         TriggerEvent('qb-weathersync:client:EnableSync')
                                         SetEntityCoords(GetPlayerPed(-1), Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z + 0.5)
                                         SetEntityHeading(GetPlayerPed(-1), Config.Houses[closesthouse].coords.enter.h)
                                         inOwned = false
                                         inside = false
-                                        TriggerServerEvent('qb-houses:server:logOut')
+                                        TriggerServerEvent('qb-houses:server:LogoutLocation')
                                     end)
                                 end
                             elseif(GetDistanceBetweenCoords(pos, logoutLocation.x, logoutLocation.y, logoutLocation.z, true) < 3)then
@@ -611,6 +611,7 @@ function leaveNonOwnedHouse(house)
         SetEntityCoords(GetPlayerPed(-1), Config.Houses[house].coords.enter.x, Config.Houses[house].coords.enter.y, Config.Houses[house].coords.enter.z + 0.5)
         SetEntityHeading(GetPlayerPed(-1), Config.Houses[house].coords.enter.h)
         inOwned = false
+        inside = false
         TriggerEvent('qb-weed:client:leaveHouse')
         TriggerServerEvent('qb-houses:server:SetInsideMeta', house, false)
     end)

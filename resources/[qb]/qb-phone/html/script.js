@@ -1517,5 +1517,3 @@ updateNewBalance = function() {
     var minAmount = $(".euro-amount-input").val();
     $("#new-balance").html(balance - minAmount);
 }
-
-// qbPhone.Open();
