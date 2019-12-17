@@ -508,7 +508,7 @@ AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     end)
 end)
 
---[[Citizen.CreateThread(function()
+Citizen.CreateThread(function()
     Citizen.Wait(250)
     isLoggedIn = true
     setPhoneMeta()
@@ -519,7 +519,7 @@ end)
     QBCore.Functions.TriggerCallback('qb-phone:server:getPlayerMessages', function(result)
         messages = result
     end)
-end)]]--
+end)
 
 function setPhoneMeta()
     phoneMeta = QBCore.Functions.GetPlayerData().metadata["phone"]
@@ -694,6 +694,39 @@ RegisterNUICallback('getTweets', function()
             tweets = tweets
         })
     end)
+end)
+
+RegisterNetEvent('qb-phone:client:InPhoneNotify')
+AddEventHandler('qb-phone:client:InPhoneNotify', function(title, type, text)
+    SendNUIMessage({
+        task = "phoneNotify",
+        title = title,
+        type = type, 
+        text = text,
+    })
+end)
+
+RegisterNetEvent('qb-phone:client:setupCompanies')
+AddEventHandler('qb-phone:client:setupCompanies', function()
+    SendNUIMessage({
+        task = "setupCompanies",
+        companies = exports['qb-companies']:GetCompanies()
+    })
+end)
+
+RegisterNUICallback('getCompanies', function()
+    SendNUIMessage({
+        task = "setupCompanies",
+        companies = exports['qb-companies']:GetCompanies()
+    })
+end)
+
+RegisterNUICallback('removeCompany', function(data)
+    TriggerServerEvent("qb-companies:server:removeCompany", data.name)
+end)
+
+RegisterNUICallback('quitCompany', function(data)
+    TriggerServerEvent("qb-companies:server:quitCompany", data.name)
 end)
 
 RegisterNUICallback('getAds', function()

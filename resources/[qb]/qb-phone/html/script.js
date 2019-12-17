@@ -49,6 +49,29 @@ $(document).on('click', '.bank-app-header-tab', function(e){
     }
 });
 
+$(document).on('click', '.companies-item', function(e){
+    var maxRank = 6;
+    var companyData = $(this).data('companyData');
+    $(".companies-item").removeClass("companies-item-selected");
+    $(this).addClass("companies-item-selected");
+    $(".companies-buttons").html("");
+    if (companyData.rank == maxRank) {
+        var elem = '<div class="companies-settings-small-btn"><p>Instellingen</p></div><div class="companies-quit-small-btn"><p>Verwijder</p></div>';
+        $(".companies-buttons").html(elem);
+        $(".companies-quit-small-btn").data("companyData", companyData)
+        $(".companies-settings-small-btn").data("companyData", companyData)
+    } else if (companyData.rank == (maxRank-1)) {
+        var elem = '<div class="companies-settings-small-btn"><p>Instellingen</p></div><div class="companies-quit-btn"><p>Neem Ontslag</p></div>';
+        $(".companies-buttons").html(elem);
+        $(".companies-quit-btn").data("companyData", companyData)
+        $(".companies-settings-small-btn").data("companyData", companyData)
+    } else {
+        var elem = '<div class="companies-quit-btn"><p>Neem Ontslag</p></div>';
+        $(".companies-buttons").html(elem);
+        $(".companies-quit-btn").data("companyData", companyData)
+    }
+});
+
 qbPhone.OpenPayPhone = function() {
     $(".payphone-input").text("");
     $(".payphone").fadeIn(150);
@@ -129,6 +152,10 @@ $(document).ready(function(){
             qbPhone.SetupTweets(eventData.tweets);
         }
 
+        if (eventData.task == "phoneNotify")  {
+            qbPhone.Notify(eventData.title, eventData.type, eventData.text, 3500);
+        }
+
         if (eventData.task == "setupAds") {
             qbPhone.SetupAdverts(eventData.ads);
         }
@@ -140,6 +167,10 @@ $(document).ready(function(){
         if (eventData.task == "newTweet") {
             qbPhone.SetupTweets(eventData.tweets);
             qbPhone.Notify('<i class="fab fa-twitter" style="position: relative; padding-top: 3px;"></i> Twitter', 'tweet', '@'+eventData.sender + ' heeft een tweet geplaatst!')
+        }
+
+        if (eventData.task == "setupCompanies") {
+            qbPhone.SetupCompanies(eventData.companies);
         }
 
         if (eventData.task == "newAd") {
@@ -305,6 +336,8 @@ $(document).on('click', '.app', function(e){
         $.post('http://qb-phone/getCharacterData', JSON.stringify({}), function(charinfo){
             qbPhone.SetupPoliceApp(charinfo)
         });
+    } else if (pressedApp.app == "companies") {
+        $.post('http://qb-phone/getCompanies');
     }
 
     qbPhone.succesSound();
@@ -802,8 +835,46 @@ $(document).on('click', '.back-transfer-btn', function(e){
     });
 });
 
+$(document).on('click', '.back-quit-btn', function(e){
+    $('.quit-confirm-container').css({"display":"block"}).animate({top: "103%",}, 250, function(){
+        $('.quit-confirm-container').css({'display':'none'});
+    });
+});
+
+$(document).on('click', '.companies-quit-btn', function(e){
+    $('.quitperson-confirm-container').css({"display":"block"}).animate({top: "18.5%",}, 150);
+    $(".submit-quitperson-btn").data("companyData", $(this).data("companyData"));
+});
+
+$(document).on('click', '.companies-quit-small-btn', function(e){
+    $('.quit-confirm-container').css({"display":"block"}).animate({top: "18.5%",}, 150);
+    $(".submit-quit-btn").data("companyData", $(this).data("companyData"));
+});
+
 $(document).on('click', '.bank-transfer-btn', function(e){
     $('.transfer-money-container').css({"display":"block"}).animate({top: "18.5%",}, 150);
+});
+
+$(document).on('click', '.submit-quit-btn', function(e){
+    var companyData = $(this).data("companyData");
+    $.post('http://qb-phone/removeCompany', JSON.stringify({
+        name: companyData.name,
+    }))
+    $('.quit-confirm-container').css({"display":"block"}).animate({top: "103%",}, 250, function(){
+        $('.quit-confirm-container').css({'display':'none'});
+        $(".companies-buttons").html("");
+    });
+});
+
+$(document).on('click', '.submit-quitperson-btn', function(e){
+    var companyData = $(this).data("companyData");
+    $.post('http://qb-phone/quitCompany', JSON.stringify({
+        name: companyData.name,
+    }))
+    $('.quitperson-confirm-container').css({"display":"block"}).animate({top: "103%",}, 250, function(){
+        $('.quitperson-confirm-container').css({'display':'none'});
+        $(".companies-buttons").html("");
+    });
 });
 
 $(document).on('click', '.submit-transfer-btn', function(e){
@@ -1465,6 +1536,21 @@ qbPhone.SetupTweets = function(tweets) {
         });
     } else {
         $(".twitter-tweets").html('<span id="no-emails-error">Er zijn nog<br> geen Tweets geplaatst :(</span>')
+    }
+}
+
+qbPhone.SetupCompanies = function(companies) {
+    $('.companies-accounts-tab').html("");
+    if (companies != null && companies != undefined && companies != "") {
+        var count = 0;
+        $.each(companies, function(i, company){
+            count++;
+            var elem = '<div class="companies-item" id="company-'+count+'"><p class="company-name">'+company.label+'</p><p class="company-rank">Rank: '+company.rank+'</p></div>';
+            $('.companies-accounts-tab').append(elem);
+            $("#company-"+count).data("companyData", company);
+        });
+    } else {
+        $(".companies-accounts-tab").html('<p>Je bent nog geen werknemer..</p>')
     }
 }
 
