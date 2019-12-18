@@ -32,7 +32,7 @@ end)
 RegisterNetEvent('QBCore:Client:OnJobUpdate')
 AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
     PlayerJob = JobInfo
-    onDuty = PlayerJob.onduty
+    onDuty = true
 end)
 
 RegisterNetEvent('police:SetCopCount')
@@ -43,7 +43,7 @@ end)
 RegisterNetEvent("QBCore:Client:OnPlayerLoaded")
 AddEventHandler("QBCore:Client:OnPlayerLoaded", function()
     PlayerJob = QBCore.Functions.GetPlayerData().job
-    onDuty = QBCore.Functions.GetPlayerData().onduty
+    onDuty = true
     ResetBankDoors()
 end)
 
