@@ -168,7 +168,7 @@ end)
 
 RegisterNetEvent('112:client:SendAlert')
 AddEventHandler('112:client:SendAlert', function(msg, blipSettings)
-    if (PlayerJob.name == "police" or PlayerJob.name == "ambulance") and onDuty then
+    if (PlayerJob.name == "police" or PlayerJob.name == "ambulance" or PlayerJob.name == "doctor") and onDuty then
         PlaySound(-1, "Event_Start_Text", "GTAO_FM_Events_Soundset", 0, 0, 1)
         TriggerEvent("chatMessage", "112-MELDING", "error", msg)
     

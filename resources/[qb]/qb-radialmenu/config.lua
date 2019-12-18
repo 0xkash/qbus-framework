@@ -288,6 +288,22 @@ Config.JobInteractions = {
             event = 'hospital:client:RevivePlayer',
             shouldClose = true,
         },
+        {
+            id    = 'emergencybutton2',
+            title = 'Noodknop',
+            icon = '#general',
+            type = 'client',
+            event = 'police:client:SendPoliceEmergencyAlert',
+            shouldClose = true,
+        },
+        {
+            id    = 'escort',
+            title = 'Escorteren',
+            icon = '#general',
+            type = 'client',
+            event = 'police:client:EscortPlayer',
+            shouldClose = true,
+        },
     },
     ["ambulance"] = {
         {
