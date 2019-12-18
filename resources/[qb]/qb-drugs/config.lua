@@ -150,7 +150,7 @@ Config.Dealers = {
             },
         },
     },
-    [2] = {
+    --[[[2] = {
         ["name"] = "Garry",
         ["coords"] = {
             ["x"] = 967.72, 
@@ -264,8 +264,8 @@ Config.Dealers = {
                 minrep = 200,
             },
         },
-    },
-    [3] = {
+    },]]--
+    [2] = {
         ["name"] = "Fred",
         ["coords"] = {
             ["x"] = 819.71, 
@@ -380,7 +380,7 @@ Config.Dealers = {
             },
         },
     },
-    [4] = {
+    [3] = {
         ["name"] = "Viktor",
         ["coords"] = {
             ["x"] = 802.99, 
@@ -495,7 +495,7 @@ Config.Dealers = {
             },
         },
     },
-    [5] = {
+    [4] = {
         ["name"] = "Julio",
         ["coords"] = {
             ["x"] = -252.12, 
@@ -610,7 +610,7 @@ Config.Dealers = {
             },
         },
     },
-    [6] = {
+    [5] = {
         ["name"] = "Ricardo",
         ["coords"] = {
             ["x"] = 1744.08, 
@@ -725,7 +725,7 @@ Config.Dealers = {
             },
         },
     },
-    [7] = {
+    [6] = {
         ["name"] = "Ouweheer",
         ["coords"] = {
             ["x"] = 3310.75, 
