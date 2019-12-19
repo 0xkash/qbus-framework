@@ -114,11 +114,19 @@ Config.Products = {
         },
         [7] = {
             name = "radio",
-            price = 850,
+            price = 250,
             amount = 50,
             info = {},
             type = "item",
             slot = 7,
+        },
+        [8] = {
+            name = "binoculars",
+            price = 50,
+            amount = 50,
+            info = {},
+            type = "item",
+            slot = 8,
         },
     },
     ["coffeeshop"] = {

@@ -1271,6 +1271,14 @@ QBCore.Functions.CreateUseableItem("id_card", function(source, item)
     end
 end)
 
+QBCore.Functions.CreateUseableItem("snowball", function(source, item)
+	local Player = QBCore.Functions.GetPlayer(source)
+	local itemData = Player.Functions.GetItemBySlot(item.slot)
+	if Player.Functions.GetItemBySlot(item.slot) ~= nil then
+        TriggerClientEvent("inventory:client:UseSnowball", source, itemData.amount)
+    end
+end)
+
 QBCore.Functions.CreateUseableItem("driver_license", function(source, item)
     local Player = QBCore.Functions.GetPlayer(source)
 	if Player.Functions.GetItemBySlot(item.slot) ~= nil then
