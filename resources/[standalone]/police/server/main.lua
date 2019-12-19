@@ -9,6 +9,15 @@ BloodDrops = {}
 FingerDrops = {}
 local Objects = {}
 
+
+Citizen.CreateThread(function()
+    while true do 
+        Citizen.Wait(1000 * 60 * 10)
+        local curCops = GetCurrentCops()
+        TriggerClientEvent("police:SetCopCount", -1, curCops)
+    end
+end)
+
 RegisterServerEvent('police:server:CheckBills')
 AddEventHandler('police:server:CheckBills', function()
     local src = source
@@ -1079,6 +1088,19 @@ QBCore.Functions.CreateUseableItem("moneybag", function(source, item)
         end
     end
 end)
+
+function GetCurrentCops()
+    local amount = 0
+    for k, v in pairs(QBCore.Functions.GetPlayers()) do
+        local Player = QBCore.Functions.GetPlayer(v)
+        if Player ~= nil then 
+            if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
+                amount = amount + 1
+            end
+        end
+    end
+    return amount
+end
 
 function DnaHash(s)
     local h = string.gsub(s, ".", function(c)
