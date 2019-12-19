@@ -32,7 +32,6 @@ end
 
 RegisterNetEvent('qb-weed:client:getHousePlants')
 AddEventHandler('qb-weed:client:getHousePlants', function(house)    
-    print('yeet?') 
     QBCore.Functions.TriggerCallback('qb-weed:server:getBuildingPlants', function(plants)
         currentHouse = house
         housePlants[currentHouse] = plants

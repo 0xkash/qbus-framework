@@ -272,6 +272,16 @@ Citizen.CreateThread(function()
                             end
                         end
                     end
+                    if inside and not isOwned then
+                        if not entering then
+                            if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.enter.x + POIOffsets.exit.x, Config.Houses[closesthouse].coords.enter.y + POIOffsets.exit.y, Config.Houses[closesthouse].coords.enter.z - Config.MinZOffset + POIOffsets.exit.z, true) < 1.5)then
+                                DrawText3Ds(Config.Houses[closesthouse].coords.enter.x + POIOffsets.exit.x, Config.Houses[closesthouse].coords.enter.y + POIOffsets.exit.y, Config.Houses[closesthouse].coords.enter.z - Config.MinZOffset + POIOffsets.exit.z, '~g~E~w~ - Om huis te verlaten')
+                                if IsControlJustPressed(0, Keys["E"]) then
+                                    leaveNonOwnedHouse(closesthouse)
+                                end
+                            end
+                        end
+                    end
                 end
                 
                 local StashObject = nil
