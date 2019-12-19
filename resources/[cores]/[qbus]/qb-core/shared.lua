@@ -196,6 +196,7 @@ QBShared.Items = {
 	["snspistol_stage_1"] 			 = {["name"] = "snspistol_stage_1", 			["label"] = "SNS Body", 				["weight"] = 2500, 		["type"] = "item", 		["image"] = "snspistol_stage_1.png", 	["unique"] = true, 	    ["useable"] = false, 	["shouldClose"] = true,    ["combinable"] = {accept = {"snspistol_part_2"}, reward = "weapon_snspistol", anim = {["dict"] = "anim@amb@business@weed@weed_inspecting_high_dry@", ["lib"] = "weed_inspecting_high_base_inspector", ["text"] = "Onderdelen aan het bevestigen", ["timeOut"] = 15000,}}, ["description"] = "SNS w/ Loop & Clip"},
 	["bandage"] 			 		 = {["name"] = "bandage", 						["label"] = "Verband", 					["weight"] = 0, 		["type"] = "item", 		["image"] = "bandage.png", 				["unique"] = false, 	["useable"] = true, 	["shouldClose"] = true,    ["combinable"] = nil, ["description"] = "Pleister erop, voel je je vast beter"},
 	["painkillers"] 			 	 = {["name"] = "painkillers", 					["label"] = "Pijnstillers", 			["weight"] = 0, 		["type"] = "item", 		["image"] = "painkillers.png", 			["unique"] = false, 	["useable"] = true, 	["shouldClose"] = true,    ["combinable"] = nil, ["description"] = "Voor ondragelijke pijn, een pilletje erbij"},
+	["binoculars"] 			 	 	 = {["name"] = "binoculars", 					["label"] = "Verrekijker", 				["weight"] = 600, 		["type"] = "item", 		["image"] = "binoculars.png", 			["unique"] = false, 	["useable"] = true, 	["shouldClose"] = true,    ["combinable"] = nil, ["description"] = "Sneaky Breaky.."},
 }
 
 -- // HASH WEAPON ITEMS, NEED SOMETIMES TO GET INFO FOR CLIENT
