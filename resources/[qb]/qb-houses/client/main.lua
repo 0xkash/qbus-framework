@@ -233,10 +233,15 @@ Citizen.CreateThread(function()
                     if not isOwned then
                         if closesthouse ~= nil then
                             if(GetDistanceBetweenCoords(pos, Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z, true) < 1.5)then
-                                if not viewCam then
+                                if not viewCam and Config.Houses[closesthouse].locked then
                                     DrawText3Ds(Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z, '[~g~E~w~] Om het huis te bezichtigen')
                                     if IsControlJustPressed(0, Keys["E"]) then
                                         TriggerServerEvent('qb-houses:server:viewHouse', closesthouse)
+                                    end
+                                elseif not viewCam and not Config.Houses[closesthouse].locked then
+                                    DrawText3Ds(Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z + 1.2, '[~g~E~w~] Om naar ~b~binnen~w~ te gaan')
+                                    if IsControlJustPressed(0, Keys["E"])  then
+                                        enterNonOwnedHouse(closesthouse)
                                     end
                                 end
                             end
@@ -377,9 +382,11 @@ end
 RegisterNetEvent('qb-houses:client:giveHouseKey')
 AddEventHandler('qb-houses:client:giveHouseKey', function(data)
     local player, distance = GetClosestPlayer()
-    if player ~= -1 and distance < 2.5 then
+    if player ~= -1 and distance < 2.5 and closesthouse ~= nil then
         local playerId = GetPlayerServerId(player)
         TriggerServerEvent('qb-houses:server:giveHouseKey', playerId, closesthouse)
+    elseif closesthouse == nil then
+        QBCore.Functions.Notify("Er is geen huis in de buurt!", "error")
     else
         QBCore.Functions.Notify("Niemand in de buurt!", "error")
     end
