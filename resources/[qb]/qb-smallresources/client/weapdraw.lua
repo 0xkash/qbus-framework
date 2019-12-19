@@ -71,6 +71,20 @@ local weapons = {
 	'WEAPON_DOUBLEACTION',
 }
 
+-- Wheapons that require the Police holster animation
+local holsterableWeapons {
+	--'WEAPON_STUNGUN',
+	'WEAPON_PISTOL',
+	'WEAPON_PISTOL_MK2',
+	'WEAPON_COMBATPISTOL',
+	'WEAPON_APPISTOL',
+	'WEAPON_PISTOL50',
+	'WEAPON_REVOLVER',
+	'WEAPON_SNSPISTOL',
+	'WEAPON_HEAVYPISTOL',
+	'WEAPON_VINTAGEPISTOL'
+}
+
 local holstered = true
 local canFire = true
 local currWeapon = GetHashKey('WEAPON_UNARMED')
@@ -104,7 +118,7 @@ Citizen.CreateThread(function()
 				loadAnimDict("weapons@pistol@")
 				if CheckWeapon(newWeap) then
 					if holstered then
-						if QBCore.Functions.GetPlayerData().job.name == "police" then
+						if QBCore.Functions.GetPlayerData().job.name == "police" and IsWeaponHolsterable(newWeap) then
 							--TaskPlayAnim(ped, "rcmjosh4", "josh_leadout_cop2", 8.0, 2.0, -1, 48, 10, 0, 0, 0 )
 							canFire = false
 							currentHoldster = GetPedDrawableVariation(GetPlayerPed(-1), 7)
@@ -135,7 +149,7 @@ Citizen.CreateThread(function()
 							canFire = true
 						end
 					elseif newWeap ~= currWeapon and CheckWeapon(currWeapon) then
-						if QBCore.Functions.GetPlayerData().job.name == "police" then
+						if QBCore.Functions.GetPlayerData().job.name == "police" and IsWeaponHolsterable(newWeap) then
 							canFire = false
 							TaskPlayAnimAdvanced(PlayerPedId(), "reaction@intimidation@cop@unarmed", "intro", GetEntityCoords(PlayerPedId(), true), 0, 0, rot, 3.0, 3.0, -1, 50, 0, 0, 0)
 							Citizen.Wait(300)
@@ -172,7 +186,7 @@ Citizen.CreateThread(function()
 							canFire = true
 						end
 					else
-						if QBCore.Functions.GetPlayerData().job.name == "police" then
+						if QBCore.Functions.GetPlayerData().job.name == "police" and IsWeaponHolsterable(newWeap) then
 							SetCurrentPedWeapon(PlayerPedId(), GetHashKey('WEAPON_UNARMED'), true)
 							currentHoldster = GetPedDrawableVariation(GetPlayerPed(-1), 7)
 							TaskPlayAnimAdvanced(PlayerPedId(), "rcmjosh4", "josh_leadout_cop2", GetEntityCoords(PlayerPedId(), true), 0, 0, rot, 3.0, 3.0, -1, 50, 0, 0, 0)
@@ -204,7 +218,7 @@ Citizen.CreateThread(function()
 					end
 				else
 					if not holstered and CheckWeapon(currWeapon) then
-						if QBCore.Functions.GetPlayerData().job.name == "police" then
+						if QBCore.Functions.GetPlayerData().job.name == "police" and IsWeaponHolsterable(newWeap) then
 							canFire = false
 							TaskPlayAnimAdvanced(PlayerPedId(), "reaction@intimidation@cop@unarmed", "intro", GetEntityCoords(PlayerPedId(), true), 0, 0, rot, 3.0, 3.0, -1, 50, 0, 0, 0)
 							Citizen.Wait(500)
@@ -259,6 +273,15 @@ end)
 function CheckWeapon(newWeap)
 	for i = 1, #weapons do
 		if GetHashKey(weapons[i]) == newWeap then
+			return true
+		end
+	end
+	return false
+end
+
+function IsWeaponHolsterable(weap)
+	for i = 1, #holsterableWeapons do
+		if GetHashKey(holsterableWeapons[i]) == weap then
 			return true
 		end
 	end
