@@ -276,7 +276,6 @@ end)
 RegisterNetEvent("inventory:client:OpenInventory")
 AddEventHandler("inventory:client:OpenInventory", function(inventory, other)
     if not IsEntityDead(GetPlayerPed(-1)) then
-        TransitionToBlurred(250)
         ToggleHotbar(false)
         SetNuiFocus(true, true)
         if other ~= nil then
@@ -337,6 +336,32 @@ AddEventHandler("inventory:client:CraftItems", function(itemName, itemCosts, amo
 	end)
 end)
 
+RegisterNetEvent("inventory:client:PickupSnowballs")
+AddEventHandler("inventory:client:PickupSnowballs", function()
+    RequestAnimDict('anim@mp_snowball')
+    TaskPlayAnim(GetPlayerPed(-1), 'anim@mp_snowball', 'pickup_snowball', 3.0, 3.0, -1, 0, 1, 0, 0, 0)
+    QBCore.Functions.Progressbar("pickupsnowball", "Sneeuwballen oprapen..", 1500, false, true, {
+        disableMovement = true,
+        disableCarMovement = true,
+        disableMouse = false,
+        disableCombat = true,
+    }, {}, {}, {}, function() -- Done
+        ClearPedTasks(GetPlayerPed(-1))
+        TriggerServerEvent('QBCore:Server:AddItem', "snowball", math.random(1, 5))
+        TriggerEvent('inventory:client:ItemBox', QBCore.Shared.Items["snowball"], "add")
+    end, function() -- Cancel
+        ClearPedTasks(GetPlayerPed(-1))
+        QBCore.Functions.Notify("Geannuleerd..", "error")
+    end)
+end)
+
+RegisterNetEvent("inventory:client:UseSnowball")
+AddEventHandler("inventory:client:UseSnowball", function(amount)
+    GiveWeaponToPed(GetPlayerPed(-1), GetHashKey("weapon_snowball"), amount, false, false)
+    SetPedAmmo(GetPlayerPed(-1), GetHashKey("weapon_snowball"), amount)
+    SetCurrentPedWeapon(GetPlayerPed(-1), GetHashKey("weapon_snowball"), true)
+end)
+
 RegisterNetEvent("inventory:client:UseWeapon")
 AddEventHandler("inventory:client:UseWeapon", function(weaponData)
     local weaponName = tostring(weaponData.name)
@@ -347,6 +372,12 @@ AddEventHandler("inventory:client:UseWeapon", function(weaponData)
     elseif weaponName == "weapon_stickybomb" then
         GiveWeaponToPed(GetPlayerPed(-1), GetHashKey(weaponName), ammo, false, false)
         SetPedAmmo(GetPlayerPed(-1), GetHashKey(weaponName), 1)
+        SetCurrentPedWeapon(GetPlayerPed(-1), GetHashKey(weaponName), true)
+        TriggerServerEvent('QBCore:Server:RemoveItem', weaponName, 1)
+        currentWeapon = weaponName
+    elseif weaponName == "weapon_snowball" then
+        GiveWeaponToPed(GetPlayerPed(-1), GetHashKey(weaponName), ammo, false, false)
+        SetPedAmmo(GetPlayerPed(-1), GetHashKey(weaponName), 10)
         SetCurrentPedWeapon(GetPlayerPed(-1), GetHashKey(weaponName), true)
         TriggerServerEvent('QBCore:Server:RemoveItem', weaponName, 1)
         currentWeapon = weaponName
@@ -456,7 +487,6 @@ RegisterNUICallback("CloseInventory", function(data, cb)
         SetNuiFocus(false, false)
         inInventory = false
         ClearPedTasks(GetPlayerPed(-1))
-        TransitionFromBlurred(250)
         return
     end
     if CurrentVehicle ~= nil then

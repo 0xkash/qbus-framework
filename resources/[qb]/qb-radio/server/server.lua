@@ -13,7 +13,6 @@ QBCore.Functions.CreateCallback('qb-radio:server:GetItem', function(source, cb, 
   local Player = QBCore.Functions.GetPlayer(src)
   if Player ~= nil then 
     local RadioItem = Player.Functions.GetItemByName(item)
-
     if RadioItem ~= nil then
       cb(true)
     else
