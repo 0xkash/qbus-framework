@@ -405,6 +405,7 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 			if toInventory == "player" or toInventory == "hotbar" then
 				local toItemData = Player.Functions.GetItemBySlot(toSlot)
 				OtherPlayer.Functions.RemoveItem(itemInfo["name"], fromAmount, fromSlot)
+				TriggerClientEvent("inventory:client:CheckWeapon", OtherPlayer.PlayerData.source, fromItemData.name)
 				if toItemData ~= nil then
 					local itemInfo = QBCore.Shared.Items[toItemData.name:lower()]
 					local toAmount = tonumber(toAmount) ~= nil and tonumber(toAmount) or toItemData.amount
