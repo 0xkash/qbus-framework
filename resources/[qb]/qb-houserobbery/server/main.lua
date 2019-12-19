@@ -3,11 +3,8 @@ TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 
 -- Code
 
-
-RegisterServerEvent('qb-houserobbery:server:loadHouseData')
-AddEventHandler('qb-houserobbery:server:loadHouseData', function()
-    local src = source
-    TriggerClientEvent("qb-houserobbery:client:setHouseData", src, Config.Houses)
+QBCore.Functions.CreateCallback('qb-houserobbery:server:GetHouseConfig', function(source, cb)
+    cb(Config.Houses)
 end)
 
 RegisterServerEvent('qb-houserobbery:server:enterHouse')
@@ -19,6 +16,16 @@ AddEventHandler('qb-houserobbery:server:enterHouse', function(house)
     TriggerClientEvent('qb-houserobbery:client:setHouseState', -1, house, true)
     Config.Houses[house]["opened"] = true
 end)
+
+function ResetHouseState(house)
+    SetTimeout(45 * 60000, function()
+        Config.Houses[house]["opened"] = false
+        for k, v in pairs(Config.Houses[house]["furniture"]) do
+            v["searched"] = false
+        end
+        TriggerClientEvent('qb-houserobbery:server:SetHouseState', -1, house)
+    end)
+end
 
 RegisterServerEvent('qb-houserobbery:server:searchCabin')
 AddEventHandler('qb-houserobbery:server:searchCabin', function(cabin, house)
@@ -65,5 +72,6 @@ AddEventHandler('qb-houserobbery:server:searchCabin', function(cabin, house)
         TriggerClientEvent('QBCore:Notify', src, 'Het kastje is leeg broooo', 'error', 3500)
     end
 
+    Config.Houses[house]["furniture"][cabin]["searched"] = true
     TriggerClientEvent('qb-houserobbery:client:setCabinState', -1, house, cabin, true)
 end)

@@ -174,14 +174,19 @@ function leaveRobberyHouse(house)
     end)
 end
 
-RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
-AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
-    TriggerServerEvent("qb-houserobbery:server:loadHouseData")
+RegisterNetEvent('qb-houserobbery:server:SetHouseState')
+AddEventHandler('qb-houserobbery:server:SetHouseState', function(house)
+    Config.Houses[house]["opened"] = false
+    for k, v in pairs(Config.Houses[house]["furniture"]) do
+        Config.Houses[house]["furniture"][k]["searched"] = false
+    end
 end)
 
-RegisterNetEvent('qb-houserobbery:client:setHouseData')
-AddEventHandler('qb-houserobbery:client:setHouseData', function(houseInfo)
-    Config.Houses = houseInfo
+RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
+AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+    QBCore.Functions.TriggerCallback('qb-houserobbery:server:GetHouseConfig', function(HouseConfig)
+        Config.Houses = HouseConfig
+    end)
 end)
 
 RegisterNetEvent('police:SetCopCount')
