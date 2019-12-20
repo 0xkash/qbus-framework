@@ -18,9 +18,11 @@ files {
     'stream/[police]/dsiq5/DSIQ5.xml',
     'stream/[police]/dsivito/DSIVITO.xml',
     'stream/[police]/pschafter/PSCHAFTER.xml',
+    'stream/[police]/poracle/PORACLE.xml',
     'stream/[police]/pbmwmotor2/PBMWMOTOR2.xml',
     'stream/[police]/pyamahamotor/PYAMAHAMOTOR.xml',
     'stream/[police]/pboot/PBOOT.xml',
+    'stream/[police]/poracle/PORACLE.xml',
     'stream/[dienst]/sneeuwschuiver/sneeuwschuiver.xml',
     'stream/[ambulance]/asprinter/asprinter.xml',
     'stream/[ambulance]/aeklasse/AEKLASSE.xml',
@@ -32,6 +34,6 @@ data_file 'CARCOLS_FILE' 'carcols.meta'
 data_file 'VEHICLE_VARIATION_FILE' 'carvariations.meta'
 data_file 'VEHICLE_LAYOUTS_FILE' 'vehiclelayouts.meta'
  
-client_script 'vehicle_names.lua'
+client_scripts 'vehicle_names.lua'
 
 is_els 'true'

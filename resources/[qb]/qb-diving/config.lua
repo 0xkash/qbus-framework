@@ -322,10 +322,34 @@ QBDiving.Locations = {
                         z = -39.45
                     },
                     PickedUp = false
-                }
+                },
+                [3] = {
+                    coords = {
+                        x = -2887.04, 
+                        y = -394.87, 
+                        z = -40.91
+                    },
+                    PickedUp = false
+                },
+                [4] = {
+                    coords = {
+                        x = -2808.99, 
+                        y = -385.56, 
+                        z = -39.32
+                    },
+                    PickedUp = false
+                },
+                [5] = {
+                    coords = {
+                        x = -2840.39, 
+                        y = -444.79, 
+                        z = -39.65
+                    },
+                    PickedUp = false
+                },
             }
         },
-        TotalCoral = 2
+        TotalCoral = 5
     },
     [2] = {
         label = "Ha locatie 2",
@@ -351,11 +375,35 @@ QBDiving.Locations = {
                         z = -26.81,
                     },
                     PickedUp = false
-                }
+                },
+                [3] = {
+                    coords = {
+                        x = -3346.53, 
+                        y = -50.4, 
+                        z = -35.84
+                    },
+                    PickedUp = false
+                },
+                [4] = {
+                    coords = {
+                        x = -3265.13, 
+                        y = -80.26, 
+                        z = -28.71
+                    },
+                    PickedUp = false
+                },
+                [5] = {
+                    coords = {
+                        x = -3276.7,
+                        y = -111.75,
+                        z = -38.02
+                    },
+                    PickedUp = false
+                },
             }
         },
-        DefaultCoral = 2,
-        TotalCoral = 2
+        DefaultCoral = 5,
+        TotalCoral = 5
     },
     [3] = {
         label = "Heyyy locatie 3",
@@ -381,11 +429,35 @@ QBDiving.Locations = {
                         z = -38.21,
                     },
                     PickedUp = false
-                }
+                },
+                [3] = {
+                    coords = {
+                        x = -3326.04, 
+                        y = 1636.43, 
+                        z = -40.98
+                    },
+                    PickedUp = false
+                },
+                [4] = {
+                    coords = {
+                        x = -3339.09, 
+                        y = 1668.96, 
+                        z = -42.63
+                    },
+                    PickedUp = false
+                },
+                [5] = {
+                    coords = {
+                        x = -3382.11, 
+                        y = 1634.13, 
+                        z = -42.88
+                    },
+                    PickedUp = false
+                },
             }
         },
-        DefaultCoral = 2,
-        TotalCoral = 2
+        DefaultCoral = 5,
+        TotalCoral = 5,
     },
     [4] = {
         label = "Heyyy locatie 4",
@@ -568,13 +640,13 @@ QBDiving.Locations = {
 QBDiving.CoralTypes = {
     [1] = {
         item = "dendrogyra_coral",
-        maxAmount = 2,
-        price = 400
+        maxAmount = math.random(2, 7),
+        price = math.random(400, 500),
     },
     [2] = {
         item = "antipatharia_coral",
-        maxAmount = 2,
-        price = 350
+        maxAmount = math.random(2, 7),
+        price = math.random(300, 450),
     }
 }
 

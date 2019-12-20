@@ -5,12 +5,6 @@ Citizen.CreateThread(function()
 		TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 		Citizen.Wait(0)
 	end
-
-	QBCore.Functions.TriggerCallback('qb-doorlock:server:getDoorInfo', function(doorInfo)
-		for k, v in pairs(doorInfo) do
-			QB.Doors[k].locked = state
-		end
-	end)
 end)
 
 local closestDoorKey, closestDoorValue = nil, nil
@@ -212,4 +206,14 @@ end
 RegisterNetEvent('qb-doorlock:client:setState')
 AddEventHandler('qb-doorlock:client:setState', function(doorID, state)
 	QB.Doors[doorID].locked = state
+end)
+
+RegisterNetEvent('qb-doorlock:client:setDoors')
+AddEventHandler('qb-doorlock:client:setDoors', function(doorList)
+	QB.Doors = doorList
+end)
+
+RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
+AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+    TriggerServerEvent("qb-doorlock:server:setupDoors")
 end)

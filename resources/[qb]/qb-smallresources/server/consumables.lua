@@ -61,6 +61,11 @@ QBCore.Functions.CreateUseableItem("tosti", function(source, item)
     end
 end)
 
+QBCore.Functions.CreateUseableItem("binoculars", function(source, item)
+    local Player = QBCore.Functions.GetPlayer(source)
+    TriggerClientEvent("binoculars:Toggle", source)
+end)
+
 QBCore.Commands.Add("vestuit", "Doe je vest uit 4head", {}, false, function(source, args)
     local Player = QBCore.Functions.GetPlayer(source)
     if Player.PlayerData.job.name == "police" then

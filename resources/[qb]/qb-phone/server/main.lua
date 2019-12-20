@@ -26,17 +26,21 @@ AddEventHandler('qb-phone:server:transferBank', function(amount, iban)
     local sender = QBCore.Functions.GetPlayer(src)
 
     QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `charinfo` LIKE '%"..iban.."%'", function(result)
-        local recieverSteam = QBCore.Functions.GetPlayerByCitizenId(result[1].citizenid)
+        if result[1] ~= nil then
+            local recieverSteam = QBCore.Functions.GetPlayerByCitizenId(result[1].citizenid)
 
-        if recieverSteam then
-            recieverSteam.Functions.AddMoney('bank', amount)
-            sender.Functions.RemoveMoney('bank', amount)
-            TriggerClientEvent('qb-phone:client:RecievedBankNotify', recieverSteam.PlayerData.source, amount, sender.PlayerData.charinfo.account)
+            if recieverSteam then
+                recieverSteam.Functions.AddMoney('bank', amount)
+                sender.Functions.RemoveMoney('bank', amount)
+                TriggerClientEvent('qb-phone:client:RecievedBankNotify', recieverSteam.PlayerData.source, amount, sender.PlayerData.charinfo.account)
+            else
+                local moneyInfo = json.decode(result[1].money)
+                moneyInfo.bank = round((moneyInfo.bank + amount))
+                QBCore.Functions.ExecuteSql("UPDATE `players` SET `money` = '"..json.encode(moneyInfo).."' WHERE `citizenid` = '"..result[1].citizenid.."'")
+                sender.Functions.RemoveMoney('bank', amount)
+            end
         else
-            local moneyInfo = json.decode(result[1].money)
-            moneyInfo.bank = round((moneyInfo.bank + amount))
-            QBCore.Functions.ExecuteSql("UPDATE `players` SET `money` = '"..json.encode(moneyInfo).."' WHERE `citizenid` = '"..result[1].citizenid.."'")
-            sender.Functions.RemoveMoney('bank', amount)
+            TriggerClientEvent('QBCore:Notify', src, "Dit rekeningnummer bestaat niet!", "error")
         end
     end)
 end)

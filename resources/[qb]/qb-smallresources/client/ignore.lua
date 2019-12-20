@@ -79,7 +79,7 @@ Citizen.CreateThread(function()
 			DeleteEntity(ped)
 		end
 	end
-	Citizen.Wait(1)
+	Citizen.Wait(500)
 end)
 
 Citizen.CreateThread(function()
@@ -90,6 +90,17 @@ Citizen.CreateThread(function()
 		end
 
 		Citizen.Wait(3)
+	end
+end)
+
+Citizen.CreateThread(function()
+	while true do
+		for veh in EnumerateVehicles() do
+			if Config.BlacklistedVehs[GetEntityModel(veh)] then
+				DeleteEntity(veh)
+			end
+		end
+        Citizen.Wait(250)
 	end
 end)
 
@@ -109,6 +120,7 @@ end)
 Citizen.CreateThread(function()
 	SetWeaponDamageModifier(GetHashKey('WEAPON_UNARMED'), 0.25)
 	SetWeaponDamageModifier(GetHashKey('WEAPON_NIGHTSTICK'), 0.3)
+	SetWeaponDamageModifier(GetHashKey('WEAPON_SNOWBALL'), 0.01)
 end)
 
 
