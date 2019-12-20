@@ -14,6 +14,10 @@ AddEventHandler('qb-drugs:server:giveDeliveryItems', function(amount)
     TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items["weed_brick"], "add")
 end)
 
+QBCore.Functions.CreateCallback('qb-drugs:server:RequestConfig', function(source, cb)
+    cb(Config.Dealers)
+end)
+
 RegisterServerEvent('qb-drugs:server:succesDelivery')
 AddEventHandler('qb-drugs:server:succesDelivery', function(deliveryData, inTime)
     local src = source

@@ -27,7 +27,11 @@ Citizen.CreateThread(function()
         if IsPedShooting(GetPlayerPed(-1)) then
             local weapon = GetSelectedPedWeapon(GetPlayerPed(-1))
             local ammo = GetAmmoInPedWeapon(GetPlayerPed(-1), weapon)
-            TriggerServerEvent("weapons:server:UpdateWeaponAmmo", QBCore.Shared.Weapons[weapon]["ammotype"], tonumber(ammo))
+            if QBCore.Shared.Weapons[weapon]["name"] == "weapon_snowball" then
+                TriggerServerEvent('QBCore:Server:RemoveItem', "snowball", 1)
+            else
+                TriggerServerEvent("weapons:server:UpdateWeaponAmmo", QBCore.Shared.Weapons[weapon]["ammotype"], tonumber(ammo))
+            end
         end
     end 
 end)

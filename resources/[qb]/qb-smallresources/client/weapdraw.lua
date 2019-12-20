@@ -72,7 +72,7 @@ local weapons = {
 }
 
 -- Wheapons that require the Police holster animation
-local holsterableWeapons {
+local holsterableWeapons = {
 	--'WEAPON_STUNGUN',
 	'WEAPON_PISTOL',
 	'WEAPON_PISTOL_MK2',
@@ -153,7 +153,7 @@ Citizen.CreateThread(function()
 							canFire = false
 							if IsWeaponHolsterable(currWeapon) then
 								TaskPlayAnimAdvanced(PlayerPedId(), "reaction@intimidation@cop@unarmed", "intro", GetEntityCoords(PlayerPedId(), true), 0, 0, rot, 3.0, 3.0, -1, 50, 0, 0, 0)
-								Citizen.Wait(300)
+								Citizen.Wait(500)
 								SetPedComponentVariation(GetPlayerPed(-1), 7, currentHoldster, 0, 2)
 							else
 								TaskPlayAnimAdvanced(PlayerPedId(), "reaction@intimidation@1h", "outro", GetEntityCoords(PlayerPedId(), true), 0, 0, rot, 8.0, 3.0, -1, 50, 0, 0, 0)
@@ -179,6 +179,7 @@ Citizen.CreateThread(function()
 							else
 								TaskPlayAnimAdvanced(PlayerPedId(), "reaction@intimidation@1h", "intro", GetEntityCoords(PlayerPedId(), true), 0, 0, rot, 8.0, 3.0, -1, 50, 0, 0, 0)
 								Citizen.Wait(1000)
+								SetCurrentPedWeapon(PlayerPedId(), newWeap, true)
 								-- Wait after currweapon is usually set
 								Citizen.Wait(1400)
 							end

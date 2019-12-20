@@ -52,42 +52,41 @@ Citizen.CreateThread(function()
     while true do
         QBCore.Functions.ExecuteSql("SELECT * FROM `house_plants`", function(housePlants)
             for k, v in pairs(housePlants) do
-
                 if housePlants[k].food >= 50 then
-                    QBCore.Functions.ExecuteSql("UPDATE `house_plants` SET `food` = '"..(housePlants[k].food - 1).."'")
+                    QBCore.Functions.ExecuteSql("UPDATE `house_plants` SET `food` = '"..(housePlants[k].food - 1).."' WHERE `plantid` = '"..housePlants[k].plantid.."'")
                     if housePlants[k].health + 1 < 100 then
-                        QBCore.Functions.ExecuteSql("UPDATE `house_plants` SET `health` = '"..(housePlants[k].health + 1).."'")
+                        QBCore.Functions.ExecuteSql("UPDATE `house_plants` SET `health` = '"..(housePlants[k].health + 1).."' WHERE `plantid` = '"..housePlants[k].plantid.."'")
                     end
                 end
 
                 if housePlants[k].food < 50 then
                     if housePlants[k].food - 1 >= 0 then
-                        QBCore.Functions.ExecuteSql("UPDATE `house_plants` SET `food` = '"..(housePlants[k].food - 1).."'")
+                        QBCore.Functions.ExecuteSql("UPDATE `house_plants` SET `food` = '"..(housePlants[k].food - 1).."' WHERE `plantid` = '"..housePlants[k].plantid.."'")
                     end
                     if housePlants[k].health - 1 >= 0 then
-                        QBCore.Functions.ExecuteSql("UPDATE `house_plants` SET `health` = '"..(housePlants[k].health - 1).."'")
+                        QBCore.Functions.ExecuteSql("UPDATE `house_plants` SET `health` = '"..(housePlants[k].health - 1).."' WHERE `plantid` = '"..housePlants[k].plantid.."'")
                     end
                 end
 
                 if housePlants[k].health > 50 then
                     if housePlants[k].progress + 1 < 100 then
-                        QBCore.Functions.ExecuteSql("UPDATE `house_plants` SET `progress` = '"..(housePlants[k].progress + 1).."'")
+                        QBCore.Functions.ExecuteSql("UPDATE `house_plants` SET `progress` = '"..(housePlants[k].progress + 1).."' WHERE `plantid` = '"..housePlants[k].plantid.."'")
                     elseif housePlants[k].progress + 1 == 100 then
                         if housePlants[k].stage ~= QBWeed.Plants[housePlants[k].sort]["highestStage"] then
                             if housePlants[k].stage == "stage-a" then
-                                QBCore.Functions.ExecuteSql("UPDATE `house_plants` SET `stage` = 'stage-b'")
+                                QBCore.Functions.ExecuteSql("UPDATE `house_plants` SET `stage` = 'stage-b' WHERE `plantid` = '"..housePlants[k].plantid.."'")
                             elseif housePlants[k].stage == "stage-b" then
-                                QBCore.Functions.ExecuteSql("UPDATE `house_plants` SET `stage` = 'stage-c'")
+                                QBCore.Functions.ExecuteSql("UPDATE `house_plants` SET `stage` = 'stage-c' WHERE `plantid` = '"..housePlants[k].plantid.."'")
                             elseif housePlants[k].stage == "stage-c" then
-                                QBCore.Functions.ExecuteSql("UPDATE `house_plants` SET `stage` = 'stage-d'")
+                                QBCore.Functions.ExecuteSql("UPDATE `house_plants` SET `stage` = 'stage-d' WHERE `plantid` = '"..housePlants[k].plantid.."'")
                             elseif housePlants[k].stage == "stage-d" then
-                                QBCore.Functions.ExecuteSql("UPDATE `house_plants` SET `stage` = 'stage-e'")
+                                QBCore.Functions.ExecuteSql("UPDATE `house_plants` SET `stage` = 'stage-e' WHERE `plantid` = '"..housePlants[k].plantid.."'")
                             elseif housePlants[k].stage == "stage-e" then
-                                QBCore.Functions.ExecuteSql("UPDATE `house_plants` SET `stage` = 'stage-f'")
+                                QBCore.Functions.ExecuteSql("UPDATE `house_plants` SET `stage` = 'stage-f' WHERE `plantid` = '"..housePlants[k].plantid.."'")
                             elseif housePlants[k].stage == "stage-f" then
-                                QBCore.Functions.ExecuteSql("UPDATE `house_plants` SET `stage` = 'stage-g'")
+                                QBCore.Functions.ExecuteSql("UPDATE `house_plants` SET `stage` = 'stage-g' WHERE `plantid` = '"..housePlants[k].plantid.."'")
                             end
-                            QBCore.Functions.ExecuteSql("UPDATE `house_plants` SET `progress` = '0'")
+                            QBCore.Functions.ExecuteSql("UPDATE `house_plants` SET `progress` = '0' WHERE `plantid` = '"..housePlants[k].plantid.."'")
                         end
                     end
                 end

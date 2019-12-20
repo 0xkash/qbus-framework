@@ -302,7 +302,7 @@ AddEventHandler('hospital:client:Revive', function()
         loadAnimDict(inBedDict)
         TaskPlayAnim(player, inBedDict , inBedAnim, 8.0, 1.0, -1, 1, 0, 0, 0, 0 )
         SetEntityInvincible(GetPlayerPed(-1), true)
-        SetEntityHeading(player, bedOccupyingData.h - 180.0)
+        --SetEntityHeading(player, bedOccupyingData.h - 180.0)
         canLeaveBed = true
     end
 

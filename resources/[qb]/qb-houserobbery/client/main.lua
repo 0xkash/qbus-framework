@@ -61,15 +61,18 @@ Citizen.CreateThread(function()
                     if dist <= 1.5 then
                         closestHouse = k
                         inRange = true
-                        if Config.Houses[k]["opened"] then
-                            DrawText3Ds(Config.Houses[k]["coords"]["x"], Config.Houses[k]["coords"]["y"], Config.Houses[k]["coords"]["z"], '~g~E~w~ - Om naar binnen te gaan')
-                            if IsControlJustPressed(0, Keys["E"]) then
-                                enterRobberyHouse(k)
-                            end
-                        else
-                            if not requiredItemsShowed then
-                                requiredItemsShowed = true
-                                TriggerEvent('inventory:client:requiredItems', requiredItems, true)
+                        
+                        if CurrentCops >= 3 then
+                            if Config.Houses[k]["opened"] then
+                                DrawText3Ds(Config.Houses[k]["coords"]["x"], Config.Houses[k]["coords"]["y"], Config.Houses[k]["coords"]["z"], '~g~E~w~ - Om naar binnen te gaan')
+                                if IsControlJustPressed(0, Keys["E"]) then
+                                    enterRobberyHouse(k)
+                                end
+                            else
+                                if not requiredItemsShowed then
+                                    requiredItemsShowed = true
+                                    TriggerEvent('inventory:client:requiredItems', requiredItems, true)
+                                end
                             end
                         end
                     end
@@ -233,7 +236,6 @@ AddEventHandler('lockpicks:UseLockpick', function()
                 else
                     QBCore.Functions.Notify('Niet genoeg agenten..', 'error', 3500)
                 end
-                
             else
                 QBCore.Functions.Notify('Het lijkt erop dat je iets mist...', 'error', 3500)
             end

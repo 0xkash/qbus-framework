@@ -2,6 +2,105 @@
 
 <CVehicleModelInfoVariation>
   <variationData>
+        <Item>
+      <modelName>poracle</modelName>
+      <colors>
+        <Item>
+          <indices content="char_array">
+            62
+            62
+            62
+            156 
+			0
+			156
+          </indices>
+          <liveries>
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+          </liveries>
+        </Item>
+        <Item>
+          <indices content="char_array">
+            0
+            0
+            0
+            156 
+			0
+			156
+          </indices>
+          <liveries>
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+          </liveries>
+        </Item>
+        <Item>
+          <indices content="char_array">
+            5
+            5
+            5
+            156 
+			0
+			156
+          </indices>
+          <liveries>
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+          </liveries>
+        </Item>
+        <Item>
+          <indices content="char_array">
+            11
+            11
+            11
+            156 
+			0
+			156
+          </indices>
+          <liveries>
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+          </liveries>
+        </Item>		
+      </colors>
+      <kits>
+        <Item>123_schafter3_modkit</Item>
+      </kits>
+      <windowsWithExposedEdges />
+      <plateProbabilities>
+        <Probabilities>
+          <Item>
+            <Name>Standard White</Name>
+            <Value value="100" />
+          </Item>
+        </Probabilities>
+      </plateProbabilities>
+      <lightSettings value="45" />
+      <sirenSettings value="666" />
+    </Item>
   <Item>
     <modelName>qtax</modelName>
     <colors>
@@ -2043,16 +2142,16 @@
 			<lightSettings value="1" />
 			<sirenSettings value="666" />
 		</Item>
-    <Item>
-      <modelName>pschafter</modelName>
+          <Item>
+      <modelName>poracle</modelName>
       <colors>
         <Item>
           <indices content="char_array">
-            0
-            0
-            156
+            62
+            62
+            62
             156 
-			48
+			0
 			156
           </indices>
           <liveries>
@@ -2066,6 +2165,66 @@
             <Item value="false" />
           </liveries>
         </Item>
+        <Item>
+          <indices content="char_array">
+            0
+            0
+            0
+            156 
+			0
+			156
+          </indices>
+          <liveries>
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+          </liveries>
+        </Item>
+        <Item>
+          <indices content="char_array">
+            5
+            5
+            5
+            156 
+			0
+			156
+          </indices>
+          <liveries>
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+          </liveries>
+        </Item>
+        <Item>
+          <indices content="char_array">
+            11
+            11
+            11
+            156 
+			0
+			156
+          </indices>
+          <liveries>
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+          </liveries>
+        </Item>		
       </colors>
       <kits>
         <Item>123_schafter3_modkit</Item>
@@ -2083,71 +2242,104 @@
       <sirenSettings value="666" />
     </Item>
     <Item>
-			<modelName>ptouran</modelName>
-			<colors>
-				<Item>
-					<!-- nobel white -->
-					<indices content="char_array">
-            134
-            134
-            134
-            156
-            7
-            111
-					</indices>
-					<liveries>
-					</liveries>
-				</Item>
-			</colors>
-			<windowsWithExposedEdges />
-			<plateProbabilities>
-				<Probabilities>
-					<Item>
-						<Name>Standard White</Name>
-						<Value value="80"/>
-					</Item>
-					<Item>
-						<Name>White Plate 2</Name>
-						<Value value="20"/>
-					</Item>
-				</Probabilities>
-			</plateProbabilities>
-			<lightSettings value="1" />
-			<sirenSettings value="666" />
-		</Item>
-    <Item>
-			<modelName>pschafter</modelName>
-			<colors>
-				<Item>
-					<!-- nobel white -->
-					<indices content="char_array">
-            134
-            134
-            134
-            156
-            7
-            111
-					</indices>
-					<liveries>
-					</liveries>
-				</Item>
-			</colors>
-			<windowsWithExposedEdges />
-			<plateProbabilities>
-				<Probabilities>
-					<Item>
-						<Name>Standard White</Name>
-						<Value value="80"/>
-					</Item>
-					<Item>
-						<Name>White Plate 2</Name>
-						<Value value="20"/>
-					</Item>
-				</Probabilities>
-			</plateProbabilities>
-			<lightSettings value="1" />
-			<sirenSettings value="666" />
-		</Item>
+      <modelName>pschafter</modelName>
+      <colors>
+        <Item>
+          <indices content="char_array">
+            62
+            62
+            62
+            156 
+			0
+			156
+          </indices>
+          <liveries>
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+          </liveries>
+        </Item>
+        <Item>
+          <indices content="char_array">
+            0
+            0
+            0
+            156 
+			0
+			156
+          </indices>
+          <liveries>
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+          </liveries>
+        </Item>
+        <Item>
+          <indices content="char_array">
+            5
+            5
+            5
+            156 
+			0
+			156
+          </indices>
+          <liveries>
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+          </liveries>
+        </Item>
+        <Item>
+          <indices content="char_array">
+            11
+            11
+            11
+            156 
+			0
+			156
+          </indices>
+          <liveries>
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+          </liveries>
+        </Item>		
+      </colors>
+      <kits>
+        <Item>123_schafter3_modkit</Item>
+      </kits>
+      <windowsWithExposedEdges />
+      <plateProbabilities>
+        <Probabilities>
+          <Item>
+            <Name>Standard White</Name>
+            <Value value="100" />
+          </Item>
+        </Probabilities>
+      </plateProbabilities>
+      <lightSettings value="45" />
+      <sirenSettings value="666" />
+    </Item>
     <Item>
       <modelName>pbklasse</modelName>
 			<colors>

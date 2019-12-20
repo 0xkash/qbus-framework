@@ -118,7 +118,6 @@ function HasPlayerGold()
 		retval = result
 	end)
     Citizen.Wait(500)
-    print(retval)
 	return retval
 end
 

@@ -102,8 +102,12 @@ Citizen.CreateThread(function()
                         end
                         if IsControlJustReleased(0, Keys["E"]) then
                             if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
-                                DeleteVehicle(GetVehiclePedIsIn(GetPlayerPed(-1)))
-                                TriggerServerEvent('qb-trucker:server:DoBail', false)
+                                if GetPedInVehicleSeat(GetVehiclePedIsIn(GetPlayerPed(-1)), -1) == GetPlayerPed(-1) then
+                                    DeleteVehicle(GetVehiclePedIsIn(GetPlayerPed(-1)))
+                                    TriggerServerEvent('qb-trucker:server:DoBail', false)
+                                else
+                                    QBCore.Functions.Notify('Je moet bestuurder zijn..')
+                                end
                             else
                                 MenuGarage()
                                 Menu.hidden = not Menu.hidden
