@@ -15,7 +15,7 @@ Citizen.CreateThread(function()
             SetClosestBerthBoat()
             if not BoatsSpawned then
                 SpawnBerthBoats()
-                print('yeey')
+                --print('yeey')
             end
         elseif BerthDist > 110 then
             if BoatsSpawned then

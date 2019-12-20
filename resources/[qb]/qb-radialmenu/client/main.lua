@@ -83,7 +83,7 @@ RegisterNUICallback('selectItem', function(data)
 
     if itemData.type == 'client' then
         TriggerEvent(itemData.event, itemData)
-        print('yeey')
+        --print('yeey')
     elseif itemData.type == 'server' then
         TriggerServerEvent(itemData.event, itemData)
     end

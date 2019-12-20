@@ -35,7 +35,7 @@ function openCharMenu(bool)
     })
     choosingCharacter = bool
     skyCam(bool)
-    print('yeet?')
+    print('[Character Menu Loaded]')
 end
 
 RegisterNUICallback('closeUI', function()
