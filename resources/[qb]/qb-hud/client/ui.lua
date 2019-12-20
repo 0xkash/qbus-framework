@@ -25,7 +25,7 @@ end
 Citizen.CreateThread(function()
     Citizen.Wait(500)
     while true do 
-        if isLoggedIn and QBHud.Show then
+        if QBCore ~= nil and isLoggedIn and QBHud.Show then
             speed = GetEntitySpeed(GetVehiclePedIsIn(GetPlayerPed(-1), false)) * 3.6
             local pos = GetEntityCoords(GetPlayerPed(-1))
             local time = CalculateTimeToDisplay()
@@ -64,27 +64,24 @@ Citizen.CreateThread(function()
             })
             radarActive = true
         else
-            if radarActive then
-                DisplayRadar(false)
-                SendNUIMessage({
-                    action = "car",
-                    show = false,
-                })
-                seatbeltOn = false
-                cruiseOn = false
-    
-                SendNUIMessage({
-                    action = "seatbelt",
-                    seatbelt = seatbeltOn,
-                })
-    
-                SendNUIMessage({
-                    action = "cruise",
-                    cruise = cruiseOn,
-                })
-                radarActive = false
-            end
-            
+            DisplayRadar(false)
+            SendNUIMessage({
+                action = "car",
+                show = false,
+            })
+            seatbeltOn = false
+            cruiseOn = false
+
+            SendNUIMessage({
+                action = "seatbelt",
+                seatbelt = seatbeltOn,
+            })
+
+            SendNUIMessage({
+                action = "cruise",
+                cruise = cruiseOn,
+            })
+            radarActive = false
         end
     end
 end)
