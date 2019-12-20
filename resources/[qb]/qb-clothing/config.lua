@@ -505,7 +505,7 @@ Config.LoadedManModels = {}
 Config.LoadedWomanModels = {}
 
 Config.Stores = {
-    [1] =   {shopType = "clothing", x = 1683.45667,   y = 4823.17725,  z = 42.1631294},
+    [1] =   {shopType = "clothing", x = 1693.32,      y = 4823.48,     z = 41.06},
 	[2] =   {shopType = "clothing", x = -712.215881,  y = -155.352982, z = 37.4151268},
 	[3] =   {shopType = "clothing", x = -1192.94495,  y = -772.688965, z = 17.3255997},
 	[4] =   {shopType = "clothing", x =  425.236,     y = -806.008,    z = 28.491},

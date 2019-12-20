@@ -114,6 +114,7 @@ AddEventHandler('QBCore:UpdatePlayer', function(data)
 
 		Player.Functions.AddMoney("bank", Player.PlayerData.job.payment)
 		TriggerClientEvent('QBCore:Notify', src, "Je hebt je salaris ontvangen van €"..Player.PlayerData.job.payment)
+		TriggerClientEvent("hud:client:UpdateNeeds", src, newHunger, newThirst)
 
 		Player.Functions.Save()
 	end

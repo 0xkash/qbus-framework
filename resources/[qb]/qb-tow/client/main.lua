@@ -20,6 +20,8 @@ local CurrentBlip = nil
 local LastVehicle = 0
 local VehicleSpawned = false
 
+local selectedVeh = nil
+
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     isLoggedIn = true
@@ -195,6 +197,7 @@ Citizen.CreateThread(function()
                         if IsControlJustReleased(0, Keys["E"]) then
                             if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
                                 DeleteVehicle(GetVehiclePedIsIn(GetPlayerPed(-1)))
+                                TriggerServerEvent('qb-tow:server:DoBail', false)
                             else
                                 MenuGarage()
                                 Menu.hidden = not Menu.hidden
@@ -301,6 +304,13 @@ function VehicleList(isDown)
 end
 
 function TakeOutVehicle(vehicleInfo)
+    TriggerServerEvent('qb-tow:server:DoBail', true, vehicleInfo)
+    selectedVeh = vehicleInfo
+end
+
+RegisterNetEvent('qb-tow:client:SpawnVehicle')
+AddEventHandler('qb-tow:client:SpawnVehicle', function()
+    local vehicleInfo = selectedVeh
     local coords = Config.Locations["vehicle"].coords
     QBCore.Functions.SpawnVehicle(vehicleInfo, function(veh)
         SetVehicleNumberPlateText(veh, "TOWR"..tostring(math.random(1000, 9999)))
@@ -315,7 +325,7 @@ function TakeOutVehicle(vehicleInfo)
             SetVehicleExtra(veh, i, 0)
         end
     end, coords, true)
-end
+end)
 
 function closeMenuFull()
     Menu.hidden = true

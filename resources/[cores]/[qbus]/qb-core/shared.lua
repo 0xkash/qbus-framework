@@ -121,6 +121,7 @@ QBShared.Items = {
 	-- // ITEMS //
 	["id_card"] 					 = {["name"] = "id_card", 			 	  	  	["label"] = "Identiteitskaart", 		["weight"] = 0, 		["type"] = "item", 		["image"] = "id_card.png", 				["unique"] = true, 		["useable"] = true, 	["shouldClose"] = false,   ["combinable"] = nil,   ["description"] = "Een kaart waar al je gegevens op staat."},
 	["driver_license"] 				 = {["name"] = "driver_license", 			  	["label"] = "Rijbewijs", 				["weight"] = 0, 		["type"] = "item", 		["image"] = "driver_license.png", 		["unique"] = true, 		["useable"] = true, 	["shouldClose"] = false,   ["combinable"] = nil,   ["description"] = "Bewijs om aan te tonen dat je een voertuig kunt besturen."},
+	["lawyerpass"] 					 = {["name"] = "lawyerpass", 			 	  	["label"] = "Advocatenpas", 			["weight"] = 0, 		["type"] = "item", 		["image"] = "lawyerpass.png", 			["unique"] = true, 		["useable"] = true, 	["shouldClose"] = false,   ["combinable"] = nil,   ["description"] = "Pas enkel voor advocaten als bewijs dat zij een verdachte mogen vertegenwoordigen."},
 	["tosti"] 						 = {["name"] = "tosti", 			 	  	  	["label"] = "Tosti", 					["weight"] = 200, 		["type"] = "item", 		["image"] = "tosti.png", 				["unique"] = false, 	["useable"] = true, 	["shouldClose"] = false,   ["combinable"] = nil,   ["description"] = "Lekker om te eten."},
 	["water_bottle"] 				 = {["name"] = "water_bottle", 			  	  	["label"] = "Flesje water", 			["weight"] = 500, 		["type"] = "item", 		["image"] = "water_bottle.png", 		["unique"] = false, 	["useable"] = true, 	["shouldClose"] = true,	   ["combinable"] = nil,   ["description"] = "Voor alle thirsty guys and gals"},
 	["kurkakola"] 				 	 = {["name"] = "kurkakola", 			  	  	["label"] = "Kurk A Kola", 				["weight"] = 500, 		["type"] = "item", 		["image"] = "kurkakola.png", 			["unique"] = false, 	["useable"] = true, 	["shouldClose"] = true,	   ["combinable"] = nil,   ["description"] = "Voor alle thirsty guys and gals"},
@@ -5292,6 +5293,16 @@ QBShared.Jobs = {
 	["reporter"] = {
 		label = "Verslaggever",
 		payment = 10,
+		defaultDuty = true,
+	},
+	["judge"] = {
+		label = "Rechter",
+		payment = 500,
+		defaultDuty = true,
+	},
+	["lawyer"] = {
+		label = "Advocaat",
+		payment = 50,
 		defaultDuty = true,
 	},
 }

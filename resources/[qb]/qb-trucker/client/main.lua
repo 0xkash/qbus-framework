@@ -22,6 +22,8 @@ local currentCount = 0
 local CurrentPlate = nil
 local CurrentTow = nil
 
+local selectedVeh = nil
+
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     isLoggedIn = true
@@ -316,8 +318,6 @@ function VehicleList(isDown)
         
     Menu.addButton("Terug", "MenuGarage",nil)
 end
-
-local selectedVeh = nil
 
 function TakeOutVehicle(vehicleInfo)
     TriggerServerEvent('qb-trucker:server:DoBail', true, vehicleInfo)
