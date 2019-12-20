@@ -95,7 +95,7 @@ Citizen.CreateThread(function()
             TriggerClientEvent('qb-weed:client:refreshPlantStats', -1)
         end)
 
-        Citizen.Wait(10000)
+        Citizen.Wait((60 * 1000) * 10)
     end
 end)
 
