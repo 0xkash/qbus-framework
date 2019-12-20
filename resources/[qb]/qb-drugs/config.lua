@@ -358,7 +358,7 @@ Config.Dealers = {
             },
             [11] = {
                 name = "weapon_snspistol",
-                price = 20000,
+                price = 5000,
                 amount = 2,
                 info = {
                     serie = tostring(Config.RandomInt(2) .. Config.RandomStr(3) .. Config.RandomInt(1) .. Config.RandomStr(2) .. Config.RandomInt(3) .. Config.RandomStr(4))
