@@ -21,7 +21,7 @@ Citizen.CreateThread(function()
     end
 end)
 
-isLoggedIn = false
+isLoggedIn = true
 inJail = false
 jailTime = 0
 currentJob = "electrician"
