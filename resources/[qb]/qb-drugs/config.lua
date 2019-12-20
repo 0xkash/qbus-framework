@@ -365,7 +365,7 @@ Config.Dealers = {
                 },
                 type = "item",
                 slot = 11,
-                minrep = 200,
+                minrep = 650,
             },
         },
     },
