@@ -14,6 +14,13 @@ local isHealingPerson = false
 local healAnimDict = "mini@cpr@char_a@cpr_str"
 local healAnim = "cpr_pumpchest"
 
+RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
+AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+    QBCore.Functions.TriggerCallback('qb-drugs:server:RequestConfig', function(DealerConfig)
+        Config.Dealers = DealerConfig
+    end)
+end)
+
 Citizen.CreateThread(function()
     while true do
         local ped = GetPlayerPed(-1)

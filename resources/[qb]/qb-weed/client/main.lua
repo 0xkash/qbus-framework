@@ -272,33 +272,30 @@ AddEventHandler('qb-weed:client:foodPlant', function(item)
     if currentHouse ~= nil then
         if ClosestTarget ~= 0 then
             local ped = GetPlayerPed(-1)
-            local plyDistance
-            -- for k, v in pairs(housePlants[currentHouse]) do
-                local gender = "M"
-                if housePlants[currentHouse][ClosestTarget].gender == "woman" then 
-                    gender = "V" 
-                end
+            local gender = "M"
+            if housePlants[currentHouse][ClosestTarget].gender == "woman" then 
+                gender = "V" 
+            end
 
-                plantData = {
-                    ["plantCoords"] = {["x"] = json.decode(housePlants[currentHouse][ClosestTarget].coords).x, ["y"] = json.decode(housePlants[currentHouse][ClosestTarget].coords).y, ["z"] = json.decode(housePlants[currentHouse][ClosestTarget].coords).z},
-                    ["plantStage"] = housePlants[currentHouse][ClosestTarget].stage,
-                    ["plantProp"] = GetHashKey(QBWeed.Plants[housePlants[currentHouse][ClosestTarget].sort]["stages"][housePlants[currentHouse][ClosestTarget].stage]),
-                    ["plantSort"] = {
-                        ["name"] = housePlants[currentHouse][ClosestTarget].sort,
-                        ["label"] = QBWeed.Plants[housePlants[currentHouse][ClosestTarget].sort]["label"],
-                    },
-                    ["plantStats"] = {
-                        ["food"] = housePlants[currentHouse][ClosestTarget].food,
-                        ["health"] = housePlants[currentHouse][ClosestTarget].health,
-                        ["progress"] = housePlants[currentHouse][ClosestTarget].progress,
-                        ["stage"] = housePlants[currentHouse][ClosestTarget].stage,
-                        ["highestStage"] = QBWeed.Plants[housePlants[currentHouse][ClosestTarget].sort]["highestStage"],
-                        ["gender"] = gender,
-                        ["plantId"] = housePlants[currentHouse][ClosestTarget].plantid,
-                    }
+            plantData = {
+                ["plantCoords"] = {["x"] = json.decode(housePlants[currentHouse][ClosestTarget].coords).x, ["y"] = json.decode(housePlants[currentHouse][ClosestTarget].coords).y, ["z"] = json.decode(housePlants[currentHouse][ClosestTarget].coords).z},
+                ["plantStage"] = housePlants[currentHouse][ClosestTarget].stage,
+                ["plantProp"] = GetHashKey(QBWeed.Plants[housePlants[currentHouse][ClosestTarget].sort]["stages"][housePlants[currentHouse][ClosestTarget].stage]),
+                ["plantSort"] = {
+                    ["name"] = housePlants[currentHouse][ClosestTarget].sort,
+                    ["label"] = QBWeed.Plants[housePlants[currentHouse][ClosestTarget].sort]["label"],
+                },
+                ["plantStats"] = {
+                    ["food"] = housePlants[currentHouse][ClosestTarget].food,
+                    ["health"] = housePlants[currentHouse][ClosestTarget].health,
+                    ["progress"] = housePlants[currentHouse][ClosestTarget].progress,
+                    ["stage"] = housePlants[currentHouse][ClosestTarget].stage,
+                    ["highestStage"] = QBWeed.Plants[housePlants[currentHouse][ClosestTarget].sort]["highestStage"],
+                    ["gender"] = gender,
+                    ["plantId"] = housePlants[currentHouse][ClosestTarget].plantid,
                 }
-                plyDistance = GetDistanceBetweenCoords(GetEntityCoords(ped), plantData["plantCoords"]["x"], plantData["plantCoords"]["y"], plantData["plantCoords"]["z"], false)
-            -- end
+            }
+            local plyDistance = GetDistanceBetweenCoords(GetEntityCoords(ped), plantData["plantCoords"]["x"], plantData["plantCoords"]["y"], plantData["plantCoords"]["z"], false)
 
             if plyDistance < 1.0 then
                 if plantData["plantStats"]["food"] == 100 then

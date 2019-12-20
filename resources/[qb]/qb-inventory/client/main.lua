@@ -505,7 +505,6 @@ RegisterNUICallback("CloseInventory", function(data, cb)
     end
     SetNuiFocus(false, false)
     inInventory = false
-    TransitionFromBlurred(250)
 end)
 
 RegisterNUICallback("UseItem", function(data, cb)
