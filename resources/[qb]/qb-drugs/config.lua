@@ -139,7 +139,7 @@ Config.Dealers = {
             },
             [11] = {
                 name = "weapon_snspistol",
-                price = 3500,
+                price = 20000,
                 amount = 2,
                 info = {
                     serie = tostring(Config.RandomInt(2) .. Config.RandomStr(3) .. Config.RandomInt(1) .. Config.RandomStr(2) .. Config.RandomInt(3) .. Config.RandomStr(4))
@@ -369,7 +369,7 @@ Config.Dealers = {
             },
             [11] = {
                 name = "weapon_snspistol",
-                price = 3500,
+                price = 20000,
                 amount = 2,
                 info = {
                     serie = tostring(Config.RandomInt(2) .. Config.RandomStr(3) .. Config.RandomInt(1) .. Config.RandomStr(2) .. Config.RandomInt(3) .. Config.RandomStr(4))
@@ -484,7 +484,7 @@ Config.Dealers = {
             },
             [11] = {
                 name = "weapon_snspistol",
-                price = 3500,
+                price = 18000,
                 amount = 2,
                 info = {
                     serie = tostring(Config.RandomInt(2) .. Config.RandomStr(3) .. Config.RandomInt(1) .. Config.RandomStr(2) .. Config.RandomInt(3) .. Config.RandomStr(4))
@@ -599,7 +599,7 @@ Config.Dealers = {
             },
             [11] = {
                 name = "weapon_snspistol",
-                price = 3500,
+                price = 20000,
                 amount = 2,
                 info = {
                     serie = tostring(Config.RandomInt(2) .. Config.RandomStr(3) .. Config.RandomInt(1) .. Config.RandomStr(2) .. Config.RandomInt(3) .. Config.RandomStr(4))
@@ -714,7 +714,7 @@ Config.Dealers = {
             },
             [11] = {
                 name = "weapon_snspistol",
-                price = 3500,
+                price = 20000,
                 amount = 2,
                 info = {
                     serie = tostring(Config.RandomInt(2) .. Config.RandomStr(3) .. Config.RandomInt(1) .. Config.RandomStr(2) .. Config.RandomInt(3) .. Config.RandomStr(4))

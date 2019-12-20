@@ -276,7 +276,6 @@ end)
 RegisterNetEvent("inventory:client:OpenInventory")
 AddEventHandler("inventory:client:OpenInventory", function(inventory, other)
     if not IsEntityDead(GetPlayerPed(-1)) then
-        TransitionToBlurred(250)
         ToggleHotbar(false)
         SetNuiFocus(true, true)
         if other ~= nil then
@@ -456,7 +455,6 @@ RegisterNUICallback("CloseInventory", function(data, cb)
         SetNuiFocus(false, false)
         inInventory = false
         ClearPedTasks(GetPlayerPed(-1))
-        TransitionFromBlurred(250)
         return
     end
     if CurrentVehicle ~= nil then
@@ -475,7 +473,6 @@ RegisterNUICallback("CloseInventory", function(data, cb)
     end
     SetNuiFocus(false, false)
     inInventory = false
-    TransitionFromBlurred(250)
 end)
 
 RegisterNUICallback("UseItem", function(data, cb)
