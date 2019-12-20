@@ -22,7 +22,6 @@ files {
     'stream/[police]/pbmwmotor2/PBMWMOTOR2.xml',
     'stream/[police]/pyamahamotor/PYAMAHAMOTOR.xml',
     'stream/[police]/pboot/PBOOT.xml',
-    'stream/[police]/poracle/PORACLE.xml',
     'stream/[dienst]/sneeuwschuiver/sneeuwschuiver.xml',
     'stream/[ambulance]/asprinter/asprinter.xml',
     'stream/[ambulance]/aeklasse/AEKLASSE.xml',
