@@ -8,8 +8,8 @@ local ItemList = {
 }
 
 local MeltItems = {
-    ["rolex"] = 6,
-    ["goldchain"] = 16,
+    ["rolex"] = 16,
+    ["goldchain"] = 32,
 }
 
 local GoldBarsAmount = 0
@@ -81,6 +81,8 @@ AddEventHandler("qb-pawnshop:server:meltItems", function()
                         if Player.Functions.RemoveItem(Player.PlayerData.items[k].name, Player.PlayerData.items[k].amount, k) then
                             goldbars = goldbars + amount
                         end
+                    else
+                        TriggerClientEvent('QBCore:Notify', src, "Je hebt niet genoeg " .. Player.PlayerData.items[k].label, "error")
                     end
                 end
             end
@@ -88,8 +90,6 @@ AddEventHandler("qb-pawnshop:server:meltItems", function()
         if goldbars > 0 then
             GoldBarsAmount = goldbars
             TriggerClientEvent('qb-pawnshop:client:startMelting', -1)
-        else
-            TriggerClientEvent('QBCore:Notify', src, "Je hebt geen juiste items", "error")
         end
     end
 end)
