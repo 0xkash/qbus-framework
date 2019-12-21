@@ -73,6 +73,12 @@ Citizen.CreateThread(function()
 							type = "buyOption",
 						})
 					else
+						SetNuiFocus(false, false)
+						cursorEnabled = not cursorEnabled
+						SaveDecorations()
+						SelectedObj = nil
+						SelObjId = 0
+						peanut = false
 						isEdit = false
 					end
 				end
