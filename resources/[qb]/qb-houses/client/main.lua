@@ -394,7 +394,14 @@ AddEventHandler('qb-houses:client:giveHouseKey', function(data)
     local player, distance = GetClosestPlayer()
     if player ~= -1 and distance < 2.5 and closesthouse ~= nil then
         local playerId = GetPlayerServerId(player)
-        TriggerServerEvent('qb-houses:server:giveHouseKey', playerId, closesthouse)
+        local housedist = GetDistanceBetweenCoords(GetEntityCoords(GetPlayerPed(-1)), Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z)
+        
+        if housedist < 10 then
+            print('ye gegeven')
+            TriggerServerEvent('qb-houses:server:giveHouseKey', playerId, closesthouse)
+        else
+            QBCore.Functions.Notify("Je staat niet dicht genoeg bij het huis..", "error")
+        end
     elseif closesthouse == nil then
         QBCore.Functions.Notify("Er is geen huis in de buurt!", "error")
     else

@@ -67,7 +67,19 @@ Citizen.CreateThread(function()
                         QBCore.Functions.ExecuteSql("UPDATE `house_plants` SET `health` = '"..(housePlants[k].health - 1).."' WHERE `plantid` = '"..housePlants[k].plantid.."'")
                     end
                 end
+            end
 
+            TriggerClientEvent('qb-weed:client:refreshPlantStats', -1)
+        end)
+
+        Citizen.Wait((60 * 1000) * 20)
+    end
+end)
+
+Citizen.CreateThread(function()
+    while true do
+        QBCore.Functions.ExecuteSql("SELECT * FROM `house_plants`", function(housePlants)
+            for k, v in pairs(housePlants) do
                 if housePlants[k].health > 50 then
                     if housePlants[k].progress + 1 < 100 then
                         QBCore.Functions.ExecuteSql("UPDATE `house_plants` SET `progress` = '"..(housePlants[k].progress + 1).."' WHERE `plantid` = '"..housePlants[k].plantid.."'")
@@ -95,7 +107,7 @@ Citizen.CreateThread(function()
             TriggerClientEvent('qb-weed:client:refreshPlantStats', -1)
         end)
 
-        Citizen.Wait((60 * 1000) * 10)
+        Citizen.Wait((60 * 1000) * 9)
     end
 end)
 
