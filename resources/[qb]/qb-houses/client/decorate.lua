@@ -156,7 +156,6 @@ end)
 RegisterNUICallback("deleteSelectedObject", function(data, cb)
 	DeleteObject(SelectedObj)
 	SelectedObj = nil
-	print(SelObjId)
 	table.remove(ObjectList, SelObjId)
 	Citizen.Wait(100)
 	SaveDecorations()
@@ -181,8 +180,25 @@ RegisterNUICallback("buySelectedObject", function(data, cb)
 end)
 
 RegisterNUICallback('setupMyObjects', function(data, cb)
-	print(json.encode(ObjectList))
-	cb(ObjectList)
+	local Objects = {}
+	for k, v in pairs(ObjectList) do
+		if ObjectList[k] ~= nil then
+			table.insert(Objects, {
+				rotx = v.rotx,
+				object = v.object,
+				y = v.y,
+				hashname = v.hashname,
+				x = v.x,
+				rotz = v.rotz,
+				objectId = v.objectId,
+				roty = v.roty,
+				z = v.z,
+			})
+		end
+	end
+	Wait(100)
+
+	cb(Objects)
 end)
 
 RegisterNUICallback('removeObject', function()
