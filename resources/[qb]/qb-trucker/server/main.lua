@@ -14,7 +14,12 @@ AddEventHandler('qb-trucker:server:DoBail', function(bool, vehInfo)
         if Player.PlayerData.money.cash >= Config.BailPrice then
             Bail[Player.PlayerData.citizenid] = Config.BailPrice
             Player.Functions.RemoveMoney('cash', Config.BailPrice)
-            TriggerClientEvent('QBCore:Notify', src, 'Je hebt de borg van 1000,- betaald', 'success')
+            TriggerClientEvent('QBCore:Notify', src, 'Je hebt de borg van 1000,- betaald (Cash)', 'success')
+            TriggerClientEvent('qb-trucker:client:SpawnVehicle', src, vehInfo)
+        elseif Player.PlayerData.money.bank >= Config.BailPrice then
+            Bail[Player.PlayerData.citizenid] = Config.BailPrice
+            Player.Functions.RemoveMoney('bank', Config.BailPrice)
+            TriggerClientEvent('QBCore:Notify', src, 'Je hebt de borg van 1000,- betaald (Bank)', 'success')
             TriggerClientEvent('qb-trucker:client:SpawnVehicle', src, vehInfo)
         else
             TriggerClientEvent('QBCore:Notify', src, 'Je hebt niet genoeg contant, de borg is 1000,-', 'error')

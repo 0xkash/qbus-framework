@@ -84,29 +84,6 @@ $('document').ready(function() {
 
 Decorations.Open = function(data) {
     $("#decorate").fadeIn(250);
-
-    // $.each(data.furniture, function (i, category) {
-    //     $(".object-selectors").append('<div id="'+i+'" class="form-group object-category"><label for="obj-sel" class="object-select-label">'+category.label+':</label><select class="form-control select-object" id="sel1"></select><br /><button class="btn btn-group btn-spawnobj" id="spawn-object" data-category="'+i+'">Spawn</button>');
-    //     $.each(data.furniture[i].items, function (j, item) {
-    //         $("#"+i).find(".select-object").append('<option value="'+item.object+'">'+item.label+'</option>');
-    //     });
-    // });
-
-    // $('.select-object').on('change', function() {
-    //     var gtaobj = $(this).children("option:selected").val();
-    //     $.post("http://qb-houses/chooseobject", JSON.stringify({
-    //         object: gtaobj,
-    //     }));
-    // });
-
-    // $('.btn-spawnobj').on('click', function() {
-    //     var category = $(this).attr("data-category");
-    //     var gtaobj = $("#"+category).find(".select-object").children("option:selected").val();
-    //     Decorations.Close();
-    //     $.post("http://qb-houses/spawnobject", JSON.stringify({
-    //         object: gtaobj,
-    //     }));
-    // });
 }
 
 Decorations.SetupCategorys = function() {

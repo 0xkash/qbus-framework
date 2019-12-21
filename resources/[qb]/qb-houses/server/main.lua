@@ -330,26 +330,15 @@ RegisterServerEvent('qb-houses:server:giveHouseKey')
 AddEventHandler('qb-houses:server:giveHouseKey', function(target, house)
 	local src = source
 	local tPlayer = QBCore.Functions.GetPlayer(target)
-
-	print(tPlayer)
-	print(target)
-	print(house)
-
+	
 	if tPlayer ~= nil then
-		print('1')
 		for _, cid in pairs(housekeyholders[house]) do
-			print(cid)
-			print(tPlayer.PlayerData.citizenid)
 			if cid == tPlayer.PlayerData.citizenid then
 				print('3')
 				TriggerClientEvent('QBCore:Notify', src, 'Dit persoon heeft al de sleutels van dit huis!', 'error', 3500)
 				return
 			end
 		end
-
-		print('2')
-
-		print(housekeyholders[house])
 		
 		if housekeyholders[house] ~= nil then
 			if typeof(housekeyholders[house]) ~= "table" then
@@ -372,6 +361,11 @@ AddEventHandler('qb-houses:server:giveHouseKey', function(target, house)
 	else
 		TriggerClientEvent('QBCore:Notify', src, 'Er is iets mis gegaan.. Probeer het opnieuw!', 'error', 2500)
 	end
+end)
+
+RegisterServerEvent('test:test')
+AddEventHandler('test:test', function(msg)
+	print(msg)
 end)
 
 RegisterServerEvent('qb-houses:server:setLocation')
