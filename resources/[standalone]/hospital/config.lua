@@ -60,6 +60,22 @@ Config.Items = {
             type = "item",
             slot = 3,
         },
+        [4] = {
+            name = "weapon_flashlight",
+            price = 0,
+            amount = 50,
+            info = {},
+            type = "item",
+            slot = 4,
+        },
+        [5] = {
+            name = "weapon_fireextinguisher",
+            price = 0,
+            amount = 50,
+            info = {},
+            type = "item",
+            slot = 5,
+        },
     }
 }
 

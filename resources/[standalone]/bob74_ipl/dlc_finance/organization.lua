@@ -1,11 +1,7 @@
 
-exports('GetFinanceOrganizationObject', function()
-    return FinanceOrganization
-end)
 
-AddEventHandler('onClientResourceStop', function(res)
-    if (GetCurrentResourceName() ~= res) then return end
-    FinanceOrganization.Office.Clear()
+exports('GetFinanceOrganizationObject', function()
+	return FinanceOrganization
 end)
 
 FinanceOrganization = {
@@ -42,9 +38,7 @@ FinanceOrganization = {
             FinanceOrganization.Office.needToLoad = state
         end,
         Clear = function()
-            if IsNamedRendertargetRegistered(FinanceOrganization.Office.target) then
-                ReleaseNamedRendertarget(GetHashKey(FinanceOrganization.Office.target))
-            end
+            ReleaseNamedRendertarget(0, FinanceOrganization.Office.target)
             if (HasNamedScaleformMovieLoaded(FinanceOrganization.Office.movieId)) then
                 SetScaleformMovieAsNoLongerNeeded(FinanceOrganization.Office.movieId)
             end
@@ -55,31 +49,63 @@ FinanceOrganization = {
     }
 }
 
+
+-- Called when a resource stops
+AddEventHandler('onResourceStop', function(res)
+    FinanceOrganization.Office.Clear()
+end)
+
 Citizen.CreateThread(function()
+    local officesInteriorIds = GetOfficesInteriorIds()
+    local isInOffice = false
     FinanceOrganization.Office.Init()
 
     while true do
         if FinanceOrganization.Office.needToLoad then
-            -- Need to load
-            if (Global.FinanceOffices.isInsideOffice1 or Global.FinanceOffices.isInsideOffice2 or
-                Global.FinanceOffices.isInsideOffice3 or Global.FinanceOffices.isInsideOffice4) then
+            interiorId = GetInteriorAtCoords(GetEntityCoords(GetPlayerPed(-1)))
+
+            for key, id in pairs(officesInteriorIds) do
+                if interiorId == id then
+                    isInOffice = true
+                    break
+                end
+            end
+
+            if isInOffice then
                 DrawOrganizationName(FinanceOrganization.Name.name, FinanceOrganization.Name.style, FinanceOrganization.Name.color, FinanceOrganization.Name.font)
                 FinanceOrganization.Office.loaded = true
+                isInOffice = false
                 Wait(0) -- We need to call all this every frame
             else
-                Wait(1000) -- We are not inside an office
+                Wait(1000) -- We can wait longer when we don't need to display text
             end
         elseif FinanceOrganization.Office.loaded then
-            -- Loaded and need to unload
             FinanceOrganization.Office.Clear()
             FinanceOrganization.Office.loaded = false
             Wait(1000) -- We can wait longer when we don't need to display text
         else
-            -- Not needed to load
             Wait(1000) -- We can wait longer when we don't need to display text
         end
     end
 end)
+
+function GetOfficesInteriorIds()
+    local ids = {}
+    for key, theme in pairs(FinanceOffice1.Style.Theme) do
+        ids["FinanceOffice1" .. key] = theme.interiorId
+    end
+    for key, theme in pairs(FinanceOffice2.Style.Theme) do
+        ids["FinanceOffice2" .. key] = theme.interiorId
+    end
+    for key, theme in pairs(FinanceOffice3.Style.Theme) do
+        ids["FinanceOffice3" .. key] = theme.interiorId
+    end
+    for key, theme in pairs(FinanceOffice4.Style.Theme) do
+        ids["FinanceOffice4" .. key] = theme.interiorId
+    end
+    return ids
+end
+
 
 function DrawOrganizationName(name, style, color, font)
     if FinanceOrganization.Office.stage == 0 then

@@ -1,11 +1,15 @@
 
+local NeedToLoadBlackboard = false
+local IsBlackboardLoaded = false
+
+local NeedToLoadTable = false
+local IsTableLoaded = false
+
+local NeedToLoadPlan = false
+local IsPlanLoaded = false
+
 exports('GetBikerGangObject', function()
     return BikerGang
-end)
-
-AddEventHandler('onClientResourceStop', function(res)
-    if (GetCurrentResourceName() ~= res) then return end
-    BikerGang.Clubhouse.ClearAll()
 end)
 
 BikerGang = {
@@ -176,9 +180,7 @@ BikerGang = {
                 end
             end,
             Clear = function(member)
-                if IsNamedRendertargetRegistered(member.target) then
-                    ReleaseNamedRendertarget(GetHashKey(member.target))
-                end
+                ReleaseNamedRendertarget(0, member.target)
                 if (member.pedheadshot ~= -1) then
                     UnregisterPedheadshot(member.pedheadshot)
                 end
@@ -208,9 +210,7 @@ BikerGang = {
                 BikerGang.Clubhouse.ClubName.needToLoad = state
             end,
             Clear = function()
-                if IsNamedRendertargetRegistered(BikerGang.Clubhouse.ClubName.target) then
-                    ReleaseNamedRendertarget(GetHashKey(BikerGang.Clubhouse.ClubName.target))
-                end
+                ReleaseNamedRendertarget(0, BikerGang.Clubhouse.ClubName.target)
                 if (HasNamedScaleformMovieLoaded(BikerGang.Clubhouse.ClubName.movieId)) then
                     SetScaleformMovieAsNoLongerNeeded(BikerGang.Clubhouse.ClubName.movieId)
                 end
@@ -236,9 +236,7 @@ BikerGang = {
                 DrawEmptyRect(BikerGang.Clubhouse.Emblem.target, BikerGang.Clubhouse.Emblem.prop)
             end,
             Clear = function()
-                if IsNamedRendertargetRegistered(BikerGang.Clubhouse.Emblem.target) then
-                    ReleaseNamedRendertarget(GetHashKey(BikerGang.Clubhouse.Emblem.target))
-                end
+                ReleaseNamedRendertarget(0, BikerGang.Clubhouse.Emblem.target)
                 BikerGang.Clubhouse.Emblem.renderId = -1
                 BikerGang.Clubhouse.Emblem.stage = 0
             end
@@ -356,9 +354,7 @@ BikerGang = {
                 BikerGang.Clubhouse.MissionsWall.SetMission(BikerGang.Clubhouse.MissionsWall.Position.none)
 
                 -- Releasing handles
-                if IsNamedRendertargetRegistered(BikerGang.Clubhouse.MissionsWall.prop) then
-                    ReleaseNamedRendertarget(GetHashKey(BikerGang.Clubhouse.MissionsWall.prop))
-                end
+                ReleaseNamedRendertarget(0, BikerGang.Clubhouse.MissionsWall.prop)
                 if HasNamedScaleformMovieLoaded(BikerGang.Clubhouse.MissionsWall.movieId) then
                     SetScaleformMovieAsNoLongerNeeded(BikerGang.Clubhouse.MissionsWall.movieId)
                 end
@@ -390,6 +386,13 @@ BikerGang = {
     }
 }
 
+
+
+-- Called when a resource stops
+AddEventHandler('onResourceStop', function(res)
+    BikerGang.Clubhouse.ClearAll()
+end)
+
 Citizen.CreateThread(function()
     -- Removing the black texture
     BikerGang.Clubhouse.Members.President.Init()
@@ -413,8 +416,10 @@ Citizen.CreateThread(function()
             BikerGang.Clubhouse.Members.Enforcer.needToLoad or
             BikerGang.Clubhouse.Members.SergeantAtArms.needToLoad) then
 
+            interiorId = GetInteriorAtCoords(GetEntityCoords(GetPlayerPed(-1)))
+
             -- If we are inside a clubhouse, then we load
-            if (Global.Biker.isInsideClubhouse1 or Global.Biker.isInsideClubhouse2) then
+            if (interiorId == BikerGang.Clubhouse.interiorId1 or interiorId == BikerGang.Clubhouse.interiorId2) then
                 -- Club name
                 if BikerGang.Clubhouse.ClubName.needToLoad then
                     DrawClubName(BikerGang.Name.name, BikerGang.Name.color, BikerGang.Name.font)
