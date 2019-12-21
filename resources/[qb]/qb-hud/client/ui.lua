@@ -3,6 +3,8 @@ local seatbeltOn = false
 local cruiseOn = false
 
 local bleedingPercentage = 0
+local hunger = 100
+local thirst = 100
 
 function CalculateTimeToDisplay()
 	hour = GetClockHours()
@@ -23,36 +25,34 @@ end
 Citizen.CreateThread(function()
     Citizen.Wait(500)
     while true do 
-        if isLoggedIn and QBHud.Show then
+        if QBCore ~= nil and isLoggedIn and QBHud.Show then
             speed = GetEntitySpeed(GetVehiclePedIsIn(GetPlayerPed(-1), false)) * 3.6
             local pos = GetEntityCoords(GetPlayerPed(-1))
             local time = CalculateTimeToDisplay()
             local street1, street2 = GetStreetNameAtCoord(pos.x, pos.y, pos.z, Citizen.ResultAsInteger(), Citizen.ResultAsInteger())
             local fuel = exports['LegacyFuel']:GetFuel(GetVehiclePedIsIn(GetPlayerPed(-1)))
-            QBCore.Functions.GetPlayerData(function(PlayerData)
-                SendNUIMessage({
-                    action = "hudtick",
-                    show = IsPauseMenuActive(),
-                    health = GetEntityHealth(GetPlayerPed(-1)),
-                    armor = GetPedArmour(GetPlayerPed(-1)),
-                    thirst = PlayerData.metadata["thirst"],
-                    hunger = PlayerData.metadata["hunger"],
-                    bleeding = bleedingPercentage,
-                    direction = GetDirectionText(GetEntityHeading(GetPlayerPed(-1))),
-                    street1 = GetStreetNameFromHashKey(street1),
-                    street2 = GetStreetNameFromHashKey(street2),
-                    speed = math.ceil(speed),
-                    fuel = fuel,
-                    time = time,
-                })
-            end)
+            SendNUIMessage({
+                action = "hudtick",
+                show = IsPauseMenuActive(),
+                health = GetEntityHealth(GetPlayerPed(-1)),
+                armor = GetPedArmour(GetPlayerPed(-1)),
+                thirst = thirst,
+                hunger = hunger,
+                bleeding = bleedingPercentage,
+                direction = GetDirectionText(GetEntityHeading(GetPlayerPed(-1))),
+                street1 = GetStreetNameFromHashKey(street1),
+                street2 = GetStreetNameFromHashKey(street2),
+                speed = math.ceil(speed),
+                fuel = fuel,
+                time = time,
+            })
             Citizen.Wait(500)
         else
             Citizen.Wait(1000)
         end
     end
 end)
-
+local radarActive = false
 Citizen.CreateThread(function() 
     while true do
         Citizen.Wait(1000)
@@ -62,6 +62,7 @@ Citizen.CreateThread(function()
                 action = "car",
                 show = true,
             })
+            radarActive = true
         else
             DisplayRadar(false)
             SendNUIMessage({
@@ -80,8 +81,15 @@ Citizen.CreateThread(function()
                 action = "cruise",
                 cruise = cruiseOn,
             })
+            radarActive = false
         end
     end
+end)
+
+RegisterNetEvent("hud:client:UpdateNeeds")
+AddEventHandler("hud:client:UpdateNeeds", function(newHunger, newThirst)
+    hunger = newHunger
+    thirst = newThirst
 end)
 
 RegisterNetEvent("seatbelt:client:ToggleSeatbelt")

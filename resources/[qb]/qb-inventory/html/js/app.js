@@ -41,6 +41,9 @@ $(document).on("mouseenter", ".item-slot", function(e){
         } else if (itemData.name == "driver_license") {
             $(".item-info-title").html('<p>'+itemData.label+'</p>')
             $(".item-info-description").html('<p><strong>Voornaam: </strong><span>' + itemData.info.firstname + '</span></p><p><strong>Achternaam: </strong><span>' + itemData.info.lastname + '</span></p><p><strong>Geboortedatum: </strong><span>' + itemData.info.birthdate + '</span></p><p><strong>Rijbewijzen: </strong><span>' + itemData.info.type + '</span></p>');
+        } else if (itemData.name == "lawyerpass") {
+            $(".item-info-title").html('<p>'+itemData.label+'</p>')
+            $(".item-info-description").html('<p><strong>Pas-ID: </strong><span>' + itemData.info.id + '</span></p><p><strong>Voornaam: </strong><span>' + itemData.info.firstname + '</span></p><p><strong>Achternaam: </strong><span>' + itemData.info.lastname + '</span></p><p><strong>BSN: </strong><span>' + itemData.info.citizenid + '</span></p>');
         } else if (itemData.type == "weapon") {
             $(".item-info-title").html('<p>'+itemData.label+'</p>')
             if (itemData.info.attachments != null) {

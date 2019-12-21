@@ -62,7 +62,6 @@ RegisterNetEvent('qb-multicharacter:client:chooseChar')
 AddEventHandler('qb-multicharacter:client:chooseChar', function()
     SetNuiFocus(false, false)
     -- Sets the loadingscreen shutdown to manual so that it wont dissapear when interior not loaded
-    SetManualShutdownLoadingScreenNui(true)
     -- Loads Micheals interior
     local interior = GetInteriorAtCoords(300.38, -991.13, -98.28)
     LoadInterior(interior)

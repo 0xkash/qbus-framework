@@ -1,6 +1,7 @@
 local cruiseOn = false
 local Speed = 0.0
 local cruiseSpeed = 0.0
+local lastVehicle = nil
 
 Citizen.CreateThread(function()
     while true do
@@ -8,7 +9,7 @@ Citizen.CreateThread(function()
         if IsPedInAnyVehicle(GetPlayerPed(-1)) then
             Speed = GetEntitySpeed(GetVehiclePedIsIn(GetPlayerPed(-1)))
 
-            if IsControlJustReleased(0, Keys["B"]) then 
+            if IsControlJustReleased(0, Keys["B"]) and GetPedInVehicleSeat(GetVehiclePedIsIn(GetPlayerPed(-1)), -1) == GetPlayerPed(-1) then 
                 if IsPedInAnyVehicle(GetPlayerPed(-1)) then
                     cruiseSpeed = Speed
                     if cruiseOn then
@@ -17,11 +18,12 @@ Citizen.CreateThread(function()
                         QBCore.Functions.Notify("Begrenzer gezet op "..tostring(math.floor(cruiseSpeed * 3.6)).."km/u")
                     end
                     TriggerEvent("seatbelt:client:ToggleCruise")
-                else
-                    cruiseOn = false
                 end
             end
-        else
+        elseif lastVehicle ~= nil then
+            local maxSpeed = GetVehicleHandlingFloat(lastVehicle,"CHandlingData","fInitialDriveMaxFlatVel")
+            SetEntityMaxSpeed(lastVehicle, maxSpeed)
+            lastVehicle = nil
             Citizen.Wait(1500)
         end
     end
@@ -32,4 +34,5 @@ AddEventHandler("seatbelt:client:ToggleCruise", function()
     cruiseOn = not cruiseOn
     local maxSpeed = cruiseOn and cruiseSpeed or GetVehicleHandlingFloat(GetVehiclePedIsIn(GetPlayerPed(-1), false),"CHandlingData","fInitialDriveMaxFlatVel")
     SetEntityMaxSpeed(GetVehiclePedIsIn(GetPlayerPed(-1), false), maxSpeed)
+    lastVehicle = GetVehiclePedIsIn(GetPlayerPed(-1), false)
 end)

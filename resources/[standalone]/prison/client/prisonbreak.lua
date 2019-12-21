@@ -34,7 +34,7 @@ Citizen.CreateThread(function()
         Citizen.Wait(5)
         inRange = false
         currentGate = 0
-        if isLoggedIn then
+        if isLoggedIn and QBCore ~= nil then
             if QBCore.Functions.GetPlayerData().job.name ~= "police" then
                 local pos = GetEntityCoords(GetPlayerPed(-1))
                 for k, v in pairs(Gates) do
