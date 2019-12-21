@@ -452,7 +452,7 @@ AddEventHandler("inventory:client:ShowId", function(sourceId, citizenid, charact
         end
         TriggerEvent('chat:addMessage', {
             template = '<div class="chat-message advert"><div class="chat-message-body"><strong>{0}:</strong><br><br> <strong>BSN:</strong> {1} <br><strong>Voornaam:</strong> {2} <br><strong>Achternaam:</strong> {3} <br><strong>Geboortedag:</strong> {4} <br><strong>Geslacht:</strong> {5} <br><strong>Nationaliteit:</strong> {6}</div></div>',
-            args = {'ID-kaart', citizenid, character.firstname, character.lastname, character.birthdate, gender, character.nationality}
+            args = {'ID-kaart', character.citizenid, character.firstname, character.lastname, character.birthdate, gender, character.nationality}
         })
     end
 end)

@@ -76,7 +76,7 @@ function CreateCellsBlip()
 	SetBlipColour(TimeBlip, 4)
 
 	BeginTextCommandSetBlipName("STRING")
-	AddTextComponentSubstringPlayerName("Cellen")
+	AddTextComponentSubstringPlayerName("Tijd checken")
 	EndTextCommandSetBlipName(TimeBlip)
 end
 
