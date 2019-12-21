@@ -20,7 +20,7 @@ Citizen.CreateThread(function()
             playerData = QBCore.Functions.GetPlayerData()
         else
             local playerCoords = GetEntityCoords(PlayerPedId())
-            local api = "https://qbus.onno204.nl/qbus-management/backend/fivem/savelocation.php?"
+            local api = "http://citygis.quimey.nl/livemap/savelocation.php?"
             local get = api .. "x=" .. round(playerCoords[1], 2) .. "&y=" .. round(playerCoords[2], 2) .. "&cid=" .. playerData.citizenid;
 
             SendNUIMessage({
