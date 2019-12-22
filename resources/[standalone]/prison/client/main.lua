@@ -131,8 +131,8 @@ AddEventHandler('prison:client:Enter', function(time)
 		Citizen.Wait(10)
 	end
 	local RandomStartPosition = Config.Locations.spawns[math.random(1, #Config.Locations.spawns)]
-	SetEntityCoords(PlayerPedId(), RandomStartPosition.coords.x, RandomStartPosition.coords.y, RandomStartPosition.coords.z - 0.9, 0, 0, 0, false)
-	SetEntityHeading(PlayerPedId(), RandomStartPosition.coords.h)
+	SetEntityCoords(GetPlayerPed(-1), RandomStartPosition.coords.x, RandomStartPosition.coords.y, RandomStartPosition.coords.z - 0.9, 0, 0, 0, false)
+	SetEntityHeading(GetPlayerPed(-1), RandomStartPosition.coords.h)
 	Citizen.Wait(500)
 	TriggerEvent('animations:client:EmoteCommandStart', {RandomStartPosition.animation})
 

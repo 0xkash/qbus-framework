@@ -279,13 +279,14 @@ RegisterNUICallback('success', function()
         }, {}, {}, function() -- Done
             openingDoor = false
             ClearPedTasks(GetPlayerPed(-1))
-            TriggerServerEvent('qb-storerobbery:server:takeMoney', currentRegister, true)
+            TriggerServerEvent('qb-storerobbery:server:takeMoney', currentRegister, true)            
+            currentRegister = 0
         end, function() -- Cancel
             openingDoor = false
             ClearPedTasks(GetPlayerPed(-1))
             QBCore.Functions.Notify("Proces geannuleerd..", "error")
+            currentRegister = 0
         end)
-        currentRegister = 0
     else
         SendNUIMessage({
             action = "kekw",
