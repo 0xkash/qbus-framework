@@ -56,7 +56,7 @@ $(document).on('click', '.companies-item', function(e){
     $(this).addClass("companies-item-selected");
     $(".companies-buttons").html("");
     if (companyData.rank == maxRank) {
-        var elem = '<div class="companies-settings-small-btn"><p>Instellingen</p></div><div class="companies-quit-small-btn"><p>Verwijder</p></div>';
+        var elem = '<div class="companies-settings-small-btn"><p>Management</p></div><div class="companies-quit-small-btn"><p>Verwijder</p></div>';
         $(".companies-buttons").html(elem);
         $(".companies-quit-small-btn").data("companyData", companyData)
         $(".companies-settings-small-btn").data("companyData", companyData)
@@ -70,6 +70,18 @@ $(document).on('click', '.companies-item', function(e){
         $(".companies-buttons").html(elem);
         $(".companies-quit-btn").data("companyData", companyData)
     }
+});
+
+$(document).on('click', '.employee-item', function(e){
+    var maxRank = 6;
+    //var companyData = $(this).data('companyData');
+    $(".employee-item").removeClass("employee-item-selected");
+    $(this).addClass("employee-item-selected");
+    $(".employees-buttons").html("");
+    var elem = '<div class="employee-pay-btn"><p>Betaal</p></div><div class="employee-alter-buttons"><div class="employee-promote-btn"><p>Promote</p></div><div class="employee-demote-btn"><p>Demote</p></div></div><div class="employee-quit-btn"><p>Ontslaan</p></div>';
+    $(".employees-buttons").html(elem);
+    //$(".companies-quit-btn").data("companyData", companyData)
+    //$(".companies-settings-small-btn").data("companyData", companyData)
 });
 
 qbPhone.OpenPayPhone = function() {
@@ -382,6 +394,7 @@ $(document).on('click', '.person-found-item', function(e){
     });
     var person = $(this).data("personData");
     var status = '<span class="person-status-inactive">Nee</span>'
+    var driverlicense = '<span class="person-status-inactive">Ja</span>'
     var gender = "Man"
     if (person.gender == 1) {
         gender = "Vrouw"
@@ -389,7 +402,10 @@ $(document).on('click', '.person-found-item', function(e){
     if (person.warrant) {
         status = '<span class="person-status-active">Ja</span>'
     }
-    $(this).html('<p class="person-name">Naam: '+person.firstname+' '+person.lastname+'</p><p class="person-citizenid">BSN: '+person.citizenid+'</p><hr><p class="person-birthdate">Geboortedatum: '+person.birthdate+'</p><p class="person-phonenumber">Telefoonnummer: '+person.phone+'</p><p class="person-address">Nationaliteit: '+person.nationality+'</p><p class="person-address">Geslacht: '+gender+'</p><br/><p class="person-status">Gesignaleerd: '+status+'</p>');
+    if (!person.driverlicense) {
+        driverlicense = '<span class="person-status-active">Nee</span>'
+    }
+    $(this).html('<p class="person-name">Naam: '+person.firstname+' '+person.lastname+'</p><p class="person-citizenid">BSN: '+person.citizenid+'</p><hr><p class="person-birthdate">Geboortedatum: '+person.birthdate+'</p><p class="person-phonenumber">Telefoonnummer: '+person.phone+'</p><p class="person-address">Nationaliteit: '+person.nationality+'</p><p class="person-address">Geslacht: '+gender+'</p><br/><p class="person-status">Gesignaleerd: '+status+'</p><p class="person-status">Rijbewijs: '+driverlicense+'</p>');
 });
 
 $(document).on('click', '#person-button-search', function(e){
@@ -420,7 +436,6 @@ $(document).on('click', '.vehicle-found-item', function(e){
         status = '<span class="vehicle-status-active">Nee</span>'
     }
     var flagged = '<span class="vehicle-status-active">Ja</span>'
-    console.log(vehicleData)
     if (!vehicleData.isFlagged) {
         flagged = '<span class="vehicle-status-inactive">Nee</span>'
     }
@@ -849,6 +864,14 @@ $(document).on('click', '.companies-quit-btn', function(e){
 $(document).on('click', '.companies-quit-small-btn', function(e){
     $('.quit-confirm-container').css({"display":"block"}).animate({top: "18.5%",}, 150);
     $(".submit-quit-btn").data("companyData", $(this).data("companyData"));
+});
+
+$(document).on('click', '.companies-settings-small-btn', function(e){
+    $('.companies-home').css({"display":"block"}).animate({top: "103%",}, 250, function(){
+        $('.companies-home').css({'display':'none'});
+        $('.companies-settings').css({"display":"block"}).animate({top: "5%",}, 150);
+        $(".employees-buttons").html("");
+    });
 });
 
 $(document).on('click', '.bank-transfer-btn', function(e){
