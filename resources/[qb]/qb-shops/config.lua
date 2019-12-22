@@ -207,9 +207,31 @@ Config.Products = {
             slot = 3,
         },
     },
+    ["coffeeplace"] = {
+        [1] = {
+            name = "coffee",
+            price = 5,
+            amount = 500,
+            info = {},
+            type = "item",
+            slot = 1,
+        },
+    },
 }
 
 Config.Locations = {
+    ["beancoffee"] = {
+        ["label"] = "Bean Machine Coffee",
+        ["type"] = "normal",
+        ["coords"] = {
+            [1] = {
+                ["x"] = -633.72,
+                ["y"] = 236.15,
+                ["z"] = 81.88,
+            },
+        },
+        ["products"] = Config.Products["coffeeplace"],
+    },
     ["ltdgasoline"] = {
         ["label"] = "LTD Gasoline",
         ["type"] = "normal",
