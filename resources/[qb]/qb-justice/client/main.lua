@@ -8,35 +8,15 @@ Citizen.CreateThread(function()
 end)
 
 Citizen.CreateThread(function()
-    while true do 
-        Citizen.Wait(1)
-        local pos = GetEntityCoords(GetPlayerPed(-1))
-        if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["courthouse"].enter.x, Config.Locations["courthouse"].enter.y, Config.Locations["courthouse"].enter.z, true) < 1.5 then
-            DrawText3D(Config.Locations["courthouse"].enter.x, Config.Locations["courthouse"].enter.y, Config.Locations["courthouse"].enter.z, "~g~E~w~ - Om naar binnen te gaan")
-            if IsControlJustReleased(0, Config.Keys["E"]) then
-                DoScreenFadeOut(500)
-                while not IsScreenFadedOut() do
-                    Citizen.Wait(10)
-                end
-                SetEntityCoords(GetPlayerPed(-1), Config.Locations["courthouse"].exit.x, Config.Locations["courthouse"].exit.y, Config.Locations["courthouse"].exit.z)
-                SetEntityHeading(GetPlayerPed(-1), Config.Locations["courthouse"].exit.h)
-                DoScreenFadeIn(500)
-            end
-        end
-
-        if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["courthouse"].exit.x, Config.Locations["courthouse"].exit.y, Config.Locations["courthouse"].exit.z, true) < 1.5 then
-            DrawText3D(Config.Locations["courthouse"].exit.x, Config.Locations["courthouse"].exit.y, Config.Locations["courthouse"].exit.z, "~g~E~w~ - Om naar binnen te gaan")
-            if IsControlJustReleased(0, Config.Keys["E"]) then
-                DoScreenFadeOut(500)
-                while not IsScreenFadedOut() do
-                    Citizen.Wait(10)
-                end
-                SetEntityCoords(GetPlayerPed(-1), Config.Locations["courthouse"].enter.x, Config.Locations["courthouse"].enter.y, Config.Locations["courthouse"].enter.z)
-                SetEntityHeading(GetPlayerPed(-1), Config.Locations["courthouse"].enter.h)
-                DoScreenFadeIn(500)
-            end
-        end
-    end
+    local blip = AddBlipForCoord(416.61, -1084.57, 30.05)
+	SetBlipSprite(blip, 304)
+	SetBlipDisplay(blip, 4)
+	SetBlipScale(blip, 0.6)
+	SetBlipAsShortRange(blip, true)
+	SetBlipColour(blip, 5)
+	BeginTextCommandSetBlipName("STRING")
+	AddTextComponentSubstringPlayerName("Gerechtshof")
+    EndTextCommandSetBlipName(blip)
 end)
 
 RegisterNetEvent("qb-justice:client:showLawyerLicense")

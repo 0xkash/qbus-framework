@@ -26,6 +26,7 @@ inJail = false
 jailTime = 0
 currentJob = "electrician"
 CellsBlip = nil
+TimeBlip
 
 --[[
 	Decrease jailtime every minute
@@ -53,15 +54,30 @@ function CreateCellsBlip()
 	end
 	CellsBlip = AddBlipForCoord(Config.Locations["yard"].coords.x, Config.Locations["yard"].coords.y, Config.Locations["yard"].coords.z)
 
-	SetBlipSprite (CellsBlip, 402)
+	SetBlipSprite (CellsBlip, 238)
 	SetBlipDisplay(CellsBlip, 4)
 	SetBlipScale  (CellsBlip, 0.8)
 	SetBlipAsShortRange(CellsBlip, true)
-	SetBlipColour(CellsBlip, 1)
+	SetBlipColour(CellsBlip, 4)
 
 	BeginTextCommandSetBlipName("STRING")
 	AddTextComponentSubstringPlayerName("Cellen")
 	EndTextCommandSetBlipName(CellsBlip)
+
+	if TimeBlip ~= nil then
+		RemoveBlip(TimeBlip)
+	end
+	TimeBlip = AddBlipForCoord(Config.Locations["freedom"].coords.x, Config.Locations["freedom"].coords.y, Config.Locations["freedom"].coords.z)
+
+	SetBlipSprite (TimeBlip, 466)
+	SetBlipDisplay(TimeBlip, 4)
+	SetBlipScale  (TimeBlip, 0.8)
+	SetBlipAsShortRange(TimeBlip, true)
+	SetBlipColour(TimeBlip, 4)
+
+	BeginTextCommandSetBlipName("STRING")
+	AddTextComponentSubstringPlayerName("Tijd checken")
+	EndTextCommandSetBlipName(TimeBlip)
 end
 
 --[[
@@ -71,62 +87,8 @@ Citizen.CreateThread(function()
 	while true do 
 		Citizen.Wait(1)
 		if isLoggedIn then
-			local pos = GetEntityCoords(GetPlayerPed(-1))
-			if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["cells"].coords.x, Config.Locations["cells"].coords.y, Config.Locations["cells"].coords.z, true) < 1.5) then
-				QBCore.Functions.DrawText3D(Config.Locations["cells"].coords.x, Config.Locations["cells"].coords.y, Config.Locations["cells"].coords.z, "~g~E~w~ - Bezoek / ~g~G~w~ - Buiten")
-				if IsControlJustReleased(0, Keys["E"]) then
-					DoScreenFadeOut(500)
-					while not IsScreenFadedOut() do
-						Citizen.Wait(10)
-					end
-					SetEntityCoords(PlayerPedId(), Config.Locations["meeting"].coords.x, Config.Locations["meeting"].coords.y, Config.Locations["meeting"].coords.z, 0, 0, 0, false)
-					SetEntityHeading(PlayerPedId(), Config.Locations["meeting"].coords.h)
-					Citizen.Wait(500)
-	
-					DoScreenFadeIn(1000)
-				end
-				if IsControlJustReleased(0, Keys["G"]) then
-					DoScreenFadeOut(500)
-					while not IsScreenFadedOut() do
-						Citizen.Wait(10)
-					end
-					SetEntityCoords(PlayerPedId(), Config.Locations["yard"].coords.x, Config.Locations["yard"].coords.y, Config.Locations["yard"].coords.z, 0, 0, 0, false)
-					SetEntityHeading(PlayerPedId(), Config.Locations["yard"].coords.h)
-					Citizen.Wait(500)
-	
-					DoScreenFadeIn(1000)
-				end
-			end
-			if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["meeting"].coords.x, Config.Locations["meeting"].coords.y, Config.Locations["meeting"].coords.z, true) < 1.5) then
-				QBCore.Functions.DrawText3D(Config.Locations["meeting"].coords.x, Config.Locations["meeting"].coords.y, Config.Locations["meeting"].coords.z, "~g~E~w~ - Cellen")
-				if IsControlJustReleased(0, Keys["E"]) then
-					DoScreenFadeOut(500)
-					while not IsScreenFadedOut() do
-						Citizen.Wait(10)
-					end
-					SetEntityCoords(PlayerPedId(), Config.Locations["cells"].coords.x, Config.Locations["cells"].coords.y, Config.Locations["cells"].coords.z, 0, 0, 0, false)
-					SetEntityHeading(PlayerPedId(), Config.Locations["cells"].coords.h)
-					Citizen.Wait(500)
-	
-					DoScreenFadeIn(1000)
-				end
-			end
-			if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["yard"].coords.x, Config.Locations["yard"].coords.y, Config.Locations["yard"].coords.z, true) < 1.5) then
-				QBCore.Functions.DrawText3D(Config.Locations["yard"].coords.x, Config.Locations["yard"].coords.y, Config.Locations["yard"].coords.z, "~g~E~w~ - Cellen")
-				if IsControlJustReleased(0, Keys["E"]) then
-					DoScreenFadeOut(500)
-					while not IsScreenFadedOut() do
-						Citizen.Wait(10)
-					end
-					SetEntityCoords(PlayerPedId(), Config.Locations["cells"].coords.x, Config.Locations["cells"].coords.y, Config.Locations["cells"].coords.z, 0, 0, 0, false)
-					SetEntityHeading(PlayerPedId(), Config.Locations["cells"].coords.h)
-					Citizen.Wait(500)
-	
-					DoScreenFadeIn(1000)
-				end
-			end
-
 			if inJail then
+				local pos = GetEntityCoords(GetPlayerPed(-1))
 				if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["freedom"].coords.x, Config.Locations["freedom"].coords.y, Config.Locations["freedom"].coords.z, true) < 1.5) then
 					QBCore.Functions.DrawText3D(Config.Locations["freedom"].coords.x, Config.Locations["freedom"].coords.y, Config.Locations["freedom"].coords.z, "~g~E~w~ - Check tijd")
 					if IsControlJustReleased(0, Keys["E"]) then
@@ -135,37 +97,6 @@ Citizen.CreateThread(function()
 				elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["freedom"].coords.x, Config.Locations["freedom"].coords.y, Config.Locations["freedom"].coords.z, true) < 2.5) then
 					QBCore.Functions.DrawText3D(Config.Locations["freedom"].coords.x, Config.Locations["freedom"].coords.y, Config.Locations["freedom"].coords.z, "Check tijd")
 				end  
-			end
-	
-			if not inJail then 
-				if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["exit"].coords.x, Config.Locations["exit"].coords.y, Config.Locations["exit"].coords.z, true) < 1.5) then
-					QBCore.Functions.DrawText3D(Config.Locations["exit"].coords.x, Config.Locations["exit"].coords.y, Config.Locations["exit"].coords.z, "~g~E~w~ - Bezoek")
-					if IsControlJustReleased(0, Keys["E"]) then
-						DoScreenFadeOut(500)
-						while not IsScreenFadedOut() do
-							Citizen.Wait(10)
-						end
-						SetEntityCoords(PlayerPedId(), Config.Locations["visit"].coords.x, Config.Locations["visit"].coords.y, Config.Locations["visit"].coords.z, 0, 0, 0, false)
-						SetEntityHeading(PlayerPedId(), Config.Locations["visit"].coords.h)
-						Citizen.Wait(500)
-	
-						DoScreenFadeIn(1000)
-					end
-				end
-				if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["visit"].coords.x, Config.Locations["visit"].coords.y, Config.Locations["visit"].coords.z, true) < 1.5) then
-					QBCore.Functions.DrawText3D(Config.Locations["visit"].coords.x, Config.Locations["visit"].coords.y, Config.Locations["visit"].coords.z, "~g~E~w~ - Uitgang")
-					if IsControlJustReleased(0, Keys["E"]) then
-						DoScreenFadeOut(500)
-						while not IsScreenFadedOut() do
-							Citizen.Wait(10)
-						end
-						SetEntityCoords(PlayerPedId(), Config.Locations["exit"].coords.x, Config.Locations["exit"].coords.y, Config.Locations["exit"].coords.z, 0, 0, 0, false)
-						SetEntityHeading(PlayerPedId(), Config.Locations["exit"].coords.h)
-						Citizen.Wait(500)
-	
-						DoScreenFadeIn(1000)
-					end
-				end
 			end
 		else
 			Citizen.Wait(5000)
@@ -233,13 +164,15 @@ AddEventHandler('prison:client:Leave', function()
 		RemoveBlip(currentBlip)
 		RemoveBlip(CellsBlip)
 		CellsBlip = nil
+		RemoveBlip(TimeBlip)
+		TimeBlip = nil
 		QBCore.Functions.Notify("Je bent vrij! Geniet ervan :)")
 		DoScreenFadeOut(500)
 		while not IsScreenFadedOut() do
 			Citizen.Wait(10)
 		end
-		SetEntityCoords(PlayerPedId(), Config.Locations["freedom"].coords.x, Config.Locations["freedom"].coords.y, Config.Locations["freedom"].coords.z - 0.9, 0, 0, 0, false)
-		SetEntityHeading(PlayerPedId(), Config.Locations["freedom"].coords.h)
+		SetEntityCoords(PlayerPedId(), Config.Locations["outside"].coords.x, Config.Locations["outside"].coords.y, Config.Locations["outside"].coords.z, 0, 0, 0, false)
+		SetEntityHeading(PlayerPedId(), Config.Locations["outside"].coords.h)
 
 		Citizen.Wait(500)
 

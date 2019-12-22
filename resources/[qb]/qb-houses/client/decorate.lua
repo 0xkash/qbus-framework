@@ -73,6 +73,12 @@ Citizen.CreateThread(function()
 							type = "buyOption",
 						})
 					else
+						SetNuiFocus(false, false)
+						cursorEnabled = not cursorEnabled
+						SaveDecorations()
+						SelectedObj = nil
+						SelObjId = 0
+						peanut = false
 						isEdit = false
 					end
 				end
@@ -330,41 +336,45 @@ function LoadDecorations(house)
 			if Config.Houses[house].decorations ~= nil then
 				ObjectList = {}
 				for k, v in pairs(Config.Houses[house].decorations) do
-					if Config.Houses[house].decorations[k].object ~= nil then
-						if DoesEntityExist(Config.Houses[house].decorations[k].object) then
-							DeleteObject(Config.Houses[house].decorations[k].object)
+					if Config.Houses[house].decorations[k] ~= nil then 
+						if Config.Houses[house].decorations[k].object ~= nil then
+							if DoesEntityExist(Config.Houses[house].decorations[k].object) then
+								DeleteObject(Config.Houses[house].decorations[k].object)
+							end
 						end
+						local modelHash = GetHashKey(Config.Houses[house].decorations[k].hashname)
+						RequestModel(modelHash)
+						while not HasModelLoaded(modelHash) do
+							Citizen.Wait(10)
+						end
+						local decorateObject = CreateObject(modelHash, Config.Houses[house].decorations[k].x, Config.Houses[house].decorations[k].y, Config.Houses[house].decorations[k].z, false, false, false)
+						SetEntityRotation(decorateObject, Config.Houses[house].decorations[k].rotx, Config.Houses[house].decorations[k].roty, Config.Houses[house].decorations[k].rotz)
+						ObjectList[Config.Houses[house].decorations[k].objectId] = {hashname = Config.Houses[house].decorations[k].hashname, x = Config.Houses[house].decorations[k].x, y = Config.Houses[house].decorations[k].y, z = Config.Houses[house].decorations[k].z, rotx = Config.Houses[house].decorations[k].rotx, roty = Config.Houses[house].decorations[k].roty, rotz = Config.Houses[house].decorations[k].rotz, object = decorateObject, objectId = Config.Houses[house].decorations[k].objectId}
+						FreezeEntityPosition(decorateObject, true)
 					end
-					local modelHash = GetHashKey(Config.Houses[house].decorations[k].hashname)
-					RequestModel(modelHash)
-					while not HasModelLoaded(modelHash) do
-						Citizen.Wait(10)
-					end
-					local decorateObject = CreateObject(modelHash, Config.Houses[house].decorations[k].x, Config.Houses[house].decorations[k].y, Config.Houses[house].decorations[k].z, false, false, false)
-					SetEntityRotation(decorateObject, Config.Houses[house].decorations[k].rotx, Config.Houses[house].decorations[k].roty, Config.Houses[house].decorations[k].rotz)
-					ObjectList[Config.Houses[house].decorations[k].objectId] = {hashname = Config.Houses[house].decorations[k].hashname, x = Config.Houses[house].decorations[k].x, y = Config.Houses[house].decorations[k].y, z = Config.Houses[house].decorations[k].z, rotx = Config.Houses[house].decorations[k].rotx, roty = Config.Houses[house].decorations[k].roty, rotz = Config.Houses[house].decorations[k].rotz, object = decorateObject, objectId = Config.Houses[house].decorations[k].objectId}
-					FreezeEntityPosition(decorateObject, true)
 				end
 			end
 		end, house)
 	elseif Config.Houses[house].decorations ~= nil then
 		ObjectList = {}
 		for k, v in pairs(Config.Houses[house].decorations) do
-			if Config.Houses[house].decorations[k].object ~= nil then
-				if DoesEntityExist(Config.Houses[house].decorations[k].object) then
-					DeleteObject(Config.Houses[house].decorations[k].object)
+			if Config.Houses[house].decorations[k] ~= nil then 
+				if Config.Houses[house].decorations[k].object ~= nil then
+					if DoesEntityExist(Config.Houses[house].decorations[k].object) then
+						DeleteObject(Config.Houses[house].decorations[k].object)
+					end
 				end
+				local modelHash = GetHashKey(Config.Houses[house].decorations[k].hashname)
+				RequestModel(modelHash)
+				while not HasModelLoaded(modelHash) do
+					Citizen.Wait(10)
+				end
+				local decorateObject = CreateObject(modelHash, Config.Houses[house].decorations[k].x, Config.Houses[house].decorations[k].y, Config.Houses[house].decorations[k].z, false, false, false)
+				Config.Houses[house].decorations[k].object = decorateObject
+				SetEntityRotation(decorateObject, Config.Houses[house].decorations[k].rotx, Config.Houses[house].decorations[k].roty, Config.Houses[house].decorations[k].rotz)
+				ObjectList[Config.Houses[house].decorations[k].objectId] = {hashname = Config.Houses[house].decorations[k].hashname, x = Config.Houses[house].decorations[k].x, y = Config.Houses[house].decorations[k].y, z = Config.Houses[house].decorations[k].z, rotx = Config.Houses[house].decorations[k].rotx, roty = Config.Houses[house].decorations[k].roty, rotz = Config.Houses[house].decorations[k].rotz, object = decorateObject, objectId = Config.Houses[house].decorations[k].objectId}
+				FreezeEntityPosition(decorateObject, true)
 			end
-			local modelHash = GetHashKey(Config.Houses[house].decorations[k].hashname)
-			RequestModel(modelHash)
-			while not HasModelLoaded(modelHash) do
-				Citizen.Wait(10)
-			end
-			local decorateObject = CreateObject(modelHash, Config.Houses[house].decorations[k].x, Config.Houses[house].decorations[k].y, Config.Houses[house].decorations[k].z, false, false, false)
-			Config.Houses[house].decorations[k].object = decorateObject
-			SetEntityRotation(decorateObject, Config.Houses[house].decorations[k].rotx, Config.Houses[house].decorations[k].roty, Config.Houses[house].decorations[k].rotz)
-			ObjectList[Config.Houses[house].decorations[k].objectId] = {hashname = Config.Houses[house].decorations[k].hashname, x = Config.Houses[house].decorations[k].x, y = Config.Houses[house].decorations[k].y, z = Config.Houses[house].decorations[k].z, rotx = Config.Houses[house].decorations[k].rotx, roty = Config.Houses[house].decorations[k].roty, rotz = Config.Houses[house].decorations[k].rotz, object = decorateObject, objectId = Config.Houses[house].decorations[k].objectId}
-			FreezeEntityPosition(decorateObject, true)
 		end
 	end
 end
