@@ -339,14 +339,6 @@ QBDiving.Locations = {
                     },
                     PickedUp = false
                 },
-                [5] = {
-                    coords = {
-                        x = -2840.39, 
-                        y = -444.79, 
-                        z = -39.65
-                    },
-                    PickedUp = false
-                },
             }
         },
         TotalCoral = 5
@@ -381,22 +373,6 @@ QBDiving.Locations = {
                         x = -3346.53, 
                         y = -50.4, 
                         z = -35.84
-                    },
-                    PickedUp = false
-                },
-                [4] = {
-                    coords = {
-                        x = -3265.13, 
-                        y = -80.26, 
-                        z = -28.71
-                    },
-                    PickedUp = false
-                },
-                [5] = {
-                    coords = {
-                        x = -3276.7,
-                        y = -111.75,
-                        z = -38.02
                     },
                     PickedUp = false
                 },
@@ -435,22 +411,6 @@ QBDiving.Locations = {
                         x = -3326.04, 
                         y = 1636.43, 
                         z = -40.98
-                    },
-                    PickedUp = false
-                },
-                [4] = {
-                    coords = {
-                        x = -3339.09, 
-                        y = 1668.96, 
-                        z = -42.63
-                    },
-                    PickedUp = false
-                },
-                [5] = {
-                    coords = {
-                        x = -3382.11, 
-                        y = 1634.13, 
-                        z = -42.88
                     },
                     PickedUp = false
                 },

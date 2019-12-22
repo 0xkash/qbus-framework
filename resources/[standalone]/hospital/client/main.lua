@@ -403,13 +403,14 @@ end)
 RegisterNetEvent('QBCore:Client:OnJobUpdate')
 AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
     PlayerJob = JobInfo
+    TriggerServerEvent("hospital:server:SetDoctor")
 end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     exports.spawnmanager:setAutoSpawn(false)
     isLoggedIn = true
-    TriggerServerEvent("hospital:client:SetDoctor")
+    TriggerServerEvent("hospital:server:SetDoctor")
     QBCore.Functions.GetPlayerData(function(PlayerData)
         PlayerJob = PlayerData.job
         onDuty = PlayerData.job.onduty
@@ -430,6 +431,7 @@ end)
 RegisterNetEvent('QBCore:Client:SetDuty')
 AddEventHandler('QBCore:Client:SetDuty', function(duty)
     onDuty = duty
+    TriggerServerEvent("hospital:server:SetDoctor")
 end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerUnload')

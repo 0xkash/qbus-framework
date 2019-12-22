@@ -165,8 +165,14 @@ end)
 RegisterServerEvent('QBCore:Server:SetMetaData')
 AddEventHandler('QBCore:Server:SetMetaData', function(meta, data)
     local src = source
-    local Player = QBCore.Functions.GetPlayer(src)
-    Player.Functions.SetMetaData(meta, data)
+	local Player = QBCore.Functions.GetPlayer(src)
+	if meta == "hunger" or meta == "thirst" then
+		if data > 100 then
+			data = 100
+		end
+	end
+	Player.Functions.SetMetaData(meta, data)
+	TriggerClientEvent("hud:client:UpdateNeeds", src, Player.PlayerData.metadata["hunger"], Player.PlayerData.metadata["thirst"])
 end)
 
 AddEventHandler('chatMessage', function(source, n, message)
