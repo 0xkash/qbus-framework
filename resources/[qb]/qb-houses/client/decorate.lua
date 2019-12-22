@@ -243,7 +243,7 @@ RegisterNUICallback('editOwnedObject', function(data)
 
 	local ownedObject = GetClosestObjectOfType(objectData.x, objectData.y, objectData.z, 1.5, GetHashKey(objectData.hashname), false, 6, 7)
 	local pos = GetEntityCoords(ownedObject, true)
-    local rot = GetEntityRotation(ownedObject)
+	local rot = GetEntityRotation(ownedObject)
     SelObjRot = {x = rot.x, y = rot.y, z = rot.z}
 	SelObjPos = {x = pos.x, y = pos.y, z = pos.z}
 	SelObjHash = objectData.hashname
