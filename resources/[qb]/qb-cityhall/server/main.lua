@@ -4,6 +4,7 @@ TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 local DrivingSchools = {
     "PAE31194",
     "UFV96874",
+    "TRB56419",
 }
 
 RegisterServerEvent('qb-cityhall:server:requestId')

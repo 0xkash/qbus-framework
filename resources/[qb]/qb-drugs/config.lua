@@ -720,8 +720,8 @@ Config.Dealers = {
                 slot = 2,
                 minrep = 0,
             },
-        },]]--
-    },
+        },
+    },]]--
 }
 
 Config.CornerSellingDrugsList = {
