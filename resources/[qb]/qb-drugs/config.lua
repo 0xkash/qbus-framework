@@ -690,7 +690,7 @@ Config.Dealers = {
             },
         },
     },
-    [6] = {
+    --[[[6] = {
         ["name"] = "Ouweheer",
         ["coords"] = {
             ["x"] = 3310.75, 
@@ -720,7 +720,7 @@ Config.Dealers = {
                 slot = 2,
                 minrep = 0,
             },
-        },
+        },]]--
     },
 }
 

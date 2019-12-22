@@ -186,23 +186,15 @@ Citizen.CreateThread(function()
         Citizen.Wait(1)
         if QBCore ~= nil then
             local pos = GetEntityCoords(GetPlayerPed(-1))
-            if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["checking"].x, Config.Locations["checking"].y, Config.Locations["checking"].z, true) < 7.5) then
-                if not doctorsSet then
-                    doctorCount = 0
-                    doctorsSet = true
-                end
-            else
-                doctorsSet = false
-            end
 
             if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["checking"].x, Config.Locations["checking"].y, Config.Locations["checking"].z, true) < 1.5) then
-                if doctorCount > 1 then
+                if doctorCount > 0 then
                     QBCore.Functions.DrawText3D(Config.Locations["checking"].x, Config.Locations["checking"].y, Config.Locations["checking"].z, "~g~E~w~ - Arts oproepen")
                 else
                     QBCore.Functions.DrawText3D(Config.Locations["checking"].x, Config.Locations["checking"].y, Config.Locations["checking"].z, "~g~E~w~ - Inchecken")
                 end
                 if IsControlJustReleased(0, Keys["E"]) then
-                    if doctorCount > 1 then
+                    if doctorCount > 0 then
                         TriggerServerEvent("hospital:server:SendDoctorAlert")
                     else
                         TriggerEvent('animations:client:EmoteCommandStart', {"notepad"})
@@ -417,6 +409,7 @@ RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     exports.spawnmanager:setAutoSpawn(false)
     isLoggedIn = true
+    TriggerServerEvent("hospital:client:SetDoctor")
     QBCore.Functions.GetPlayerData(function(PlayerData)
         PlayerJob = PlayerData.job
         onDuty = PlayerData.job.onduty
@@ -427,6 +420,11 @@ AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
             DeathTimer()
         end
     end)
+end)
+
+RegisterNetEvent('hospital:client:SetDoctorCount')
+AddEventHandler('hospital:client:SetDoctorCount', function(amount)
+    doctorCount = amount
 end)
 
 RegisterNetEvent('QBCore:Client:SetDuty')

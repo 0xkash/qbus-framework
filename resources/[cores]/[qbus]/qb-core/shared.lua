@@ -5264,12 +5264,12 @@ QBShared.Jobs = {
 	},
 	["doctor"] = {
 		label = "Dokter",
-		payment = 250,
+		payment = 600,
 		defaultDuty = true,
 	},
 	["ambulance"] = {
 		label = "Ambulance",
-		payment = 250,
+		payment = 500,
 		defaultDuty = true,
 	},
 	["trucker"] = {
