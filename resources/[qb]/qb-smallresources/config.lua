@@ -16,6 +16,7 @@ Consumeables = {
     ["kurkakola"] = math.random(35, 54),
     ["twerks_candy"] = math.random(35, 54),
     ["snikkel_candy"] = math.random(40, 50),
+    ["coffee"] = math.random(40, 50),
 }
 
 Config = {}

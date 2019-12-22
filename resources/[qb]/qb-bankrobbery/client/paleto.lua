@@ -34,7 +34,7 @@ Citizen.CreateThread(function()
                                     if lockerDist < 0.5 then
                                         DrawText3Ds(Config.BigBanks["paleto"]["lockers"][k].x, Config.BigBanks["paleto"]["lockers"][k].y, Config.BigBanks["paleto"]["lockers"][k].z + 0.3, '[E] Kluis openbreken')
                                         if IsControlJustPressed(0, Keys["E"]) then
-                                            if CurrentCops >= 5 then
+                                            if CurrentCops >= 0 then
                                                 openLocker("paleto", k)
                                             else
                                                 QBCore.Functions.Notify("Niet genoeg politie.. (5 nodig)", "error")
@@ -66,7 +66,7 @@ AddEventHandler('qb-bankrobbery:UseBankcardA', function()
     if dist < 1.5 then
         QBCore.Functions.TriggerCallback('qb-bankrobbery:server:isRobberyActive', function(isBusy)
             if not isBusy then
-                if CurrentCops >= 5 then
+                if CurrentCops >= 0 then
                     if not Config.BigBanks["paleto"]["isOpened"] then 
                         TriggerEvent('inventory:client:requiredItems', requiredItems, false)
                         QBCore.Functions.Progressbar("security_pass", "Pas aan het valideren..", math.random(5000, 10000), false, true, {
@@ -82,6 +82,7 @@ AddEventHandler('qb-bankrobbery:UseBankcardA', function()
                             StopAnimTask(GetPlayerPed(-1), "anim@gangops@facility@servers@", "hotwire", 1.0)
                             TriggerServerEvent('qb-bankrobbery:server:setBankState', "paleto", true)
                             TriggerServerEvent("QBCore:Server:RemoveItem", "security_card_01", 1)
+                            TriggerServerEvent('qb-doorlock:server:updateState', 65, false)
                             if not copsCalled then
                                 local s1, s2 = Citizen.InvokeNative(0x2EB41072B4C1E4C0, pos.x, pos.y, pos.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
                                 local street1 = GetStreetNameFromHashKey(s1)

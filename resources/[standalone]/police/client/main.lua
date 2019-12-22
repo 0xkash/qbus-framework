@@ -140,7 +140,7 @@ end)
 local DutyBlips = {}
 RegisterNetEvent('police:client:UpdateBlips')
 AddEventHandler('police:client:UpdateBlips', function(players)
-    if PlayerJob ~= nil and (PlayerJob.name == 'police' or PlayerJob.name == 'ambulance') and onDuty then
+    if PlayerJob ~= nil and (PlayerJob.name == 'police' or PlayerJob.name == 'ambulance' or PlayerJob.name == 'doctor') and onDuty then
         if DutyBlips ~= nil then 
             for k, v in pairs(DutyBlips) do
                 RemoveBlip(v)

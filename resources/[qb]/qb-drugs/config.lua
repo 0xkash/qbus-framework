@@ -137,6 +137,15 @@ Config.Dealers = {
                 slot = 10,
                 minrep = 180,
             },
+            [11] = {
+                name = "drill",
+                price = 2500,
+                amount = 5,
+                info = {},
+                type = "item",
+                slot = 11,
+                minrep = 450,
+            },
         },
     },
     --[[[2] = {
