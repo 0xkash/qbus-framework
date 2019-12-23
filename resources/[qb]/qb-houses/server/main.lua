@@ -97,14 +97,15 @@ AddEventHandler('qb-houses:server:buyHouse', function(house)
 	local src     	= source
 	local pData 	= QBCore.Functions.GetPlayer(src)
 	local price   	= Config.Houses[house].price
-	local keyyeet 	= {pData.PlayerData.citizenid}
 	local bankBalance = pData.PlayerData.money["bank"]
 
 	if (bankBalance >= price) then
 		QBCore.Functions.ExecuteSql("INSERT INTO `player_houses` (`house`, `identifier`, `citizenid`, `keyholders`) VALUES ('"..house.."', '"..pData.PlayerData.steam.."', '"..pData.PlayerData.citizenid.."', '"..json.encode(keyyeet).."')")
 		houseowneridentifier[house] = pData.PlayerData.steam
 		houseownercid[house] = pData.PlayerData.citizenid
-		housekeyholders[house] = json.encode(keyyeet)
+		housekeyholders[house] = {
+			[1] = pData.PlayerData.citizenid
+		}
 		QBCore.Functions.ExecuteSql("UPDATE `houselocations` SET `owned` = 1 WHERE `name` = '"..house.."'")
 		TriggerClientEvent('qb-houses:client:SetClosestHouse', src)
 		pData.Functions.RemoveMoney('bank', (price * 1.21)) -- 21% Extra house costs
@@ -154,7 +155,7 @@ function hasKey(identifier, cid, house)
 		if houseowneridentifier[house] == identifier and houseownercid[house] == cid then
 			return true
 		else
-			for i = 1, (#housekeyholders[house]) do
+			for i = 1, #housekeyholders[house], 1 do
 				if housekeyholders[house][i] == cid then
 					return true
 				end
@@ -334,16 +335,12 @@ AddEventHandler('qb-houses:server:giveHouseKey', function(target, house)
 	if tPlayer ~= nil then
 		for _, cid in pairs(housekeyholders[house]) do
 			if cid == tPlayer.PlayerData.citizenid then
-				print('3')
 				TriggerClientEvent('QBCore:Notify', src, 'Dit persoon heeft al de sleutels van dit huis!', 'error', 3500)
 				return
 			end
 		end
 		
 		if housekeyholders[house] ~= nil then
-			if typeof(housekeyholders[house]) ~= "table" then
-				housekeyholders[house] = json.decode(housekeyholders[house])
-			end
 			table.insert(housekeyholders[house], tPlayer.PlayerData.citizenid)
 			Wait(250)
 			QBCore.Functions.ExecuteSql("UPDATE `player_houses` SET `keyholders` = '"..json.encode(housekeyholders[house]).."' WHERE `house` = '"..house.."'")
@@ -351,7 +348,9 @@ AddEventHandler('qb-houses:server:giveHouseKey', function(target, house)
 			TriggerClientEvent('QBCore:Notify', tPlayer.PlayerData.source, 'Je hebt de sleuteltjes van '..Config.Houses[house].adress..' ontvagen!', 'success', 2500)
 		else
 			local sourceTarget = QBCore.Functions.GetPlayer(src)
-			housekeyholders[house] = {sourceTarget.PlayerData.citizenid}
+			housekeyholders[house] {
+				[1] = sourceTarget.PlayerData.citizenid
+			}
 			table.insert(housekeyholders[house], tPlayer.PlayerData.citizenid)
 			Wait(250)
 			QBCore.Functions.ExecuteSql("UPDATE `player_houses` SET `keyholders` = '"..json.encode(housekeyholders[house]).."' WHERE `house` = '"..house.."'")
