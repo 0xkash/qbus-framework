@@ -333,14 +333,13 @@ AddEventHandler('qb-houses:server:giveHouseKey', function(target, house)
 	local tPlayer = QBCore.Functions.GetPlayer(target)
 	
 	if tPlayer ~= nil then
-		for _, cid in pairs(housekeyholders[house]) do
-			if cid == tPlayer.PlayerData.citizenid then
-				TriggerClientEvent('QBCore:Notify', src, 'Dit persoon heeft al de sleutels van dit huis!', 'error', 3500)
-				return
-			end
-		end
-		
 		if housekeyholders[house] ~= nil then
+			for _, cid in pairs(housekeyholders[house]) do
+				if cid == tPlayer.PlayerData.citizenid then
+					TriggerClientEvent('QBCore:Notify', src, 'Dit persoon heeft al de sleutels van dit huis!', 'error', 3500)
+					return
+				end
+			end		
 			table.insert(housekeyholders[house], tPlayer.PlayerData.citizenid)
 			Wait(250)
 			QBCore.Functions.ExecuteSql("UPDATE `player_houses` SET `keyholders` = '"..json.encode(housekeyholders[house]).."' WHERE `house` = '"..house.."'")
