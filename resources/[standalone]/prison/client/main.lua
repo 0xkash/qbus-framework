@@ -26,11 +26,8 @@ inJail = false
 jailTime = 0
 currentJob = "electrician"
 CellsBlip = nil
-TimeBlip
+TimeBlip = nil
 
---[[
-	Decrease jailtime every minute
-]]
 Citizen.CreateThread(function()
 	while true do 
 		Citizen.Wait(7)
