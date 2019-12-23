@@ -47,6 +47,11 @@ $(function() {
 			radarContainer.fadeToggle();
 		}
 
+		if (item.reset) {
+			updatePlate("fwdPlate", "");
+			updatePlate("bwdPlate", "");
+		}
+
 		if (item.hideradar) {
 			radarContainer.fadeOut();
 		} else if (item.hideradar == false) {
