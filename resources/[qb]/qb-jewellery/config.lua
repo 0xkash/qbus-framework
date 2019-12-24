@@ -39,6 +39,9 @@ Config.WhitelistedWeapons = {
     [GetHashKey("weapon_compactrifle")] = {
         ["timeOut"] = 5000
     },
+    [GetHashKey("weapon_autoshotgun")] = {
+        ["timeOut"] = 5500
+    },
 }
 
 Config.VitrineRewards = {
