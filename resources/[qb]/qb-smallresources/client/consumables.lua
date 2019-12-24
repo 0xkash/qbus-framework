@@ -42,7 +42,7 @@ AddEventHandler("consumables:client:UseHeavyArmor", function()
         else
             SetPedComponentVariation(GetPlayerPed(-1), 9, 12, 1, 2) -- blauw
         end
-        TriggerEvent("inventory:client:ItemBox", QBCore.Shared.Items["armor"], "remove")
+        TriggerEvent("inventory:client:ItemBox", QBCore.Shared.Items["heavyarmor"], "remove")
         SetPedArmour(GetPlayerPed(-1), 100)
     end)
 end)
@@ -58,6 +58,8 @@ AddEventHandler("consumables:client:ResetArmor", function()
         }, {}, {}, {}, function() -- Done
             SetPedComponentVariation(GetPlayerPed(-1), 9, currentVest, currentVestTexture, 2)
             SetPedArmour(GetPlayerPed(-1), 0)
+            TriggerEvent("inventory:client:ItemBox", QBCore.Shared.Items["heavyarmor"], "add")
+            TriggerServerEvent("QBCore:Server:AddItem", "heavyarmor", 1)
         end)
     else
         QBCore.Functions.Notify("Vest niet gezet..", "error")

@@ -207,12 +207,6 @@ AddEventHandler("initializeVoip", function()
 		while true do
 			Wait(5)
 
-			if (IsControlPressed(0, Keys["LEFTSHIFT"])) then
-				if (IsControlJustPressed(1, Keys["9"]) or IsDisabledControlJustPressed(1, Keys["9"])) then
-					debugData = not debugData;
-				end
-			end
-
 			if (debugData) then
 				local pos_y;
 				local pos_x;

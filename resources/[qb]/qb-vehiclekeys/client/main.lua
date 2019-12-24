@@ -182,39 +182,37 @@ function RobVehicle(target)
 end
 
 function LockVehicle()
-    -- local veh = QBCore.Functions.GetClosestVehicle()
+    local veh = QBCore.Functions.GetClosestVehicle()
     local pos = GetEntityCoords(GetPlayerPed(-1), true)
-    local veh = GetClosestVehicle(pos.x, pos.y, pos.z, 5.0, 0, 70)
+    --local veh = GetClosestVehicle(pos.x, pos.y, pos.z, 5.0, 0, 70)
     if IsPedInAnyVehicle(GetPlayerPed(-1)) then
         veh = GetVehiclePedIsIn(GetPlayerPed(-1))
-        print(veh)
     end
     local vehpos = GetEntityCoords(veh, false)
     if veh ~= nil and GetDistanceBetweenCoords(pos.x, pos.y, pos.z, vehpos.x, vehpos.y, vehpos.z, true) < 7.5 then
-        QBCore.Functions.TriggerCallback('vehiclekeys:CheckHasKey', function(result)
-            if result then
-                local vehLockStatus = GetVehicleDoorLockStatus(veh)
-                loadAnimDict("anim@mp_player_intmenu@key_fob@")
-                TaskPlayAnim(GetPlayerPed(-1), 'anim@mp_player_intmenu@key_fob@', 'fob_click' ,3.0, 3.0, -1, 49, 0, false, false, false)
-                if(vehLockStatus <= 2)then
-                    Citizen.Wait(750)
-                    ClearPedTasks(GetPlayerPed(-1))
-                    vehLockStatus = 4
-                    TriggerServerEvent("InteractSound_SV:PlayWithinDistance", 5, "lock", 0.3)
-                    SetVehicleDoorsLocked(veh, vehLockStatus)
-                    SetVehicleDoorsLockedForAllPlayers(veh, true)
-                    QBCore.Functions.Notify("Voertuig staat op slot..")
-                elseif(vehLockStatus > 2)then
-                    Citizen.Wait(750)
-                    ClearPedTasks(GetPlayerPed(-1))
-                    vehLockStatus = 1
-                    TriggerServerEvent("InteractSound_SV:PlayWithinDistance", 5, "unlock", 0.3)
-                    SetVehicleDoorsLocked(veh, vehLockStatus)
-                    SetVehicleDoorsLockedForAllPlayers(veh, false)
-                    QBCore.Functions.Notify("Voertuig staat op open..")
-                end
+        
+        if HasKey then
+            local vehLockStatus = GetVehicleDoorLockStatus(veh)
+            loadAnimDict("anim@mp_player_intmenu@key_fob@")
+            TaskPlayAnim(GetPlayerPed(-1), 'anim@mp_player_intmenu@key_fob@', 'fob_click' ,3.0, 3.0, -1, 49, 0, false, false, false)
+            if(vehLockStatus <= 2)then
+                Citizen.Wait(750)
+                ClearPedTasks(GetPlayerPed(-1))
+                vehLockStatus = 4
+                TriggerServerEvent("InteractSound_SV:PlayWithinDistance", 5, "lock", 0.3)
+                SetVehicleDoorsLocked(veh, vehLockStatus)
+                SetVehicleDoorsLockedForAllPlayers(veh, true)
+                QBCore.Functions.Notify("Voertuig staat op slot..")
+            elseif(vehLockStatus > 2)then
+                Citizen.Wait(750)
+                ClearPedTasks(GetPlayerPed(-1))
+                vehLockStatus = 1
+                TriggerServerEvent("InteractSound_SV:PlayWithinDistance", 5, "unlock", 0.3)
+                SetVehicleDoorsLocked(veh, vehLockStatus)
+                SetVehicleDoorsLockedForAllPlayers(veh, false)
+                QBCore.Functions.Notify("Voertuig staat op open..")
             end
-        end, GetVehicleNumberPlateText(veh))
+        end
     end
 end
 
