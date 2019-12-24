@@ -59,7 +59,7 @@ Citizen.CreateThread(function()
             end]]--
         end
 
-        if IsControlJustPressed(0, Keys["L"]) then
+        if IsControlJustPressed(1, Keys["L"]) then
             LockVehicle()
         end
     end
@@ -149,13 +149,13 @@ AddEventHandler('vehiclekeys:client:ToggleEngine', function()
 end)
 
 RegisterNetEvent('lockpicks:UseLockpick')
-AddEventHandler('lockpicks:UseLockpick', function()
+AddEventHandler('lockpicks:UseLockpick', function(isAdvanced)
     if (IsPedInAnyVehicle(GetPlayerPed(-1))) then
         if not HasKey then
-            LockpickIgnition()
+            LockpickIgnition(isAdvanced)
         end
     else
-        LockpickDoor()
+        LockpickDoor(isAdvanced)
     end
 end)
 
@@ -217,7 +217,7 @@ function LockVehicle()
 end
 
 local openingDoor = false
-function LockpickDoor()
+function LockpickDoor(isAdvanced)
     local vehicle = QBCore.Functions.GetClosestVehicle()
     if vehicle ~= nil and vehicle ~= 0 then
         local vehpos = GetEntityCoords(vehicle)
@@ -226,6 +226,9 @@ function LockpickDoor()
             local vehLockStatus = GetVehicleDoorLockStatus(vehicle)
             if (vehLockStatus > 2) then
                 local lockpickTime = math.random(15000, 30000)
+                if isAdvanced then
+                    lockpickTime = math.ceil(lockpickTime*0.5)
+                end
                 LockpickDoorAnim(lockpickTime)
                 PoliceCall()
                 IsHotwiring = true
@@ -277,12 +280,16 @@ function LockpickDoorAnim(time)
     end)
 end
 
-function LockpickIgnition()
+function LockpickIgnition(isAdvanced)
     if not HasKey then 
         local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1), true)
         IsHotwiring = true
         PoliceCall()
-        QBCore.Functions.Progressbar("lockpick_ignition", "Lockpicken..", math.random(30000, 40000), false, true, {
+        local lockpickTime = math.random(30000, 40000)
+        if isAdvanced then
+            lockpickTime = math.ceil(lockpickTime*0.5)
+        end
+        QBCore.Functions.Progressbar("lockpick_ignition", "Lockpicken..", lockpickTime, false, true, {
             disableMovement = true,
             disableCarMovement = true,
             disableMouse = false,
