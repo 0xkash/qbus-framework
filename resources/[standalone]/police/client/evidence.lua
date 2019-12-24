@@ -9,7 +9,9 @@ StatusList = {
 	["heavybreath"] = "Ademt zwaar",
 	["sweat"] = "Zweet erg",
     ["handbleed"] = "Bloed op handen",
-    ["confused"] = "Verward",
+	["confused"] = "Verward",
+	["alcohol"] = "Ruikt naar alcohol",
+	["heavyalcohol"] = "Ruikt erg naar alcohol",
 }
 
 CurrentStatusList = {}
