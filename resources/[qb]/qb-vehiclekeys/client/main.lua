@@ -195,15 +195,16 @@ function LockVehicle()
             local vehLockStatus = GetVehicleDoorLockStatus(veh)
             loadAnimDict("anim@mp_player_intmenu@key_fob@")
             TaskPlayAnim(GetPlayerPed(-1), 'anim@mp_player_intmenu@key_fob@', 'fob_click' ,3.0, 3.0, -1, 49, 0, false, false, false)
-            if(vehLockStatus <= 2)then
+
+            if(vehLockStatus == 1 or vehLockStatus == 0)then
                 Citizen.Wait(750)
                 ClearPedTasks(GetPlayerPed(-1))
-                vehLockStatus = 4
+                vehLockStatus = 2
                 TriggerServerEvent("InteractSound_SV:PlayWithinDistance", 5, "lock", 0.3)
                 SetVehicleDoorsLocked(veh, vehLockStatus)
                 SetVehicleDoorsLockedForAllPlayers(veh, true)
                 QBCore.Functions.Notify("Voertuig staat op slot..")
-            elseif(vehLockStatus > 2)then
+            else
                 Citizen.Wait(750)
                 ClearPedTasks(GetPlayerPed(-1))
                 vehLockStatus = 1
@@ -211,6 +212,23 @@ function LockVehicle()
                 SetVehicleDoorsLocked(veh, vehLockStatus)
                 SetVehicleDoorsLockedForAllPlayers(veh, false)
                 QBCore.Functions.Notify("Voertuig staat op open..")
+            end
+
+            if not IsPedInAnyVehicle(GetPlayerPed(-1)) then
+                SetVehicleInteriorlight(veh, true)
+                SetVehicleIndicatorLights(veh, 0, true)
+                SetVehicleIndicatorLights(veh, 1, true)
+                Citizen.Wait(450)
+                SetVehicleIndicatorLights(veh, 0, false)
+                SetVehicleIndicatorLights(veh, 1, false)
+                Citizen.Wait(450)
+                SetVehicleInteriorlight(veh, true)
+                SetVehicleIndicatorLights(veh, 0, true)
+                SetVehicleIndicatorLights(veh, 1, true)
+                Citizen.Wait(450)
+                SetVehicleInteriorlight(veh, false)
+                SetVehicleIndicatorLights(veh, 0, false)
+                SetVehicleIndicatorLights(veh, 1, false)
             end
         end
     end
@@ -224,7 +242,7 @@ function LockpickDoor(isAdvanced)
         local pos = GetEntityCoords(GetPlayerPed(-1))
         if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, vehpos.x, vehpos.y, vehpos.z, true) < 1.5 then
             local vehLockStatus = GetVehicleDoorLockStatus(vehicle)
-            if (vehLockStatus > 2) then
+            if (vehLockStatus > 1) then
                 local lockpickTime = math.random(15000, 30000)
                 if isAdvanced then
                     lockpickTime = math.ceil(lockpickTime*0.5)
@@ -243,7 +261,7 @@ function LockpickDoor(isAdvanced)
                     openingDoor = false
                     StopAnimTask(GetPlayerPed(-1), "veh@break_in@0h@p_m_one@", "low_force_entry_ds", 1.0)
                     IsHotwiring = false
-                    if math.random(1, 100) <= 50 then
+                    if math.random(1, 100) <= 90 then
                         QBCore.Functions.Notify("Deur open!")
                         TriggerServerEvent("InteractSound_SV:PlayWithinDistance", 5, "unlock", 0.3)
                         SetVehicleDoorsLocked(vehicle, 1)
