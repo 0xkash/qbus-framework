@@ -49,7 +49,7 @@ AddEventHandler('qb-cityhall:server:sendDriverTest', function()
             local mailData = {
                 sender = "Gemeente",
                 subject = "Aanvraag Rijles",
-                message = "Beste,<br /><br />Wij hebben zojuist een bericht gehad dat er iemand rijles wilt volgen.<br />Mocht u bereid zijn om les te geven kunt u contact opnemen:<br />Naam: <strong>".. Player.charinfo.firstname .. " " .. Player.charinfo.lastname .. "<br />Telefoonnummer: <strong>"..Player.charinfo.phone.."</strong><br/><br/>Met vriendelijke groet,<br />Gemeente Los Santos",
+                message = "Beste,<br /><br />Wij hebben zojuist een bericht gehad dat er iemand rijles wilt volgen.<br />Mocht u bereid zijn om les te geven kunt u contact opnemen:<br />Naam: <strong>".. Player.PlayerData.charinfo.firstname .. " " .. Player.PlayerData.charinfo.lastname .. "<br />Telefoonnummer: <strong>"..Player.PlayerData.charinfo.phone.."</strong><br/><br/>Met vriendelijke groet,<br />Gemeente Los Santos",
                 button = {}
             }
             TriggerEvent("qb-phone:server:sendNewEventMail", v, mailData)
