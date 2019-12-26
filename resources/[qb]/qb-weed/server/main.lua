@@ -72,7 +72,7 @@ Citizen.CreateThread(function()
             TriggerClientEvent('qb-weed:client:refreshPlantStats', -1)
         end)
 
-        Citizen.Wait((60 * 1000) * 20)
+        Citizen.Wait((60 * 1000) * 9.6)
     end
 end)
 
@@ -81,9 +81,10 @@ Citizen.CreateThread(function()
         QBCore.Functions.ExecuteSql("SELECT * FROM `house_plants`", function(housePlants)
             for k, v in pairs(housePlants) do
                 if housePlants[k].health > 50 then
-                    if housePlants[k].progress + 1 < 100 then
+                    local Grow = math.random(1, 3)
+                    if housePlants[k].progress + Grow < 100 then
                         QBCore.Functions.ExecuteSql("UPDATE `house_plants` SET `progress` = '"..(housePlants[k].progress + 1).."' WHERE `plantid` = '"..housePlants[k].plantid.."'")
-                    elseif housePlants[k].progress + 1 == 100 then
+                    elseif housePlants[k].progress + Grow >= 100 then
                         if housePlants[k].stage ~= QBWeed.Plants[housePlants[k].sort]["highestStage"] then
                             if housePlants[k].stage == "stage-a" then
                                 QBCore.Functions.ExecuteSql("UPDATE `house_plants` SET `stage` = 'stage-b' WHERE `plantid` = '"..housePlants[k].plantid.."'")
@@ -107,7 +108,7 @@ Citizen.CreateThread(function()
             TriggerClientEvent('qb-weed:client:refreshPlantStats', -1)
         end)
 
-        Citizen.Wait((60 * 1000) * 9)
+        Citizen.Wait((60 * 1000) * 4.8)
     end
 end)
 

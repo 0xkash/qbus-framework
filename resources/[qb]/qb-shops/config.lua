@@ -148,7 +148,7 @@ Config.Products = {
         },
         [3] = {
             name = "weed_nutrition",
-            price = 80,
+            price = 20,
             amount = 500,
             info = {},
             type = "item",
