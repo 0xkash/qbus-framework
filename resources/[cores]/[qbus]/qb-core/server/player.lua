@@ -394,23 +394,25 @@ QBCore.Player.LoadInventory = function(PlayerData)
 end
 
 QBCore.Player.SaveInventory = function(source)
-	local PlayerData = QBCore.Players[source].PlayerData
-	local items = PlayerData.items
-	local ItemsJson = {}
-	if items ~= nil and next(items) ~= nil then
-		for slot, item in pairs(items) do
-			if items[slot] ~= nil then
-				table.insert(ItemsJson, {
-					name = item.name,
-					amount = item.amount,
-					info = item.info,
-					type = item.type,
-					slot = slot,
-				})
+	if QBCore.Players[source] ~= nil then 
+		local PlayerData = QBCore.Players[source].PlayerData
+		local items = PlayerData.items
+		local ItemsJson = {}
+		if items ~= nil and next(items) ~= nil then
+			for slot, item in pairs(items) do
+				if items[slot] ~= nil then
+					table.insert(ItemsJson, {
+						name = item.name,
+						amount = item.amount,
+						info = item.info,
+						type = item.type,
+						slot = slot,
+					})
+				end
 			end
+	
+			QBCore.Functions.ExecuteSql("UPDATE `players` SET `inventory` = '"..QBCore.EscapeSqli(json.encode(ItemsJson)).."' WHERE `citizenid` = '"..PlayerData.citizenid.."'")
 		end
-
-		QBCore.Functions.ExecuteSql("UPDATE `players` SET `inventory` = '"..QBCore.EscapeSqli(json.encode(ItemsJson)).."' WHERE `citizenid` = '"..PlayerData.citizenid.."'")
 	end
 end
 
