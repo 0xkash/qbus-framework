@@ -381,6 +381,7 @@ end)
 RegisterNetEvent('hospital:client:RespawnAtHospital')
 AddEventHandler('hospital:client:RespawnAtHospital', function()
     TriggerServerEvent("hospital:server:RespawnAtHospital")
+    TriggerEvent("police:client:DeEscort")
 end)
 
 RegisterNetEvent('hospital:client:SendBillEmail')

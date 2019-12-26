@@ -94,6 +94,14 @@ Config.MenuItems = {
                         event = 'police:client:KidnapPlayer',
                         shouldClose = true,
                     },
+                    {
+                        id    = 'escort2',
+                        title = 'Escorteren',
+                        icon = '#general',
+                        type = 'client',
+                        event = 'police:client:EscortPlayer',
+                        shouldClose = true,
+                    },
                 }
             },
         }

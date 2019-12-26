@@ -93,6 +93,36 @@ QBCore.Functions.CreateUseableItem("cokebaggy", function(source, item)
     TriggerClientEvent("consumables:client:Cokebaggy", source)
 end)
 
+QBCore.Functions.CreateUseableItem("crack_baggy", function(source, item)
+    local Player = QBCore.Functions.GetPlayer(source)
+    TriggerClientEvent("consumables:client:Crackbaggy", source)
+end)
+
+QBCore.Functions.CreateUseableItem("xtcbaggy", function(source, item)
+    local Player = QBCore.Functions.GetPlayer(source)
+    TriggerClientEvent("consumables:client:EcstasyBaggy", source)
+end)
+
+QBCore.Functions.CreateUseableItem("firework1", function(source, item)
+    local Player = QBCore.Functions.GetPlayer(source)
+    TriggerClientEvent("fireworks:client:UseFirework", source, item.name, "proj_indep_firework")
+end)
+
+QBCore.Functions.CreateUseableItem("firework2", function(source, item)
+    local Player = QBCore.Functions.GetPlayer(source)
+    TriggerClientEvent("fireworks:client:UseFirework", source, item.name, "proj_indep_firework_v2")
+end)
+
+QBCore.Functions.CreateUseableItem("firework3", function(source, item)
+    local Player = QBCore.Functions.GetPlayer(source)
+    TriggerClientEvent("fireworks:client:UseFirework", source, item.name, "proj_xmas_firework")
+end)
+
+QBCore.Functions.CreateUseableItem("firework4", function(source, item)
+    local Player = QBCore.Functions.GetPlayer(source)
+    TriggerClientEvent("fireworks:client:UseFirework", source, item.name, "scr_indep_fireworks")
+end)
+
 QBCore.Commands.Add("vestuit", "Doe je vest uit 4head", {}, false, function(source, args)
     local Player = QBCore.Functions.GetPlayer(source)
     if Player.PlayerData.job.name == "police" then

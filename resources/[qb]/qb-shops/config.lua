@@ -86,6 +86,14 @@ Config.Products = {
             type = "item",
             slot = 9,
         },
+        [10] = {
+            name = "bandage",
+            price = 100,
+            amount = 50,
+            info = {},
+            type = "item",
+            slot = 10,
+        },
     },
     ["hardware"] = {
         [1] = {
@@ -151,6 +159,38 @@ Config.Products = {
             info = {},
             type = "item",
             slot = 8,
+        },
+        [9] = {
+            name = "firework1",
+            price = 50,
+            amount = 50,
+            info = {},
+            type = "item",
+            slot = 9,
+        },
+        [10] = {
+            name = "firework2",
+            price = 50,
+            amount = 50,
+            info = {},
+            type = "item",
+            slot = 10,
+        },
+        [11] = {
+            name = "firework3",
+            price = 50,
+            amount = 50,
+            info = {},
+            type = "item",
+            slot = 11,
+        },
+        [12] = {
+            name = "firework4",
+            price = 50,
+            amount = 50,
+            info = {},
+            type = "item",
+            slot = 12,
         },
     },
     ["coffeeshop"] = {

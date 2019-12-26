@@ -95,7 +95,7 @@ AddEventHandler('qb-occasions:server:buyVehicle', function(vehicleData)
                         moneyInfo.bank = math.ceil((moneyInfo.bank + (result[1].price / 100) * 77))
                         QBCore.Functions.ExecuteSql("UPDATE `players` SET `money` = '"..json.encode(moneyInfo).."' WHERE `citizenid` = '"..player[1].citizenid.."'")
                     end
-                    TriggerEvent("qb-log:server:CreateLog", "vehicleshop", "Occasion gekocht", "green", "**"..GetPlayerName(src) .. "** heeft een occasian gekocht voor "..result[1].price .. " van **"..player[1].citizenid.."**")
+                    TriggerEvent("qb-log:server:CreateLog", "vehicleshop", "Occasion gekocht", "green", "**"..GetPlayerName(src) .. "** heeft een occasian gekocht voor "..result[1].price .. " (" .. result[1].plate .. ") van **"..player[1].citizenid.."**")
                 end)
                 TriggerClientEvent('qb-occasion:client:refreshVehicles', -1)
             elseif bankAmount >= result[1].price then
@@ -115,7 +115,7 @@ AddEventHandler('qb-occasions:server:buyVehicle', function(vehicleData)
                         QBCore.Functions.ExecuteSql("UPDATE `players` SET `money` = '"..json.encode(moneyInfo).."' WHERE `citizenid` = '"..player[1].citizenid.."'")
                     end
                 end)
-                TriggerEvent("qb-log:server:CreateLog", "vehicleshop", "Occasion gekocht", "green", "**"..GetPlayerName(src) .. "** heeft een occasian gekocht voor "..result[1].price .. " van **"..player[1].citizenid.."**")
+                TriggerEvent("qb-log:server:CreateLog", "vehicleshop", "Occasion gekocht", "green", "**"..GetPlayerName(src) .. "** heeft een occasian gekocht voor "..result[1].price .. " (" .. result[1].plate .. ") van **"..player[1].citizenid.."**")
                 TriggerClientEvent('qb-occasion:client:refreshVehicles', -1)
             else
                 TriggerClientEvent('QBCore:Notify', src, 'Je hebt niet voldoende geld...', 'error', 3500)
