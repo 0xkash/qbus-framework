@@ -86,6 +86,14 @@ Config.Products = {
             type = "item",
             slot = 9,
         },
+        [10] = {
+            name = "bandage",
+            price = 100,
+            amount = 50,
+            info = {},
+            type = "item",
+            slot = 10,
+        },
     },
     ["hardware"] = {
         [1] = {
