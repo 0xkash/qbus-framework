@@ -175,9 +175,9 @@ function SellToPed(ped)
         bagAmount = math.random(9, 15)
     end
     
-    local randomPrice = math.random(11, 20) * bagAmount
+    local randomPrice = math.random(15, 24) * bagAmount
     if scamChance == 5 then
-       randomPrice = math.random(3, 11) * bagAmount
+       randomPrice = math.random(3, 10) * bagAmount
     end
 
     currentOfferDrug = availableDrugs[drugType]

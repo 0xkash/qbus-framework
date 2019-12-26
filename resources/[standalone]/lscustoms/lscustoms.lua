@@ -558,13 +558,13 @@ local function DriveInGarage()
 						for n, w in pairs(LSC_Config.prices.highendwheels) do
 							local btn = hughendw:addPurchase(w.name,w.price)btn.wtype = w.wtype btn.modtype = 23 btn.mod = w.mod
 						end
-					customwheels = wtype:addSubMenu("CUSTOM WHEELS", "Custom Tires", nil,true)
+					--[[customwheels = wtype:addSubMenu("CUSTOM WHEELS", "Custom Tires", nil,true)
 						for i = 51, 138, 1 do
 							local veh = myveh.vehicle
 							local lbl = GetModTextLabel(veh, 23, i)
 							local mname = tostring(GetLabelText(lbl))
 							local btn = customwheels:addPurchase(mname, 1000)btn.wtype = 0 btn.modtype = 23 btn.mod = i
-						end
+						end]]--
 				end
 					
 		m = LSCMenu.categories.Wheels:addSubMenu("WHEEL COLOR", "Wheel color", nil, true)
@@ -922,7 +922,7 @@ AddEventHandler("LSC:buttonSelected", function(name, button, canpurchase)
 			myveh.windowtint = button.tint
 			SetVehicleWindowTint(veh, button.tint)
 		end
-	elseif mname == "sport" or mname == "muscle" or mname == "lowrider" or mname == "back wheel" or mname == "front wheel" or mname == "highend" or mname == "suv" or mname == "offroad" or mname == "tuner" then
+	elseif mname == "sport" or mname == "custom tires" or mname == "muscle" or mname == "lowrider" or mname == "back wheel" or mname == "front wheel" or mname == "highend" or mname == "suv" or mname == "offroad" or mname == "tuner" then
 		if button.purchased or CanPurchase(price, canpurchase) then
 			myveh.wheeltype = button.wtype
 			myveh.mods[button.modtype].mod = button.mod
@@ -1062,7 +1062,7 @@ function LSCMenu:OnMenuChange(last,current)
 		--MoveVehCam('back',0.5,-1.6,1.3)
 	elseif c == "back wheel" then
 		--PointCamAtBone("wheel_lr",-1.4,0,0.3)
-	elseif c == "front wheel" or c == "wheel accessories" or  c == "wheel color" or c == "sport" or c == "muscle" or c == "lowrider"  or c == "highend" or c == "suv" or c == "offroad" or c == "tuner" then
+	elseif c == "front wheel" or c == "wheel accessories" or  c == "wheel color" or c == "sport" or c == "custom tires" or c == "muscle" or c == "lowrider"  or c == "highend" or c == "suv" or c == "offroad" or c == "tuner" then
 		--PointCamAtBone("wheel_lf",-1.4,0,0.3)
 	--[[elseif c == "windows" then
 		if not IsThisModelABike(GetEntityModel(myveh.vehicle)) then
@@ -1232,7 +1232,7 @@ function CheckPurchases(m)
 				b.sprite = nil
 			end
 		end
-	elseif name == "sport" or name == "muscle" or name == "lowrider" or name == "back wheel" or name == "front wheel" or name == "highend" or name == "suv" or name == "offroad" or name == "tuner" then
+	elseif name == "sport" or name == "custom tires" or name == "muscle" or name == "lowrider" or name == "back wheel" or name == "front wheel" or name == "highend" or name == "suv" or name == "offroad" or name == "tuner" then
 		for i,b in pairs(m.buttons) do
 			if myveh.mods[b.modtype].mod == b.mod and myveh.wheeltype == b.wtype then
 				b.sprite = "garage"
