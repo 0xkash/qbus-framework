@@ -92,6 +92,66 @@ AddEventHandler('vehiclefailure:client:RepairVehicle', function()
 	end
 end)
 
+RegisterNetEvent('vehiclefailure:client:RepairVehicleFull')
+AddEventHandler('vehiclefailure:client:RepairVehicleFull', function()
+	local vehicle = QBCore.Functions.GetClosestVehicle()
+	if vehicle ~= nil and vehicle ~= 0 then
+		local pos = GetEntityCoords(GetPlayerPed(-1))
+		local vehpos = GetEntityCoords(vehicle)
+		if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, vehpos.x, vehpos.y, vehpos.z, true) < 5.0) and not IsPedInAnyVehicle(GetPlayerPed(-1)) then
+			local drawpos = GetOffsetFromEntityInWorldCoords(vehicle, 0, 2.5, 0)
+			if (IsBackEngine(GetEntityModel(vehicle))) then
+				drawpos = GetOffsetFromEntityInWorldCoords(vehicle, 0, -2.5, 0)
+			end
+			if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, drawpos) < 2.0) and not IsPedInAnyVehicle(GetPlayerPed(-1)) then
+				RepairVehicleFull(vehicle)
+			else
+				ShowEnginePos = true
+			end
+		end
+	end
+end)
+
+function RepairVehicleFull(vehicle)
+	if (IsBackEngine(GetEntityModel(vehicle))) then
+        SetVehicleDoorOpen(vehicle, 5, false, false)
+    else
+        SetVehicleDoorOpen(vehicle, 4, false, false)
+    end
+	QBCore.Functions.Progressbar("repair_vehicle", "Bezig met sleutelen..", math.random(20000, 30000), false, true, {
+		disableMovement = true,
+		disableCarMovement = true,
+		disableMouse = false,
+		disableCombat = true,
+	}, {
+		animDict = "mini@repair",
+		anim = "fixing_a_player",
+		flags = 16,
+	}, {}, {}, function() -- Done
+		StopAnimTask(GetPlayerPed(-1), "mini@repair", "fixing_a_player", 1.0)
+		QBCore.Functions.Notify("Voertuig gemaakt!")
+		SetVehicleEngineHealth(vehicle, 1000.0)
+		SetVehicleTyreFixed(vehicle, 0)
+		SetVehicleTyreFixed(vehicle, 1)
+		SetVehicleTyreFixed(vehicle, 2)
+		SetVehicleTyreFixed(vehicle, 3)
+		SetVehicleTyreFixed(vehicle, 4)
+		if (IsBackEngine(GetEntityModel(vehicle))) then
+			SetVehicleDoorShut(vehicle, 5, false)
+		else
+			SetVehicleDoorShut(vehicle, 4, false)
+		end
+	end, function() -- Cancel
+		StopAnimTask(GetPlayerPed(-1), "mini@repair", "fixing_a_player", 1.0)
+		QBCore.Functions.Notify("Mislukt!", "error")
+		if (IsBackEngine(GetEntityModel(vehicle))) then
+			SetVehicleDoorShut(vehicle, 5, false)
+		else
+			SetVehicleDoorShut(vehicle, 4, false)
+		end
+	end)
+end
+
 function RepairVehicle(vehicle)
 	if (IsBackEngine(GetEntityModel(vehicle))) then
         SetVehicleDoorOpen(vehicle, 5, false, false)
@@ -342,6 +402,7 @@ if cfg.torqueMultiplierEnabled or cfg.preventVehicleFlip or cfg.limpMode then
 								-- Forward and braking
 								isBrakingForward = true
 								brk = fscale(brake, 127.0, 254.0, 0.01, fBrakeForce, 10.0-(cfg.sundayDriverBrakeCurve*2.0))
+								--exports['qb-vehicletuning']:SetVehicleStatus(GetVehicleNumberPlateText(vehicle), "brakes", exports['qb-vehicletuning']:GetVehicleStatus(GetVehicleNumberPlateText(vehicle), "brakes") - 0.01)
 							end
 						elseif speed <= -1.0 then
 							-- Going reverse
@@ -349,6 +410,7 @@ if cfg.torqueMultiplierEnabled or cfg.preventVehicleFlip or cfg.limpMode then
 								-- Reversing and accelerating (using the brake)
 								local rev = fscale(brake, 127.0, 254.0, 0.1, 1.0, 10.0-(cfg.sundayDriverAcceleratorCurve*2.0))
 								factor = factor * rev
+								--exports['qb-vehicletuning']:SetVehicleStatus(GetVehicleNumberPlateText(vehicle), "brakes", exports['qb-vehicletuning']:GetVehicleStatus(GetVehicleNumberPlateText(vehicle), "brakes") - 0.01)
 							end
 							if accelerator > 127 then
 								-- Reversing and braking (Using the accelerator)
@@ -532,9 +594,19 @@ Citizen.CreateThread(function()
 			-- set the actual new values
 			if healthEngineNew ~= healthEngineCurrent then
 				SetVehicleEngineHealth(vehicle, healthEngineNew)
+				local dmgFactr = (healthEngineCurrent - healthEngineNew)
+				if dmgFactr > 0.8 then
+					DamageRandomComponent()
+				end
 			end
-			if healthBodyNew ~= healthBodyCurrent then SetVehicleBodyHealth(vehicle, healthBodyNew) end
-			if healthPetrolTankNew ~= healthPetrolTankCurrent then SetVehiclePetrolTankHealth(vehicle, healthPetrolTankNew) end
+			if healthBodyNew ~= healthBodyCurrent then 
+				SetVehicleBodyHealth(vehicle, healthBodyNew) 
+				local dmgFactr = (healthBodyCurrent - healthBodyNew)
+				DamageRandomComponent()
+			end
+			if healthPetrolTankNew ~= healthPetrolTankCurrent then 
+				SetVehiclePetrolTankHealth(vehicle, healthPetrolTankNew)
+			end
 
 			-- Store current values, so we can calculate delta next time around
 			healthEngineLast = healthEngineNew
@@ -556,6 +628,19 @@ Citizen.CreateThread(function()
 		end
 	end
 end)
+local DamageComponents = {
+    "radiator",
+    "axle",
+    "clutch",
+	"fuel",
+	"brakes",
+}
+function DamageRandomComponent()
+	local dmgFctr = math.random() + math.random(0, 2)
+	local randomComponent = DamageComponents[math.random(1, #DamageComponents)]
+	local randomDamage = (math.random() + math.random(0, 1)) * dmgFctr
+	--exports['qb-vehicletuning']:SetVehicleStatus(GetVehicleNumberPlateText(vehicle), randomComponent, exports['qb-vehicletuning']:GetVehicleStatus(GetVehicleNumberPlateText(vehicle), randomComponent) - randomDamage)
+end
 
 function procent(time)
     showPro = true
