@@ -134,25 +134,24 @@ AddEventHandler('lockpicks:UseLockpick', function()
 	local ped = GetPlayerPed(-1)
 	local pos = GetEntityCoords(ped)
 	QBCore.Functions.TriggerCallback('qb-radio:server:GetItem', function(hasItem)
-		if hasItem then
-			for k, v in pairs(QB.Doors) do
-				local dist = GetDistanceBetweenCoords(pos, QB.Doors[k].textCoords.x, QB.Doors[k].textCoords.y, QB.Doors[k].textCoords.z)
-
-				if dist < 1.5 then
-					if QB.Doors[k].pickable then
-						if QB.Doors[k].locked then
+		for k, v in pairs(QB.Doors) do
+			local dist = GetDistanceBetweenCoords(pos, QB.Doors[k].textCoords.x, QB.Doors[k].textCoords.y, QB.Doors[k].textCoords.z)
+			if dist < 1.5 then
+				if QB.Doors[k].pickable then
+					if QB.Doors[k].locked then
+						if hasItem then
 							closestDoorKey, closestDoorValue = k, v
 							TriggerEvent('qb-lockpick:client:openLockpick', lockpickFinish)
 						else
-							QBCore.Functions.Notify('De deur is al ontgrendeld??', 'error', 2500)
+							QBCore.Functions.Notify("Je mist een toolkit..", "error")
 						end
 					else
-						QBCore.Functions.Notify('De deur heeft een te sterk slot', 'error', 2500)
+						QBCore.Functions.Notify('De deur is al ontgrendeld??', 'error', 2500)
 					end
+				else
+					QBCore.Functions.Notify('De deur heeft een te sterk slot', 'error', 2500)
 				end
 			end
-		else
-			QBCore.Functions.Notify("Je mist een toolkit..", "error")
 		end
     end, "screwdriverset")
 end)

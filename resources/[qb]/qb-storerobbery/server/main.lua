@@ -4,19 +4,19 @@ TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 
 local SafeCodes = {
     [1] = math.random(1000, 9999),
-    [2] = {math.random(0, 39), math.random(0, 39), math.random(0, 39), math.random(0, 39), math.random(0, 39)},
-    [3] = {math.random(0, 39), math.random(0, 39), math.random(0, 39), math.random(0, 39), math.random(0, 39)},
+    [2] = {math.random(1, 149), math.random(150.0, 359.0), math.random(1, 149), math.random(150.0, 359.0), math.random(1, 149)},
+    [3] = {math.random(1, 149), math.random(150.0, 359.0), math.random(1, 149), math.random(150.0, 359.0), math.random(1, 149)},
     [4] = math.random(1000, 9999),
     [5] = math.random(1000, 9999),
-    [6] = {math.random(0, 39), math.random(0, 39), math.random(0, 39), math.random(0, 39), math.random(0, 39)},
+    [6] = {math.random(1, 149), math.random(150.0, 359.0), math.random(1, 149), math.random(150.0, 359.0), math.random(1, 149)},
     [7] = math.random(1000, 9999),
     [8] = math.random(1000, 9999),
     [9] = math.random(1000, 9999),
-    [10] = {math.random(0, 39), math.random(0, 39), math.random(0, 39), math.random(0, 39), math.random(0, 39)},
+    [10] = {math.random(1, 149), math.random(150.0, 359.0), math.random(1, 149), math.random(150.0, 359.0), math.random(1, 149)},
     [11] = math.random(1000, 9999),
     [12] = math.random(1000, 9999),
     [13] = math.random(1000, 9999),
-    [14] = {math.random(0, 39), math.random(0, 39), math.random(0, 39), math.random(0, 39), math.random(0, 39)},
+    [14] = {math.random(1, 149), math.random(150.0, 359.0), math.random(1, 149), math.random(150.0, 359.0), math.random(1, 149)},
     [15] = math.random(1000, 9999),
     [16] = math.random(1000, 9999),
     [17] = math.random(1000, 9999),
@@ -29,7 +29,7 @@ AddEventHandler('qb-storerobbery:server:takeMoney', function(register, isDone)
 
     Player.Functions.AddMoney('cash', math.random(25, 69))
     if isDone then
-        if math.random(1, 100) <= 10 then
+        if math.random(1, 100) <= 17 then
             local code = SafeCodes[Config.Registers[register].safeKey]
             local info = {}
             if Config.Safes[Config.Registers[register].safeKey].type == "keypad" then
@@ -38,7 +38,7 @@ AddEventHandler('qb-storerobbery:server:takeMoney', function(register, isDone)
                 }
             else
                 info = {
-                    label = "Kluis code: "..tostring(code[1]).."-"..tostring(code[2]).."-"..tostring(code[3]).."-"..tostring(code[4]).."-"..tostring(code[5])
+                    label = "Kluis code: "..tostring(math.floor((code[1] % 360) / 3.60)).."-"..tostring(math.floor((code[2] % 360) / 3.60)).."-"..tostring(math.floor((code[3] % 360) / 3.60)).."-"..tostring(math.floor((code[4] % 360) / 3.60)).."-"..tostring(math.floor((code[5] % 360) / 3.60))
                 }
             end
             Player.Functions.AddItem("stickynote", 1, false, info)

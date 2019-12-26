@@ -18,6 +18,8 @@ Citizen.CreateThread(function()
     end
 end)
 
+
+
 --- CODE
 
 local uiOpen            = false
@@ -27,6 +29,7 @@ local copsCalled = false
 local CurrentCops = 0
 local PlayerJob = {}
 local onDuty = false
+local usingAdvanced = false
 
 Citizen.CreateThread(function()
     while true do
@@ -70,7 +73,7 @@ Citizen.CreateThread(function()
                 local dist = GetDistanceBetweenCoords(pos, Config.Safes[safe].x, Config.Safes[safe].y, Config.Safes[safe].z)
                 if dist < 3 then
                     inRange = true
-                    if dist < 1.5 then
+                    if dist < 1.0 then
                         if not Config.Safes[safe].robbed then
                             DrawText3Ds(Config.Safes[safe].x, Config.Safes[safe].y, Config.Safes[safe].z, '~g~E~w~ - Combinatie proberen')
                             if IsControlJustPressed(0, Keys["E"]) then
@@ -79,17 +82,14 @@ Citizen.CreateThread(function()
                                     if math.random(1, 100) <= 65 and not IsWearingHandshoes() then
                                         TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
                                     end
-                                    SetNuiFocus(true, true)
                                     if Config.Safes[safe].type == "keypad" then
                                         SendNUIMessage({
                                             action = "openKeypad",
                                         })
+                                        SetNuiFocus(true, true)
                                     else
                                         QBCore.Functions.TriggerCallback('qb-storerobbery:server:getPadlockCombination', function(combination)
-                                            SendNUIMessage({
-                                                action = "openPadlock",
-                                                combination = combination, 
-                                            })
+                                            TriggerEvent("SafeCracker:StartMinigame", combination)
                                         end, safe)
                                     end
                                 else
@@ -149,35 +149,56 @@ AddEventHandler('police:SetCopAlert', function()
 end)
 
 RegisterNetEvent('lockpicks:UseLockpick')
-AddEventHandler('lockpicks:UseLockpick', function()
+AddEventHandler('lockpicks:UseLockpick', function(isAdvanced)
+    usingAdvanced = isAdvanced
     for k, v in pairs(Config.Registers) do
         local ped = GetPlayerPed(-1)
         local pos = GetEntityCoords(ped)
         local dist = GetDistanceBetweenCoords(pos, Config.Registers[k].x, Config.Registers[k].y, Config.Registers[k].z)
         if dist <= 1 and not Config.Registers[k].robbed then
             if CurrentCops >= 3 then
-                QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
-                    if result then
-                        lockpick(true)
-                        currentRegister = k
-                        if math.random(1, 80) <= 100 and not IsWearingHandshoes() then
-                            TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
-                        end
-                        if not copsCalled then
-                            local s1, s2 = Citizen.InvokeNative(0x2EB41072B4C1E4C0, pos.x, pos.y, pos.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
-                            local street1 = GetStreetNameFromHashKey(s1)
-                            local street2 = GetStreetNameFromHashKey(s2)
-                            local streetLabel = street1
-                            if street2 ~= nil then 
-                                streetLabel = streetLabel .. " " .. street2
-                            end
-                            TriggerServerEvent("qb-storerobbery:server:callCops", "cashier", currentRegister, streetLabel, pos)
-                            copsCalled = true
-                        end
-                    else
-                        QBCore.Functions.Notify("Het lijkt erop dat je een schroevendraaier mist..", "error")
+                if usingAdvanced then
+                    lockpick(true)
+                    currentRegister = k
+                    if not IsWearingHandshoes() or (IsWearingHandshoes() and math.random(1, 100) <= 20) then
+                        TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
                     end
-                end, "screwdriverset")
+                    if not copsCalled then
+                        local s1, s2 = Citizen.InvokeNative(0x2EB41072B4C1E4C0, pos.x, pos.y, pos.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
+                        local street1 = GetStreetNameFromHashKey(s1)
+                        local street2 = GetStreetNameFromHashKey(s2)
+                        local streetLabel = street1
+                        if street2 ~= nil then 
+                            streetLabel = streetLabel .. " " .. street2
+                        end
+                        TriggerServerEvent("qb-storerobbery:server:callCops", "cashier", currentRegister, streetLabel, pos)
+                        copsCalled = true
+                    end
+                else
+                    QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
+                        if result then
+                            lockpick(true)
+                            currentRegister = k
+                            if not IsWearingHandshoes() or (IsWearingHandshoes() and math.random(1, 100) <= 10) then
+                                TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
+                            end
+                            if not copsCalled then
+                                local s1, s2 = Citizen.InvokeNative(0x2EB41072B4C1E4C0, pos.x, pos.y, pos.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
+                                local street1 = GetStreetNameFromHashKey(s1)
+                                local street2 = GetStreetNameFromHashKey(s2)
+                                local streetLabel = street1
+                                if street2 ~= nil then 
+                                    streetLabel = streetLabel .. " " .. street2
+                                end
+                                TriggerServerEvent("qb-storerobbery:server:callCops", "cashier", currentRegister, streetLabel, pos)
+                                copsCalled = true
+                            end
+                        else
+                            QBCore.Functions.Notify("Het lijkt erop dat je een schroevendraaier mist..", "error")
+                        end
+                    end, "screwdriverset")
+                end
+                
             else
                 QBCore.Functions.Notify("Niet genoeg politie.. (3 nodig)", "error")
             end
@@ -265,7 +286,7 @@ RegisterNUICallback('success', function()
     if currentRegister ~= 0 then
         lockpick(false)
         TriggerServerEvent('qb-storerobbery:server:setRegisterStatus', currentRegister)
-        local lockpickTime = 28000
+        local lockpickTime = 30000
         LockpickDoorAnim(lockpickTime)
         QBCore.Functions.Progressbar("search_register", "Kassa leeghalen..", lockpickTime, false, true, {
             disableMovement = true,
@@ -317,14 +338,31 @@ RegisterNUICallback('callcops', function()
     TriggerEvent("police:SetCopAlert")
 end)
 
+RegisterNetEvent('SafeCracker:EndMinigame')
+AddEventHandler('SafeCracker:EndMinigame', function(won)
+    if won then
+        if currentSafe ~= 0 then
+            if not Config.Safes[currentSafe].robbed then
+                SetNuiFocus(false, false)
+                TriggerServerEvent("qb-storerobbery:server:SafeReward", currentSafe)
+                TriggerServerEvent("qb-storerobbery:server:setSafeStatus", currentSafe)
+                currentSafe = 0
+                takeAnim()
+            end
+        else
+            SendNUIMessage({
+                action = "kekw",
+            })
+        end
+    end
+end)
+
 RegisterNUICallback('PadLockSuccess', function()
     if currentSafe ~= 0 then
         if not Config.Safes[currentSafe].robbed then
-            SetNuiFocus(false, false)
-            TriggerServerEvent("qb-storerobbery:server:SafeReward", currentSafe)
-            TriggerServerEvent("qb-storerobbery:server:setSafeStatus", currentSafe)
-            currentSafe = 0
-            takeAnim()
+            SendNUIMessage({
+                action = "kekw",
+            })
         end
     else
         SendNUIMessage({
@@ -343,8 +381,13 @@ end)
 
 RegisterNUICallback('fail', function()
     if math.random(1, 100) < 40 then
-        TriggerServerEvent("QBCore:Server:RemoveItem", "lockpick", 1)
-        TriggerEvent('inventory:client:ItemBox', QBCore.Shared.Items["lockpick"], "remove")
+        if usingAdvanced then
+            TriggerServerEvent("QBCore:Server:RemoveItem", "advancedlockpick", 1)
+            TriggerEvent('inventory:client:ItemBox', QBCore.Shared.Items["advancedlockpick"], "remove")
+        else
+            TriggerServerEvent("QBCore:Server:RemoveItem", "lockpick", 1)
+            TriggerEvent('inventory:client:ItemBox', QBCore.Shared.Items["lockpick"], "remove")
+        end
     end
     lockpick(false)
 end)
