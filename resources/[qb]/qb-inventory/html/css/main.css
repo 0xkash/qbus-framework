@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:600&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Lato&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Balthazar&display=swap');
 
 
 p {
@@ -15,12 +16,12 @@ input[type=number]::-webkit-outer-spin-button {
 
 ::-webkit-scrollbar
 {
-	width: 3px;
+	width: 5px;
 }
 
 ::-webkit-scrollbar-thumb
 {
-	background-color: #421b1be1;
+	background-color: #e74c3c;
 }
 
 #qbus-inventory {
@@ -28,7 +29,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .inv-background {
-    background: rgba(0,0,0,0.7);
+    background: rgba(0, 0, 0, 0.7);
     width: 100%;
     height: 100%;
     position: absolute;
@@ -46,10 +47,10 @@ input[type=number]::-webkit-outer-spin-button {
 
 .player-inventory {
     position: absolute;
-    top: 15%;
-    left: 12%;
-    width: 30.73%;
-    max-width: 30.73%;
+    top: 29%;
+    left: 10.2%;
+    width: 30.95%;
+    max-width: 30.95%;
     height: 44.16%;
     max-height: 44.16%;
     float: left;
@@ -60,10 +61,10 @@ input[type=number]::-webkit-outer-spin-button {
 
 .other-inventory {
     position: absolute;
-    top: 15%;
-    right: 12%;
-    width: 30.73%;
-    max-width: 30.73%;
+    top: 29%;
+    right: 10.2%;
+    width: 30.95%;
+    max-width: 30.95%;
     height: 44.16%;
     max-height: 44.16%;
     float: left;
@@ -85,8 +86,10 @@ input[type=number]::-webkit-outer-spin-button {
     color: #000000;
     padding: 3px;
     text-align: left;
-    font-size: 11px;
+    font-size: 10px;
     border-radius: 0px 0px 2px 0px;
+    font-weight: bold;
+    font-family: 'Open Sans';
 }
 
 .inv-options {
@@ -95,28 +98,31 @@ input[type=number]::-webkit-outer-spin-button {
     left: 0;
     right: 0;
     width: 9%;
-    top: 25%;
+    top: 35%;
 }
 
 .item-slot {
     position: relative;
-    width: 110px;
-    height: 130px;
+    width: 113px;
+    height: 140px;
     float: left;
     margin-left: 2px;
     margin-top: 2px;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(235, 235, 235, 0.03); /* 0,02 */
     border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: background-color 0.3s;
+    transition: background-color 0.2s;
 }
 
 .item-slot-hoverClass {
-    background-color: rgba(255, 255, 255, 0.3);
+    background-color: rgba(235, 235, 235, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    transition: background-color 0.2s;
 }
 
 .item-slot:hover {
-    background-color: rgba(31, 31, 31, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background-color: rgba(235, 235, 235, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: background-color 0.2s;
 }
 
 .inv-option-item {
@@ -133,7 +139,7 @@ input[type=number]::-webkit-outer-spin-button {
 #item-amount {
     color: white;
     text-align: center;
-    font-size: 12px;
+    font-size: 11px;
     font-family: 'Roboto Mono', monospace;
     outline: none;
 }
@@ -148,7 +154,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .inv-option-item {
-    width: 100%;
+    width: 80%;
     height: 50px;
     background-color: rgba(235, 235, 235, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.01);
@@ -213,22 +219,28 @@ input[type=number]::-webkit-outer-spin-button {
 .item-slot-amount p {
     color: #ffffff;
     text-align: right;
-    font-size: 10px;
+    font-size: 11px;
 }
 
 .item-slot-label {
     position: absolute;
     bottom:0;
     width: 100%;
-    background-color: rgba(24, 0, 0, 0.2);
-    padding: 3%;
+    background-color: rgba(14, 14, 14, 0.5);
+    padding: 2.3%;
 }
+
+@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap');
 
 .item-slot-label p {
     color: #ffffff;
-    font-size: 10px;
+    font-size: 9px;
     text-align: center;
     text-transform: uppercase;
+    line-height: 19px;
+    font-family: 'Source Code Pro', monospace;
+    letter-spacing: 0.05vh;
+    font-weight: lighter;
 }
 
 .item-slot-img {
@@ -238,12 +250,14 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .item-slot-img img {
-    margin-top: 21%;
     display:block;
+    position: relative;
+    margin: 0 auto;
+    margin-top: 21%;
     width: auto;
     height: auto;
-    max-width: 100%;
-    max-height: 100%;
+    max-width: 95%;
+    max-height: 95%;
 }
 
 .ui-draggable-dragging {
@@ -252,18 +266,18 @@ input[type=number]::-webkit-outer-spin-button {
 
 .player-inv-info {
     position: absolute;
-    left: 12.1%;
-    top: 10.5%;
+    left: 10.5%;
+    top: 22.5%;
 }
 
 #player-inv-label {
     position: relative;
     color: white;
-    font-size: 14px;
+    font-size: 18px;
     font-family: 'Lato', monospace;
     font-weight: bold;
     letter-spacing: 0.1vh;
-    bottom: 6px;
+    bottom: 15px;
     float: left;
 }
 
@@ -278,12 +292,12 @@ input[type=number]::-webkit-outer-spin-button {
 #other-inv-label {
     position: relative;
     color: white;
-    font-size: 14px;
+    font-size: 18px;
     font-family: 'Lato', monospace;
     font-weight: bold;
     letter-spacing: 0.1vh;
-    bottom: 6px;
-    float: right;
+    bottom: 15px;
+    float: left;
 }
 
 #other-inv-weight {
@@ -291,7 +305,7 @@ input[type=number]::-webkit-outer-spin-button {
     font-size: 11px;
     font-family: 'Lato', monospace;
     letter-spacing: 0.1vh;
-    float: right;
+    float: left;
 }
 
 .player-inv-weight {
@@ -308,15 +322,15 @@ input[type=number]::-webkit-outer-spin-button {
 
 .other-inv-info {
     position: absolute;
-    right: 13.6%;
-    top: 10.5%;
+    left: 59%;
+    top: 22.5%;
 }
 
 .ply-iteminfo-container {
     font-family: 'Open Sans';
     display: none;
     position: absolute;
-    bottom: 6%;
+    bottom: 3%;
     margin: 0 auto;
     left: 0;
     right: 0;
@@ -449,6 +463,8 @@ input[type=number]::-webkit-outer-spin-button {
     text-align: left;
     font-size: 11px;
     border-radius: 0px 0px 2px 0px;
+    font-family: sans-serif;
+    font-weight: bold;
 }
 
 .z-hotbar-item-slot {
