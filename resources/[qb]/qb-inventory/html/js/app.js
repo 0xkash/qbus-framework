@@ -375,7 +375,7 @@ function optionSwitch($fromSlot, $toSlot, $fromInv, $toInv, $toAmount, toData, f
 
     
     if ($toSlot < 6) {
-        $toInv.find("[data-slot=" + $toSlot + "]").html('<div class="item-slot-key"><p>[' + $toSlot + ']</p></div><div class="item-slot-img"><img src="images/' + fromData.image + '" alt="' + fromData.name + '" /></div><div class="item-slot-amount"><p>' + fromData.amount + ' (' + ((fromData.weight * fromData.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + fromData.label + '</p></div>');
+        $toInv.find("[data-slot=" + $toSlot + "]").html('<div class="item-slot-key"><p>' + $toSlot + '</p></div><div class="item-slot-img"><img src="images/' + fromData.image + '" alt="' + fromData.name + '" /></div><div class="item-slot-amount"><p>' + fromData.amount + ' (' + ((fromData.weight * fromData.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + fromData.label + '</p></div>');
     } else {
         $toInv.find("[data-slot=" + $toSlot + "]").html('<div class="item-slot-img"><img src="images/' + fromData.image + '" alt="' + fromData.name + '" /></div><div class="item-slot-amount"><p>' + fromData.amount + ' (' + ((fromData.weight * fromData.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + fromData.label + '</p></div>');
     }
@@ -388,7 +388,7 @@ function optionSwitch($fromSlot, $toSlot, $fromInv, $toInv, $toAmount, toData, f
     $fromInv.find("[data-slot=" + $fromSlot + "]").data("item", toData);
 
     if ($fromSlot < 6) {
-        $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-key"><p>[' + $fromSlot + ']</p></div><div class="item-slot-img"><img src="images/' + toData.image + '" alt="' + toData.name + '" /></div><div class="item-slot-amount"><p>' + toData.amount + ' (' + ((toData.weight * toData.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + toData.label + '</p></div>');
+        $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-key"><p>' + $fromSlot + '</p></div><div class="item-slot-img"><img src="images/' + toData.image + '" alt="' + toData.name + '" /></div><div class="item-slot-amount"><p>' + toData.amount + ' (' + ((toData.weight * toData.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + toData.label + '</p></div>');
     } else {
         $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-img"><img src="images/' + toData.image + '" alt="' + toData.name + '" /></div><div class="item-slot-amount"><p>' + toData.amount + ' (' + ((toData.weight * toData.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + toData.label + '</p></div>');
     }
@@ -439,7 +439,7 @@ function swap($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
                 $toInv.find("[data-slot=" + $toSlot + "]").removeClass("item-nodrag");
 
                 if ($toSlot < 6 && $toInv.attr("data-inventory") == "player") {
-                    $toInv.find("[data-slot=" + $toSlot + "]").html('<div class="item-slot-key"><p>[' + $toSlot + ']</p></div><div class="item-slot-img"><img src="images/' + newData.image + '" alt="' + newData.name + '" /></div><div class="item-slot-amount"><p>' + newData.amount + ' (' + ((newData.weight * newData.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + newData.label + '</p></div>');
+                    $toInv.find("[data-slot=" + $toSlot + "]").html('<div class="item-slot-key"><p>' + $toSlot + '</p></div><div class="item-slot-img"><img src="images/' + newData.image + '" alt="' + newData.name + '" /></div><div class="item-slot-amount"><p>' + newData.amount + ' (' + ((newData.weight * newData.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + newData.label + '</p></div>');
                 } else {
                     $toInv.find("[data-slot=" + $toSlot + "]").html('<div class="item-slot-img"><img src="images/' + newData.image + '" alt="' + newData.name + '" /></div><div class="item-slot-amount"><p>' + newData.amount + ' (' + ((newData.weight * newData.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + newData.label + '</p></div>');
                 }                
@@ -470,7 +470,7 @@ function swap($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
                 $toInv.find("[data-slot=" + $toSlot + "]").removeClass("item-nodrag");
 
                 if ($toSlot < 6 && $toInv.attr("data-inventory") == "player") {
-                    $toInv.find("[data-slot=" + $toSlot + "]").html('<div class="item-slot-key"><p>[' + $toSlot + ']</p></div><div class="item-slot-img"><img src="images/' + newData.image + '" alt="' + newData.name + '" /></div><div class="item-slot-amount"><p>' + newData.amount + ' (' + ((newData.weight * newData.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + newData.label + '</p></div>');
+                    $toInv.find("[data-slot=" + $toSlot + "]").html('<div class="item-slot-key"><p>' + $toSlot + '</p></div><div class="item-slot-img"><img src="images/' + newData.image + '" alt="' + newData.name + '" /></div><div class="item-slot-amount"><p>' + newData.amount + ' (' + ((newData.weight * newData.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + newData.label + '</p></div>');
                 } else {
                     $toInv.find("[data-slot=" + $toSlot + "]").html('<div class="item-slot-img"><img src="images/' + newData.image + '" alt="' + newData.name + '" /></div><div class="item-slot-amount"><p>' + newData.amount + ' (' + ((newData.weight * newData.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + newData.label + '</p></div>');
                 }
@@ -485,7 +485,7 @@ function swap($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
                     $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-img"><img src="images/' + newDataFrom.image + '" alt="' + newDataFrom.name + '" /></div><div class="item-slot-amount"><p>('+newDataFrom.amount+') €'+newDataFrom.price+'</p></div><div class="item-slot-label"><p>' + newDataFrom.label + '</p></div>');
                 } else {
                     if ($fromSlot < 6 && $fromInv.attr("data-inventory") == "player") {
-                        $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-key"><p>[' + $fromSlot + ']</p></div><div class="item-slot-img"><img src="images/' + newDataFrom.image + '" alt="' + newDataFrom.name + '" /></div><div class="item-slot-amount"><p>' + newDataFrom.amount + ' (' + ((newDataFrom.weight * newDataFrom.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + newDataFrom.label + '</p></div>');
+                        $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-key"><p>' + $fromSlot + '</p></div><div class="item-slot-img"><img src="images/' + newDataFrom.image + '" alt="' + newDataFrom.name + '" /></div><div class="item-slot-amount"><p>' + newDataFrom.amount + ' (' + ((newDataFrom.weight * newDataFrom.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + newDataFrom.label + '</p></div>');
                     } else {
                         $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-img"><img src="images/' + newDataFrom.image + '" alt="' + newDataFrom.name + '" /></div><div class="item-slot-amount"><p>' + newDataFrom.amount + ' (' + ((newDataFrom.weight * newDataFrom.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + newDataFrom.label + '</p></div>');
                     }
@@ -527,7 +527,7 @@ function swap($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
 
 
                 if ($toSlot < 6 && $toInv.attr("data-inventory") == "player") {
-                    $toInv.find("[data-slot=" + $toSlot + "]").html('<div class="item-slot-key"><p>[' + $toSlot + ']</p></div><div class="item-slot-img"><img src="images/' + fromData.image + '" alt="' + fromData.name + '" /></div><div class="item-slot-amount"><p>' + fromData.amount + ' (' + ((fromData.weight * fromData.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + fromData.label + '</p></div>');
+                    $toInv.find("[data-slot=" + $toSlot + "]").html('<div class="item-slot-key"><p>' + $toSlot + '</p></div><div class="item-slot-img"><img src="images/' + fromData.image + '" alt="' + fromData.name + '" /></div><div class="item-slot-amount"><p>' + fromData.amount + ' (' + ((fromData.weight * fromData.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + fromData.label + '</p></div>');
                 } else {
                     $toInv.find("[data-slot=" + $toSlot + "]").html('<div class="item-slot-img"><img src="images/' + fromData.image + '" alt="' + fromData.name + '" /></div><div class="item-slot-amount"><p>' + fromData.amount + ' (' + ((fromData.weight * fromData.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + fromData.label + '</p></div>');
                 }
@@ -541,7 +541,7 @@ function swap($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
                     $fromInv.find("[data-slot=" + $fromSlot + "]").data("item", toData);
  
                     if ($fromSlot < 6 && $fromInv.attr("data-inventory") == "player") {
-                        $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-key"><p>[' + $fromSlot + ']</p></div><div class="item-slot-img"><img src="images/' + toData.image + '" alt="' + toData.name + '" /></div><div class="item-slot-amount"><p>' + toData.amount + ' (' + ((toData.weight * toData.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + toData.label + '</p></div>');
+                        $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-key"><p>' + $fromSlot + '</p></div><div class="item-slot-img"><img src="images/' + toData.image + '" alt="' + toData.name + '" /></div><div class="item-slot-amount"><p>' + toData.amount + ' (' + ((toData.weight * toData.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + toData.label + '</p></div>');
                     } else {
                         $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-img"><img src="images/' + toData.image + '" alt="' + toData.name + '" /></div><div class="item-slot-amount"><p>' + toData.amount + ' (' + ((toData.weight * toData.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + toData.label + '</p></div>');
                     }
@@ -561,7 +561,7 @@ function swap($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
                     $fromInv.find("[data-slot=" + $fromSlot + "]").removeData("item");
 
                     if ($fromSlot < 6 && $fromInv.attr("data-inventory") == "player") {
-                        $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-key"><p>[' + $fromSlot + ']</p></div><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div>');
+                        $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-key"><p>' + $fromSlot + '</p></div><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div>');
                     } else {
                         $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div>');
                     }
@@ -595,7 +595,7 @@ function swap($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
                 $toInv.find("[data-slot=" + $toSlot + "]").removeClass("item-nodrag");
 
                 if ($toSlot < 6 && $toInv.attr("data-inventory") == "player") {
-                    $toInv.find("[data-slot=" + $toSlot + "]").html('<div class="item-slot-key"><p>[' + $toSlot + ']</p></div><div class="item-slot-img"><img src="images/' + newDataTo.image + '" alt="' + newDataTo.name + '" /></div><div class="item-slot-amount"><p>' + newDataTo.amount + ' (' + ((newDataTo.weight * newDataTo.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + newDataTo.label + '</p></div>');
+                    $toInv.find("[data-slot=" + $toSlot + "]").html('<div class="item-slot-key"><p>' + $toSlot + '</p></div><div class="item-slot-img"><img src="images/' + newDataTo.image + '" alt="' + newDataTo.name + '" /></div><div class="item-slot-amount"><p>' + newDataTo.amount + ' (' + ((newDataTo.weight * newDataTo.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + newDataTo.label + '</p></div>');
                 } else {
                     $toInv.find("[data-slot=" + $toSlot + "]").html('<div class="item-slot-img"><img src="images/' + newDataTo.image + '" alt="' + newDataTo.name + '" /></div><div class="item-slot-amount"><p>' + newDataTo.amount + ' (' + ((newDataTo.weight * newDataTo.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + newDataTo.label + '</p></div>');
                 }
@@ -623,7 +623,7 @@ function swap($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
                     $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-img"><img src="images/' + newDataFrom.image + '" alt="' + newDataFrom.name + '" /></div><div class="item-slot-amount"><p>('+newDataFrom.amount+') €'+newDataFrom.price+'</p></div><div class="item-slot-label"><p>' + newDataFrom.label + '</p></div>');
                 } else {
                     if ($fromSlot < 6 && $fromInv.attr("data-inventory") == "player") {
-                        $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-key"><p>[' + $fromSlot + ']</p></div><div class="item-slot-img"><img src="images/' + newDataFrom.image + '" alt="' + newDataFrom.name + '" /></div><div class="item-slot-amount"><p>' + newDataFrom.amount + ' (' + ((newDataFrom.weight * newDataFrom.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + newDataFrom.label + '</p></div>');
+                        $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-key"><p>' + $fromSlot + '</p></div><div class="item-slot-img"><img src="images/' + newDataFrom.image + '" alt="' + newDataFrom.name + '" /></div><div class="item-slot-amount"><p>' + newDataFrom.amount + ' (' + ((newDataFrom.weight * newDataFrom.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + newDataFrom.label + '</p></div>');
                     } else {
                         $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-img"><img src="images/' + newDataFrom.image + '" alt="' + newDataFrom.name + '" /></div><div class="item-slot-amount"><p>' + newDataFrom.amount + ' (' + ((newDataFrom.weight * newDataFrom.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + newDataFrom.label + '</p></div>');
                     }
@@ -713,7 +713,7 @@ var requiredItemOpen = false;
         }
         // First 5 Slots
         for(i = 1; i < 6; i++) {
-            $(".player-inventory").append('<div class="item-slot" data-slot="' + i + '"><div class="item-slot-key"><p>[' + i + ']</p></div><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div>');
+            $(".player-inventory").append('<div class="item-slot" data-slot="' + i + '"><div class="item-slot-key"><p>' + i + '</p></div><div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div></div>');
         }
         // Inventory
         for(i = 6; i < (data.slots + 1); i++) {
@@ -736,8 +736,8 @@ var requiredItemOpen = false;
                     totalWeight += (item.weight * item.amount);
                     if (item.slot < 6) {
                         $(".player-inventory").find("[data-slot=" + item.slot + "]").addClass("item-drag");
-                        // $(".player-inventory").find("[data-slot=" + item.slot + "]").html('<div class="item-slot-key"><p>[' + item.slot + ']</p></div><div class="item-slot-img"><img src="images/' + item.image + '" alt="' + item.name + '" /></div><div class="item-slot-amount"><p>' + item.amount + ' (' + ((item.weight * item.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + item.label + '</p></div>');
-                        $(".player-inventory").find("[data-slot=" + item.slot + "]").html('<div class="item-slot-key"><p>[' + item.slot + ']</p></div><div class="item-slot-img"><img src="images/' + item.image + '" alt="' + item.name + '" /></div><div class="item-slot-amount"><p>' + item.amount + ' (' + ((item.weight * item.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + item.label + '</p></div>');
+                        // $(".player-inventory").find("[data-slot=" + item.slot + "]").html('<div class="item-slot-key"><p>' + item.slot + '</p></div><div class="item-slot-img"><img src="images/' + item.image + '" alt="' + item.name + '" /></div><div class="item-slot-amount"><p>' + item.amount + ' (' + ((item.weight * item.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + item.label + '</p></div>');
+                        $(".player-inventory").find("[data-slot=" + item.slot + "]").html('<div class="item-slot-key"><p>' + item.slot + '</p></div><div class="item-slot-img"><img src="images/' + item.image + '" alt="' + item.name + '" /></div><div class="item-slot-amount"><p>' + item.amount + ' (' + ((item.weight * item.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + item.label + '</p></div>');
                         $(".player-inventory").find("[data-slot=" + item.slot + "]").data("item", item);
                     } else {
                         $(".player-inventory").find("[data-slot=" + item.slot + "]").addClass("item-drag");
@@ -820,7 +820,7 @@ var requiredItemOpen = false;
                 totalWeight += (item.weight * item.amount);
                 if (item.slot < 6) {
                     $(".player-inventory").find("[data-slot=" + item.slot + "]").addClass("item-drag");
-                    $(".player-inventory").find("[data-slot=" + item.slot + "]").html('<div class="item-slot-key"><p>[' + item.slot + ']</p></div><div class="item-slot-img"><img src="images/' + item.image + '" alt="' + item.name + '" /></div><div class="item-slot-amount"><p>' + item.amount + ' (' + ((item.weight * item.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + item.label + '</p></div>');
+                    $(".player-inventory").find("[data-slot=" + item.slot + "]").html('<div class="item-slot-key"><p>' + item.slot + '</p></div><div class="item-slot-img"><img src="images/' + item.image + '" alt="' + item.name + '" /></div><div class="item-slot-amount"><p>' + item.amount + ' (' + ((item.weight * item.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + item.label + '</p></div>');
                     $(".player-inventory").find("[data-slot=" + item.slot + "]").data("item", item);
                 } else {
                     $(".player-inventory").find("[data-slot=" + item.slot + "]").addClass("item-drag");
@@ -839,12 +839,12 @@ var requiredItemOpen = false;
         if (data.open) {
             $(".z-hotbar-inventory").html("");
             for(i = 1; i < 6; i++) {
-                var elem = '<div class="z-hotbar-item-slot" data-zhotbarslot="'+i+'"> <div class="z-hotbar-item-slot-key"><p>['+i+']</p></div><div class="z-hotbar-item-slot-img"></div><div class="z-hotbar-item-slot-label"><p>&nbsp;</p></div></div>'
+                var elem = '<div class="z-hotbar-item-slot" data-zhotbarslot="'+i+'"> <div class="z-hotbar-item-slot-key"><p>'+i+'</p></div><div class="z-hotbar-item-slot-img"></div><div class="z-hotbar-item-slot-label"><p>&nbsp;</p></div></div>'
                 $(".z-hotbar-inventory").append(elem);
             }
             $.each(data.items, function(i, item){
                 if (item != null) {
-                    $(".z-hotbar-inventory").find("[data-zhotbarslot=" + item.slot + "]").html('<div class="z-hotbar-item-slot-key"><p>[' + item.slot + ']</p></div><div class="z-hotbar-item-slot-img"><img src="images/' + item.image + '" alt="' + item.name + '" /></div><div class="z-hotbar-item-slot-amount"><p>' + item.amount + ' (' + ((item.weight * item.amount) / 1000).toFixed(1) + ')</p></div><div class="z-hotbar-item-slot-label"><p>' + item.label + '</p></div>');
+                    $(".z-hotbar-inventory").find("[data-zhotbarslot=" + item.slot + "]").html('<div class="z-hotbar-item-slot-key"><p>' + item.slot + '</p></div><div class="z-hotbar-item-slot-img"><img src="images/' + item.image + '" alt="' + item.name + '" /></div><div class="z-hotbar-item-slot-amount"><p>' + item.amount + ' (' + ((item.weight * item.amount) / 1000).toFixed(1) + ')</p></div><div class="z-hotbar-item-slot-label"><p>' + item.label + '</p></div>');
                 }
             });
             $(".z-hotbar-inventory").fadeIn(150);
