@@ -107,7 +107,7 @@ end)
 
 RegisterNetEvent("consumables:client:Cokebaggy")
 AddEventHandler("consumables:client:Cokebaggy", function()
-    QBCore.Functions.Progressbar("snort_coke", "Snelle snuivie..", math.random(3000, 6000), false, true, {
+    QBCore.Functions.Progressbar("snort_coke", "Snelle snuivie..", math.random(5000, 8000), false, true, {
         disableMovement = false,
         disableCarMovement = false,
         disableMouse = false,
@@ -125,6 +125,51 @@ AddEventHandler("consumables:client:Cokebaggy", function()
     end, function() -- Cancel
         StopAnimTask(GetPlayerPed(-1), "switch@trevor@trev_smoking_meth", "trev_smoking_meth_loop", 1.0)
         QBCore.Functions.Notify("Geannuleerd..", "error")
+    end)
+end)
+
+RegisterNetEvent("consumables:client:Crackbaggy")
+AddEventHandler("consumables:client:Crackbaggy", function()
+    QBCore.Functions.Progressbar("snort_coke", "Crackie roken..", math.random(7000, 10000), false, true, {
+        disableMovement = false,
+        disableCarMovement = false,
+        disableMouse = false,
+        disableCombat = true,
+    }, {
+        animDict = "switch@trevor@trev_smoking_meth",
+        anim = "trev_smoking_meth_loop",
+        flags = 49,
+    }, {}, {}, function() -- Done
+        StopAnimTask(GetPlayerPed(-1), "switch@trevor@trev_smoking_meth", "trev_smoking_meth_loop", 1.0)
+        TriggerServerEvent("QBCore:Server:RemoveItem", "crack_baggy", 1)
+        TriggerEvent("inventory:client:ItemBox", QBCore.Shared.Items["crack_baggy"], "remove")
+        TriggerEvent("evidence:client:SetStatus", "widepupils", 300)
+        CrackBaggyEffect()
+    end, function() -- Cancel
+        StopAnimTask(GetPlayerPed(-1), "switch@trevor@trev_smoking_meth", "trev_smoking_meth_loop", 1.0)
+        QBCore.Functions.Notify("Geannuleerd..", "error")
+    end)
+end)
+
+RegisterNetEvent('consumables:client:EcstasyBaggy')
+AddEventHandler('consumables:client:EcstasyBaggy', function()
+    QBCore.Functions.Progressbar("use_ecstasy", "Pillen poppen", 3000, false, true, {
+        disableMovement = false,
+        disableCarMovement = false,
+		disableMouse = false,
+		disableCombat = true,
+    }, {
+		animDict = "mp_suicide",
+		anim = "pill",
+		flags = 49,
+    }, {}, {}, function() -- Done
+        StopAnimTask(GetPlayerPed(-1), "mp_suicide", "pill", 1.0)
+        TriggerServerEvent("QBCore:Server:RemoveItem", "xtcbaggy", 1)
+        TriggerEvent("inventory:client:ItemBox", QBCore.Shared.Items["xtcbaggy"], "remove")
+        EcstasyEffect()
+    end, function() -- Cancel
+        StopAnimTask(GetPlayerPed(-1), "mp_suicide", "pill", 1.0)
+        QBCore.Functions.Notify("Mislukt", "error")
     end)
 end)
 
@@ -158,6 +203,26 @@ AddEventHandler("consumables:client:Drink", function(itemName)
     end)
 end)
 
+function EcstasyEffect()
+    local startStamina = 30
+    SetFlash(0, 0, 500, 7000, 500)
+    while startStamina > 0 do 
+        Citizen.Wait(1000)
+        startStamina = startStamina - 1
+        RestorePlayerStamina(PlayerId(), 1.0)
+        if math.random(1, 100) < 51 then
+            SetFlash(0, 0, 500, 7000, 500)
+            ShakeGameplayCam('SMALL_EXPLOSION_SHAKE', 0.08)
+        end
+    end
+    if IsPedRunning(GetPlayerPed(-1)) then
+        SetPedToRagdoll(GetPlayerPed(-1), math.random(1000, 3000), math.random(1000, 3000), 3, 0, 0, 0)
+    end
+
+    startStamina = 0
+    --RevertToStressMultiplier()
+end
+
 function JointEffect()
     local onWeed = true
     local weedTime = Config.JointEffectTime
@@ -173,13 +238,40 @@ function JointEffect()
     end)
 end
 
+function CrackBaggyEffect()
+    local startStamina = 8
+    AlienEffect()
+    SetRunSprintMultiplierForPlayer(PlayerId(), 1.3)
+    while startStamina > 0 do 
+        Citizen.Wait(1000)
+        if math.random(1, 100) < 10 then
+            RestorePlayerStamina(PlayerId(), 1.0)
+        end
+        startStamina = startStamina - 1
+        if math.random(1, 100) < 60 and IsPedRunning(GetPlayerPed(-1)) then
+            SetPedToRagdoll(GetPlayerPed(-1), math.random(1000, 2000), math.random(1000, 2000), 3, 0, 0, 0)
+        end
+        if math.random(1, 100) < 51 then
+            AlienEffect()
+        end
+    end
+    if IsPedRunning(GetPlayerPed(-1)) then
+        SetPedToRagdoll(GetPlayerPed(-1), math.random(1000, 3000), math.random(1000, 3000), 3, 0, 0, 0)
+    end
+
+    startStamina = 0
+    SetRunSprintMultiplierForPlayer(PlayerId(), 1.0)
+end
+
 function CokeBaggyEffect()
-    local startStamina = 30
+    local startStamina = 20
     AlienEffect()
     SetRunSprintMultiplierForPlayer(PlayerId(), 1.1)
     while startStamina > 0 do 
         Citizen.Wait(1000)
-        RestorePlayerStamina(PlayerId(), 1.0)
+        if math.random(1, 100) < 20 then
+            RestorePlayerStamina(PlayerId(), 1.0)
+        end
         startStamina = startStamina - 1
         if math.random(1, 100) < 10 and IsPedRunning(GetPlayerPed(-1)) then
             SetPedToRagdoll(GetPlayerPed(-1), math.random(1000, 3000), math.random(1000, 3000), 3, 0, 0, 0)
@@ -195,7 +287,6 @@ function CokeBaggyEffect()
 
     startStamina = 0
     SetRunSprintMultiplierForPlayer(PlayerId(), 1.0)
-    RevertToStressMultiplier()
 end
 
 function AlienEffect()

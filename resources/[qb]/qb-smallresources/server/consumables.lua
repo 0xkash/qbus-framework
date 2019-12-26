@@ -93,6 +93,16 @@ QBCore.Functions.CreateUseableItem("cokebaggy", function(source, item)
     TriggerClientEvent("consumables:client:Cokebaggy", source)
 end)
 
+QBCore.Functions.CreateUseableItem("crack_baggy", function(source, item)
+    local Player = QBCore.Functions.GetPlayer(source)
+    TriggerClientEvent("consumables:client:Crackbaggy", source)
+end)
+
+QBCore.Functions.CreateUseableItem("xtcbaggy", function(source, item)
+    local Player = QBCore.Functions.GetPlayer(source)
+    TriggerClientEvent("consumables:client:EcstasyBaggy", source)
+end)
+
 QBCore.Commands.Add("vestuit", "Doe je vest uit 4head", {}, false, function(source, args)
     local Player = QBCore.Functions.GetPlayer(source)
     if Player.PlayerData.job.name == "police" then
