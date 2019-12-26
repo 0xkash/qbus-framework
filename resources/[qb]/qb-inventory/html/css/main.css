@@ -103,7 +103,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 .item-slot {
     position: relative;
-    width: 113px;
+    width: 115px;
     height: 140px;
     float: left;
     margin-left: 2px;
@@ -227,7 +227,7 @@ input[type=number]::-webkit-outer-spin-button {
     bottom:0;
     width: 100%;
     background-color: rgba(14, 14, 14, 0.5);
-    padding: 2.3%;
+    padding: 2.4%;
 }
 
 @import url('https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap');
