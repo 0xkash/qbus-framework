@@ -20,7 +20,7 @@
 
 ::-webkit-scrollbar-thumb
 {
-	background-color: #004682;
+	background-color: rgba(0,0,0,0.5);
 }
 
 .police-header {

@@ -60,21 +60,21 @@ PlayerJob = {}
 onDuty = false
 
 BodyParts = {
-    ['HEAD'] = { label = 'Hoofd', causeLimp = false, isDamaged = false, severity = 0 },
-    ['NECK'] = { label = 'Nek', causeLimp = false, isDamaged = false, severity = 0 },
-    ['SPINE'] = { label = 'Rug', causeLimp = true, isDamaged = false, severity = 0 },
-    ['UPPER_BODY'] = { label = 'Boven Rug', causeLimp = false, isDamaged = false, severity = 0 },
-    ['LOWER_BODY'] = { label = 'Onder Rug', causeLimp = true, isDamaged = false, severity = 0 },
-    ['LARM'] = { label = 'Linker Arm', causeLimp = false, isDamaged = false, severity = 0 },
-    ['LHAND'] = { label = 'Linker Hand', causeLimp = false, isDamaged = false, severity = 0 },
-    ['LFINGER'] = { label = 'Linker Vingers', causeLimp = false, isDamaged = false, severity = 0 },
-    ['LLEG'] = { label = 'Linker Been', causeLimp = true, isDamaged = false, severity = 0 },
-    ['LFOOT'] = { label = 'Linker Voet', causeLimp = true, isDamaged = false, severity = 0 },
-    ['RARM'] = { label = 'Rechter Arm', causeLimp = false, isDamaged = false, severity = 0 },
-    ['RHAND'] = { label = 'Rechter Hand', causeLimp = false, isDamaged = false, severity = 0 },
-    ['RFINGER'] = { label = 'Rechter Vingers', causeLimp = false, isDamaged = false, severity = 0 },
-    ['RLEG'] = { label = 'Rechter Been', causeLimp = true, isDamaged = false, severity = 0 },
-    ['RFOOT'] = { label = 'Rechter Voet', causeLimp = true, isDamaged = false, severity = 0 },
+    ['HEAD'] = { label = 'hoofd', causeLimp = false, isDamaged = false, severity = 0 },
+    ['NECK'] = { label = 'nek', causeLimp = false, isDamaged = false, severity = 0 },
+    ['SPINE'] = { label = 'rug', causeLimp = true, isDamaged = false, severity = 0 },
+    ['UPPER_BODY'] = { label = 'boven rug', causeLimp = false, isDamaged = false, severity = 0 },
+    ['LOWER_BODY'] = { label = 'onder rug', causeLimp = true, isDamaged = false, severity = 0 },
+    ['LARM'] = { label = 'linker arm', causeLimp = false, isDamaged = false, severity = 0 },
+    ['LHAND'] = { label = 'linker hand', causeLimp = false, isDamaged = false, severity = 0 },
+    ['LFINGER'] = { label = 'linker vingers', causeLimp = false, isDamaged = false, severity = 0 },
+    ['LLEG'] = { label = 'linker been', causeLimp = true, isDamaged = false, severity = 0 },
+    ['LFOOT'] = { label = 'linker voet', causeLimp = true, isDamaged = false, severity = 0 },
+    ['RARM'] = { label = 'rechter arm', causeLimp = false, isDamaged = false, severity = 0 },
+    ['RHAND'] = { label = 'rechter hand', causeLimp = false, isDamaged = false, severity = 0 },
+    ['RFINGER'] = { label = 'rechter vingers', causeLimp = false, isDamaged = false, severity = 0 },
+    ['RLEG'] = { label = 'rchter been', causeLimp = true, isDamaged = false, severity = 0 },
+    ['RFOOT'] = { label = 'rechter voet', causeLimp = true, isDamaged = false, severity = 0 },
 }
 
 injured = {}
@@ -186,23 +186,15 @@ Citizen.CreateThread(function()
         Citizen.Wait(1)
         if QBCore ~= nil then
             local pos = GetEntityCoords(GetPlayerPed(-1))
-            if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["checking"].x, Config.Locations["checking"].y, Config.Locations["checking"].z, true) < 7.5) then
-                if not doctorsSet then
-                    doctorCount = 0
-                    doctorsSet = true
-                end
-            else
-                doctorsSet = false
-            end
 
             if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["checking"].x, Config.Locations["checking"].y, Config.Locations["checking"].z, true) < 1.5) then
-                if doctorCount > 1 then
+                if doctorCount > 0 then
                     QBCore.Functions.DrawText3D(Config.Locations["checking"].x, Config.Locations["checking"].y, Config.Locations["checking"].z, "~g~E~w~ - Arts oproepen")
                 else
                     QBCore.Functions.DrawText3D(Config.Locations["checking"].x, Config.Locations["checking"].y, Config.Locations["checking"].z, "~g~E~w~ - Inchecken")
                 end
                 if IsControlJustReleased(0, Keys["E"]) then
-                    if doctorCount > 1 then
+                    if doctorCount > 0 then
                         TriggerServerEvent("hospital:server:SendDoctorAlert")
                     else
                         TriggerEvent('animations:client:EmoteCommandStart', {"notepad"})
@@ -411,12 +403,14 @@ end)
 RegisterNetEvent('QBCore:Client:OnJobUpdate')
 AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
     PlayerJob = JobInfo
+    TriggerServerEvent("hospital:server:SetDoctor")
 end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     exports.spawnmanager:setAutoSpawn(false)
     isLoggedIn = true
+    TriggerServerEvent("hospital:server:SetDoctor")
     QBCore.Functions.GetPlayerData(function(PlayerData)
         PlayerJob = PlayerData.job
         onDuty = PlayerData.job.onduty
@@ -429,9 +423,15 @@ AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     end)
 end)
 
+RegisterNetEvent('hospital:client:SetDoctorCount')
+AddEventHandler('hospital:client:SetDoctorCount', function(amount)
+    doctorCount = amount
+end)
+
 RegisterNetEvent('QBCore:Client:SetDuty')
 AddEventHandler('QBCore:Client:SetDuty', function(duty)
     onDuty = duty
+    TriggerServerEvent("hospital:server:SetDoctor")
 end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerUnload')

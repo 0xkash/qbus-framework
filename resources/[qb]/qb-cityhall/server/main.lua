@@ -3,6 +3,8 @@ TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 
 local DrivingSchools = {
     "PAE31194",
+    "UFV96874",
+    "TRB56419",
 }
 
 RegisterServerEvent('qb-cityhall:server:requestId')
@@ -44,14 +46,10 @@ AddEventHandler('qb-cityhall:server:sendDriverTest', function()
         if SchoolPlayer ~= nil then 
             TriggerClientEvent("qb-cityhall:client:sendDriverEmail", SchoolPlayer.PlayerData.source, SchoolPlayer.PlayerData.charinfo)
         else
-            local gender = "meneer"
-            if SchoolPlayer.PlayerData.charinfo.gender == 1 then
-                gender = "mevrouw"
-            end
             local mailData = {
                 sender = "Gemeente",
                 subject = "Aanvraag Rijles",
-                message = "Beste " .. gender .. " " .. SchoolPlayer.PlayerData.charinfo.lastname .. ",<br /><br />Wij hebben zojuist een bericht gehad dat er iemand rijles wilt volgen.<br />Mocht u bereid zijn om les te geven kunt u contact opnemen:<br />Naam: <strong>".. Player.charinfo.firstname .. " " .. Player.charinfo.lastname .. "<br />Telefoonnummer: <strong>"..Player.charinfo.phone.."</strong><br/><br/>Met vriendelijke groet,<br />Gemeente Los Santos",
+                message = "Beste,<br /><br />Wij hebben zojuist een bericht gehad dat er iemand rijles wilt volgen.<br />Mocht u bereid zijn om les te geven kunt u contact opnemen:<br />Naam: <strong>".. Player.PlayerData.charinfo.firstname .. " " .. Player.PlayerData.charinfo.lastname .. "<br />Telefoonnummer: <strong>"..Player.PlayerData.charinfo.phone.."</strong><br/><br/>Met vriendelijke groet,<br />Gemeente Los Santos",
                 button = {}
             }
             TriggerEvent("qb-phone:server:sendNewEventMail", v, mailData)

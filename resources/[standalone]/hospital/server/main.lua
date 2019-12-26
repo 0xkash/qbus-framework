@@ -85,6 +85,20 @@ AddEventHandler('hospital:server:TreatWounds', function(playerId)
 	end
 end)
 
+RegisterServerEvent('hospital:server:SetDoctor')
+AddEventHandler('hospital:server:SetDoctor', function()
+	local amount = 0
+	for k, v in pairs(QBCore.Functions.GetPlayers()) do
+        local Player = QBCore.Functions.GetPlayer(v)
+        if Player ~= nil then 
+            if (Player.PlayerData.job.name == "doctor" and Player.PlayerData.job.onduty) then
+                amount = amount + 1
+            end
+        end
+	end
+	TriggerClientEvent("hospital:client:SetDoctorCount", -1, amount)
+end)
+
 RegisterServerEvent('hospital:server:RevivePlayer')
 AddEventHandler('hospital:server:RevivePlayer', function(playerId)
 	local src = source

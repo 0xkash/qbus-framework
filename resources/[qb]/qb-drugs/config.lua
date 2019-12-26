@@ -690,7 +690,7 @@ Config.Dealers = {
             },
         },
     },
-    [6] = {
+    --[[[6] = {
         ["name"] = "Ouweheer",
         ["coords"] = {
             ["x"] = 3310.75, 
@@ -721,7 +721,7 @@ Config.Dealers = {
                 minrep = 0,
             },
         },
-    },
+    },]]--
 }
 
 Config.CornerSellingDrugsList = {

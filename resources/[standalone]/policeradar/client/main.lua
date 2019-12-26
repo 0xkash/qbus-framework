@@ -138,6 +138,7 @@ end)
 RegisterNetEvent( 'wk:changeRadarLimit' )
 AddEventHandler( 'wk:changeRadarLimit', function( speed ) 
     radarInfo.fastLimit = speed 
+    QBCore.Functions.Notify("Max snelheid gezet op: " .. speed .. "km/u")
 end )
 
 function Radar_SetLimit()
@@ -202,7 +203,9 @@ function ResetFrontFast()
         radarInfo.fwdFastSpeed = 0
         radarInfo.fwdFastLocked = false 
 
-        SendNUIMessage( { lockfwdfast = false } )
+        radarInfo.lockedPlate = ""
+        radarInfo.fwdPlate = ""
+        SendNUIMessage({reset = true, lockfwdfast = false, unlockPlate = true})
     end 
 end 
 
@@ -212,7 +215,10 @@ function ResetRearFast()
         radarInfo.bwdFastSpeed = 0
         radarInfo.bwdFastLocked = false 
 
-        SendNUIMessage( { lockbwdfast = false } )
+        radarInfo.lockedPlate = ""
+        radarInfo.bwdPlate = ""
+
+        SendNUIMessage( {reset = true, lockbwdfast = false } )
     end 
 end 
 
@@ -306,6 +312,7 @@ function ManageVehicleRadar()
                                     radarInfo.fwdFastSpeed = fwdVehSpeed 
                                     radarInfo.fwdFastLocked = true 
                                     SendNUIMessage( { lockfwdfast = true } )
+                                    QBCore.Functions.Notify("Gemarkeerd voertuig gevonden!", "error")
                                 end
                                 plateChecked = fwdPlate
                             end, fwdPlate)
@@ -362,6 +369,7 @@ function ManageVehicleRadar()
                                     radarInfo.bwdFastSpeed = bwdVehSpeed 
                                     radarInfo.bwdFastLocked = true 
                                     SendNUIMessage( { lockbwdfast = true } )
+                                    QBCore.Functions.Notify("Gemarkeerd voertuig gevonden!", "error")
                                 end
                                 plateChecked = bwdPlate
                             end, bwdPlate)
@@ -492,17 +500,22 @@ Citizen.CreateThread( function()
                 if QBCore.Functions.GetPlayerData().job.name == "police" and QBCore.Functions.GetPlayerData().job.onduty then
                     ResetFrontFast()
                     ResetRearFast()
+                    ResetFrontAntenna()
+                    ResetRearAntenna()
+                    QBCore.Functions.Notify("Politie ANPR gereset")
                 end
             end 
 
-            if ( not IsDisabledControlPressed( 0, Keys["LEFTCTRL"] ) and IsDisabledControlJustPressed( 0, Keys["8"] ) ) then 
+            if ( IsDisabledControlJustPressed( 0, Keys["8"] ) ) then 
                 if QBCore.Functions.GetPlayerData().job.name == "police" and QBCore.Functions.GetPlayerData().job.onduty then
                     radarInfo.plateLocked = not radarInfo.plateLocked
                     if (radarInfo.plateLocked) then
-                        SendNUIMessage( { lockPlate = true } )
                         radarInfo.lockedPlate = radarInfo.fwdPlate
+                        SendNUIMessage( { lockPlate = true } )
+                        QBCore.Functions.Notify("Kenteken locked: " .. radarInfo.fwdPlate)
                     else
                         SendNUIMessage( { unlockPlate = true } )
+                        QBCore.Functions.Notify("Kenteken unlocked")
                     end
                 end
             end

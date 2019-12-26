@@ -12,6 +12,7 @@ Config.Vehicles = {
     ["pyamahamotor"] = "Yamaha Motor",
     ["pbmwmotor2"] = "BMW Motor",
     ["pschafter"] = "Unmarked Schafter",
+    ["poracle"] = "Unmarked Oracle",
     ["dsimerc"] = "Mercedes (DSI)",
     ["dsivito"] = "Mercedes Vito (DSI)",
     ["dsiq5"] = "Audi Q5 (DSI)",

@@ -92,7 +92,6 @@ $(document).on("mouseenter", ".item-slot", function(e){
 function handleDragDrop() {
     $(".item-drag").draggable({
         helper: 'clone',
-        zIndex:999,
         appendTo: "body",
         scroll: true,
         revertDuration: 0,

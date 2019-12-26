@@ -339,17 +339,10 @@ QBDiving.Locations = {
                     },
                     PickedUp = false
                 },
-                [5] = {
-                    coords = {
-                        x = -2840.39, 
-                        y = -444.79, 
-                        z = -39.65
-                    },
-                    PickedUp = false
-                },
             }
         },
-        TotalCoral = 5
+        DefaultCoral = 4,
+        TotalCoral = 4,
     },
     [2] = {
         label = "Ha locatie 2",
@@ -384,26 +377,10 @@ QBDiving.Locations = {
                     },
                     PickedUp = false
                 },
-                [4] = {
-                    coords = {
-                        x = -3265.13, 
-                        y = -80.26, 
-                        z = -28.71
-                    },
-                    PickedUp = false
-                },
-                [5] = {
-                    coords = {
-                        x = -3276.7,
-                        y = -111.75,
-                        z = -38.02
-                    },
-                    PickedUp = false
-                },
             }
         },
-        DefaultCoral = 5,
-        TotalCoral = 5
+        DefaultCoral = 3,
+        TotalCoral = 3,
     },
     [3] = {
         label = "Heyyy locatie 3",
@@ -438,26 +415,10 @@ QBDiving.Locations = {
                     },
                     PickedUp = false
                 },
-                [4] = {
-                    coords = {
-                        x = -3339.09, 
-                        y = 1668.96, 
-                        z = -42.63
-                    },
-                    PickedUp = false
-                },
-                [5] = {
-                    coords = {
-                        x = -3382.11, 
-                        y = 1634.13, 
-                        z = -42.88
-                    },
-                    PickedUp = false
-                },
             }
         },
-        DefaultCoral = 5,
-        TotalCoral = 5,
+        DefaultCoral = 3,
+        TotalCoral = 3,
     },
     [4] = {
         label = "Heyyy locatie 4",
@@ -495,7 +456,7 @@ QBDiving.Locations = {
             }
         },
         DefaultCoral = 3,
-        TotalCoral = 3
+        TotalCoral = 3,
     },
     [5] = {
         label = "Heyyy locatie 5",
@@ -541,7 +502,7 @@ QBDiving.Locations = {
             }
         },
         DefaultCoral = 4,
-        TotalCoral = 4
+        TotalCoral = 4,
     },
     [6] = {
         label = "Heyyy locatie 6",
@@ -587,7 +548,7 @@ QBDiving.Locations = {
             }
         },
         DefaultCoral = 4,
-        TotalCoral = 4
+        TotalCoral = 4,
     },
     [7] = {
         label = "Heyyy locatie 7",
@@ -633,7 +594,7 @@ QBDiving.Locations = {
             }
         },
         DefaultCoral = 4,
-        TotalCoral = 4
+        TotalCoral = 4,
     },
 }
 

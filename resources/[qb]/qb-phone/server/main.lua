@@ -251,6 +251,7 @@ QBCore.Functions.CreateCallback('qb-phone:server:getSearchData', function(source
         if result[1] ~= nil then
             for k, v in pairs(result) do
                 local charinfo = json.decode(v.charinfo)
+                local metadata = json.decode(v.metadata)
                 table.insert(searchData, {
                     citizenid = v.citizenid,
                     firstname = charinfo.firstname,
@@ -260,6 +261,7 @@ QBCore.Functions.CreateCallback('qb-phone:server:getSearchData', function(source
                     nationality = charinfo.nationality,
                     gender = charinfo.gender,
                     warrant = false,
+                    driverlicense = metadata["licences"]["driver"]
                 })
             end
             cb(searchData)

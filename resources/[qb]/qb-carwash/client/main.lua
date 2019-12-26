@@ -42,7 +42,7 @@ Citizen.CreateThread(function()
                 if dist <= 10 then
                     inRange = true
                     
-                    if dist <= 2 then
+                    if dist <= 7.5 then
                         if Driver == PlayerPed then
                             if not washingVehicle then
                                 DrawText3Ds(Config.Locations[k]["coords"]["x"], Config.Locations[k]["coords"]["y"], Config.Locations[k]["coords"]["z"], '~g~E~w~ - Auto wassen (€'..Config.DefaultPrice..')')

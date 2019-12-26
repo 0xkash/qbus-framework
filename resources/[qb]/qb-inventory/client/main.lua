@@ -338,7 +338,7 @@ end)
 
 RegisterNetEvent("inventory:client:PickupSnowballs")
 AddEventHandler("inventory:client:PickupSnowballs", function()
-    RequestAnimDict('anim@mp_snowball')
+    LoadAnimDict('anim@mp_snowball')
     TaskPlayAnim(GetPlayerPed(-1), 'anim@mp_snowball', 'pickup_snowball', 3.0, 3.0, -1, 0, 1, 0, 0, 0)
     QBCore.Functions.Progressbar("pickupsnowball", "Sneeuwballen oprapen..", 1500, false, true, {
         disableMovement = true,
@@ -347,7 +347,7 @@ AddEventHandler("inventory:client:PickupSnowballs", function()
         disableCombat = true,
     }, {}, {}, {}, function() -- Done
         ClearPedTasks(GetPlayerPed(-1))
-        TriggerServerEvent('QBCore:Server:AddItem', "snowball", math.random(1, 5))
+        TriggerServerEvent('QBCore:Server:AddItem', "snowball", 1)
         TriggerEvent('inventory:client:ItemBox', QBCore.Shared.Items["snowball"], "add")
     end, function() -- Cancel
         ClearPedTasks(GetPlayerPed(-1))
@@ -616,5 +616,12 @@ function ToggleHotbar(toggle)
             action = "toggleHotbar",
             open = false,
         })
+    end
+end
+
+function LoadAnimDict( dict )
+    while ( not HasAnimDictLoaded( dict ) ) do
+        RequestAnimDict( dict )
+        Citizen.Wait( 5 )
     end
 end
