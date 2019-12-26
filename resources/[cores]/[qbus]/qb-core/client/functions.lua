@@ -76,7 +76,7 @@ QBCore.Functions.SpawnVehicle = function(model, cb, coords, isnetworked)
 end
 
 QBCore.Functions.DeleteVehicle = function(vehicle)
-    --SetEntityAsMissionEntity(vehicle, true, true)
+    SetEntityAsMissionEntity(vehicle, true, true)
     DeleteVehicle(vehicle)
 end
 
@@ -158,7 +158,34 @@ QBCore.Functions.GetPlayers = function()
 end
 
 QBCore.Functions.GetClosestVehicle = function(coords)
-	local vehicles        = QBCore.Functions.GetVehicles()
+	local coordFrom = coords
+	local playerPed = PlayerPedId()
+
+	if coordFrom == nil then
+		coordFrom = GetEntityCoords(playerPed)
+	end
+	local coordTo = GetOffsetFromEntityInWorldCoords(playerped, 0.0, 100.0, 0.0)
+
+	local offset = 0
+	local rayHandle
+	local vehicle
+
+	for i = 0, 100 do
+		rayHandle = CastRayPointToPoint(coordFrom.x, coordFrom.y, coordFrom.z, coordTo.x, coordTo.y, coordTo.z + offset, 10, GetPlayerPed(-1), 0)	
+		a, b, c, d, vehicle = GetRaycastResult(rayHandle)
+		
+		offset = offset - 1
+
+		if vehicle ~= 0 then break end
+	end
+	
+	local distance = Vdist2(coordFrom, GetEntityCoords(vehicle))
+	
+	if distance > 25 then vehicle = nil end
+
+	return vehicle ~= nil and vehicle or 0
+	
+	--[[local vehicles        = QBCore.Functions.GetVehicles()
 	local closestDistance = -1
 	local closestVehicle  = -1
 	local coords          = coords
@@ -176,7 +203,7 @@ QBCore.Functions.GetClosestVehicle = function(coords)
 			closestDistance = distance
 		end
 	end
-	return closestVehicle
+	return closestVehicle]]--
 end
 
 QBCore.Functions.GetClosestPed = function(coords, ignoreList)
