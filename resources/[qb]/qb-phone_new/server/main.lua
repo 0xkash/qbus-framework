@@ -25,6 +25,7 @@ QBCore.Functions.CreateCallback('qb-phone_new:server:GetPhoneData', function(sou
         MentionedTweets = {},
         Chats = {},
         Hashtags = {},
+        Invoices = {},
     }
 
     QBCore.Functions.ExecuteSql("SELECT * FROM player_contacts WHERE `citizenid` = '"..Player.PlayerData.citizenid.."'", function(result)
@@ -36,6 +37,27 @@ QBCore.Functions.CreateCallback('qb-phone_new:server:GetPhoneData', function(sou
             
             PhoneData.PlayerContacts = result
         end        
+    end)
+
+    QBCore.Functions.ExecuteSql("SELECT * FROM phone_invoices WHERE `citizenid` = '"..Player.PlayerData.citizenid.."'", function(invoices)
+        if invoices[1] ~= nil then
+            for k, v in pairs(invoices) do
+                local Ply = QBCore.Functions.GetPlayerByCitizenId(v.sender)
+                if Ply ~= nil then
+                    v.number = Ply.PlayerData.charinfo.phone
+                else
+                    QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `citizenid` = '"..v.sender.."'", function(res)
+                        if res[1] ~= nil then
+                            res[1].charinfo = json.decode(res[1].charinfo)
+                            v.number = res[1].charinfo.phone
+                        else
+                            v.number = nil
+                        end
+                    end)
+                end
+            end
+            PhoneData.Invoices = invoices
+        end
     end)
 
     QBCore.Functions.ExecuteSql("SELECT * FROM phone_messages WHERE `citizenid` = '"..Player.PlayerData.citizenid.."'", function(messages)

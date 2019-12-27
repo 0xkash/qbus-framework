@@ -24,6 +24,10 @@ $(document).on('click', '.whatsapp-chat', function(e){
     var ChatData = $("#"+ChatId).data('chatdata');
     QB.Phone.Functions.SetupChatMessages(ChatData);
 
+    $.post('http://qb-phone_new/ClearAlerts', JSON.stringify({
+        number: ChatData.number
+    }));
+
     $('.whatsapp-openedchat-messages').animate({scrollTop: 9999}, 150);
     $(".whatsapp-openedchat").css({"display":"block"});
     $(".whatsapp-openedchat").animate({
@@ -86,11 +90,28 @@ QB.Phone.Functions.LoadWhatsappChats = function(chats) {
     $(".whatsapp-chats").html("");
     $.each(chats, function(i, chat){
         var LastMessage = QB.Phone.Functions.GetLastMessage(chat.messages);
-        console.log(LastMessage.time)
-        var ChatElement = '<div class="whatsapp-chat" id="whatsapp-chat-'+i+'"><div class="whatsapp-chat-picture"></div><div class="whatsapp-chat-name"><p>'+chat.name+'</p></div><div class="whatsapp-chat-lastmessage"><p>'+LastMessage.message+'</p></div> <div class="whatsapp-chat-lastmessagetime"><p>'+LastMessage.time+'</p></div><div class="whatsapp-chat-unreadmessages">1</div></div>';
+        var ChatElement = '<div class="whatsapp-chat" id="whatsapp-chat-'+i+'"><div class="whatsapp-chat-picture"></div><div class="whatsapp-chat-name"><p>'+chat.name+'</p></div><div class="whatsapp-chat-lastmessage"><p>'+LastMessage.message+'</p></div> <div class="whatsapp-chat-lastmessagetime"><p>'+LastMessage.time+'</p></div><div class="whatsapp-chat-unreadmessages unread-chat-id-'+i+'">1</div></div>';
         
         $(".whatsapp-chats").append(ChatElement);
         $("#whatsapp-chat-"+i).data('chatdata', chat);
+
+        if (chat.Unread > 0 && chat.Unread !== undefined && chat.Unread !== null) {
+            $(".unread-chat-id-"+i).html(chat.Unread);
+            $(".unread-chat-id-"+i).css({"display":"block"});
+        } else {
+            $(".unread-chat-id-"+i).css({"display":"none"});
+        }
+    });
+}
+
+QB.Phone.Functions.ReloadWhatsappAlerts = function(chats) {
+    $.each(chats, function(i, chat){
+        if (chat.Unread > 0 && chat.Unread !== undefined && chat.Unread !== null) {
+            $(".unread-chat-id-"+i).html(chat.Unread);
+            $(".unread-chat-id-"+i).css({"display":"block"});
+        } else {
+            $(".unread-chat-id-"+i).css({"display":"none"});
+        }
     });
 }
 
