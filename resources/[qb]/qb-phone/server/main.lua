@@ -282,7 +282,7 @@ QBCore.Functions.CreateCallback('qb-phone:server:getVehicleSearch', function(sou
                 QBCore.Functions.ExecuteSql('SELECT * FROM `players` WHERE `citizenid` = "'..result[k].citizenid..'"', function(player)
                     if player[1] ~= nil then 
                         local charinfo = json.decode(player[1].charinfo)
-                        local vehicleInfo = QBCore.Shared.VehicleModels[tonumber(result[k].hash)]
+                        local vehicleInfo = QBCore.Shared.VehicleModels[result[k].hash]
                         if vehicleInfo ~= nil then 
                             table.insert(searchData, {
                                 plate = result[k].plate,

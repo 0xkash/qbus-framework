@@ -162,8 +162,13 @@ QBCore.Commands.Add("reportr", "Toggle inkomende reports uit of aan", {}, false,
     local playerId = tonumber(args[1])
     table.remove(args, 1)
     local msg = table.concat(args, " ")
-    TriggerClientEvent('chatMessage', playerId, "ADMIN - "..GetPlayerName(source), "warning", msg)
-    TriggerClientEvent('QBCore:Notify', source, "Reactie gestuurd")
+    local OtherPlayer = QBCore.Functions.GetPlayer(playerId)
+    if OtherPlayer ~= nil then
+        TriggerClientEvent('chatMessage', playerId, "ADMIN - "..GetPlayerName(source), "warning", msg)
+        TriggerClientEvent('QBCore:Notify', source, "Reactie gestuurd")
+    else
+        TriggerClientEvent('QBCore:Notify', source, "Persoon is niet online", "error")
+    end
 end, "admin")
 
 QBCore.Commands.Add("reporttoggle", "Toggle inkomende reports uit of aan", {}, false, function(source, args)

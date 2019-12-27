@@ -205,7 +205,7 @@ Citizen.CreateThread(function()
 
     if chatInputActivating then
       if not IsControlPressed(0, 245) then
-        SetNuiFocus(true, true)
+        SetNuiFocus(true)
 
         chatInputActivating = false
       end

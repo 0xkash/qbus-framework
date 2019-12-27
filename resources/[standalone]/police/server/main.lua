@@ -760,11 +760,7 @@ end)
 
 QBCore.Commands.Add("escort", "Escort een speler", {}, false, function(source, args)
 	local Player = QBCore.Functions.GetPlayer(source)
-    if Player.PlayerData.job.name == "police" then
-        TriggerClientEvent("police:client:EscortPlayer", source)
-    else
-        TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Dit command is voor hulpdiensten!")
-    end
+    TriggerClientEvent("police:client:EscortPlayer", source)
 end)
 
 QBCore.Commands.Add("databank", "Toggle politie databank", {}, false, function(source, args)
@@ -1045,7 +1041,7 @@ end)
 
 QBCore.Commands.Add("noodknop", "Stuur een bericht terug naar een melding", {}, false, function(source, args)
     local Player = QBCore.Functions.GetPlayer(source)
-    if ((Player.PlayerData.job.name == "police" or Player.PlayerData.job.name == "ambulance") and Player.PlayerData.job.onduty) then
+    if ((Player.PlayerData.job.name == "police" or Player.PlayerData.job.name == "ambulance" or Player.PlayerData.job.name == "doctor") and Player.PlayerData.job.onduty) then
         TriggerClientEvent("police:client:SendPoliceEmergencyAlert", source)
     end
 end)

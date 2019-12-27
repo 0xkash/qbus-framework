@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>QB Phone Rework</title>
+
+    <!-- CSS File's -->
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/fonts.css">
+    <link rel="stylesheet" href="./css/tooltip.css">
+    <link rel="stylesheet" href="./css/settings.css">
+    <link rel="stylesheet" href="./css/phone.css">
+    <link rel="stylesheet" href="./css/twitter.css">
+    <link rel="stylesheet" href="./css/bank.css">
+    <link rel="stylesheet" href="./css/whatsapp.css">
+
+    <!-- CDN's -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> <!-- JQuery -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> <!-- Bootstrap -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-color/2.1.2/jquery.color.js"></script> <!-- Color CDN -->
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"> <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> <!-- Bootstrap -->
+
+</head>
+    <body style="background-color: transparent !important";>
+        <div class="container">
+            <img src="./img/samsung-s10.png" class="phone-frame">
+            <div class="phone-container phone-background">
+                <!-- Phone Header -->
+                <div class="phone-header">
+                    <div id="phone-time">08:05</div>
+                    <div id="phone-icons">
+                        <i class="fas fa-signal" id="phone-signal" data-toggle="tooltip" data-placement="left" title="kubie 5G"></i>
+                        <i class="fas fa-battery-three-quarters" id="phone-battery"></i>
+                    </div>
+                </div>
+
+                <!-- Phone Notification -->
+                <div class="phone-notification-container">
+                    <div class="notification-icon"></div>
+                    <div class="notification-title"></div>
+                    <div class="notification-text"></div>
+                </div>
+
+                <!-- Home Applications -->
+                <div class="phone-applications">
+                    <div class="phone-footer-applications">
+                        <div class="phone-application" data-toggle="tooltip" data-placement="bottom" title="" data-appslot="1"></div>
+                        <div class="phone-application" data-toggle="tooltip" data-placement="bottom" title="" data-appslot="2"></div>
+                        <div class="phone-application" data-toggle="tooltip" data-placement="bottom" title="" data-appslot="3"></div>
+                        <div class="phone-application" data-toggle="tooltip" data-placement="bottom" title="" data-appslot="4"></div>
+                    </div>
+
+                    <div class="phone-home-applications">
+                        <div class="phone-application" data-toggle="tooltip" data-placement="bottom" title="" data-appslot="5"></div>
+                        <div class="phone-application" data-toggle="tooltip" data-placement="bottom" title="" data-appslot="6"></div>
+                        <div class="phone-application" data-toggle="tooltip" data-placement="bottom" title="" data-appslot="7"></div>
+                        <div class="phone-application" data-toggle="tooltip" data-placement="bottom" title="" data-appslot="8"></div>
+
+                        <div class="phone-application" data-toggle="tooltip" data-placement="bottom" title="" data-appslot="9"></div>
+                        <div class="phone-application" data-toggle="tooltip" data-placement="bottom" title="" data-appslot="10"></div>
+                        <div class="phone-application" data-toggle="tooltip" data-placement="bottom" title="" data-appslot="11"></div>
+                        <div class="phone-application" data-toggle="tooltip" data-placement="bottom" title="" data-appslot="12"></div>
+                    </div>
+                </div>
+
+                <!-- Unread Alerts -->
+                <!-- <div class="app-unread-alerts">1</div> -->
+
+                <!-- Container for all application's -->
+                <div class="phone-application-container">
+                    <div class="settings-app">
+                        <div class="settings-app-header"><p>Instellingen</p></div>
+                        
+                        <div class="settings-app-tab-appereance">
+                            <div class="settings-app-tab-header"><p>Uiterlijk</p></div>
+                            <div class="settings-app-tab" data-settingstab="background">
+                                <div class="settings-tab-icon"><i class="fas fa-palette" style="color: #9b59b6;"></i></div>
+                                <div class="settings-tab-title"><p>Achtergrond</p></div>
+                                <div class="settings-tab-description"><p>Standaard</p></div>
+                            </div>
+                        </div>
+
+                        <div class="settings-app-tab-information">
+                            <div class="settings-app-tab-header"><p>Informatie</p></div>
+                            <div class="settings-app-tab secondTab" data-settingstab="myPhone">
+                                <div class="settings-tab-icon"><i class="fas fa-phone-alt" style="color: #e67e22;"></i></div>
+                                <div class="settings-tab-title"><p>Mijn Nummer</p></div>
+                                <div class="settings-tab-description" id="myPhoneNumber"><p>0612345678</p></div>
+                            </div>
+                        </div>
+
+                        <div class="settings-background-tab">
+                            <div class="settings-app-header"><p>Achtergrond</p></div>
+
+                            <div class="background-options">
+                                <div class="background-option" data-background="background-1">
+                                    <div class="background-option-icon"> <i class="fas fa-paint-brush"></i> </div>
+                                    <div class="background-option-title"> Standaard </div>
+                                    <div class="background-option-description"> Dit is de standaard achtergrond.</div>
+                                    <div class="background-option-current"><i class="fas fa-check-circle"></i></div>
+                                </div>
+                                <div class="background-option" data-background="custom-background">
+                                    <div class="background-option-icon"><i class="fas fa-paint-brush"></i></div>
+                                    <div class="background-option-title">Custom</div>
+                                    <div class="background-option-description"> Je eigen achtergrond met een URL.</div>
+                                </div>
+                            </div>
+
+                            <div class="background-buttons">
+                                <div class="background-button" id="accept-background">
+                                    <p>Bevestig</p>
+                                </div>
+                                <div class="background-button" id="cancel-background">
+                                    <p>Annuleren</p>
+                                </div>
+                            </div>
+
+                            <div class="background-custom">
+                                <div class="background-custom-title">Custom Achtergrond</div>
+                                <input type="text" class="custom-background-input" placeholder="URL (.jpg/.png)" spellcheck="false">
+
+                                <div class="background-custom-buttons">
+                                    <div class="custom-background-button" id="accept-custom-background"><p>Bevestig</p></div>
+                                    <div class="custom-background-button" id="cancel-custom-background"><p>Annuleren</p></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="phone-app">
+                        <div class="phone-app-header">
+                            <p>Telefoon</p>
+                            <span id="total-contacts">0 contacten #SAD</span>
+                        </div>
+
+                        <div class="phone-contacts">
+                            <div class="phone-contacts-header">
+                                <input type="text" id="contact-search" placeholder="Contact naam" spellcheck="false">
+                                <i id="phone-search-icon" class="fas fa-search"></i>
+                                <i id="phone-plus-icon" class="fas fa-plus"></i>
+                            </div>
+
+                            <div class="phone-contact-list">
+                                <!-- <div class="phone-contact" data-contactid="1">
+                                    <div class="phone-contact-firstletter">P</div>
+                                    <div class="phone-contact-name">Pieter Post</div>
+                                    <div class="phone-contact-actions"><i class="fas fa-sort-down"></i></div>
+
+                                    <div class="phone-contact-action-buttons">
+                                        <i class="fas fa-phone-volume"></i>
+                                        <i class="fas fa-comment"></i>
+                                        <i class="fas fa-user-edit"></i>
+                                    </div>
+                                </div>-->
+                            </div>
+                        </div>
+
+                        <div class="phone-keypad">
+                            <div class="phone-keypad-header"><p>Telefoon</p></div>
+                            <div id="phone-keypad-input"></div>
+
+                            <div class="phone-keypad-keys">
+                                <div class="phone-keypad-key" data-keypadvalue="1">1</div>
+                                <div class="phone-keypad-key" data-keypadvalue="2">2</div>
+                                <div class="phone-keypad-key" data-keypadvalue="3">3</div>
+                                <div class="phone-keypad-key" data-keypadvalue="4">4</div>
+                                <div class="phone-keypad-key" data-keypadvalue="5">5</div>
+                                <div class="phone-keypad-key" data-keypadvalue="6">6</div>
+                                <div class="phone-keypad-key" data-keypadvalue="7">7</div>
+                                <div class="phone-keypad-key" data-keypadvalue="8">8</div>
+                                <div class="phone-keypad-key" data-keypadvalue="9">9</div>
+                                <div class="phone-keypad-key" data-keypadvalue="*">*</div>
+                                <div class="phone-keypad-key" data-keypadvalue="0">0</div>
+                                <div class="phone-keypad-key" data-keypadvalue="#">#</div>
+                            </div>
+                            <div class="phone-keypad-key-call"><i class="fas fa-phone-alt"></i></div>
+                        </div>
+
+                        <div class="phone-add-contact">
+                            <div class="phone-add-contact-header"><p>Contact Toevoegen</p></div>
+
+                            <i id="phone-add-contact-name-icon" class="fas fa-user"></i>
+                            <input type="text" class="phone-add-contact-name" placeholder="Contactnaam" required spellcheck="false">
+
+                            <i id="phone-add-contact-number-icon" class="fas fa-phone-alt"></i>
+                            <input type="number" class="phone-add-contact-number" placeholder="Telefoon-nummer" required spellcheck="false">
+
+                            <i id="phone-add-contact-iban-icon" class="fas fa-money-check"></i>
+                            <input type="text" class="phone-add-contact-iban" placeholder="Bank nr. (Niet verplicht)" required spellcheck="false">
+
+                            <div class="phone-add-contact-buttons">
+                                <div class="phone-add-contact-button" id="add-contact-save"><p>Opslaan</p></div>
+                                <div class="phone-add-contact-button" id="add-contact-cancel"><p>Annuleer</p></div>
+                            </div>
+                        </div>
+
+                        <div class="phone-edit-contact">
+                            <div class="phone-edit-contact-header"><p>Contact Toevoegen</p></div>
+
+                            <i id="phone-edit-contact-name-icon" class="fas fa-user"></i>
+                            <input type="text" class="phone-edit-contact-name" placeholder="Contactnaam" required spellcheck="false">
+
+                            <i id="phone-edit-contact-number-icon" class="fas fa-phone-alt"></i>
+                            <input type="number" class="phone-edit-contact-number" placeholder="Telefoon-nummer" required spellcheck="false">
+
+                            <i id="phone-edit-contact-iban-icon" class="fas fa-money-check"></i>
+                            <input type="text" class="phone-edit-contact-iban" placeholder="Bank nr. (Niet verplicht)" required spellcheck="false">
+
+                            <div class="phone-edit-contact-buttons">
+                                <div class="phone-edit-contact-button" id="edit-contact-save"><p>Opslaan</p></div>
+                                <div class="phone-edit-contact-button" id="edit-contact-cancel"><p>Annuleer</p></div>
+                            </div>
+                        </div>
+
+                        <div class="phone-app-footer">
+                            <div class="phone-app-footer-button" data-phonefootertab="keypad">
+                                <p>Toetsen</p>
+                            </div>
+                            <div class="phone-app-footer-button" data-phonefootertab="recent">
+                                <p>Recent</p>
+                            </div>
+                            <div class="phone-app-footer-button phone-selected-footer-tab" data-phonefootertab="contacts">
+                                <p>Contacten</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="twitter-app">
+
+                        <div class="twitter-home-tab">
+                            <!-- <div class="twitter-tweet"> <img src="./img/backgrounds/background-1.png" class="tweeter-image"> <div class="tweet-tweeter">Test &nbsp;<span>@Test &middot; 2 m</span></div> <div class="tweet-message">Dit is test tweet yeey. :) ggggggggggggggggggggggggggg gggggggggggggggggg</div> </div> -->
+                            <div class="twitter-no-tweets"><p>Er zijn nog geen Tweets geplaatst.. :(</p></div>
+                        </div>
+
+                        <div class="twitter-mentions-tab">
+                            <!-- <div class="twitter-mentioned-tweet"> <img src="./img/backgrounds/background-1.png" class="tweeter-image"> <div class="tweet-tweeter">Test &nbsp;<span>@Test &middot; 2 m</span></div> <div class="tweet-message">Dit is test tweet yeey. :) ggggggggggggggggggggggggggg gggggggggggggggggg</div> </div> -->
+                            <div class="twitter-no-tweets"><p>Je bent nog niet gementioned.. :(</p></div>
+                        </div>
+
+                        <div class="twitter-hashtags-tab">
+                            <div class="twitter-hashtag-tweets">
+                                    <!-- <div class="twitter-tweet"> <img src="./img/backgrounds/background-1.png" class="tweeter-image"> <div class="tweet-tweeter">Test &nbsp;<span>@Test &middot; 2 m</span></div> <div class="tweet-message">Dit is test tweet yeey. :) ggggggggggggggggggggggggggg gggggggggggggggggg</div> </div>
+                                    <div class="twitter-tweet"> <img src="./img/backgrounds/background-1.png" class="tweeter-image"> <div class="tweet-tweeter">Test &nbsp;<span>@Test &middot; 2 m</span></div> <div class="tweet-message">Dit is test tweet yeey. :) ggggggggggggggggggggggggggg gggggggggggggggggg</div> </div>
+                                    <div class="twitter-tweet"> <img src="./img/backgrounds/background-1.png" class="tweeter-image"> <div class="tweet-tweeter">Test &nbsp;<span>@Test &middot; 2 m</span></div> <div class="tweet-message">Dit is test tweet yeey. :) ggggggggggggggggggggggggggg gggggggggggggggggg</div> </div>
+                                    <div class="twitter-tweet"> <img src="./img/backgrounds/background-1.png" class="tweeter-image"> <div class="tweet-tweeter">Test &nbsp;<span>@Test &middot; 2 m</span></div> <div class="tweet-message">Dit is test tweet yeey. :) ggggggggggggggggggggggggggg gggggggggggggggggg</div> </div>
+                                    <div class="twitter-tweet"> <img src="./img/backgrounds/background-1.png" class="tweeter-image"> <div class="tweet-tweeter">Test &nbsp;<span>@Test &middot; 2 m</span></div> <div class="tweet-message">Dit is test tweet yeey. :) ggggggggggggggggggggggggggg gggggggggggggggggg</div> </div> -->
+                            </div>
+                            <div class="twitter-hashtags">
+                                <!-- <div class="twitter-hashtag">
+                                    <div class="twitter-hashtag-status">Niet trending in Qbus</div>
+                                    <div class="twitter-hashtag-tag">#Test</div>
+                                    <div class="twitter-hashtag-messages">5 Tweets</div>
+                                </div> -->
+                                <div class="twitter-no-tweets"><p>Er zijn nog geen Hashtags #SAD.. :(</p></div>
+                            </div>
+                        </div>
+
+                        <div class="twitter-new-tweet">
+                            <i class="fas fa-feather-alt"></i>
+                        </div>
+
+                        <div class="twitter-new-tweet-tab">
+                            <div class="twitter-new-tweet-header"><p>Nieuwe Tweet</p></div>
+
+                            <textarea id="tweet-new-message" placeholder="Twitter bericht" cols="30" rows="10" spellcheck="false" required></textarea>
+                        
+                            <div class="twitter-new-tweet-buttons">
+                                <div class="twitter-new-tweet-button" id="send-tweet"><p>Verstuur</p></div>
+                                <div class="twitter-new-tweet-button" id="cancel-tweet"><p>Annuleer</p></div>
+                            </div>
+                        </div>
+                        
+                        <div class="twitter-header">
+                            <div id="twitter-home" data-twittertab="twitter-home" class="twitter-header-tab selected-twitter-header-tab"><i class="fas fa-home"></i></div>
+                            <div id="twitter-mentions" data-twittertab="twitter-mentions" class="twitter-header-tab"><i class="fas fa-at"></i></div>
+                            <div id="twitter-hashtags" data-twittertab="twitter-hashtags" class="twitter-header-tab"><i class="fas fa-hashtag"></i></div>
+                        </div>
+                    </div>
+
+                    <div class="bank-app">
+                        <div class="bank-app-loading">
+                            <img src="../html/img/apps/bank-logo.png" class="qbank-logo">
+                            <span id="qbank-text">Bank</span>
+                        </div>
+                        <div class="bank-app-loaded">
+                            <div class="bank-app-header">
+                                <div data-headertype="accounts" class="bank-app-header-button bank-app-header-button-selected"> <i class="fas fa-align-left"></i> <p>Overzicht</p> </div>
+                                <div data-headertype="invoices" class="bank-app-header-button"> <i class="fas fa-file-invoice"></i> <p>Facturen</p> </div>
+                            </div>
+
+                            <div class="bank-app-accounts">
+                                <div class="bank-app-account">
+                                    <div class="bank-app-account-title">Betaalrekening</div>
+                                    <!-- <div class="bank-app-account-number" id="iban-account">NL01QBBA012341234123</div> -->
+                                    <input type="text" class="bank-app-account-number" id="iban-account" readonly spellcheck="false">
+                                    <div class="bank-app-account-balance">&euro; 5000,00</div>
+                                </div>
+
+                                <div class="bank-app-account-actions">
+                                    <i id="transfer-money" class="fas fa-exchange-alt bank-app-account-action-transfer"></i>
+                                </div>
+                            </div>
+
+                            <div class="bank-app-transfer">
+                                <div class="bank-app-transfer-header">Geld Overmaken</div>
+
+                                <i class="bank-transfer-iban-icon fas fa-money-check"></i>
+                                <input type="text" id="bank-transfer-iban" class="bank-transfer-input" required spellcheck="false">
+                                <i class="bank-transfer-mycontacts-icon fas fa-address-book"></i>
+
+                                <i class="bank-transfer-amount-icon fas fa-euro-sign"></i>
+                                <input type="number" id="bank-transfer-amount" class="bank-transfer-input" required spellcheck="false">
+                            
+                                <div class="bank-app-transfer-buttons">
+                                    <div class="bank-app-transfer-button" id="accept-transfer">Overmaken</div>
+                                    <div class="bank-app-transfer-button" id="cancel-transfer">Annuleren</div>
+                                </div>
+                            </div>
+
+                            <div class="bank-app-invoices">
+                                <div class="bank-app-invoices-list">
+                                    <!-- <div class="bank-app-invoice"> <div class="bank-app-invoice-title">Betaalverzoek <span style="font-size: 1vh; color: gray;">(Afzender: 0612345678)</span></div> <div class="bank-app-invoice-amount">&euro; 5000,-</div> <div class="bank-app-invoice-buttons"> <i class="fas fa-check-circle pay-invoice"></i> <i class="fas fa-times-circle decline-invoice"></i> </div> </div> -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bank-app-my-contacts">
+                            <div class="bank-app-my-contacts-header">Mijn Contacten</div>
+                            <div class="bank-app-my-contacts-list-header">
+                                <input type="text" id="bank-app-my-contact-search" placeholder="Contact naam" spellcheck="false">
+                            </div>
+                            <div class="bank-app-my-contacts-list">
+                                <!-- <div class="bank-app-my-contact"> <div class="bank-app-my-contact-firstletter">P</div> <div class="bank-app-my-contact-name">Pieter Post</div> </div> -->
+                            </div>
+                            <div class="bank-app-my-contacts-list-back">Terug</div>
+                        </div>
+                    </div>
+
+                    <div class="whatsapp-app">
+                        <div class="whatsapp-header">
+                            <div class="whatsapp-header-top"></div>
+                            <div class="whatsapp-header-footer">
+                                <p>Whatsapp</p>
+                                <i id="whatsapp-search-chats" class="fas fa-search"></i>
+                                <input type="text" id="whatsapp-search-input" placeholder="Contactnaam" spellcheck="false">
+                            </div>
+                        </div>
+                        <div class="whatsapp-chats">
+                            <!-- <div class="whatsapp-chat">
+                                <div class="whatsapp-chat-picture"></div>
+                                <div class="whatsapp-chat-name"><p>Testt</p></div>
+                                <div class="whatsapp-chat-lastmessage"><p>This is a hardcoded test message! 1111111111111111111111111111111111111</p></div>
+                                <div class="whatsapp-chat-lastmessagetime"><p>07:53</p></div>
+                            </div> -->
+                        </div>
+                        <div class="whatsapp-openedchat">
+                            <div class="whatsapp-header-openedchat">
+                                <div class="whatsapp-header-top-openedchat"></div>
+                                <div class="whatsapp-header-footer-openedchat">
+                                    <div class="whatsapp-openedchat-picture"></div>
+                                    <div class="whatsapp-openedchat-name"><p>Testt</p></div>
+                                    <i id="whatsapp-openedchat-back" class="fas fa-arrow-left"></i>
+                                </div>
+                            </div>
+                            <div class="whatsapp-openedchat-messages">
+                                <!-- <div class="whatsapp-openedchat-messages-29-11-2019 unique-chat">
+                                    <div class="whatsapp-openedchat-date">15 DECEMBER 2019</div>
+                                    <div class="whatsapp-openedchat-message whatsapp-openedchat-message-me">
+                                        uhm
+                                        <div class="whatsapp-openedchat-message-time">12:05</div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="whatsapp-openedchat-message whatsapp-openedchat-message-other">
+                                        uhm
+                                        <div class="whatsapp-openedchat-message-time">12:05</div>
+                                    </div>
+                                </div> -->
+                            </div>
+                            <div class="whatsapp-openedchat-input">
+                                
+                                <input type="text" id="whatsapp-openedchat-message" placeholder="Bericht" spellcheck="false">
+                                <i class="fas fa-paper-plane" id="whatsapp-openedchat-send"></i> 
+                                <i class="fas fa-ellipsis-v" id="whatsapp-openedchat-message-extras"></i>
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phone Home Button -->
+                <div class="phone-footer">
+                    <div class="phone-home-container">
+                        <div class="phone-home-button"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="screen-notifications-container">
+            <div class="screen-notification-icon"><i class="fab fa-twitter"></i></div>
+            <div class="screen-notification-title"><p>Nieuwe Tweet!</p></div>
+            <div class="screen-notification-content"><p>Dit is een test notification JOINK 222222222222222222222222222222</p></div>
+        </div>
+        
+        <!-- JavaScript File's -->
+        <script src="./js/app.js"></script>
+        <script src="./js/settings.js"></script>
+        <script src="./js/phone.js"></script>
+        <script src="./js/twitter.js"></script>
+        <script src="./js/bank.js"></script>
+        <script src="./js/whatsapp.js"></script>
+    </body>
+</html>

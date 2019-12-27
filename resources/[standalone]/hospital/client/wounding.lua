@@ -380,9 +380,10 @@ AddEventHandler('hospital:client:UseBandage', function()
         StopAnimTask(GetPlayerPed(-1), "anim@amb@business@weed@weed_inspecting_high_dry@", "weed_inspecting_high_base_inspector", 1.0)
         TriggerServerEvent("QBCore:Server:RemoveItem", "bandage", 1)
         TriggerEvent("inventory:client:ItemBox", QBCore.Shared.Items["bandage"], "remove")
-        print("health: " ..GetEntityHealth(GetPlayerPed(-1)))
-        print("new health: " ..GetEntityHealth(GetPlayerPed(-1)) + 5)
-        SetEntityHealth(GetPlayerPed(-1), GetEntityHealth(GetPlayerPed(-1)) + 5)
+        SetEntityHealth(GetPlayerPed(-1), GetEntityHealth(GetPlayerPed(-1)) + 10)
+        if math.random(1, 100) < 50 then
+            RemoveBleed(1)
+        end
         if math.random(1, 100) < 7 then
             ResetPartial()
         end
@@ -441,6 +442,17 @@ function ProcessRunStuff(ped)
         end
         SetPedMovementClipset(ped, "move_m@injured", 1 )
         SetPlayerSprint(PlayerId(), false)
+    end
+end
+
+function RemoveBleed(level)
+    if isBleeding ~= 0 then
+        if isBleeding - level < 0 then
+            isBleeding = 0
+        else
+            isBleeding = isBleeding - level
+        end
+        DoBleedAlert()
     end
 end
 

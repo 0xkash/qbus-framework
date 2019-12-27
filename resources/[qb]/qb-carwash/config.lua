@@ -23,4 +23,4 @@ Config.Locations = {
     }
 }
 
-Config.DefaultPrice = 100
+Config.DefaultPrice = 20

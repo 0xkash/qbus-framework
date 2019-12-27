@@ -41,6 +41,7 @@ end
 local occasionVehicles = {}
 local inRange
 local vehiclesSpawned = false
+local isConfirming = false
 
 Citizen.CreateThread(function()
     while true do
@@ -72,15 +73,34 @@ Citizen.CreateThread(function()
 
                     if dstCheck <= 2 then
                         if not IsPedInAnyVehicle(ped) then
-                            DrawText3Ds(vehPos.x, vehPos.y, vehPos.z + 1.45, '~g~E~w~ Om voertuig te bekijken')
-                            DrawText3Ds(vehPos.x, vehPos.y, vehPos.z + 1.25, QBCore.Shared.Vehicles[Config.OccasionSlots[i]["model"]]["name"]..', Prijs: €'..Config.OccasionSlots[i]["price"]..',-')
-                            if IsControlJustPressed(0, Keys["E"]) then
-                                currentVehicle = i
-                                
-                                QBCore.Functions.TriggerCallback('qb-occasions:server:getSellerInformation', function(info)
-                                    info.charinfo = json.decode(info.charinfo)
-                                    openBuyContract(info, Config.OccasionSlots[currentVehicle])
-                                end, Config.OccasionSlots[currentVehicle]["owner"])
+                            if not isConfirming then
+                                DrawText3Ds(vehPos.x, vehPos.y, vehPos.z + 1.45, '~g~E~w~ Om voertuig te bekijken')
+                                DrawText3Ds(vehPos.x, vehPos.y, vehPos.z + 1.25, QBCore.Shared.Vehicles[Config.OccasionSlots[i]["model"]]["name"]..', Prijs: €'..Config.OccasionSlots[i]["price"]..',-')
+                                if Config.OccasionSlots[i]["owner"] == QBCore.Functions.GetPlayerData().citizenid then
+                                    DrawText3Ds(vehPos.x, vehPos.y, vehPos.z + 1.05, '~r~G~w~ Om voertuig terug te nemen')
+                                    if IsControlJustPressed(0, Keys["G"]) then
+                                        isConfirming = true
+                                    end
+                                end
+                                if IsControlJustPressed(0, Keys["E"]) then
+                                    currentVehicle = i
+                                    
+                                    QBCore.Functions.TriggerCallback('qb-occasions:server:getSellerInformation', function(info)
+                                        info.charinfo = json.decode(info.charinfo)
+                                        openBuyContract(info, Config.OccasionSlots[currentVehicle])
+                                    end, Config.OccasionSlots[currentVehicle]["owner"])
+                                end
+                            else
+                                DrawText3Ds(vehPos.x, vehPos.y, vehPos.z + 1.45, 'Weet je zeker dat je je voertuig van de occasions wilt halen?')
+                                DrawText3Ds(vehPos.x, vehPos.y, vehPos.z + 1.25, '~g~7~w~ - Ja | ~r~8~w~ - Nee')
+                                if IsDisabledControlJustPressed(0, Keys["7"]) then
+                                    isConfirming = false
+                                    currentVehicle = i
+                                    TriggerServerEvent("qb-occasions:server:ReturnVehicle", Config.OccasionSlots[i])
+                                end
+                                if IsDisabledControlJustPressed(0, Keys["8"]) then
+                                    isConfirming = false
+                                end
                             end
                         end
                     end
@@ -193,8 +213,9 @@ end)
 DoScreenFadeIn(250)
 
 RegisterNetEvent('qb-occasions:client:BuyFinished')
-AddEventHandler('qb-occasions:client:BuyFinished', function()
+AddEventHandler('qb-occasions:client:BuyFinished', function(mods)
     local vehData = Config.OccasionSlots[currentVehicle]
+    local vehmods = json.decode(mods)
     DoScreenFadeOut(250)
     Citizen.Wait(500)
     QBCore.Functions.SpawnVehicle(vehData["model"], function(veh)
@@ -205,7 +226,30 @@ AddEventHandler('qb-occasions:client:BuyFinished', function()
         QBCore.Functions.Notify("Voertuig gekocht", "success", 2500)
         TriggerEvent("vehiclekeys:client:SetOwner", vehData["plate"])
         SetVehicleEngineOn(veh, true, true)
-        QBCore.Functions.SetVehicleProperties(veh, vehData["mods"])
+        Citizen.Wait(500)
+        QBCore.Functions.SetVehicleProperties(veh, vehmods)
+    end, Config.BuyVehicle, true)
+    Citizen.Wait(500)
+    DoScreenFadeIn(250)
+    currentVehicle = nil
+end)
+
+RegisterNetEvent('qb-occasions:client:ReturnOwnedVehicle')
+AddEventHandler('qb-occasions:client:ReturnOwnedVehicle', function(mods)
+    local vehData = Config.OccasionSlots[currentVehicle]
+    local vehmods = json.decode(mods)
+    DoScreenFadeOut(250)
+    Citizen.Wait(500)
+    QBCore.Functions.SpawnVehicle(vehData["model"], function(veh)
+        SetVehicleNumberPlateText(veh, vehData["plate"])
+        SetEntityHeading(veh, Config.BuyVehicle.h)
+        TaskWarpPedIntoVehicle(GetPlayerPed(-1), veh, -1)
+        exports['LegacyFuel']:SetFuel(veh, 100)
+        QBCore.Functions.Notify("Jouw voertuig is terug in ontvangst..")
+        TriggerEvent("vehiclekeys:client:SetOwner", vehData["plate"])
+        SetVehicleEngineOn(veh, true, true)
+        Citizen.Wait(500)
+        QBCore.Functions.SetVehicleProperties(veh, vehmods)
     end, Config.BuyVehicle, true)
     Citizen.Wait(500)
     DoScreenFadeIn(250)

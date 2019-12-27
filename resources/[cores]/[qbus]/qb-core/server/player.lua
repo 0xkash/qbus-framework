@@ -320,9 +320,9 @@ QBCore.Player.Save = function(source)
 	if PlayerData ~= nil then
 		QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `citizenid` = '"..PlayerData.citizenid.."'", function(result)
 			if result[1] == nil then
-				QBCore.Functions.ExecuteSql("INSERT INTO `players` (`citizenid`, `cid`, `steam`, `license`, `name`, `money`, `charinfo`, `job`, `position`, `metadata`) VALUES ('"..PlayerData.citizenid.."', '"..tonumber(PlayerData.cid).."', '"..PlayerData.steam.."', '"..PlayerData.license.."', '"..PlayerData.name.."', '"..json.encode(PlayerData.money).."', '"..json.encode(PlayerData.charinfo).."', '"..json.encode(PlayerData.job).."', '"..json.encode(PlayerData.position).."', '"..json.encode(PlayerData.metadata).."')")
+				QBCore.Functions.ExecuteSql("INSERT INTO `players` (`citizenid`, `cid`, `steam`, `license`, `name`, `money`, `charinfo`, `job`, `position`, `metadata`) VALUES ('"..PlayerData.citizenid.."', '"..tonumber(PlayerData.cid).."', '"..PlayerData.steam.."', '"..PlayerData.license.."', '"..PlayerData.name.."', '"..json.encode(PlayerData.money).."', '"..QBCore.EscapeSqli(json.encode(PlayerData.charinfo)).."', '"..json.encode(PlayerData.job).."', '"..json.encode(PlayerData.position).."', '"..json.encode(PlayerData.metadata).."')")
 			else
-				QBCore.Functions.ExecuteSql("UPDATE `players` SET steam='"..PlayerData.steam.."',license='"..PlayerData.license.."',name='"..PlayerData.name.."',money='"..json.encode(PlayerData.money).."',charinfo='"..json.encode(PlayerData.charinfo).."',job='"..json.encode(PlayerData.job).."',position='"..json.encode(PlayerData.position).."',metadata='"..json.encode(PlayerData.metadata).."' WHERE `citizenid` = '"..PlayerData.citizenid.."'")
+				QBCore.Functions.ExecuteSql("UPDATE `players` SET steam='"..PlayerData.steam.."',license='"..PlayerData.license.."',name='"..PlayerData.name.."',money='"..json.encode(PlayerData.money).."',charinfo='"..QBCore.EscapeSqli(json.encode(PlayerData.charinfo)).."',job='"..json.encode(PlayerData.job).."',position='"..json.encode(PlayerData.position).."',metadata='"..json.encode(PlayerData.metadata).."' WHERE `citizenid` = '"..PlayerData.citizenid.."'")
 			end
 			QBCore.Player.SaveInventory(source)
 		end)
@@ -394,23 +394,25 @@ QBCore.Player.LoadInventory = function(PlayerData)
 end
 
 QBCore.Player.SaveInventory = function(source)
-	local PlayerData = QBCore.Players[source].PlayerData
-	local items = PlayerData.items
-	local ItemsJson = {}
-	if items ~= nil and next(items) ~= nil then
-		for slot, item in pairs(items) do
-			if items[slot] ~= nil then
-				table.insert(ItemsJson, {
-					name = item.name,
-					amount = item.amount,
-					info = item.info,
-					type = item.type,
-					slot = slot,
-				})
+	if QBCore.Players[source] ~= nil then 
+		local PlayerData = QBCore.Players[source].PlayerData
+		local items = PlayerData.items
+		local ItemsJson = {}
+		if items ~= nil and next(items) ~= nil then
+			for slot, item in pairs(items) do
+				if items[slot] ~= nil then
+					table.insert(ItemsJson, {
+						name = item.name,
+						amount = item.amount,
+						info = item.info,
+						type = item.type,
+						slot = slot,
+					})
+				end
 			end
+	
+			QBCore.Functions.ExecuteSql("UPDATE `players` SET `inventory` = '"..QBCore.EscapeSqli(json.encode(ItemsJson)).."' WHERE `citizenid` = '"..PlayerData.citizenid.."'")
 		end
-
-		QBCore.Functions.ExecuteSql("UPDATE `players` SET `inventory` = '"..json.encode(ItemsJson).."' WHERE `citizenid` = '"..PlayerData.citizenid.."'")
 	end
 end
 
@@ -474,4 +476,9 @@ QBCore.Player.CreateFingerId = function()
 		end)
 	end
 	return FingerId
+end
+
+QBCore.EscapeSqli = function(str)
+    local replacements = { ['"'] = '\\"', ["'"] = "\\'" }
+    return str:gsub( "['\"]", replacements ) -- or string.gsub( source, "['\"]", replacements )
 end

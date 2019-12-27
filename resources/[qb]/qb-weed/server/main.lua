@@ -72,7 +72,7 @@ Citizen.CreateThread(function()
             TriggerClientEvent('qb-weed:client:refreshPlantStats', -1)
         end)
 
-        Citizen.Wait((60 * 1000) * 20)
+        Citizen.Wait((60 * 1000) * 9.6)
     end
 end)
 
@@ -81,9 +81,10 @@ Citizen.CreateThread(function()
         QBCore.Functions.ExecuteSql("SELECT * FROM `house_plants`", function(housePlants)
             for k, v in pairs(housePlants) do
                 if housePlants[k].health > 50 then
-                    if housePlants[k].progress + 1 < 100 then
+                    local Grow = math.random(1, 3)
+                    if housePlants[k].progress + Grow < 100 then
                         QBCore.Functions.ExecuteSql("UPDATE `house_plants` SET `progress` = '"..(housePlants[k].progress + 1).."' WHERE `plantid` = '"..housePlants[k].plantid.."'")
-                    elseif housePlants[k].progress + 1 == 100 then
+                    elseif housePlants[k].progress + Grow >= 100 then
                         if housePlants[k].stage ~= QBWeed.Plants[housePlants[k].sort]["highestStage"] then
                             if housePlants[k].stage == "stage-a" then
                                 QBCore.Functions.ExecuteSql("UPDATE `house_plants` SET `stage` = 'stage-b' WHERE `plantid` = '"..housePlants[k].plantid.."'")
@@ -107,7 +108,7 @@ Citizen.CreateThread(function()
             TriggerClientEvent('qb-weed:client:refreshPlantStats', -1)
         end)
 
-        Citizen.Wait((60 * 1000) * 9)
+        Citizen.Wait((60 * 1000) * 4.8)
     end
 end)
 
@@ -154,36 +155,41 @@ end)
 
 RegisterServerEvent('qb-weed:server:harvestPlant')
 AddEventHandler('qb-weed:server:harvestPlant', function(house, amount, plantName, plantId)
-    local Player = QBCore.Functions.GetPlayer(source)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
     local weedBag = Player.Functions.GetItemByName('empty_weed_bag')
     local sndAmount = math.random(8, 12)
 
     if weedBag ~= nil then
         if weedBag.amount >= sndAmount then
-            QBCore.Functions.ExecuteSql("SELECT * FROM `house_plants` WHERE plantid = '"..plantId.."' AND building = '"..house.."'", function(result)
-                if result[1] ~= nil then
-                    Player.Functions.AddItem('weed_'..plantName..'_seed', amount)
-                    Player.Functions.AddItem('weed_'..plantName, sndAmount)
-                    Player.Functions.RemoveItem('empty_weed_bag', 1)
-                    QBCore.Functions.ExecuteSql("DELETE FROM `house_plants` WHERE plantid = '"..plantId.."' AND building = '"..house.."'")
-                    TriggerClientEvent('QBCore:Notify', source, 'De plant is geoogst', 'success', 3500)
-                    TriggerClientEvent('qb-weed:client:refreshHousePlants', -1, house)
-                else
-                    TriggerClientEvent('QBCore:Notify', source, 'Deze plant bestaat niet meer?', 'error', 3500)
-                end
-            end)
+            if house ~= nil then 
+                QBCore.Functions.ExecuteSql("SELECT * FROM `house_plants` WHERE plantid = '"..plantId.."' AND building = '"..house.."'", function(result)
+                    if result[1] ~= nil then
+                        Player.Functions.AddItem('weed_'..plantName..'_seed', amount)
+                        Player.Functions.AddItem('weed_'..plantName, sndAmount)
+                        Player.Functions.RemoveItem('empty_weed_bag', 1)
+                        QBCore.Functions.ExecuteSql("DELETE FROM `house_plants` WHERE plantid = '"..plantId.."' AND building = '"..house.."'")
+                        TriggerClientEvent('QBCore:Notify', src, 'De plant is geoogst', 'success', 3500)
+                        TriggerClientEvent('qb-weed:client:refreshHousePlants', -1, house)
+                    else
+                        TriggerClientEvent('QBCore:Notify', src, 'Deze plant bestaat niet meer?', 'error', 3500)
+                    end
+                end)
+            else
+                TriggerClientEvent('QBCore:Notify', src, 'Huis niet gevonden', 'error', 3500)
+            end
         else
-            TriggerClientEvent('QBCore:Notify', source, 'Je hebt niet genoeg hersluitbare zakjes', 'error', 3500)
+            TriggerClientEvent('QBCore:Notify', src, 'Je hebt niet genoeg hersluitbare zakjes', 'error', 3500)
         end
     else
-        TriggerClientEvent('QBCore:Notify', source, 'Je hebt geen hersluitbare zakjes', 'error', 3500)
+        TriggerClientEvent('QBCore:Notify', src, 'Je hebt geen hersluitbare zakjes', 'error', 3500)
     end
 end)
 
 RegisterServerEvent('qb-weed:server:foodPlant')
 AddEventHandler('qb-weed:server:foodPlant', function(house, amount, plantName, plantId)
     local src = source
-    local Player = QBCore.Functions.GetPlayer(source)
+    local Player = QBCore.Functions.GetPlayer(src)
 
     QBCore.Functions.ExecuteSql('SELECT * FROM `house_plants` WHERE `building` = "'..house..'" AND `sort` = "'..plantName..'" AND `plantid` = "'..tostring(plantId)..'"', function(plantStats)
         TriggerClientEvent('QBCore:Notify', src, QBWeed.Plants[plantName]["label"]..' | Voeding: '..plantStats[1].food..'% + '..amount..'% ('..(plantStats[1].food + amount)..'%)', 'success', 3500)

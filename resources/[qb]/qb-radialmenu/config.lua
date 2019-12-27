@@ -94,6 +94,14 @@ Config.MenuItems = {
                         event = 'police:client:KidnapPlayer',
                         shouldClose = true,
                     },
+                    {
+                        id    = 'escort2',
+                        title = 'Escorteren',
+                        icon = '#general',
+                        type = 'client',
+                        event = 'police:client:EscortPlayer',
+                        shouldClose = true,
+                    },
                 }
             },
         }
@@ -114,6 +122,15 @@ Config.MenuItems = {
                         icon = '#vehiclekey',
                         type = 'client',
                         event = 'qb-houses:client:giveHouseKey',
+                        shouldClose = true,
+                        items = {},
+                    },
+                    {
+                        id    = 'removehousekey',
+                        title = 'Verwijder Huis Sleutel',
+                        icon = '#vehiclekey',
+                        type = 'client',
+                        event = 'qb-houses:client:removeHouseKey',
                         shouldClose = true,
                         items = {},
                     },

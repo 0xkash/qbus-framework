@@ -20,5 +20,6 @@ files {
 	'html/ui.html',
 	'html/css/main.css',
 	'html/js/app.js',
-	'html/images/*.png'
+	'html/images/*.png',
+	'html/images/*.jpg',
 }

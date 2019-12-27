@@ -9,7 +9,9 @@ StatusList = {
 	["heavybreath"] = "Ademt zwaar",
 	["sweat"] = "Zweet erg",
     ["handbleed"] = "Bloed op handen",
-    ["confused"] = "Verward",
+	["confused"] = "Verward",
+	["alcohol"] = "Ruikt naar alcohol",
+	["heavyalcohol"] = "Ruikt erg naar alcohol",
 }
 
 CurrentStatusList = {}
@@ -177,7 +179,7 @@ Citizen.CreateThread(function()
 		Citizen.Wait(1)
 		if IsPedShooting(GetPlayerPed(-1)) then
 			local weapon = GetSelectedPedWeapon(GetPlayerPed(-1))
-			if weapon ~= GetHashKey("WEAPON_STUNGUN") and weapon ~= GetHashKey("WEAPON_PETROLCAN") and weapon ~= GetHashKey("WEAPON_FIREEXTINGUISHER") then
+			if weapon ~= GetHashKey("WEAPON_SNOWBALL") and weapon ~= GetHashKey("WEAPON_STUNGUN") and weapon ~= GetHashKey("WEAPON_PETROLCAN") and weapon ~= GetHashKey("WEAPON_FIREEXTINGUISHER") then
 				shotAmount = shotAmount + 1
 				if shotAmount > 5 and (CurrentStatusList == nil or CurrentStatusList["gunpowder"] == nil) then
 					if math.random(1, 10) <= 7 then

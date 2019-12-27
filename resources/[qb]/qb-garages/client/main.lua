@@ -239,8 +239,8 @@ end
 
 function TakeOutVehicle(vehicle)
     if vehicle.state == "Garage" then
-        enginePercent = round(vehicle.engine / 10, 0)
-        bodyPercent = round(vehicle.body / 10, 0)
+        enginePercent = round(vehicle.engine / 10, 1)
+        bodyPercent = round(vehicle.body / 10, 1)
         currentFuel = vehicle.fuel
 
         QBCore.Functions.SpawnVehicle(vehicle.vehicle, function(veh)
@@ -279,8 +279,8 @@ function TakeOutGarageVehicle(vehicle)
         QBCore.Functions.SpawnVehicle(vehicle.vehicle, function(veh)
             QBCore.Functions.TriggerCallback('qb-garage:server:GetVehicleProperties', function(properties)
                 QBCore.Functions.SetVehicleProperties(veh, properties)
-                enginePercent = round(vehicle.engine / 10, 0)
-                bodyPercent = round(vehicle.body / 10, 0)
+                enginePercent = round(vehicle.engine / 10, 1)
+                bodyPercent = round(vehicle.body / 10, 1)
                 currentFuel = vehicle.fuel
 
                 SetVehicleNumberPlateText(veh, vehicle.plate)
@@ -308,22 +308,22 @@ function doCarDamage(currentVehicle, veh)
 		engine = 200.0
     end
     
-    if engine  > 1000.0 then
-        engine = 950.0
+    if engine > 1000.0 then
+        engine = 1000.0
     end
 
 	if body < 150.0 then
 		body = 150.0
 	end
-	if body < 950.0 then
+	if body < 900.0 then
 		smash = true
 	end
 
-	if body < 920.0 then
+	if body < 800.0 then
 		damageOutside = true
 	end
 
-	if body < 920.0 then
+	if body < 500.0 then
 		damageOutside2 = true
 	end
 
@@ -424,6 +424,7 @@ Citizen.CreateThread(function()
         
                                 TriggerServerEvent('qb-garage:server:updateVehicleStatus', totalFuel, engineDamage, bodyDamage, plate, k)
                                 TriggerServerEvent('qb-garage:server:updateVehicleState', 1, plate, k)
+                                --TriggerServerEvent('vehiclemod:server:saveStatus', plate)
                                 QBCore.Functions.DeleteVehicle(curVeh)
                                 QBCore.Functions.Notify("Voertuig geparkeerd in, "..Garages[k].label, "primary", 4500)
                             else

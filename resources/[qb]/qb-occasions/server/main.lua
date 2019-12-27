@@ -38,12 +38,32 @@ QBCore.Functions.CreateCallback("qb-occasions:server:getSellerInformation", func
     end)
 end)
 
+RegisterServerEvent('qb-occasions:server:ReturnVehicle')
+AddEventHandler('qb-occasions:server:ReturnVehicle', function(vehicleData)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    QBCore.Functions.ExecuteSql("SELECT * FROM `occasion_vehicles` WHERE `plate` = '"..vehicleData['plate'].."' AND `occasionId` = '"..vehicleData["oid"].."'", function(result)
+        if result[1] ~= nil then 
+            if result[1].seller == Player.PlayerData.citizenid then
+                QBCore.Functions.ExecuteSql("INSERT INTO `player_vehicles` (`steam`, `citizenid`, `vehicle`, `hash`, `mods`, `plate`, `state`) VALUES ('"..Player.PlayerData.steam.."', '"..Player.PlayerData.citizenid.."', '"..vehicleData["model"].."', '"..GetHashKey(vehicleData["model"]).."', '"..vehicleData["mods"].."', '"..vehicleData["plate"].."', '0')")
+                QBCore.Functions.ExecuteSql("DELETE FROM `occasion_vehicles` WHERE `occasionId` = '"..vehicleData["oid"].."'")
+                TriggerClientEvent("qb-occasions:client:ReturnOwnedVehicle", src, result[1].mods)
+                TriggerClientEvent('qb-occasion:client:refreshVehicles', -1)
+            else
+                TriggerClientEvent('QBCore:Notify', src, 'Dit is niet jouw voertuig...', 'error', 3500)
+            end
+        else
+            TriggerClientEvent('QBCore:Notify', src, 'Voertuig bestaat niet...', 'error', 3500)
+        end
+    end)
+end)
+
 RegisterServerEvent('qb-occasions:server:sellVehicle')
 AddEventHandler('qb-occasions:server:sellVehicle', function(vehiclePrice, vehicleData)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     QBCore.Functions.ExecuteSql("DELETE FROM `player_vehicles` WHERE `plate` = '"..vehicleData.plate.."' AND `vehicle` = '"..vehicleData.model.."'")
-    QBCore.Functions.ExecuteSql("INSERT INTO `occasion_vehicles` (`seller`, `price`, `description`, `plate`, `model`, `mods`, `occasionId`) VALUES ('"..Player.PlayerData.citizenid.."', '"..vehiclePrice.."', '"..vehicleData.desc.."', '"..vehicleData.plate.."', '"..vehicleData.model.."', '"..json.encode(vehicleData.mods).."', '"..generateOID().."')")
+    QBCore.Functions.ExecuteSql("INSERT INTO `occasion_vehicles` (`seller`, `price`, `description`, `plate`, `model`, `mods`, `occasionId`) VALUES ('"..Player.PlayerData.citizenid.."', '"..vehiclePrice.."', '"..escapeSqli(vehicleData.desc).."', '"..vehicleData.plate.."', '"..vehicleData.model.."', '"..json.encode(vehicleData.mods).."', '"..generateOID().."')")
     TriggerEvent("qb-log:server:CreateLog", "vehicleshop", "Voertuig te koop", "red", "**"..GetPlayerName(src) .. "** heeft een " .. vehicleData.model .. " te koop gezet voor "..vehiclePrice)
 
     TriggerClientEvent('qb-occasion:client:refreshVehicles', -1)
@@ -58,46 +78,50 @@ AddEventHandler('qb-occasions:server:buyVehicle', function(vehicleData)
 
     QBCore.Functions.ExecuteSql("SELECT * FROM `occasion_vehicles` WHERE `plate` = '"..vehicleData['plate'].."' AND `occasionId` = '"..vehicleData["oid"].."'", function(result)
         local bankAmount = Player.PlayerData.money["bank"]
-        if Player.Functions.RemoveMoney('cash', result[1].price) then
-            QBCore.Functions.ExecuteSql("INSERT INTO `player_vehicles` (`steam`, `citizenid`, `vehicle`, `hash`, `mods`, `plate`, `state`) VALUES ('"..Player.PlayerData.steam.."', '"..Player.PlayerData.citizenid.."', '"..vehicleData["model"].."', '"..GetHashKey(vehicleData["model"]).."', '"..vehicleData["mods"].."', '"..vehicleData["plate"].."', '0')")
-            QBCore.Functions.ExecuteSql("DELETE FROM `occasion_vehicles` WHERE `occasionId` = '"..vehicleData["oid"].."'")
-            TriggerClientEvent('qb-occasions:client:BuyFinished', src)
-    
-    
-            QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE citizenid = '"..ownerCid.."'", function(player)
-                local recieverSteam = QBCore.Functions.GetPlayerByCitizenId(player[1].citizenid)
+        local cashAmount = Player.PlayerData.money["cash"]
+        if result[1] ~= nil then 
+            if  cashAmount >= result[1].price then
+                Player.Functions.RemoveMoney('cash', result[1].price)
+                QBCore.Functions.ExecuteSql("INSERT INTO `player_vehicles` (`steam`, `citizenid`, `vehicle`, `hash`, `mods`, `plate`, `state`) VALUES ('"..Player.PlayerData.steam.."', '"..Player.PlayerData.citizenid.."', '"..vehicleData["model"].."', '"..GetHashKey(vehicleData["model"]).."', '"..vehicleData["mods"].."', '"..vehicleData["plate"].."', '0')")
+                QBCore.Functions.ExecuteSql("DELETE FROM `occasion_vehicles` WHERE `occasionId` = '"..vehicleData["oid"].."'")
+                TriggerClientEvent('qb-occasions:client:BuyFinished', src, result[1].mods)
+                QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE citizenid = '"..result[1].seller.."'", function(player)
+                    local recieverSteam = QBCore.Functions.GetPlayerByCitizenId(player[1].citizenid)
+            
+                    if recieverSteam then
+                        recieverSteam.Functions.AddMoney('bank', math.ceil((result[1].price / 100) * 77))
+                    else
+                        local moneyInfo = json.decode(player[1].money)
+                        moneyInfo.bank = math.ceil((moneyInfo.bank + (result[1].price / 100) * 77))
+                        QBCore.Functions.ExecuteSql("UPDATE `players` SET `money` = '"..json.encode(moneyInfo).."' WHERE `citizenid` = '"..player[1].citizenid.."'")
+                    end
+                    TriggerEvent("qb-log:server:CreateLog", "vehicleshop", "Occasion gekocht", "green", "**"..GetPlayerName(src) .. "** heeft een occasian gekocht voor "..result[1].price .. " (" .. result[1].plate .. ") van **"..player[1].citizenid.."**")
+                end)
+                TriggerClientEvent('qb-occasion:client:refreshVehicles', -1)
+            elseif bankAmount >= result[1].price then
+                Player.Functions.RemoveMoney('bank', result[1].price)
+                QBCore.Functions.ExecuteSql("INSERT INTO `player_vehicles` (`steam`, `citizenid`, `vehicle`, `hash`, `mods`, `plate`, `state`) VALUES ('"..Player.PlayerData.steam.."', '"..Player.PlayerData.citizenid.."', '"..vehicleData["model"].."', '"..GetHashKey(vehicleData["model"]).."', '"..vehicleData["mods"].."', '"..vehicleData["plate"].."', '0')")
+                QBCore.Functions.ExecuteSql("DELETE FROM `occasion_vehicles` WHERE `occasionId` = '"..vehicleData["oid"].."'")
+                TriggerClientEvent('qb-occasions:client:BuyFinished', src, result[1].mods)
         
-                if recieverSteam then
-                    recieverSteam.Functions.AddMoney('bank', math.ceil((result[1].price / 100) * 77))
-                else
-                    local moneyInfo = json.decode(player[1].money)
-                    moneyInfo.bank = math.ceil((moneyInfo.bank + (result[1].price / 100) * 77))
-                    QBCore.Functions.ExecuteSql("UPDATE `players` SET `money` = '"..json.encode(moneyInfo).."' WHERE `citizenid` = '"..player[1].citizenid.."'")
-                end
-                TriggerEvent("qb-log:server:CreateLog", "vehicleshop", "Occasion gekocht", "green", "**"..GetPlayerName(src) .. "** heeft een occasian gekocht voor "..result[1].price .. " van **"..player[1].citizenid.."**")
-            end)
-            TriggerClientEvent('qb-occasion:client:refreshVehicles', -1)
-        elseif bankAmount >= result[1].price then
-            Player.Functions.RemoveMoney('bank', result[1].price)
-            QBCore.Functions.ExecuteSql("INSERT INTO `player_vehicles` (`steam`, `citizenid`, `vehicle`, `hash`, `mods`, `plate`, `state`) VALUES ('"..Player.PlayerData.steam.."', '"..Player.PlayerData.citizenid.."', '"..vehicleData["model"].."', '"..GetHashKey(vehicleData["model"]).."', '"..vehicleData["mods"].."', '"..vehicleData["plate"].."', '0')")
-            QBCore.Functions.ExecuteSql("DELETE FROM `occasion_vehicles` WHERE `occasionId` = '"..vehicleData["oid"].."'")
-            TriggerClientEvent('qb-occasions:client:BuyFinished', src)
-    
-            QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE citizenid = '"..ownerCid.."'", function(player)
-                local recieverSteam = QBCore.Functions.GetPlayerByCitizenId(player[1].citizenid)
-        
-                if recieverSteam then
-                    recieverSteam.Functions.AddMoney('bank', math.ceil((result[1].price / 100) * 77))
-                else
-                    local moneyInfo = json.decode(player[1].money)
-                    moneyInfo.bank = math.ceil((moneyInfo.bank + (result[1].price / 100) * 77))
-                    QBCore.Functions.ExecuteSql("UPDATE `players` SET `money` = '"..json.encode(moneyInfo).."' WHERE `citizenid` = '"..player[1].citizenid.."'")
-                end
-            end)
-            TriggerEvent("qb-log:server:CreateLog", "vehicleshop", "Occasion gekocht", "green", "**"..GetPlayerName(src) .. "** heeft een occasian gekocht voor "..result[1].price .. " van **"..player[1].citizenid.."**")
-            TriggerClientEvent('qb-occasion:client:refreshVehicles', -1)
+                QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE citizenid = '"..ownerCid.."'", function(player)
+                    local recieverSteam = QBCore.Functions.GetPlayerByCitizenId(player[1].citizenid)
+            
+                    if recieverSteam then
+                        recieverSteam.Functions.AddMoney('bank', math.ceil((result[1].price / 100) * 77))
+                    else
+                        local moneyInfo = json.decode(player[1].money)
+                        moneyInfo.bank = math.ceil((moneyInfo.bank + (result[1].price / 100) * 77))
+                        QBCore.Functions.ExecuteSql("UPDATE `players` SET `money` = '"..json.encode(moneyInfo).."' WHERE `citizenid` = '"..player[1].citizenid.."'")
+                    end
+                end)
+                TriggerEvent("qb-log:server:CreateLog", "vehicleshop", "Occasion gekocht", "green", "**"..GetPlayerName(src) .. "** heeft een occasian gekocht voor "..result[1].price .. " (" .. result[1].plate .. ") van **"..player[1].citizenid.."**")
+                TriggerClientEvent('qb-occasion:client:refreshVehicles', -1)
+            else
+                TriggerClientEvent('QBCore:Notify', src, 'Je hebt niet voldoende geld...', 'error', 3500)
+            end
         else
-            TriggerClientEvent('QBCore:Notify', src, 'Je hebt niet voldoende geld...', 'error', 3500)
+            TriggerClientEvent('QBCore:Notify', src, 'Voertuig bestaat niet...', 'error', 3500)
         end
     end)
 end)
@@ -110,4 +134,9 @@ end
 
 function round(number)
     return number - (number % 1)
+end
+
+function escapeSqli(str)
+    local replacements = { ['"'] = '\\"', ["'"] = "\\'" }
+    return str:gsub( "['\"]", replacements ) -- or string.gsub( source, "['\"]", replacements )
 end

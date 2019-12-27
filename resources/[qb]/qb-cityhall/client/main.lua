@@ -77,7 +77,8 @@ Citizen.CreateThread(function()
     AddTextComponentSubstringPlayerName("Gemeentehuis")
     EndTextCommandSetBlipName(CityhallBlip)
 end)
-
+local creatingCompany = false
+local currentName = nil
 Citizen.CreateThread(function()
     while true do
 
@@ -98,12 +99,34 @@ Citizen.CreateThread(function()
             end
             DrawMarker(2, Config.DriverTest.coords.x, Config.DriverTest.coords.y, Config.DriverTest.coords.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.2, 155, 152, 234, 155, false, false, false, true, false, false, false)
             if GetDistanceBetweenCoords(pos, Config.DriverTest.coords.x, Config.DriverTest.coords.y, Config.DriverTest.coords.z, true) < 1.5 then
-                qbCityhall.DrawText3Ds(Config.DriverTest.coords, '~g~E~w~ - Rijles aanvragen')
-                if IsControlJustPressed(0, Keys["E"]) then
-                    if QBCore.Functions.GetPlayerData().metadata["licences"]["driver"] then
-                        QBCore.Functions.Notify("Je hebt al je rijbewijs gehaald, vraag het hiernaast aan")
-                    else
-                        TriggerServerEvent("qb-cityhall:server:sendDriverTest")
+                if creatingCompany then
+                    qbCityhall.DrawText3Ds(Config.DriverTest.coords, '~g~E~w~ - Bedrijf aanmaken (€'..Config.CompanyPrice..') | ~r~G~w~ - Stoppen')
+                    if IsControlJustPressed(0, Keys["E"]) then
+                        TriggerServerEvent("qb-companies:server:createCompany", currentName)
+                        creatingCompany = false
+                    end
+                    if IsControlJustPressed(0, Keys["G"]) then
+                        creatingCompany = false
+                    end
+                else
+                    qbCityhall.DrawText3Ds(Config.DriverTest.coords, '~g~E~w~ - Rijles aanvragen | ~g~G~w~ - Bedrijf aanvragen')
+                    if IsControlJustPressed(0, Keys["E"]) then
+                        if QBCore.Functions.GetPlayerData().metadata["licences"]["driver"] then
+                            QBCore.Functions.Notify("Je hebt al je rijbewijs gehaald, vraag het hiernaast aan")
+                        else
+                            TriggerServerEvent("qb-cityhall:server:sendDriverTest")
+                        end
+                    end
+                    if IsControlJustPressed(0, Keys["G"]) then
+                        QBCore.Functions.Notify("Voer een bedrijfsnaam in..", false, 10000)
+                        DisplayOnscreenKeyboard(1, "Naam", "", "Naam", "", "", "", 128 + 1)
+                        while UpdateOnscreenKeyboard() ~= 1 and UpdateOnscreenKeyboard() ~= 2 do
+                            Citizen.Wait(7)
+                        end
+                        currentName = GetOnscreenKeyboardResult()
+                        if currentName ~= nil and currentName ~= "" then
+                            creatingCompany = true
+                        end
                     end
                 end
             end

@@ -238,7 +238,7 @@ Citizen.CreateThread(function()
 
 				QBCore.Functions.DrawText3D(pumpCoords.x, pumpCoords.y, pumpCoords.z + 1.2, Config.Strings.ExitVehicle)
 			else
-				local vehicle = GetPlayersLastVehicle()
+				local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1), true)
 				local vehicleCoords = GetEntityCoords(vehicle)
 
 				if DoesEntityExist(vehicle) and GetDistanceBetweenCoords(GetEntityCoords(ped), vehicleCoords) < 2.5 then

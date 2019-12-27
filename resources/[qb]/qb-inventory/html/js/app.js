@@ -92,7 +92,6 @@ $(document).on("mouseenter", ".item-slot", function(e){
 function handleDragDrop() {
     $(".item-drag").draggable({
         helper: 'clone',
-        zIndex:999,
         appendTo: "body",
         scroll: true,
         revertDuration: 0,
@@ -165,7 +164,7 @@ function handleDragDrop() {
             }
         },
         stop: function() {
-            $(this).css("background", "rgba(0, 0, 0, 0.2)");
+            $(this).css("background", "rgba(235, 235, 235, 0.03)");
             $(this).find("img").css("filter", "brightness(100%)");
             $("#item-use").css("background", "rgba(235, 235, 235, 0.08)");
         },
@@ -736,7 +735,7 @@ var requiredItemOpen = false;
                     totalWeight += (item.weight * item.amount);
                     if (item.slot < 6) {
                         $(".player-inventory").find("[data-slot=" + item.slot + "]").addClass("item-drag");
-                        // $(".player-inventory").find("[data-slot=" + item.slot + "]").html('<div class="item-slot-key"><p>[' + item.slot + ']</p></div><div class="item-slot-img"><img src="images/' + item.image + '" alt="' + item.name + '" /></div><div class="item-slot-amount"><p>' + item.amount + ' (' + ((item.weight * item.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + item.label + '</p></div>');
+                        // $(".player-inventory").find("[data-slot=" + item.slot + "]").html('<div class="item-slot-key"><p>' + item.slot + '</p></div><div class="item-slot-img"><img src="images/' + item.image + '" alt="' + item.name + '" /></div><div class="item-slot-amount"><p>' + item.amount + ' (' + ((item.weight * item.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + item.label + '</p></div>');
                         $(".player-inventory").find("[data-slot=" + item.slot + "]").html('<div class="item-slot-key"><p>[' + item.slot + ']</p></div><div class="item-slot-img"><img src="images/' + item.image + '" alt="' + item.name + '" /></div><div class="item-slot-amount"><p>' + item.amount + ' (' + ((item.weight * item.amount) / 1000).toFixed(1) + ')</p></div><div class="item-slot-label"><p>' + item.label + '</p></div>');
                         $(".player-inventory").find("[data-slot=" + item.slot + "]").data("item", item);
                     } else {

@@ -57,6 +57,16 @@ QBCore.Functions.GetPlayerByCitizenId = function(citizenid)
 	return nil
 end
 
+QBCore.Functions.GetPlayerByPhone = function(number)
+	for src, player in pairs(QBCore.Players) do
+		local cid = citizenid
+		if QBCore.Players[src].PlayerData.charinfo.phone == number then
+			return QBCore.Players[src]
+		end
+	end
+	return nil
+end
+
 QBCore.Functions.GetPlayers = function()
 	local sources = {}
 	for k, v in pairs(QBCore.Players) do

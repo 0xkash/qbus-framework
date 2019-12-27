@@ -299,6 +299,12 @@ AddEventHandler('police:client:GetEscorted', function(playerId)
     end)
 end)
 
+RegisterNetEvent('police:client:DeEscort')
+AddEventHandler('police:client:DeEscort', function()
+    isEscorted = false
+    DetachEntity(GetPlayerPed(-1), true, false)
+end)
+
 RegisterNetEvent('police:client:GetKidnappedTarget')
 AddEventHandler('police:client:GetKidnappedTarget', function(playerId)
     QBCore.Functions.GetPlayerData(function(PlayerData)
