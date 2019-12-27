@@ -42,3 +42,4 @@ resources/[standalone]/vMenu/config/locations.json
 resources/[standalone]/vMenu/config/addons.json
 resources/[standalone]/vMenu/__resource.lua
 ghmattimysql.log
+resources/[cores]/[qbus]/qb-core/config.lua
