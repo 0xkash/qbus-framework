@@ -273,8 +273,10 @@ end
 
 QBCore.Functions.CreateUseableItem("thermite", function(source, item)
     local Player = QBCore.Functions.GetPlayer(source)
-	if Player.Functions.RemoveItem('thermite', 1, item.slot) then
+	if Player.Functions.GetItemByName('lighter') ~= nil then
         TriggerClientEvent("thermite:UseThermite", source)
+    else
+        TriggerClientEvent('QBCore:Notify', source, "Je mist iets om het mee te vlammen..", "error")
     end
 end)
 
