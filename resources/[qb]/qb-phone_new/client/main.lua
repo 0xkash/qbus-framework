@@ -369,6 +369,18 @@ AddEventHandler('qb-phone_new:client:UpdateHashtags', function(Handle, msgData)
     })
 end)
 
+RegisterNUICallback('GetHashtagMessages', function(data, cb)
+    if PhoneData.Hashtags[data.hashtag] ~= nil and next(PhoneData.Hashtags[data.hashtag]) ~= nil then
+        cb(PhoneData.Hashtags[data.hashtag])
+    else
+        cb(nil)
+    end
+end)
+
+RegisterNUICallback('GetTweets', function(data, cb)
+    cb(PhoneData.Tweets)
+end)
+
 RegisterNUICallback('PostNewTweet', function(data, cb)
     local TweetMessage = {
         firstName = PhoneData.PlayerData.charinfo.firstname,

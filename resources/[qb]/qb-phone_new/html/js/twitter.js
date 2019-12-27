@@ -18,6 +18,12 @@ $(document).on('click', '.twitter-header-tab', function(e){
             $.post('http://qb-phone_new/ClearMentions');
         }
 
+        if (PressedTwitterTab == "twitter-home") {
+            $.post('http://qb-phone_new/GetTweets', JSON.stringify({}), function(Tweets){
+                QB.Phone.Notifications.LoadTweets(Tweets);
+            });
+        }
+
         CurrentTwitterTab = PressedTwitterTab;
 
         if (HashtagOpen) {
@@ -42,6 +48,12 @@ $(document).on('click', '.twitter-header-tab', function(e){
             }, 150);
             HashtagOpen = false;
         }
+    } else if (CurrentTwitterTab == "twitter-home" && PressedTwitterTab == "twitter-home") {
+        event.preventDefault();
+
+        $.post('http://qb-phone_new/GetTweets', JSON.stringify({}), function(Tweets){
+            QB.Phone.Notifications.LoadTweets(Tweets);
+        });
     }
 });
 
@@ -66,11 +78,11 @@ QB.Phone.Notifications.LoadTweets = function(Tweets) {
             var diffSeconds = Math.round(diffMs / 1000);
             var TimeAgo = diffSeconds + ' s';
 
-            if (diffSeconds > 60) {
+            if (diffMins > 0) {
                 TimeAgo = diffMins + ' m';
-            } else if (diffMins > 60) {
+            } else if (diffHrs > 0) {
                 TimeAgo = diffHrs + ' h';
-            } else if (diffHrs > 24) {
+            } else if (diffDays > 0) {
                 TimeAgo = diffDays + ' d';
             }
 
@@ -116,11 +128,19 @@ QB.Phone.Notifications.LoadMentionedTweets = function(Tweets) {
 QB.Phone.Functions.FormatTwitterMessage = function(TwitterMessage) {
     var TwtMessage = TwitterMessage;
     var res = TwtMessage.split("@");
+    var tags = TwtMessage.split("#");
 
     for(i = 1; i < res.length; i++) {
         var MentionTag = res[i].split(" ")[0];
         if (MentionTag !== null && MentionTag !== undefined && MentionTag !== "") {
             TwtMessage = TwtMessage.replace("@"+MentionTag, "<span class='mentioned-tag' data-mentiontag='@"+MentionTag+"' style='color: rgb(27, 149, 224);'>@"+MentionTag+"</span>");
+        }
+    }
+
+    for(i = 1; i < tags.length; i++) {
+        var Hashtag = tags[i].split(" ")[0];
+        if (Hashtag !== null && Hashtag !== undefined && Hashtag !== "") {
+            TwtMessage = TwtMessage.replace("#"+Hashtag, "<span class='hashtag-tag-text' data-hashtag='"+Hashtag+"' style='color: rgb(27, 149, 224);'>#"+Hashtag+"</span>");
         }
     }
 
@@ -158,6 +178,32 @@ $(document).on('click', '#cancel-tweet', function(e){
 $(document).on('click', '.mentioned-tag', function(e){
     e.preventDefault();
     CopyMentionTag(this);
+});
+
+$(document).on('click', '.hashtag-tag-text', function(e){
+    e.preventDefault();
+    if (!HashtagOpen) {
+        var Hashtag = $(this).data('hashtag');
+        var PreviousTwitterTabObject = $('.twitter-header').find('[data-twittertab="'+CurrentTwitterTab+'"]');
+    
+        $("#twitter-hashtags").addClass('selected-twitter-header-tab');
+        $(PreviousTwitterTabObject).removeClass('selected-twitter-header-tab');
+    
+        $("."+CurrentTwitterTab+"-tab").css({"display":"none"});
+        $(".twitter-hashtags-tab").css({"display":"block"});
+    
+        $.post('http://qb-phone_new/GetHashtagMessages', JSON.stringify({hashtag: Hashtag}), function(HashtagData){
+            QB.Phone.Notifications.LoadHashtagMessages(HashtagData.messages);
+        });
+    
+        $(".twitter-hashtag-tweets").css({"display":"block", "left":"30vh"});
+        $(".twitter-hashtag-tweets").css({"left": "0vh"});
+        $(".twitter-hashtags").css({"left": "-30vh"});
+        $(".twitter-hashtags").css({"display":"none"});
+        HashtagOpen = true;
+    
+        CurrentTwitterTab = "twitter-hashtags";
+    }
 });
 
 function CopyMentionTag(elem) {

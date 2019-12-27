@@ -47,7 +47,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 .player-inventory {
     position: absolute;
-    top: 29%;
+    top: 26%;
     left: 10.2%;
     width: 30.95%;
     max-width: 30.95%;
@@ -61,7 +61,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 .other-inventory {
     position: absolute;
-    top: 29%;
+    top: 26%;
     right: 10.2%;
     width: 30.95%;
     max-width: 30.95%;
@@ -98,7 +98,7 @@ input[type=number]::-webkit-outer-spin-button {
     left: 0;
     right: 0;
     width: 9%;
-    top: 35%;
+    top: 32%;
 }
 
 .item-slot {
@@ -256,8 +256,8 @@ input[type=number]::-webkit-outer-spin-button {
     margin-top: 21%;
     width: auto;
     height: auto;
-    max-width: 95%;
-    max-height: 95%;
+    max-width: 100%;
+    max-height: 100%;
 }
 
 .ui-draggable-dragging {
@@ -267,7 +267,7 @@ input[type=number]::-webkit-outer-spin-button {
 .player-inv-info {
     position: absolute;
     left: 10.5%;
-    top: 22.5%;
+    top: 19.5%;
 }
 
 #player-inv-label {
@@ -323,7 +323,7 @@ input[type=number]::-webkit-outer-spin-button {
 .other-inv-info {
     position: absolute;
     left: 59%;
-    top: 22.5%;
+    top: 19.5%;
 }
 
 .ply-iteminfo-container {

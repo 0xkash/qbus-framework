@@ -17,6 +17,7 @@ QB.Phone.Data = {
     currentApplication: null,
     PlayerData: {},
     Applications: {},
+    IsOpen: false,
 }
 
 OpenedChatData = {
@@ -95,6 +96,11 @@ $(document).on('click', '.phone-application', function(e){
                 $.post('http://qb-phone_new/GetHashtags', JSON.stringify({}), function(Hashtags){
                     QB.Phone.Notifications.LoadHashtags(Hashtags)
                 })
+                if (QB.Phone.Data.IsOpen) {
+                    $.post('http://qb-phone_new/GetTweets', JSON.stringify({}), function(Tweets){
+                        QB.Phone.Notifications.LoadTweets(Tweets);
+                    });
+                }
             } else if (PressedApplication == "bank") {
                 QB.Phone.Functions.DoBankOpen();
                 $.post('http://qb-phone_new/GetBankContacts', JSON.stringify({}), function(contacts){
@@ -146,6 +152,7 @@ $(document).on('click', '.phone-home-container', function(event){
 QB.Phone.Functions.Open = function(data) {
     QB.Phone.Animations.BottomSlideUp('.container', 300, 0);
     QB.Phone.Notifications.LoadTweets(data.Tweets);
+    QB.Phone.Data.IsOpen = true;
 }
 
 QB.Phone.Functions.ToggleApp = function(app, show) {
@@ -155,6 +162,7 @@ QB.Phone.Functions.ToggleApp = function(app, show) {
 QB.Phone.Functions.Close = function() {
     QB.Phone.Animations.BottomSlideDown('.container', 300, -70);
     $.post('http://qb-phone_new/Close');
+    QB.Phone.Data.IsOpen = false;
 }
 
 QB.Phone.Functions.HeaderTextColor = function(newColor, Timeout) {
@@ -289,6 +297,7 @@ $(document).ready(function(){
             case "open":
                 QB.Phone.Functions.Open(event.data);
                 QB.Phone.Functions.SetupAppWarnings(event.data.AppData);
+                QB.Phone.Data.IsOpen = true; 
                 break;
             case "LoadPhoneApplications":
                 QB.Phone.Functions.SetupApplications(event.data);
