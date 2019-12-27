@@ -73,10 +73,10 @@ RegisterNetEvent('thermite:UseThermite')
 AddEventHandler('thermite:UseThermite', function()
     local ped = GetPlayerPed(-1)
     local pos = GetEntityCoords(ped)
-    if math.random(1, 100) <= 65 and not IsWearingHandshoes() then
-        TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
-    end
     if closestStation ~= 0 then
+        if math.random(1, 100) <= 65 and not IsWearingHandshoes() then
+            TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
+        end
         local dist = GetDistanceBetweenCoords(pos, Config.PowerStations[closestStation].coords.x, Config.PowerStations[closestStation].coords.y, Config.PowerStations[closestStation].coords.z)
         if dist < 1.5 then
             if CurrentCops >= 4 then
@@ -87,6 +87,8 @@ AddEventHandler('thermite:UseThermite', function()
                         action = "openThermite",
                         amount = math.random(5, 10),
                     })
+                    TriggerServerEvent("QBCore:Server:RemoveItem", "thermite", 1)
+                    TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items["thermite"], "remove")
                     currentStation = closestStation
                 else
                     QBCore.Functions.Notify("Het lijkt erop dat de zekeringen zijn doorgebrand..", "error")

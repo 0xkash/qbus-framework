@@ -340,19 +340,21 @@ end)
 
 RegisterNetEvent('SafeCracker:EndMinigame')
 AddEventHandler('SafeCracker:EndMinigame', function(won)
-    if won then
-        if currentSafe ~= 0 then
-            if not Config.Safes[currentSafe].robbed then
-                SetNuiFocus(false, false)
-                TriggerServerEvent("qb-storerobbery:server:SafeReward", currentSafe)
-                TriggerServerEvent("qb-storerobbery:server:setSafeStatus", currentSafe)
-                currentSafe = 0
-                takeAnim()
+    if currentSafe ~= 0 then
+        if won then
+            if currentSafe ~= 0 then
+                if not Config.Safes[currentSafe].robbed then
+                    SetNuiFocus(false, false)
+                    TriggerServerEvent("qb-storerobbery:server:SafeReward", currentSafe)
+                    TriggerServerEvent("qb-storerobbery:server:setSafeStatus", currentSafe)
+                    currentSafe = 0
+                    takeAnim()
+                end
+            else
+                SendNUIMessage({
+                    action = "kekw",
+                })
             end
-        else
-            SendNUIMessage({
-                action = "kekw",
-            })
         end
     end
 end)

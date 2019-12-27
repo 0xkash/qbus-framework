@@ -88,9 +88,9 @@ function HandleMinigame(combo)
 	---------------------------------------------
 	-- Still havn't done, you're welcome to ^^ --
 	---------------------------------------------
-	for i = 1,5 do
+	--[[for i = 1,5 do
 		print(math.floor((lockNumbers[i] % 360) / 3.60))
-	end
+	end]]--
 	--------------------------------------
 	-- Comment this out for a challenge --
 	--------------------------------------

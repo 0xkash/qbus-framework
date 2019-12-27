@@ -64,15 +64,15 @@ Citizen.CreateThread(function()
                                     DrawText3Ds(Config.Locations[case]["coords"]["x"], Config.Locations[case]["coords"]["y"], Config.Locations[case]["coords"]["z"], '[E] Vitrine in slaan')
                                     if IsControlJustPressed(0, Keys["E"]) then
                                         QBCore.Functions.TriggerCallback('qb-jewellery:server:getCops', function(cops)
-                                            -- if cops >= Config.RequiredCops then
+                                            if cops >= Config.RequiredCops then
                                                 if validWeapon() then
                                                     smashVitrine(case)
                                                 else
                                                     QBCore.Functions.Notify('Je wapen lijkt niet sterk genoeg..', 'error')
                                                 end
-                                            -- else
-                                                -- QBCore.Functions.Notify('Er zijn niet genoeg agenten...', 'error')
-                                            -- end                
+                                            else
+                                                QBCore.Functions.Notify('Er zijn niet genoeg agenten...', 'error')
+                                            end                
                                         end)
                                     end
                                 end
@@ -136,7 +136,7 @@ function smashVitrine(k)
     local plyCoords = GetOffsetFromEntityInWorldCoords(ped, 0, 0.6, 0)
     local pedWeapon = GetSelectedPedWeapon(ped)
 
-    if math.random(1, 100) <= 65 and not IsWearingHandshoes() then
+    if (math.random(1, 100) <= 80 and not IsWearingHandshoes()) or (math.random(1, 100) <= 20 and IsWearingHandshoes()) then
         TriggerServerEvent("evidence:server:CreateFingerDrop", plyCoords)
     end
 

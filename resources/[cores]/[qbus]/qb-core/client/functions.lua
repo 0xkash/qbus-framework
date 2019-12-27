@@ -159,12 +159,12 @@ end
 
 QBCore.Functions.GetClosestVehicle = function(coords)
 	local coordFrom = coords
-	local playerPed = PlayerPedId()
+	local playerPed = GetPlayerPed(-1)
 
 	if coordFrom == nil then
 		coordFrom = GetEntityCoords(playerPed)
 	end
-	local coordTo = GetOffsetFromEntityInWorldCoords(playerped, 0.0, 100.0, 0.0)
+	local coordTo = GetOffsetFromEntityInWorldCoords(playerPed, 0.0, 255.0, 0.0)
 
 	local offset = 0
 	local rayHandle

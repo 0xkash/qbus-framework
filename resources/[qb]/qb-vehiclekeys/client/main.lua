@@ -183,6 +183,9 @@ end
 
 function LockVehicle()
     local veh = QBCore.Functions.GetClosestVehicle()
+    local coordA = GetEntityCoords(GetPlayerPed(-1), true)
+    local coordB = GetOffsetFromEntityInWorldCoords(GetPlayerPed(-1), 0.0, 255.0, 0.0)
+    local veh = GetClosestVehicleInDirection(coordA, coordB)
     local pos = GetEntityCoords(GetPlayerPed(-1), true)
     --local veh = GetClosestVehicle(pos.x, pos.y, pos.z, 5.0, 0, 70)
     if IsPedInAnyVehicle(GetPlayerPed(-1)) then
@@ -190,7 +193,6 @@ function LockVehicle()
     end
     local vehpos = GetEntityCoords(veh, false)
     if veh ~= nil and GetDistanceBetweenCoords(pos.x, pos.y, pos.z, vehpos.x, vehpos.y, vehpos.z, true) < 7.5 then
-        
         if HasKey then
             local vehLockStatus = GetVehicleDoorLockStatus(veh)
             loadAnimDict("anim@mp_player_intmenu@key_fob@")
@@ -404,6 +406,27 @@ function PoliceCall()
             TriggerServerEvent("police:server:VehicleCall", pos, msg)
         end
     end
+end
+
+function GetClosestVehicleInDirection(coordFrom, coordTo)
+	local offset = 0
+	local rayHandle
+	local vehicle
+
+	for i = 0, 100 do
+		rayHandle = CastRayPointToPoint(coordFrom.x, coordFrom.y, coordFrom.z, coordTo.x, coordTo.y, coordTo.z + offset, 10, GetPlayerPed(-1), 0)	
+		a, b, c, d, vehicle = GetRaycastResult(rayHandle)
+		
+		offset = offset - 1
+
+		if vehicle ~= 0 then break end
+	end
+	
+	local distance = Vdist2(coordFrom, GetEntityCoords(vehicle))
+	
+	if distance > 250 then vehicle = nil end
+
+    return vehicle ~= nil and vehicle or 0
 end
 
 function GetNearbyPed()

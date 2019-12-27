@@ -94,6 +94,14 @@ Config.Products = {
             type = "item",
             slot = 10,
         },
+        [11] = {
+            name = "lighter",
+            price = 2,
+            amount = 50,
+            info = {},
+            type = "item",
+            slot = 11,
+        },
     },
     ["hardware"] = {
         [1] = {
@@ -279,6 +287,14 @@ Config.Products = {
             info = {},
             type = "item",
             slot = 1,
+        },
+        [2] = {
+            name = "lighter",
+            price = 2,
+            amount = 50,
+            info = {},
+            type = "item",
+            slot = 2,
         },
     },
 }
