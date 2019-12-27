@@ -171,7 +171,9 @@ AddEventHandler('QBCore:Server:SetMetaData', function(meta, data)
 			data = 100
 		end
 	end
-	Player.Functions.SetMetaData(meta, data)
+	if Player ~= nil then 
+		Player.Functions.SetMetaData(meta, data)
+	end
 	TriggerClientEvent("hud:client:UpdateNeeds", src, Player.PlayerData.metadata["hunger"], Player.PlayerData.metadata["thirst"])
 end)
 

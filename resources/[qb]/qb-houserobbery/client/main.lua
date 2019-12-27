@@ -19,6 +19,7 @@ local lockpicking = false
 
 local houseObj = {}
 local POIOffsets = nil
+local usingAdvanced = false
 
 CurrentCops = 0
 
@@ -218,29 +219,49 @@ function loadAnimDict(dict)
 end
 
 RegisterNetEvent('lockpicks:UseLockpick')
-AddEventHandler('lockpicks:UseLockpick', function()
-    QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
+AddEventHandler('lockpicks:UseLockpick', function(isAdvanced)
+    usingAdvanced = isAdvanced
+    if usingAdvanced then
         if closestHouse ~= nil then
-            if result then
-                if CurrentCops >= 3 then
-                    if not Config.Houses[closestHouse]["opened"] then
-                        PoliceCall()
-                        TriggerEvent('qb-lockpick:client:openLockpick', lockpickFinish)
-                        if math.random(1, 100) <= 65 and not IsWearingHandshoes() then
-                            local pos = GetEntityCoords(GetPlayerPed(-1))
-                            TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
-                        end
-                    else
-                        QBCore.Functions.Notify('De deur is al open..', 'error', 3500)
+            if CurrentCops >= 3 then
+                if not Config.Houses[closestHouse]["opened"] then
+                    PoliceCall()
+                    TriggerEvent('qb-lockpick:client:openLockpick', lockpickFinish)
+                    if math.random(1, 100) <= 65 and not IsWearingHandshoes() then
+                        local pos = GetEntityCoords(GetPlayerPed(-1))
+                        TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
                     end
                 else
-                    QBCore.Functions.Notify('Niet genoeg agenten..', 'error', 3500)
+                    QBCore.Functions.Notify('De deur is al open..', 'error', 3500)
                 end
             else
-                QBCore.Functions.Notify('Het lijkt erop dat je iets mist...', 'error', 3500)
+                QBCore.Functions.Notify('Niet genoeg agenten..', 'error', 3500)
             end
         end
-    end, "screwdriverset")
+    else
+        QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
+            if closestHouse ~= nil then
+                if result then
+                    if CurrentCops >= 3 then
+                        if not Config.Houses[closestHouse]["opened"] then
+                            PoliceCall()
+                            TriggerEvent('qb-lockpick:client:openLockpick', lockpickFinish)
+                            if math.random(1, 100) <= 65 and not IsWearingHandshoes() then
+                                local pos = GetEntityCoords(GetPlayerPed(-1))
+                                TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
+                            end
+                        else
+                            QBCore.Functions.Notify('De deur is al open..', 'error', 3500)
+                        end
+                    else
+                        QBCore.Functions.Notify('Niet genoeg agenten..', 'error', 3500)
+                    end
+                else
+                    QBCore.Functions.Notify('Het lijkt erop dat je iets mist...', 'error', 3500)
+                end
+            end
+        end, "screwdriverset")
+    end
 end)
 
 function PoliceCall()
@@ -289,11 +310,20 @@ function lockpickFinish(success)
         TriggerServerEvent('qb-houserobbery:server:enterHouse', closestHouse)
         QBCore.Functions.Notify('Het is gelukt!', 'success', 2500)
     else
-        local itemInfo = QBCore.Shared.Items["lockpick"]
-        if math.random(1, 100) < 40 then
-            TriggerServerEvent("QBCore:Server:RemoveItem", "lockpick", 1)
-            TriggerEvent('inventory:client:ItemBox', itemInfo, "remove")
+        if usingAdvanced then
+            local itemInfo = QBCore.Shared.Items["advancedlockpick"]
+            if math.random(1, 100) < 20 then
+                TriggerServerEvent("QBCore:Server:RemoveItem", "advancedlockpick", 1)
+                TriggerEvent('inventory:client:ItemBox', itemInfo, "remove")
+            end
+        else
+            local itemInfo = QBCore.Shared.Items["lockpick"]
+            if math.random(1, 100) < 40 then
+                TriggerServerEvent("QBCore:Server:RemoveItem", "lockpick", 1)
+                TriggerEvent('inventory:client:ItemBox', itemInfo, "remove")
+            end
         end
+        
         QBCore.Functions.Notify('Het is niet gelukt..', 'error', 2500)
     end
 end
