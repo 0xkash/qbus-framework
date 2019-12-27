@@ -3,6 +3,7 @@ QBCore = nil
 TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 
 local alarmTriggered = false
+local certificateAmount = 43
 
 RegisterServerEvent('qb-ifruitstore:server:LoadLocationList')
 AddEventHandler('qb-ifruitstore:server:LoadLocationList', function()
@@ -30,14 +31,39 @@ AddEventHandler('qb-ifruitstore:server:SetThermiteStatus', function(stateType, s
     TriggerClientEvent('qb-ifruitstore:client:SetThermiteStatus', -1, stateType, state)
 end)
 
+RegisterServerEvent('qb-ifruitstore:server:SafeReward')
+AddEventHandler('qb-ifruitstore:server:SafeReward', function()
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    Player.Functions.AddMoney('cash', math.random(1500, 2000))
+    Player.Functions.AddItem("certificate", certificateAmount)
+    TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items["certificate"], "add")
+    Citizen.Wait(500)
+    local luck = math.random(1, 100)
+    if luck <= 10 then
+        Player.Functions.AddItem("goldbar", math.random(1, 2))
+        TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items["goldbar"], "add")
+    end
+end)
+
+RegisterServerEvent('qb-ifruitstore:server:SetSafeStatus')
+AddEventHandler('qb-ifruitstore:server:SetSafeStatus', function(stateType, state)
+    if stateType == "isBusy" then
+        Config.Locations["safe"].isBusy = state
+    elseif stateType == "isDone" then
+        Config.Locations["safe"].isDone = state
+    end
+    TriggerClientEvent('qb-ifruitstore:client:SetSafeStatus', -1, stateType, state)
+end)
+
 RegisterServerEvent('qb-ifruitstore:server:itemReward')
 AddEventHandler('qb-ifruitstore:server:itemReward', function(spot)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     local item = Config.Locations["takeables"][spot].reward
 
-    if Player.Functions.AddItem(item, 1) then
-        TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[item], 'add')
+    if Player.Functions.AddItem(item.name, item.amount) then
+        TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[item.name], 'add')
     else
         TriggerClientEvent('QBCore:Notify', src, 'Je hebt teveel op zak..', 'error')
     end    

@@ -21,22 +21,27 @@ Citizen.CreateThread(function()
 end)
 
 local requiredItemsShowed = false
+local requiredItemsShowed2 = false
 local requiredItems = {}
 local currentSpot = 0
+local usingSafe = false
 
 Citizen.CreateThread(function()
     while true do 
         Citizen.Wait(1)
         if isLoggedIn then
             local pos = GetEntityCoords(GetPlayerPed(-1))
-            if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["thermite"].x, Config.Locations["thermite"].y,Config.Locations["thermite"].z, true) < 1.0 then
-                if not Config.Locations["thermite"].isDone then 
-                    if not requiredItemsShowed then
-                        requiredItems = {
-                            [1] = {name = QBCore.Shared.Items["thermite"]["name"], image = QBCore.Shared.Items["thermite"]["image"]},
-                        }
-                        requiredItemsShowed = true
-                        TriggerEvent('inventory:client:requiredItems', requiredItems, true)
+            if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["thermite"].x, Config.Locations["thermite"].y,Config.Locations["thermite"].z, true) < 3.0 and not Config.Locations["thermite"].isDone then
+                DrawMarker(2, Config.Locations["thermite"].x, Config.Locations["thermite"].y,Config.Locations["thermite"].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.25, 0.1, 255, 255, 255, 100, 0, 0, 0, 1, 0, 0, 0)
+                if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["thermite"].x, Config.Locations["thermite"].y,Config.Locations["thermite"].z, true) < 1.0 then
+                    if not Config.Locations["thermite"].isDone then 
+                        if not requiredItemsShowed then
+                            requiredItems = {
+                                [1] = {name = QBCore.Shared.Items["thermite"]["name"], image = QBCore.Shared.Items["thermite"]["image"]},
+                            }
+                            requiredItemsShowed = true
+                            TriggerEvent('inventory:client:requiredItems', requiredItems, true)
+                        end
                     end
                 end
             else
@@ -46,6 +51,18 @@ Citizen.CreateThread(function()
                     }
                     requiredItemsShowed = false
                     TriggerEvent('inventory:client:requiredItems', requiredItems, false)
+                end
+            end
+            if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["safe"].x, Config.Locations["safe"].y,Config.Locations["safe"].z, true) < 1.0 then
+                if not Config.Locations["safe"].isDone then 
+                    DrawText3Ds(Config.Locations["safe"].x, Config.Locations["safe"].y,Config.Locations["safe"].z, '~g~E~w~ Om kluis te kraken')
+                    if IsControlJustPressed(0, Keys["E"]) then
+                        QBCore.Functions.TriggerCallback('qb-storerobbery:server:getPadlockCombination', function(combination)
+                            TriggerServerEvent("qb-ifruitstore:server:SetSafeStatus", "isBusy", true)
+                            TriggerEvent("SafeCracker:StartMinigame", combination)
+                            usingSafe = true
+                        end, 2)
+                    end
                 end
             end
         else
@@ -65,21 +82,28 @@ Citizen.CreateThread(function()
                 if dist < 1.0 then
                     inRange = true
                     if dist < 0.6 then
-                        if not requiredItemsShowed then
+                        if not requiredItemsShowed2 then
                             requiredItems = {
                                 [1] = {name = QBCore.Shared.Items["advancedlockpick"]["name"], image = QBCore.Shared.Items["advancedlockpick"]["image"]},
                             }
-                            requiredItemsShowed = true
+                            requiredItemsShowed2 = true
                             TriggerEvent('inventory:client:requiredItems', requiredItems, true)
                         end
                         if not Config.Locations["takeables"][spot].isBusy and not Config.Locations["takeables"][spot].isDone then
                             DrawText3Ds(Config.Locations["takeables"][spot].x, Config.Locations["takeables"][spot].y,Config.Locations["takeables"][spot].z, '~g~E~w~ Om item te pakken')
                             if IsControlJustPressed(0, Keys["E"]) then
-                                if CurrentCops >= 3 then
+                                if CurrentCops >= 0 then
                                     if Config.Locations["thermite"].isDone then 
                                         QBCore.Functions.TriggerCallback('qb-radio:server:GetItem', function(hasItem)
                                             if hasItem then
                                                 currentSpot = spot
+                                                if requiredItemsShowed2 then
+                                                    requiredItems = {
+                                                        [1] = {name = QBCore.Shared.Items["advancedlockpick"]["name"], image = QBCore.Shared.Items["advancedlockpick"]["image"]},
+                                                    }
+                                                    requiredItemsShowed2 = false
+                                                    TriggerEvent('inventory:client:requiredItems', requiredItems, false)
+                                                end
                                                 TriggerEvent("qb-lockpick:client:openLockpick", lockpickDone)
                                             else
                                                 QBCore.Functions.Notify("Je mist een grote lockpick..", "error")
@@ -97,11 +121,11 @@ Citizen.CreateThread(function()
                 end
             end
             if not inRange then
-                if requiredItemsShowed then
+                if requiredItemsShowed2 then
                     requiredItems = {
                         [1] = {name = QBCore.Shared.Items["advancedlockpick"]["name"], image = QBCore.Shared.Items["advancedlockpick"]["image"]},
                     }
-                    requiredItemsShowed = false
+                    requiredItemsShowed2 = false
                     TriggerEvent('inventory:client:requiredItems', requiredItems, false)
                 end
                 Citizen.Wait(2000)
@@ -111,6 +135,7 @@ Citizen.CreateThread(function()
 end)
 
 function lockpickDone(success)
+    local pos = GetEntityCoords(GetPlayerPed(-1))
     if (math.random(1, 100) <= 80 and not IsWearingHandshoes()) or (math.random(1, 100) <= 20 and IsWearingHandshoes()) then
         TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
     end
@@ -118,15 +143,17 @@ function lockpickDone(success)
     if success then
         GrabItem(currentSpot)
     else
-        TriggerServerEvent("QBCore:Server:RemoveItem", "advancedlockpick", 1)
-        TriggerEvent('inventory:client:ItemBox', QBCore.Shared.Items["advancedlockpick"], "remove")
+        if math.random(1, 100) <= 10 then
+            TriggerServerEvent("QBCore:Server:RemoveItem", "advancedlockpick", 1)
+            TriggerEvent('inventory:client:ItemBox', QBCore.Shared.Items["advancedlockpick"], "remove")
+        end
     end
 end
 
 function GrabItem(spot)
     local pos = GetEntityCoords(GetPlayerPed(-1))
-    if requiredItemsShowed then
-        requiredItemsShowed = false
+    if requiredItemsShowed2 then
+        requiredItemsShowed2 = false
         TriggerEvent('inventory:client:requiredItems', requiredItems, false)
     end
     QBCore.Functions.Progressbar("grab_ifruititem", "Item loskoppelen..", 5000, false, true, {
@@ -151,6 +178,21 @@ function GrabItem(spot)
     end)
 end
 
+RegisterNetEvent('SafeCracker:EndMinigame')
+AddEventHandler('SafeCracker:EndMinigame', function(won)
+    if usingSafe then
+        if won then
+            if not Config.Locations["safe"].isDone then
+                SetNuiFocus(false, false)
+                TriggerServerEvent("qb-ifruitstore:server:SafeReward")
+                TriggerServerEvent("qb-ifruitstore:server:SetSafeStatus", "isBusy", false)
+                TriggerServerEvent("qb-ifruitstore:server:SetSafeStatus", "isDone", false)
+                takeAnim()
+            end
+        end
+    end
+end)
+
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     isLoggedIn = true
@@ -174,8 +216,9 @@ end)
 
 RegisterNetEvent('thermite:UseThermite')
 AddEventHandler('thermite:UseThermite', function()
+    local pos = GetEntityCoords(GetPlayerPed(-1))
     if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["thermite"].x, Config.Locations["thermite"].y,Config.Locations["thermite"].z, true) < 1.0 then
-        if CurrentCops >= 3 then
+        if CurrentCops >= 0 then
             local pos = GetEntityCoords(GetPlayerPed(-1))
             if (math.random(1, 100) <= 80 and not IsWearingHandshoes()) or (math.random(1, 100) <= 20 and IsWearingHandshoes()) then
                 TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
@@ -187,8 +230,9 @@ AddEventHandler('thermite:UseThermite', function()
                 requiredItemsShowed = false
                 TriggerEvent('inventory:client:requiredItems', requiredItems, false)
                 TriggerServerEvent("QBCore:Server:RemoveItem", "thermite", 1)
-                TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items["thermite"], "remove")
+                TriggerEvent('inventory:client:ItemBox', QBCore.Shared.Items["thermite"], "remove")
                 TriggerServerEvent("qb-ifruitstore:server:SetThermiteStatus", "isBusy", true)
+                SetNuiFocus(true, true)
                 SendNUIMessage({
                     action = "openThermite",
                     amount = math.random(5, 10),
@@ -209,8 +253,17 @@ AddEventHandler('qb-ifruitstore:client:setSpotState', function(stateType, state,
     end
 end)
 
+RegisterNetEvent('qb-ifruitstore:client:SetSafeStatus')
+AddEventHandler('qb-ifruitstore:client:SetSafeStatus', function(stateType, state)
+    if stateType == "isBusy" then
+        Config.Locations["safe"].isBusy = state
+    elseif stateType == "isDone" then
+        Config.Locations["safe"].isDone = state
+    end
+end)
+
 RegisterNetEvent('qb-ifruitstore:client:SetThermiteStatus')
-AddEventHandler('qb-ifruitstore:client:SetThermiteStatus', function(stateType, state))
+AddEventHandler('qb-ifruitstore:client:SetThermiteStatus', function(stateType, state)
     if stateType == "isBusy" then
         Config.Locations["thermite"].isBusy = state
     elseif stateType == "isDone" then
@@ -262,10 +315,15 @@ end)
 
 RegisterNUICallback('thermitesuccess', function()
     QBCore.Functions.Notify("De zekeringen zijn kapot", "success")
+    local pos = GetEntityCoords(GetPlayerPed(-1))
     if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["thermite"].x, Config.Locations["thermite"].y,Config.Locations["thermite"].z, true) < 1.0 then
         TriggerServerEvent("qb-ifruitstore:server:SetThermiteStatus", "isDone", true)
         TriggerServerEvent("qb-ifruitstore:server:SetThermiteStatus", "isBusy", false)
     end
+end)
+
+RegisterNUICallback('closethermite', function()
+    SetNuiFocus(false, false)
 end)
 
 function DrawText3Ds(x, y, z, text)
@@ -281,4 +339,31 @@ function DrawText3Ds(x, y, z, text)
     local factor = (string.len(text)) / 370
     DrawRect(0.0, 0.0+0.0125, 0.017+ factor, 0.03, 0, 0, 0, 75)
     ClearDrawOrigin()
+end
+
+function IsWearingHandshoes()
+    local armIndex = GetPedDrawableVariation(GetPlayerPed(-1), 3)
+    local model = GetEntityModel(GetPlayerPed(-1))
+    local retval = true
+    if model == GetHashKey("mp_m_freemode_01") then
+        if Config.MaleNoHandshoes[armIndex] ~= nil and Config.MaleNoHandshoes[armIndex] then
+            retval = false
+        end
+    else
+        if Config.FemaleNoHandshoes[armIndex] ~= nil and Config.FemaleNoHandshoes[armIndex] then
+            retval = false
+        end
+    end
+    return retval
+end
+
+function takeAnim()
+    local ped = GetPlayerPed(-1)
+    while (not HasAnimDictLoaded("amb@prop_human_bum_bin@idle_b")) do
+        RequestAnimDict("amb@prop_human_bum_bin@idle_b")
+        Citizen.Wait(100)
+    end
+    TaskPlayAnim(ped, "amb@prop_human_bum_bin@idle_b", "idle_d", 8.0, 8.0, -1, 50, 0, false, false, false)
+    Citizen.Wait(2500)
+    TaskPlayAnim(ped, "amb@prop_human_bum_bin@idle_b", "exit", 8.0, 8.0, -1, 50, 0, false, false, false)
 end
