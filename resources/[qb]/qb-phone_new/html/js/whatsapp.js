@@ -64,11 +64,9 @@ QB.Phone.Functions.GetLastMessage = function(message) {
     }
 
     $.each(message, function(i, msg){
-        if (i == ""+CurrentDOM+"-"+CurrentMonth+"-"+CurrentYear+"") {
-            var msgData = msg[msg.length - 1];
-            LastMessageData.time = msgData.time
-            LastMessageData.message = msgData.message
-        }
+        var msgData = msg[msg.length - 1];
+        LastMessageData.time = msgData.time
+        LastMessageData.message = msgData.message
     });
 
     return LastMessageData
@@ -88,7 +86,8 @@ QB.Phone.Functions.LoadWhatsappChats = function(chats) {
     $(".whatsapp-chats").html("");
     $.each(chats, function(i, chat){
         var LastMessage = QB.Phone.Functions.GetLastMessage(chat.messages);
-        var ChatElement = '<div class="whatsapp-chat" id="whatsapp-chat-'+i+'"><div class="whatsapp-chat-picture"></div><div class="whatsapp-chat-name"><p>'+chat.name+'</p></div><div class="whatsapp-chat-lastmessage"><p>'+LastMessage.message+'</p></div> <div class="whatsapp-chat-lastmessagetime"><p>'+LastMessage.time+'</p></div> </div>';
+        console.log(LastMessage.time)
+        var ChatElement = '<div class="whatsapp-chat" id="whatsapp-chat-'+i+'"><div class="whatsapp-chat-picture"></div><div class="whatsapp-chat-name"><p>'+chat.name+'</p></div><div class="whatsapp-chat-lastmessage"><p>'+LastMessage.message+'</p></div> <div class="whatsapp-chat-lastmessagetime"><p>'+LastMessage.time+'</p></div><div class="whatsapp-chat-unreadmessages">1</div></div>';
         
         $(".whatsapp-chats").append(ChatElement);
         $("#whatsapp-chat-"+i).data('chatdata', chat);
@@ -120,10 +119,14 @@ FormatMessageTime = function() {
     var NewHour = NewDate.getHours();
     var NewMinute = NewDate.getMinutes();
     var Minutessss = NewMinute;
+    var Hourssssss = NewHour;
     if (NewMinute < 10) {
         Minutessss = "0" + NewMinute;
     }
-    var MessageTime = NewHour + ":" + Minutessss
+    if (NewHour < 10) {
+        Hourssssss = "0" + NewHour;
+    }
+    var MessageTime = Hourssssss + ":" + Minutessss
     return MessageTime;
 }
 

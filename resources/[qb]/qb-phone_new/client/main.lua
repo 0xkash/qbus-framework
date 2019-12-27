@@ -22,7 +22,7 @@ local PhoneData = {
     Chats = {},
 }
 
-function IsNumberInContacs(num)
+function IsNumberInContacts(num)
     local retval = num
     for _, v in pairs(PhoneData.Contacts) do
         if num == v.number then
@@ -81,7 +81,7 @@ Citizen.CreateThread(function()
             local Chats = {}
             for k, v in pairs(pData.Chats) do
                 Chats[v.number] = {
-                    name = IsNumberInContacs(v.number),
+                    name = IsNumberInContacts(v.number),
                     number = v.number,
                     messages = json.decode(v.messages)
                 }
@@ -193,7 +193,7 @@ RegisterNUICallback('SendMessage', function(data, cb)
         end
     else
         PhoneData.Chats[ChatNumber] = {
-            name = IsNumberInContacs(ChatNumber),
+            name = IsNumberInContacts(ChatNumber),
             number = ChatNumber,
             messages = {}
         }
@@ -214,11 +214,11 @@ end)
 
 RegisterNetEvent('qb-phone_new:client:UpdateMessages')
 AddEventHandler('qb-phone_new:client:UpdateMessages', function(ChatMessages, SenderNumber, New)
-    local Sender = IsNumberInContacs(SenderNumber)
+    local Sender = IsNumberInContacts(SenderNumber)
 
     if New then
         PhoneData.Chats[SenderNumber] = {
-            name = IsNumberInContacs(SenderNumber),
+            name = IsNumberInContacts(SenderNumber),
             number = SenderNumber,
             messages = ChatMessages
         }
@@ -229,7 +229,7 @@ AddEventHandler('qb-phone_new:client:UpdateMessages', function(ChatMessages, Sen
                     action = "PhoneNotification",
                     PhoneNotify = {
                         title = "Whatsapp",
-                        text = "Nieuw bericht van "..IsNumberInContacs(SenderNumber).."!",
+                        text = "Nieuw bericht van "..IsNumberInContacts(SenderNumber).."!",
                         icon = "fab fa-whatsapp",
                         color = "#25D366",
                         timeout = 1500,
@@ -260,12 +260,14 @@ AddEventHandler('qb-phone_new:client:UpdateMessages', function(ChatMessages, Sen
                 action = "Notification",
                 NotifyData = {
                     title = "Whatsapp", 
-                    content = "Je hebt een nieuw bericht ontvangen van "..IsNumberInContacs(SenderNumber).."!", 
+                    content = "Je hebt een nieuw bericht ontvangen van "..IsNumberInContacts(SenderNumber).."!", 
                     icon = "fab fa-whatsapp", 
                     timeout = 3500, 
                     color = "#25D366",
                 },
             })
+            Config.PhoneApplications['whatsapp'].Alerts = Config.PhoneApplications['whatsapp'].Alerts + 1
+            TriggerServerEvent('qb-phone:server:SetPhoneAlerts', "whatsapp")
         end
     else
         PhoneData.Chats[SenderNumber].messages = ChatMessages
@@ -276,7 +278,7 @@ AddEventHandler('qb-phone_new:client:UpdateMessages', function(ChatMessages, Sen
                     action = "PhoneNotification",
                     PhoneNotify = {
                         title = "Whatsapp",
-                        text = "Nieuw bericht van "..IsNumberInContacs(SenderNumber).."!",
+                        text = "Nieuw bericht van "..IsNumberInContacts(SenderNumber).."!",
                         icon = "fab fa-whatsapp",
                         color = "#25D366",
                         timeout = 1500,
@@ -307,12 +309,14 @@ AddEventHandler('qb-phone_new:client:UpdateMessages', function(ChatMessages, Sen
                 action = "Notification",
                 NotifyData = {
                     title = "Whatsapp", 
-                    content = "Je hebt een nieuw bericht ontvangen van "..IsNumberInContacs(SenderNumber).."!", 
+                    content = "Je hebt een nieuw bericht ontvangen van "..IsNumberInContacts(SenderNumber).."!", 
                     icon = "fab fa-whatsapp", 
                     timeout = 3500, 
                     color = "#25D366",
                 },
             })
+            Config.PhoneApplications['whatsapp'].Alerts = Config.PhoneApplications['whatsapp'].Alerts + 1
+            TriggerServerEvent('qb-phone:server:SetPhoneAlerts', "whatsapp")
         end
     end
 end)

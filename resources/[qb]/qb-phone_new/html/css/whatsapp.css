@@ -87,6 +87,12 @@
     border-radius: 1vh 0 0 1vh;
 }
 
+.whatsapp-chat-unreadmessages {
+    position: absolute;
+    right: 1vh;
+    top: 3.5vh;
+}
+
 .whatsapp-chat {
     position: relative;
     width: 100%;
