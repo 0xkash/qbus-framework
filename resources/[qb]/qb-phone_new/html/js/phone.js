@@ -64,13 +64,15 @@ QB.Phone.Functions.LoadContacts = function(myContacts) {
         });
     });
 
+    console.log(myContacts)
+
     if (myContacts !== null) {
         $.each(myContacts, function(i, contact){
-            var RandomNumber = Math.floor(Math.random() * 6);
             var ContactElement = '<div class="phone-contact" data-contactid="'+i+'"><div class="phone-contact-firstletter" style="background-color: #e74c3c;">'+((contact.name).charAt(0)).toUpperCase()+'</div><div class="phone-contact-name">'+contact.name+'</div><div class="phone-contact-actions"><i class="fas fa-sort-down"></i></div><div class="phone-contact-action-buttons"> <i class="fas fa-phone-volume"></i> <i class="fab fa-whatsapp" id="new-chat-phone" style="font-size: 2.5vh;"></i> <i class="fas fa-user-edit" id="edit-contact"></i> </div></div>'
             if (contact.status) {
                 ContactElement = '<div class="phone-contact" data-contactid="'+i+'"><div class="phone-contact-firstletter" style="background-color: #2ecc71;">'+((contact.name).charAt(0)).toUpperCase()+'</div><div class="phone-contact-name">'+contact.name+'</div><div class="phone-contact-actions"><i class="fas fa-sort-down"></i></div><div class="phone-contact-action-buttons"> <i class="fas fa-phone-volume"></i> <i class="fab fa-whatsapp" id="new-chat-phone" style="font-size: 2.5vh;"></i> <i class="fas fa-user-edit" id="edit-contact"></i> </div></div>'
             }
+            console.log(i)
             TotalContacts = TotalContacts + 1
             $(ContactsObject).append(ContactElement);
             $("[data-contactid='"+i+"']").data('contactData', contact);

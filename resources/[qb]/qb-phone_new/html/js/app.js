@@ -106,6 +106,9 @@ $(document).on('click', '.phone-application', function(e){
                 $.post('http://qb-phone_new/GetBankContacts', JSON.stringify({}), function(contacts){
                     QB.Phone.Functions.LoadContactsWithNumber(contacts);
                 });
+                $.post('http://qb-phone_new/GetInvoices', JSON.stringify({}), function(invoices){
+                    QB.Phone.Functions.LoadBankInvoices(invoices);
+                });
             } else if (PressedApplication == "whatsapp") {
                 $.post('http://qb-phone_new/GetWhatsappChats', JSON.stringify({}), function(chats){
                     QB.Phone.Functions.LoadWhatsappChats(chats);
@@ -142,6 +145,23 @@ $(document).on('click', '.phone-home-container', function(event){
                     });
                     OpenedChatData.number = null;
                 }, 450);
+            }
+        } else if (QB.Phone.Data.currentApplication == "bank") {
+            if (CurrentTab == "invoices") {
+                setTimeout(function(){
+                    $(".bank-app-invoices").animate({"left": "30vh"});
+                    $(".bank-app-invoices").css({"display":"none"})
+                    $(".bank-app-accounts").css({"display":"block"})
+                    $(".bank-app-accounts").css({"left": "0vh"});
+    
+                    var InvoicesObjectBank = $(".bank-app-header").find('[data-headertype="invoices"]');
+                    var HomeObjectBank = $(".bank-app-header").find('[data-headertype="accounts"]');
+    
+                    $(InvoicesObjectBank).removeClass('bank-app-header-button-selected');
+                    $(HomeObjectBank).addClass('bank-app-header-button-selected');
+    
+                    CurrentTab = "accounts";
+                }, 400)
             }
         }
 
@@ -242,6 +262,7 @@ QB.Phone.Notifications.Add = function(icon, title, text, color, timeout) {
 }
 
 QB.Phone.Functions.LoadPhoneData = function(data) {
+    console.log(data.PhoneData.Contacts)
     QB.Phone.Functions.LoadContacts(data.PhoneData.Contacts);
     QB.Phone.Data.PlayerData = data.PlayerData;
 }
@@ -334,6 +355,9 @@ $(document).ready(function(){
                 break;
             case "UpdateHashtags":
                 QB.Phone.Notifications.LoadHashtags(event.data.Hashtags);
+                break;
+            case "RefreshWhatsappAlerts":
+                QB.Phone.Functions.ReloadWhatsappAlerts(event.data.Chats);
                 break;
         }
     })

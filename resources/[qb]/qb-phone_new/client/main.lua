@@ -20,6 +20,7 @@ local PhoneData = {
     MentionedTweets = {},
     Hashtags = {},
     Chats = {},
+    Invoices = {},
 }
 
 function IsNumberInContacts(num)
@@ -56,13 +57,14 @@ Citizen.CreateThread(function()
 end)
 
 Citizen.CreateThread(function() 
-    Citizen.Wait(100)
-    SendNUIMessage({ 
-        action = "LoadPhoneApplications", 
-        applications = Config.PhoneApplications 
-    })
-    PhoneData.PlayerData = QBCore.Functions.GetPlayerData()
+    Citizen.Wait(500)
     QBCore.Functions.TriggerCallback('qb-phone_new:server:GetPhoneData', function(pData) 
+        SendNUIMessage({ 
+            action = "LoadPhoneApplications", 
+            applications = Config.PhoneApplications 
+        })
+        PhoneData.PlayerData = QBCore.Functions.GetPlayerData()
+        
         if pData.Applications ~= nil and next(pData.Applications) ~= nil then
             for k, v in pairs(pData.Applications) do 
                 Config.PhoneApplications[k].Alerts = v 
@@ -92,18 +94,26 @@ Citizen.CreateThread(function()
             PhoneData.Chats = {}
         end
 
+        if pData.Invoices ~= nil and next(pData.Invoices) ~= nil then
+            for _, invoice in pairs(pData.Invoices) do
+                invoice.name = IsNumberInContacts(invoice.number)
+            end
+            PhoneData.Invoices = pData.Invoices
+        end
+
         if pData.Hashtags ~= nil and next(pData.Hashtags) ~= nil then
             PhoneData.Hashtags = pData.Hashtags
         end
+
+        Citizen.Wait(300)
+    
+        SendNUIMessage({ 
+            action = "LoadPhoneData", 
+            PhoneData = PhoneData, 
+            PlayerData = PhoneData.PlayerData, 
+        })
+        print('data loaded!')
     end)
-
-    Citizen.Wait(300)
-
-    SendNUIMessage({ 
-        action = "LoadPhoneData", 
-        PhoneData = PhoneData, 
-        PlayerData = PhoneData.PlayerData, 
-    })
 end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
@@ -166,6 +176,14 @@ end)
 
 RegisterNUICallback('GetBankContacts', function(data, cb)
     cb(PhoneData.Contacts)
+end)
+
+RegisterNUICallback('GetInvoices', function(data, cb)
+    if PhoneData.Invoices ~= nil and next(PhoneData.Invoices) ~= nil then
+        cb(PhoneData.Invoices)
+    else
+        cb(nil)
+    end
 end)
 
 RegisterNUICallback('SendMessage', function(data, cb)
@@ -319,6 +337,33 @@ AddEventHandler('qb-phone_new:client:UpdateMessages', function(ChatMessages, Sen
             TriggerServerEvent('qb-phone:server:SetPhoneAlerts', "whatsapp")
         end
     end
+
+
+    if PhoneData.Chats[SenderNumber].Unread ~= nil then
+        PhoneData.Chats[SenderNumber].Unread = PhoneData.Chats[SenderNumber].Unread + 1
+    else
+        PhoneData.Chats[SenderNumber].Unread = 1
+    end
+
+    SendNUIMessage({
+        action = "RefreshWhatsappAlerts",
+        Chats = PhoneData.Chats,
+    })
+end)
+
+RegisterNUICallback('ClearAlerts', function(data, cb)
+    local chat = data.number
+    local newAlerts = (Config.PhoneApplications['whatsapp'].Alerts - PhoneData.Chats[chat].Unread)
+    Config.PhoneApplications['whatsapp'].Alerts = newAlerts
+    TriggerServerEvent('qb-phone:server:SetPhoneAlerts', "whatsapp", newAlerts)
+
+    PhoneData.Chats[chat].Unread = 0
+
+    SendNUIMessage({
+        action = "RefreshWhatsappAlerts",
+        Chats = PhoneData.Chats,
+    })
+    SendNUIMessage({ action = "RefreshAppAlerts", AppData = Config.PhoneApplications })
 end)
 
 RegisterNUICallback('EditContact', function(data, cb)
@@ -513,6 +558,7 @@ RegisterNUICallback('ClearMentions', function()
         AppData = Config.PhoneApplications
     })
     TriggerServerEvent('qb-phone:server:SetPhoneAlerts', "twitter", 0)
+    SendNUIMessage({ action = "RefreshAppAlerts", AppData = Config.PhoneApplications })
 end)
 
 function string:split(delimiter)

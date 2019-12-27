@@ -122,6 +122,28 @@ $(document).on('click', '#accept-transfer', function(e){
     }
 });
 
+GetInvoiceLabel = function(type) {
+    retval = null;
+    if (type == "request") {
+        retval = "Betaalverzoek";
+    }
+
+    return retval
+}
+
+QB.Phone.Functions.LoadBankInvoices = function(invoices) {
+    if (invoices !== null) {
+        $(".bank-app-invoices-list").html("");
+
+        $.each(invoices, function(i, invoice){
+            var Elem = '<div class="bank-app-invoice" id="invoiceid-'+i+'"> <div class="bank-app-invoice-title">'+GetInvoiceLabel(invoice.type)+' <span style="font-size: 1vh; color: gray;">(Afzender: '+invoice.name+')</span></div> <div class="bank-app-invoice-amount">&euro; '+invoice.amount+',-</div> <div class="bank-app-invoice-buttons"> <i class="fas fa-check-circle pay-invoice"></i> <i class="fas fa-times-circle decline-invoice"></i> </div> </div>';
+
+            $(".bank-app-invoices-list").append(Elem);
+            $("#invoiceid-"+i).data('invoicedata', invoice);
+        });
+    }
+}
+
 QB.Phone.Functions.LoadContactsWithNumber = function(myContacts) {
     var ContactsObject = $(".bank-app-my-contacts-list");
     $(ContactsObject).html("");
