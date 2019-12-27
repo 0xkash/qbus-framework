@@ -32,6 +32,8 @@ local rangDoorbell = nil
 
 QBCore = nil
 
+local inHoldersMenu = false
+
 Citizen.CreateThread(function() 
     while true do
         Citizen.Wait(10)
@@ -352,6 +354,15 @@ Citizen.CreateThread(function()
     end
 end)
 
+Citizen.CreateThread(function()
+    while true do 
+        Citizen.Wait(1)
+        if inHoldersMenu then
+            Menu.renderGUI()
+        end
+    end
+end)
+
 function openHouseAnim()
     loadAnimDict("anim@heists@keycard@") 
     TaskPlayAnim( GetPlayerPed(-1), "anim@heists@keycard@", "exit", 5.0, 1.0, -1, 16, 0, 0, 0, 0 )
@@ -397,7 +408,6 @@ AddEventHandler('qb-houses:client:giveHouseKey', function(data)
         local housedist = GetDistanceBetweenCoords(GetEntityCoords(GetPlayerPed(-1)), Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z)
         
         if housedist < 10 then
-            print('ye gegeven')
             TriggerServerEvent('qb-houses:server:giveHouseKey', playerId, closesthouse)
         else
             QBCore.Functions.Notify("Je staat niet dicht genoeg bij het huis..", "error")
@@ -406,6 +416,28 @@ AddEventHandler('qb-houses:client:giveHouseKey', function(data)
         QBCore.Functions.Notify("Er is geen huis in de buurt!", "error")
     else
         QBCore.Functions.Notify("Niemand in de buurt!", "error")
+    end
+end)
+
+RegisterNetEvent('qb-houses:client:removeHouseKey')
+AddEventHandler('qb-houses:client:removeHouseKey', function(data)
+    if closesthouse ~= nil then 
+        local housedist = GetDistanceBetweenCoords(GetEntityCoords(GetPlayerPed(-1)), Config.Houses[closesthouse].coords.enter.x, Config.Houses[closesthouse].coords.enter.y, Config.Houses[closesthouse].coords.enter.z)
+        if housedist < 5 then
+            QBCore.Functions.TriggerCallback('qb-houses:server:getHouseOwner', function(result)
+                if QBCore.Functions.GetPlayerData().citizenid == result then
+                    inHoldersMenu = true
+                    HouseKeysMenu()
+                    Menu.hidden = not Menu.hidden
+                else
+                    QBCore.Functions.Notify("Je bent geen huiseigenaar..", "error")
+                end
+            end, closesthouse)
+        else
+            QBCore.Functions.Notify("Je staat niet dicht genoeg bij het huis..", "error")
+        end
+    else
+        QBCore.Functions.Notify("Je staat niet dicht genoeg bij het huis..", "error")
     end
 end)
 
@@ -435,12 +467,24 @@ function loadAnimDict(dict)
     end
 end 
 
-function MenuOutfits()
+function HouseKeysMenu()
     ped = GetPlayerPed(-1);
-    MenuTitle = "Outfits"
+    MenuTitle = "Sleutels"
     ClearMenu()
-    Menu.addButton("Mijn Outfits", "OutfitsLijst", nil)
-    Menu.addButton("Sluit Menu", "closeMenuFull", nil) 
+    QBCore.Functions.TriggerCallback('qb-houses:server:getHouseKeyHolders', function(holders)
+        ped = GetPlayerPed(-1);
+        MenuTitle = "Sleutelhouders:"
+        ClearMenu()
+        if holders == nil or next(holders) == nil then
+            QBCore.Functions.Notify("Geen sleutel houders gevonden..", "error", 3500)
+            closeMenuFull()
+        else
+            for k, v in pairs(holders) do
+                Menu.addButton(holders[k].firstname .. " " .. holders[k].lastname, "optionMenu", holders[k]) 
+            end
+        end
+        Menu.addButton("Sluit Menu", "closeMenuFull", nil) 
+    end, closesthouse)
 end
 
 function changeOutfit()
@@ -451,39 +495,17 @@ function changeOutfit()
 	TaskPlayAnim(GetPlayerPed(-1), "clothingshirt", "exit", 8.0, 1.0, -1, 49, 0, 0, 0, 0)
 end
 
-function OutfitsLijst()
-    QBCore.Functions.TriggerCallback('qb-houses:server:getSavedOutfits', function(outfits)
-        ped = GetPlayerPed(-1);
-        MenuTitle = "My Outfits :"
-        ClearMenu()
-
-        if outfits == nil then
-            QBCore.Functions.Notify("Je hebt geen outfits opgeslagen...", "error", 3500)
-            closeMenuFull()
-        else
-            for k, v in pairs(outfits) do
-                Menu.addButton(outfits[k].outfitname, "optionMenu", outfits[k]) 
-            end
-        end
-        Menu.addButton("Terug", "MenuOutfits",nil)
-    end)
-end
-
-function optionMenu(outfitData)
+function optionMenu(citizenData)
     ped = GetPlayerPed(-1);
     MenuTitle = "What now?"
     ClearMenu()
-
-    Menu.addButton("Kies Outfit", "selectOutfit", outfitData) 
-    Menu.addButton("Verwijder Outfit", "removeOutfit", outfitData) 
-    Menu.addButton("Terug", "OutfitsLijst",nil)
+    Menu.addButton("Verwijder sleutel", "removeHouseKey", citizenData) 
+    Menu.addButton("Terug", "HouseKeysMenu",nil)
 end
 
-function selectOutfit(oData)
-    TriggerServerEvent('clothes:selectOutfit', oData.model, oData.skin)
-    QBCore.Functions.Notify(oData.outfitname.." gekozen", "success", 2500)
+function removeHouseKey(citizenData)
+    TriggerServerEvent('qb-houses:server:removeHouseKey', closesthouse, citizenData)
     closeMenuFull()
-    changeOutfit()
 end
 
 function removeOutfit(oData)
@@ -495,6 +517,7 @@ end
 function closeMenuFull()
     Menu.hidden = true
     currentGarage = nil
+    inHoldersMenu = false
     ClearMenu()
 end
 

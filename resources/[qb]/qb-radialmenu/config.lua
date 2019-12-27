@@ -126,6 +126,15 @@ Config.MenuItems = {
                         items = {},
                     },
                     {
+                        id    = 'removehousekey',
+                        title = 'Verwijder Huis Sleutel',
+                        icon = '#vehiclekey',
+                        type = 'client',
+                        event = 'qb-houses:client:removeHouseKey',
+                        shouldClose = true,
+                        items = {},
+                    },
+                    {
                         id    = 'togglelock',
                         title = 'Toggle Deurslot',
                         icon = '#vehiclekey',

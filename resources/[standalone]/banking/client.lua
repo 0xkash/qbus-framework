@@ -376,17 +376,6 @@ end
 return closestPlayer, closestDistance
 end
 
-RegisterNetEvent('qb-houses:client:giveHouseKey')
-AddEventHandler('qb-houses:client:giveHouseKey', function(data)
-  local player, distance = GetClosestPlayer()
-  if player ~= -1 and distance < 2.5 then
-      local playerId = GetPlayerServerId(player)
-      TriggerServerEvent('qb-houses:server:giveHouseKey', playerId, closesthouse)
-  else
-      QBCore.Functions.Notify("Niemand in de buurt!", "error")
-  end
-end)
-
 RegisterNetEvent('banking:client:CheckDistance')
 AddEventHandler('banking:client:CheckDistance', function(targetId, amount)
   local player, distance = GetClosestPlayer()
