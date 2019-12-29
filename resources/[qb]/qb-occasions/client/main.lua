@@ -86,7 +86,18 @@ Citizen.CreateThread(function()
                                     currentVehicle = i
                                     
                                     QBCore.Functions.TriggerCallback('qb-occasions:server:getSellerInformation', function(info)
-                                        info.charinfo = json.decode(info.charinfo)
+                                        if info ~= nil then 
+                                            info.charinfo = json.decode(info.charinfo)
+                                        else
+                                            info = {}
+                                            info.charinfo = {
+                                                firstname = "Niet",
+                                                lastname = "bekend..",
+                                                account = "Account niet bekend..",
+                                                phone = "Telefoonnummer niet bekend.."
+                                            }
+                                        end
+                                        
                                         openBuyContract(info, Config.OccasionSlots[currentVehicle])
                                     end, Config.OccasionSlots[currentVehicle]["owner"])
                                 end
