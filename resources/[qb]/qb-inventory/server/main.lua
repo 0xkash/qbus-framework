@@ -1194,6 +1194,31 @@ QBCore.Commands.Add("inv", "Open je inventory", {}, false, function(source, args
 	TriggerClientEvent("inventory:client:OpenInventory", source, Player.PlayerData.items)
 end)
 
+QBCore.Commands.Add("resetinv", "Reset inventory (in geval met -None)", {{name="type", help="stash/trunk/glovebox"},{name="id/plate", help="ID van stash of kenteken"}}, true, function(source, args)
+	local invType = args[1]:lower()
+	local invId = args[2]
+	if invType ~= nil and invId ~= nil then 
+		if invType == "trunk" then
+			if Trunks[invId] ~= nil then 
+				Trunks[invId].isOpen = false
+			end
+		elseif type == "glovebox" then
+			if Gloveboxes[invId] ~= nil then 
+				Gloveboxes[invId].isOpen = false
+			end
+		elseif type == "stash" then
+			if Stashes[invId] ~= nil then 
+				Stashes[invId].isOpen = false
+			end
+		else
+			TriggerClientEvent('QBCore:Notify', source,  "Geen geldig type..", "error")
+		end
+	else
+		TriggerClientEvent('QBCore:Notify', source,  "Argumenten niet juist ingevuld..", "error")
+	end
+	
+end, "admin")
+
 QBCore.Commands.Add("setnui", "Zet nui aan/ui (0/1)", {}, true, function(source, args)
     if tonumber(args[1]) == 1 then
         TriggerClientEvent("inventory:client:EnableNui", src)
