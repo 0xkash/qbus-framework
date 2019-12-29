@@ -137,7 +137,7 @@ end)
 RegisterNetEvent('qb-pawnshop:client:startMelting')
 AddEventHandler('qb-pawnshop:client:startMelting', function()
     Config.IsMelting = true
-    Config.MeltTime = 60
+    Config.MeltTime = 300
     Citizen.CreateThread(function()
         while Config.IsMelting do
             Config.MeltTime = Config.MeltTime - 1

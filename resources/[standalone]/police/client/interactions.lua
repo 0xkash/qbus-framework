@@ -3,6 +3,8 @@ Citizen.CreateThread(function()
         Citizen.Wait(1)
         if isEscorted then
             DisableAllControlActions(0)
+            EnableControlAction(0, 1, true)
+			EnableControlAction(0, 2, true)
             EnableControlAction(0, Keys['T'], true)
             EnableControlAction(0, Keys['E'], true)
             EnableControlAction(0, Keys['ESC'], true)

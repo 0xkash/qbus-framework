@@ -131,7 +131,7 @@ end
 knockDealerDoor = function()
     local hours = GetClockHours()
 
-    if hours > Config.Dealers[currentDealer]["time"]["min"] and hours < 24 or hours < Config.Dealers[currentDealer]["time"]["max"] and hours > 0 then
+    if hours >= Config.Dealers[currentDealer]["time"]["min"] and hours < 24 and hours <= Config.Dealers[currentDealer]["time"]["max"] and hours > 0 then
         knockDoorAnim(true)
     else
         knockDoorAnim(false)

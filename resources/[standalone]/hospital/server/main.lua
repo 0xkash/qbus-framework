@@ -6,9 +6,9 @@ local PlayerWeaponWounds = {}
 local bedsTaken = {}
 
 RegisterServerEvent('hospital:server:SendToBed')
-AddEventHandler('hospital:server:SendToBed', function(bedId)
+AddEventHandler('hospital:server:SendToBed', function(bedId, isRevive)
 	local src = source
-	TriggerClientEvent('hospital:client:SendToBed', src, bedId, Config.Locations["beds"][bedId], true)
+	TriggerClientEvent('hospital:client:SendToBed', src, bedId, Config.Locations["beds"][bedId], isRevive)
 	TriggerClientEvent('hospital:client:SetBed', -1, bedId, true)
 end)
 
