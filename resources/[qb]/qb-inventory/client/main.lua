@@ -130,6 +130,9 @@ Citizen.CreateThread(function()
                         elseif GetVehicleClass(curVeh) == 9 then
                             maxweight = 60000
                             slots = 35
+                        elseif GetVehicleClass(curVeh) == 12 then
+                            maxweight = 120000
+                            slots = 35
                         else
                             maxweight = 60000
                             slots = 35
