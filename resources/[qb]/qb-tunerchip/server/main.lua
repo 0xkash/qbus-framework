@@ -20,6 +20,19 @@ AddEventHandler('qb-tunerchip:server:TuneStatus', function(plate, bool)
     end
 end)
 
+QBCore.Functions.CreateCallback('qb-tunerchip:server:HasChip', function(source, cb)
+    local src = source
+    local Ply = QBCore.Functions.GetPlayer(src)
+    local Chip = Ply.Functions.GetItemByName('tunerlaptop')
+
+    if Chip ~= nil then
+        cb(true)
+    else
+        DropPlayer(src, 'Dit is niet de bedoeling he...')
+        cb(true)
+    end
+end)
+
 QBCore.Functions.CreateCallback('qb-tunerchip:server:GetStatus', function(source, cb, plate)
     cb(tunedVehicles[plate])
 end)
