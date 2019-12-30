@@ -1203,11 +1203,11 @@ QBCore.Commands.Add("resetinv", "Reset inventory (in geval met -None)", {{name="
 			if Trunks[invId] ~= nil then 
 				Trunks[invId].isOpen = false
 			end
-		elseif type == "glovebox" then
+		elseif invType == "glovebox" then
 			if Gloveboxes[invId] ~= nil then 
 				Gloveboxes[invId].isOpen = false
 			end
-		elseif type == "stash" then
+		elseif invType == "stash" then
 			if Stashes[invId] ~= nil then 
 				Stashes[invId].isOpen = false
 			end
