@@ -1232,6 +1232,10 @@ QBCore.Commands.Add("kofferbak", "Laat kofferbak positie zien", {}, false, funct
 	TriggerClientEvent("inventory:client:ShowTrunkPos", source)
 end)
 
+QBCore.Commands.Add("beroof", "Beroof een speler", {}, false, function(source, args)
+	TriggerClientEvent("police:client:RobPlayer", source)
+end)
+
 QBCore.Commands.Add("giveitem", "Geef een item aan een speler", {{name="id", help="Speler ID"},{name="item", help="Naam van het item (geen label)"}, {name="amount", help="Aantal items"}}, true, function(source, args)
 	local Player = QBCore.Functions.GetPlayer(tonumber(args[1]))
 	local amount = tonumber(args[3])
