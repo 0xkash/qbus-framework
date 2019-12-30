@@ -1196,7 +1196,8 @@ end)
 
 QBCore.Commands.Add("resetinv", "Reset inventory (in geval met -None)", {{name="type", help="stash/trunk/glovebox"},{name="id/plate", help="ID van stash of kenteken"}}, true, function(source, args)
 	local invType = args[1]:lower()
-	local invId = args[2]
+	table.remove(args, 1)
+	local invId = table.concat(args, " ")
 	if invType ~= nil and invId ~= nil then 
 		if invType == "trunk" then
 			if Trunks[invId] ~= nil then 
