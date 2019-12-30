@@ -59,7 +59,7 @@ Config.MenuItems = {
                         title = 'Boeien',
                         icon = '#general',
                         type = 'client',
-                        event = 'police:client:CuffPlayer',
+                        event = 'police:client:CuffPlayerSoft',
                         shouldClose = true,
                     },
                     {
