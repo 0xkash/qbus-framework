@@ -8,6 +8,7 @@ QBCore.Functions.ExecuteSql = function(query, cb)
 		busy = false
 		if cb ~= nil then
 			cb(retdata)
+		end
 	end)
 	while (busy and cb ~= nil) do
 		Citizen.Wait(10)
