@@ -618,3 +618,8 @@ RegisterNetEvent('qb-admin:client:SendReport')
 AddEventHandler('qb-admin:client:SendReport', function(name, src, msg)
     TriggerServerEvent('qb-admin:server:SendReport', name, src, msg)
 end)
+
+RegisterNetEvent('qb-admin:client:SendStaffChat')
+AddEventHandler('qb-admin:client:SendStaffChat', function(name, msg)
+    TriggerServerEvent('qb-admin:server:StaffChatMessage', name, msg)
+end)

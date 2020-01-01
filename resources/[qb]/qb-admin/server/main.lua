@@ -94,6 +94,12 @@ QBCore.Commands.Add("report", "Stuur een report naar admins (alleen wanneer nodi
     TriggerClientEvent('chatMessage', source, "REPORT VERSTUURD", "normal", msg)
 end)
 
+QBCore.Commands.Add("staffchat", "Bericht naar alle staff sturen", {{name="bericht", help="Bericht die je wilt sturen"}}, true, function(source, args)
+    local msg = table.concat(args, " ")
+
+    TriggerClientEvent('qb-admin:client:SendStaffChat', -1, GetPlayerName(source), msg)
+end, "admin")
+
 QBCore.Commands.Add("warn", "Geef een persoon een waarschuwing", {{name="ID", help="Persoon"}, {name="Reden", help="Vul een reden in"}}, true, function(source, args)
     local targetPlayer = QBCore.Functions.GetPlayer(tonumber(args[1]))
     local senderPlayer = QBCore.Functions.GetPlayer(source)
@@ -245,6 +251,18 @@ AddEventHandler('qb-admin:server:SendReport', function(name, targetSrc, msg)
     if QBCore.Functions.HasPermission(src, "admin") then
         if QBCore.Functions.IsOptin(src) then
             TriggerClientEvent('chatMessage', src, "REPORT - "..name.." ("..targetSrc..")", "report", msg)
+        end
+    end
+end)
+
+RegisterServerEvent('qb-admin:server:StaffChatMessage')
+AddEventHandler('qb-admin:server:StaffChatMessage', function(name, msg)
+    local src = source
+    local Players = QBCore.Functions.GetPlayers()
+
+    if QBCore.Functions.HasPermission(src, "admin") then
+        if QBCore.Functions.IsOptin(src) then
+            TriggerClientEvent('chatMessage', src, "STAFFCHAT - "..name, "error", msg)
         end
     end
 end)
