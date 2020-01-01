@@ -38,10 +38,11 @@ Citizen.CreateThread(function()
 			EnableControlAction(0, 2, true)
 			EnableControlAction(0, Keys['T'], true)
             EnableControlAction(0, Keys['E'], true)
+            EnableControlAction(0, Keys['V'], true)
             EnableControlAction(0, Keys['ESC'], true)
             EnableControlAction(0, Keys['F1'], true)
             EnableControlAction(0, Keys['HOME'], true)
-
+            
             if not isInHospitalBed then 
                 if deathTime > 0 then
                     DrawTxt(0.89, 1.44, 1.0,1.0,0.6, "RESPAWN OVER: ~b~" .. math.ceil(deathTime) .. "~w~ SECONDEN", 255, 255, 255, 255)

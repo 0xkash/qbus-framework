@@ -103,35 +103,31 @@ end)
 
 RegisterNetEvent('police:client:deleteObject')
 AddEventHandler('police:client:deleteObject', function()
-    if PlayerJob.name == "police" then 
-        local objectId, dist = GetClosestPoliceObject()
-        if dist < 5.0 then
-            QBCore.Functions.Progressbar("remove_object", "Object verwijderen..", 2500, false, true, {
-                disableMovement = true,
-                disableCarMovement = true,
-                disableMouse = false,
-                disableCombat = true,
-            }, {
-                animDict = "weapons@first_person@aim_rng@generic@projectile@thermal_charge@",
-                anim = "plant_floor",
-                flags = 16,
-            }, {}, {}, function() -- Done
-                StopAnimTask(GetPlayerPed(-1), "weapons@first_person@aim_rng@generic@projectile@thermal_charge@", "plant_floor", 1.0)
-                TriggerServerEvent("police:server:deleteObject", objectId)
-            end, function() -- Cancel
-                StopAnimTask(GetPlayerPed(-1), "weapons@first_person@aim_rng@generic@projectile@thermal_charge@", "plant_floor", 1.0)
-                QBCore.Functions.Notify("Geannuleerd..", "error")
-            end)
-        end
+    local objectId, dist = GetClosestPoliceObject()
+    if dist < 5.0 then
+        QBCore.Functions.Progressbar("remove_object", "Object verwijderen..", 2500, false, true, {
+            disableMovement = true,
+            disableCarMovement = true,
+            disableMouse = false,
+            disableCombat = true,
+        }, {
+            animDict = "weapons@first_person@aim_rng@generic@projectile@thermal_charge@",
+            anim = "plant_floor",
+            flags = 16,
+        }, {}, {}, function() -- Done
+            StopAnimTask(GetPlayerPed(-1), "weapons@first_person@aim_rng@generic@projectile@thermal_charge@", "plant_floor", 1.0)
+            TriggerServerEvent("police:server:deleteObject", objectId)
+        end, function() -- Cancel
+            StopAnimTask(GetPlayerPed(-1), "weapons@first_person@aim_rng@generic@projectile@thermal_charge@", "plant_floor", 1.0)
+            QBCore.Functions.Notify("Geannuleerd..", "error")
+        end)
     end
 end)
 
 RegisterNetEvent('police:client:removeObject')
 AddEventHandler('police:client:removeObject', function(objectId)
-    if PlayerJob.name == "police" then 
-        DeleteObject(ObjectList[objectId].object)
-        ObjectList[objectId] = nil
-    end
+    DeleteObject(ObjectList[objectId].object)
+    ObjectList[objectId] = nil
 end)
 
 RegisterNetEvent('police:client:spawnObject')
@@ -144,17 +140,15 @@ AddEventHandler('police:client:spawnObject', function(objectId, type, player)
     PlaceObjectOnGroundProperly(spawnedObj)
     SetEntityHeading(spawnedObj, heading)
     FreezeEntityPosition(spawnedObj, Config.Objects[type].freeze)
-    if PlayerJob.name == "police" then 
-        ObjectList[objectId] = {
-            id = objectId,
-            object = spawnedObj,
-            coords = {
-                x = x,
-                y = y,
-                z = z - 0.3,
-            },
-        }
-    end
+    ObjectList[objectId] = {
+        id = objectId,
+        object = spawnedObj,
+        coords = {
+            x = x,
+            y = y,
+            z = z - 0.3,
+        },
+    }
 end)
 
 function GetClosestPoliceObject()

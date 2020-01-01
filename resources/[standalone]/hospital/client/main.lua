@@ -120,6 +120,9 @@ Citizen.CreateThread(function()
                     if weapon ~= nil then
                         if armorDamaged and (bodypart == 'SPINE' or bodypart == 'UPPER_BODY') or weapon == Config.WeaponClasses['NOTHING'] then
                             checkDamage = false -- Don't check damage if the it was a body shot and the weapon class isn't that strong
+                            if armorDamaged then
+                                TriggerServerEvent("hospital:server:SetArmor", GetPedArmour(GetPlayerPed(-1)))
+                            end
                         end
     
                         if checkDamage then
