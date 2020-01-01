@@ -6,15 +6,16 @@ QBCore.Functions.ExecuteSql = function(query, cb)
 	exports['ghmattimysql']:execute(query, {}, function(data)
 		retdata = data
 		busy = false
+		if cb ~= nil then
+			cb(retdata)
 	end)
 	while (busy and cb ~= nil) do
 		Citizen.Wait(10)
 	end
-	if cb ~= nil then
-		cb(retdata)
-	else
+	if cb == nil then
 		return retdata
 	end
+	return true
 end
 
 QBCore.Functions.GetIdentifier = function(source, idtype)
