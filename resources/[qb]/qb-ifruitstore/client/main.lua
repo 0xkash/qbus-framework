@@ -229,8 +229,6 @@ AddEventHandler('thermite:UseThermite', function()
                 }
                 requiredItemsShowed = false
                 TriggerEvent('inventory:client:requiredItems', requiredItems, false)
-                TriggerServerEvent("QBCore:Server:RemoveItem", "thermite", 1)
-                TriggerEvent('inventory:client:ItemBox', QBCore.Shared.Items["thermite"], "remove")
                 TriggerServerEvent("qb-ifruitstore:server:SetThermiteStatus", "isBusy", true)
                 SetNuiFocus(true, true)
                 SendNUIMessage({
@@ -311,6 +309,8 @@ end)
 RegisterNUICallback('thermitefailed', function()
     PlaySound(-1, "Place_Prop_Fail", "DLC_Dmod_Prop_Editor_Sounds", 0, 0, 1)
     TriggerServerEvent("qb-ifruitstore:server:SetThermiteStatus", "isBusy", false)
+    TriggerServerEvent("QBCore:Server:RemoveItem", "thermite", 1)
+    TriggerEvent('inventory:client:ItemBox', QBCore.Shared.Items["thermite"], "remove")
 end)
 
 RegisterNUICallback('thermitesuccess', function()

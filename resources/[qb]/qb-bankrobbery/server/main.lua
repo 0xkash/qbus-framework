@@ -203,6 +203,16 @@ AddEventHandler('qb-bankrobbery:server:SetStationStatus', function(key, isHit)
     end
 end)
 
+RegisterServerEvent('thermite:StartServerFire')
+AddEventHandler('thermite:StartServerFire', function(coords, maxChildren, isGasFire)
+    TriggerClientEvent("thermite:StartFire", -1, coords, maxChildren, isGasFire)
+end)
+
+RegisterServerEvent('thermite:StopFires')
+AddEventHandler('thermite:StopFires', function(coords, maxChildren, isGasFire)
+    TriggerClientEvent("thermite:StopFires", -1)
+end)
+
 function CheckStationHits()
     if Config.PowerStations[1].hit and Config.PowerStations[2].hit and Config.PowerStations[3].hit then
         TriggerClientEvent("police:client:SetCamera", -1, 19, false)

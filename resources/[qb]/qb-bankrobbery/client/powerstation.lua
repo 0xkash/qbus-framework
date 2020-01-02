@@ -1,6 +1,8 @@
 local closestStation = 0
 local currentStation = 0
 CurrentCops = 0
+local currentFires = {}
+local currentGate = 0
 
 Citizen.CreateThread(function()
     while true do
@@ -68,6 +70,26 @@ AddEventHandler('police:SetCopCount', function(amount)
     CurrentCops = amount
 end)
 
+RegisterNetEvent("thermite:StartFire")
+AddEventHandler("thermite:StartFire", function(coords, maxChildren, isGasFire)
+    if GetDistanceBetweenCoords(coords.x, coords.y, coords.z, GetEntityCoords(GetPlayerPed(-1))) < 100 then
+        local pos = {
+            x = coords.x, 
+            y = coords.y,
+            z = coords.z,
+        }
+        pos.z = pos.z - 0.9
+        local fire = StartScriptFire(pos.x, pos.y, pos.z, maxChildren, isGasFire)
+        table.insert(currentFires, fire)
+    end
+end)
+
+RegisterNetEvent("thermite:StopFires")
+AddEventHandler("thermite:StopFires", function()
+    for k, v in ipairs(currentFires) do
+        RemoveScriptFire(v)
+    end
+end)
 
 RegisterNetEvent('thermite:UseThermite')
 AddEventHandler('thermite:UseThermite', function()
@@ -79,16 +101,16 @@ AddEventHandler('thermite:UseThermite', function()
         end
         local dist = GetDistanceBetweenCoords(pos, Config.PowerStations[closestStation].coords.x, Config.PowerStations[closestStation].coords.y, Config.PowerStations[closestStation].coords.z)
         if dist < 1.5 then
-            if CurrentCops >= 4 then
+            if CurrentCops >= 2 then
                 if not Config.PowerStations[closestStation].hit then
+                    loadAnimDict("weapon@w_sp_jerrycan")
+                    TaskPlayAnim(GetPlayerPed(-1), "weapon@w_sp_jerrycan", "fire", 3.0, 3.9, 180, 49, 0, 0, 0, 0)
                     TriggerEvent('inventory:client:requiredItems', requiredItems, false)
                     SetNuiFocus(true, true)
                     SendNUIMessage({
                         action = "openThermite",
                         amount = math.random(5, 10),
                     })
-                    TriggerServerEvent("QBCore:Server:RemoveItem", "thermite", 1)
-                    TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items["thermite"], "remove")
                     currentStation = closestStation
                 else
                     QBCore.Functions.Notify("Het lijkt erop dat de zekeringen zijn doorgebrand..", "error")
@@ -96,6 +118,23 @@ AddEventHandler('thermite:UseThermite', function()
             else
                 QBCore.Functions.Notify("Niet genoeg politie.. (2 nodig)", "error")
             end
+        end
+    elseif currentThermiteGate ~= 0 then
+        if math.random(1, 100) <= 65 and not IsWearingHandshoes() then
+            TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
+        end
+        if CurrentCops >= 2 then
+            currentGate = currentThermiteGate
+            loadAnimDict("weapon@w_sp_jerrycan")
+            TaskPlayAnim(GetPlayerPed(-1), "weapon@w_sp_jerrycan", "fire", 3.0, 3.9, -1, 49, 0, 0, 0, 0)
+            TriggerEvent('inventory:client:requiredItems', requiredItems, false)
+            SetNuiFocus(true, true)
+            SendNUIMessage({
+                action = "openThermite",
+                amount = math.random(5, 10),
+            })
+        else
+            QBCore.Functions.Notify("Niet genoeg politie.. (2 nodig)", "error")
         end
     end
 end)
@@ -111,15 +150,43 @@ end)
 
 RegisterNUICallback('thermitefailed', function()
     PlaySound(-1, "Place_Prop_Fail", "DLC_Dmod_Prop_Editor_Sounds", 0, 0, 1)
+    TriggerServerEvent("QBCore:Server:RemoveItem", "thermite", 1)
+    TriggerEvent('inventory:client:ItemBox', QBCore.Shared.Items["thermite"], "remove")
+    ClearPedTasks(GetPlayerPed(-1))
+    local coords = GetEntityCoords(GetPlayerPed(-1))
+    local randTime = math.random(10000, 15000)
+    CreateFire(coords, randTime)
 end)
 
 RegisterNUICallback('thermitesuccess', function()
-    QBCore.Functions.Notify("De zekeringen zijn kapot", "success")
+    ClearPedTasks(GetPlayerPed(-1))
+    local time = 3
+    local coords = GetEntityCoords(GetPlayerPed(-1))
+    while time > 0 do 
+        QBCore.Functions.Notify("Branden over " .. time .. "..")
+        Citizen.Wait(1000)
+        time = time - 1
+    end
+    local randTime = math.random(10000, 15000)
+    CreateFire(coords, randTime)
     if currentStation ~= 0 then
+        QBCore.Functions.Notify("De zekeringen zijn kapot", "success")
         TriggerServerEvent("qb-bankrobbery:server:SetStationStatus", currentStation, true)
+    elseif currentGate ~= 0 then
+        QBCore.Functions.Notify("De deur is open gebrand", "success")
+        TriggerServerEvent('qb-doorlock:server:updateState', currentGate, false)
+        currentGate = 0
     end
 end)
 
 RegisterNUICallback('closethermite', function()
     SetNuiFocus(false, false)
 end)
+
+function CreateFire(coords, time)
+    for i = 1, math.random(1, 7), 1 do
+        TriggerServerEvent("thermite:StartServerFire", coords, 24, false)
+    end
+    Citizen.Wait(time)
+    TriggerServerEvent("thermite:StopFires")
+end

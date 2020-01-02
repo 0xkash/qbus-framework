@@ -489,7 +489,7 @@ local function playerConnect(source, setKickReason, deferrals)
 
     if not ids then
         -- prevent joining
-        done(Config.Language.iderr .."\n🔸 Kijk op onze discord voor meer informatie: https://discord.gg/Ttr6fY6")
+        done(Config.Language.idrr .."\n🔸 Kijk op onze discord voor meer informatie: https://discord.gg/Ttr6fY6")
         CancelEvent()
         Queue:DebugPrint("Dropped " .. name .. ", couldn't retrieve any of their id's")
         return

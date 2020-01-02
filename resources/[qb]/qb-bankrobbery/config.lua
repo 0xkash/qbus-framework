@@ -477,6 +477,15 @@ Config.BigBanks = {
             closed = 45.45,
             open = 130.45,
         },
+        ["thermite"] = {
+            [1] = {
+                ["x"] = -106.11,
+                ["y"] = 6475.36,
+                ["z"] = 31.62,
+                ["isOpened"] = false,
+                ["doorId"] = 66,
+            },
+        },
         ["camId"] = 26,
         ["isOpened"] = false,
         ["lockers"] = {
@@ -557,6 +566,22 @@ Config.BigBanks = {
         ["heading"] = {
             closed = 160.00001,
             open = 70.00001,
+        },
+        ["thermite"] = {
+            [1] = {
+                ["x"] = 252.55,
+                ["y"] = 221.15,
+                ["z"] = 101.68,
+                ["isOpened"] = false,
+                ["doorId"] = 58,
+            },
+            [2] = {
+                ["x"] = 261.15,
+                ["y"] = 215.21,
+                ["z"] = 101.68,
+                ["isOpened"] = false,
+                ["doorId"] = 59,
+            },
         },
         ["camId"] = 26,
         ["isOpened"] = false,

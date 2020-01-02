@@ -206,15 +206,6 @@ Config.MenuItems = {
         icon = '#vehicle',
         items = {
             {
-                id    = 'givekey',
-                title = 'Geef Voertuig Sleutel',
-                icon = '#vehiclekey',
-                type = 'client',
-                event = 'qb-radialmenu:client:playerCheck',
-                shouldClose = false,
-                items = {},
-            },
-            {
                 id    = 'vehicledoors',
                 title = 'Voertuig Deuren',
                 icon = '#vehicledoors',
