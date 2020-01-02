@@ -1,22 +1,25 @@
 QBCore.Functions = {}
 
-QBCore.Functions.ExecuteSql = function(query, cb)
-	local busy = true
-	local retdata = {}
+QBCore.Functions.ExecuteSql = function(wait, query, cb)
+	print("wait: " .. tostring(wait))
+	local rtndata = {}
+	local waiting = true
 	exports['ghmattimysql']:execute(query, {}, function(data)
-		retdata = data
-		busy = false
-		if cb ~= nil then
-			cb(retdata)
+		if cb ~= nil and wait == false then
+			cb(data)
 		end
+		rtndata = data
+		waiting = false
 	end)
-	while (busy and cb ~= nil) do
-		Citizen.Wait(10)
+	if wait then
+		while waiting do
+			Citizen.Wait(5)
+		end
+		if cb ~= nil and wait == true then
+			cb(rtndata)
+		end
 	end
-	if cb == nil then
-		return retdata
-	end
-	return true
+	return rtndata
 end
 
 QBCore.Functions.GetIdentifier = function(source, idtype)
@@ -136,7 +139,7 @@ QBCore.Functions.IsWhitelisted = function(source)
 	local identifiers = GetPlayerIdentifiers(source)
 	local rtn = false
 	if (QBCore.Config.Server.whitelist) then
-		QBCore.Functions.ExecuteSql("SELECT * FROM `whitelist` WHERE `"..QBCore.Config.IdentifierType.."` = '".. QBCore.Functions.GetIdentifier(source).."'", function(result)
+		QBCore.Functions.ExecuteSql(true, "SELECT * FROM `whitelist` WHERE `"..QBCore.Config.IdentifierType.."` = '".. QBCore.Functions.GetIdentifier(source).."'", function(result)
 			local data = result[1]
 			if data ~= nil then
 				for _, id in pairs(identifiers) do
@@ -160,8 +163,8 @@ QBCore.Functions.AddPermission = function(source, permission)
 			license = GetPlayerIdentifiers(source)[2],
 			permission = permission:lower(),
 		}
-		QBCore.Functions.ExecuteSql("DELETE FROM `permissions` WHERE `steam` = '"..GetPlayerIdentifiers(source)[1].."'")
-		QBCore.Functions.ExecuteSql("INSERT INTO `permissions` (`name`, `steam`, `license`, `permission`) VALUES ('"..GetPlayerName(source).."', '"..GetPlayerIdentifiers(source)[1].."', '"..GetPlayerIdentifiers(source)[2].."', '"..permission:lower().."')")
+		QBCore.Functions.ExecuteSql(true, "DELETE FROM `permissions` WHERE `steam` = '"..GetPlayerIdentifiers(source)[1].."'")
+		QBCore.Functions.ExecuteSql(true, "INSERT INTO `permissions` (`name`, `steam`, `license`, `permission`) VALUES ('"..GetPlayerName(source).."', '"..GetPlayerIdentifiers(source)[1].."', '"..GetPlayerIdentifiers(source)[2].."', '"..permission:lower().."')")
 		Player.Functions.UpdatePlayerData()
 	end
 end
@@ -170,7 +173,7 @@ QBCore.Functions.RemovePermission = function(source)
 	local Player = QBCore.Functions.GetPlayer(source)
 	if Player ~= nil then 
 		QBCore.Config.Server.PermissionList[GetPlayerIdentifiers(source)[1]] = nil	
-		QBCore.Functions.ExecuteSql("DELETE FROM `permissions` WHERE `steam` = '"..GetPlayerIdentifiers(source)[1].."'")
+		QBCore.Functions.ExecuteSql(true, "DELETE FROM `permissions` WHERE `steam` = '"..GetPlayerIdentifiers(source)[1].."'")
 		Player.Functions.UpdatePlayerData()
 	end
 end
@@ -228,14 +231,14 @@ end
 QBCore.Functions.IsPlayerBanned = function (source)
 	local retval = false
 	local message = ""
-	QBCore.Functions.ExecuteSql("SELECT * FROM `bans` WHERE `steam` = '"..GetPlayerIdentifiers(source)[1].."' OR `license` = '"..GetPlayerIdentifiers(source)[2].."' OR `ip` = '"..GetPlayerIdentifiers(source)[3].."'", function(result)
+	QBCore.Functions.ExecuteSql(true, "SELECT * FROM `bans` WHERE `steam` = '"..GetPlayerIdentifiers(source)[1].."' OR `license` = '"..GetPlayerIdentifiers(source)[2].."' OR `ip` = '"..GetPlayerIdentifiers(source)[3].."'", function(result)
 		if result[1] ~= nil then 
 			if os.time() < result[1].expire then
 				retval = true
 				local timeTable = os.date("*t", tonumber(result[1].expire))
 				message = "Je bent verbannen van de server:\n"..result[1].reason.."\nJe ban verloopt "..timeTable.day.. "/" .. timeTable.month .. "/" .. timeTable.year .. " " .. timeTable.hour.. ":" .. timeTable.min .. "\n"
 			else
-				QBCore.Functions.ExecuteSql("DELETE FROM `bans` WHERE `id` = "..result[1].id)
+				QBCore.Functions.ExecuteSql(true, "DELETE FROM `bans` WHERE `id` = "..result[1].id)
 			end
 		end
 	end)

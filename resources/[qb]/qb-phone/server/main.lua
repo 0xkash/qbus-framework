@@ -8,7 +8,7 @@ local callId = 501
 local Adverts = {}
 
 Citizen.CreateThread(function()
-    QBCore.Functions.ExecuteSql('DELETE FROM `phone_tweets`')
+    QBCore.Functions.ExecuteSql(true, 'DELETE FROM `phone_tweets`')
     print('Tweets have been cleared')
 end)
 
@@ -25,7 +25,7 @@ AddEventHandler('qb-phone:server:transferBank', function(amount, iban)
     local src = source
     local sender = QBCore.Functions.GetPlayer(src)
 
-    QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `charinfo` LIKE '%"..iban.."%'", function(result)
+    QBCore.Functions.ExecuteSql(true, "SELECT * FROM `players` WHERE `charinfo` LIKE '%"..iban.."%'", function(result)
         if result[1] ~= nil then
             local recieverSteam = QBCore.Functions.GetPlayerByCitizenId(result[1].citizenid)
 
@@ -36,7 +36,7 @@ AddEventHandler('qb-phone:server:transferBank', function(amount, iban)
             else
                 local moneyInfo = json.decode(result[1].money)
                 moneyInfo.bank = round((moneyInfo.bank + amount))
-                QBCore.Functions.ExecuteSql("UPDATE `players` SET `money` = '"..json.encode(moneyInfo).."' WHERE `citizenid` = '"..result[1].citizenid.."'")
+                QBCore.Functions.ExecuteSql(true, "UPDATE `players` SET `money` = '"..json.encode(moneyInfo).."' WHERE `citizenid` = '"..result[1].citizenid.."'")
                 sender.Functions.RemoveMoney('bank', amount)
             end
         else
@@ -54,11 +54,11 @@ QBCore.Functions.CreateCallback('qb-phone:server:getUserContacts', function(sour
     local Player = QBCore.Functions.GetPlayer(src)
     local playerContacts = {}
     if Player ~= nil then 
-        QBCore.Functions.ExecuteSql("SELECT * FROM `player_contacts` WHERE `citizenid` = '"..Player.PlayerData.citizenid.."' ORDER BY `name` ASC", function(result)
+        QBCore.Functions.ExecuteSql(true, "SELECT * FROM `player_contacts` WHERE `citizenid` = '"..Player.PlayerData.citizenid.."' ORDER BY `name` ASC", function(result)
             if result[1] ~= nil then
                 for i = 1, (#result), 1 do
                     local status = false
-                    QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `charinfo` LIKE '%"..result[i].number.."%'", function(player)
+                    QBCore.Functions.ExecuteSql(true, "SELECT * FROM `players` WHERE `charinfo` LIKE '%"..result[i].number.."%'", function(player)
                         for i=1, (#player), 1 do
                             local ply = QBCore.Functions.GetPlayerByCitizenId(player[i].citizenid)
                             if ply then
@@ -83,7 +83,7 @@ AddEventHandler('qb-phone:server:addContact', function(name, number)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
 
-    QBCore.Functions.ExecuteSql("INSERT INTO `player_contacts` (`citizenid`, `name`, `number`) VALUES ('"..Player.PlayerData.citizenid.."', '"..name.."', '"..number.."')")
+    QBCore.Functions.ExecuteSql(true, "INSERT INTO `player_contacts` (`citizenid`, `name`, `number`) VALUES ('"..Player.PlayerData.citizenid.."', '"..name.."', '"..number.."')")
 end)
 
 RegisterServerEvent('qb-phone:server:editContact')
@@ -91,7 +91,7 @@ AddEventHandler('qb-phone:server:editContact', function(oName, oNum, nName, nNum
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
 
-    QBCore.Functions.ExecuteSql("UPDATE `player_contacts` SET `name` = '"..nName.."', `number` = '"..nNum.."' WHERE `name` = '"..oName.."' AND `number` = '"..oNum.."'")
+    QBCore.Functions.ExecuteSql(true, "UPDATE `player_contacts` SET `name` = '"..nName.."', `number` = '"..nNum.."' WHERE `name` = '"..oName.."' AND `number` = '"..oNum.."'")
 end)
 
 QBCore.Functions.CreateCallback("qb-phone:server:GetAllUserVehicles", function(source, cb, garage)
@@ -111,7 +111,7 @@ QBCore.Functions.CreateCallback("qb-phone:server:GetUserMails", function(source,
     local src = source
     local pData = QBCore.Functions.GetPlayer(src)
 
-    QBCore.Functions.ExecuteSql('SELECT * FROM `player_mails` WHERE `citizenid` = "'..pData.PlayerData.citizenid..'" ORDER BY `date` DESC', function(result)
+    QBCore.Functions.ExecuteSql(true, 'SELECT * FROM `player_mails` WHERE `citizenid` = "'..pData.PlayerData.citizenid..'" ORDER BY `date` DESC', function(result)
         if result[1] ~= nil then
             for k, v in pairs(result) do
                 if result[k].button ~= nil then
@@ -140,7 +140,7 @@ QBCore.Functions.CreateCallback("qb-phone:server:getPhoneTweets", function(sourc
     local src = source
     local pData = QBCore.Functions.GetPlayer(src)
 
-    QBCore.Functions.ExecuteSql('SELECT * FROM `phone_tweets` ORDER BY `date` DESC', function(result)
+    QBCore.Functions.ExecuteSql(true, 'SELECT * FROM `phone_tweets` ORDER BY `date` DESC', function(result)
         if result[1] ~= nil then
             cb(result)
         else
@@ -156,7 +156,7 @@ AddEventHandler('qb-phone:server:setEmailRead', function(mailId)
 
     print(mailId)
 
-    QBCore.Functions.ExecuteSql('UPDATE `player_mails` SET `read` = "1" WHERE `mailid` = "'..mailId..'" AND `citizenid` = "'..Player.PlayerData.citizenid..'"')
+    QBCore.Functions.ExecuteSql(true, 'UPDATE `player_mails` SET `read` = "1" WHERE `mailid` = "'..mailId..'" AND `citizenid` = "'..Player.PlayerData.citizenid..'"')
 end)
 
 RegisterServerEvent('qb-phone:server:clearButtonData')
@@ -164,7 +164,7 @@ AddEventHandler('qb-phone:server:clearButtonData', function(mailId)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
 
-    QBCore.Functions.ExecuteSql('UPDATE `player_mails` SET `button` = "" WHERE `mailid` = "'..mailId..'" AND `citizenid` = "'..Player.PlayerData.citizenid..'"')
+    QBCore.Functions.ExecuteSql(true, 'UPDATE `player_mails` SET `button` = "" WHERE `mailid` = "'..mailId..'" AND `citizenid` = "'..Player.PlayerData.citizenid..'"')
 end)
 
 RegisterServerEvent('qb-phone:server:removeMail')
@@ -172,7 +172,7 @@ AddEventHandler('qb-phone:server:removeMail', function(mailId)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
 
-    QBCore.Functions.ExecuteSql('DELETE FROM `player_mails` WHERE `mailid` = "'..mailId..'" AND `citizenid` = "'..Player.PlayerData.citizenid..'"')
+    QBCore.Functions.ExecuteSql(true, 'DELETE FROM `player_mails` WHERE `mailid` = "'..mailId..'" AND `citizenid` = "'..Player.PlayerData.citizenid..'"')
 end)
 
 RegisterServerEvent('qb-phone:server:sendNewMail')
@@ -181,10 +181,10 @@ AddEventHandler('qb-phone:server:sendNewMail', function(mailData)
     local Player = QBCore.Functions.GetPlayer(src)
 
     if mailData.button == nil then
-        QBCore.Functions.ExecuteSql("INSERT INTO `player_mails` (`citizenid`, `sender`, `subject`, `message`, `mailid`, `read`) VALUES ('"..Player.PlayerData.citizenid.."', '"..mailData.sender.."', '"..mailData.subject.."', '"..mailData.message.."', '"..GenerateMailId().."', '0')")
+        QBCore.Functions.ExecuteSql(true, "INSERT INTO `player_mails` (`citizenid`, `sender`, `subject`, `message`, `mailid`, `read`) VALUES ('"..Player.PlayerData.citizenid.."', '"..mailData.sender.."', '"..mailData.subject.."', '"..mailData.message.."', '"..GenerateMailId().."', '0')")
         TriggerClientEvent('qb-phone:client:newMailNotify', src, mailData)
     else
-        QBCore.Functions.ExecuteSql("INSERT INTO `player_mails` (`citizenid`, `sender`, `subject`, `message`, `mailid`, `read`, `button`) VALUES ('"..Player.PlayerData.citizenid.."', '"..mailData.sender.."', '"..mailData.subject.."', '"..mailData.message.."', '"..GenerateMailId().."', '0', '"..json.encode(mailData.button).."')")
+        QBCore.Functions.ExecuteSql(true, "INSERT INTO `player_mails` (`citizenid`, `sender`, `subject`, `message`, `mailid`, `read`, `button`) VALUES ('"..Player.PlayerData.citizenid.."', '"..mailData.sender.."', '"..mailData.subject.."', '"..mailData.message.."', '"..GenerateMailId().."', '0', '"..json.encode(mailData.button).."')")
         TriggerClientEvent('qb-phone:client:newMailNotify', src, mailData)
     end
 end)
@@ -192,10 +192,10 @@ end)
 RegisterServerEvent('qb-phone:server:sendNewEventMail')
 AddEventHandler('qb-phone:server:sendNewEventMail', function(citizenid, mailData)
     if mailData.button == nil then
-        QBCore.Functions.ExecuteSql("INSERT INTO `player_mails` (`citizenid`, `sender`, `subject`, `message`, `mailid`, `read`) VALUES ('"..citizenid.."', '"..mailData.sender.."', '"..mailData.subject.."', '"..mailData.message.."', '"..GenerateMailId().."', '0')")
+        QBCore.Functions.ExecuteSql(true, "INSERT INTO `player_mails` (`citizenid`, `sender`, `subject`, `message`, `mailid`, `read`) VALUES ('"..citizenid.."', '"..mailData.sender.."', '"..mailData.subject.."', '"..mailData.message.."', '"..GenerateMailId().."', '0')")
         --TriggerClientEvent('qb-phone:client:newMailNotify', src, mailData)
     else
-        QBCore.Functions.ExecuteSql("INSERT INTO `player_mails` (`citizenid`, `sender`, `subject`, `message`, `mailid`, `read`, `button`) VALUES ('"..citizenid.."', '"..mailData.sender.."', '"..mailData.subject.."', '"..mailData.message.."', '"..GenerateMailId().."', '0', '"..json.encode(mailData.button).."')")
+        QBCore.Functions.ExecuteSql(true, "INSERT INTO `player_mails` (`citizenid`, `sender`, `subject`, `message`, `mailid`, `read`, `button`) VALUES ('"..citizenid.."', '"..mailData.sender.."', '"..mailData.subject.."', '"..mailData.message.."', '"..GenerateMailId().."', '0', '"..json.encode(mailData.button).."')")
         --TriggerClientEvent('qb-phone:client:newMailNotify', src, mailData)
     end
 end)
@@ -205,7 +205,7 @@ AddEventHandler('qb-phone:server:postTweet', function(message)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     
-    QBCore.Functions.ExecuteSql("INSERT INTO `phone_tweets` (`citizenid`, `sender`, `message`) VALUES ('"..Player.PlayerData.citizenid.."', '"..Player.PlayerData.charinfo.firstname.." "..string.sub(Player.PlayerData.charinfo.lastname, 1, 1):upper()..".', '"..message.."')")
+    QBCore.Functions.ExecuteSql(true, "INSERT INTO `phone_tweets` (`citizenid`, `sender`, `message`) VALUES ('"..Player.PlayerData.citizenid.."', '"..Player.PlayerData.charinfo.firstname.." "..string.sub(Player.PlayerData.charinfo.lastname, 1, 1):upper()..".', '"..message.."')")
     TriggerClientEvent('qb-phone:client:newTweet', -1, Player.PlayerData.charinfo.firstname.." "..string.sub(Player.PlayerData.charinfo.lastname, 1, 1):upper()..".", message)
 end)
 
@@ -234,7 +234,7 @@ QBCore.Functions.CreateCallback('qb-phone:server:getContactName', function(sourc
     local src = source
     local plyCid = QBCore.Functions.GetPlayer(src)
 
-    QBCore.Functions.ExecuteSql('SELECT `name` FROM `player_contacts` WHERE `citizenid` = "'..plyCid.PlayerData.citizenid..'" AND `number` = "'..number..'"', function(result)
+    QBCore.Functions.ExecuteSql(true, 'SELECT `name` FROM `player_contacts` WHERE `citizenid` = "'..plyCid.PlayerData.citizenid..'" AND `number` = "'..number..'"', function(result)
         if result[1] ~= nil then
             cb(result[1].name)
         else
@@ -247,7 +247,7 @@ QBCore.Functions.CreateCallback('qb-phone:server:getSearchData', function(source
     local src = source
     local search = escape_sqli(search)
     local searchData = {}
-    QBCore.Functions.ExecuteSql('SELECT * FROM `players` WHERE `citizenid` = "'..search..'" OR `charinfo` LIKE "%'..search..'%"', function(result)
+    QBCore.Functions.ExecuteSql(true, 'SELECT * FROM `players` WHERE `citizenid` = "'..search..'" OR `charinfo` LIKE "%'..search..'%"', function(result)
         if result[1] ~= nil then
             for k, v in pairs(result) do
                 local charinfo = json.decode(v.charinfo)
@@ -276,10 +276,10 @@ QBCore.Functions.CreateCallback('qb-phone:server:getVehicleSearch', function(sou
     local src = source
     local search = escape_sqli(search)
     local searchData = {}
-    QBCore.Functions.ExecuteSql('SELECT * FROM `player_vehicles` WHERE `plate` LIKE "%'..search..'%" OR `citizenid` = "'..search..'"', function(result)
+    QBCore.Functions.ExecuteSql(true, 'SELECT * FROM `player_vehicles` WHERE `plate` LIKE "%'..search..'%" OR `citizenid` = "'..search..'"', function(result)
         if result[1] ~= nil then
             for k, v in pairs(result) do
-                QBCore.Functions.ExecuteSql('SELECT * FROM `players` WHERE `citizenid` = "'..result[k].citizenid..'"', function(player)
+                QBCore.Functions.ExecuteSql(true, 'SELECT * FROM `players` WHERE `citizenid` = "'..result[k].citizenid..'"', function(player)
                     if player[1] ~= nil then 
                         local charinfo = json.decode(player[1].charinfo)
                         local vehicleInfo = QBCore.Shared.VehicleModels[GetHashKey(result[k].vehicle)]
@@ -337,9 +337,9 @@ QBCore.Functions.CreateCallback('qb-phone:server:getVehicleData', function(sourc
     local src = source
     local vehicleData = {}
     if plate ~= nil then 
-        QBCore.Functions.ExecuteSql('SELECT * FROM `player_vehicles` WHERE `plate` = "'..plate..'"', function(result)
+        QBCore.Functions.ExecuteSql(true, 'SELECT * FROM `player_vehicles` WHERE `plate` = "'..plate..'"', function(result)
             if result[1] ~= nil then
-                QBCore.Functions.ExecuteSql('SELECT * FROM `players` WHERE `citizenid` = "'..result[1].citizenid..'"', function(player)
+                QBCore.Functions.ExecuteSql(true, 'SELECT * FROM `players` WHERE `citizenid` = "'..result[1].citizenid..'"', function(player)
                     local charinfo = json.decode(player[1].charinfo)
                     vehicleData = {
                         plate = plate,
@@ -418,7 +418,7 @@ QBCore.Functions.CreateCallback('qb-phone:server:getContactStatus', function(sou
     local src = source
     local plyCid = QBCore.Functions.GetPlayer(src)
 
-    QBCore.Functions.ExecuteSql('SELECT * FROM `players` WHERE `charinfo` LIKE "%'..number..'%"', function(result)
+    QBCore.Functions.ExecuteSql(true, 'SELECT * FROM `players` WHERE `charinfo` LIKE "%'..number..'%"', function(result)
         local target = result[1]
 
         if target ~= nil then
@@ -439,16 +439,16 @@ AddEventHandler('qb-phone:server:createChat', function(messages)
     local src = source
     local ply = QBCore.Functions.GetPlayer(src)
 
-    QBCore.Functions.ExecuteSql("INSERT INTO `phone_messages` (`citizenid`, `number`, `messages`) VALUES ('"..ply.PlayerData.citizenid.."', '"..messages.number.."', '"..json.encode(messages.messages).."')")
+    QBCore.Functions.ExecuteSql(true, "INSERT INTO `phone_messages` (`citizenid`, `number`, `messages`) VALUES ('"..ply.PlayerData.citizenid.."', '"..messages.number.."', '"..json.encode(messages.messages).."')")
 
     if messages.number ~= ply.PlayerData.charinfo.phone then
-        QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `charinfo` LIKE '%"..messages.number.."%'", function(target)
+        QBCore.Functions.ExecuteSql(true, "SELECT * FROM `players` WHERE `charinfo` LIKE '%"..messages.number.."%'", function(target)
             local targetPly = QBCore.Functions.GetPlayerByCitizenId(target[1].citizenid)
 
             if targetPly ~= nil then
                 TriggerClientEvent('qb-phone:client:createChatOther', targetPly.PlayerData.source, messages, ply.PlayerData.charinfo.phone)
             else
-                QBCore.Functions.ExecuteSql("INSERT INTO `phone_messages` (`citizenid`, `number`, `messages`) VALUES ('"..target[1].citizenid.."', '"..ply.PlayerData.charinfo.phone.."', '"..json.encode(messages.messages).."')")
+                QBCore.Functions.ExecuteSql(true, "INSERT INTO `phone_messages` (`citizenid`, `number`, `messages`) VALUES ('"..target[1].citizenid.."', '"..ply.PlayerData.charinfo.phone.."', '"..json.encode(messages.messages).."')")
             end
         end)
     end
@@ -470,9 +470,9 @@ AddEventHandler('qb-phone:server:createChatOther', function(chatData, senderPhon
     local src = source
     local ply = QBCore.Functions.GetPlayer(src)
 
-    QBCore.Functions.ExecuteSql("INSERT INTO `phone_messages` (`citizenid`, `number`, `messages`) VALUES ('"..ply.PlayerData.citizenid.."', '"..senderPhone.."', '"..json.encode(chatData.messages).."')")
+    QBCore.Functions.ExecuteSql(true, "INSERT INTO `phone_messages` (`citizenid`, `number`, `messages`) VALUES ('"..ply.PlayerData.citizenid.."', '"..senderPhone.."', '"..json.encode(chatData.messages).."')")
     
-    QBCore.Functions.ExecuteSql("SELECT * FROM `player_contacts` WHERE `citizenid` = '"..ply.PlayerData.citizenid.."' AND `number` = '"..senderPhone.."'", function(result)
+    QBCore.Functions.ExecuteSql(true, "SELECT * FROM `player_contacts` WHERE `citizenid` = '"..ply.PlayerData.citizenid.."' AND `number` = '"..senderPhone.."'", function(result)
         if result[1] ~= nil then
             TriggerClientEvent('qb-phone:client:msgNotify', src, 'Je hebt een bericht ontvangen van '..result[1].name, result[1].name)
         else
@@ -485,15 +485,15 @@ RegisterServerEvent('qb-phone:server:sendMessage')
 AddEventHandler('qb-phone:server:sendMessage', function(chatData)
     local src = source
     local ply = QBCore.Functions.GetPlayer(src)
-    QBCore.Functions.ExecuteSql("UPDATE `phone_messages` SET `messages` = '"..json.encode(chatData.messages).."' WHERE `citizenid` = '"..ply.PlayerData.citizenid.."' AND `number` = '"..chatData.number.."'")
+    QBCore.Functions.ExecuteSql(true, "UPDATE `phone_messages` SET `messages` = '"..json.encode(chatData.messages).."' WHERE `citizenid` = '"..ply.PlayerData.citizenid.."' AND `number` = '"..chatData.number.."'")
     
-    QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `charinfo` LIKE '%"..chatData.number.."%'", function(target)
+    QBCore.Functions.ExecuteSql(true, "SELECT * FROM `players` WHERE `charinfo` LIKE '%"..chatData.number.."%'", function(target)
         local targetPly = QBCore.Functions.GetPlayerByCitizenId(target[1].citizenid)
 
         if targetPly ~= nil then
             TriggerClientEvent('qb-phone:client:recieveMessage', targetPly.PlayerData.source, chatData, ply.PlayerData.charinfo.phone)
         else
-            QBCore.Functions.ExecuteSql("UPDATE `phone_messages` SET `messages` = '"..json.encode(chatData.messages).."' WHERE `citizenid` = '"..target[1].citizenid.."' AND `number` = '"..ply.PlayerData.charinfo.phone.."'")
+            QBCore.Functions.ExecuteSql(true, "UPDATE `phone_messages` SET `messages` = '"..json.encode(chatData.messages).."' WHERE `citizenid` = '"..target[1].citizenid.."' AND `number` = '"..ply.PlayerData.charinfo.phone.."'")
         end
     end)
 end)
@@ -503,9 +503,9 @@ AddEventHandler('qb-phone:server:recieveMessage', function(chatData, senderPhone
     local src = source
     local ply = QBCore.Functions.GetPlayer(src)
 
-    QBCore.Functions.ExecuteSql("UPDATE `phone_messages` SET `messages` = '"..json.encode(chatData.messages).."' WHERE `citizenid` = '"..ply.PlayerData.citizenid.."' AND `number` = '"..senderPhone.."'")
+    QBCore.Functions.ExecuteSql(true, "UPDATE `phone_messages` SET `messages` = '"..json.encode(chatData.messages).."' WHERE `citizenid` = '"..ply.PlayerData.citizenid.."' AND `number` = '"..senderPhone.."'")
 
-    QBCore.Functions.ExecuteSql("SELECT * FROM `player_contacts` WHERE `citizenid` = '"..ply.PlayerData.citizenid.."' AND `number` = '"..senderPhone.."'", function(result)
+    QBCore.Functions.ExecuteSql(true, "SELECT * FROM `player_contacts` WHERE `citizenid` = '"..ply.PlayerData.citizenid.."' AND `number` = '"..senderPhone.."'", function(result)
         if result[1] ~= nil then
             TriggerClientEvent('qb-phone:client:msgNotify', src, 'Je hebt een bericht ontvangen van '..result[1].name, result[1].name)
         else
@@ -519,14 +519,14 @@ AddEventHandler('qb-phone:server:removeContact', function(name, number)
     local src = source
     local ply = QBCore.Functions.GetPlayer(src)
 
-    QBCore.Functions.ExecuteSql("DELETE FROM `player_contacts` WHERE `name` = '"..name.."' AND `number` = '"..number.."'")
+    QBCore.Functions.ExecuteSql(true, "DELETE FROM `player_contacts` WHERE `name` = '"..name.."' AND `number` = '"..number.."'")
 end)
 
 QBCore.Functions.CreateCallback('qb-phone:server:getPlayerMessages', function(source, cb)
     local src = source
     local ply = QBCore.Functions.GetPlayer(src)
 
-    QBCore.Functions.ExecuteSql("SELECT * FROM `phone_messages` WHERE `citizenid` = '"..ply.PlayerData.citizenid.."'", function(result)
+    QBCore.Functions.ExecuteSql(true, "SELECT * FROM `phone_messages` WHERE `citizenid` = '"..ply.PlayerData.citizenid.."'", function(result)
         for k, v in pairs(result) do
             result[k].messages = json.decode(result[k].messages)
         end
@@ -539,7 +539,7 @@ AddEventHandler('qb-phone:server:CallContact', function(callData, caller, anonym
     local src = source
     local ply = QBCore.Functions.GetPlayer(src)
 
-    QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `charinfo` LIKE '%"..callData.number.."%'", function(result)
+    QBCore.Functions.ExecuteSql(true, "SELECT * FROM `players` WHERE `charinfo` LIKE '%"..callData.number.."%'", function(result)
         if result[1] ~= nil then
             local target = result[1]
             local targetPlayer = QBCore.Functions.GetPlayerByCitizenId(target.citizenid)
@@ -578,7 +578,7 @@ AddEventHandler('qb-phone:server:AnswerCall', function(callData)
     local src = source
     local ply = QBCore.Functions.GetPlayer(src)
 
-    QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `charinfo` LIKE '%"..callData.number.."%'", function(result)
+    QBCore.Functions.ExecuteSql(true, "SELECT * FROM `players` WHERE `charinfo` LIKE '%"..callData.number.."%'", function(result)
         if result[1] ~= nil then
             local target = result[1]
             local targetPlayer = QBCore.Functions.GetPlayerByCitizenId(target.citizenid)
@@ -597,7 +597,7 @@ AddEventHandler('qb-phone:server:HangupCall', function(callData)
     local src = source
     local ply = QBCore.Functions.GetPlayer(src)
     if callData ~= nil and callData.number ~= nil then 
-        QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `charinfo` LIKE '%"..callData.number.."%'", function(result)
+        QBCore.Functions.ExecuteSql(true, "SELECT * FROM `players` WHERE `charinfo` LIKE '%"..callData.number.."%'", function(result)
             if result[1] ~= nil then
                 local target = result[1]
                 local targetPlayer = QBCore.Functions.GetPlayerByCitizenId(target.citizenid)
@@ -612,7 +612,7 @@ end)
 
 QBCore.Functions.CreateCallback('qb-phone:server:doesChatExists', function(source, cb, number)
     local ply = QBCore.Functions.GetPlayer(source)
-    QBCore.Functions.ExecuteSql('SELECT * FROM `phone_messages` WHERE `citizenid` = "'..ply.PlayerData.citizenid..'" AND `number` = "'..number..'"', function(result)
+    QBCore.Functions.ExecuteSql(true, 'SELECT * FROM `phone_messages` WHERE `citizenid` = "'..ply.PlayerData.citizenid..'" AND `number` = "'..number..'"', function(result)
         if result[1] ~= nil then
             cb(result[1])
         else
