@@ -137,9 +137,16 @@ AddEventHandler('police:client:RobPlayer', function()
                 anim = "robbery_action_b",
                 flags = 16,
             }, {}, {}, function() -- Done
-                StopAnimTask(GetPlayerPed(-1), "random@shop_robbery", "robbery_action_b", 1.0)
-                TriggerServerEvent("inventory:server:OpenInventory", "otherplayer", playerId)
-                TriggerServerEvent("police:server:RobPlayer", playerId)
+                local plyCoords = GetEntityCoords(playerPed)
+                local pos = GetEntityCoords(GetPlayerPed(-1))
+                local dist = GetDistanceBetweenCoords(pos.x, pos.y, pos.z, plyCoords.x, plyCoords.y, plyCoords.z, true)
+                if dist < 2.5 then
+                    StopAnimTask(GetPlayerPed(-1), "random@shop_robbery", "robbery_action_b", 1.0)
+                    TriggerServerEvent("inventory:server:OpenInventory", "otherplayer", playerId)
+                    TriggerServerEvent("police:server:RobPlayer", playerId)
+                else
+                    QBCore.Functions.Notify("Niemand in de buurt!", "error")
+                end
             end, function() -- Cancel
                 StopAnimTask(GetPlayerPed(-1), "random@shop_robbery", "robbery_action_b", 1.0)
                 QBCore.Functions.Notify("Geannuleerd..", "error")
