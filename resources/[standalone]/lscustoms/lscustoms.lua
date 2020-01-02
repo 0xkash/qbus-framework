@@ -404,7 +404,7 @@ local function DriveInGarage()
 				for n, mod in pairs(LSC_Config.prices.neoncolor) do
 					local btn = m:addPurchase(mod.name,mod.price)btn.neon = mod.neon
 				end
-		end]]
+		end]]--
 
 		
 		respray = LSCMenu.categories:addSubMenu("RESPRAY", "Respray", nil,true)

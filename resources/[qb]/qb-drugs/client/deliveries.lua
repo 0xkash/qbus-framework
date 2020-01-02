@@ -45,7 +45,7 @@ Citizen.CreateThread(function()
                             end
                         elseif dealerIsHome then
                             if dealer["name"] == "Ouweheer" then
-                                DrawText3D(dealer["coords"]["x"], dealer["coords"]["y"], dealer["coords"]["z"], '[E] Om in te kopen / [G] Help je maat')
+                                DrawText3D(dealer["coords"]["x"], dealer["coords"]["y"], dealer["coords"]["z"], '[E] Om in te kopen / [G] Help je maat (€5000)')
                             else
                                 DrawText3D(dealer["coords"]["x"], dealer["coords"]["y"], dealer["coords"]["z"], '[E] Om in te kopen / [G] Opdracht doen')
                             end
@@ -72,7 +72,7 @@ Citizen.CreateThread(function()
                                             isHealingPerson = false
                                             StopAnimTask(GetPlayerPed(-1), healAnimDict, "exit", 1.0)
                                             QBCore.Functions.Notify("Je hebt de persoon geholpen!")
-                                            TriggerServerEvent("hospital:server:RevivePlayer", playerId)
+                                            TriggerServerEvent("hospital:server:RevivePlayer", playerId, true)
                                         end, function() -- Cancel
                                             isHealingPerson = false
                                             StopAnimTask(GetPlayerPed(-1), healAnimDict, "exit", 1.0)
@@ -131,7 +131,7 @@ end
 knockDealerDoor = function()
     local hours = GetClockHours()
 
-    if hours > Config.Dealers[currentDealer]["time"]["min"] and hours < 24 or hours < Config.Dealers[currentDealer]["time"]["max"] and hours > 0 then
+    if (hours >= Config.Dealers[currentDealer]["time"]["min"] and hours < 24) or (hours <= Config.Dealers[currentDealer]["time"]["max"] and hours > 0) then
         knockDoorAnim(true)
     else
         knockDoorAnim(false)

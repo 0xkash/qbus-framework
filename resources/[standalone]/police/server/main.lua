@@ -969,7 +969,7 @@ end)
 QBCore.Functions.CreateUseableItem("handcuffs", function(source, item)
     local Player = QBCore.Functions.GetPlayer(source)
 	if Player.Functions.GetItemBySlot(item.slot) ~= nil then
-        TriggerClientEvent("police:client:CuffPlayer", source)
+        TriggerClientEvent("police:client:CuffPlayerSoft", source)
     end
 end)
 

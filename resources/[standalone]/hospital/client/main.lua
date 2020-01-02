@@ -120,6 +120,9 @@ Citizen.CreateThread(function()
                     if weapon ~= nil then
                         if armorDamaged and (bodypart == 'SPINE' or bodypart == 'UPPER_BODY') or weapon == Config.WeaponClasses['NOTHING'] then
                             checkDamage = false -- Don't check damage if the it was a body shot and the weapon class isn't that strong
+                            if armorDamaged then
+                                TriggerServerEvent("hospital:server:SetArmor", GetPedArmour(GetPlayerPed(-1)))
+                            end
                         end
     
                         if checkDamage then
@@ -207,7 +210,7 @@ Citizen.CreateThread(function()
                             TriggerEvent('animations:client:EmoteCommandStart', {"c"})
                             local bedId = GetAvailableBed()
                             if bedId ~= nil then 
-                                TriggerServerEvent("hospital:server:SendToBed", bedId)
+                                TriggerServerEvent("hospital:server:SendToBed", bedId, true)
                             else
                                 QBCore.Functions.Notify("Bedden bezet..", "error")
                             end
@@ -230,7 +233,7 @@ Citizen.CreateThread(function()
                     QBCore.Functions.DrawText3D(Config.Locations["beds"][closestBed].x, Config.Locations["beds"][closestBed].y, Config.Locations["beds"][closestBed].z + 0.3, "~g~E~w~ - Om in bed te liggen")
                     if IsControlJustReleased(0, Keys["E"]) then
                         if GetAvailableBed(closestBed) ~= nil then 
-                            TriggerServerEvent("hospital:server:SendToBed", closestBed)
+                            TriggerServerEvent("hospital:server:SendToBed", closestBed, false)
                         else
                             QBCore.Functions.Notify("Bedden bezet..", "error")
                         end
@@ -621,7 +624,7 @@ function SetBedCam()
     FreezeEntityPosition(bedObject, true)
 
     SetEntityCoords(player, bedOccupyingData.x, bedOccupyingData.y, bedOccupyingData.z + 0.02)
-    SetEntityInvincible(PlayerPedId(), true)
+    --SetEntityInvincible(PlayerPedId(), true)
     Citizen.Wait(500)
     FreezeEntityPosition(player, true)
 

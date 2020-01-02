@@ -3,6 +3,8 @@ Citizen.CreateThread(function()
         Citizen.Wait(1)
         if isEscorted then
             DisableAllControlActions(0)
+            EnableControlAction(0, 1, true)
+			EnableControlAction(0, 2, true)
             EnableControlAction(0, Keys['T'], true)
             EnableControlAction(0, Keys['E'], true)
             EnableControlAction(0, Keys['ESC'], true)
@@ -135,9 +137,16 @@ AddEventHandler('police:client:RobPlayer', function()
                 anim = "robbery_action_b",
                 flags = 16,
             }, {}, {}, function() -- Done
-                StopAnimTask(GetPlayerPed(-1), "random@shop_robbery", "robbery_action_b", 1.0)
-                TriggerServerEvent("inventory:server:OpenInventory", "otherplayer", playerId)
-                TriggerServerEvent("police:server:RobPlayer", playerId)
+                local plyCoords = GetEntityCoords(playerPed)
+                local pos = GetEntityCoords(GetPlayerPed(-1))
+                local dist = GetDistanceBetweenCoords(pos.x, pos.y, pos.z, plyCoords.x, plyCoords.y, plyCoords.z, true)
+                if dist < 2.5 then
+                    StopAnimTask(GetPlayerPed(-1), "random@shop_robbery", "robbery_action_b", 1.0)
+                    TriggerServerEvent("inventory:server:OpenInventory", "otherplayer", playerId)
+                    TriggerServerEvent("police:server:RobPlayer", playerId)
+                else
+                    QBCore.Functions.Notify("Niemand in de buurt!", "error")
+                end
             end, function() -- Cancel
                 StopAnimTask(GetPlayerPed(-1), "random@shop_robbery", "robbery_action_b", 1.0)
                 QBCore.Functions.Notify("Geannuleerd..", "error")
@@ -242,8 +251,10 @@ AddEventHandler('police:client:KidnapPlayer', function()
     local player, distance = GetClosestPlayer()
     if player ~= -1 and distance < 2.5 then
         local playerId = GetPlayerServerId(player)
-        if not isHandcuffed and not isEscorted then
-            TriggerServerEvent("police:server:KidnapPlayer", playerId)
+        if not IsPedInAnyVehicle(GetPlayerPed(player)) then
+            if not isHandcuffed and not isEscorted then
+                TriggerServerEvent("police:server:KidnapPlayer", playerId)
+            end
         end
     else
         QBCore.Functions.Notify("Niemand in de buurt!", "error")
@@ -252,31 +263,42 @@ end)
 
 RegisterNetEvent('police:client:CuffPlayerSoft')
 AddEventHandler('police:client:CuffPlayerSoft', function()
-    local player, distance = GetClosestPlayer()
-    if player ~= -1 and distance < 2.5 then
-        local playerId = GetPlayerServerId(player)
-        TriggerServerEvent("police:server:CuffPlayer", playerId, true)
+    if not IsPedRagdoll(GetPlayerPed(-1)) then
+        local player, distance = GetClosestPlayer()
+        if player ~= -1 and distance < 1.5 then
+            local playerId = GetPlayerServerId(player)
+            if not IsPedInAnyVehicle(GetPlayerPed(player)) then
+                TriggerServerEvent("police:server:CuffPlayer", playerId, true)
+                HandCuffAnimation()
+            end
+        else
+            QBCore.Functions.Notify("Niemand in de buurt!", "error")
+        end
     else
-        QBCore.Functions.Notify("Niemand in de buurt!", "error")
+        Citizen.Wait(2000)
     end
 end)
 
 RegisterNetEvent('police:client:CuffPlayer')
 AddEventHandler('police:client:CuffPlayer', function()
-    local player, distance = GetClosestPlayer()
-    if player ~= -1 and distance < 2.5 then
-        QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
-            if result then 
-                local playerId = GetPlayerServerId(player)
-                TriggerServerEvent("police:server:CuffPlayer", playerId, false)
-                HandCuffAnimation()
-            else
-                QBCore.Functions.Notify("Je hebt geen handboeien bij je", "error")
-            end
-        end, "handcuffs")
-        
+    if not IsPedRagdoll(GetPlayerPed(-1)) then
+        local player, distance = GetClosestPlayer()
+        if player ~= -1 and distance < 1.5 then
+            QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
+                if result then 
+                    local playerId = GetPlayerServerId(player)
+                    TriggerServerEvent("police:server:CuffPlayer", playerId, false)
+                    HandCuffAnimation()
+                else
+                    QBCore.Functions.Notify("Je hebt geen handboeien bij je", "error")
+                end
+            end, "handcuffs")
+            
+        else
+            QBCore.Functions.Notify("Niemand in de buurt!", "error")
+        end
     else
-        QBCore.Functions.Notify("Niemand in de buurt!", "error")
+        Citizen.Wait(2000)
     end
 end)
 
@@ -369,6 +391,7 @@ AddEventHandler('police:client:GetCuffed', function(playerId, isSoftcuff)
             QBCore.Functions.Notify("Je bent geboeid!")
         else
             cuffType = 49
+            GetCuffedAnimation(playerId)
             QBCore.Functions.Notify("Je bent geboeid, maar je kan lopen")
         end
     else

@@ -6,9 +6,9 @@ local PlayerWeaponWounds = {}
 local bedsTaken = {}
 
 RegisterServerEvent('hospital:server:SendToBed')
-AddEventHandler('hospital:server:SendToBed', function(bedId)
+AddEventHandler('hospital:server:SendToBed', function(bedId, isRevive)
 	local src = source
-	TriggerClientEvent('hospital:client:SendToBed', src, bedId, Config.Locations["beds"][bedId], true)
+	TriggerClientEvent('hospital:client:SendToBed', src, bedId, Config.Locations["beds"][bedId], isRevive)
 	TriggerClientEvent('hospital:client:SetBed', -1, bedId, true)
 end)
 
@@ -100,12 +100,21 @@ AddEventHandler('hospital:server:SetDoctor', function()
 end)
 
 RegisterServerEvent('hospital:server:RevivePlayer')
-AddEventHandler('hospital:server:RevivePlayer', function(playerId)
+AddEventHandler('hospital:server:RevivePlayer', function(playerId, isOldMan)
 	local src = source
 	local Player = QBCore.Functions.GetPlayer(src)
 	local Patient = QBCore.Functions.GetPlayer(playerId)
+	local oldMan = isOldMan ~= nil and isOldMan or false
 	if Patient ~= nil then
-		TriggerClientEvent('hospital:client:Revive', Patient.PlayerData.source)
+		if oldMan then
+			if Player.Functions.RemoveMoney("cash", 5000) then
+				TriggerClientEvent('hospital:client:Revive', Patient.PlayerData.source)
+			else
+				TriggerClientEvent('QBCore:Notify', src, "Je hebt niet genoeg geld op zak..", "error")
+			end
+		else
+			TriggerClientEvent('hospital:client:Revive', Patient.PlayerData.source)
+		end
 	end
 end)
 

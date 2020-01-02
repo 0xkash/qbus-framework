@@ -38,10 +38,10 @@ AddEventHandler('qb-diving:server:TakeCoral', function(Area, Coral, Bool)
         
         TriggerClientEvent('qb-diving:client:NewLocations', -1)
     else
+        QBDiving.Locations[Area].coords.Coral[Coral].PickedUp = Bool
         QBDiving.Locations[Area].TotalCoral = QBDiving.Locations[Area].TotalCoral - 1
     end
 
-    QBDiving.Locations[Area].coords.Coral[Coral].PickedUp = Bool
     TriggerClientEvent('qb-diving:server:UpdateCoral', -1, Area, Coral, Bool)
 end)
 

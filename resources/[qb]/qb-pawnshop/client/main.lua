@@ -19,6 +19,8 @@ Citizen.CreateThread(function()
 end)
 local sellItemsSet = false
 local sellPrice = 0
+local sellHardwareItemsSet = false
+local sellHardwarePrice = 0
 Citizen.CreateThread(function()
 	local blip = AddBlipForCoord(Config.PawnLocation.x, Config.PawnLocation.y, Config.PawnLocation.z)
 	SetBlipSprite(blip, 431)
@@ -58,7 +60,7 @@ Citizen.CreateThread(function()
 						DrawText3D(Config.PawnLocation.x, Config.PawnLocation.y, Config.PawnLocation.z, "Pawnshop: Je hebt niks om te verkopen..")
 					end
 				else
-					DrawText3D(Config.PawnLocation.x, Config.PawnLocation.y, Config.PawnLocation.z, "Pawnshop: Geen items nodig..")
+					DrawText3D(Config.PawnLocation.x, Config.PawnLocation.y, Config.PawnLocation.z, "Pawnshop Gesloten, open vanaf ~r~1:00")
 				end
 			end
 		end
@@ -70,9 +72,69 @@ Citizen.CreateThread(function()
 	end
 end)
 
+Citizen.CreateThread(function()
+	local blip = AddBlipForCoord(Config.PawnHardwareLocation.x, Config.PawnHardwareLocation.y, Config.PawnHardwareLocation.z)
+	SetBlipSprite(blip, 431)
+	SetBlipDisplay(blip, 4)
+	SetBlipScale(blip, 0.7)
+	SetBlipAsShortRange(blip, true)
+	SetBlipColour(blip, 5)
+	BeginTextCommandSetBlipName("STRING")
+	AddTextComponentSubstringPlayerName("Hardware Pawnshop")
+	EndTextCommandSetBlipName(blip)
+	while true do 
+		Citizen.Wait(1)
+		local inRange = false
+		local pos = GetEntityCoords(GetPlayerPed(-1))
+		if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.PawnHardwareLocation.x, Config.PawnHardwareLocation.y, Config.PawnHardwareLocation.z, true) < 5.0 then
+			inRange = true
+			if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.PawnHardwareLocation.x, Config.PawnHardwareLocation.y, Config.PawnHardwareLocation.z, true) < 1.5 then
+				if GetClockHours() >= 9 and GetClockHours() <= 16 then
+					if not sellHardwareItemsSet then 
+						sellHardwarePrice = GetSellingHardwarePrice()
+						sellHardwareItemsSet = true
+					elseif sellHardwareItemsSet and sellHardwarePrice ~= 0 then
+						DrawText3D(Config.PawnHardwareLocation.x, Config.PawnHardwareLocation.y, Config.PawnHardwareLocation.z, "~g~E~w~ - Verkoop iPhones/Samsung S10s/Tablets/Laptops (€"..sellHardwarePrice..")")
+						if IsControlJustReleased(0, Keys["E"]) then
+							TaskStartScenarioInPlace(GetPlayerPed(-1), "WORLD_HUMAN_STAND_IMPATIENT", 0, true)
+                            QBCore.Functions.Progressbar("sell_pawn_items", "Spullen verkopen..", math.random(15000, 25000), false, true, {}, {}, {}, {}, function() -- Done
+                                ClearPedTasks(GetPlayerPed(-1))
+								TriggerServerEvent("qb-pawnshop:server:sellHardwarePawnItems")
+								sellHardwareItemsSet = false
+								sellHardwarePrice = 0
+                            end, function() -- Cancel
+								ClearPedTasks(GetPlayerPed(-1))
+								QBCore.Functions.Notify("Geannuleerd..", "error")
+							end)
+						end
+					else
+						DrawText3D(Config.PawnHardwareLocation.x, Config.PawnHardwareLocation.y, Config.PawnHardwareLocation.z, "Pawnshop: Je hebt niks om te verkopen..")
+					end
+				else
+					DrawText3D(Config.PawnHardwareLocation.x, Config.PawnHardwareLocation.y, Config.PawnHardwareLocation.z, "Pawnshop Gesloten, open vanaf ~r~9:00")
+				end
+			end
+		end
+		if not inRange then
+			sellHardwarePrice = 0
+			sellHardwareItemsSet = false
+			Citizen.Wait(2500)
+		end
+	end
+end)
+
 function GetSellingPrice()
 	local price = 0
 	QBCore.Functions.TriggerCallback('qb-pawnshop:server:getSellPrice', function(result)
+		price = result
+	end)
+	Citizen.Wait(500)
+	return price
+end
+
+function GetSellingHardwarePrice()
+	local price = 0
+	QBCore.Functions.TriggerCallback('qb-pawnshop:server:getSellHardwarePrice', function(result)
 		price = result
 	end)
 	Citizen.Wait(500)

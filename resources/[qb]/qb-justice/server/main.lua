@@ -32,7 +32,7 @@ QBCore.Commands.Add("removelawyer", "Verwijder iemand in als advocaat", {{name="
     local OtherPlayer = QBCore.Functions.GetPlayer(playerId)
     if Player.PlayerData.job.name == "judge" then
         if OtherPlayer ~= nil then 
-            OtherPlayer.Functions.SetJob("unemployed")
+            --OtherPlayer.Functions.SetJob("unemployed")
             TriggerClientEvent("QBCore:Notify", OtherPlayer.PlayerData.source, "Je bent nu werkloos")
             TriggerClientEvent("QBCore:Notify", source, "Je hebt " .. OtherPlayer.PlayerData.charinfo.firstname .. " " .. OtherPlayer.PlayerData.charinfo.lastname .. " onstlagen als advocaat")
         else

@@ -158,7 +158,7 @@ QBCore.Functions.GetPlayers = function()
 end
 
 QBCore.Functions.GetClosestVehicle = function(coords)
-	local coordFrom = coords
+	--[[local coordFrom = coords
 	local playerPed = GetPlayerPed(-1)
 
 	if coordFrom == nil then
@@ -183,9 +183,9 @@ QBCore.Functions.GetClosestVehicle = function(coords)
 	
 	if distance > 25 then vehicle = nil end
 
-	return vehicle ~= nil and vehicle or 0
+	return vehicle ~= nil and vehicle or 0]]--
 	
-	--[[local vehicles        = QBCore.Functions.GetVehicles()
+	local vehicles        = QBCore.Functions.GetVehicles()
 	local closestDistance = -1
 	local closestVehicle  = -1
 	local coords          = coords
@@ -203,7 +203,7 @@ QBCore.Functions.GetClosestVehicle = function(coords)
 			closestDistance = distance
 		end
 	end
-	return closestVehicle]]--
+	return closestVehicle
 end
 
 QBCore.Functions.GetClosestPed = function(coords, ignoreList)

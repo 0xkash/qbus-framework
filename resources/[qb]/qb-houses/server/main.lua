@@ -183,9 +183,11 @@ function hasKey(identifier, cid, house)
 		if houseowneridentifier[house] == identifier and houseownercid[house] == cid then
 			return true
 		else
-			for i = 1, #housekeyholders[house], 1 do
-				if housekeyholders[house][i] == cid then
-					return true
+			if housekeyholders[house] ~= nil then 
+				for i = 1, #housekeyholders[house], 1 do
+					if housekeyholders[house][i] == cid then
+						return true
+					end
 				end
 			end
 		end
@@ -405,7 +407,7 @@ AddEventHandler('qb-houses:server:giveHouseKey', function(target, house)
 			TriggerClientEvent('QBCore:Notify', tPlayer.PlayerData.source, 'Je hebt de sleuteltjes van '..Config.Houses[house].adress..' ontvagen!', 'success', 2500)
 		else
 			local sourceTarget = QBCore.Functions.GetPlayer(src)
-			housekeyholders[house] {
+			housekeyholders[house] = {
 				[1] = sourceTarget.PlayerData.citizenid
 			}
 			table.insert(housekeyholders[house], tPlayer.PlayerData.citizenid)

@@ -282,7 +282,7 @@ QBCore.Functions.CreateCallback('qb-phone:server:getVehicleSearch', function(sou
                 QBCore.Functions.ExecuteSql('SELECT * FROM `players` WHERE `citizenid` = "'..result[k].citizenid..'"', function(player)
                     if player[1] ~= nil then 
                         local charinfo = json.decode(player[1].charinfo)
-                        local vehicleInfo = QBCore.Shared.VehicleModels[result[k].hash]
+                        local vehicleInfo = QBCore.Shared.VehicleModels[GetHashKey(result[k].vehicle)]
                         if vehicleInfo ~= nil then 
                             table.insert(searchData, {
                                 plate = result[k].plate,
@@ -302,6 +302,31 @@ QBCore.Functions.CreateCallback('qb-phone:server:getVehicleSearch', function(sou
                         end
                     end
                 end)
+            end
+        else
+            if GeneratedPlates[search] ~= nil then
+                table.insert(searchData, {
+                    plate = GeneratedPlates[search].plate,
+                    status = GeneratedPlates[search].status,
+                    owner = GeneratedPlates[search].owner,
+                    citizenid = GeneratedPlates[search].citizenid,
+                    label = "Merk niet bekend.."
+                })
+            else
+                local ownerInfo = GenerateOwnerName()
+                GeneratedPlates[search] = {
+                    plate = search,
+                    status = true,
+                    owner = ownerInfo.name,
+                    citizenid = ownerInfo.citizenid,
+                }
+                table.insert(searchData, {
+                    plate = search,
+                    status = true,
+                    owner = ownerInfo.name,
+                    citizenid = ownerInfo.citizenid,
+                    label = "Merk niet bekend.."
+                })
             end
         end
     end)

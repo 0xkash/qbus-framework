@@ -174,13 +174,14 @@ function SellToPed(ped)
     if bagAmount > 15 then
         bagAmount = math.random(9, 15)
     end
-    
-    local randomPrice = math.random(15, 24) * bagAmount
+    currentOfferDrug = availableDrugs[drugType]
+
+    local randomPrice = math.random(15, 24) * bagAmount + Config.DrugsPrice[currentOfferDrug.item]
     if scamChance == 5 then
        randomPrice = math.random(3, 10) * bagAmount
     end
 
-    currentOfferDrug = availableDrugs[drugType]
+    
 
     SetEntityAsNoLongerNeeded(ped)
     ClearPedTasks(ped)

@@ -109,7 +109,7 @@ Citizen.CreateThread(function()
                         creatingCompany = false
                     end
                 else
-                    qbCityhall.DrawText3Ds(Config.DriverTest.coords, '~g~E~w~ - Rijles aanvragen | ~g~G~w~ - Bedrijf aanvragen')
+                    qbCityhall.DrawText3Ds(Config.DriverTest.coords, '~g~E~w~ - Rijles aanvragen')
                     if IsControlJustPressed(0, Keys["E"]) then
                         if QBCore.Functions.GetPlayerData().metadata["licences"]["driver"] then
                             QBCore.Functions.Notify("Je hebt al je rijbewijs gehaald, vraag het hiernaast aan")
@@ -117,7 +117,7 @@ Citizen.CreateThread(function()
                             TriggerServerEvent("qb-cityhall:server:sendDriverTest")
                         end
                     end
-                    if IsControlJustPressed(0, Keys["G"]) then
+                    --[[if IsControlJustPressed(0, Keys["G"]) then
                         QBCore.Functions.Notify("Voer een bedrijfsnaam in..", false, 10000)
                         DisplayOnscreenKeyboard(1, "Naam", "", "Naam", "", "", "", 128 + 1)
                         while UpdateOnscreenKeyboard() ~= 1 and UpdateOnscreenKeyboard() ~= 2 do
@@ -127,7 +127,7 @@ Citizen.CreateThread(function()
                         if currentName ~= nil and currentName ~= "" then
                             creatingCompany = true
                         end
-                    end
+                    end]]--
                 end
             end
         end

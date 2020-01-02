@@ -46,12 +46,16 @@ function resetVeh(veh)
 end
 
 RegisterNUICallback('save', function(data)
-    local ped = GetPlayerPed(-1)
-    local veh = GetVehiclePedIsUsing(ped)
-    setVehData(veh, data)
-    QBCore.Functions.Notify('Tjoenertjip v1.05: Voertuig aangepast!', 'error')
+    QBCore.Functions.TriggerCallback('qb-tunerchip:server:HasChip', function(HasChip)
+        if HasChip then
+            local ped = GetPlayerPed(-1)
+            local veh = GetVehiclePedIsUsing(ped)
+            setVehData(veh, data)
+            QBCore.Functions.Notify('Tjoenertjip v1.05: Voertuig aangepast!', 'error')
 
-    TriggerServerEvent('qb-tunerchip:server:TuneStatus', GetVehicleNumberPlateText(veh), true)
+            TriggerServerEvent('qb-tunerchip:server:TuneStatus', GetVehicleNumberPlateText(veh), true)
+        end
+    end)
 end)
 
 RegisterNetEvent('qb-tunerchip:server:TuneStatus')
@@ -123,36 +127,42 @@ RegisterNUICallback('exit', function()
 end)
 
 RegisterNUICallback('saveNeon', function(data)
-    local ped = GetPlayerPed(-1)
-    local veh = GetVehiclePedIsIn(ped)
+    QBCore.Functions.TriggerCallback('qb-tunerchip:server:HasChip', function(HasChip)
+        if HasChip then
+            local ped = GetPlayerPed(-1)
+            local veh = GetVehiclePedIsIn(ped)
 
-    if tonumber(data.neonEnabled) == 1 then
-        SetVehicleNeonLightEnabled(veh, 0, true)
-		SetVehicleNeonLightEnabled(veh, 1, true)
-		SetVehicleNeonLightEnabled(veh, 2, true)
-        SetVehicleNeonLightEnabled(veh, 3, true)
-        if tonumber(data.r) ~= nil and tonumber(data.g) ~= nil and tonumber(data.b) ~= nil then
-            SetVehicleNeonLightsColour(veh, tonumber(data.r), tonumber(data.g), tonumber(data.b))
-        else
-            SetVehicleNeonLightsColour(veh, 255, 255, 255)
+            if tonumber(data.neonEnabled) == 1 then
+                SetVehicleNeonLightEnabled(veh, 0, true)
+                SetVehicleNeonLightEnabled(veh, 1, true)
+                SetVehicleNeonLightEnabled(veh, 2, true)
+                SetVehicleNeonLightEnabled(veh, 3, true)
+                if tonumber(data.r) ~= nil and tonumber(data.g) ~= nil and tonumber(data.b) ~= nil then
+                    SetVehicleNeonLightsColour(veh, tonumber(data.r), tonumber(data.g), tonumber(data.b))
+                else
+                    SetVehicleNeonLightsColour(veh, 255, 255, 255)
+                end
+            else
+                SetVehicleNeonLightEnabled(veh, 0, false)
+                SetVehicleNeonLightEnabled(veh, 1, false)
+                SetVehicleNeonLightEnabled(veh, 2, false)
+                SetVehicleNeonLightEnabled(veh, 3, false)
+            end
         end
-    else
-        SetVehicleNeonLightEnabled(veh, 0, false)
-		SetVehicleNeonLightEnabled(veh, 1, false)
-		SetVehicleNeonLightEnabled(veh, 2, false)
-        SetVehicleNeonLightEnabled(veh, 3, false)
-    end
+    end)
 end)
 
 RegisterNUICallback('saveHeadlights', function(data)
-    local ped = GetPlayerPed(-1)
-    local veh = GetVehiclePedIsIn(ped)
-    local value = tonumber(data.value)
+    QBCore.Functions.TriggerCallback('qb-tunerchip:server:HasChip', function(HasChip)
+        if HasChip then
+            local ped = GetPlayerPed(-1)
+            local veh = GetVehiclePedIsIn(ped)
+            local value = tonumber(data.value)
 
-    ToggleVehicleMod(veh, 22, true)
-    SetVehicleHeadlightsColour(veh, value)
-
-    print(value)
+            ToggleVehicleMod(veh, 22, true)
+            SetVehicleHeadlightsColour(veh, value)
+        end
+    end)
 end)
 
 function openTunerLaptop(bool)

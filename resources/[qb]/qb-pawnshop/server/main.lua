@@ -7,6 +7,13 @@ local ItemList = {
     ["rolex"] = math.random(300, 500),
 }
 
+local ItemListHardware = {
+    ["tablet"] = math.random(400, 600),
+    ["iphone"] = math.random(600, 800),
+    ["samsungphone"] = math.random(550, 750),
+    ["laptop"] = math.random(600, 900),
+}
+
 local MeltItems = {
     ["rolex"] = 16,
     ["goldchain"] = 32,
@@ -28,6 +35,28 @@ AddEventHandler("qb-pawnshop:server:sellPawnItems", function()
                 end
             end
         end
+        Player.Functions.AddMoney("cash", price)
+        TriggerClientEvent('QBCore:Notify', src, "Je hebt je items verkocht")
+    end
+end)
+
+RegisterServerEvent("qb-pawnshop:server:sellHardwarePawnItems")
+AddEventHandler("qb-pawnshop:server:sellHardwarePawnItems", function()
+    local src = source
+    local price = 0
+    local totalAmount = 0
+    local Player = QBCore.Functions.GetPlayer(src)
+    if Player.PlayerData.items ~= nil and next(Player.PlayerData.items) ~= nil then 
+        for k, v in pairs(Player.PlayerData.items) do 
+            if Player.PlayerData.items[k] ~= nil then 
+                if ItemListHardware[Player.PlayerData.items[k].name] ~= nil then 
+                    price = price + (ItemListHardware[Player.PlayerData.items[k].name] * Player.PlayerData.items[k].amount)
+                    totalAmount = totalAmount + Player.PlayerData.items[k].amount
+                    Player.Functions.RemoveItem(Player.PlayerData.items[k].name, Player.PlayerData.items[k].amount, k)
+                end
+            end
+        end
+        Player.Functions.RemoveItem("certificate", totalAmount)
         Player.Functions.AddMoney("cash", price)
         TriggerClientEvent('QBCore:Notify', src, "Je hebt je items verkocht")
     end
@@ -98,7 +127,7 @@ AddEventHandler("qb-pawnshop:server:meltItems", function()
 end)
 
 QBCore.Functions.CreateCallback('qb-pawnshop:server:getSellPrice', function(source, cb)
-	local retval = 0
+    local retval = 0
     local Player = QBCore.Functions.GetPlayer(source)
     if Player.PlayerData.items ~= nil and next(Player.PlayerData.items) ~= nil then 
         for k, v in pairs(Player.PlayerData.items) do 
@@ -109,6 +138,35 @@ QBCore.Functions.CreateCallback('qb-pawnshop:server:getSellPrice', function(sour
             end
         end
     end
+    cb(retval)
+end)
+
+QBCore.Functions.CreateCallback('qb-pawnshop:server:getSellHardwarePrice', function(source, cb)
+    local retval = 0
+    local amount = 0
+    local Player = QBCore.Functions.GetPlayer(source)
+    if Player.PlayerData.items ~= nil and next(Player.PlayerData.items) ~= nil then 
+        for k, v in pairs(Player.PlayerData.items) do 
+            if Player.PlayerData.items[k] ~= nil then 
+                if ItemListHardware[Player.PlayerData.items[k].name] ~= nil then 
+                    retval = retval + (ItemListHardware[Player.PlayerData.items[k].name] * Player.PlayerData.items[k].amount)
+                    amount = amount + Player.PlayerData.items[k].amount
+                end
+            end
+        end
+        local certificates = Player.Functions.GetItemByName("certificate")
+        if certificates ~= nil then
+            print("Certificates: " .. certificates.amount)
+            print("Price: " .. retval)
+            print("Item amount: " .. amount)
+            if certificates.amount < amount then 
+                retval = 0
+            end
+        else
+            retval = 0
+        end
+    end
+    print("final: " .. retval)
     cb(retval)
 end)
 
