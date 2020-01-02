@@ -805,7 +805,7 @@ AddEventHandler("doIntroCam", function()
 	FreezeEntityPosition(GetPlayerPed(-1),true)
 	while cmenu.show ~= 0 do
 		Citizen.Wait(1)
-		NetworkSetTalkerProximity(0.1)
+		NetworkSetTalkerProximity(0.0)
 		invisCheck()
 
 		if IsDisabledControlPressed(0, Keys["A"]) or IsControlPressed(0, Keys["A"]) then
@@ -831,7 +831,7 @@ AddEventHandler("doIntroCam", function()
 
 	FreezeEntityPosition(GetPlayerPed(-1), false)
 	SetEntityInvincible(GetPlayerPed(-1), false)
-	NetworkSetTalkerProximity(18.0)
+	NetworkSetTalkerProximity(0.0)
 	firstChar = false
 	camOff()
 end)
