@@ -4,7 +4,7 @@ QBCore.Functions.ExecuteSql = function(wait, query, cb)
 	local rtndata = {}
 	local waiting = true
 	exports['ghmattimysql']:execute(query, {}, function(data)
-		if cb ~= nil then
+		if cb ~= nil and waiting == false then
 			cb(data)
 		end
 		rtndata = data
@@ -14,6 +14,9 @@ QBCore.Functions.ExecuteSql = function(wait, query, cb)
 		while waiting do
 			Citizen.Wait(5)
 		end
+	end
+	if cb ~= nil and waiting == true then
+		cb(rtndata)
 	end
 	return rtndata
 end
