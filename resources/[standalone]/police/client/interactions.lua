@@ -244,8 +244,10 @@ AddEventHandler('police:client:KidnapPlayer', function()
     local player, distance = GetClosestPlayer()
     if player ~= -1 and distance < 2.5 then
         local playerId = GetPlayerServerId(player)
-        if not isHandcuffed and not isEscorted then
-            TriggerServerEvent("police:server:KidnapPlayer", playerId)
+        if not IsPedInAnyVehicle(GetPlayerPed(player)) then
+            if not isHandcuffed and not isEscorted then
+                TriggerServerEvent("police:server:KidnapPlayer", playerId)
+            end
         end
     else
         QBCore.Functions.Notify("Niemand in de buurt!", "error")
@@ -254,31 +256,42 @@ end)
 
 RegisterNetEvent('police:client:CuffPlayerSoft')
 AddEventHandler('police:client:CuffPlayerSoft', function()
-    local player, distance = GetClosestPlayer()
-    if player ~= -1 and distance < 2.5 then
-        local playerId = GetPlayerServerId(player)
-        TriggerServerEvent("police:server:CuffPlayer", playerId, true)
+    if not IsPedRagdoll(GetPlayerPed(-1)) then
+        local player, distance = GetClosestPlayer()
+        if player ~= -1 and distance < 1.5 then
+            local playerId = GetPlayerServerId(player)
+            if not IsPedInAnyVehicle(GetPlayerPed(player)) then
+                TriggerServerEvent("police:server:CuffPlayer", playerId, true)
+                HandCuffAnimation()
+            end
+        else
+            QBCore.Functions.Notify("Niemand in de buurt!", "error")
+        end
     else
-        QBCore.Functions.Notify("Niemand in de buurt!", "error")
+        Citizen.Wait(2000)
     end
 end)
 
 RegisterNetEvent('police:client:CuffPlayer')
 AddEventHandler('police:client:CuffPlayer', function()
-    local player, distance = GetClosestPlayer()
-    if player ~= -1 and distance < 2.5 then
-        QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
-            if result then 
-                local playerId = GetPlayerServerId(player)
-                TriggerServerEvent("police:server:CuffPlayer", playerId, false)
-                HandCuffAnimation()
-            else
-                QBCore.Functions.Notify("Je hebt geen handboeien bij je", "error")
-            end
-        end, "handcuffs")
-        
+    if not IsPedRagdoll(GetPlayerPed(-1)) then
+        local player, distance = GetClosestPlayer()
+        if player ~= -1 and distance < 1.5 then
+            QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
+                if result then 
+                    local playerId = GetPlayerServerId(player)
+                    TriggerServerEvent("police:server:CuffPlayer", playerId, false)
+                    HandCuffAnimation()
+                else
+                    QBCore.Functions.Notify("Je hebt geen handboeien bij je", "error")
+                end
+            end, "handcuffs")
+            
+        else
+            QBCore.Functions.Notify("Niemand in de buurt!", "error")
+        end
     else
-        QBCore.Functions.Notify("Niemand in de buurt!", "error")
+        Citizen.Wait(2000)
     end
 end)
 
@@ -371,6 +384,7 @@ AddEventHandler('police:client:GetCuffed', function(playerId, isSoftcuff)
             QBCore.Functions.Notify("Je bent geboeid!")
         else
             cuffType = 49
+            GetCuffedAnimation(playerId)
             QBCore.Functions.Notify("Je bent geboeid, maar je kan lopen")
         end
     else
