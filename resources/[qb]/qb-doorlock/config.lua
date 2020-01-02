@@ -783,7 +783,7 @@ QB.Doors = {
 		authorizedJobs = { 'police' },
 		locking = false,
 		locked = true,
-		pickable = true,
+		pickable = false,
 		distance = 1.5,
 		size = 2
 	},
@@ -871,7 +871,7 @@ QB.Doors = {
 		authorizedJobs = { 'police' },
 		locking = false,
 		locked = true,
-		pickable = true,
+		pickable = false,
 		distance = 1.5,
 		size = 2
 	},

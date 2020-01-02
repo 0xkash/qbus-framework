@@ -56,7 +56,7 @@ Config.Language = {
 }
 
 Citizen.CreateThread(function()
-	QBCore.Functions.ExecuteSql("SELECT * FROM `queue`", function(result)
+	QBCore.Functions.ExecuteSql(true, "SELECT * FROM `queue`", function(result)
 		if result[1] ~= nil then
 			for k, v in pairs(result) do
 				Config.Priority[v.steam] = tonumber(v.priority)
@@ -90,8 +90,8 @@ function AddPriority(source, level)
 	local Player = QBCore.Functions.GetPlayer(source)
 	if Player ~= nil then 
 		Config.Priority[GetPlayerIdentifiers(source)[1]] = level
-		QBCore.Functions.ExecuteSql("DELETE FROM `queue` WHERE `steam` = '"..GetPlayerIdentifiers(source)[1].."'")
-		QBCore.Functions.ExecuteSql("INSERT INTO `queue` (`name`, `steam`, `license`, `priority`) VALUES ('"..GetPlayerName(source).."', '"..GetPlayerIdentifiers(source)[1].."', '"..GetPlayerIdentifiers(source)[2].."', '"..level.."')")
+		QBCore.Functions.ExecuteSql(true, "DELETE FROM `queue` WHERE `steam` = '"..GetPlayerIdentifiers(source)[1].."'")
+		QBCore.Functions.ExecuteSql(true, "INSERT INTO `queue` (`name`, `steam`, `license`, `priority`) VALUES ('"..GetPlayerName(source).."', '"..GetPlayerIdentifiers(source)[1].."', '"..GetPlayerIdentifiers(source)[2].."', '"..level.."')")
 		Player.Functions.UpdatePlayerData()
 	end
 end
@@ -100,6 +100,6 @@ function RemovePriority(source)
 	local Player = QBCore.Functions.GetPlayer(source)
 	if Player ~= nil then 
 		Config.Priority[GetPlayerIdentifiers(source)[1]] = nil
-		QBCore.Functions.ExecuteSql("DELETE FROM `queue` WHERE `steam` = '"..GetPlayerIdentifiers(source)[1].."'")
+		QBCore.Functions.ExecuteSql(true, "DELETE FROM `queue` WHERE `steam` = '"..GetPlayerIdentifiers(source)[1].."'")
 	end
 end

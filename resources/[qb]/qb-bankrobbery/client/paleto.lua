@@ -1,7 +1,14 @@
+local requiredItemsShowed = false
+local requiredItemsShowed2 = false
+
 Citizen.CreateThread(function()
     Citizen.Wait(2000)
     local requiredItems = {
         [1] = {name = QBCore.Shared.Items["security_card_01"]["name"], image = QBCore.Shared.Items["security_card_01"]["image"]},
+    }
+
+    local requiredItems2 = {
+        [1] = {name = QBCore.Shared.Items["thermite"]["name"], image = QBCore.Shared.Items["thermite"]["image"]},
     }
     while true do
         local ped = GetPlayerPed(-1)
@@ -34,7 +41,7 @@ Citizen.CreateThread(function()
                                     if lockerDist < 0.5 then
                                         DrawText3Ds(Config.BigBanks["paleto"]["lockers"][k].x, Config.BigBanks["paleto"]["lockers"][k].y, Config.BigBanks["paleto"]["lockers"][k].z + 0.3, '[E] Kluis openbreken')
                                         if IsControlJustPressed(0, Keys["E"]) then
-                                            if CurrentCops >= 0 then
+                                            if CurrentCops >= 5 then
                                                 openLocker("paleto", k)
                                             else
                                                 QBCore.Functions.Notify("Niet genoeg politie.. (5 nodig)", "error")
@@ -43,6 +50,25 @@ Citizen.CreateThread(function()
                                     end
                                 end
                             end
+                        end
+                    end
+                end
+            end
+            if GetDistanceBetweenCoords(pos, Config.BigBanks["paleto"]["thermite"][1]["x"], Config.BigBanks["paleto"]["thermite"][1]["y"], Config.BigBanks["paleto"]["thermite"][1]["z"], true) < 10.0 then
+                inRange = true
+                if not Config.BigBanks["pacific"]["thermite"][1]["isOpened"] then
+                    local dist = GetDistanceBetweenCoords(pos, Config.BigBanks["paleto"]["thermite"][1]["x"], Config.BigBanks["paleto"]["thermite"][1]["y"], Config.BigBanks["paleto"]["thermite"][1]["z"], true)
+                    if dist < 1 then
+                        currentThermiteGate = Config.BigBanks["paleto"]["thermite"][1]["doorId"]
+                        if not requiredItemsShowed2 then
+                            requiredItemsShowed2 = true
+                            TriggerEvent('inventory:client:requiredItems', requiredItems2, true)
+                        end
+                    else
+                        currentThermiteGate = 0
+                        if requiredItemsShowed2 then
+                            requiredItemsShowed2 = false
+                            TriggerEvent('inventory:client:requiredItems', requiredItems2, false)
                         end
                     end
                 end
@@ -66,7 +92,7 @@ AddEventHandler('qb-bankrobbery:UseBankcardA', function()
     if dist < 1.5 then
         QBCore.Functions.TriggerCallback('qb-bankrobbery:server:isRobberyActive', function(isBusy)
             if not isBusy then
-                if CurrentCops >= 0 then
+                if CurrentCops >= 5 then
                     if not Config.BigBanks["paleto"]["isOpened"] then 
                         TriggerEvent('inventory:client:requiredItems', requiredItems, false)
                         QBCore.Functions.Progressbar("security_pass", "Pas aan het valideren..", math.random(5000, 10000), false, true, {
