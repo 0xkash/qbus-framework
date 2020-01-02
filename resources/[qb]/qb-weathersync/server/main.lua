@@ -23,7 +23,7 @@ AvailableTimeTypes = {
     'NIGHT',
 }
 
-local CurrentWeather = "XMAS"
+local CurrentWeather = "EXTRASUNNY"
 local DynamicWeather = false
 local baseTime = 0
 local timeOffset = 0

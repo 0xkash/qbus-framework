@@ -18,6 +18,7 @@ QB.Phone.Data = {
     PlayerData: {},
     Applications: {},
     IsOpen: false,
+    CallActive: false,
 }
 
 OpenedChatData = {
@@ -128,7 +129,9 @@ $(document).on('click', '.phone-home-container', function(event){
     } else {
         QB.Phone.Animations.TopSlideUp('.phone-application-container', 400, -160);
         QB.Phone.Animations.TopSlideUp('.'+QB.Phone.Data.currentApplication+"-app", 400, -160);
-        QB.Phone.Functions.ToggleApp(QB.Phone.Data.currentApplication, "false");
+        setTimeout(function(){
+            QB.Phone.Functions.ToggleApp(QB.Phone.Data.currentApplication, "none");
+        }, 400)
         QB.Phone.Functions.HeaderTextColor("white", 300);
 
         if (QB.Phone.Data.currentApplication == "whatsapp") {
@@ -209,7 +212,7 @@ QB.Phone.Animations.TopSlideDown = function(Object, Timeout, Percentage) {
     }, Timeout);
 }
 
-QB.Phone.Animations.TopSlideUp = function(Object, Timeout, Percentage) {
+QB.Phone.Animations.TopSlideUp = function(Object, Timeout, Percentage, cb) {
     $(Object).css({'display':'block'}).animate({
         top: Percentage+"%",
     }, Timeout, function(){
@@ -359,6 +362,12 @@ $(document).ready(function(){
             case "RefreshWhatsappAlerts":
                 QB.Phone.Functions.ReloadWhatsappAlerts(event.data.Chats);
                 break;
+            case "CancelOutgoingCall":
+                CancelOutgoingCall();
+                break;
+            case "IncomingCallAlert":
+                IncomingCallAlert(event.data.CallData, event.data.Canceled);
+                break;
         }
     })
 });
@@ -371,4 +380,7 @@ $(document).on('keydown', function() {
     }
 });
 
+
+
+// 
 // QB.Phone.Functions.Open();

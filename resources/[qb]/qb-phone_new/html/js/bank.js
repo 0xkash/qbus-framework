@@ -131,6 +131,60 @@ GetInvoiceLabel = function(type) {
     return retval
 }
 
+$(document).on('click', '.pay-invoice', function(event){
+    event.preventDefault();
+
+    var InvoiceId = $(this).parent().parent().attr('id');
+    var InvoiceData = $("#"+InvoiceId).data('invoicedata');
+    var BankBalance = $(".bank-app-account-balance").data('balance');
+
+    if (BankBalance >= InvoiceData.amount) {
+        $.post('http://qb-phone_new/PayInvoice', JSON.stringify({
+            sender: InvoiceData.sender,
+            amount: InvoiceData.amount,
+            invoiceId: InvoiceData.invoiceid,
+        }), function(CanPay){
+            if (CanPay) {
+                $("#"+InvoiceId).animate({
+                    left: 30+"vh",
+                }, 300, function(){
+                    setTimeout(function(){
+                        $("#"+InvoiceId).remove();
+                    }, 100);
+                });
+                QB.Phone.Notifications.Add("fas fa-university", "QBank", "Je hebt &euro;"+InvoiceData.amount+" betaald!", "#badc58", 1500);
+                var amountData = $(".bank-app-account-balance").data('balance');
+                $("#bank-transfer-amount").val(amountData - InvoiceData.amount);
+                $(".bank-app-account-balance").data('balance', amountData - InvoiceData.amount);
+            } else {
+                QB.Phone.Notifications.Add("fas fa-university", "QBank", "Je hebt niet genoeg saldo!", "#badc58", 1500);
+            }
+        });
+    } else {
+        QB.Phone.Notifications.Add("fas fa-university", "QBank", "Je hebt niet genoeg saldo!", "#badc58", 1500);
+    }
+});
+
+$(document).on('click', '.decline-invoice', function(event){
+    event.preventDefault();
+    var InvoiceId = $(this).parent().parent().attr('id');
+    var InvoiceData = $("#"+InvoiceId).data('invoicedata');
+
+    $.post('http://qb-phone_new/DeclineInvoice', JSON.stringify({
+        sender: InvoiceData.sender,
+        amount: InvoiceData.amount,
+        invoiceId: InvoiceData.invoiceid,
+    }));
+    $("#"+InvoiceId).animate({
+        left: 30+"vh",
+    }, 300, function(){
+        setTimeout(function(){
+            $("#"+InvoiceId).remove();
+        }, 100);
+    });
+    QB.Phone.Notifications.Add("fas fa-university", "QBank", "Je hebt &euro;"+InvoiceData.amount+" betaald!", "#badc58", 1500);
+});
+
 QB.Phone.Functions.LoadBankInvoices = function(invoices) {
     if (invoices !== null) {
         $(".bank-app-invoices-list").html("");

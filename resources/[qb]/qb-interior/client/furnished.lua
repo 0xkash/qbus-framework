@@ -136,7 +136,7 @@ function CreateTrevorsShell(spawn)
 	local objects = {}
 
     local POIOffsets = {}
-	POIOffsets.exit = json.decode('{"z":2.5,"y":4.29636328125,"x":1.172736328125,"h":2.2633972168}')
+	POIOffsets.exit = json.decode('{"z":7.9,"y":-3.9,"x":0.1,"h":358.633972168}')
 	DoScreenFadeOut(500)
     while not IsScreenFadedOut() do
         Citizen.Wait(10)
@@ -149,7 +149,29 @@ function CreateTrevorsShell(spawn)
     FreezeEntityPosition(house, true)
 	table.insert(objects, house)
 
-	TeleportToInterior(spawn.x - 1.52089355468, spawn.y - 4.00144140625, spawn.z + 1.5, POIOffsets.exit.h)
+	TeleportToInterior(spawn.x + 0.0, spawn.y - 3.20144140625, spawn.z + 6.5, POIOffsets.exit.h)
+
+    return { objects, POIOffsets }
+end
+
+function CreateGunshopShell(spawn)
+	local objects = {}
+
+    local POIOffsets = {}
+	POIOffsets.exit = json.decode('{"z":7.9,"y":-3.9,"x":0.1,"h":358.633972168}')
+	DoScreenFadeOut(500)
+    while not IsScreenFadedOut() do
+        Citizen.Wait(10)
+    end
+	RequestModel(`gunshop_shell`)
+	while not HasModelLoaded(`gunshop_shell`) do
+	    Citizen.Wait(1000)
+	end
+	local house = CreateObject(`gunshop_shell`, spawn.x, spawn.y, spawn.z, false, false, false)
+    FreezeEntityPosition(house, true)
+	table.insert(objects, house)
+
+	TeleportToInterior(spawn.x + 0.0, spawn.y - 3.20144140625, spawn.z + 6.5, POIOffsets.exit.h)
 
     return { objects, POIOffsets }
 end
