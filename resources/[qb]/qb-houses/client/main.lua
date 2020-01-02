@@ -549,6 +549,8 @@ function enterOwnedHouse(house)
         data = exports['qb-interior']:CreateTrevorsShell(coords)
     elseif Config.Houses[house].tier == 3 then
         data = exports['qb-interior']:CreateMichaelShell(coords)
+    elseif Config.Houses[house].tier == 4 then
+        data = exports['qb-interior']:CreateGunshopShell(coords)
     end
     Citizen.Wait(100)
     houseObj = data[1]
@@ -624,6 +626,8 @@ function enterNonOwnedHouse(house)
         data = exports['qb-interior']:CreateTrevorsShell(coords)
     elseif Config.Houses[house].tier == 3 then
         data = exports['qb-interior']:CreateMichaelShell(coords)
+    elseif Config.Houses[house].tier == 4 then
+        data = exports['qb-interior']:CreateGunshopShell(coords)
     end
     houseObj = data[1]
     POIOffsets = data[2]

@@ -15,6 +15,58 @@ body {
 }
 /*  */
 
+.phone-currentcall-container {
+    position: absolute;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    height: 5vh;
+    width: 70%;
+    background-color: rgba(0, 0, 0, 0.65);
+    top: 10vh;
+    z-index: 101;
+    transition: background-color .1s linear;
+    border-radius: 3vh;
+    animation: pulse 2s infinite;
+}
+.phone-currentcall-container:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.phone-currentcall-icon {
+    position: absolute;
+    top: 1.3vh;
+    left: 1.3vh;
+    font-size: 1.8vh;
+    color: white;
+    transform: rotate(90deg);
+}
+@-webkit-keyframes pulse {
+    0% {
+      -webkit-box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.5);
+    }
+    70% {
+        -webkit-box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+    }
+    100% {
+        -webkit-box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+    }
+  }
+  @keyframes pulse {
+    0% {
+      -moz-box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.5);
+      box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.2);
+    }
+    70% {
+        -moz-box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+        box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+    }
+    100% {
+        -moz-box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+    }
+}
+
 /* Phone Container */
 .phone-frame {
     position: absolute;
@@ -192,7 +244,9 @@ body {
 }
 /* Home Applications END */
 
+
 /* Phone Notification */
+
 .phone-notification-container {
     position: absolute;
     height: 5.5vh;
@@ -240,6 +294,39 @@ body {
 
 /* Phone Notification END */
 
+.call-notifications {
+    display: none;
+    position: absolute;
+    background: #e67d22ea;
+    height: 9vh;
+    width: 34vh;
+    bottom: 16vh;
+    right: -35vh;
+    border-radius: 1.7vh;
+    z-index: -5;
+}
+.call-notifications-shake {
+    /* Start the shake animation and make the animation last for 0.5 seconds */
+    animation: shake 0.5s;
+  
+    /* When the animation is finished, start again */
+    animation-iteration-count: infinite;
+}
+  
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(3px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    70% { transform: translate(3px, 1px) rotate(-1deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    90% { transform: translate(1px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+
 .screen-notifications-container {
     display: none;
     position: absolute;
@@ -270,6 +357,36 @@ body {
 }
 
 .screen-notification-content {
+    position: absolute;
+    top: 4.2vh;
+    left: 7.5vh;
+    font-size: 1.2vh;
+    color: white;
+    font-family: 'Samsung Sans Medium';
+    height: 3.5vh;
+    width: 26vh;
+    overflow: hidden;
+}
+
+.call-notifications-icon {
+    position: absolute;
+    line-height: 9.3vh;
+    left: 2vh;
+    font-size: 3.75vh;
+    color: white;
+    transform: rotate(90deg);
+}
+
+.call-notifications-title {
+    position: absolute;
+    line-height: 5.5vh;
+    left: 7.5vh;
+    font-size: 1.5vh;
+    color: white;
+    font-family: 'Samsung Sans Bold';
+}
+
+.call-notifications-content {
     position: absolute;
     top: 4.2vh;
     left: 7.5vh;

@@ -623,7 +623,7 @@ function resetClothing(data)
 
     -- Makeup
     SetPedHeadOverlay(ped, 4, data["makeup"].item, 1.0)
-    SetPedHeadOverlayColor(ped, 4, 1, data["blush"].texture, 0)
+    SetPedHeadOverlayColor(ped, 4, 1, data["makeup"].texture, 0)
 
     -- Ageing
     SetPedHeadOverlay(ped, 3, data["ageing"].item, 1.0)
@@ -1112,11 +1112,11 @@ AddEventHandler('qb-clothing:client:loadPlayerClothing', function(data, ped)
 
     -- Lipstick
     SetPedHeadOverlay(ped, 8, data["lipstick"].item, 1.0)
-    SetPedHeadOverlayColor(ped, 8, 1, data["lipstick"].item, 0)
+    SetPedHeadOverlayColor(ped, 8, 1, data["lipstick"].texture, 0)
 
     -- Makeup
     SetPedHeadOverlay(ped, 4, data["makeup"].item, 1.0)
-    SetPedHeadOverlayColor(ped, 4, 1, data["blush"].texture, 0)
+    SetPedHeadOverlayColor(ped, 4, 1, data["makeup"].texture, 0)
 
     -- Ageing
     SetPedHeadOverlay(ped, 3, data["ageing"].item, 1.0)

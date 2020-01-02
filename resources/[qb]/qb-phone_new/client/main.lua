@@ -21,6 +21,7 @@ local PhoneData = {
     Hashtags = {},
     Chats = {},
     Invoices = {},
+    CallData = {}
 }
 
 function IsNumberInContacts(num)
@@ -366,6 +367,28 @@ RegisterNUICallback('ClearAlerts', function(data, cb)
     SendNUIMessage({ action = "RefreshAppAlerts", AppData = Config.PhoneApplications })
 end)
 
+RegisterNUICallback('PayInvoice', function(data, cb)
+    local sender = data.sender
+    local amount = data.amount
+    local invoiceId = data.invoiceId
+
+    QBCore.Functions.TriggerCallback('qb-phone_new:server:PayInvoice', function(CanPay, Invoices)
+        if CanPay then PhoneData.Invoices = Invoices end
+        cb(CanPay)
+    end, sender, amount, invoiceId)
+end)
+
+RegisterNUICallback('DeclineInvoice', function(data, cb)
+    local sender = data.sender
+    local amount = data.amount
+    local invoiceId = data.invoiceId
+
+    QBCore.Functions.TriggerCallback('qb-phone_new:server:DeclineInvoice', function(CanPay, Invoices)
+        PhoneData.Invoices = Invoices
+        cb('ok')
+    end, sender, amount, invoiceId)
+end)
+
 RegisterNUICallback('EditContact', function(data, cb)
     local NewName = data.CurrentContactName
     local NewNumber = data.CurrentContactNumber
@@ -586,6 +609,134 @@ end)
 
 RegisterNUICallback('GetWhatsappChats', function(data, cb)
     cb(PhoneData.Chats)
+end)
+
+RegisterNUICallback('CallContact', function(data, cb)
+    QBCore.Functions.TriggerCallback('qb-phone_new:server:GetCallState', function(CanCall, IsOnline)
+        local status = { 
+            cc = CanCall, 
+            io = IsOnline,
+            ic = PhoneData.CallData.InCall,
+        }
+        cb(status)
+        if CanCall and not status.ic then
+            CallContact(data.ContactData)
+        end
+    end, data.ContactData)
+end)
+
+function GenerateCallId(caller, target)
+    local CallId = "CALL-"..math.ceil(((tonumber(caller) + tonumber(target)) / 100 * 10))
+    return CallId
+end
+
+CallContact = function(CallData)
+    local RepeatCount = 0
+    PhoneData.CallData.CallType = "outgoing"
+    PhoneData.CallData.InCall = true
+    PhoneData.CallData.TargetData = CallData
+    PhoneData.CallData.CallId = GenerateCallId(PhoneData.PlayerData.charinfo.phone, CallData.number)
+
+    TriggerServerEvent('qb-phone_new:server:CallContact', PhoneData.CallData.TargetData, PhoneData.CallData.CallId)
+
+    for i = 1, Config.CallRepeats + 1, 1 do
+        if RepeatCount + 1 ~= Config.CallRepeats + 1 then
+            Citizen.Wait(Config.RepeatTimeout)
+            if PhoneData.CallData.InCall then
+                RepeatCount = RepeatCount + 1
+                TriggerServerEvent("InteractSound_SV:PlayOnSource", "demo", 0.1)
+            else
+                break
+            end
+        else          
+            CancelOutgoingCall()
+            break
+        end
+    end
+end
+
+CancelOutgoingCall = function(Caller)
+    PhoneData.CallData.CallType = nil
+    PhoneData.CallData.InCall = false
+    PhoneData.CallData.TargetData = {}
+
+    if not PhoneData.isOpen then
+        SendNUIMessage({ 
+            action = "Notification", 
+            NotifyData = { 
+                title = "Telefoon",
+                content = "De oproep is beëindigd", 
+                icon = "fas fa-phone", 
+                timeout = 3500, 
+                color = "#e84118",
+            }, 
+        })            
+    else
+        SendNUIMessage({ 
+            action = "PhoneNotification", 
+            PhoneNotify = { 
+                title = "Telefoon", 
+                text = "De oproep is beëindigd", 
+                icon = "fas fa-phone", 
+                color = "#e84118", 
+            }, 
+        })
+
+        SendNUIMessage({
+            action = "CancelOutgoingCall",
+        })
+    end
+end
+
+RegisterNetEvent('qb-phone_new:client:GetCalled')
+AddEventHandler('qb-phone_new:client:GetCalled', function(CallerNumber, CallId)
+    local RepeatCount = 0
+    local CallData = {
+        number = CallerNumber,
+        name = IsNumberInContacts(CallerNumber)
+    }
+
+    PhoneData.CallData.CallType = "incoming"
+    PhoneData.CallData.InCall = true
+    PhoneData.CallData.TargetData = CallData
+    PhoneData.CallData.CallId = CallId
+
+    for i = 1, Config.CallRepeats + 1, 1 do
+        if RepeatCount + 1 ~= Config.CallRepeats + 1 then
+            Citizen.Wait(Config.RepeatTimeout)
+            if PhoneData.CallData.InCall then
+                RepeatCount = RepeatCount + 1
+                TriggerServerEvent("InteractSound_SV:PlayOnSource", "demo", 0.1)
+                
+                if not PhoneData.CallData.isOpen then
+                    SendNUIMessage({
+                        action = "IncomingCallAlert",
+                        CallData = PhoneData.CallData.TargetData,
+                        Canceled = false,
+                    })
+                end
+            else
+                SendNUIMessage({
+                    action = "IncomingCallAlert",
+                    CallData = PhoneData.CallData.TargetData,
+                    Canceled = true,
+                })
+                break
+            end
+        else
+            SendNUIMessage({
+                action = "IncomingCallAlert",
+                CallData = PhoneData.CallData.TargetData,
+                Canceled = true,
+            })
+            CancelOutgoingCall()
+            break
+        end
+    end
+end)
+
+RegisterNUICallback('CancelOutgoingCall', function()
+    CancelOutgoingCall()
 end)
 
 AddEventHandler('onResourceStop', function(resource)

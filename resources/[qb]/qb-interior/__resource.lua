@@ -13,6 +13,7 @@ files {
 	'stream/playerhouse_appartment_motel/playerhouse_appartment_motel.ytyp',
 	'stream/micheal_shell/micheal_shell.ytyp',
 	'stream/trevors_shell/trevors_shell.ytyp',
+	'stream/gunshop_shell/gunshop_shell.ytyp',
 }
 
 data_file 'DLC_ITYP_REQUEST' 'stream/v_int_20.ytyp'
@@ -22,6 +23,7 @@ data_file 'DLC_ITYP_REQUEST' 'stream/playerhouse_tier3/playerhouse_tier3.ytyp'
 data_file 'DLC_ITYP_REQUEST' 'stream/playerhouse_appartment_motel/playerhouse_appartment_motel.ytyp'
 data_file 'DLC_ITYP_REQUEST' 'stream/micheal_shell/micheal_shell.ytyp'
 data_file 'DLC_ITYP_REQUEST' 'stream/trevors_shell/trevors_shell.ytyp'
+data_file 'DLC_ITYP_REQUEST' 'stream/gunshop_shell/gunshop_shell.ytyp'
 
 exports {
 	'DespawnInterior',
@@ -31,6 +33,7 @@ exports {
 	'CreateTier3House',
 	'CreateMichaelShell',
 	'CreateTrevorsShell',
+	'CreateGunshopShell',
 
 	'CreateTier1HouseFurnished',
 	'CreateHotelFurnished',

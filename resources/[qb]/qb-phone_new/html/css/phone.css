@@ -588,3 +588,260 @@
 .phone-edit-contact-button:hover {
     border-top: 2px solid #eb4d4b;
 }
+
+/* Phone Call App */
+
+.phone-call-app {
+    display: none;
+    height: 100%;
+    width: 100%;
+    background: #de6262  ;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #de6262 , #ffb88c);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #de6262 , #ffb88c); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */    
+    background-size: 400% 400%;
+    
+    -webkit-animation: AnimationName 35s ease infinite;
+    -moz-animation: AnimationName 35s ease infinite;
+    animation: AnimationName 35s ease infinite;  
+    overflow: hidden;
+}
+
+.phone-call-incoming {
+    display: none;
+    height: 100%;
+    width: 100%;
+}
+.phone-call-incoming-title {
+    position: relative;
+    text-align: center;
+    top: 7.5vh;
+    font-family: 'Samsung Sans Regular';
+    color: white;
+    font-size: 1.1vh;
+    text-shadow: 0 0 1vh rgba(0, 0, 0, 0.1);
+}
+.phone-call-incoming-caller {
+    position: relative;
+    text-align: center;
+    top: 10vh;
+    font-family: 'Samsung Sans Regular';
+    color: white;
+    font-size: 2.5vh;
+    text-shadow: 0 0 1vh rgba(0, 0, 0, 0.1);
+}
+.phone-call-incoming-picture {
+    position: absolute;
+    margin: 0 auto;
+    width: 12vh;
+    height: 12vh;
+    left: 0;
+    right: 0;
+    top: 18vh;
+    border-radius: 50%;
+    border: .2vh solid #ffffff6c;
+    background: rgba(27, 27, 27, 0.25);
+    box-shadow: 0 0 .5vh 0 rgba(0, 0, 0, 0.5);
+    animation: pulse 2s infinite;
+}
+#incoming-answer {
+    position: absolute;
+    bottom: 8vh;
+    left: 5vh;
+    transform: rotate(90deg);
+    color: #2ecc70e5;
+    background-color: white;
+    padding: 1.5vh;
+    font-size: 2.2vh;
+    border-radius: 50%;
+    transition: .1s;
+    animation: pulse 2s infinite;
+}
+#incoming-answer:hover {
+    color: #2ecc71;
+    background-color: rgba(255, 255, 255, 0.8);
+    transition: .1s;
+}
+#incoming-deny {
+    position: absolute;
+    bottom: 8vh;
+    right: 5vh;
+    transform: rotate(-135deg);
+    color: #e74d3ce0;
+    background-color: white;
+    padding: 1.5vh;
+    font-size: 2.2vh;
+    border-radius: 50%;
+    transition: .1s;
+    animation: pulse 2s infinite;
+}
+#incoming-deny:hover {
+    color: #e74c3c;
+    background-color: rgba(255, 255, 255, 0.8);
+    transition: .1s;
+}
+
+/* Outgoing */
+
+.phone-call-outgoing {
+    display: none;
+    height: 100%;
+    width: 100%;
+}
+.phone-call-outgoing-title {
+    position: relative;
+    text-align: center;
+    top: 7.5vh;
+    font-family: 'Samsung Sans Regular';
+    color: white;
+    font-size: 1.1vh;
+    text-shadow: 0 0 1vh rgba(0, 0, 0, 0.1);
+}
+.phone-call-outgoing-caller {
+    position: relative;
+    text-align: center;
+    top: 10vh;
+    font-family: 'Samsung Sans Regular';
+    color: white;
+    font-size: 2.5vh;
+    text-shadow: 0 0 1vh rgba(0, 0, 0, 0.1);
+}
+.phone-call-outgoing-picture {
+    position: absolute;
+    margin: 0 auto;
+    width: 12vh;
+    height: 12vh;
+    left: 0;
+    right: 0;
+    top: 18vh;
+    border-radius: 50%;
+    border: .2vh solid #ffffff6c;
+    background: rgba(27, 27, 27, 0.25);
+    box-shadow: 0 0 .5vh 0 rgba(0, 0, 0, 0.5);
+    animation: pulse 2s infinite;
+}
+#outgoing-cancel {
+    position: absolute;
+    bottom: 8vh;
+    margin: 0 auto;
+    left: 40.8%;
+    transform: rotate(-135deg);
+    color: #e74c3c;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 1.5vh;
+    font-size: 2.5vh;
+    border-radius: 50%;
+    transition: background-color .1s ease-in-out;
+    animation: pulse 2s infinite;
+}
+#outgoing-cancel:hover {
+    background-color: rgba(255, 255, 255, 0.95);
+    transition: .2s;
+}
+@-webkit-keyframes pulse {
+    0% {
+      -webkit-box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.8);
+    }
+    70% {
+        -webkit-box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+    }
+    100% {
+        -webkit-box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+    }
+  }
+  @keyframes pulse {
+    0% {
+      -moz-box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.8);
+      box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+    }
+    70% {
+        -moz-box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+        box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+    }
+    100% {
+        -moz-box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+    }
+}
+
+@-webkit-keyframes AnimationName {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+@-moz-keyframes AnimationName {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+@keyframes AnimationName {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+
+/* Ongoing */
+
+.phone-call-ongoing {
+    display: none;
+    height: 100%;
+    width: 100%;
+}
+.phone-call-ongoing-title {
+    position: relative;
+    text-align: center;
+    top: 7.5vh;
+    font-family: 'Samsung Sans Regular';
+    color: white;
+    font-size: 1.1vh;
+    text-shadow: 0 0 1vh rgba(0, 0, 0, 0.1);
+}
+.phone-call-ongoing-caller {
+    position: relative;
+    text-align: center;
+    top: 10vh;
+    font-family: 'Samsung Sans Regular';
+    color: white;
+    font-size: 2.5vh;
+    text-shadow: 0 0 1vh rgba(0, 0, 0, 0.1);
+}
+.phone-call-ongoing-picture {
+    position: absolute;
+    margin: 0 auto;
+    width: 12vh;
+    height: 12vh;
+    left: 0;
+    right: 0;
+    top: 18vh;
+    border-radius: 50%;
+    border: .2vh solid #ffffff6c;
+    background: rgba(27, 27, 27, 0.25);
+    box-shadow: 0 0 .5vh 0 rgba(0, 0, 0, 0.5);
+    animation: pulse 2s infinite;
+}
+.phone-call-ongoing-time {
+    position: relative;
+    text-align: center;
+    top: 28vh;
+    font-family: 'Samsung Sans Regular';
+    color: white;
+    font-size: 1.2vh;
+    text-shadow: 0 0 1vh rgba(0, 0, 0, 0.1);
+}
+#ongoing-cancel {
+    position: absolute;
+    bottom: 8vh;
+    margin: 0 auto;
+    left: 40.8%;
+    transform: rotate(-135deg);
+    color: #e74c3c;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 1.5vh;
+    font-size: 2.5vh;
+    border-radius: 50%;
+    transition: background-color .1s ease-in-out;
+    animation: pulse 2s infinite;
+}
+#ongoing-cancel:hover {
+    background-color: rgba(255, 255, 255, 0.95);
+    transition: .2s;
+}

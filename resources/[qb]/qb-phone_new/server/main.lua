@@ -8,6 +8,7 @@ local Tweets = {}
 local AppAlerts = {}
 local MentionedTweets = {}
 local Hashtags = {}
+local Calls = {}
 
 function GetOnlineStatus(number)
     local Target = QBCore.Functions.GetPlayerByPhone(number)
@@ -28,7 +29,7 @@ QBCore.Functions.CreateCallback('qb-phone_new:server:GetPhoneData', function(sou
         Invoices = {},
     }
 
-    QBCore.Functions.ExecuteSql("SELECT * FROM player_contacts WHERE `citizenid` = '"..Player.PlayerData.citizenid.."'", function(result)
+    QBCore.Functions.ExecuteSql("SELECT * FROM player_contacts WHERE `citizenid` = '"..Player.PlayerData.citizenid.."' ORDER BY `name` ASC", function(result)
         local Contacts = {}
         if result[1] ~= nil then
             for k, v in pairs(result) do
@@ -81,6 +82,24 @@ QBCore.Functions.CreateCallback('qb-phone_new:server:GetPhoneData', function(sou
     cb(PhoneData)
 end)
 
+QBCore.Functions.CreateCallback('qb-phone_new:server:GetCallState', function(source, cb, ContactData)
+    local Target = QBCore.Functions.GetPlayerByPhone(ContactData.number)
+
+    if Target ~= nil then
+        if Calls[Target.PlayerData.citizenid] ~= nil then
+            if Calls[Target.PlayerData.citizenid].inCall then
+                cb(false, true)
+            else
+                cb(true, true)
+            end
+        else
+            cb(true, true)
+        end
+    else
+        cb(false, false)
+    end
+end)
+
 RegisterServerEvent('qb-phone_new:server:MentionedPlayer')
 AddEventHandler('qb-phone_new:server:MentionedPlayer', function(firstName, lastName, TweetMessage)
     for k, v in pairs(QBCore.Functions.GetPlayers()) do
@@ -105,6 +124,119 @@ AddEventHandler('qb-phone_new:server:MentionedPlayer', function(firstName, lastN
             end
         end
 	end
+end)
+
+RegisterServerEvent('qb-phone_new:server:CallContact')
+AddEventHandler('qb-phone_new:server:CallContact', function(TargetData, CallId)
+    local src = source
+    local Ply = QBCore.Functions.GetPlayer(src)
+    local Target = QBCore.Functions.GetPlayerByPhone(TargetData.number)
+
+    if Target ~= nil then
+        TriggerClientEvent('qb-phone_new:client:GetCalled', Target.PlayerData.source, Ply.PlayerData.charinfo.phone, CallId)
+    end
+end)
+
+QBCore.Functions.CreateCallback('qb-phone_new:server:PayInvoice', function(source, cb, sender, amount, invoiceId)
+    local src = source
+    local Ply = QBCore.Functions.GetPlayer(src)
+    local Trgt = QBCore.Functions.GetPlayerByCitizenId(sender)
+    local Invoices = {}
+
+    if Trgt ~= nil then
+        if Ply.PlayerData.money.bank >= amount then
+            Ply.Functions.RemoveMoney('bank', amount)
+            Trgt.Functions.AddMoney('bank', amount)
+
+            QBCore.Functions.ExecuteSql("DELETE FROM `phone_invoices` WHERE `invoiceid` = '"..invoiceId.."'")
+            QBCore.Functions.ExecuteSql("SELECT * FROM `phone_invoices` WHERE `citizenid` = '"..Ply.PlayerData.citizenid.."'", function(invoices)
+                if invoices[1] ~= nil then
+                    for k, v in pairs(invoices) do
+                        local Target = QBCore.Functions.GetPlayerByCitizenId(v.sender)
+                        if Target ~= nil then
+                            v.number = Target.PlayerData.charinfo.phone
+                        else
+                            QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `citizenid` = '"..v.sender.."'", function(res)
+                                if res[1] ~= nil then
+                                    res[1].charinfo = json.decode(res[1].charinfo)
+                                    v.number = res[1].charinfo.phone
+                                else
+                                    v.number = nil
+                                end
+                            end)
+                        end
+                    end
+                    Invoices = invoices
+                end
+            end)
+            cb(true, Invoices)
+        else
+            cb(false)
+        end
+    else
+        QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `citizenid` = '"..sender.."'", function(result)
+            if result[1] ~= nil then
+                local moneyInfo = json.decode(result[1].money)
+                moneyInfo.bank = math.ceil((moneyInfo.bank + amount))
+                QBCore.Functions.ExecuteSql("UPDATE `players` SET `money` = '"..json.encode(moneyInfo).."' WHERE `citizenid` = '"..sender.."'")
+                Ply.Functions.RemoveMoney('bank', amount)
+                QBCore.Functions.ExecuteSql("DELETE FROM `phone_invoices` WHERE `invoiceid` = '"..invoiceId.."'")
+                QBCore.Functions.ExecuteSql("SELECT * FROM `phone_invoices` WHERE `citizenid` = '"..Ply.PlayerData.citizenid.."'", function(invoices)
+                    if invoices[1] ~= nil then
+                        for k, v in pairs(invoices) do
+                            local Target = QBCore.Functions.GetPlayerByCitizenId(v.sender)
+                            if Target ~= nil then
+                                v.number = Target.PlayerData.charinfo.phone
+                            else
+                                QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `citizenid` = '"..v.sender.."'", function(res)
+                                    if res[1] ~= nil then
+                                        res[1].charinfo = json.decode(res[1].charinfo)
+                                        v.number = res[1].charinfo.phone
+                                    else
+                                        v.number = nil
+                                    end
+                                end)
+                            end
+                        end
+                        Invoices = invoices
+                    end
+                end)
+                cb(true, Invoices)
+            else
+                cb(false)
+            end
+        end)
+    end
+end)
+
+QBCore.Functions.CreateCallback('qb-phone_new:server:DeclineInvoice', function(source, cb, sender, amount, invoiceId)
+    local src = source
+    local Ply = QBCore.Functions.GetPlayer(src)
+    local Trgt = QBCore.Functions.GetPlayerByCitizenId(sender)
+    local Invoices = {}
+
+    QBCore.Functions.ExecuteSql("DELETE FROM `phone_invoices` WHERE `invoiceid` = '"..invoiceId.."'")
+    QBCore.Functions.ExecuteSql("SELECT * FROM `phone_invoices` WHERE `citizenid` = '"..Ply.PlayerData.citizenid.."'", function(invoices)
+        if invoices[1] ~= nil then
+            for k, v in pairs(invoices) do
+                local Target = QBCore.Functions.GetPlayerByCitizenId(v.sender)
+                if Target ~= nil then
+                    v.number = Target.PlayerData.charinfo.phone
+                else
+                    QBCore.Functions.ExecuteSql("SELECT * FROM `players` WHERE `citizenid` = '"..v.sender.."'", function(res)
+                        if res[1] ~= nil then
+                            res[1].charinfo = json.decode(res[1].charinfo)
+                            v.number = res[1].charinfo.phone
+                        else
+                            v.number = nil
+                        end
+                    end)
+                end
+            end
+            Invoices = invoices
+        end
+    end)
+    cb(true, invoices)
 end)
 
 RegisterServerEvent('qb-phone_new:server:UpdateHashtags')
