@@ -77,6 +77,9 @@ AddEventHandler('qb-multicharacter:client:chooseChar', function()
     -- Closes loading screen
     ShutdownLoadingScreenNui()
 
+    -- Disables NATIVE voicechat (Does not effect TokoVoip)
+    NetworkSetTalkerProximity(0.0)
+
     DoScreenFadeOut(0)
     DoScreenFadeIn(1000)
     openCharMenu(true)
