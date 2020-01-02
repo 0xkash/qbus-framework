@@ -177,6 +177,21 @@ Config.CraftingItems = {
         threshold = 350,
         points = 11,
     },
+    [12] = {
+        name = "drill",
+        amount = 50,
+        info = {},
+        costs = {
+            ["iron"] = 50,
+            ["steel"] = 50,
+            ["screwdriverset"] = 3,
+            ["advancedlockpick"] = 2,
+        },
+        type = "item",
+        slot = 12,
+        threshold = 1750,
+        points = 12,
+    },
 }
 
 Keys = {

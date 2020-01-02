@@ -404,7 +404,7 @@ local function DriveInGarage()
 				for n, mod in pairs(LSC_Config.prices.neoncolor) do
 					local btn = m:addPurchase(mod.name,mod.price)btn.neon = mod.neon
 				end
-		end]]
+		end]]--
 
 		
 		respray = LSCMenu.categories:addSubMenu("RESPRAY", "Respray", nil,true)
@@ -558,13 +558,13 @@ local function DriveInGarage()
 						for n, w in pairs(LSC_Config.prices.highendwheels) do
 							local btn = hughendw:addPurchase(w.name,w.price)btn.wtype = w.wtype btn.modtype = 23 btn.mod = w.mod
 						end
-					--[[customwheels = wtype:addSubMenu("CUSTOM WHEELS", "Custom Tires", nil,true)
+					customwheels = wtype:addSubMenu("CUSTOM WHEELS", "Custom Tires", nil,true)
 						for i = 51, 138, 1 do
 							local veh = myveh.vehicle
 							local lbl = GetModTextLabel(veh, 23, i)
 							local mname = tostring(GetLabelText(lbl))
 							local btn = customwheels:addPurchase(mname, 1000)btn.wtype = 0 btn.modtype = 23 btn.mod = i
-						end]]--
+						end
 				end
 					
 		m = LSCMenu.categories.Wheels:addSubMenu("WHEEL COLOR", "Wheel color", nil, true)

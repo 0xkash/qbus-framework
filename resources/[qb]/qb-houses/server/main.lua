@@ -407,7 +407,7 @@ AddEventHandler('qb-houses:server:giveHouseKey', function(target, house)
 			TriggerClientEvent('QBCore:Notify', tPlayer.PlayerData.source, 'Je hebt de sleuteltjes van '..Config.Houses[house].adress..' ontvagen!', 'success', 2500)
 		else
 			local sourceTarget = QBCore.Functions.GetPlayer(src)
-			housekeyholders[house] {
+			housekeyholders[house] = {
 				[1] = sourceTarget.PlayerData.citizenid
 			}
 			table.insert(housekeyholders[house], tPlayer.PlayerData.citizenid)
