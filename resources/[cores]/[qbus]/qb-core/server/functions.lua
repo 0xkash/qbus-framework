@@ -1,7 +1,6 @@
 QBCore.Functions = {}
 
 QBCore.Functions.ExecuteSql = function(wait, query, cb)
-	print("wait: " .. tostring(wait))
 	local rtndata = {}
 	local waiting = true
 	exports['ghmattimysql']:execute(query, {}, function(data)
