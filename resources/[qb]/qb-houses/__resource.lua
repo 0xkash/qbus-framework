@@ -24,3 +24,7 @@ files {
 	'html/script.js',
 	'html/img/dynasty8-logo.png'
 }
+
+server_export {
+	'hasKey',
+}

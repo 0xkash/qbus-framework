@@ -472,7 +472,7 @@ Citizen.CreateThread(function()
                             if IsControlJustPressed(0, 38) then
                                 local curVeh = GetVehiclePedIsIn(ped)
                                 local plate = GetVehicleNumberPlateText(curVeh)
-                                QBCore.Functions.TriggerCallback('qb-garage:server:checkVehicleOwner', function(owned)
+                                QBCore.Functions.TriggerCallback('qb-garage:server:checkVehicleHouseOwner', function(owned)
                                     if owned then
                                         local bodyDamage = round(GetVehicleBodyHealth(curVeh), 1)
                                         local engineDamage = round(GetVehicleEngineHealth(curVeh), 1)
@@ -485,7 +485,7 @@ Citizen.CreateThread(function()
                                     else
                                         QBCore.Functions.Notify("Niemand is in bezit van dit voertuig...", "error", 3500)
                                     end
-                                end, plate)
+                                end, plate, currentHouseGarage)
                             end
                         end
                         
