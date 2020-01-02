@@ -456,7 +456,7 @@ Config.Dealers = {
             }
         },
     },
-    --[[[6] = {
+    [6] = {
         ["name"] = "Ouweheer",
         ["coords"] = {
             ["x"] = 3310.75, 
@@ -479,15 +479,15 @@ Config.Dealers = {
             },
             [2] = {
                 name = "painkillers",
-                price = 400,
-                amount = 50,
+                price = 500,
+                amount = 2,
                 info = {},
                 type = "item",
                 slot = 2,
                 minrep = 0,
             },
         },
-    },]]--
+    },
 }
 
 Config.CornerSellingDrugsList = {
