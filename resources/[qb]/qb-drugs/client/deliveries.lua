@@ -45,7 +45,7 @@ Citizen.CreateThread(function()
                             end
                         elseif dealerIsHome then
                             if dealer["name"] == "Ouweheer" then
-                                DrawText3D(dealer["coords"]["x"], dealer["coords"]["y"], dealer["coords"]["z"], '[E] Om in te kopen / [G] Help je maat (€10000)')
+                                DrawText3D(dealer["coords"]["x"], dealer["coords"]["y"], dealer["coords"]["z"], '[E] Om in te kopen / [G] Help je maat (€5000)')
                             else
                                 DrawText3D(dealer["coords"]["x"], dealer["coords"]["y"], dealer["coords"]["z"], '[E] Om in te kopen / [G] Opdracht doen')
                             end

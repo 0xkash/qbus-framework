@@ -107,7 +107,7 @@ AddEventHandler('hospital:server:RevivePlayer', function(playerId, isOldMan)
 	local oldMan = isOldMan ~= nil and isOldMan or false
 	if Patient ~= nil then
 		if oldMan then
-			if Player.Functions.RemoveMoney("cash", 10000) then
+			if Player.Functions.RemoveMoney("cash", 5000) then
 				TriggerClientEvent('hospital:client:Revive', Patient.PlayerData.source)
 			else
 				TriggerClientEvent('QBCore:Notify', src, "Je hebt niet genoeg geld op zak..", "error")
