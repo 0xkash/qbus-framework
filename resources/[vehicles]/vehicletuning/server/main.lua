@@ -5,7 +5,7 @@ RegisterServerEvent('vehicletuning:server:SaveVehicleProps')
 AddEventHandler('vehicletuning:server:SaveVehicleProps', function(vehicleProps)
     local src = source
     if IsVehicleOwned(vehicleProps.plate) then
-        QBCore.Functions.ExecuteSql("UPDATE `player_vehicles` SET `mods` = '"..json.encode(vehicleProps).."' WHERE `plate` = '"..vehicleProps.plate.."'")
+        QBCore.Functions.ExecuteSql(true, "UPDATE `player_vehicles` SET `mods` = '"..json.encode(vehicleProps).."' WHERE `plate` = '"..vehicleProps.plate.."'")
     end
 end)
 
@@ -25,7 +25,7 @@ end)
 
 function IsVehicleOwned(plate)
     local retval = false
-    QBCore.Functions.ExecuteSql("SELECT * FROM `player_vehicles` WHERE `plate` = '"..plate.."'", function(result)
+    QBCore.Functions.ExecuteSql(true, "SELECT * FROM `player_vehicles` WHERE `plate` = '"..plate.."'", function(result)
         if result[1] ~= nil then
             retval = true
         end

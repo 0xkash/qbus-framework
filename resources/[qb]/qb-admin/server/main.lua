@@ -65,7 +65,7 @@ AddEventHandler('qb-admin:server:banPlayer', function(playerId, time, reason)
         end
         local timeTable = os.date("*t", banTime)
         TriggerClientEvent('chatMessage', -1, "BANHAMMER", "error", GetPlayerName(playerId).." is verbannen voor: "..reason.." "..suffix[math.random(1, #suffix)])
-        QBCore.Functions.ExecuteSql("INSERT INTO `bans` (`name`, `steam`, `license`, `discord`,`ip`, `reason`, `expire`, `bannedby`) VALUES ('"..GetPlayerName(playerId).."', '"..GetPlayerIdentifiers(playerId)[1].."', '"..GetPlayerIdentifiers(playerId)[2].."', '"..GetPlayerIdentifiers(playerId)[3].."', '"..GetPlayerIdentifiers(playerId)[4].."', '"..reason.."', "..banTime..", '"..GetPlayerName(src).."')")
+        QBCore.Functions.ExecuteSql(true, "INSERT INTO `bans` (`name`, `steam`, `license`, `discord`,`ip`, `reason`, `expire`, `bannedby`) VALUES ('"..GetPlayerName(playerId).."', '"..GetPlayerIdentifiers(playerId)[1].."', '"..GetPlayerIdentifiers(playerId)[2].."', '"..GetPlayerIdentifiers(playerId)[3].."', '"..GetPlayerIdentifiers(playerId)[4].."', '"..reason.."', "..banTime..", '"..GetPlayerName(src).."')")
         DropPlayer(playerId, "Je bent verbannen van de server:\n"..reason.."\n\nJe ban verloopt "..timeTable["day"].. "/" .. timeTable["month"] .. "/" .. timeTable["year"] .. " " .. timeTable["hour"].. ":" .. timeTable["min"] .. "\n🔸 Kijk op onze discord voor meer informatie: https://discord.gg/Ttr6fY6")
     end
 end)
@@ -119,7 +119,7 @@ QBCore.Commands.Add("warn", "Geef een persoon een waarschuwing", {{name="ID", he
     if targetPlayer ~= nil then
         TriggerClientEvent('chatMessage', targetPlayer.PlayerData.source, "SYSTEM", "error", "Je bent gewaarschuwd door: "..GetPlayerName(source)..", Reden: "..msg)
         TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Je hebt "..GetPlayerName(targetPlayer.PlayerData.source).." gewaarschuwd voor: "..msg)
-        QBCore.Functions.ExecuteSql("INSERT INTO `player_warns` (`senderIdentifier`, `targetIdentifier`, `reason`, `warnId`) VALUES ('"..senderPlayer.PlayerData.steam.."', '"..targetPlayer.PlayerData.steam.."', '"..msg.."', '"..warnId.."')")
+        QBCore.Functions.ExecuteSql(true, "INSERT INTO `player_warns` (`senderIdentifier`, `targetIdentifier`, `reason`, `warnId`) VALUES ('"..senderPlayer.PlayerData.steam.."', '"..targetPlayer.PlayerData.steam.."', '"..msg.."', '"..warnId.."')")
     else
         TriggerClientEvent('QBCore:Notify', source, 'Dit persoon is niet in de stad #YOLO, hmm ik ben '..myName..' en ik stink loloololo', 'error')
     end 
@@ -128,14 +128,14 @@ end, "admin")
 QBCore.Commands.Add("checkwarns", "Geef een persoon een waarschuwing", {{name="ID", help="Persoon"}, {name="Warning", help="Nummer van waarschuwing, (1, 2 of 3 etc..)"}}, false, function(source, args)
     if args[2] == nil then
         local targetPlayer = QBCore.Functions.GetPlayer(tonumber(args[1]))
-        QBCore.Functions.ExecuteSql("SELECT * FROM `player_warns` WHERE `targetIdentifier` = '"..targetPlayer.PlayerData.steam.."'", function(result)
+        QBCore.Functions.ExecuteSql(true, "SELECT * FROM `player_warns` WHERE `targetIdentifier` = '"..targetPlayer.PlayerData.steam.."'", function(result)
             print(json.encode(result))
             TriggerClientEvent('chatMessage', source, "SYSTEM", "warning", targetPlayer.PlayerData.name.." heeft "..tablelength(result).." waarschuwingen!")
         end)
     else
         local targetPlayer = QBCore.Functions.GetPlayer(tonumber(args[1]))
 
-        QBCore.Functions.ExecuteSql("SELECT * FROM `player_warns` WHERE `targetIdentifier` = '"..targetPlayer.PlayerData.steam.."'", function(warnings)
+        QBCore.Functions.ExecuteSql(true, "SELECT * FROM `player_warns` WHERE `targetIdentifier` = '"..targetPlayer.PlayerData.steam.."'", function(warnings)
             local selectedWarning = tonumber(args[2])
 
             if warnings[selectedWarning] ~= nil then
@@ -150,14 +150,14 @@ end, "admin")
 QBCore.Commands.Add("verwijderwarn", "Verwijder waarschuwing van persoon", {{name="ID", help="Persoon"}, {name="Warning", help="Nummer van waarschuwing, (1, 2 of 3 etc..)"}}, true, function(source, args)
     local targetPlayer = QBCore.Functions.GetPlayer(tonumber(args[1]))
 
-    QBCore.Functions.ExecuteSql("SELECT * FROM `player_warns` WHERE `targetIdentifier` = '"..targetPlayer.PlayerData.steam.."'", function(warnings)
+    QBCore.Functions.ExecuteSql(true, "SELECT * FROM `player_warns` WHERE `targetIdentifier` = '"..targetPlayer.PlayerData.steam.."'", function(warnings)
         local selectedWarning = tonumber(args[2])
 
         if warnings[selectedWarning] ~= nil then
             local sender = QBCore.Functions.GetPlayer(warnings[selectedWarning].senderIdentifier)
 
             TriggerClientEvent('chatMessage', source, "SYSTEM", "warning", "Je hebt waarschuwing ("..selectedWarning..") verwijderd, Reden: "..warnings[selectedWarning].reason)
-            QBCore.Functions.ExecuteSql("DELETE FROM `player_warns` WHERE `warnId` = '"..warnings[selectedWarning].warnId.."'")
+            QBCore.Functions.ExecuteSql(true, "DELETE FROM `player_warns` WHERE `warnId` = '"..warnings[selectedWarning].warnId.."'")
         end
     end)
 end, "admin")
