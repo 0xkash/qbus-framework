@@ -304,10 +304,12 @@ function EnterApartment(house, apartmentId, new)
         end
         if new ~= nil then
             if new then
-                SetTimeout(1000, function()
-                    TriggerEvent('qb-clothes:client:CreateFirstCharacter')
-                end)
+                TriggerEvent('qb-interior:client:SetNewState', true)
+            else
+                TriggerEvent('qb-interior:client:SetNewState', false)
             end
+        else
+            TriggerEvent('qb-interior:client:SetNewState', false)
         end
     end, apartmentId)
 end

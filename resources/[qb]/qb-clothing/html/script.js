@@ -290,6 +290,9 @@ $(document).ready(function(){
             case "toggleChange":
                 QBClothing.ToggleChange(event.data.allow);
                 break;
+            case "ResetValues":
+                QBClothing.ResetValues();
+                break;
         }
     })
 });

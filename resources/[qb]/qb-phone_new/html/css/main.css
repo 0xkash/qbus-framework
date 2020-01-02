@@ -35,9 +35,9 @@ body {
 
 .phone-currentcall-icon {
     position: absolute;
-    top: 1.3vh;
+    top: 1.2vh;
     left: 1.3vh;
-    font-size: 1.8vh;
+    font-size: 1.9vh;
     color: white;
     transform: rotate(90deg);
 }
@@ -65,6 +65,24 @@ body {
         -moz-box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
         box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
     }
+}
+
+.phone-currentcall-title {
+    position: absolute;
+    top: 1vh;
+    left: 4vh;
+    font-size: 1.1vh;
+    color: white;
+    font-family: 'Samsung Sans Regular';
+}
+
+.phone-currentcall-contact {
+    position: absolute;
+    bottom: 1vh;
+    left: 4vh;
+    font-size: 1vh;
+    color: rgba(255, 255, 255, 0.7);
+    font-family: 'Samsung Sans Regular';
 }
 
 /* Phone Container */
@@ -251,12 +269,12 @@ body {
     position: absolute;
     height: 5.5vh;
     width: 22vh;
-    background-color: rgba(19, 19, 19, 0.9);
+    background-color: rgba(255, 255, 255, 0.9);
     margin: 0 auto;
     left: 0;
     right: 0;
     top: -8%;
-    border-radius: 1.8vh;
+    border-radius: 3vh;
     overflow: hidden;
     box-shadow: inset 0px 0px 10px 0px rgba(0, 0, 0, 0.11);
     z-index: 140;
@@ -265,9 +283,9 @@ body {
 .notification-icon {
     position: absolute;
     height: 100%;
-    width: 4.5vh;
+    width: 5vh;
     text-align: center;
-    line-height: 5vh;
+    line-height: 5.7vh;
     color: #e74c3c;
     font-size: 2.5vh;
 }
@@ -277,7 +295,7 @@ body {
     top: 1vh;
     left: 4.5vh;
     font-size: 1.1vh;
-    font-family: 'Roboto';
+    font-family: 'Samsung Sans Regular';
     color: #e74c3c;
 }
 
@@ -286,8 +304,8 @@ body {
     top: 2.7vh;
     left: 4.5vh;
     font-size: 1vh;
-    font-family: 'Roboto';
-    color: white;
+    font-family: 'Samsung Sans Regular';
+    color: rgb(0, 0, 0);
     width: 16vh;
     overflow: hidden;
 }
