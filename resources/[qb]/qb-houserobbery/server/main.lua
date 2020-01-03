@@ -12,12 +12,17 @@ AddEventHandler('qb-houserobbery:server:enterHouse', function(house)
     local src = source
     local itemInfo = QBCore.Shared.Items["lockpick"]
     local Player = QBCore.Functions.GetPlayer(src)
+
+    if not Config.Houses[house]["opened"] then
+        ResetHouseStateTimer(house)
+    end
+
     TriggerClientEvent('qb-houserobbery:client:enterHouse', src, house)
     TriggerClientEvent('qb-houserobbery:client:setHouseState', -1, house, true)
     Config.Houses[house]["opened"] = true
 end)
 
-function ResetHouseState(house)
+function ResetHouseStateTimer(house)
     SetTimeout(45 * 60000, function()
         Config.Houses[house]["opened"] = false
         for k, v in pairs(Config.Houses[house]["furniture"]) do

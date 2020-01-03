@@ -417,3 +417,12 @@ AddEventHandler('qb-phone_new:server:CancelCall', function(ContactData)
         TriggerClientEvent('qb-phone_new:client:CancelCall', Ply.PlayerData.source)
     end
 end)
+
+RegisterServerEvent('qb-phone_new:server:AnswerCall')
+AddEventHandler('qb-phone_new:server:AnswerCall', function(CallData)
+    local Ply = QBCore.Functions.GetPlayerByPhone(CallData.TargetData.number)
+
+    if Ply ~= nil then
+        TriggerClientEvent('qb-phone_new:client:AnswerCall', Ply.PlayerData.source)
+    end
+end)

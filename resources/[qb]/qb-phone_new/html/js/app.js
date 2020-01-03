@@ -372,6 +372,17 @@ $(document).ready(function(){
             case "SetupHomeCall":
                 QB.Phone.Functions.SetupCurrentCall(event.data.CallData);
                 break;
+            case "AnswerCall":
+                QB.Phone.Functions.AnswerCall(event.data.CallData);
+                break;
+            case "UpdateCallTime":
+                var CallTime = event.data.Time;
+                var date = new Date(null);
+                date.setSeconds(CallTime);
+                var timeString = date.toISOString().substr(11, 8);
+
+                $(".phone-call-ongoing-time").html(timeString);
+                $(".phone-currentcall-title").html("In gesprek ("+timeString+")");
         }
     })
 });

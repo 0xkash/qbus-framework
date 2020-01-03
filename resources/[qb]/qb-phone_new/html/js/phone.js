@@ -296,7 +296,7 @@ SetupCall = function(cData) {
     $.post('http://qb-phone_new/CallContact', JSON.stringify({
         ContactData: cData
     }), function(status){
-        if (cData.number !== QB.Phone.Data.PlayerData.charinfo.phone) {
+        // if (cData.number !== QB.Phone.Data.PlayerData.charinfo.phone) {
             if (status.io) {
                 if (status.cc) {
                     if (!status.ic) {
@@ -307,15 +307,11 @@ SetupCall = function(cData) {
                         $(".phone-call-outgoing-caller").html(cData.name);
                         QB.Phone.Functions.HeaderTextColor("white", 400);
                         QB.Phone.Animations.TopSlideUp('.phone-application-container', 400, -160);
-                        QB.Phone.Animations.TopSlideUp('.phone-app', 400, -160);
                         setTimeout(function(){
-                            QB.Phone.Functions.ToggleApp("phone", "none");
-                        }, 450);
-                        setTimeout(function(){
-                            QB.Phone.Animations.TopSlideDown('.phone-application-container', 300, 0);
-                            QB.Phone.Animations.TopSlideDown('.phone-call-app', 300, 0);
+                            $(".phone-app").css({"display":"none"});
+                            QB.Phone.Animations.TopSlideDown('.phone-application-container', 400, 0);
                             QB.Phone.Functions.ToggleApp("phone-call", "block");
-                        }, 500);
+                        }, 450);
     
                         CallData.name = cData.name;
                         CallData.number = cData.number;
@@ -330,9 +326,9 @@ SetupCall = function(cData) {
             } else {
                 QB.Phone.Notifications.Add("fas fa-phone", "Telefoon", "Dit persoon is niet bereikbaar!");
             }
-        } else {
-            QB.Phone.Notifications.Add("fas fa-phone", "Telefoon", "Je kan niet je eigen nummer bellen!");
-        }
+        // } else {
+            // QB.Phone.Notifications.Add("fas fa-phone", "Telefoon", "Je kan niet je eigen nummer bellen!");
+        // }
     });
 }
 
@@ -374,17 +370,13 @@ IncomingCallAlert = function(CallData, Canceled) {
             $(".phone-call-incoming").css({"display":"block"});
             $(".phone-call-ongoing").css({"display":"none"});
             $(".phone-call-incoming-caller").html(CallData.name);
+            $(".phone-app").css({"display":"none"});
             QB.Phone.Functions.HeaderTextColor("white", 400);
             QB.Phone.Animations.TopSlideUp('.phone-application-container', 400, -160);
-            QB.Phone.Animations.TopSlideUp('.phone-app', 400, -160);
+            $(".phone-call-app").css({"display":"block"});
             setTimeout(function(){
-                QB.Phone.Functions.ToggleApp("phone", "none");
+                QB.Phone.Animations.TopSlideDown('.phone-application-container', 400, 0);
             }, 450);
-            setTimeout(function(){
-                QB.Phone.Animations.TopSlideDown('.phone-application-container', 300, 0);
-                QB.Phone.Animations.TopSlideDown('.phone-call-app', 300, 0);
-                QB.Phone.Functions.ToggleApp("phone-call", "block");
-            }, 500);
         
             QB.Phone.Data.currentApplication = "phone-call";
     
@@ -421,16 +413,15 @@ QB.Phone.Functions.SetupCurrentCall = function(cData) {
         CallData = cData;
         $(".phone-currentcall-container").css({"display":"block"});
 
-        if (cData.type == "incoming") {
+        if (cData.CallType == "incoming") {
             $(".phone-currentcall-title").html("Inkomende oproep");
-            $(".phone-currentcall-contact").html("van "+cData.name);
-        } else if (cData.type == "outgoing") {
+        } else if (cData.CallType == "outgoing") {
             $(".phone-currentcall-title").html("Uitgaande oproep");
-            $(".phone-currentcall-contact").html("met "+cData.name);
-        } else if (cData.type == "ongoing") {
+        } else if (cData.CallType == "ongoing") {
             $(".phone-currentcall-title").html("In gesprek ("+cData.CallTime+")");
-            $(".phone-currentcall-contact").html("met "+cData.name);
         }
+
+        $(".phone-currentcall-contact").html("met "+cData.TargetData.name);
     } else {
         $(".phone-currentcall-container").css({"display":"none"});
     }
@@ -439,15 +430,15 @@ QB.Phone.Functions.SetupCurrentCall = function(cData) {
 $(document).on('click', '.phone-currentcall-container', function(e){
     e.preventDefault();
 
-    if (CallData.type == "incoming") {
+    if (CallData.CallType == "incoming") {
         $(".phone-call-incoming").css({"display":"block"});
         $(".phone-call-outgoing").css({"display":"none"});
         $(".phone-call-ongoing").css({"display":"none"});
-    } else if (CallData.type == "outgoing") {
+    } else if (CallData.CallType == "outgoing") {
         $(".phone-call-incoming").css({"display":"none"});
         $(".phone-call-outgoing").css({"display":"block"});
         $(".phone-call-ongoing").css({"display":"none"});
-    } else if (CallData.type == "ongoing") {
+    } else if (CallData.CallType == "ongoing") {
         $(".phone-call-incoming").css({"display":"none"});
         $(".phone-call-outgoing").css({"display":"none"});
         $(".phone-call-ongoing").css({"display":"block"});
@@ -461,3 +452,22 @@ $(document).on('click', '.phone-currentcall-container', function(e){
                 
     QB.Phone.Data.currentApplication = "phone-call";
 });
+
+$(document).on('click', '#incoming-answer', function(e){
+    e.preventDefault();
+
+    $.post('http://qb-phone_new/AnswerCall');
+});
+
+QB.Phone.Functions.AnswerCall = function(CallData) {
+    $(".phone-call-incoming").css({"display":"none"});
+    $(".phone-call-outgoing").css({"display":"none"});
+    $(".phone-call-ongoing").css({"display":"block"});
+    $(".phone-call-ongoing-caller").html(CallData.TargetData.name);
+
+    $(".call-notifications").animate({
+        right: -35+"vh"
+    }, 400, function(){
+        $(".call-notifications").css({"display":"none"});
+    });
+}
