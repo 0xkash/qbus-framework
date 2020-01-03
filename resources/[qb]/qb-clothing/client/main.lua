@@ -486,7 +486,7 @@ function openMenu(allowedMenus)
         action = "open",
         menus = allowedMenus,
         currentClothing = skinData,
-        hasTracker = trackerMeta
+        hasTracker = trackerMeta,
     })
     SetNuiFocus(true, true)
     SetCursorLocation(0.9, 0.25)
@@ -731,8 +731,6 @@ function ChangeVariation(data)
     local clothingCategory = data.clothingType
     local type = data.type
     local item = data.articleNumber
-
-    
 
     if clothingCategory == "pants" then
         if type == "item" then
@@ -1000,6 +998,8 @@ function ChangeToSkinNoUpdate(skin)
         LoadPlayerModel(model)
         SetPlayerModel(PlayerId(), model)
 
+        print('hash: '..model)
+
         for k, v in pairs(skinData) do
             skinData[k].item = skinData[k].defaultItem
             skinData[k].texture = skinData[k].defaultTexture
@@ -1047,9 +1047,15 @@ AddEventHandler('qb-clothes:client:CreateFirstCharacter', function()
             {menu = "clothing", label = "Uiterlijk", selected = false},
             {menu = "accessoires", label = "Accessoires", selected = false}
         })
-        if PlayerData.charinfo.gender == 1 then skin = "mp_f_freemode_01" end
+
+        if PlayerData.charinfo.gender == 1 then 
+            skin = "mp_f_freemode_01" 
+        end
+        
         ChangeToSkinNoUpdate(skin)
-        DoScreenFadeIn(50)
+        SendNUIMessage({
+            action = "ResetValues",
+        })
     end)
 end)
 

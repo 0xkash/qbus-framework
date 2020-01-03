@@ -22,14 +22,14 @@ RegisterServerEvent('police:server:CheckBills')
 AddEventHandler('police:server:CheckBills', function()
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    QBCore.Functions.ExecuteSql("SELECT * FROM `bills` WHERE `citizenid` = '"..Player.PlayerData.citizenid.."' AND `type` = 'police'", function(result)
+    QBCore.Functions.ExecuteSql(true, "SELECT * FROM `bills` WHERE `citizenid` = '"..Player.PlayerData.citizenid.."' AND `type` = 'police'", function(result)
         if result[1] ~= nil then
             local totalAmount = 0
 			for k, v in pairs(result) do
 				totalAmount = totalAmount + tonumber(v.amount)
             end
             Player.Functions.RemoveMoney("bank", totalAmount)
-            QBCore.Functions.ExecuteSql("DELETE FROM `bills` WHERE `citizenid` = '"..Player.PlayerData.citizenid.."' AND `type` = 'police'")
+            QBCore.Functions.ExecuteSql(true, "DELETE FROM `bills` WHERE `citizenid` = '"..Player.PlayerData.citizenid.."' AND `type` = 'police'")
             TriggerClientEvent('police:client:sendBillingMail', src, totalAmount)
 		end
 	end)
@@ -662,7 +662,7 @@ end
 
 function IsVehicleOwned(plate)
     local val = false
-	QBCore.Functions.ExecuteSql("SELECT * FROM `player_vehicles` WHERE `plate` = '"..plate.."'", function(result)
+	QBCore.Functions.ExecuteSql(true, "SELECT * FROM `player_vehicles` WHERE `plate` = '"..plate.."'", function(result)
 		if (result[1] ~= nil) then
 			val = true
 		else

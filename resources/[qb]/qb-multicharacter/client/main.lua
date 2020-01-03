@@ -149,6 +149,7 @@ end)
 
 RegisterNUICallback('createNewCharacter', function(data)
     local cData = data
+    DoScreenFadeOut(150)
     if cData.gender == "man" then
         cData.gender = 0
     elseif cData.gender == "vrouw" then

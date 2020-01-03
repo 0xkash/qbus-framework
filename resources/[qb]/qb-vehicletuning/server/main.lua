@@ -83,7 +83,7 @@ end)
 
 function IsVehicleOwned(plate)
     local retval = false
-    QBCore.Functions.ExecuteSql("SELECT * FROM `player_vehicles` WHERE `plate` = '"..plate.."'", function(result)
+    QBCore.Functions.ExecuteSql(true, "SELECT * FROM `player_vehicles` WHERE `plate` = '"..plate.."'", function(result)
         if result[1] ~= nil then
             retval = true
         end
@@ -93,7 +93,7 @@ end
 
 function GetVehicleStatus(plate)
     local retval = nil
-    QBCore.Functions.ExecuteSql("SELECT `status` FROM `player_vehicles` WHERE `plate` = '"..plate.."'", function(result)
+    QBCore.Functions.ExecuteSql(true, "SELECT `status` FROM `player_vehicles` WHERE `plate` = '"..plate.."'", function(result)
         if result[1] ~= nil then
             retval = result[1].status ~= nil and json.decode(result[1].status) or nil
         end
