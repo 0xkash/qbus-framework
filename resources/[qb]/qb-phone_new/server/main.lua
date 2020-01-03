@@ -100,6 +100,19 @@ QBCore.Functions.CreateCallback('qb-phone_new:server:GetCallState', function(sou
     end
 end)
 
+RegisterServerEvent('qb-phone_new:server:SetCallState')
+AddEventHandler('qb-phone_new:server:SetCallState', function(bool)
+    local src = source
+    local Ply = QBCore.Functions.GetPlayer(src)
+
+    if Calls[Ply.PlayerData.citizenid] ~= nil then
+        Calls[Ply.PlayerData.citizenid].inCall = bool
+    else
+        Calls[Ply.PlayerData.citizenid] = {}
+        Calls[Ply.PlayerData.citizenid].inCall = bool
+    end
+end)
+
 RegisterServerEvent('qb-phone_new:server:MentionedPlayer')
 AddEventHandler('qb-phone_new:server:MentionedPlayer', function(firstName, lastName, TweetMessage)
     for k, v in pairs(QBCore.Functions.GetPlayers()) do
@@ -394,4 +407,13 @@ AddEventHandler('qb-phone_new:server:UpdateMessages', function(ChatMessages, Cha
             end
         end
     end)
+end)
+
+RegisterServerEvent('qb-phone_new:server:CancelCall')
+AddEventHandler('qb-phone_new:server:CancelCall', function(ContactData)
+    local Ply = QBCore.Functions.GetPlayerByPhone(ContactData.TargetData.number)
+
+    if Ply ~= nil then
+        TriggerClientEvent('qb-phone_new:client:CancelCall', Ply.PlayerData.source)
+    end
 end)

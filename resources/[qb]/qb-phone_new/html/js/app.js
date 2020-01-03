@@ -321,6 +321,7 @@ $(document).ready(function(){
             case "open":
                 QB.Phone.Functions.Open(event.data);
                 QB.Phone.Functions.SetupAppWarnings(event.data.AppData);
+                QB.Phone.Functions.SetupCurrentCall(event.data.CallData);
                 QB.Phone.Data.IsOpen = true; 
                 break;
             case "LoadPhoneApplications":
@@ -367,6 +368,9 @@ $(document).ready(function(){
                 break;
             case "IncomingCallAlert":
                 IncomingCallAlert(event.data.CallData, event.data.Canceled);
+                break;
+            case "SetupHomeCall":
+                QB.Phone.Functions.SetupCurrentCall(event.data.CallData);
                 break;
         }
     })

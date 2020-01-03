@@ -296,38 +296,42 @@ SetupCall = function(cData) {
     $.post('http://qb-phone_new/CallContact', JSON.stringify({
         ContactData: cData
     }), function(status){
-        if (status.io) {
-            if (status.cc) {
-                if (!status.ic) {
-                    $(".phone-call-outgoing").css({"display":"block"});
-                    $(".phone-call-incoming").css({"display":"none"});
-                    $(".phone-call-ongoing").css({"display":"none"});
-                    $(".phone-call-outgoing-caller").html(cData.name);
-                    QB.Phone.Functions.HeaderTextColor("white", 400);
-                    QB.Phone.Animations.TopSlideUp('.phone-application-container', 400, -160);
-                    QB.Phone.Animations.TopSlideUp('.phone-app', 400, -160);
-                    setTimeout(function(){
-                        QB.Phone.Functions.ToggleApp("phone", "none");
-                    }, 450);
-                    setTimeout(function(){
-                        QB.Phone.Animations.TopSlideDown('.phone-application-container', 300, 0);
-                        QB.Phone.Animations.TopSlideDown('.phone-call-app', 300, 0);
-                        QB.Phone.Functions.ToggleApp("phone-call", "block");
-                    }, 500);
-
-                    CallData.name = cData.name;
-                    CallData.number = cData.number;
-                
-                    QB.Phone.Data.currentApplication = "phone-call";
+        if (cData.number !== QB.Phone.Data.PlayerData.charinfo.phone) {
+            if (status.io) {
+                if (status.cc) {
+                    if (!status.ic) {
+                        console.log('sdfdsfsdfsdf')
+                        $(".phone-call-outgoing").css({"display":"block"});
+                        $(".phone-call-incoming").css({"display":"none"});
+                        $(".phone-call-ongoing").css({"display":"none"});
+                        $(".phone-call-outgoing-caller").html(cData.name);
+                        QB.Phone.Functions.HeaderTextColor("white", 400);
+                        QB.Phone.Animations.TopSlideUp('.phone-application-container', 400, -160);
+                        QB.Phone.Animations.TopSlideUp('.phone-app', 400, -160);
+                        setTimeout(function(){
+                            QB.Phone.Functions.ToggleApp("phone", "none");
+                        }, 450);
+                        setTimeout(function(){
+                            QB.Phone.Animations.TopSlideDown('.phone-application-container', 300, 0);
+                            QB.Phone.Animations.TopSlideDown('.phone-call-app', 300, 0);
+                            QB.Phone.Functions.ToggleApp("phone-call", "block");
+                        }, 500);
+    
+                        CallData.name = cData.name;
+                        CallData.number = cData.number;
+                    
+                        QB.Phone.Data.currentApplication = "phone-call";
+                    } else {
+                        QB.Phone.Notifications.Add("fas fa-phone", "Telefoon", "Je bent al ingesprek!");
+                    }
                 } else {
-                    QB.Phone.Notifications.Add("fas fa-phone", "Telefoon", "Je bent al ingesprek!");
+                    QB.Phone.Notifications.Add("fas fa-phone", "Telefoon", "Dit persoon is in gesprek!");
                 }
             } else {
-                QB.Phone.Notifications.Add("fas fa-phone", "Telefoon", "Dit persoon is in gesprek!");
+                QB.Phone.Notifications.Add("fas fa-phone", "Telefoon", "Dit persoon is niet bereikbaar!");
             }
         } else {
-            QB.Phone.Notifications.Add("fas fa-phone", "Telefoon", "Dit persoon is niet bereikbaar!");
-            return false
+            QB.Phone.Notifications.Add("fas fa-phone", "Telefoon", "Je kan niet je eigen nummer bellen!");
         }
     });
 }
@@ -350,6 +354,12 @@ $(document).on('click', '#outgoing-cancel', function(e){
     e.preventDefault();
 
     $.post('http://qb-phone_new/CancelOutgoingCall');
+});
+
+$(document).on('click', '#incoming-deny', function(e){
+    e.preventDefault();
+
+    $.post('http://qb-phone_new/DenyIncomingCall');
 });
 
 IncomingCallAlert = function(CallData, Canceled) {
@@ -405,3 +415,49 @@ IncomingCallAlert = function(CallData, Canceled) {
         QB.Phone.Data.currentApplication = null;
     }
 }
+
+QB.Phone.Functions.SetupCurrentCall = function(cData) {
+    if (cData.InCall) {
+        CallData = cData;
+        $(".phone-currentcall-container").css({"display":"block"});
+
+        if (cData.type == "incoming") {
+            $(".phone-currentcall-title").html("Inkomende oproep");
+            $(".phone-currentcall-contact").html("van "+cData.name);
+        } else if (cData.type == "outgoing") {
+            $(".phone-currentcall-title").html("Uitgaande oproep");
+            $(".phone-currentcall-contact").html("met "+cData.name);
+        } else if (cData.type == "ongoing") {
+            $(".phone-currentcall-title").html("In gesprek ("+cData.CallTime+")");
+            $(".phone-currentcall-contact").html("met "+cData.name);
+        }
+    } else {
+        $(".phone-currentcall-container").css({"display":"none"});
+    }
+}
+
+$(document).on('click', '.phone-currentcall-container', function(e){
+    e.preventDefault();
+
+    if (CallData.type == "incoming") {
+        $(".phone-call-incoming").css({"display":"block"});
+        $(".phone-call-outgoing").css({"display":"none"});
+        $(".phone-call-ongoing").css({"display":"none"});
+    } else if (CallData.type == "outgoing") {
+        $(".phone-call-incoming").css({"display":"none"});
+        $(".phone-call-outgoing").css({"display":"block"});
+        $(".phone-call-ongoing").css({"display":"none"});
+    } else if (CallData.type == "ongoing") {
+        $(".phone-call-incoming").css({"display":"none"});
+        $(".phone-call-outgoing").css({"display":"none"});
+        $(".phone-call-ongoing").css({"display":"block"});
+    }
+    $(".phone-call-ongoing-caller").html(CallData.name);
+
+    QB.Phone.Functions.HeaderTextColor("white", 500);
+    QB.Phone.Animations.TopSlideDown('.phone-application-container', 500, 0);
+    QB.Phone.Animations.TopSlideDown('.phone-call-app', 500, 0);
+    QB.Phone.Functions.ToggleApp("phone-call", "block");
+                
+    QB.Phone.Data.currentApplication = "phone-call";
+});

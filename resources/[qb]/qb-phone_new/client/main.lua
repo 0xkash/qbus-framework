@@ -21,7 +21,12 @@ local PhoneData = {
     Hashtags = {},
     Chats = {},
     Invoices = {},
-    CallData = {}
+    CallData = {},
+    -- CallData = {
+    --     InCall = true,
+    --     name = "Henk",
+    --     type = "incoming"
+    -- }
 }
 
 function IsNumberInContacts(num)
@@ -147,6 +152,7 @@ function OpenPhone()
         action = "open",
         Tweets = PhoneData.Tweets,
         AppData = Config.PhoneApplications,
+        CallData = PhoneData.CallData,
     })
     PhoneData.isOpen = true
 end
@@ -619,7 +625,7 @@ RegisterNUICallback('CallContact', function(data, cb)
             ic = PhoneData.CallData.InCall,
         }
         cb(status)
-        if CanCall and not status.ic then
+        if CanCall and not status.ic and (data.ContactData.number ~= PhoneData.PlayerData.charinfo.phone) then
             CallContact(data.ContactData)
         end
     end, data.ContactData)
@@ -638,6 +644,7 @@ CallContact = function(CallData)
     PhoneData.CallData.CallId = GenerateCallId(PhoneData.PlayerData.charinfo.phone, CallData.number)
 
     TriggerServerEvent('qb-phone_new:server:CallContact', PhoneData.CallData.TargetData, PhoneData.CallData.CallId)
+    TriggerServerEvent('qb-phone_new:server:SetCallState', true)
 
     for i = 1, Config.CallRepeats + 1, 1 do
         if RepeatCount + 1 ~= Config.CallRepeats + 1 then
@@ -649,16 +656,26 @@ CallContact = function(CallData)
                 break
             end
         else          
-            CancelOutgoingCall()
+            CancelCall()
             break
         end
     end
 end
 
-CancelOutgoingCall = function(Caller)
+CancelCall = function()
+
+    TriggerServerEvent('qb-phone_new:server:CancelCall', PhoneData.CallData)
+
+    if PhoneData.CallData.CallType == "ongoing" then
+        print('woepwoep')
+    end
+
     PhoneData.CallData.CallType = nil
     PhoneData.CallData.InCall = false
     PhoneData.CallData.TargetData = {}
+
+    TriggerServerEvent('qb-phone_new:server:SetCallState', false)
+
 
     if not PhoneData.isOpen then
         SendNUIMessage({ 
@@ -683,23 +700,76 @@ CancelOutgoingCall = function(Caller)
         })
 
         SendNUIMessage({
+            action = "SetupHomeCall",
+            CallData = PhoneData.CallData,
+        })
+
+        SendNUIMessage({
             action = "CancelOutgoingCall",
         })
     end
 end
+
+RegisterNetEvent('qb-phone_new:client:CancelCall')
+AddEventHandler('qb-phone_new:client:CancelCall', function()
+    PhoneData.CallData.CallType = nil
+    PhoneData.CallData.InCall = false
+    PhoneData.CallData.TargetData = {}
+
+    TriggerServerEvent('qb-phone_new:server:SetCallState', false)
+
+    if not PhoneData.isOpen then
+        SendNUIMessage({ 
+            action = "Notification", 
+            NotifyData = { 
+                title = "Telefoon",
+                content = "De oproep is beëindigd", 
+                icon = "fas fa-phone", 
+                timeout = 3500, 
+                color = "#e84118",
+            }, 
+        })            
+    else
+        SendNUIMessage({ 
+            action = "PhoneNotification", 
+            PhoneNotify = { 
+                title = "Telefoon", 
+                text = "De oproep is beëindigd", 
+                icon = "fas fa-phone", 
+                color = "#e84118", 
+            }, 
+        })
+
+        SendNUIMessage({
+            action = "SetupHomeCall",
+            CallData = PhoneData.CallData,
+        })
+
+        SendNUIMessage({
+            action = "CancelOutgoingCall",
+        })
+    end
+end)
 
 RegisterNetEvent('qb-phone_new:client:GetCalled')
 AddEventHandler('qb-phone_new:client:GetCalled', function(CallerNumber, CallId)
     local RepeatCount = 0
     local CallData = {
         number = CallerNumber,
-        name = IsNumberInContacts(CallerNumber)
+        name = IsNumberInContacts(CallerNumber),
     }
 
     PhoneData.CallData.CallType = "incoming"
     PhoneData.CallData.InCall = true
     PhoneData.CallData.TargetData = CallData
     PhoneData.CallData.CallId = CallId
+
+    TriggerServerEvent('qb-phone_new:server:SetCallState', true)
+
+    SendNUIMessage({
+        action = "SetupHomeCall",
+        CallData = PhoneData.CallData,
+    })
 
     for i = 1, Config.CallRepeats + 1, 1 do
         if RepeatCount + 1 ~= Config.CallRepeats + 1 then
@@ -736,7 +806,11 @@ AddEventHandler('qb-phone_new:client:GetCalled', function(CallerNumber, CallId)
 end)
 
 RegisterNUICallback('CancelOutgoingCall', function()
-    CancelOutgoingCall()
+    CancelCall()
+end)
+
+RegisterNUICallback('DenyIncomingCall', function()
+    CancelCall()
 end)
 
 AddEventHandler('onResourceStop', function(resource)
