@@ -148,6 +148,7 @@ QBCore.Player.CreatePlayer = function(PlayerData)
 	self.Functions.AddMoney = function(moneytype, amount)
 		local moneytype = moneytype:lower()
 		local amount = tonumber(amount)
+		if amount < 0 then return end
 		if self.PlayerData.money[moneytype] ~= nil then
 			self.PlayerData.money[moneytype] = self.PlayerData.money[moneytype]+amount
 			self.Functions.UpdatePlayerData()
@@ -165,6 +166,7 @@ QBCore.Player.CreatePlayer = function(PlayerData)
 	self.Functions.RemoveMoney = function(moneytype, amount)
 		local moneytype = moneytype:lower()
 		local amount = tonumber(amount)
+		if amount < 0 then return end
 		if self.PlayerData.money[moneytype] ~= nil then
 			for _, mtype in pairs(QBCore.Config.Money.DontAllowMinus) do
 				if mtype == moneytype then
@@ -187,6 +189,7 @@ QBCore.Player.CreatePlayer = function(PlayerData)
 	self.Functions.SetMoney = function(moneytype, amount)
 		local moneytype = moneytype:lower()
 		local amount = tonumber(amount)
+		if amount < 0 then return end
 		if self.PlayerData.money[moneytype] ~= nil then
 			self.PlayerData.money[moneytype] = amount
 			self.Functions.UpdatePlayerData()
