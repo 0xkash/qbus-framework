@@ -12,7 +12,11 @@ end)
 
 -- Code
 
+phoneProp = 0
+local phoneModel = `prop_npc_phone_02`
+
 local PhoneData = {
+    MetaData = {},
     isOpen = false,
     PlayerData = nil,
     Contacts = {},
@@ -28,6 +32,13 @@ local PhoneData = {
     --     type = "incoming"
     -- }
 }
+
+RegisterNUICallback('SetBackground', function(data)
+    local background = data.background
+
+    PhoneData.MetaData.background = background
+    TriggerServerEvent('qb-phone_new:server:SaveMetaData', PhoneData.MetaData)
+end)
 
 function IsNumberInContacts(num)
     local retval = num
@@ -70,6 +81,7 @@ Citizen.CreateThread(function()
             applications = Config.PhoneApplications 
         })
         PhoneData.PlayerData = QBCore.Functions.GetPlayerData()
+        PhoneData.MetaData = PhoneData.PlayerData.metadata["phone"]
         
         if pData.Applications ~= nil and next(pData.Applications) ~= nil then
             for k, v in pairs(pData.Applications) do 
@@ -155,9 +167,11 @@ function OpenPhone()
         CallData = PhoneData.CallData,
     })
     PhoneData.isOpen = true
+    PhonePlayIn()
 end
 
 RegisterNUICallback('Close', function()
+    PhonePlayOut()
     SetNuiFocus(false, false)
     PhoneData.isOpen = false
 end)
@@ -625,9 +639,9 @@ RegisterNUICallback('CallContact', function(data, cb)
             ic = PhoneData.CallData.InCall,
         }
         cb(status)
-        -- if CanCall and not status.ic and (data.ContactData.number ~= PhoneData.PlayerData.charinfo.phone) then
+        if CanCall and not status.ic and (data.ContactData.number ~= PhoneData.PlayerData.charinfo.phone) then
             CallContact(data.ContactData)
-        -- end
+        end
     end, data.ContactData)
 end)
 
@@ -646,6 +660,22 @@ CallContact = function(CallData)
 
     TriggerServerEvent('qb-phone_new:server:CallContact', PhoneData.CallData.TargetData, PhoneData.CallData.CallId)
     TriggerServerEvent('qb-phone_new:server:SetCallState', true)
+    
+    PhonePlayAnim('call')
+
+    Citizen.CreateThread(function()
+        while PhoneData.CallData.InCall do 
+            if callData.inCall then 
+                if not (IsEntityPlayingAnim(GetPlayerPed(-1), "cellphone@", "cellphone_call_listen_base", 3)) then 
+                    PhonePlayAnim('call', false, true)
+                    if phoneProp == 0 then
+                        newPhoneProp()
+                    end
+                end
+            end
+            Citizen.Wait(1000)
+        end
+    end)
 
     for i = 1, Config.CallRepeats + 1, 1 do
         if not PhoneData.CallData.AnsweredCall then
@@ -655,33 +685,49 @@ CallContact = function(CallData)
                     RepeatCount = RepeatCount + 1
                     TriggerServerEvent("InteractSound_SV:PlayOnSource", "demo", 0.1)
                 else
+                    if PhoneData.isOpen then
+                        PhoneCallToText()
+                    else
+                        PhonePlayOut()
+                    end
                     break
                 end
-            else          
+            else
+                if PhoneData.isOpen then
+                    PhoneCallToText()
+                else
+                    PhonePlayOut()
+                end
                 CancelCall()
                 break
             end
         else
+            if PhoneData.isOpen then
+                PhoneCallToText()
+            else
+                PhonePlayOut()
+            end
             break
         end
     end
 end
 
 CancelCall = function()
-
     TriggerServerEvent('qb-phone_new:server:CancelCall', PhoneData.CallData)
-
     if PhoneData.CallData.CallType == "ongoing" then
-        print('woepwoep')
+        exports.tokovoip_script:removePlayerFromRadio(PhoneData.CallData.CallId)
     end
-
     PhoneData.CallData.CallType = nil
     PhoneData.CallData.InCall = false
     PhoneData.CallData.AnsweredCall = false
     PhoneData.CallData.TargetData = {}
+    PhoneData.CallData.CallId = nil
+
+    if PhoneData.isOpen then
+        PhoneCallToText()
+    end
 
     TriggerServerEvent('qb-phone_new:server:SetCallState', false)
-
 
     if not PhoneData.isOpen then
         SendNUIMessage({ 
@@ -718,10 +764,20 @@ end
 
 RegisterNetEvent('qb-phone_new:client:CancelCall')
 AddEventHandler('qb-phone_new:client:CancelCall', function()
+    if PhoneData.CallData.CallType == "ongoing" then
+        SendNUIMessage({
+            action = "CancelOngoingCall"
+        })
+        exports.tokovoip_script:removePlayerFromRadio(PhoneData.CallData.CallId)
+    end
     PhoneData.CallData.CallType = nil
     PhoneData.CallData.InCall = false
     PhoneData.CallData.AnsweredCall = false
     PhoneData.CallData.TargetData = {}
+
+    if PhoneData.isOpen then
+        PhoneCallToText()
+    end
 
     TriggerServerEvent('qb-phone_new:server:SetCallState', false)
 
@@ -825,6 +881,10 @@ RegisterNUICallback('DenyIncomingCall', function()
     CancelCall()
 end)
 
+RegisterNUICallback('CancelOngoingCall', function()
+    CancelCall()
+end)
+
 RegisterNUICallback('AnswerCall', function()
     AnswerCall()
 end)
@@ -840,13 +900,22 @@ function AnswerCall()
 
         TriggerServerEvent('qb-phone_new:server:SetCallState', true)
 
+        PhonePlayAnim('call')
+
         Citizen.CreateThread(function()
-            while PhoneData.CallData.AnsweredCall do
-                PhoneData.CallData.CallTime = PhoneData.CallData.CallTime + 1
-                SendNUIMessage({
-                    action = "UpdateCallTime",
-                    Time = PhoneData.CallData.CallTime,
-                })
+            while true do
+                print(PhoneData.CallData.AnsweredCall)
+                if PhoneData.CallData.AnsweredCall then
+                    PhoneData.CallData.CallTime = PhoneData.CallData.CallTime + 1
+                    SendNUIMessage({
+                        action = "UpdateCallTime",
+                        Time = PhoneData.CallData.CallTime,
+                        Name = PhoneData.CallData.TargetData.name,
+                    })
+                else
+                    break
+                end
+
                 Citizen.Wait(1000)
             end
         end)
@@ -883,18 +952,36 @@ AddEventHandler('qb-phone_new:client:AnswerCall', function()
 
         TriggerServerEvent('qb-phone_new:server:SetCallState', true)
 
+        PhonePlayAnim('call')
+
         Citizen.CreateThread(function()
-            while PhoneData.CallData.AnsweredCall do
+            while PhoneData.CallData.InCall do 
+                if callData.inCall then 
+                    if not (IsEntityPlayingAnim(GetPlayerPed(-1), "cellphone@", "cellphone_call_listen_base", 3)) then 
+                        PhonePlayAnim('call', false, true)
+                        if phoneProp == 0 then
+                            newPhoneProp()
+                        end
+                    end
+                end
+                Citizen.Wait(1000)
+            end
+        end)
+
+        Citizen.CreateThread(function()
+            while true do
                 if PhoneData.CallData.AnsweredCall then
                     PhoneData.CallData.CallTime = PhoneData.CallData.CallTime + 1
                     SendNUIMessage({
                         action = "UpdateCallTime",
                         Time = PhoneData.CallData.CallTime,
+                        Name = PhoneData.CallData.TargetData.name,
                     })
-                    Citizen.Wait(1000)
                 else
                     break
                 end
+
+                Citizen.Wait(1000)
             end
         end)
 

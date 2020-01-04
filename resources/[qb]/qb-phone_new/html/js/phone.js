@@ -1,6 +1,7 @@
 var ContactSearchActive = false;
 var CurrentFooterTab = "contacts";
 var CallData = {};
+var ClearNumberTimer = null;
 
 $(document).on('click', '.phone-app-footer-button', function(e){
     e.preventDefault();
@@ -177,8 +178,6 @@ $(document).on('click', '#edit-contact-cancel', function(e){
     }, 250)
 });
 
-var ClearNumberTimer = null;
-
 $(document).on('click', '.phone-keypad-key', function(e){
     e.preventDefault();
 
@@ -296,7 +295,7 @@ SetupCall = function(cData) {
     $.post('http://qb-phone_new/CallContact', JSON.stringify({
         ContactData: cData
     }), function(status){
-        // if (cData.number !== QB.Phone.Data.PlayerData.charinfo.phone) {
+        if (cData.number !== QB.Phone.Data.PlayerData.charinfo.phone) {
             if (status.io) {
                 if (status.cc) {
                     if (!status.ic) {
@@ -326,9 +325,9 @@ SetupCall = function(cData) {
             } else {
                 QB.Phone.Notifications.Add("fas fa-phone", "Telefoon", "Dit persoon is niet bereikbaar!");
             }
-        // } else {
-            // QB.Phone.Notifications.Add("fas fa-phone", "Telefoon", "Je kan niet je eigen nummer bellen!");
-        // }
+        } else {
+            QB.Phone.Notifications.Add("fas fa-phone", "Telefoon", "Je kan niet je eigen nummer bellen!");
+        }
     });
 }
 
@@ -358,9 +357,16 @@ $(document).on('click', '#incoming-deny', function(e){
     $.post('http://qb-phone_new/DenyIncomingCall');
 });
 
+$(document).on('click', '#ongoing-cancel', function(e){
+    e.preventDefault();
+    
+    $.post('http://qb-phone_new/CancelOngoingCall');
+});
+
 IncomingCallAlert = function(CallData, Canceled) {
     if (!Canceled) {
         if (!QB.Phone.Data.CallActive) {
+            $(".call-notifications-title").html("Inkomende Oproep");
             $(".call-notifications-content").html("Je hebt een inkomende oproep van "+CallData.name);
             $(".call-notifications").css({"display":"block"});
             $(".call-notifications").animate({
@@ -379,7 +385,6 @@ IncomingCallAlert = function(CallData, Canceled) {
             }, 450);
         
             QB.Phone.Data.currentApplication = "phone-call";
-    
             QB.Phone.Data.CallActive = true;
         }
         setTimeout(function(){
@@ -465,9 +470,5 @@ QB.Phone.Functions.AnswerCall = function(CallData) {
     $(".phone-call-ongoing").css({"display":"block"});
     $(".phone-call-ongoing-caller").html(CallData.TargetData.name);
 
-    $(".call-notifications").animate({
-        right: -35+"vh"
-    }, 400, function(){
-        $(".call-notifications").css({"display":"none"});
-    });
+    QB.Phone.Functions.Close();
 }

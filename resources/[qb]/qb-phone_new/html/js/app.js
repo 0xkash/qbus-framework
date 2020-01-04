@@ -265,7 +265,7 @@ QB.Phone.Notifications.Add = function(icon, title, text, color, timeout) {
 }
 
 QB.Phone.Functions.LoadPhoneData = function(data) {
-    console.log(data.PhoneData.Contacts)
+    QB.Phone.Functions.LoadMetaData(data.PhoneData.MetaData);
     QB.Phone.Functions.LoadContacts(data.PhoneData.Contacts);
     QB.Phone.Data.PlayerData = data.PlayerData;
 }
@@ -381,8 +381,41 @@ $(document).ready(function(){
                 date.setSeconds(CallTime);
                 var timeString = date.toISOString().substr(11, 8);
 
+                if (!QB.Phone.Data.IsOpen) {
+                    console.log($(".call-notifications").css("right"))
+                    if ($(".call-notifications").css("right") !== "52.1px") {
+                        $(".call-notifications").css({"display":"block"});
+                        $(".call-notifications").animate({right: 5+"vh"});
+                    }
+                    $(".call-notifications-title").html("Ingesprek ("+timeString+")");
+                    $(".call-notifications-content").html("Aan het bellen met "+event.data.Name);
+                    $(".call-notifications").removeClass('call-notifications-shake');
+                } else {
+                    console.log($(".call-notifications").css("right"))
+                    $(".call-notifications").animate({
+                        right: -35+"vh"
+                    }, 400, function(){
+                        $(".call-notifications").css({"display":"none"});
+                    });
+                }
+
                 $(".phone-call-ongoing-time").html(timeString);
                 $(".phone-currentcall-title").html("In gesprek ("+timeString+")");
+                break;
+            case "CancelOngoingCall":
+                $(".call-notifications").animate({right: -35+"vh"}, function(){
+                    $(".call-notifications").css({"display":"none"});
+                });
+                QB.Phone.Animations.TopSlideUp('.phone-application-container', 400, -160);
+                setTimeout(function(){
+                    QB.Phone.Functions.ToggleApp("phone-call", "none");
+                    $(".phone-application-container").css({"display":"none"});
+                }, 400)
+                QB.Phone.Functions.HeaderTextColor("white", 300);
+    
+                QB.Phone.Data.CallActive = false;
+                QB.Phone.Data.currentApplication = null;
+                break;
         }
     })
 });

@@ -426,3 +426,11 @@ AddEventHandler('qb-phone_new:server:AnswerCall', function(CallData)
         TriggerClientEvent('qb-phone_new:client:AnswerCall', Ply.PlayerData.source)
     end
 end)
+
+RegisterServerEvent('qb-phone_new:server:SaveMetaData')
+AddEventHandler('qb-phone_new:server:SaveMetaData', function(MetaData)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+
+    Player.Functions.SetMetaData("phone", MetaData)
+end)
