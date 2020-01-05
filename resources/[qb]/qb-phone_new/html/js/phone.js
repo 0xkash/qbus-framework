@@ -48,6 +48,35 @@ $(document).on("click", "#phone-search-icon", function(e){
     ContactSearchActive = !ContactSearchActive;
 });
 
+QB.Phone.Functions.SetupRecentCalls = function(recentcalls) {
+    $(".phone-recent-calls").html("");
+
+    recentcalls = recentcalls.reverse();
+
+    $.each(recentcalls, function(i, recentCall){
+        var FirstLetter = (recentCall.name).charAt(0);
+        var TypeIcon = 'fas fa-phone-slash';
+        var IconStyle = "color: #e74c3c;";
+        if (recentCall.type === "outgoing") {
+            TypeIcon = 'fas fa-phone-volume';
+            var IconStyle = "color: #2ecc71; font-size: 1.4vh;";
+        }
+        var elem = '<div class="phone-recent-call" id="recent-'+i+'"><div class="phone-recent-call-image">'+FirstLetter+'</div> <div class="phone-recent-call-name">'+recentCall.name+'</div> <div class="phone-recent-call-type"><i class="'+TypeIcon+'" style="'+IconStyle+'"></i></div> <div class="phone-recent-call-time">'+recentCall.time+'</div> </div>'
+
+        $(".phone-recent-calls").append(elem);
+        $("#recent-"+i).data('recentData', recentCall);
+    });
+}
+
+$(document).on('click', '.phone-recent-call', function(e){
+    e.preventDefault();
+
+    var RecendId = $(this).attr('id');
+    var RecentData = $("#"+RecendId).data('recentData');
+
+    console.log(JSON.stringify(RecentData));
+});
+
 QB.Phone.Functions.LoadContacts = function(myContacts) {
     var ContactsObject = $(".phone-contact-list");
     $(ContactsObject).html("");
@@ -295,7 +324,7 @@ SetupCall = function(cData) {
     $.post('http://qb-phone_new/CallContact', JSON.stringify({
         ContactData: cData
     }), function(status){
-        if (cData.number !== QB.Phone.Data.PlayerData.charinfo.phone) {
+        // if (cData.number !== QB.Phone.Data.PlayerData.charinfo.phone) {
             if (status.io) {
                 if (status.cc) {
                     if (!status.ic) {
@@ -325,9 +354,9 @@ SetupCall = function(cData) {
             } else {
                 QB.Phone.Notifications.Add("fas fa-phone", "Telefoon", "Dit persoon is niet bereikbaar!");
             }
-        } else {
-            QB.Phone.Notifications.Add("fas fa-phone", "Telefoon", "Je kan niet je eigen nummer bellen!");
-        }
+        // } else {
+            // QB.Phone.Notifications.Add("fas fa-phone", "Telefoon", "Je kan niet je eigen nummer bellen!");
+        // }
     });
 }
 
@@ -362,6 +391,56 @@ $(document).on('click', '#ongoing-cancel', function(e){
     
     $.post('http://qb-phone_new/CancelOngoingCall');
 });
+
+IncomingCallAlert = function(CallData, Canceled) {
+    if (!Canceled) {
+        if (!QB.Phone.Data.CallActive) {
+            $(".call-notifications-title").html("Inkomende Oproep");
+            $(".call-notifications-content").html("Je hebt een inkomende oproep van "+CallData.name);
+            $(".call-notifications").css({"display":"block"});
+            $(".call-notifications").animate({
+                right: 5+"vh"
+            }, 400);
+            $(".phone-call-outgoing").css({"display":"none"});
+            $(".phone-call-incoming").css({"display":"block"});
+            $(".phone-call-ongoing").css({"display":"none"});
+            $(".phone-call-incoming-caller").html(CallData.name);
+            $(".phone-app").css({"display":"none"});
+            QB.Phone.Functions.HeaderTextColor("white", 400);
+            QB.Phone.Animations.TopSlideUp('.phone-application-container', 400, -160);
+            $(".phone-call-app").css({"display":"block"});
+            setTimeout(function(){
+                QB.Phone.Animations.TopSlideDown('.phone-application-container', 400, 0);
+            }, 450);
+        
+            QB.Phone.Data.currentApplication = "phone-call";
+            QB.Phone.Data.CallActive = true;
+        }
+        setTimeout(function(){
+            $(".call-notifications").addClass('call-notifications-shake');
+            setTimeout(function(){
+                $(".call-notifications").removeClass('call-notifications-shake');
+            }, 1000);
+        }, 400);
+    } else {
+        $(".call-notifications").animate({
+            right: -35+"vh"
+        }, 400);
+        QB.Phone.Animations.TopSlideUp('.phone-application-container', 400, -160);
+        QB.Phone.Animations.TopSlideUp('.'+QB.Phone.Data.currentApplication+"-app", 400, -160);
+        setTimeout(function(){
+            QB.Phone.Functions.ToggleApp(QB.Phone.Data.currentApplication, "none");
+            $(".phone-call-outgoing").css({"display":"none"});
+            $(".phone-call-incoming").css({"display":"none"});
+            $(".phone-call-ongoing").css({"display":"none"});
+            $(".call-notifications").css({"display":"block"});
+        }, 400)
+        QB.Phone.Functions.HeaderTextColor("white", 300);
+    
+        QB.Phone.Data.CallActive = false;
+        QB.Phone.Data.currentApplication = null;
+    }
+}
 
 IncomingCallAlert = function(CallData, Canceled) {
     if (!Canceled) {

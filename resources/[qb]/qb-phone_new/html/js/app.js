@@ -114,6 +114,10 @@ $(document).on('click', '.phone-application', function(e){
                 $.post('http://qb-phone_new/GetWhatsappChats', JSON.stringify({}), function(chats){
                     QB.Phone.Functions.LoadWhatsappChats(chats);
                 });
+            } else if (PressedApplication == "phone") {
+                $.post('http://qb-phone_new/GetMissedCalls', JSON.stringify({}), function(recent){
+                    QB.Phone.Functions.SetupRecentCalls(recent);
+                })
             }
         }
     } else {
@@ -428,7 +432,4 @@ $(document).on('keydown', function() {
     }
 });
 
-
-
-// 
-QB.Phone.Functions.Open();
+// QB.Phone.Functions.Open();

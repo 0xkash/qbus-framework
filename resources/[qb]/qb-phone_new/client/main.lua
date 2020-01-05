@@ -26,18 +26,64 @@ local PhoneData = {
     Chats = {},
     Invoices = {},
     CallData = {},
-    -- CallData = {
-    --     InCall = true,
-    --     name = "Henk",
-    --     type = "incoming"
-    -- }
+    RecentCalls = {
+        [1] = {
+            name = "test",
+            time = "12:05",
+            type = "missed",
+            number = "0612345678",
+        },
+        [2] = {
+            name = "test2",
+            time = "12:05",
+            type = "outgoing",
+            number = "0612345678",
+        },
+        [3] = {
+            name = "test3",
+            time = "12:05",
+            type = "missed",
+            number = "0612345678",
+        },
+        [4] = {
+            name = "test4",
+            time = "12:05",
+            type = "outgoing",
+            number = "0612345678",
+        },
+    },
 }
+
+RegisterNUICallback('AddMissedCall', function(data, cb)
+    local CallData = data.cdata
+
+    table.insert(PhoneData.RecentCalls, {
+        name = CallData.name,
+        time = data.time,
+        type = "missed",
+        number = CallData.number
+    })
+end)
+
+RegisterNetEvent('qb-phone_new:client:AddRecentCall')
+AddEventHandler('qb-phone_new:client:AddRecentCall', function(type, time)
+    table.insert(PhoneData.RecentCalls, {
+        name = PhoneData.CallData.TargetData.name,
+        time = time,
+        type = type,
+        number = PhoneData.CallData.TargetData.number
+    })
+end)
 
 RegisterNUICallback('SetBackground', function(data)
     local background = data.background
 
     PhoneData.MetaData.background = background
     TriggerServerEvent('qb-phone_new:server:SaveMetaData', PhoneData.MetaData)
+end)
+
+RegisterNUICallback('GetMissedCalls', function(data, cb)
+    cb(PhoneData.RecentCalls)
 end)
 
 function IsNumberInContacts(num)
@@ -708,9 +754,9 @@ RegisterNUICallback('CallContact', function(data, cb)
             ic = PhoneData.CallData.InCall,
         }
         cb(status)
-        if CanCall and not status.ic and (data.ContactData.number ~= PhoneData.PlayerData.charinfo.phone) then
+        -- if CanCall and not status.ic and (data.ContactData.number ~= PhoneData.PlayerData.charinfo.phone) then
             CallContact(data.ContactData)
-        end
+        -- end
     end, data.ContactData)
 end)
 
@@ -734,7 +780,7 @@ CallContact = function(CallData)
 
     Citizen.CreateThread(function()
         while PhoneData.CallData.InCall do 
-            if callData.inCall then 
+            if PhoneData.CallData.InCall then 
                 if not (IsEntityPlayingAnim(GetPlayerPed(-1), "cellphone@", "cellphone_call_listen_base", 3)) then 
                     PhonePlayAnim('call', false, true)
                     if phoneProp == 0 then
@@ -759,6 +805,7 @@ CallContact = function(CallData)
                     else
                         PhonePlayOut()
                     end
+                    TriggerServerEvent('qb-phone_new:server:AddRecentCall', "outgoing", PhoneData.CallData)
                     break
                 end
             else
@@ -767,6 +814,7 @@ CallContact = function(CallData)
                 else
                     PhonePlayOut()
                 end
+                TriggerServerEvent('qb-phone_new:server:AddRecentCall', "outgoing", PhoneData.CallData)
                 CancelCall()
                 break
             end
@@ -776,6 +824,7 @@ CallContact = function(CallData)
             else
                 PhonePlayOut()
             end
+            TriggerServerEvent('qb-phone_new:server:AddRecentCall', "outgoing", PhoneData.CallData)
             break
         end
     end
@@ -920,6 +969,7 @@ AddEventHandler('qb-phone_new:client:GetCalled', function(CallerNumber, CallId)
                         })
                     end
                 else
+                    TriggerServerEvent('qb-phone_new:server:AddRecentCall', "outgoing", PhoneData.CallData)
                     SendNUIMessage({
                         action = "IncomingCallAlert",
                         CallData = PhoneData.CallData.TargetData,
@@ -928,6 +978,7 @@ AddEventHandler('qb-phone_new:client:GetCalled', function(CallerNumber, CallId)
                     break
                 end
             else
+                TriggerServerEvent('qb-phone_new:server:AddRecentCall', "outgoing", PhoneData.CallData)
                 SendNUIMessage({
                     action = "IncomingCallAlert",
                     CallData = PhoneData.CallData.TargetData,
@@ -943,14 +994,17 @@ AddEventHandler('qb-phone_new:client:GetCalled', function(CallerNumber, CallId)
 end)
 
 RegisterNUICallback('CancelOutgoingCall', function()
+    TriggerServerEvent('qb-phone_new:server:AddRecentCall', "outgoing", PhoneData.CallData)
     CancelCall()
 end)
 
 RegisterNUICallback('DenyIncomingCall', function()
+    TriggerServerEvent('qb-phone_new:server:AddRecentCall', "outgoing", PhoneData.CallData)
     CancelCall()
 end)
 
 RegisterNUICallback('CancelOngoingCall', function()
+    TriggerServerEvent('qb-phone_new:server:AddRecentCall', "outgoing", PhoneData.CallData)
     CancelCall()
 end)
 
