@@ -54,6 +54,8 @@ function handleAnnounce(req, res)
         return fail(req, res)
     end
     TriggerClientEvent('chatMessage', -1, "SYSTEM", "error", message)
+    res.send(json.encode({success=true}))
+    return true
 end
 
 function handleKick(req, res)
