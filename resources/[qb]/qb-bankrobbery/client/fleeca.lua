@@ -157,7 +157,7 @@ RegisterNetEvent('electronickit:UseElectronickit')
 AddEventHandler('electronickit:UseElectronickit', function()
     local ped = GetPlayerPed(-1)
     local pos = GetEntityCoords(ped)
-    if math.random(1, 100) <= 65 and not IsWearingHandshoes() then
+    if math.random(1, 100) <= 85 and not IsWearingHandshoes() then
         TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
     end
     if closestBank ~= nil then
