@@ -227,7 +227,7 @@ AddEventHandler('lockpicks:UseLockpick', function(isAdvanced)
                 if not Config.Houses[closestHouse]["opened"] then
                     PoliceCall()
                     TriggerEvent('qb-lockpick:client:openLockpick', lockpickFinish)
-                    if math.random(1, 100) <= 65 and not IsWearingHandshoes() then
+                    if math.random(1, 100) <= 85 and not IsWearingHandshoes() then
                         local pos = GetEntityCoords(GetPlayerPed(-1))
                         TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
                     end
@@ -246,7 +246,7 @@ AddEventHandler('lockpicks:UseLockpick', function(isAdvanced)
                         if not Config.Houses[closestHouse]["opened"] then
                             PoliceCall()
                             TriggerEvent('qb-lockpick:client:openLockpick', lockpickFinish)
-                            if math.random(1, 100) <= 65 and not IsWearingHandshoes() then
+                            if math.random(1, 100) <= 85 and not IsWearingHandshoes() then
                                 local pos = GetEntityCoords(GetPlayerPed(-1))
                                 TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
                             end
@@ -336,7 +336,7 @@ end)
 
 local openingDoor = false
 function searchCabin(cabin)
-    if math.random(1, 100) <= 75 and not IsWearingHandshoes() then
+    if math.random(1, 100) <= 85 and not IsWearingHandshoes() then
         local pos = GetEntityCoords(GetPlayerPed(-1))
         TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
     end
