@@ -212,42 +212,108 @@ RegisterNUICallback('SendMessage', function(data, cb)
     local ChatDate = data.ChatDate
     local ChatNumber = data.ChatNumber
     local ChatTime = data.ChatTime
+    local ChatType = data.ChatType
+
+    local Ped = GetPlayerPed(-1)
+    local Pos = GetEntityCoords(Ped)
 
     if PhoneData.Chats[ChatNumber] ~= nil then
         if PhoneData.Chats[ChatNumber].messages[ChatDate] ~= nil then
-            table.insert(PhoneData.Chats[ChatNumber].messages[ChatDate], {
-                message = ChatMessage,
-                time = ChatTime,
-                sender = PhoneData.PlayerData.citizenid,
-            })
+            if ChatType == "message" then
+                table.insert(PhoneData.Chats[ChatNumber].messages[ChatDate], {
+                    message = ChatMessage,
+                    time = ChatTime,
+                    sender = PhoneData.PlayerData.citizenid,
+                    type = ChatType,
+                    data = {},
+                })
+            elseif ChatType == "location" then
+                table.insert(PhoneData.Chats[ChatNumber].messages[ChatDate], {
+                    message = ChatMessage,
+                    time = ChatTime,
+                    sender = PhoneData.PlayerData.citizenid,
+                    type = ChatType,
+                    data = {
+                        x = Pos.x,
+                        y = Pos.y,
+                    },
+                })
+            end
             TriggerServerEvent('qb-phone_new:server:UpdateMessages', PhoneData.Chats[ChatNumber].messages, ChatNumber, false)
         else
             PhoneData.Chats[ChatNumber].messages[ChatDate] = {}
-            table.insert(PhoneData.Chats[ChatNumber].messages[ChatDate], {
-                message = ChatMessage,
-                time = ChatTime,
-                sender = PhoneData.PlayerData.citizenid,
-            })
+            if ChatType == "message" then
+                table.insert(PhoneData.Chats[ChatNumber].messages[ChatDate], {
+                    message = ChatMessage,
+                    time = ChatTime,
+                    sender = PhoneData.PlayerData.citizenid,
+                    type = ChatType,
+                    data = {},
+                })
+            elseif ChatType == "location" then
+                table.insert(PhoneData.Chats[ChatNumber].messages[ChatDate], {
+                    message = ChatMessage,
+                    time = ChatTime,
+                    sender = PhoneData.PlayerData.citizenid,
+                    type = ChatType,
+                    data = {
+                        x = Pos.x,
+                        y = Pos.y,
+                    },
+                })
+            end
             TriggerServerEvent('qb-phone_new:server:UpdateMessages', PhoneData.Chats[ChatNumber].messages, ChatNumber, true)
         end
     else
         PhoneData.Chats[ChatNumber] = {
             name = IsNumberInContacts(ChatNumber),
             number = ChatNumber,
-            messages = {}
+            messages = {},
         }
         PhoneData.Chats[ChatNumber].messages[ChatDate] = {}
-        table.insert(PhoneData.Chats[ChatNumber].messages[ChatDate], {
-            message = ChatMessage,
-            time = ChatTime,
-            sender = PhoneData.PlayerData.citizenid,
-        })
+        if ChatType == "message" then
+            table.insert(PhoneData.Chats[ChatNumber].messages[ChatDate], {
+                message = ChatMessage,
+                time = ChatTime,
+                sender = PhoneData.PlayerData.citizenid,
+                type = ChatType,
+                data = {},
+            })
+        elseif ChatType == "location" then
+            table.insert(PhoneData.Chats[ChatNumber].messages[ChatDate], {
+                message = ChatMessage,
+                time = ChatTime,
+                sender = PhoneData.PlayerData.citizenid,
+                type = ChatType,
+                data = {
+                    x = Pos.x,
+                    y = Pos.y,
+                },
+            })
+        end
         TriggerServerEvent('qb-phone_new:server:UpdateMessages', PhoneData.Chats[ChatNumber].messages, ChatNumber, true)
     end
     SendNUIMessage({
         action = "UpdateChat",
         chatData = PhoneData.Chats[ChatNumber],
         chatNumber = ChatNumber,
+    })
+end)
+
+RegisterNUICallback('SharedLocation', function(data)
+    local x = data.coords.x
+    local y = data.coords.y
+
+    SetNewWaypoint(x, y)
+    SendNUIMessage({
+        action = "PhoneNotification",
+        PhoneNotify = {
+            title = "Whatsapp",
+            text = "Locatie is ingesteld!",
+            icon = "fab fa-whatsapp",
+            color = "#25D366",
+            timeout = 1500,
+        },
     })
 end)
 
@@ -374,17 +440,20 @@ end)
 
 RegisterNUICallback('ClearAlerts', function(data, cb)
     local chat = data.number
-    local newAlerts = (Config.PhoneApplications['whatsapp'].Alerts - PhoneData.Chats[chat].Unread)
-    Config.PhoneApplications['whatsapp'].Alerts = newAlerts
-    TriggerServerEvent('qb-phone:server:SetPhoneAlerts', "whatsapp", newAlerts)
 
-    PhoneData.Chats[chat].Unread = 0
+    if PhoneData.Chats[chat].Unread ~= nil then
+        local newAlerts = (Config.PhoneApplications['whatsapp'].Alerts - PhoneData.Chats[chat].Unread)
+        Config.PhoneApplications['whatsapp'].Alerts = newAlerts
+        TriggerServerEvent('qb-phone:server:SetPhoneAlerts', "whatsapp", newAlerts)
 
-    SendNUIMessage({
-        action = "RefreshWhatsappAlerts",
-        Chats = PhoneData.Chats,
-    })
-    SendNUIMessage({ action = "RefreshAppAlerts", AppData = Config.PhoneApplications })
+        PhoneData.Chats[chat].Unread = 0
+
+        SendNUIMessage({
+            action = "RefreshWhatsappAlerts",
+            Chats = PhoneData.Chats,
+        })
+        SendNUIMessage({ action = "RefreshAppAlerts", AppData = Config.PhoneApplications })
+    end
 end)
 
 RegisterNUICallback('PayInvoice', function(data, cb)

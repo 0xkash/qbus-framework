@@ -1,5 +1,5 @@
 .phone-app {
-    display: none;
+    display: block;
     height: 100%;
     width: 100%;
     background: rgb(230, 230, 230);
@@ -65,8 +65,8 @@
 .phone-keypad-header {
     padding-top: 6vh;
     padding-left: 3vh;
-    font-family: 'Samsung Sans Medium';
-    font-size: 2vh;
+    font-family: 'Samsung Sans Regular';
+    font-size: 1.8vh;
 }
 
 #phone-keypad-input {
@@ -97,6 +97,22 @@
     width: 100%;
     top: 0;
     background: rgb(230, 230, 230);
+}
+
+.phone-recent {
+    display: none;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    background: rgb(230, 230, 230);
+}
+
+.phone-recent-header {
+    padding-top: 6vh;
+    padding-left: 3vh;
+    font-family: 'Samsung Sans Regular';
+    font-size: 1.8vh;
 }
 
 .phone-keypad-keys {
