@@ -4,8 +4,6 @@ var QBRadialMenu = null;
 
 $(document).ready(function(){
 
-    console.log('yeet')
-
     window.addEventListener('message', function(event){
         var eventData = event.data;
 

@@ -75,7 +75,7 @@ Citizen.CreateThread(function()
 end)
 
 RegisterNUICallback('closeRadial', function()
-    closeRadial()
+    closeRadial(false)
 end)
 
 RegisterNUICallback('selectItem', function(data)
