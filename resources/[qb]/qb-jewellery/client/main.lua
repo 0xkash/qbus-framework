@@ -136,8 +136,11 @@ function smashVitrine(k)
     local plyCoords = GetOffsetFromEntityInWorldCoords(ped, 0, 0.6, 0)
     local pedWeapon = GetSelectedPedWeapon(ped)
 
-    if (math.random(1, 100) <= 80 and not IsWearingHandshoes()) or (math.random(1, 100) <= 20 and IsWearingHandshoes()) then
+    if math.random(1, 100) <= 80 and not IsWearingHandshoes() then
         TriggerServerEvent("evidence:server:CreateFingerDrop", plyCoords)
+    elseif math.random(1, 100) <= 5 and IsWearingHandshoes() then
+        TriggerServerEvent("evidence:server:CreateFingerDrop", plyCoords)
+        QBCore.Functions.Notify("Je hebt je gescheurd aan het glas..", "error")
     end
 
     QBCore.Functions.Progressbar("smash_vitrine", "Vitrine aan het inslaan..", Config.WhitelistedWeapons[pedWeapon]["timeOut"], false, true, {

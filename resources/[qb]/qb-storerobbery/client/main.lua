@@ -160,7 +160,7 @@ AddEventHandler('lockpicks:UseLockpick', function(isAdvanced)
                 if usingAdvanced then
                     lockpick(true)
                     currentRegister = k
-                    if not IsWearingHandshoes() or (IsWearingHandshoes() and math.random(1, 100) <= 20) then
+                    if not IsWearingHandshoes() then
                         TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
                     end
                     if not copsCalled then
@@ -179,7 +179,7 @@ AddEventHandler('lockpicks:UseLockpick', function(isAdvanced)
                         if result then
                             lockpick(true)
                             currentRegister = k
-                            if not IsWearingHandshoes() or (IsWearingHandshoes() and math.random(1, 100) <= 10) then
+                            if not IsWearingHandshoes() then
                                 TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
                             end
                             if not copsCalled then
@@ -392,6 +392,11 @@ RegisterNUICallback('fail', function()
             TriggerServerEvent("QBCore:Server:RemoveItem", "lockpick", 1)
             TriggerEvent('inventory:client:ItemBox', QBCore.Shared.Items["lockpick"], "remove")
         end
+    end
+    if (IsWearingHandshoes() and math.random(1, 100) <= 25) then
+        local pos = GetEntityCoords(GetPlayerPed(-1))
+        TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
+        QBCore.Functions.Notify("Je hebt je gescheurd aan de lockpick..")
     end
     lockpick(false)
 end)

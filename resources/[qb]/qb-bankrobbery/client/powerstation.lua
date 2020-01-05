@@ -96,7 +96,7 @@ AddEventHandler('thermite:UseThermite', function()
     local ped = GetPlayerPed(-1)
     local pos = GetEntityCoords(ped)
     if closestStation ~= 0 then
-        if math.random(1, 100) <= 65 and not IsWearingHandshoes() then
+        if math.random(1, 100) <= 85 and not IsWearingHandshoes() then
             TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
         end
         local dist = GetDistanceBetweenCoords(pos, Config.PowerStations[closestStation].coords.x, Config.PowerStations[closestStation].coords.y, Config.PowerStations[closestStation].coords.z)
@@ -120,7 +120,7 @@ AddEventHandler('thermite:UseThermite', function()
             end
         end
     elseif currentThermiteGate ~= 0 then
-        if math.random(1, 100) <= 65 and not IsWearingHandshoes() then
+        if math.random(1, 100) <= 85 and not IsWearingHandshoes() then
             TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
         end
         if CurrentCops >= 2 then

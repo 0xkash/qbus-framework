@@ -136,13 +136,16 @@ end)
 
 function lockpickDone(success)
     local pos = GetEntityCoords(GetPlayerPed(-1))
-    if (math.random(1, 100) <= 80 and not IsWearingHandshoes()) or (math.random(1, 100) <= 20 and IsWearingHandshoes()) then
+    if math.random(1, 100) <= 80 and not IsWearingHandshoes() then
         TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
     end
-    
     if success then
         GrabItem(currentSpot)
     else
+        if math.random(1, 100) <= 40 and IsWearingHandshoes() then
+            TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
+            QBCore.Functions.Notify("Je hebt je handschoen gescheurd..")
+        end
         if math.random(1, 100) <= 10 then
             TriggerServerEvent("QBCore:Server:RemoveItem", "advancedlockpick", 1)
             TriggerEvent('inventory:client:ItemBox', QBCore.Shared.Items["advancedlockpick"], "remove")
@@ -220,7 +223,7 @@ AddEventHandler('thermite:UseThermite', function()
     if GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["thermite"].x, Config.Locations["thermite"].y,Config.Locations["thermite"].z, true) < 1.0 then
         if CurrentCops >= 0 then
             local pos = GetEntityCoords(GetPlayerPed(-1))
-            if (math.random(1, 100) <= 80 and not IsWearingHandshoes()) or (math.random(1, 100) <= 20 and IsWearingHandshoes()) then
+            if math.random(1, 100) <= 80 and not IsWearingHandshoes() then
                 TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
             end
             if requiredItemsShowed then
