@@ -210,6 +210,7 @@ function IsWearingHandshoes()
     local armIndex = GetPedDrawableVariation(GetPlayerPed(-1), 3)
     local model = GetEntityModel(GetPlayerPed(-1))
     local retval = true
+    
     if model == GetHashKey("mp_m_freemode_01") then
         if Config.MaleNoHandshoes[armIndex] ~= nil and Config.MaleNoHandshoes[armIndex] then
             retval = false
