@@ -59,15 +59,15 @@ QBCore.Functions.CreateCallback('qb-phone_new:server:GetPhoneData', function(sou
                 PhoneData.Invoices = invoices
             end
             
-            QBCore.Functions.ExecuteSql(false, "SELECT * FROM player_vehicles WHERE `citizenid` = '"..Player.PlayerData.citizenid.."'", function(result)
-                if result[1] ~= nil then
-                    for k, v in pairs(result) do
+            QBCore.Functions.ExecuteSql(false, "SELECT * FROM player_vehicles WHERE `citizenid` = '"..Player.PlayerData.citizenid.."'", function(garageresult)
+                if garageresult[1] ~= nil then
+                    for k, v in pairs(garageresult) do
                         v.garage = Garages[v.garage].label
                         v.vehicle = QBCore.Shared.Vehicles[v.vehicle].name
                         v.brand = QBCore.Shared.Vehicles[v.vehicle].brand
                     end
 
-                    PhoneData.Garage = result
+                    PhoneData.Garage = garageresult
                 end
                 
                 QBCore.Functions.ExecuteSql(false, "SELECT * FROM phone_messages WHERE `citizenid` = '"..Player.PlayerData.citizenid.."'", function(messages)
