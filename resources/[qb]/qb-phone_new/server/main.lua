@@ -409,6 +409,30 @@ AddEventHandler('qb-phone_new:server:UpdateMessages', function(ChatMessages, Cha
     end)
 end)
 
+RegisterServerEvent('qb-phone_new:server:AddRecentCall')
+AddEventHandler('qb-phone_new:server:AddRecentCall', function(type, data)
+    local src = source
+    local Ply = QBCore.Functions.GetPlayer(src)
+
+    local Trgt = QBCore.Functions.GetPlayerByPhone(data.TargetData.number)
+
+    local Date = os.date('*t')
+    local hours = Date.hour
+    local minute = Date.min
+
+    print(hours)
+    print(minute)
+
+    if Trgt ~= nil then
+        TriggerClientEvent('qb-phone_new:client:AddRecentCall', Trgt.PlayerData.source, type)
+    end
+    if type == "outgoing" then
+        TriggerClientEvent('qb-phone_new:client:AddRecentCall', src, "missed")
+    else
+        TriggerClientEvent('qb-phone_new:client:AddRecentCall', src, "outgoing")
+    end
+end)
+
 RegisterServerEvent('qb-phone_new:server:CancelCall')
 AddEventHandler('qb-phone_new:server:CancelCall', function(ContactData)
     local Ply = QBCore.Functions.GetPlayerByPhone(ContactData.TargetData.number)
@@ -425,4 +449,12 @@ AddEventHandler('qb-phone_new:server:AnswerCall', function(CallData)
     if Ply ~= nil then
         TriggerClientEvent('qb-phone_new:client:AnswerCall', Ply.PlayerData.source)
     end
+end)
+
+RegisterServerEvent('qb-phone_new:server:SaveMetaData')
+AddEventHandler('qb-phone_new:server:SaveMetaData', function(MetaData)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+
+    Player.Functions.SetMetaData("phone", MetaData)
 end)

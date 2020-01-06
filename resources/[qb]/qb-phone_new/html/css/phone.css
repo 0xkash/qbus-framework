@@ -65,8 +65,8 @@
 .phone-keypad-header {
     padding-top: 6vh;
     padding-left: 3vh;
-    font-family: 'Samsung Sans Medium';
-    font-size: 2vh;
+    font-family: 'Samsung Sans Regular';
+    font-size: 1.8vh;
 }
 
 #phone-keypad-input {
@@ -97,6 +97,87 @@
     width: 100%;
     top: 0;
     background: rgb(230, 230, 230);
+}
+
+.phone-recent {
+    display: none;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    background: rgb(230, 230, 230);
+}
+
+.phone-recent-header {
+    padding-top: 6vh;
+    padding-left: 3vh;
+    font-family: 'Samsung Sans Regular';
+    font-size: 1.8vh;
+}
+.phone-recent-calls::-webkit-scrollbar {
+    display: none;
+}
+.phone-recent-calls {
+    position: absolute;
+    width: 100%;
+    height: 37vh;
+    background-color: rgba(245, 245, 245, 0.788);
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    top: 12vh;
+    border-radius: 2vh;
+    box-shadow: 0 0 .3vh 0vh rgba(0, 0, 0, 0.3);
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+.phone-recent-call {
+    position: relative;
+    height: 6.25vh;
+    width: 100%;
+    background-color: rgb(240, 240, 240);
+    border-bottom: .2vh solid rgba(51, 51, 51, 0.25);
+}
+.phone-recent-call:hover {
+    background-color: rgb(250, 250, 250);
+    border-bottom: .2vh solid rgba(51, 51, 51, 0.35);
+}
+.phone-recent-call-image {
+    position: absolute;
+    width: 4vh;
+    height: 4vh;
+    top: 1.2vh;
+    left: 1vh;
+    text-align: center;
+    line-height: 4.2vh;
+    font-size: 1.6vh;
+    color: white;
+    border-radius: 50%;
+    font-family: 'Samsung Sans Bold';
+    background: #4e54c8;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #8f94fb, #4e54c8);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #8f94fb, #4e54c8); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+.phone-recent-call-name {
+    position: absolute;
+    top: 1.1vh;
+    left: 6vh;
+    font-family: 'Samsung Sans Regular';
+}
+.phone-recent-call-type {
+    position: absolute;
+    bottom: 1.1vh;
+    left: 6vh;
+    font-size: 1.2vh;
+    color: rgba(54, 54, 54, 0.808);
+}
+.phone-recent-call-time {
+    position: absolute;
+    bottom: 1.1vh;
+    right: 1.75vh;
+    font-size: 1.2vh;
+    font-family: 'Samsung Sans Regular';
+    color: rgba(54, 54, 54, 0.808);
 }
 
 .phone-keypad-keys {
