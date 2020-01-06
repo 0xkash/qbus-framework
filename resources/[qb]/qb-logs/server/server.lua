@@ -34,6 +34,7 @@ AddEventHandler('qb-log:server:sendLog', function(citizenid, logtype, data)
         dataString = dataString .. key .."="..value
     end
     local requestUrl = string.format("%s?citizenid=%s&logtype=%s&%s", loggingApi, citizenid, logtype, dataString)
+    requestUrl = string.gsub(requestUrl, ' ', "%%20")
     print("requesting: " .. requestUrl)
     PerformHttpRequest(requestUrl, function(err, text, headers) end, 'GET', '')
 end)
