@@ -1,97 +1,49 @@
+@import url('https://fonts.googleapis.com/css?family=Lato&display=swap');
+
 .garage-app {
     display: block;
     height: 100%;
     width: 100%;
-    background: #2f3640;
+    background: #2d2d2d;
     overflow: hidden;
 }
 .garage-header {
     position: absolute;
-    top: 6vh;
-    left: 2vh;
-    color: rgb(240, 240, 240);
-    font-family: 'Samsung Sans Regular';
-    font-size: 1.8vh;
+    height: 26vh;
+    width: 100%;
+    background-color: #fad84f;
 }
-
-.garage-vehicles::-webkit-scrollbar {
-    display: none;
-    width: .4vh;
-}
-
-.garage-vehicles::-webkit-scrollbar-thumb {
-    background-color: #686de0;
-}
-
-.garage-vehicles::-webkit-scrollbar-track {
-    background-color: #ebebeb;
-}
-
-.garage-vehicles {
+#garage-header-car {
     position: absolute;
-    height: 40vh;
-    top: 11.5vh;
-    width: 99%;
-    left: 30vh;
-    overflow-y: scroll;
-    overflow-x: hidden;
-}
-
-.garage-vehicle {
-    position: relative;
-    height: 6vh;
-    background: #646d7ac0;
-    background-position: 0% 100%;
     margin: 0 auto;
-    width: 85%;
-    box-shadow: 0 0 .4vh 0 rgba(0, 0, 0, 0.15);
-    margin-top: 1.25vh;
-    transition: .1s;
-    overflow: hidden;
-    font-family: 'Samsung Sans Regular';
-    color: white;
+    left: 0;
+    right: 0;
+    width: 20vh;
+    top: 4vh;
+    opacity: 0.85;
 }
-
-.garage-vehicle:hover {
-    background: #6b7480e5;
-    transition: .1s;
-}
-
-.garage-vehicle-brand {
+#arrow-left {
     position: absolute;
-    left: 1vh;
-    top: 0.7vh;
-    font-size: 1.6vh;
+    font-size: 2.75vh;
+    left: 2vh;
+    top: 5.5vh;
+    color: rgb(65, 65, 65);
 }
-
-.garage-vehicle-name {
+#garage-vehicle-name {
     position: absolute;
-    left: 1.05vh;
-    top: 3vh;
-    font-size: 1.3vh;
+    bottom: 1.5vh;
+    left: 3vh;
+    font-family: 'Lato', sans-serif;
+    font-size: 2.3vh;
+    font-weight: 600;
+    letter-spacing: .1vh;
+    color: #383838e0;
 }
 
-#my-vehicles-back {
-    color: #bebebee5;
-    transition: .1s;
-}
-
-#my-vehicles-back:hover {
-    color: #ffffffe5;
-    transition: .1s;
-}
-
-.garage-vehicle-information {
+.garage-vehicle-buttons {
     position: absolute;
-    height: 40vh;
-    top: 11.5vh;
-    width: 99%;
-    left: 30vh;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    background: #6b7480e5;
-}
-
-.garage-vehicle-information::-webkit-scrollbar {
-    display: none;
+    width: 100%;
+    height: 2.5vh;
+    background-color: black;
+    bottom: 22vh;
 }
