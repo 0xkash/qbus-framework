@@ -749,9 +749,9 @@ RegisterNUICallback('CallContact', function(data, cb)
             ic = PhoneData.CallData.InCall,
         }
         cb(status)
-        if CanCall and not status.ic and (data.ContactData.number ~= PhoneData.PlayerData.charinfo.phone) then
+        -- if CanCall and not status.ic and (data.ContactData.number ~= PhoneData.PlayerData.charinfo.phone) then
             CallContact(data.ContactData)
-        end
+        -- end
     end, data.ContactData)
 end)
 

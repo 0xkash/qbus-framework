@@ -593,6 +593,51 @@ function toggleBlips()
     end)
 end
 
+Citizen.CreateThread(function()
+    while true do
+        if showBlips then
+            if next(PlayerBlips) ~= nil then
+                for k, v in pairs(PlayerBlips) do
+                    RemoveBlip(PlayerBlips[k])
+                end
+                PlayerBlips = {}
+            end
+            Citizen.Wait(1000)
+
+            local Players = getPlayers()
+
+            for k, v in pairs(Players) do
+                local playerPed = v["ped"]
+                local playerName = v["name"]
+
+                RemoveBlip(PlayerBlips[k])
+
+                local PlayerBlip = AddBlipForEntity(playerPed)
+
+                SetBlipSprite(PlayerBlip, 1)
+                SetBlipColour(PlayerBlip, 0)
+                SetBlipScale  (PlayerBlip, 0.75)
+                SetBlipAsShortRange(PlayerBlip, true)
+                BeginTextCommandSetBlipName("STRING")
+                AddTextComponentString('['..v["serverid"]..'] '..playerName)
+                EndTextCommandSetBlipName(PlayerBlip)
+                PlayerBlips[k] = PlayerBlip
+            end
+
+            print('blip updated!')
+        else
+            if next(PlayerBlips) ~= nil then
+                for k, v in pairs(PlayerBlips) do
+                    RemoveBlip(PlayerBlips[k])
+                end
+                PlayerBlips = {}
+            end
+        end
+
+        Citizen.Wait(10000)
+    end
+end)
+
 RegisterNetEvent('qb-admin:client:bringTp')
 AddEventHandler('qb-admin:client:bringTp', function(coords)
     local ped = GetPlayerPed(-1)
