@@ -13,9 +13,9 @@ function RadialMenu(params) {
     self.onClick   = params.onClick || null;
     self.menuItems = params.menuItems ? params.menuItems : [{id: 'one', title: 'One'}, {id: 'two', title: 'Two'}];
 
-    self.radius      = 65;
-    self.innerRadius = self.radius * 0.35;
-    self.sectorSpace = self.radius * 0.08;
+    self.radius      = 55;
+    self.innerRadius = 18;
+    self.sectorSpace = 3.5;
     self.sectorCount = Math.max(self.menuItems.length, MIN_SECTORS);
     self.closeOnClick = params.closeOnClick !== undefined ? !!params.closeOnClick : false;
 
@@ -40,7 +40,6 @@ RadialMenu.prototype.open = function () {
         self.currentMenu = self.createMenu('menu inner', self.menuItems);
         self.holder.appendChild(self.currentMenu);
 
-        // wait DOM commands to apply and then set class to allow transition to take effect
         RadialMenu.nextTick(function () {
             self.currentMenu.setAttribute('class', 'menu');
         });
@@ -52,6 +51,7 @@ RadialMenu.prototype.close = function () {
     var self = this;
 
     if (self.currentMenu) {
+        $.post('http://qb-radialmenu/closeRadial');
         var parentMenu;
         while (parentMenu = self.parentMenu.pop()) {
             parentMenu.remove();
@@ -64,7 +64,6 @@ RadialMenu.prototype.close = function () {
                 self.currentMenu = null;
             }
         });
-        $.post('http://qb-radialmenu/closeRadial')
     }
 };
 

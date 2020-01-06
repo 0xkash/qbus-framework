@@ -135,9 +135,14 @@ LSCMenu.config.pcontrol = false
 
 --Add mod to menu
 local function AddMod(mod,parent,header,name,info,stock)
+	print(name)
+	print(mod)
 	local veh = myveh.vehicle
+	print(GetNumVehicleMods(veh, mod))
+	print(veh)
+	print('---')
 	SetVehicleModKit(veh,0)	
-	if (GetNumVehicleMods(veh,mod) ~= nil and GetNumVehicleMods(veh,mod) > 0) or mod == 18 or mod == 22 then
+	if (GetNumVehicleMods(veh, mod) ~= nil and GetNumVehicleMods(veh,mod) > 0) or mod == 18 or mod == 22 then
 		local m = parent:addSubMenu(header, name, info,true)
 		if stock then
 			local btn = m:addPurchase("Stock")
@@ -151,6 +156,12 @@ local function AddMod(mod,parent,header,name,info,stock)
 				if lbl ~= nil then
 					local mname = tostring(GetLabelText(lbl))
 					if mname ~= "NULL" then
+						local btn = m:addPurchase(mname,price)
+						btn.modtype = mod
+						btn.mod = i
+						price = price + LSC_Config.prices.mods[mod].increaseby
+					else
+						mname = name.." #"..(i + 1)
 						local btn = m:addPurchase(mname,price)
 						btn.modtype = mod
 						btn.mod = i

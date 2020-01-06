@@ -1,3 +1,5 @@
+var WhatsappSearchActive = false;
+
 $(document).ready(function(){
     $("#whatsapp-search-input").on("keyup", function() {
         var value = $(this).val().toLowerCase();
@@ -12,8 +14,10 @@ $(document).on('click', '#whatsapp-search-chats', function(e){
 
     if ($("#whatsapp-search-input").css('display') == "none") {
         $("#whatsapp-search-input").fadeIn(150);
+        WhatsappSearchActive = true;
     } else {
         $("#whatsapp-search-input").fadeOut(150);
+        WhatsappSearchActive = false;
     }
 });
 
@@ -27,6 +31,10 @@ $(document).on('click', '.whatsapp-chat', function(e){
     $.post('http://qb-phone_new/ClearAlerts', JSON.stringify({
         number: ChatData.number
     }));
+
+    if (WhatsappSearchActive) {
+        $("#whatsapp-search-input").fadeOut(150);
+    }
 
     $('.whatsapp-openedchat-messages').animate({scrollTop: 9999}, 150);
     $(".whatsapp-openedchat").css({"display":"block"});
@@ -119,11 +127,12 @@ const monthNames = ["Januari", "Februari", "Maart", "April", "Mei", "Juni", "Jul
 
 FormatChatDate = function(date) {
     var TestDate = date.split("-");
-    var NewDate = new Date(""+TestDate[1]+"-"+TestDate[0]+"-"+TestDate[2]);
+    var NewDate = new Date(""+(TestDate[1] + 1)+"-"+TestDate[0]+"-"+TestDate[2]);
+
     var CurrentMonth = monthNames[NewDate.getMonth()];
     var CurrentDOM = NewDate.getDate();
     var CurrentYear = NewDate.getFullYear();
-    var CurDateee = CurrentDOM + "-" + (NewDate.getMonth() + 1) + "-" + CurrentYear;
+    var CurDateee = CurrentDOM + "-" + NewDate.getMonth() + "-" + CurrentYear;
     var ChatDate = CurrentDOM + " " + CurrentMonth + " " + CurrentYear;
     var CurrentDate = GetCurrentDateKey();
 
@@ -162,6 +171,7 @@ $(document).on('click', '#whatsapp-openedchat-send', function(e){
             ChatDate: GetCurrentDateKey(),
             ChatMessage: Message,
             ChatTime: FormatMessageTime(),
+            ChatType: "message",
         }));
         $("#whatsapp-openedchat-message").val("");
     } else {
@@ -169,11 +179,28 @@ $(document).on('click', '#whatsapp-openedchat-send', function(e){
     }
 });
 
+$(document).on('click', '#send-location', function(e){
+    e.preventDefault();
+
+    $.post('http://qb-phone_new/SendMessage', JSON.stringify({
+        ChatNumber: OpenedChatData.number,
+        ChatDate: GetCurrentDateKey(),
+        ChatMessage: "Gedeelde Locatie",
+        ChatTime: FormatMessageTime(),
+        ChatType: "location",
+    }));
+});
+
+SortMessagesArray = function() {
+    
+}
+
 QB.Phone.Functions.SetupChatMessages = function(cData, NewChatData) {
     if (cData !== false) {
         OpenedChatData.number = cData.number;
         $(".whatsapp-openedchat-name").html("<p>"+cData.name+"</p>");
         $(".whatsapp-openedchat-messages").html("");
+
         $.each(cData.messages, function(i, chat){
             var ChatDate = FormatChatDate(i);
             var ChatDiv = '<div class="whatsapp-openedchat-messages-'+i+' unique-chat"><div class="whatsapp-openedchat-date">'+ChatDate+'</div></div>';
@@ -183,7 +210,12 @@ QB.Phone.Functions.SetupChatMessages = function(cData, NewChatData) {
             $.each(cData.messages[i], function(index, message){
                 var Sender = "me";
                 if (message.sender !== QB.Phone.Data.PlayerData.citizenid) { Sender = "other"; }
-                var MessageElement = '<div class="whatsapp-openedchat-message whatsapp-openedchat-message-'+Sender+'">'+message.message+'<div class="whatsapp-openedchat-message-time">'+message.time+'</div></div><div class="clearfix"></div>'
+                var MessageElement
+                if (message.type == "message") {
+                    MessageElement = '<div class="whatsapp-openedchat-message whatsapp-openedchat-message-'+Sender+'">'+message.message+'<div class="whatsapp-openedchat-message-time">'+message.time+'</div></div><div class="clearfix"></div>'
+                } else if (message.type == "location") {
+                    MessageElement = '<div class="whatsapp-openedchat-message whatsapp-openedchat-message-'+Sender+' whatsapp-shared-location" data-x="'+message.data.x+'" data-y="'+message.data.y+'"><span style="font-size: 1.2vh;"><i class="fas fa-thumbtack" style="font-size: 1vh;"></i> Locatie</span><div class="whatsapp-openedchat-message-time">'+message.time+'</div></div><div class="clearfix"></div>'
+                }
                 $(".whatsapp-openedchat-messages-"+i).append(MessageElement);
             });
         });
@@ -204,3 +236,34 @@ QB.Phone.Functions.SetupChatMessages = function(cData, NewChatData) {
 
     $('.whatsapp-openedchat-messages').animate({scrollTop: 9999}, 1);
 }
+
+$(document).on('click', '.whatsapp-shared-location', function(e){
+    e.preventDefault();
+    var messageCoords = {}
+    messageCoords.x = $(this).data('x');
+    messageCoords.y = $(this).data('y');
+
+    $.post('http://qb-phone_new/SharedLocation', JSON.stringify({
+        coords: messageCoords,
+    }))
+});
+
+var ExtraButtonsOpen = false;
+
+$(document).on('click', '#whatsapp-openedchat-message-extras', function(e){
+    e.preventDefault();
+
+    if (!ExtraButtonsOpen) {
+        $(".whatsapp-extra-buttons").css({"display":"block"}).animate({
+            left: 0+"vh"
+        }, 250);
+        ExtraButtonsOpen = true;
+    } else {
+        $(".whatsapp-extra-buttons").animate({
+            left: -10+"vh"
+        }, 250, function(){
+            $(".whatsapp-extra-buttons").css({"display":"block"});
+            ExtraButtonsOpen = false;
+        });
+    }
+});

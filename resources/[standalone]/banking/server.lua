@@ -9,10 +9,10 @@ AddEventHandler('bank:withdraw', function(amount)
     local ply = QBCore.Functions.GetPlayer(src)
     local bankamount = ply.PlayerData.money["bank"]
     local amount = tonumber(amount)
-    if bankamount >= amount then
-      ply.Functions.RemoveMoney('bank', amount)
+    if bankamount >= amount and amount > 0 then
+      ply.Functions.RemoveMoney('bank', amount, "Bank withdraw")
       TriggerEvent("qb-log:server:CreateLog", "banking", "Withdraw", "red", "**"..GetPlayerName(src) .. "** heeft €"..amount.." opgenomen van zijn bank.")
-      ply.Functions.AddMoney('cash', amount)
+      ply.Functions.AddMoney('cash', amount, "Bank withdraw")
     else
       TriggerClientEvent('QBCore:Notify', src, 'Je hebt niet voldoende geld op je bank..', 'error')
     end
@@ -22,10 +22,12 @@ RegisterServerEvent('bank:deposit')
 AddEventHandler('bank:deposit', function(amount)
     local src = source
     local ply = QBCore.Functions.GetPlayer(src)
-
-    if ply.Functions.RemoveMoney('cash', amount) then
+    local cashamount = ply.PlayerData.money["cash"]
+    local amount = tonumber(amount)
+    if cashamount >= amount and amount > 0 then
+      ply.Functions.RemoveMoney('cash', amount, "Bank depost")
       TriggerEvent("qb-log:server:CreateLog", "banking", "Deposit", "green", "**"..GetPlayerName(src) .. "** heeft €"..amount.." op zijn bank gezet.")
-      ply.Functions.AddMoney('bank', amount)
+      ply.Functions.AddMoney('bank', amount, "Bank depost")
     else
       TriggerClientEvent('QBCore:Notify', src, 'Je hebt niet voldoende geld op zak..', 'error')
     end
@@ -40,7 +42,7 @@ QBCore.Commands.Add("geefcontant", "Geef contant geld aan een persoon", {{name="
   if Target ~= nil then
     if amount ~= nil then
       if amount > 0 then
-        if Player.PlayerData.money.cash >= amount then
+        if Player.PlayerData.money.cash >= amount and amount > 0 then
           if TargetId ~= source then
             TriggerClientEvent('banking:client:CheckDistance', source, TargetId, amount)
           else
@@ -66,8 +68,8 @@ AddEventHandler('banking:server:giveCash', function(trgtId, amount)
   local Player = QBCore.Functions.GetPlayer(src)
   local Target = QBCore.Functions.GetPlayer(trgtId)
 
-  Player.Functions.RemoveMoney('cash', amount)
-  Target.Functions.AddMoney('cash', amount)
+  Player.Functions.RemoveMoney('cash', amount, "Cash given to "..Player.PlayerData.citizenid)
+  Target.Functions.AddMoney('cash', amount, "Cash received from "..Target.PlayerData.citizenid)
 
   TriggerEvent("qb-log:server:CreateLog", "banking", "Geef contant", "blue", "**"..GetPlayerName(src) .. "** heeft €"..amount.." gegeven aan **" .. GetPlayerName(trgtId) .. "**")
   

@@ -51,6 +51,8 @@ QB.Phone.Functions.SetupAppWarnings = function(AppData) {
     $.each(AppData, function(i, app){
         var AppObject = $(".phone-applications").find("[data-appslot='"+app.slot+"']").find('.app-unread-alerts');
 
+        console.log(app.app+": "+app.Alerts)
+
         if (app.Alerts > 0) {
             $(AppObject).html(app.Alerts);
             $(AppObject).css({"display":"block"});
@@ -114,6 +116,10 @@ $(document).on('click', '.phone-application', function(e){
                 $.post('http://qb-phone_new/GetWhatsappChats', JSON.stringify({}), function(chats){
                     QB.Phone.Functions.LoadWhatsappChats(chats);
                 });
+            } else if (PressedApplication == "phone") {
+                $.post('http://qb-phone_new/GetMissedCalls', JSON.stringify({}), function(recent){
+                    QB.Phone.Functions.SetupRecentCalls(recent);
+                })
             }
         }
     } else {
@@ -265,7 +271,7 @@ QB.Phone.Notifications.Add = function(icon, title, text, color, timeout) {
 }
 
 QB.Phone.Functions.LoadPhoneData = function(data) {
-    console.log(data.PhoneData.Contacts)
+    QB.Phone.Functions.LoadMetaData(data.PhoneData.MetaData);
     QB.Phone.Functions.LoadContacts(data.PhoneData.Contacts);
     QB.Phone.Data.PlayerData = data.PlayerData;
 }
@@ -321,6 +327,7 @@ $(document).ready(function(){
             case "open":
                 QB.Phone.Functions.Open(event.data);
                 QB.Phone.Functions.SetupAppWarnings(event.data.AppData);
+                QB.Phone.Functions.SetupCurrentCall(event.data.CallData);
                 QB.Phone.Data.IsOpen = true; 
                 break;
             case "LoadPhoneApplications":
@@ -368,6 +375,56 @@ $(document).ready(function(){
             case "IncomingCallAlert":
                 IncomingCallAlert(event.data.CallData, event.data.Canceled);
                 break;
+            case "SetupHomeCall":
+                QB.Phone.Functions.SetupCurrentCall(event.data.CallData);
+                break;
+            case "AnswerCall":
+                QB.Phone.Functions.AnswerCall(event.data.CallData);
+                break;
+            case "UpdateCallTime":
+                var CallTime = event.data.Time;
+                var date = new Date(null);
+                date.setSeconds(CallTime);
+                var timeString = date.toISOString().substr(11, 8);
+
+                if (!QB.Phone.Data.IsOpen) {
+                    console.log($(".call-notifications").css("right"))
+                    if ($(".call-notifications").css("right") !== "52.1px") {
+                        $(".call-notifications").css({"display":"block"});
+                        $(".call-notifications").animate({right: 5+"vh"});
+                    }
+                    $(".call-notifications-title").html("Ingesprek ("+timeString+")");
+                    $(".call-notifications-content").html("Aan het bellen met "+event.data.Name);
+                    $(".call-notifications").removeClass('call-notifications-shake');
+                } else {
+                    console.log($(".call-notifications").css("right"))
+                    $(".call-notifications").animate({
+                        right: -35+"vh"
+                    }, 400, function(){
+                        $(".call-notifications").css({"display":"none"});
+                    });
+                }
+
+                $(".phone-call-ongoing-time").html(timeString);
+                $(".phone-currentcall-title").html("In gesprek ("+timeString+")");
+                break;
+            case "CancelOngoingCall":
+                $(".call-notifications").animate({right: -35+"vh"}, function(){
+                    $(".call-notifications").css({"display":"none"});
+                });
+                QB.Phone.Animations.TopSlideUp('.phone-application-container', 400, -160);
+                setTimeout(function(){
+                    QB.Phone.Functions.ToggleApp("phone-call", "none");
+                    $(".phone-application-container").css({"display":"none"});
+                }, 400)
+                QB.Phone.Functions.HeaderTextColor("white", 300);
+    
+                QB.Phone.Data.CallActive = false;
+                QB.Phone.Data.currentApplication = null;
+                break;
+            case "RefreshContacts":
+                QB.Phone.Functions.LoadContacts(event.data.Contacts);
+                break;
         }
     })
 });
@@ -380,7 +437,4 @@ $(document).on('keydown', function() {
     }
 });
 
-
-
-// 
-// QB.Phone.Functions.Open();
+QB.Phone.Functions.Open();

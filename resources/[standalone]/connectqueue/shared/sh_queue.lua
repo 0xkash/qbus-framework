@@ -581,6 +581,7 @@ local function playerConnect(source, setKickReason, deferrals)
 
         done()
         TriggerEvent("qb-log:server:CreateLog", "joinleave", "Queue", "orange", "**".. name .. "** joining..")
+        TriggerEvent("qb-log:server:sendLog", ids[1], "joinedqueue", {})
         Queue:DebugPrint(name .. "[" .. ids[1] .. "] is loading into the server")
 
         return
@@ -643,6 +644,7 @@ local function playerConnect(source, setKickReason, deferrals)
 
             Queue:RemoveFromQueue(ids)
             TriggerEvent("qb-log:server:CreateLog", "joinleave", "Queue", "orange", "**".. name .. "** joining..")
+            TriggerEvent("qb-log:server:sendLog", ids[1], "joinedqueue", {})
             Queue:DebugPrint(name .. "[" .. ids[1] .. "] is loading into the server")
             return
         end

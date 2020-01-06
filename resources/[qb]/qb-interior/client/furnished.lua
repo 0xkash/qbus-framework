@@ -1,3 +1,10 @@
+local IsNew = false
+
+RegisterNetEvent('qb-interior:client:SetNewState')
+AddEventHandler('qb-interior:client:SetNewState', function(bool)
+	IsNew = bool
+end)
+
 -- Thanks Stroudy <3
 function CreateHotelFurnished(spawn)
 	local object = {}
@@ -106,7 +113,12 @@ function CreateApartmentFurnished(spawn)
 	table.insert(objects, house)
 
 	TeleportToInterior(spawn.x - 1.52089355468, spawn.y - 4.00144140625, spawn.z + 1.5, POIOffsets.exit.h)
-
+	if IsNew then
+		SetTimeout(750, function()
+			TriggerEvent('qb-clothes:client:CreateFirstCharacter')
+			IsNew = false
+		end)
+	end
     return { objects, POIOffsets }
 end
 

@@ -33,9 +33,29 @@ $(document).on('click', '#accept-background', function(e){
     } else {
         QB.Phone.Notifications.Add("fas fa-paint-brush", "Instellingen", "Eigen achtergrond ingesteld!")
         QB.Phone.Animations.TopSlideUp(".settings-"+QB.Phone.Settings.OpenedTab+"-tab", 200, -100);
-        $(".phone-background").css({"background-image":"url('"+QB.Phone.Settings.Background+"')"})
+        $(".phone-background").css({"background-image":"url('"+QB.Phone.Settings.Background+"')"});
     }
+
+    $.post('http://qb-phone_new/SetBackground', JSON.stringify({
+        background: QB.Phone.Settings.Background,
+    }))
 });
+
+QB.Phone.Functions.LoadMetaData = function(MetaData) {
+    if (MetaData.background !== null && MetaData.background !== undefined) {
+        QB.Phone.Settings.Background = MetaData.background;
+    } else {
+        QB.Phone.Settings.Background = "background-1";
+    }
+
+    var hasCustomBackground = QB.Phone.Functions.IsBackgroundCustom();
+
+    if (!hasCustomBackground) {
+        $(".phone-background").css({"background-image":"url('/html/img/backgrounds/"+QB.Phone.Settings.Background+".png')"})
+    } else {
+        $(".phone-background").css({"background-image":"url('"+QB.Phone.Settings.Background+"')"});
+    }
+}
 
 $(document).on('click', '#cancel-background', function(e){
     e.preventDefault();

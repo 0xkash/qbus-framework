@@ -4,11 +4,14 @@ ui_page "html/index.html"
 
 client_scripts {
     'client/main.lua',
+    'client/animation.lua',
+    '@qb-garages/SharedConfig.lua',
     'config.lua',
 }
 
 server_scripts {
     'server/main.lua',
+    '@qb-garages/SharedConfig.lua',
     'config.lua',
 }
 

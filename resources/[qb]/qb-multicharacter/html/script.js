@@ -147,9 +147,10 @@ $(document).on('click', '#create', function(e){
         birthdate: $('#birthdate').val(),
         gender: $('select[name=gender]').val(),
         cid: $(selectedChar).attr('id').replace('char-', ''),
-    }))
-    $('.characters-list').css("filter", "none")
-    $('.character-info').css("filter", "none")
+    }));
+    $(".container").fadeOut(150);
+    $('.characters-list').css("filter", "none");
+    $('.character-info').css("filter", "none");
     qbMultiCharacters.fadeOutDown('.character-register', '125%', 400);
     refreshCharacters()
 });

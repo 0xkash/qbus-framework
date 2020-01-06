@@ -15,10 +15,12 @@ AddEventHandler("LSC:buttonSelected", function(name, button)
 		if button.price then -- check if button have price
 			if Player.Functions.RemoveMoney("cash", button.price) then
 				TriggerClientEvent("LSC:buttonSelected", source, name, button, true)
+				TriggerEvent("qb-log:server:sendLog", Player.PlayerData.citizenid, "vehicleupgraded", {name=name, moneyType="cash", price=button.price, plate="unkown"})
 				TriggerEvent("qb-log:server:CreateLog", "vehicleupgrades", "Upgrade gekocht", "green", "**"..GetPlayerName(src).."** heeft en upgrade gekocht ("..name..") voor €" .. button.price)
 			elseif bankBalance >= button.price then
 				Player.Functions.RemoveMoney("bank", button.price)
 				TriggerClientEvent("LSC:buttonSelected", source, name, button, true)
+				TriggerEvent("qb-log:server:sendLog", Player.PlayerData.citizenid, "vehicleupgraded", {name=name, moneyType="bank", price=button.price, plate="unkown"})
 				TriggerEvent("qb-log:server:CreateLog", "vehicleupgrades", "Upgrade gekocht", "green", "**"..GetPlayerName(src).."** heeft en upgrade gekocht ("..name..") voor €" .. button.price)
 			else
 				TriggerClientEvent("LSC:buttonSelected", source, name, button, false)
