@@ -56,7 +56,7 @@ Config.Language = {
 }
 
 Citizen.CreateThread(function()
-	QBCore.Functions.ExecuteSql(true, "SELECT * FROM `queue`", function(result)
+	QBCore.Functions.ExecuteSql(false, "SELECT * FROM `queue`", function(result)
 		if result[1] ~= nil then
 			for k, v in pairs(result) do
 				Config.Priority[v.steam] = tonumber(v.priority)

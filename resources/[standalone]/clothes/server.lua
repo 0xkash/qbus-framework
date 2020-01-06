@@ -17,9 +17,9 @@ AddEventHandler('clothes:saveSkin', function(model, skin)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     if model ~= nil and skin ~= nil then 
-        QBCore.Functions.ExecuteSql(true, "DELETE FROM `playerskins` WHERE `citizenid` = '"..Player.PlayerData.citizenid.."'")
-        Citizen.Wait(500)
-        QBCore.Functions.ExecuteSql(true, "INSERT INTO `playerskins` (`citizenid`, `model`, `skin`, `active`) VALUES ('"..Player.PlayerData.citizenid.."', '"..model.."', '"..skin.."', 1)")
+        QBCore.Functions.ExecuteSql(false, "DELETE FROM `playerskins` WHERE `citizenid` = '"..Player.PlayerData.citizenid.."'", function(result)
+            QBCore.Functions.ExecuteSql(false, "INSERT INTO `playerskins` (`citizenid`, `model`, `skin`, `active`) VALUES ('"..Player.PlayerData.citizenid.."', '"..model.."', '"..skin.."', 1)")
+        end)
     end
 end)
 
@@ -28,7 +28,7 @@ AddEventHandler('clothes:saveOutfit', function(model, skin, outfitname)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     if model ~= nil and skin ~= nil then
-        QBCore.Functions.ExecuteSql(true, "INSERT INTO `player_outfits` (`citizenid`, `outfitname`, `model`, `skin`) VALUES ('"..Player.PlayerData.citizenid.."', '"..outfitname.."', '"..model.."', '"..skin.."')")
+        QBCore.Functions.ExecuteSql(false, "INSERT INTO `player_outfits` (`citizenid`, `outfitname`, `model`, `skin`) VALUES ('"..Player.PlayerData.citizenid.."', '"..outfitname.."', '"..model.."', '"..skin.."')")
     end
 end)
 
@@ -45,14 +45,14 @@ AddEventHandler('clothes:removeOutfit', function(outfitname)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
 
-    QBCore.Functions.ExecuteSql(true, "DELETE FROM `player_outfits` WHERE `citizenid` = '"..Player.PlayerData.citizenid.."' AND `outfitname` = '"..outfitname.."'")
+    QBCore.Functions.ExecuteSql(false, "DELETE FROM `player_outfits` WHERE `citizenid` = '"..Player.PlayerData.citizenid.."' AND `outfitname` = '"..outfitname.."'")
 end)
 
 RegisterServerEvent("clothes:loadPlayerSkin")
 AddEventHandler('clothes:loadPlayerSkin', function()
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    QBCore.Functions.ExecuteSql(true, "SELECT * FROM `playerskins` WHERE `citizenid` = '"..Player.PlayerData.citizenid.."' AND `active` = 1", function(result)
+    QBCore.Functions.ExecuteSql(false, "SELECT * FROM `playerskins` WHERE `citizenid` = '"..Player.PlayerData.citizenid.."' AND `active` = 1", function(result)
         if result[1] ~= nil then
             TriggerClientEvent("clothes:loadSkin", src, false, result[1].model, result[1].skin)
         else

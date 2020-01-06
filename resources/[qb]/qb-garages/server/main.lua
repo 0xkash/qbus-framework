@@ -20,12 +20,12 @@ end)
 QBCore.Functions.CreateCallback("qb-garage:server:GetVehicleProperties", function(source, cb, plate)
     local src = source
     local properties = {}
-    QBCore.Functions.ExecuteSql(true, "SELECT `mods` FROM `player_vehicles` WHERE `plate` = '"..plate.."'", function(result)
+    QBCore.Functions.ExecuteSql(false, "SELECT `mods` FROM `player_vehicles` WHERE `plate` = '"..plate.."'", function(result)
         if result[1] ~= nil then
             properties = json.decode(result[1].mods)
         end
+        cb(properties)
     end)
-    cb(properties)
 end)
 
 QBCore.Functions.CreateCallback("qb-garage:server:GetDepotVehicles", function(source, cb)
