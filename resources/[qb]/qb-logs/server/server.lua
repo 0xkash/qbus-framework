@@ -1,6 +1,6 @@
 QBCore = nil
 TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
-local loggingApi = "https://192.168.178.30/qbus-management/backend/fivem/log"
+local loggingApi = "https://qbus.onno204.nl/qbus-management/backend/fivem/log"
 
 RegisterServerEvent('qb-log:server:CreateLog')
 AddEventHandler('qb-log:server:CreateLog', function(name, title, color, message, tagEveryone)
