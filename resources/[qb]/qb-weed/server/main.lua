@@ -50,7 +50,7 @@ end)
 
 Citizen.CreateThread(function()
     while true do
-        QBCore.Functions.ExecuteSql(true, "SELECT * FROM `house_plants`", function(housePlants)
+        QBCore.Functions.ExecuteSql(false, "SELECT * FROM `house_plants`", function(housePlants)
             for k, v in pairs(housePlants) do
                 if housePlants[k].food >= 50 then
                     QBCore.Functions.ExecuteSql(true, "UPDATE `house_plants` SET `food` = '"..(housePlants[k].food - 1).."' WHERE `plantid` = '"..housePlants[k].plantid.."'")
@@ -78,7 +78,7 @@ end)
 
 Citizen.CreateThread(function()
     while true do
-        QBCore.Functions.ExecuteSql(true, "SELECT * FROM `house_plants`", function(housePlants)
+        QBCore.Functions.ExecuteSql(false, "SELECT * FROM `house_plants`", function(housePlants)
             for k, v in pairs(housePlants) do
                 if housePlants[k].health > 50 then
                     local Grow = math.random(1, 3)
@@ -163,7 +163,7 @@ AddEventHandler('qb-weed:server:harvestPlant', function(house, amount, plantName
     if weedBag ~= nil then
         if weedBag.amount >= sndAmount then
             if house ~= nil then 
-                QBCore.Functions.ExecuteSql(true, "SELECT * FROM `house_plants` WHERE plantid = '"..plantId.."' AND building = '"..house.."'", function(result)
+                QBCore.Functions.ExecuteSql(false, "SELECT * FROM `house_plants` WHERE plantid = '"..plantId.."' AND building = '"..house.."'", function(result)
                     if result[1] ~= nil then
                         Player.Functions.AddItem('weed_'..plantName..'_seed', amount)
                         Player.Functions.AddItem('weed_'..plantName, sndAmount)
@@ -191,7 +191,7 @@ AddEventHandler('qb-weed:server:foodPlant', function(house, amount, plantName, p
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
 
-    QBCore.Functions.ExecuteSql(true, 'SELECT * FROM `house_plants` WHERE `building` = "'..house..'" AND `sort` = "'..plantName..'" AND `plantid` = "'..tostring(plantId)..'"', function(plantStats)
+    QBCore.Functions.ExecuteSql(false, 'SELECT * FROM `house_plants` WHERE `building` = "'..house..'" AND `sort` = "'..plantName..'" AND `plantid` = "'..tostring(plantId)..'"', function(plantStats)
         TriggerClientEvent('QBCore:Notify', src, QBWeed.Plants[plantName]["label"]..' | Voeding: '..plantStats[1].food..'% + '..amount..'% ('..(plantStats[1].food + amount)..'%)', 'success', 3500)
         if plantStats[1].food + amount > 100 then
             QBCore.Functions.ExecuteSql(true, "UPDATE `house_plants` SET `food` = '100' WHERE `building` = '"..house.."' AND `plantid` = '"..plantId.."'")
@@ -199,8 +199,6 @@ AddEventHandler('qb-weed:server:foodPlant', function(house, amount, plantName, p
             QBCore.Functions.ExecuteSql(true, "UPDATE `house_plants` SET `food` = '"..(plantStats[1].food + amount).."' WHERE `building` = '"..house.."' AND `plantid` = '"..plantId.."'")
         end
         Player.Functions.RemoveItem('weed_nutrition', 1)
+        TriggerClientEvent('qb-weed:client:refreshHousePlants', -1, house)
     end)
-
-    Citizen.Wait(250)
-    TriggerClientEvent('qb-weed:client:refreshHousePlants', -1, house)
 end)
