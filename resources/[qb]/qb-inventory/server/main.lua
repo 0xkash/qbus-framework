@@ -329,7 +329,7 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 					end
 				else
 					local itemInfo = QBCore.Shared.Items[fromItemData.name:lower()]
-					TriggerEvent("qb-log:server:sendLog", Player.PlayerData.citizenid, "itemswapped", {type="trunk2", name=toItemData.name, amount=fromAmount, target=plate})
+					TriggerEvent("qb-log:server:sendLog", Player.PlayerData.citizenid, "itemswapped", {type="trunk2", name=fromItemData.name, amount=fromAmount, target=plate})
 					TriggerEvent("qb-log:server:CreateLog", "trunk", "Dropped Item", "red", "**".. GetPlayerName(src) .. "** (citizenid: *"..Player.PlayerData.citizenid.."* | id: *"..src.."*) dropped new item; name: **"..itemInfo["name"].."**, amount: **" .. fromAmount .. "** - plate: *" .. plate .. "*")
 				end
 				local itemInfo = QBCore.Shared.Items[fromItemData.name:lower()]
@@ -352,7 +352,7 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 					end
 				else
 					local itemInfo = QBCore.Shared.Items[fromItemData.name:lower()]
-					TriggerEvent("qb-log:server:sendLog", Player.PlayerData.citizenid, "itemswapped", {type="glovebox2", name=toItemData.name, amount=fromAmount, target=plate})
+					TriggerEvent("qb-log:server:sendLog", Player.PlayerData.citizenid, "itemswapped", {type="glovebox2", name=fromItemData.name, amount=fromAmount, target=plate})
 					TriggerEvent("qb-log:server:CreateLog", "glovebox", "Dropped Item", "red", "**".. GetPlayerName(src) .. "** (citizenid: *"..Player.PlayerData.citizenid.."* | id: *"..src.."*) dropped new item; name: **"..itemInfo["name"].."**, amount: **" .. fromAmount .. "** - plate: *" .. plate .. "*")
 				end
 				local itemInfo = QBCore.Shared.Items[fromItemData.name:lower()]
