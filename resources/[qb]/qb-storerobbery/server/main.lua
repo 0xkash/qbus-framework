@@ -2,25 +2,32 @@ QBCore = nil
 
 TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 
-local SafeCodes = {
-    [1] = math.random(1000, 9999),
-    [2] = {math.random(1, 149), math.random(150.0, 359.0), math.random(1, 149), math.random(150.0, 359.0), math.random(1, 149)},
-    [3] = {math.random(1, 149), math.random(150.0, 359.0), math.random(1, 149), math.random(150.0, 359.0), math.random(1, 149)},
-    [4] = math.random(1000, 9999),
-    [5] = math.random(1000, 9999),
-    [6] = {math.random(1, 149), math.random(150.0, 359.0), math.random(1, 149), math.random(150.0, 359.0), math.random(1, 149)},
-    [7] = math.random(1000, 9999),
-    [8] = math.random(1000, 9999),
-    [9] = math.random(1000, 9999),
-    [10] = {math.random(1, 149), math.random(150.0, 359.0), math.random(1, 149), math.random(150.0, 359.0), math.random(1, 149)},
-    [11] = math.random(1000, 9999),
-    [12] = math.random(1000, 9999),
-    [13] = math.random(1000, 9999),
-    [14] = {math.random(1, 149), math.random(150.0, 359.0), math.random(1, 149), math.random(150.0, 359.0), math.random(1, 149)},
-    [15] = math.random(1000, 9999),
-    [16] = math.random(1000, 9999),
-    [17] = math.random(1000, 9999),
-}
+local SafeCodes = {}
+
+Citizen.CreateThread(function()
+    while true do 
+        SafeCodes = {
+            [1] = math.random(1000, 9999),
+            [2] = {math.random(1, 149), math.random(150.0, 359.0), math.random(1, 149), math.random(150.0, 359.0), math.random(1, 149)},
+            [3] = {math.random(1, 149), math.random(150.0, 359.0), math.random(1, 149), math.random(150.0, 359.0), math.random(1, 149)},
+            [4] = math.random(1000, 9999),
+            [5] = math.random(1000, 9999),
+            [6] = {math.random(1, 149), math.random(150.0, 359.0), math.random(1, 149), math.random(150.0, 359.0), math.random(1, 149)},
+            [7] = math.random(1000, 9999),
+            [8] = math.random(1000, 9999),
+            [9] = math.random(1000, 9999),
+            [10] = {math.random(1, 149), math.random(150.0, 359.0), math.random(1, 149), math.random(150.0, 359.0), math.random(1, 149)},
+            [11] = math.random(1000, 9999),
+            [12] = math.random(1000, 9999),
+            [13] = math.random(1000, 9999),
+            [14] = {math.random(1, 149), math.random(150.0, 359.0), math.random(1, 149), math.random(150.0, 359.0), math.random(1, 149)},
+            [15] = math.random(1000, 9999),
+            [16] = math.random(1000, 9999),
+            [17] = math.random(1000, 9999),
+        }
+        Citizen.Wait((1000 * 60) * 40)
+    end
+end)
 
 RegisterServerEvent('qb-storerobbery:server:takeMoney')
 AddEventHandler('qb-storerobbery:server:takeMoney', function(register, isDone)
