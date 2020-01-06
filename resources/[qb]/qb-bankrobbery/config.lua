@@ -677,7 +677,6 @@ Config.MaleNoHandshoes = {
     [13] = true,
     [14] = true,
     [15] = true,
-    [16] = true,
     [18] = true,
     [26] = true,
     [52] = true,
