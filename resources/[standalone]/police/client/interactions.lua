@@ -267,9 +267,11 @@ AddEventHandler('police:client:CuffPlayerSoft', function()
         local player, distance = GetClosestPlayer()
         if player ~= -1 and distance < 1.5 then
             local playerId = GetPlayerServerId(player)
-            if not IsPedInAnyVehicle(GetPlayerPed(player)) then
+            if not IsPedInAnyVehicle(GetPlayerPed(player)) and not IsPedInAnyVehicle(GetPlayerPed(GetPlayerPed(-1))) then
                 TriggerServerEvent("police:server:CuffPlayer", playerId, true)
                 HandCuffAnimation()
+            else
+                QBCore.Functions.Notify("Je kunt niet boeien in een voertuig", "error")
             end
         else
             QBCore.Functions.Notify("Niemand in de buurt!", "error")
@@ -287,13 +289,16 @@ AddEventHandler('police:client:CuffPlayer', function()
             QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
                 if result then 
                     local playerId = GetPlayerServerId(player)
-                    TriggerServerEvent("police:server:CuffPlayer", playerId, false)
-                    HandCuffAnimation()
+                    if not IsPedInAnyVehicle(GetPlayerPed(player)) and not IsPedInAnyVehicle(GetPlayerPed(GetPlayerPed(-1))) then
+                        TriggerServerEvent("police:server:CuffPlayer", playerId, false)
+                        HandCuffAnimation()
+                    else
+                        QBCore.Functions.Notify("Je kunt niet boeien in een voertuig", "error")
+                    end
                 else
                     QBCore.Functions.Notify("Je hebt geen handboeien bij je", "error")
                 end
             end, "handcuffs")
-            
         else
             QBCore.Functions.Notify("Niemand in de buurt!", "error")
         end
