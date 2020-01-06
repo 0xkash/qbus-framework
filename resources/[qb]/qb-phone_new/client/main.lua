@@ -26,53 +26,29 @@ local PhoneData = {
     Chats = {},
     Invoices = {},
     CallData = {},
-    RecentCalls = {
-        [1] = {
-            name = "test",
-            time = "12:05",
-            type = "missed",
-            number = "0612345678",
-        },
-        [2] = {
-            name = "test2",
-            time = "12:05",
-            type = "outgoing",
-            number = "0612345678",
-        },
-        [3] = {
-            name = "test3",
-            time = "12:05",
-            type = "missed",
-            number = "0612345678",
-        },
-        [4] = {
-            name = "test4",
-            time = "12:05",
-            type = "outgoing",
-            number = "0612345678",
-        },
-    },
+    RecentCalls = {},
+    Garage = {},
 }
 
-RegisterNUICallback('AddMissedCall', function(data, cb)
-    local CallData = data.cdata
-
-    table.insert(PhoneData.RecentCalls, {
-        name = CallData.name,
-        time = data.time,
-        type = "missed",
-        number = CallData.number
-    })
-end)
-
 RegisterNetEvent('qb-phone_new:client:AddRecentCall')
-AddEventHandler('qb-phone_new:client:AddRecentCall', function(type, time)
+AddEventHandler('qb-phone_new:client:AddRecentCall', function(CallData, type, time)
     table.insert(PhoneData.RecentCalls, {
-        name = PhoneData.CallData.TargetData.name,
+        name = CallData.TargetData.name,
         time = time,
         type = type,
-        number = PhoneData.CallData.TargetData.number
+        number = CallData.TargetData.number
     })
+    TriggerServerEvent('qb-phone:server:SetPhoneAlerts', "phone")
+    Config.PhoneApplications["phone"].Alerts = Config.PhoneApplications["phone"].Alerts + 1
+    
+    SendNUIMessage({ action = "RefreshAppAlerts", AppData = Config.PhoneApplications })
+end)
+
+RegisterNUICallback('ClearRecentAlerts', function(data, cb)
+    TriggerServerEvent('qb-phone:server:SetPhoneAlerts', "phone", 0)
+    Config.PhoneApplications["phone"].Alerts = 0
+    SendNUIMessage({ action = "RefreshAppAlerts", AppData = Config.PhoneApplications })
+    cb('ok')
 end)
 
 RegisterNUICallback('SetBackground', function(data)
@@ -121,6 +97,7 @@ end)
 
 Citizen.CreateThread(function() 
     Citizen.Wait(500)
+    isLoggedIn = true
     QBCore.Functions.TriggerCallback('qb-phone_new:server:GetPhoneData', function(pData) 
         SendNUIMessage({ 
             action = "LoadPhoneApplications", 
@@ -176,8 +153,26 @@ Citizen.CreateThread(function()
             PhoneData = PhoneData, 
             PlayerData = PhoneData.PlayerData, 
         })
-        print('data loaded!')
     end)
+end)
+
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(60000)
+
+        if isLoggedIn then
+            QBCore.Functions.TriggerCallback('qb-phone_new:server:GetPhoneData', function(pData)   
+                if pData.PlayerContacts ~= nil and next(pData.PlayerContacts) ~= nil then 
+                    PhoneData.Contacts = pData.PlayerContacts
+                end
+
+                SendNUIMessage({
+                    action = "RefreshContacts",
+                    Contacts = PhoneData.Contacts
+                })
+            end)
+        end
+    end
 end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
@@ -275,7 +270,7 @@ RegisterNUICallback('SendMessage', function(data, cb)
                 })
             elseif ChatType == "location" then
                 table.insert(PhoneData.Chats[ChatNumber].messages[ChatDate], {
-                    message = ChatMessage,
+                    message = "Gedeelde Locatie",
                     time = ChatTime,
                     sender = PhoneData.PlayerData.citizenid,
                     type = ChatType,
@@ -298,7 +293,7 @@ RegisterNUICallback('SendMessage', function(data, cb)
                 })
             elseif ChatType == "location" then
                 table.insert(PhoneData.Chats[ChatNumber].messages[ChatDate], {
-                    message = ChatMessage,
+                    message = "Gedeelde Locatie",
                     time = ChatTime,
                     sender = PhoneData.PlayerData.citizenid,
                     type = ChatType,
@@ -327,7 +322,7 @@ RegisterNUICallback('SendMessage', function(data, cb)
             })
         elseif ChatType == "location" then
             table.insert(PhoneData.Chats[ChatNumber].messages[ChatDate], {
-                message = ChatMessage,
+                message = "Gedeelde Locatie",
                 time = ChatTime,
                 sender = PhoneData.PlayerData.citizenid,
                 type = ChatType,
@@ -754,9 +749,9 @@ RegisterNUICallback('CallContact', function(data, cb)
             ic = PhoneData.CallData.InCall,
         }
         cb(status)
-        -- if CanCall and not status.ic and (data.ContactData.number ~= PhoneData.PlayerData.charinfo.phone) then
+        if CanCall and not status.ic and (data.ContactData.number ~= PhoneData.PlayerData.charinfo.phone) then
             CallContact(data.ContactData)
-        -- end
+        end
     end, data.ContactData)
 end)
 
@@ -805,7 +800,6 @@ CallContact = function(CallData)
                     else
                         PhonePlayOut()
                     end
-                    TriggerServerEvent('qb-phone_new:server:AddRecentCall', "outgoing", PhoneData.CallData)
                     break
                 end
             else
@@ -969,7 +963,6 @@ AddEventHandler('qb-phone_new:client:GetCalled', function(CallerNumber, CallId)
                         })
                     end
                 else
-                    TriggerServerEvent('qb-phone_new:server:AddRecentCall', "outgoing", PhoneData.CallData)
                     SendNUIMessage({
                         action = "IncomingCallAlert",
                         CallData = PhoneData.CallData.TargetData,
@@ -978,7 +971,7 @@ AddEventHandler('qb-phone_new:client:GetCalled', function(CallerNumber, CallId)
                     break
                 end
             else
-                TriggerServerEvent('qb-phone_new:server:AddRecentCall', "outgoing", PhoneData.CallData)
+                TriggerServerEvent('qb-phone_new:server:AddRecentCall', "missed", PhoneData.CallData)
                 SendNUIMessage({
                     action = "IncomingCallAlert",
                     CallData = PhoneData.CallData.TargetData,

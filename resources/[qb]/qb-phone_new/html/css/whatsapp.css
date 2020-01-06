@@ -347,6 +347,11 @@
     margin-top: .7vh;
     padding: .4vh;
     text-indent: .3vh;
+    transition: .1s linear;
+}
+.whatsapp-shared-location:hover {
+    opacity: .8;
+    transition: .1s linear;
 }
 .whatsapp-openedchat-message-me {
     background: #dcf8c6;

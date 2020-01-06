@@ -1,0 +1,88 @@
+.garage-app {
+    display: block;
+    height: 100%;
+    width: 100%;
+    background: #2f3640;
+    overflow: hidden;
+}
+.garage-header {
+    position: absolute;
+    top: 6vh;
+    left: 2vh;
+    color: white;
+    font-family: 'Samsung Sans Medium';
+    font-size: 1.6vh;
+    letter-spacing: .05vh;
+}
+
+.garage-vehicles::-webkit-scrollbar {
+    display: none;
+    width: .4vh;
+}
+
+.garage-vehicles::-webkit-scrollbar-thumb {
+    background-color: #686de0;
+}
+
+.garage-vehicles::-webkit-scrollbar-track {
+    background-color: #ebebeb;
+}
+
+.garage-vehicles {
+    position: absolute;
+    height: 40vh;
+    top: 11.5vh;
+    width: 99%;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.garage-vehicle {
+    position: relative;
+    height: 6vh;
+    background: #ECE9E6;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #FFFFFF, #ECE9E6);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #FFFFFF, #ECE9E6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background-position: 0% 100%;
+    margin: 0 auto;
+    width: 88%;
+    border-radius: 1.5vh;
+    box-shadow: 0 0 .5vh 0 rgba(0, 0, 0, 0.2);
+    margin-top: 1vh;
+    transition: .1s;
+    overflow: hidden;
+}
+
+.garage-vehicle:hover {
+    background-position: 100% 0%;
+    transition: .1s;
+}
+
+.garage-vehicle-name {
+    position: absolute;
+    left: 1vh;
+    top: 1vh;
+    font-family: 'Samsung Sans Regular';
+    font-size: 1.4vh;
+    color: rgb(56, 56, 56);
+}
+
+.garage-vehicle-information {
+    position: absolute;
+    left: 1vh;
+    top: 3.2vh;
+    font-family: 'Samsung Sans Regular';
+    font-size: 1.2vh;
+    color: rgba(56, 56, 56, 0.808);
+}
+
+.garage-vehicle-more-information {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.233);
+    width: 100%;
+    height: 7vh;
+    bottom: 0;
+}

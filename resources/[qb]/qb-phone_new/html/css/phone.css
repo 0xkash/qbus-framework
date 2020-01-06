@@ -50,8 +50,8 @@
 }
 
 .phone-selected-footer-tab {
-    color: #686de0;
-    border-bottom: .4vh solid #686de0;   
+    color: #27ae60;
+    border-bottom: .4vh solid #27ae60;   
 }
 
 .phone-contacts {
@@ -349,7 +349,7 @@
 }
 
 .phone-contact-actions:hover {
-    color: #f9ca24;
+    color: #e74c3c;
 }
 
 .phone-contact-action-buttons {

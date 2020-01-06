@@ -8,7 +8,7 @@ $(document).on('click', '.phone-app-footer-button', function(e){
 
     var PressedFooterTab = $(this).data('phonefootertab');
 
-    if (PressedBackground !== CurrentFooterTab) {
+    if (PressedFooterTab !== CurrentFooterTab) {
         var PreviousTab = $(this).parent().find('[data-phonefootertab="'+CurrentFooterTab+'"');
 
         $(this).addClass('phone-selected-footer-tab');
@@ -16,6 +16,10 @@ $(document).on('click', '.phone-app-footer-button', function(e){
 
         $(".phone-"+CurrentFooterTab).hide();
         $(".phone-"+PressedFooterTab).show();
+
+        if (PressedFooterTab == "recent") {
+            $.post('http://qb-phone_new/ClearRecentAlerts');
+        }
 
         CurrentFooterTab = PressedFooterTab;
     }
@@ -74,7 +78,47 @@ $(document).on('click', '.phone-recent-call', function(e){
     var RecendId = $(this).attr('id');
     var RecentData = $("#"+RecendId).data('recentData');
 
-    console.log(JSON.stringify(RecentData));
+    cData = {
+        number: RecentData.number,
+        name: RecentData.name
+    }
+
+    $.post('http://qb-phone_new/CallContact', JSON.stringify({
+        ContactData: cData
+    }), function(status){
+        if (cData.number !== QB.Phone.Data.PlayerData.charinfo.phone) {
+            if (status.io) {
+                if (status.cc) {
+                    if (!status.ic) {
+                        $(".phone-call-outgoing").css({"display":"block"});
+                        $(".phone-call-incoming").css({"display":"none"});
+                        $(".phone-call-ongoing").css({"display":"none"});
+                        $(".phone-call-outgoing-caller").html(cData.name);
+                        QB.Phone.Functions.HeaderTextColor("white", 400);
+                        QB.Phone.Animations.TopSlideUp('.phone-application-container', 400, -160);
+                        setTimeout(function(){
+                            $(".phone-app").css({"display":"none"});
+                            QB.Phone.Animations.TopSlideDown('.phone-application-container', 400, 0);
+                            QB.Phone.Functions.ToggleApp("phone-call", "block");
+                        }, 450);
+    
+                        CallData.name = cData.name;
+                        CallData.number = cData.number;
+                    
+                        QB.Phone.Data.currentApplication = "phone-call";
+                    } else {
+                        QB.Phone.Notifications.Add("fas fa-phone", "Telefoon", "Je bent al ingesprek!");
+                    }
+                } else {
+                    QB.Phone.Notifications.Add("fas fa-phone", "Telefoon", "Dit persoon is in gesprek!");
+                }
+            } else {
+                QB.Phone.Notifications.Add("fas fa-phone", "Telefoon", "Dit persoon is niet bereikbaar!");
+            }
+        } else {
+            QB.Phone.Notifications.Add("fas fa-phone", "Telefoon", "Je kan niet je eigen nummer bellen!");
+        }
+    });
 });
 
 QB.Phone.Functions.LoadContacts = function(myContacts) {

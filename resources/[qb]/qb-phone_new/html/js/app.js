@@ -51,6 +51,8 @@ QB.Phone.Functions.SetupAppWarnings = function(AppData) {
     $.each(AppData, function(i, app){
         var AppObject = $(".phone-applications").find("[data-appslot='"+app.slot+"']").find('.app-unread-alerts');
 
+        console.log(app.app+": "+app.Alerts)
+
         if (app.Alerts > 0) {
             $(AppObject).html(app.Alerts);
             $(AppObject).css({"display":"block"});
@@ -420,6 +422,9 @@ $(document).ready(function(){
                 QB.Phone.Data.CallActive = false;
                 QB.Phone.Data.currentApplication = null;
                 break;
+            case "RefreshContacts":
+                QB.Phone.Functions.LoadContacts(event.data.Contacts);
+                break;
         }
     })
 });
@@ -432,4 +437,4 @@ $(document).on('keydown', function() {
     }
 });
 
-// QB.Phone.Functions.Open();
+QB.Phone.Functions.Open();

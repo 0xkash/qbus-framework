@@ -27,6 +27,7 @@ QBCore.Functions.CreateCallback('qb-phone_new:server:GetPhoneData', function(sou
         Chats = {},
         Hashtags = {},
         Invoices = {},
+        Garage = {},
     }
 
     QBCore.Functions.ExecuteSql(true, "SELECT * FROM player_contacts WHERE `citizenid` = '"..Player.PlayerData.citizenid.."' ORDER BY `name` ASC", function(result)
@@ -37,6 +38,18 @@ QBCore.Functions.CreateCallback('qb-phone_new:server:GetPhoneData', function(sou
             end
             
             PhoneData.PlayerContacts = result
+        end        
+    end)
+
+    QBCore.Functions.ExecuteSql(true, "SELECT * FROM player_vehicles WHERE `citizenid` = '"..Player.PlayerData.citizenid.."'", function(result)
+        if result[1] ~= nil then
+            for k, v in pairs(result) do
+                v.garage = Garages[v.garage].label
+                v.vehicle = QBCore.Shared.Vehicles[v.vehicle].name
+                v.brand = QBCore.Shared.Vehicles[v.vehicle].brand
+            end
+            
+            PhoneData.Garage = result
         end        
     end)
 
@@ -369,41 +382,45 @@ AddEventHandler('qb-phone_new:server:UpdateMessages', function(ChatMessages, Cha
             local TargetData = QBCore.Functions.GetPlayerByCitizenId(Player[1].citizenid)
 
             if TargetData ~= nil then
-                if New then
-                    -- Insert for target
-                    QBCore.Functions.ExecuteSql(true, "INSERT INTO `phone_messages` (`citizenid`, `number`, `messages`) VALUES ('"..TargetData.PlayerData.citizenid.."', '"..SenderData.PlayerData.charinfo.phone.."', '"..json.encode(ChatMessages).."')")
+                QBCore.Functions.ExecuteSql(true, "SELECT * FROM `phone_messages` WHERE `citizenid` = '"..SenderData.PlayerData.citizenid.."' AND `number` = '"..ChatNumber.."'", function(Chat)
+                    if Chat[1] ~= nil then
+                        -- Update for target
+                        QBCore.Functions.ExecuteSql(true, "UPDATE `phone_messages` SET `messages` = '"..json.encode(ChatMessages).."' WHERE `citizenid` = '"..TargetData.PlayerData.citizenid.."' AND `number` = '"..SenderData.PlayerData.charinfo.phone.."'")
+                                
+                        -- Update for sender
+                        QBCore.Functions.ExecuteSql(true, "UPDATE `phone_messages` SET `messages` = '"..json.encode(ChatMessages).."' WHERE `citizenid` = '"..SenderData.PlayerData.citizenid.."' AND `number` = '"..TargetData.PlayerData.charinfo.phone.."'")
                     
-                    -- Insert for sender
-                    QBCore.Functions.ExecuteSql(true, "INSERT INTO `phone_messages` (`citizenid`, `number`, `messages`) VALUES ('"..SenderData.PlayerData.citizenid.."', '"..TargetData.PlayerData.charinfo.phone.."', '"..json.encode(ChatMessages).."')")
-                
-                    -- Send notification & Update messages for target
-                    TriggerClientEvent('qb-phone_new:client:UpdateMessages', TargetData.PlayerData.source, ChatMessages, SenderData.PlayerData.charinfo.phone, true)
-                else
-                    -- Update for target
-                    QBCore.Functions.ExecuteSql(true, "UPDATE `phone_messages` SET `messages` = '"..json.encode(ChatMessages).."' WHERE `citizenid` = '"..TargetData.PlayerData.citizenid.."' AND `number` = '"..SenderData.PlayerData.charinfo.phone.."'")
-                            
-                    -- Update for sender
-                    QBCore.Functions.ExecuteSql(true, "UPDATE `phone_messages` SET `messages` = '"..json.encode(ChatMessages).."' WHERE `citizenid` = '"..SenderData.PlayerData.citizenid.."' AND `number` = '"..TargetData.PlayerData.charinfo.phone.."'")
-                
-                    -- Send notification & Update messages for target
-                    TriggerClientEvent('qb-phone_new:client:UpdateMessages', TargetData.PlayerData.source, ChatMessages, SenderData.PlayerData.charinfo.phone, false)
-                end
+                        -- Send notification & Update messages for target
+                        TriggerClientEvent('qb-phone_new:client:UpdateMessages', TargetData.PlayerData.source, ChatMessages, SenderData.PlayerData.charinfo.phone, false)
+                    else
+                        -- Insert for target
+                        QBCore.Functions.ExecuteSql(true, "INSERT INTO `phone_messages` (`citizenid`, `number`, `messages`) VALUES ('"..TargetData.PlayerData.citizenid.."', '"..SenderData.PlayerData.charinfo.phone.."', '"..json.encode(ChatMessages).."')")
+                                            
+                        -- Insert for sender
+                        QBCore.Functions.ExecuteSql(true, "INSERT INTO `phone_messages` (`citizenid`, `number`, `messages`) VALUES ('"..SenderData.PlayerData.citizenid.."', '"..TargetData.PlayerData.charinfo.phone.."', '"..json.encode(ChatMessages).."')")
+
+                        -- Send notification & Update messages for target
+                        TriggerClientEvent('qb-phone_new:client:UpdateMessages', TargetData.PlayerData.source, ChatMessages, SenderData.PlayerData.charinfo.phone, true)
+                    end
+                end)
             else
-                if New then
-                    -- Insert for target
-                    QBCore.Functions.ExecuteSql(true, "INSERT INTO `phone_messages` (`citizenid`, `number`, `messages`) VALUES ('"..Player[1].citizenid.."', '"..SenderData.PlayerData.charinfo.phone.."', '"..json.encode(ChatMessages).."')")
-                    
-                    -- Insert for sender
-                    Player[1].charinfo = json.decode(Player[1].charinfo)
-                    QBCore.Functions.ExecuteSql(true, "INSERT INTO `phone_messages` (`citizenid`, `number`, `messages`) VALUES ('"..SenderData.PlayerData.citizenid.."', '"..Player[1].charinfo.phone.."', '"..json.encode(ChatMessages).."')")
-                else
-                    -- Update for target
-                    QBCore.Functions.ExecuteSql(true, "UPDATE `phone_messages` SET `messages` = '"..json.encode(ChatMessages).."' WHERE `citizenid` = '"..Player[1].citizenid.."' AND `number` = '"..SenderData.PlayerData.charinfo.phone.."'")
-                            
-                    -- Update for sender
-                    Player[1].charinfo = json.decode(Player[1].charinfo)
-                    QBCore.Functions.ExecuteSql(true, "UPDATE `phone_messages` SET `messages` = '"..json.encode(ChatMessages).."' WHERE `citizenid` = '"..SenderData.PlayerData.citizenid.."' AND `number` = '"..Player[1].charinfo.phone.."'")
-                end
+                QBCore.Functions.ExecuteSql(true, "SELECT * FROM `phone_messages` WHERE `citizenid` = '"..SenderData.PlayerData.citizenid.."' AND `number` = '"..ChatNumber.."'", function(Chat)
+                    if Chat[1] ~= nil then
+                        -- Update for target
+                        QBCore.Functions.ExecuteSql(true, "UPDATE `phone_messages` SET `messages` = '"..json.encode(ChatMessages).."' WHERE `citizenid` = '"..Player[1].citizenid.."' AND `number` = '"..SenderData.PlayerData.charinfo.phone.."'")
+                                
+                        -- Update for sender
+                        Player[1].charinfo = json.decode(Player[1].charinfo)
+                        QBCore.Functions.ExecuteSql(true, "UPDATE `phone_messages` SET `messages` = '"..json.encode(ChatMessages).."' WHERE `citizenid` = '"..SenderData.PlayerData.citizenid.."' AND `number` = '"..Player[1].charinfo.phone.."'")
+                    else
+                        -- Insert for target
+                        QBCore.Functions.ExecuteSql(true, "INSERT INTO `phone_messages` (`citizenid`, `number`, `messages`) VALUES ('"..Player[1].citizenid.."', '"..SenderData.PlayerData.charinfo.phone.."', '"..json.encode(ChatMessages).."')")
+                        
+                        -- Insert for sender
+                        Player[1].charinfo = json.decode(Player[1].charinfo)
+                        QBCore.Functions.ExecuteSql(true, "INSERT INTO `phone_messages` (`citizenid`, `number`, `messages`) VALUES ('"..SenderData.PlayerData.citizenid.."', '"..Player[1].charinfo.phone.."', '"..json.encode(ChatMessages).."')")
+                    end
+                end)
             end
         end
     end)
@@ -416,20 +433,17 @@ AddEventHandler('qb-phone_new:server:AddRecentCall', function(type, data)
 
     local Trgt = QBCore.Functions.GetPlayerByPhone(data.TargetData.number)
 
-    local Date = os.date('*t')
-    local hours = Date.hour
-    local minute = Date.min
-
-    print(hours)
-    print(minute)
+    local Hour = os.date("%H")
+    local Minute = os.date("%M")
+    local Label = Hour..":"..Minute
 
     if Trgt ~= nil then
-        TriggerClientEvent('qb-phone_new:client:AddRecentCall', Trgt.PlayerData.source, type)
+        TriggerClientEvent('qb-phone_new:client:AddRecentCall', Trgt.PlayerData.source, data,type, Label)
     end
     if type == "outgoing" then
-        TriggerClientEvent('qb-phone_new:client:AddRecentCall', src, "missed")
+        TriggerClientEvent('qb-phone_new:client:AddRecentCall', src, data, "missed", Label)
     else
-        TriggerClientEvent('qb-phone_new:client:AddRecentCall', src, "outgoing")
+        TriggerClientEvent('qb-phone_new:client:AddRecentCall', src, data, "outgoing", Label)
     end
 end)
 

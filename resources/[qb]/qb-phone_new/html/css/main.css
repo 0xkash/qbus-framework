@@ -157,10 +157,10 @@ body {
 
 /* Phone Application Contanier */
 .phone-application-container {
-    display: none;
-    /* display: block; */
-    top: -160%;
-    /* top: 0; */
+    /* display: none; */
+    display: block;
+    /* top: -160%; */
+    top: 0;
     position: absolute;
     height: 92%;
     width: 100%;
