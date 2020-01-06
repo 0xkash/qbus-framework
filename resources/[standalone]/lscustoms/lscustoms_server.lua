@@ -33,7 +33,7 @@ RegisterServerEvent("lscustoms:server:SaveVehicleProps")
 AddEventHandler("lscustoms:server:SaveVehicleProps", function(vehicleProps)
 	local src = source
     if IsVehicleOwned(vehicleProps.plate) then
-        QBCore.Functions.ExecuteSql(true, "UPDATE `player_vehicles` SET `mods` = '"..json.encode(vehicleProps).."' WHERE `plate` = '"..vehicleProps.plate.."'")
+        QBCore.Functions.ExecuteSql(false, "UPDATE `player_vehicles` SET `mods` = '"..json.encode(vehicleProps).."' WHERE `plate` = '"..vehicleProps.plate.."'")
     end
 end)
 
