@@ -491,7 +491,7 @@ Citizen.CreateThread(function()
             WarMenu.Display()
         end
 
-        Citizen.Wait(0)
+        Citizen.Wait(3)
     end
 end)
 
