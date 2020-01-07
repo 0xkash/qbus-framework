@@ -178,6 +178,13 @@ QBCore.Commands.Add("reportr", "Reply op een report", {}, false, function(source
     if OtherPlayer ~= nil then
         TriggerClientEvent('chatMessage', playerId, "ADMIN - "..GetPlayerName(source), "warning", msg)
         TriggerClientEvent('QBCore:Notify', source, "Reactie gestuurd")
+        for k, v in pairs(QBCore.Functions.GetPlayers()) do
+            if QBCore.Functions.HasPermission(v, "admin") then
+                if QBCore.Functions.IsOptin(v) then
+                    TriggerClientEvent('chatMessage', v, "ReportReply("..source..") - "..GetPlayerName(source), "warning", msg)
+                end
+            end
+        end
     else
         TriggerClientEvent('QBCore:Notify', source, "Persoon is niet online", "error")
     end
