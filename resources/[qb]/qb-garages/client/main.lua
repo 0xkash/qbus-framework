@@ -491,7 +491,7 @@ Citizen.CreateThread(function()
                                         local engineDamage = round(GetVehicleEngineHealth(curVeh), 1)
                                         local totalFuel = exports['LegacyFuel']:GetFuel(curVeh)
                 
-                                        TriggerServerEvent('qb-garage:server:updateVehicleStatus', totalFuel, engineDamage, bodyDamage, plate, k)
+                                        TriggerServerEvent('qb-garage:server:updateVehicleStatus', totalFuel, engineDamage, bodyDamage, plate, currentHouseGarage)
                                         TriggerServerEvent('qb-garage:server:updateVehicleState', 1, plate, currentHouseGarage)
                                         QBCore.Functions.DeleteVehicle(curVeh)
                                         QBCore.Functions.Notify("Voertuig geparkeerd in, "..HouseGarages[currentHouseGarage].label, "primary", 4500)
