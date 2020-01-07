@@ -2242,31 +2242,32 @@
       <sirenSettings value="666" />
     </Item>
     <Item>
-      <modelName>pbklasse</modelName>
+			<modelName>pbklasse</modelName>
 			<colors>
 				<Item>
+					<!-- nobel white -->
 					<indices content="char_array">
-						111
-					  111
-					  122
-					  156
+            134
 					</indices>
 					<liveries />
 				</Item>
 			</colors>
 			<kits>
 				<Item>0_default_modkit</Item>
-			</kits>
 			<windowsWithExposedEdges />
 			<plateProbabilities>
 				<Probabilities>
 					<Item>
-						<Name>police guv plate</Name>
-						<Value value="100" />
+						<Name>Standard White</Name>
+						<Value value="80"/>
+					</Item>
+					<Item>
+						<Name>White Plate 2</Name>
+						<Value value="20"/>
 					</Item>
 				</Probabilities>
 			</plateProbabilities>
-			<lightSettings value="72"/>
+			<lightSettings value="1"/>
 			<sirenSettings value="666"/>
 		</Item>
     <Item>
