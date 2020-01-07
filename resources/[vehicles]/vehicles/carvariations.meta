@@ -2248,12 +2248,16 @@
 					<!-- nobel white -->
 					<indices content="char_array">
             134
+            134
+            134
+            156
+            7
+            111
 					</indices>
-					<liveries />
+					<liveries>
+					</liveries>
 				</Item>
 			</colors>
-			<kits>
-				<Item>0_default_modkit</Item>
 			<windowsWithExposedEdges />
 			<plateProbabilities>
 				<Probabilities>
