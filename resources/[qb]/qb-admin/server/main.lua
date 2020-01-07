@@ -170,7 +170,7 @@ function tablelength(table)
     return count
 end
 
-QBCore.Commands.Add("reportr", "Toggle inkomende reports uit of aan", {}, false, function(source, args)
+QBCore.Commands.Add("reportr", "Reply op een report", {}, false, function(source, args)
     local playerId = tonumber(args[1])
     table.remove(args, 1)
     local msg = table.concat(args, " ")
