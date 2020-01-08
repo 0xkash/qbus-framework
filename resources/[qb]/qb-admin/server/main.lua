@@ -90,8 +90,10 @@ end, "admin")
 QBCore.Commands.Add("report", "Stuur een report naar admins (alleen wanneer nodig, MAAK HIER GEEN MISBRUIK VAN)", {{name="bericht", help="Bericht die je wilt sturen"}}, true, function(source, args)
     local msg = table.concat(args, " ")
 
+    local Player = QBCore.Functions.GetPlayer(source)
     TriggerClientEvent('qb-admin:client:SendReport', -1, GetPlayerName(source), source, msg)
     TriggerClientEvent('chatMessage', source, "REPORT VERSTUURD", "normal", msg)
+    TriggerEvent("qb-log:server:sendLog", Player.PlayerData.citizenid, "reportreply", {message=msg})
 end)
 
 QBCore.Commands.Add("staffchat", "Bericht naar alle staff sturen", {{name="bericht", help="Bericht die je wilt sturen"}}, true, function(source, args)
@@ -175,9 +177,11 @@ QBCore.Commands.Add("reportr", "Reply op een report", {}, false, function(source
     table.remove(args, 1)
     local msg = table.concat(args, " ")
     local OtherPlayer = QBCore.Functions.GetPlayer(playerId)
+    local Player = QBCore.Functions.GetPlayer(source)
     if OtherPlayer ~= nil then
         TriggerClientEvent('chatMessage', playerId, "ADMIN - "..GetPlayerName(source), "warning", msg)
         TriggerClientEvent('QBCore:Notify', source, "Reactie gestuurd")
+        TriggerEvent("qb-log:server:sendLog", Player.PlayerData.citizenid, "reportreply", {otherCitizenId=OtherPlayer.PlayerData.citizenid, message=msg})
         for k, v in pairs(QBCore.Functions.GetPlayers()) do
             if QBCore.Functions.HasPermission(v, "admin") then
                 if QBCore.Functions.IsOptin(v) then
