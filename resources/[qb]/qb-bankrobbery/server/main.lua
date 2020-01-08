@@ -78,7 +78,7 @@ AddEventHandler('qb-bankrobbery:server:recieveItem', function(type)
                 TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[item.item], "add")
             elseif Config.RewardTypes[itemType].type == "money" then
                 local moneyAmount = math.random(Config.RewardTypes[itemType].maxAmount)
-                ply.Functions.AddMoney('cash', moneyAmount)
+                ply.Functions.AddMoney('cash', moneyAmount, "small-bankrobbery")
             end
         else
             ply.Functions.AddItem('security_card_01', 1)
@@ -99,7 +99,7 @@ AddEventHandler('qb-bankrobbery:server:recieveItem', function(type)
                 TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[item.item], "add")
             elseif Config.RewardTypes[itemType].type == "money" then
                 local moneyAmount = math.random(500, 5000)
-                ply.Functions.AddMoney('cash', moneyAmount)
+                ply.Functions.AddMoney('cash', moneyAmount, "paleto-bankrobbery")
             end
         else
             ply.Functions.AddItem('security_card_02', 1)
@@ -127,7 +127,7 @@ AddEventHandler('qb-bankrobbery:server:recieveItem', function(type)
                 TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[item.item], "add")
             elseif Config.RewardTypes[itemType].type == "money" then
                 local moneyAmount = math.random(1200, 7000)
-                ply.Functions.AddMoney('cash', moneyAmount)
+                ply.Functions.AddMoney('cash', moneyAmount, "pacific-bankrobbery")
             end
         else
             local info = {

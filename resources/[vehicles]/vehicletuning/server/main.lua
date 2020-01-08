@@ -14,10 +14,10 @@ AddEventHandler('vehicletuning:server:BuyUpgrade', function(costs)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     local bankBalance = Player.PlayerData.money["bank"]
-    if Player.Functions.RemoveMoney("cash", costs) then
+    if Player.Functions.RemoveMoney("cash", costs, "vehicle-tuning-bought-upgrade") then
         -- :)
     elseif bankBalance >= costs then
-        Player.Functions.RemoveMoney("bank", costs)
+        Player.Functions.RemoveMoney("bank", costs, "vehicle-tuning-bought-upgrade")
     else
         TriggerClientEvent('QBCore:Notify', src, "Je hebt niet genoeg geld!", "error")
     end

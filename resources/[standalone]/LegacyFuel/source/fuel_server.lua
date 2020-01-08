@@ -11,7 +11,7 @@ AddEventHandler('fuel:pay', function(price)
 	local pData = QBCore.Functions.GetPlayer(src)
 	local amount = round(price)
 
-	if pData.Functions.RemoveMoney('cash', amount) then
+	if pData.Functions.RemoveMoney('cash', amount, "bought-fuel") then
 		TriggerClientEvent("QBCore:Notify", src, "Uw auto is bijgevuld", "success")
 	end
 end)

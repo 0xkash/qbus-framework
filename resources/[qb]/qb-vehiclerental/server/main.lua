@@ -12,7 +12,7 @@ AddEventHandler('qb-vehiclerental:server:SetVehicleRented', function(plate, bool
     local plyCid = ply.PlayerData.citizenid
 
     if bool then
-        if ply.Functions.RemoveMoney('cash', vehicleData.price) then
+        if ply.Functions.RemoveMoney('cash', vehicleData.price, "vehicle-rentail-bail") then
             RentedVehicles[plyCid] = plate
             TriggerClientEvent('QBCore:Notify', src, 'Je hebt de borg van €'..vehicleData.price..' betaald.', 'success', 3500)
             TriggerClientEvent('qb-vehiclerental:server:SpawnRentedVehicle', src, plate, vehicleData)
@@ -22,7 +22,7 @@ AddEventHandler('qb-vehiclerental:server:SetVehicleRented', function(plate, bool
         return
     end
     TriggerClientEvent('QBCore:Notify', src, 'Je hebt je borg van €'..vehicleData.price..' terug gekregen.', 'success', 3500)
-    ply.Functions.AddMoney('cash', vehicleData.price)
+    ply.Functions.AddMoney('cash', vehicleData.price, "vehicle-rentail-bail")
     print(vehicleData.price)
     RentedVehicles[plyCid] = nil
 end)
