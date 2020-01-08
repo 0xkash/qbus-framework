@@ -35,7 +35,7 @@ AddEventHandler("qb-pawnshop:server:sellPawnItems", function()
                 end
             end
         end
-        Player.Functions.AddMoney("cash", price)
+        Player.Functions.AddMoney("cash", price, "sold-pawn-items")
         TriggerClientEvent('QBCore:Notify', src, "Je hebt je items verkocht")
     end
 end)
@@ -57,7 +57,7 @@ AddEventHandler("qb-pawnshop:server:sellHardwarePawnItems", function()
             end
         end
         Player.Functions.RemoveItem("certificate", totalAmount)
-        Player.Functions.AddMoney("cash", price)
+        Player.Functions.AddMoney("cash", price, "sold-hardware-pawn-items")
         TriggerClientEvent('QBCore:Notify', src, "Je hebt je items verkocht")
     end
 end)
@@ -91,7 +91,7 @@ AddEventHandler("qb-pawnshop:server:sellGold", function()
                 end
             end
         end
-        Player.Functions.AddMoney("cash", price)
+        Player.Functions.AddMoney("cash", price, "sold-gold")
         TriggerClientEvent('QBCore:Notify', src, "Je hebt je items verkocht")
     end
 end)

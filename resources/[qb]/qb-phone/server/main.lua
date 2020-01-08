@@ -30,14 +30,14 @@ AddEventHandler('qb-phone:server:transferBank', function(amount, iban)
             local recieverSteam = QBCore.Functions.GetPlayerByCitizenId(result[1].citizenid)
 
             if recieverSteam then
-                recieverSteam.Functions.AddMoney('bank', amount)
-                sender.Functions.RemoveMoney('bank', amount)
+                recieverSteam.Functions.AddMoney('bank', amount, "phone-transfered-from-"..sender.PlayerData.citizenid)
+                sender.Functions.RemoveMoney('bank', amount, "phone-transfered-money-to-"..recieverSteam.PlayerData.citizenid)
                 TriggerClientEvent('qb-phone:client:RecievedBankNotify', recieverSteam.PlayerData.source, amount, sender.PlayerData.charinfo.account)
             else
                 local moneyInfo = json.decode(result[1].money)
                 moneyInfo.bank = round((moneyInfo.bank + amount))
                 QBCore.Functions.ExecuteSql(false, "UPDATE `players` SET `money` = '"..json.encode(moneyInfo).."' WHERE `citizenid` = '"..result[1].citizenid.."'")
-                sender.Functions.RemoveMoney('bank', amount)
+                sender.Functions.RemoveMoney('bank', amount, "phone-transfered-money")
             end
         else
             TriggerClientEvent('QBCore:Notify', src, "Dit rekeningnummer bestaat niet!", "error")

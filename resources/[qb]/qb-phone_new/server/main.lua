@@ -170,8 +170,8 @@ QBCore.Functions.CreateCallback('qb-phone_new:server:PayInvoice', function(sourc
 
     if Trgt ~= nil then
         if Ply.PlayerData.money.bank >= amount then
-            Ply.Functions.RemoveMoney('bank', amount)
-            Trgt.Functions.AddMoney('bank', amount)
+            Ply.Functions.RemoveMoney('bank', amount, "paid-invoice")
+            Trgt.Functions.AddMoney('bank', amount, "paid-invoice")
 
             QBCore.Functions.ExecuteSql(true, "DELETE FROM `phone_invoices` WHERE `invoiceid` = '"..invoiceId.."'")
             QBCore.Functions.ExecuteSql(false, "SELECT * FROM `phone_invoices` WHERE `citizenid` = '"..Ply.PlayerData.citizenid.."'", function(invoices)
@@ -204,7 +204,7 @@ QBCore.Functions.CreateCallback('qb-phone_new:server:PayInvoice', function(sourc
                 local moneyInfo = json.decode(result[1].money)
                 moneyInfo.bank = math.ceil((moneyInfo.bank + amount))
                 QBCore.Functions.ExecuteSql(true, "UPDATE `players` SET `money` = '"..json.encode(moneyInfo).."' WHERE `citizenid` = '"..sender.."'")
-                Ply.Functions.RemoveMoney('bank', amount)
+                Ply.Functions.RemoveMoney('bank', amount, "paid-invoice")
                 QBCore.Functions.ExecuteSql(true, "DELETE FROM `phone_invoices` WHERE `invoiceid` = '"..invoiceId.."'")
                 QBCore.Functions.ExecuteSql(false, "SELECT * FROM `phone_invoices` WHERE `citizenid` = '"..Ply.PlayerData.citizenid.."'", function(invoices)
                     if invoices[1] ~= nil then
@@ -338,8 +338,8 @@ AddEventHandler('qb-phone_new:server:TransferMoney', function(iban, amount)
 
             if recieverSteam then
                 local PhoneItem = recieverSteam.Functions.GetItemByName("phone")
-                recieverSteam.Functions.AddMoney('bank', amount)
-                sender.Functions.RemoveMoney('bank', amount)
+                recieverSteam.Functions.AddMoney('bank', amount, "phone-transfered-from-"..sender.PlayerData.citizenid)
+                sender.Functions.RemoveMoney('bank', amount, "phone-transfered-to-"..recieverSteam.PlayerData.citizenid)
 
                 if PhoneItem ~= nil then
                     TriggerClientEvent('qb-phone_new:server:TransferMoney', recieverSteam.PlayerData.source, amount)
@@ -348,7 +348,7 @@ AddEventHandler('qb-phone_new:server:TransferMoney', function(iban, amount)
                 local moneyInfo = json.decode(result[1].money)
                 moneyInfo.bank = round((moneyInfo.bank + amount))
                 QBCore.Functions.ExecuteSql(false, "UPDATE `players` SET `money` = '"..json.encode(moneyInfo).."' WHERE `citizenid` = '"..result[1].citizenid.."'")
-                sender.Functions.RemoveMoney('bank', amount)
+                sender.Functions.RemoveMoney('bank', amount, "phone-transfered")
             end
         else
             TriggerClientEvent('QBCore:Notify', src, "Dit rekeningnummer bestaat niet!", "error")

@@ -78,10 +78,10 @@ AddEventHandler('qb-garage:server:PayDepotPrice', function(vehicle, garage)
     local bankBalance = Player.PlayerData.money["bank"]
     exports['ghmattimysql']:execute('SELECT * FROM player_vehicles WHERE plate = @plate', {['@plate'] = vehicle.plate}, function(result)
         if result[1] ~= nil then
-            if Player.Functions.RemoveMoney("cash", result[1].depotprice) then
+            if Player.Functions.RemoveMoney("cash", result[1].depotprice, "paid-depot") then
                 TriggerClientEvent("qb-garages:client:takeOutDepot", src, vehicle, garage)
             elseif bankBalance >= result[1].depotprice then
-                Player.Functions.RemoveMoney("bank", result[1].depotprice)
+                Player.Functions.RemoveMoney("bank", result[1].depotprice, "paid-depot")
                 TriggerClientEvent("qb-garages:client:takeOutDepot", src, vehicle, garage)
             end
         end

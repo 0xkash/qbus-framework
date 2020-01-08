@@ -33,11 +33,11 @@ AddEventHandler('qb-diving:server:BuyBoat', function(boatModel, BerthId)
     local plate = "QBUS"..math.random(1111, 9999)
 
     if PlayerMoney.cash >= BoatPrice then
-        Player.Functions.RemoveMoney('cash', BoatPrice)
+        Player.Functions.RemoveMoney('cash', BoatPrice, "bought-boat")
         TriggerClientEvent('qb-diving:client:BuyBoat', src, boatModel, plate)
         InsertBoat(boatModel, Player, plate)
     elseif PlayerMoney.bank >= BoatPrice then
-        Player.Functions.RemoveMoney('bank', BoatPrice)
+        Player.Functions.RemoveMoney('bank', BoatPrice, "bought-boat")
         TriggerClientEvent('qb-diving:client:BuyBoat', src, boatModel, plate)
         InsertBoat(boatModel, Player, plate)
     else
@@ -157,12 +157,12 @@ AddEventHandler('qb-diving:server:SellCoral', function()
                 for i = 1, Item.amount, 1 do
                     Player.Functions.RemoveItem(Item.name, 1)
                     TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[Item.name], "remove")
-                    Player.Functions.AddMoney('cash', math.ceil((Reward / Item.amount)))
+                    Player.Functions.AddMoney('cash', math.ceil((Reward / Item.amount)), "sold-coral")
                     Citizen.Wait(250)
                 end
             else
                 Player.Functions.RemoveItem(Item.name, 1)
-                Player.Functions.AddMoney('cash', Reward)
+                Player.Functions.AddMoney('cash', Reward, "sold-coral")
                 TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[Item.name], "remove")
             end
         end

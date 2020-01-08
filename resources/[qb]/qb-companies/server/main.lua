@@ -37,7 +37,7 @@ AddEventHandler('qb-companies:server:createCompany', function(name)
             if companyName ~= "" then
                 if IsNameAvailable(companyName) then
                     if cashAmount >= Config.CompanyPrice then
-                        Player.Functions.RemoveMoney("cash", Config.CompanyPrice)
+                        Player.Functions.RemoveMoney("cash", Config.CompanyPrice, "company-created")
                         QBCore.Functions.ExecuteSql(false, "INSERT INTO `companies` (`name`, `label`, `owner`) VALUES ('"..companyName.."', '"..companyLabel.."', '"..Player.PlayerData.citizenid.."')")
                         Config.Companies[companyName] = {
                             name = companyName,
@@ -49,7 +49,7 @@ AddEventHandler('qb-companies:server:createCompany', function(name)
                         TriggerClientEvent("qb-companies:client:setCompanies", -1, Config.Companies)
                         TriggerClientEvent('QBCore:Notify', src, "Gefeliciteerd, je bent trotse eigenaar van: "..companyLabel)
                     else
-                        Player.Functions.RemoveMoney("bank", Config.CompanyPrice)
+                        Player.Functions.RemoveMoney("bank", Config.CompanyPrice, "company-created")
                         QBCore.Functions.ExecuteSql(false, "INSERT INTO `companies` (`name`, `label`, `owner`) VALUES ('"..companyName.."', '"..companyLabel.."', '"..Player.PlayerData.citizenid.."')")
                         Config.Companies[companyName] = {
                             name = companyName,

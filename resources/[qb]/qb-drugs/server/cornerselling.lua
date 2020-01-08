@@ -29,7 +29,7 @@ AddEventHandler('qb-drugs:server:sellCornerDrugs', function(item, amount, price)
     local AvailableDrugs = {}
 
     Player.Functions.RemoveItem(item, amount)
-    Player.Functions.AddMoney('cash', price)
+    Player.Functions.AddMoney('cash', price, "sold-cornerdrugs")
 
     TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[item], "remove")
 
