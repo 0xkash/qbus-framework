@@ -587,9 +587,6 @@ function toggleBlips()
                 end
                 Citizen.Wait(1000)
             end
-
-            -- Citizen.Wait(100)
-        -- end
     end)
 end
 
@@ -602,10 +599,7 @@ Citizen.CreateThread(function()
                 end
                 PlayerBlips = {}
             end
-            Citizen.Wait(1000)
-
             local Players = getPlayers()
-
             for k, v in pairs(Players) do
                 local playerPed = v["ped"]
                 local playerName = v["name"]
@@ -634,7 +628,7 @@ Citizen.CreateThread(function()
             end
         end
 
-        Citizen.Wait(10000)
+        Citizen.Wait(30000)
     end
 end)
 
