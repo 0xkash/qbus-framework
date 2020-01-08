@@ -5,9 +5,9 @@ RegisterServerEvent("clothes:server:PayClothes")
 AddEventHandler('clothes:server:PayClothes', function()
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    if Player.Functions.RemoveMoney("cash", 100) then
+    if Player.Functions.RemoveMoney("cash", 100, "paid-clothes") then
         -- :)
-    elseif Player.Functions.RemoveMoney("bank", 100) then
+    elseif Player.Functions.RemoveMoney("bank", 100, "paid-clothes") then
         -- :)
     end
 end)

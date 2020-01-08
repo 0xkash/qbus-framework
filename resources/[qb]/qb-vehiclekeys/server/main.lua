@@ -58,7 +58,7 @@ QBCore.Commands.Add("motor", "Toggle motor aan/uit van het voertuig", {}, false,
 	TriggerClientEvent('vehiclekeys:client:ToggleEngine', source)
 end)
 
-QBCore.Commands.Add("geefsleutels", "Geef sleutels van een voertuig", {name = "id", help = "Speler id"}, true, function(source, args)
+QBCore.Commands.Add("geefsleutels", "Geef sleutels van een voertuig", {{name = "id", help = "Speler id"}}, true, function(source, args)
 	local src = source
     local target = tonumber(args[1])
     TriggerClientEvent('vehiclekeys:client:GiveKeys', src, target)

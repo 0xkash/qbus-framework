@@ -34,7 +34,7 @@ AddEventHandler('qb-storerobbery:server:takeMoney', function(register, isDone)
     local src   = source
     local Player = QBCore.Functions.GetPlayer(src)
 
-    Player.Functions.AddMoney('cash', math.random(25, 69))
+    Player.Functions.AddMoney('cash', math.random(25, 69), "robbery-store")
     if isDone then
         if math.random(1, 100) <= 17 then
             local code = SafeCodes[Config.Registers[register].safeKey]
@@ -71,7 +71,7 @@ RegisterServerEvent('qb-storerobbery:server:SafeReward')
 AddEventHandler('qb-storerobbery:server:SafeReward', function(safe)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    Player.Functions.AddMoney('cash', math.random(1500, 5000))
+    Player.Functions.AddMoney('cash', math.random(1500, 5000), "robbery-safe-reward")
     local luck = math.random(1, 100)
     if luck <= 10 then
         Player.Functions.AddItem("rolex", math.random(5, 10))

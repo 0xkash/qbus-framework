@@ -38,15 +38,15 @@ AddEventHandler('qb-drugs:server:succesDelivery', function(deliveryData, inTime)
             end
             print("Drugs PRICE BRO: " .. price)
             if curRep < 10 then
-                Player.Functions.AddMoney('cash', (deliveryData["amount"] * price / 100 * 8))
+                Player.Functions.AddMoney('cash', (deliveryData["amount"] * price / 100 * 8), "dilvery-drugs")
             elseif curRep >= 10 then
-                Player.Functions.AddMoney('cash', (deliveryData["amount"] * price / 100 * 10))
+                Player.Functions.AddMoney('cash', (deliveryData["amount"] * price / 100 * 10), "dilvery-drugs")
             elseif curRep >= 20 then
-                Player.Functions.AddMoney('cash', (deliveryData["amount"] * price / 100 * 12))
+                Player.Functions.AddMoney('cash', (deliveryData["amount"] * price / 100 * 12), "dilvery-drugs")
             elseif curRep >= 30 then
-                Player.Functions.AddMoney('cash', (deliveryData["amount"] * price / 100 * 15))
+                Player.Functions.AddMoney('cash', (deliveryData["amount"] * price / 100 * 15), "dilvery-drugs")
             elseif curRep >= 40 then
-                Player.Functions.AddMoney('cash', (deliveryData["amount"] * price / 100 * 18))
+                Player.Functions.AddMoney('cash', (deliveryData["amount"] * price / 100 * 18), "dilvery-drugs")
             end
 
             TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items["weed_brick"], "remove")
@@ -61,7 +61,7 @@ AddEventHandler('qb-drugs:server:succesDelivery', function(deliveryData, inTime)
             TriggerClientEvent('QBCore:Notify', src, 'Dit voldoet niet aan de bestelling...', 'error')
 
             Player.Functions.RemoveItem('weed_brick', deliveryData["amount"])
-            Player.Functions.AddMoney('cash', (deliveryData["amount"] * 6000 / 100 * 5))
+            Player.Functions.AddMoney('cash', (deliveryData["amount"] * 6000 / 100 * 5), "dilvery-drugs-wrong-delivery")
 
             TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items["weed_brick"], "remove")
 
@@ -79,7 +79,7 @@ AddEventHandler('qb-drugs:server:succesDelivery', function(deliveryData, inTime)
         TriggerClientEvent('QBCore:Notify', src, 'Je bent te laat...', 'error')
 
         Player.Functions.RemoveItem('weed_brick', deliveryData["amount"])
-        Player.Functions.AddMoney('cash', (deliveryData["amount"] * 6000 / 100 * 4))
+        Player.Functions.AddMoney('cash', (deliveryData["amount"] * 6000 / 100 * 4), "dilvery-drugs-too-late")
 
         TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items["weed_brick"], "remove")
 

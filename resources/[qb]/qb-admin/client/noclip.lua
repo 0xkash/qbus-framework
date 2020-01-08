@@ -160,7 +160,7 @@ Citizen.CreateThread( function()
     end
 
      while true do
-        Citizen.Wait( 0 )
+        Citizen.Wait( 3 )
 
         if ( in_noclip_mode ) then
             local playerPed = PlayerPedId()

@@ -19,7 +19,7 @@ AddEventHandler('hospital:server:RespawnAtHospital', function()
 	for k, v in pairs(Config.Locations["beds"]) do
 		TriggerClientEvent('hospital:client:SendToBed', src, k, v, true)
 		TriggerClientEvent('hospital:client:SetBed', -1, k, true)
-		Player.Functions.RemoveMoney("bank", Config.BillCost)
+		Player.Functions.RemoveMoney("bank", Config.BillCost, "respawned-at-hospital")
 		TriggerClientEvent('hospital:client:SendBillEmail', src, Config.BillCost)
 		return
 	end
@@ -107,7 +107,7 @@ AddEventHandler('hospital:server:RevivePlayer', function(playerId, isOldMan)
 	local oldMan = isOldMan ~= nil and isOldMan or false
 	if Patient ~= nil then
 		if oldMan then
-			if Player.Functions.RemoveMoney("cash", 5000) then
+			if Player.Functions.RemoveMoney("cash", 5000, "revived-player") then
 				TriggerClientEvent('hospital:client:Revive', Patient.PlayerData.source)
 			else
 				TriggerClientEvent('QBCore:Notify', src, "Je hebt niet genoeg geld op zak..", "error")

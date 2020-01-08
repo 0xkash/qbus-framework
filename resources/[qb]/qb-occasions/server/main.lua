@@ -83,7 +83,7 @@ AddEventHandler('qb-occasions:server:buyVehicle', function(vehicleData)
         local cashAmount = Player.PlayerData.money["cash"]
         if result[1] ~= nil then 
             if  cashAmount >= result[1].price then
-                Player.Functions.RemoveMoney('cash', result[1].price)
+                Player.Functions.RemoveMoney('cash', result[1].price, "occasions-bought-vehicle")
                 QBCore.Functions.ExecuteSql(true, "INSERT INTO `player_vehicles` (`steam`, `citizenid`, `vehicle`, `hash`, `mods`, `plate`, `state`) VALUES ('"..Player.PlayerData.steam.."', '"..Player.PlayerData.citizenid.."', '"..vehicleData["model"].."', '"..GetHashKey(vehicleData["model"]).."', '"..vehicleData["mods"].."', '"..vehicleData["plate"].."', '0')")
                 QBCore.Functions.ExecuteSql(true, "DELETE FROM `occasion_vehicles` WHERE `occasionId` = '"..vehicleData["oid"].."'")
                 TriggerClientEvent('qb-occasions:client:BuyFinished', src, result[1].mods)
@@ -91,7 +91,7 @@ AddEventHandler('qb-occasions:server:buyVehicle', function(vehicleData)
                     local recieverSteam = QBCore.Functions.GetPlayerByCitizenId(player[1].citizenid)
             
                     if recieverSteam then
-                        recieverSteam.Functions.AddMoney('bank', math.ceil((result[1].price / 100) * 77))
+                        recieverSteam.Functions.AddMoney('bank', math.ceil((result[1].price / 100) * 77), "occasions-sold")
                     else
                         local moneyInfo = json.decode(player[1].money)
                         moneyInfo.bank = math.ceil((moneyInfo.bank + (result[1].price / 100) * 77))
@@ -102,7 +102,7 @@ AddEventHandler('qb-occasions:server:buyVehicle', function(vehicleData)
                     TriggerClientEvent('qb-occasion:client:refreshVehicles', -1)
                 end)
             elseif bankAmount >= result[1].price then
-                Player.Functions.RemoveMoney('bank', result[1].price)
+                Player.Functions.RemoveMoney('bank', result[1].price, "occasions-bought-vehicle")
                 QBCore.Functions.ExecuteSql(true, "INSERT INTO `player_vehicles` (`steam`, `citizenid`, `vehicle`, `hash`, `mods`, `plate`, `state`) VALUES ('"..Player.PlayerData.steam.."', '"..Player.PlayerData.citizenid.."', '"..vehicleData["model"].."', '"..GetHashKey(vehicleData["model"]).."', '"..vehicleData["mods"].."', '"..vehicleData["plate"].."', '0')")
                 QBCore.Functions.ExecuteSql(true, "DELETE FROM `occasion_vehicles` WHERE `occasionId` = '"..vehicleData["oid"].."'")
                 TriggerClientEvent('qb-occasions:client:BuyFinished', src, result[1].mods)
@@ -111,7 +111,7 @@ AddEventHandler('qb-occasions:server:buyVehicle', function(vehicleData)
                     local recieverSteam = QBCore.Functions.GetPlayerByCitizenId(player[1].citizenid)
             
                     if recieverSteam then
-                        recieverSteam.Functions.AddMoney('bank', math.ceil((result[1].price / 100) * 77))
+                        recieverSteam.Functions.AddMoney('bank', math.ceil((result[1].price / 100) * 77), "occasions-sold")
                     else
                         local moneyInfo = json.decode(player[1].money)
                         moneyInfo.bank = math.ceil((moneyInfo.bank + (result[1].price / 100) * 77))

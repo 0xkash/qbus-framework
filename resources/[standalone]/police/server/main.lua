@@ -28,7 +28,7 @@ AddEventHandler('police:server:CheckBills', function()
 			for k, v in pairs(result) do
 				totalAmount = totalAmount + tonumber(v.amount)
             end
-            Player.Functions.RemoveMoney("bank", totalAmount)
+            Player.Functions.RemoveMoney("bank", totalAmount, "paid-all-bills")
             QBCore.Functions.ExecuteSql(false, "DELETE FROM `bills` WHERE `citizenid` = '"..Player.PlayerData.citizenid.."' AND `type` = 'police'")
             TriggerClientEvent('police:client:sendBillingMail', src, totalAmount)
 		end
@@ -135,7 +135,7 @@ AddEventHandler('police:server:BillPlayer', function(playerId, price)
     local OtherPlayer = QBCore.Functions.GetPlayer(playerId)
     if Player.PlayerData.job.name == "police" then
         if OtherPlayer ~= nil then
-            OtherPlayer.Functions.RemoveMoney("bank", price)
+            OtherPlayer.Functions.RemoveMoney("bank", price, "paid-bills")
             TriggerClientEvent('QBCore:Notify', OtherPlayer.PlayerData.source, "Je hebt een boete ontvangen van €"..price)
         end
     end
@@ -283,7 +283,7 @@ AddEventHandler('police:server:SeizeCash', function(playerId)
         local info = {
             cash = moneyAmount,
         }
-        SearchedPlayer.Functions.RemoveMoney("cash", moneyAmount)
+        SearchedPlayer.Functions.RemoveMoney("cash", moneyAmount, "police-cash-seized")
         Player.Functions.AddItem("moneybag", 1, false, info)
         TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items["moneybag"], "add")
         TriggerClientEvent('QBCore:Notify', SearchedPlayer.PlayerData.source, "Jouw cash in beslag genomen..")
@@ -317,8 +317,8 @@ AddEventHandler('police:server:RobPlayer', function(playerId)
     local SearchedPlayer = QBCore.Functions.GetPlayer(playerId)
     if SearchedPlayer ~= nil then 
         local money = SearchedPlayer.PlayerData.money["cash"]
-        Player.Functions.AddMoney("cash", money)
-        SearchedPlayer.Functions.RemoveMoney("cash", money)
+        Player.Functions.AddMoney("cash", money, "police-player-robbed")
+        SearchedPlayer.Functions.RemoveMoney("cash", money, "police-player-robbed")
         TriggerClientEvent('QBCore:Notify', SearchedPlayer.PlayerData.source, "Je bent van €"..money.." beroofd")
     end
 end)
@@ -945,7 +945,7 @@ QBCore.Commands.Add("paytow", "Betaal een bergnet medewerker", {{name="id", help
         local OtherPlayer = QBCore.Functions.GetPlayer(playerId)
         if OtherPlayer ~= nil then
             if OtherPlayer.PlayerData.job.name == "tow" then
-                OtherPlayer.Functions.AddMoney("bank", 500)
+                OtherPlayer.Functions.AddMoney("bank", 500, "police-tow-paid")
                 TriggerClientEvent('chatMessage', OtherPlayer.PlayerData.source, "SYSTEM", "warning", "Je hebt €500,- ontvangen voor je dienst!")
                 TriggerClientEvent('QBCore:Notify', source, 'Je hebt een bergnet medewerker betaald')
             else
@@ -1078,7 +1078,7 @@ QBCore.Functions.CreateUseableItem("moneybag", function(source, item)
         if item.info ~= nil and item.info ~= "" then
             if Player.PlayerData.job.name ~= "police" then
                 if Player.Functions.RemoveItem("moneybag", 1, item.slot) then
-                    Player.Functions.AddMoney("cash", tonumber(item.info.cash))
+                    Player.Functions.AddMoney("cash", tonumber(item.info.cash), "used-moneybag")
                 end
             end
         end
