@@ -170,7 +170,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 			</Item>
@@ -196,7 +196,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -242,7 +242,7 @@
 					<Chance_SourceOther value="0.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli ValidOnlyIfSourceIsPlayer ValidOnlyIfRandom</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli ValidOnlyIfSourceIsPlayer ValidOnlyIfRandom</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -268,7 +268,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -294,7 +294,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -330,7 +330,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -1265,7 +1265,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar ValidInHeli ValidOnBicycle</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot ValidInHeli ValidOnBicycle</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -1281,7 +1281,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar ValidOnBicycle</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot ValidOnBicycle</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -1317,7 +1317,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags></EventResponseDecisionFlags>
 				</Item>	
 				<Item>
 					<TaskRef>RESPONSE_TASK_HEAD_TRACK</TaskRef>
@@ -1327,7 +1327,7 @@
 					<Chance_SourceOther value="0.000000"/>
 					<DistanceMinSq value="2500.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags></EventResponseDecisionFlags>
 				</Item>					
 				<Item>
 					<TaskRef>RESPONSE_TASK_HEAD_TRACK</TaskRef>
@@ -1337,7 +1337,7 @@
 					<Chance_SourceOther value="0.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="2500.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidOnlyIfSourceIsNotThreatening</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidOnlyIfSourceIsNotThreatening</EventResponseDecisionFlags>
 				</Item>				
 				<Item>
 					<TaskRef>RESPONSE_TASK_THREAT</TaskRef>
@@ -1373,7 +1373,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -1399,7 +1399,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli ValidOnFoot ValidOnBicycle</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli ValidOnFoot ValidOnBicycle</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -1415,7 +1415,7 @@
 					<Chance_SourceOther value="0.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="144.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidOnBicycle ValidInCar</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot ValidOnBicycle</EventResponseDecisionFlags>
 				</Item>
 				<Item>
 					<TaskRef>RESPONSE_TASK_HEAD_TRACK</TaskRef>
@@ -1425,7 +1425,7 @@
 					<Chance_SourceOther value="0.000000"/>
 					<DistanceMinSq value="144.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidOnBicycle ValidInCar</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot ValidOnBicycle </EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -1441,7 +1441,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -1457,7 +1457,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot  ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -1473,7 +1473,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -1489,7 +1489,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -1505,7 +1505,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -1521,7 +1521,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -1537,7 +1537,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -1553,7 +1553,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -1569,7 +1569,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot  ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -1585,7 +1585,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -1601,7 +1601,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot  ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -1617,7 +1617,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -1633,7 +1633,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -1649,7 +1649,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar ValidInHeli ValidOnBicycle</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot ValidInHeli ValidOnBicycle</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -1681,7 +1681,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidOnBicycle</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnBicycle</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -1717,7 +1717,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar ValidOnBicycle</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot ValidOnBicycle</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -1753,7 +1753,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -1779,7 +1779,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -1889,7 +1889,7 @@
 				<Chance_SourceOther value="1.000000"/>
 				<DistanceMinSq value="-1.000000"/>
 				<DistanceMaxSq value="-1.000000"/>
-				<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+				<EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
 			</Item>
 			</Decision>
 		</Item> 
@@ -1905,7 +1905,7 @@
 					<Chance_SourceOther value="0.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar ValidOnlyIfSourceIsPlayer ValidOnlyIfRandom</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot ValidOnlyIfSourceIsPlayer ValidOnlyIfRandom</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>		
@@ -1921,7 +1921,7 @@
 					<Chance_SourceOther value="0.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar ValidInHeli ValidOnBicycle</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot ValidInHeli ValidOnBicycle</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -1937,7 +1937,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar ValidInHeli ValidOnBicycle</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot ValidInHeli ValidOnBicycle</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -2063,7 +2063,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -2105,7 +2105,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -2185,7 +2185,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar</EventResponseDecisionFlags>					
+					<EventResponseDecisionFlags></EventResponseDecisionFlags>					
 				</Item>
 			</Decision>
 		</Item>	
@@ -2335,7 +2335,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -2391,7 +2391,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -2433,7 +2433,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
 				</Item>
       </Decision>
     </Item>
@@ -2479,7 +2479,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
 				</Item>
       </Decision>
     </Item>
@@ -2549,7 +2549,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -2605,7 +2605,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -2651,7 +2651,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags></EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -2667,7 +2667,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot </EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -2693,7 +2693,7 @@
 					<Chance_SourceOther value="0.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.00000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar ValidOnlyIfFriendlyWithTarget ValidOnlyIfRandom</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot  ValidOnlyIfFriendlyWithTarget ValidOnlyIfRandom</EventResponseDecisionFlags>
 				</Item>
 				<Item>
 					<TaskRef>RESPONSE_TASK_THREAT</TaskRef>
@@ -2753,7 +2753,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -2779,7 +2779,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli ValidOnBicycle</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli ValidOnBicycle</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -2831,7 +2831,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="25.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar ValidOnBicycle</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot  ValidOnBicycle</EventResponseDecisionFlags>
 				</Item>
 				<Item>
 					<TaskRef>RESPONSE_TASK_HEAD_TRACK</TaskRef>
@@ -2841,7 +2841,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="25.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -2867,7 +2867,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar ValidInHeli ValidOnBicycle</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot  ValidInHeli ValidOnBicycle</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -2893,7 +2893,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -2919,7 +2919,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar ValidInHeli ValidOnBicycle</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot  ValidInHeli ValidOnBicycle</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -3007,7 +3007,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -3033,7 +3033,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -3049,7 +3049,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="100.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot </EventResponseDecisionFlags>
 				</Item>
 				<Item>
 					<TaskRef>RESPONSE_TASK_HEAD_TRACK</TaskRef>
@@ -3085,7 +3085,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -3101,7 +3101,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -3147,7 +3147,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli ValidOnlyIfSource</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli ValidOnlyIfSource</EventResponseDecisionFlags>
 				</Item>
 				<Item>
 					<TaskRef>RESPONSE_TASK_HEAD_TRACK</TaskRef>
@@ -3157,7 +3157,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli ValidOnlyIfSourceIsInvalid</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli ValidOnlyIfSourceIsInvalid</EventResponseDecisionFlags>
 				</Item>
  			</Decision>
 		</Item>
@@ -3173,7 +3173,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -3189,7 +3189,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -3205,7 +3205,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -3231,7 +3231,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="25.000000"/>
-					<EventResponseDecisionFlags>ValidInCar</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags></EventResponseDecisionFlags>
 				</Item>
 				<Item>
 					<TaskRef>RESPONSE_TASK_HEAD_TRACK</TaskRef>
@@ -3257,7 +3257,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot </EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -3283,7 +3283,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="25.000000"/>
-					<EventResponseDecisionFlags>ValidInCar</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags></EventResponseDecisionFlags>
 				</Item>
 				<Item>
 					<TaskRef>RESPONSE_TASK_HEAD_TRACK</TaskRef>
@@ -3309,7 +3309,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="100.000000"/>
-					<EventResponseDecisionFlags>ValidInCar</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags></EventResponseDecisionFlags>
 				</Item>
 				<Item>
 					<TaskRef>RESPONSE_TASK_SHOCKING_POLICE_INVESTIGATE</TaskRef>
@@ -3319,7 +3319,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="100.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -3345,7 +3345,7 @@
 					<Chance_SourceOther value="0.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="100.000000"/>
-					<EventResponseDecisionFlags>ValidInCar</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags></EventResponseDecisionFlags>
 				</Item>
 				<Item>
 					<TaskRef>RESPONSE_TASK_SHOCKING_POLICE_INVESTIGATE</TaskRef>
@@ -3355,7 +3355,7 @@
 					<Chance_SourceOther value="0.000000"/>
 					<DistanceMinSq value="100.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -3371,7 +3371,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -3435,7 +3435,7 @@
 					<Chance_SourceOther value="0.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar ValidOnBicycle ValidOnlyIfFriendlyWithTarget</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot ValidOnBicycle ValidOnlyIfFriendlyWithTarget</EventResponseDecisionFlags>
 				</Item>
 				<Item>
 					<TaskRef>RESPONSE_TASK_SHOCKING_EVENT_HURRY_AWAY</TaskRef>
@@ -3465,7 +3465,7 @@
 					<Chance_SourceOther value="0.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar ValidOnBicycle InvalidIfFriendlyWithTarget ValidOnlyIfMissionPedInMP</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot ValidOnBicycle InvalidIfFriendlyWithTarget ValidOnlyIfMissionPedInMP</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -3577,7 +3577,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -3603,7 +3603,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -3629,7 +3629,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 				<Item>
 					<TaskRef>RESPONSE_TASK_HEAD_TRACK</TaskRef>
@@ -3675,7 +3675,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -3711,7 +3711,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -3747,7 +3747,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -3793,7 +3793,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -3839,7 +3839,7 @@
           <Chance_SourceOther value="1.000000"/>
           <DistanceMinSq value="-1.000000"/>
           <DistanceMaxSq value="-1.000000"/>
-          <EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+          <EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
         </Item>
         <Item>
           <TaskRef>RESPONSE_TASK_HEAD_TRACK</TaskRef>
@@ -3875,7 +3875,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -3931,7 +3931,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -3947,7 +3947,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli ValidOnFoot ValidOnBicycle</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli ValidOnFoot ValidOnBicycle</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -3963,7 +3963,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli ValidOnFoot ValidOnBicycle</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli ValidOnFoot ValidOnBicycle</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -3989,7 +3989,7 @@
 					<Chance_SourceOther value="0.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="144.000000"/>
-					<EventResponseDecisionFlags>ValidOnBicycle ValidInCar</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnBicycle</EventResponseDecisionFlags>
 				</Item>
 				<Item>
 					<TaskRef>RESPONSE_TASK_HEAD_TRACK</TaskRef>
@@ -3999,7 +3999,7 @@
 					<Chance_SourceOther value="0.000000"/>
 					<DistanceMinSq value="144.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidOnBicycle ValidInCar</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot ValidOnBicycle</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -4025,7 +4025,7 @@
 					<Chance_SourceOther value="0.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="144.000000"/>
-					<EventResponseDecisionFlags>ValidOnBicycle ValidInCar</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnBicycle </EventResponseDecisionFlags>
 				</Item>
 				<Item>
 					<TaskRef>RESPONSE_TASK_HEAD_TRACK</TaskRef>
@@ -4035,7 +4035,7 @@
 					<Chance_SourceOther value="0.000000"/>
 					<DistanceMinSq value="144.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidOnBicycle ValidInCar</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot ValidOnBicycle</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -4061,7 +4061,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="25.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -4129,7 +4129,7 @@
 					<Chance_SourceOther value="0.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.00000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar ValidOnlyIfFriendlyWithTarget ValidOnlyIfSource</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot  ValidOnlyIfFriendlyWithTarget ValidOnlyIfSource</EventResponseDecisionFlags>
 				</Item>
 				<Item>
 					<TaskRef>RESPONSE_TASK_THREAT</TaskRef>
@@ -4199,7 +4199,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar InvalidIfFriendlyWithTarget ValidOnlyIfSource</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>InvalidIfFriendlyWithTarget ValidOnlyIfSource</EventResponseDecisionFlags>
 				</Item>
 				<Item>
 					<TaskRef>RESPONSE_TASK_SHOCKING_EVENT_HURRY_AWAY</TaskRef>
@@ -4219,7 +4219,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidOnlyIfSource ValidOnlyIfFriendlyWithTarget ValidOnlyIfSourceEntityIsOtherEntity</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidOnlyIfSource ValidOnlyIfFriendlyWithTarget ValidOnlyIfSourceEntityIsOtherEntity</EventResponseDecisionFlags>
 				</Item>
 				<Item>
 					<TaskRef>RESPONSE_TASK_SHOCKING_EVENT_HURRY_AWAY</TaskRef>
@@ -4301,7 +4301,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidOnlyIfSource InvalidIfSourcePed InvalidIfSourceEntityIsOtherEntity InvalidIfTargetDoesNotInfluenceWanted</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidOnlyIfSource InvalidIfSourcePed InvalidIfSourceEntityIsOtherEntity InvalidIfTargetDoesNotInfluenceWanted</EventResponseDecisionFlags>
 				</Item>
 				<Item>
 					<TaskRef>RESPONSE_TASK_TURN_TO_FACE</TaskRef>
@@ -4321,7 +4321,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidOnlyIfSource ValidOnlyIfSourceEntityIsOtherEntity</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidOnlyIfSource ValidOnlyIfSourceEntityIsOtherEntity</EventResponseDecisionFlags>
 				</Item>
 				<Item>
 					<TaskRef>RESPONSE_TASK_HEAD_TRACK</TaskRef>
@@ -4331,7 +4331,7 @@
 					<Chance_SourceOther value="0.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar ValidOnlyIfSource</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot  ValidOnlyIfSource</EventResponseDecisionFlags>
 				</Item>
 				<Item>
 					<TaskRef>RESPONSE_TASK_HEAD_TRACK</TaskRef>
@@ -4351,7 +4351,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar ValidOnlyIfSourceIsInvalid</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot  ValidOnlyIfSourceIsInvalid</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -4427,7 +4427,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli ValidOnlyIfSource</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli ValidOnlyIfSource</EventResponseDecisionFlags>
 				</Item>
 				<Item>
 					<TaskRef>RESPONSE_TASK_HEAD_TRACK</TaskRef>
@@ -4437,7 +4437,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli ValidOnlyIfSourceIsInvalid</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli ValidOnlyIfSourceIsInvalid</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -4539,7 +4539,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar ValidInHeli ValidOnBicycle</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot  ValidInHeli ValidOnBicycle</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -4555,7 +4555,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar ValidInHeli ValidOnBicycle</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot ValidInHeli ValidOnBicycle</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -4571,7 +4571,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar ValidInHeli ValidOnBicycle</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot ValidInHeli ValidOnBicycle</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -4617,7 +4617,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags></EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -4643,7 +4643,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -4669,7 +4669,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -4715,7 +4715,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 				<Item>
 					<TaskRef>RESPONSE_TASK_HEAD_TRACK</TaskRef>
@@ -4771,7 +4771,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -4807,7 +4807,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -4833,7 +4833,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -4875,7 +4875,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -4951,7 +4951,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli InvalidIfOtherVehicleIsYourVehicle</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli InvalidIfOtherVehicleIsYourVehicle</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -5027,7 +5027,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli InvalidIfOtherVehicleIsYourVehicle</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli InvalidIfOtherVehicleIsYourVehicle</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -5115,7 +5115,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -5141,7 +5141,7 @@
 					<Chance_SourceOther value="0.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="225.00000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar ValidOnBicycle</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot  ValidOnBicycle</EventResponseDecisionFlags>
 				</Item>
 				<Item>
 					<TaskRef>RESPONSE_TASK_HEAD_TRACK</TaskRef>
@@ -5151,7 +5151,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="16.000000"/>
 					<DistanceMaxSq value="225.00000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar ValidOnBicycle</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot  ValidOnBicycle</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -5177,7 +5177,7 @@
 					<Chance_SourceOther value="0.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="225.00000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar ValidOnBicycle</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot  ValidOnBicycle</EventResponseDecisionFlags>
 				</Item>
 				<Item>
 					<TaskRef>RESPONSE_TASK_HEAD_TRACK</TaskRef>
@@ -5187,7 +5187,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="16.000000"/>
 					<DistanceMaxSq value="225.00000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar ValidOnBicycle</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot  ValidOnBicycle</EventResponseDecisionFlags>
 				</Item>
 				<Item>
 					<TaskRef>RESPONSE_TASK_HEAD_TRACK</TaskRef>
@@ -5197,7 +5197,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="16.00000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidOnBicycle</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidOnBicycle</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -5223,7 +5223,7 @@
 					<Chance_SourceOther value="0.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="225.00000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar ValidOnBicycle</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot  ValidOnBicycle</EventResponseDecisionFlags>
 				</Item>
 				<Item>
 					<TaskRef>RESPONSE_TASK_HEAD_TRACK</TaskRef>
@@ -5233,7 +5233,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="16.000000"/>
 					<DistanceMaxSq value="225.00000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar ValidOnBicycle</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot  ValidOnBicycle</EventResponseDecisionFlags>
 				</Item>
 				<Item>
 					<TaskRef>RESPONSE_TASK_HEAD_TRACK</TaskRef>
@@ -5243,7 +5243,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="16.00000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidOnBicycle</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidOnBicycle</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -5279,7 +5279,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="16.000000"/>
 					<DistanceMaxSq value="225.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -5401,7 +5401,7 @@
 					<Chance_SourceOther value="0.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="25.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot</EventResponseDecisionFlags>
 				</Item>
 				<Item>
 					<TaskRef>RESPONSE_TASK_HEAD_TRACK</TaskRef>
@@ -5411,7 +5411,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="25.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidOnFoot</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidOnFoot</EventResponseDecisionFlags>
 				</Item>
 				<Item>
 					<TaskRef>RESPONSE_TASK_THREAT</TaskRef>
@@ -5477,7 +5477,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -5523,7 +5523,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnBicycle ValidInCar ValidInHeli</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnBicycle  ValidInHeli</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -5539,7 +5539,7 @@
 					<Chance_SourceOther value="0.400000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -5555,7 +5555,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar ValidOnBicycle</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot ValidOnBicycle</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -5591,7 +5591,7 @@
 					<Chance_SourceOther value="0.500000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidOnlyForDrivers ValidForTargetOutsideVehicle</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnlyForDrivers ValidForTargetOutsideVehicle</EventResponseDecisionFlags>
 				</Item>
 				<Item>
 					<TaskRef>RESPONSE_TASK_HEAD_TRACK</TaskRef>
@@ -5601,7 +5601,7 @@
 					<Chance_SourceOther value="0.500000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidOnlyForDrivers ValidForTargetOutsideVehicle</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidOnlyForDrivers ValidForTargetOutsideVehicle</EventResponseDecisionFlags>
 				</Item>
 				<Item>
 					<TaskRef>RESPONSE_TASK_THREAT</TaskRef>
@@ -5631,7 +5631,7 @@
 					<Chance_SourceOther value="1.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidInCar ValidOnlyForPassengersWithDriver ValidForTargetOutsideVehicle</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags> ValidOnlyForPassengersWithDriver ValidForTargetOutsideVehicle</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -5737,7 +5737,7 @@
 					<Chance_SourceOther value="0.000000"/>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar ValidOnlyIfSourceIsPlayer ValidOnlyIfRandom</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot ValidOnlyIfSourceIsPlayer ValidOnlyIfRandom</EventResponseDecisionFlags>
 				</Item>
 			</Decision>
 		</Item>
@@ -5751,7 +5751,7 @@
 					<Chance_SourceFriend value="1.000000"/>
 					<Chance_SourceThreat value="1.000000"/>
 					<Chance_SourceOther value="1.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidInCar ValidOnBicycle</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot ValidOnBicycle</EventResponseDecisionFlags>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
 				</Item>
@@ -5809,7 +5809,7 @@
 					<Chance_SourceFriend value="1.000000"/>
 					<Chance_SourceThreat value="0.000000"/>
 					<Chance_SourceOther value="0.000000"/>
-					<EventResponseDecisionFlags>ValidOnFoot ValidOnBicycle ValidInCar</EventResponseDecisionFlags>
+					<EventResponseDecisionFlags>ValidOnFoot ValidOnBicycle</EventResponseDecisionFlags>
 					<DistanceMinSq value="-1.000000"/>
 					<DistanceMaxSq value="-1.000000"/>
         </Item>

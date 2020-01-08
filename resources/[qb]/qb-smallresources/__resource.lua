@@ -31,11 +31,11 @@ client_scripts {
 	"client/calmai.lua"
 }
 
-data_file 'FIVEM_LOVES_YOU_341B23A2F0E0F131' 'popgroups.ymt'
 data_file 'FIVEM_LOVES_YOU_4B38E96CC036038F' 'events.meta'
+data_file 'FIVEM_LOVES_YOU_341B23A2F0E0F131' 'popgroups.ymt'
 
 files {
-    'popgroups.ymt',
 	'events.meta',
+	'popgroups.ymt',
 	'relationships.dat',
 }
