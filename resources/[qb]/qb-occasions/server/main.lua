@@ -82,7 +82,7 @@ AddEventHandler('qb-occasions:server:buyVehicle', function(vehicleData)
         local bankAmount = Player.PlayerData.money["bank"]
         local cashAmount = Player.PlayerData.money["cash"]
         if result[1] ~= nil then 
-            if  cashAmount >= result[1].price then
+            if cashAmount >= result[1].price then
                 Player.Functions.RemoveMoney('cash', result[1].price)
                 QBCore.Functions.ExecuteSql(true, "INSERT INTO `player_vehicles` (`steam`, `citizenid`, `vehicle`, `hash`, `mods`, `plate`, `state`) VALUES ('"..Player.PlayerData.steam.."', '"..Player.PlayerData.citizenid.."', '"..vehicleData["model"].."', '"..GetHashKey(vehicleData["model"]).."', '"..vehicleData["mods"].."', '"..vehicleData["plate"].."', '0')")
                 QBCore.Functions.ExecuteSql(true, "DELETE FROM `occasion_vehicles` WHERE `occasionId` = '"..vehicleData["oid"].."'")
@@ -90,7 +90,7 @@ AddEventHandler('qb-occasions:server:buyVehicle', function(vehicleData)
                 QBCore.Functions.ExecuteSql(false, "SELECT * FROM `players` WHERE citizenid = '"..result[1].seller.."'", function(player)
                     local recieverSteam = QBCore.Functions.GetPlayerByCitizenId(player[1].citizenid)
             
-                    if recieverSteam then
+                    if recieverSteam ~= nil then
                         recieverSteam.Functions.AddMoney('bank', math.ceil((result[1].price / 100) * 77))
                     else
                         local moneyInfo = json.decode(player[1].money)
@@ -110,7 +110,7 @@ AddEventHandler('qb-occasions:server:buyVehicle', function(vehicleData)
                 QBCore.Functions.ExecuteSql(false, "SELECT * FROM `players` WHERE citizenid = '"..ownerCid.."'", function(player)
                     local recieverSteam = QBCore.Functions.GetPlayerByCitizenId(player[1].citizenid)
             
-                    if recieverSteam then
+                    if recieverSteam ~= nil then
                         recieverSteam.Functions.AddMoney('bank', math.ceil((result[1].price / 100) * 77))
                     else
                         local moneyInfo = json.decode(player[1].money)

@@ -398,13 +398,13 @@ Citizen.CreateThread(function()
                 local target = GetPlayerServerId(currentPlayer)
                 TriggerServerEvent("qb-admin:server:Freeze", target, isFreeze)
             end
-            if WarMenu.CheckBox("Spectate", isSpectating, function(checked) isSpectating = checked end) then
-                local target = GetPlayerFromServerId(GetPlayerServerId(currentPlayer))
-                local targetPed = GetPlayerPed(target)
-                local targetCoords = GetEntityCoords(targetPed)
+            -- if WarMenu.CheckBox("Spectate", isSpectating, function(checked) isSpectating = checked end) then
+            --     local target = GetPlayerFromServerId(GetPlayerServerId(currentPlayer))
+            --     local targetPed = GetPlayerPed(target)
+            --     local targetCoords = GetEntityCoords(targetPed)
 
-                SpectatePlayer(targetPed, isSpectating)
-            end
+            --     SpectatePlayer(targetPed, isSpectating)
+            -- end
             if WarMenu.MenuButton("Open Inventory", currentPlayer) then
                 local targetId = GetPlayerServerId(currentPlayer)
 

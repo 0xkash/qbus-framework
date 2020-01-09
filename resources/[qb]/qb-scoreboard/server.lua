@@ -5,6 +5,7 @@ TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 
 QBCore.Functions.CreateCallback('qb-scoreboard:server:GetActiveCops', function(source, cb)
     local retval = 0
+    
     for k, v in pairs(QBCore.Functions.GetPlayers()) do
         local Player = QBCore.Functions.GetPlayer(v)
         if Player ~= nil then
@@ -14,7 +15,7 @@ QBCore.Functions.CreateCallback('qb-scoreboard:server:GetActiveCops', function(s
         end
     end
 
-    cb(retval, Config.IllegalActions)
+    cb(retval)
 end)
 
 RegisterServerEvent('qb-scoreboard:server:SetActivityBusy')

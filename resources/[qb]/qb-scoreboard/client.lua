@@ -12,8 +12,16 @@ end)
 
 -- Code
 
-local scoreboardOpen = false
+RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
+AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+    isLoggedIn = true
 
+    QBCore.Functions.TriggerCallback('qb-scoreboard:server:GetActiveCops', function(cops, config)
+        Config.IllegalActions = config
+    end)
+end)
+
+local scoreboardOpen = false
 
 DrawText3D = function(x, y, z, text)
 	SetTextScale(0.35, 0.35)
@@ -87,17 +95,20 @@ end
 
 Citizen.CreateThread(function()
     while true do
-
         if IsControlJustPressed(0, Config.OpenKey) then
             if not scoreboardOpen then
-                SendNUIMessage({
-                    action = "open",
-                    players = GetCurrentPlayers(),
-                    maxPlayers = Config.MaxPlayers,
-                    requiredCops = Config.IllegalActions,
-                    currentCops = Config.CurrentCops,
-                })
-                scoreboardOpen = true
+                QBCore.Functions.TriggerCallback('qb-scoreboard:server:GetActiveCops', function(cops)
+                    Config.CurrentCops = cops
+
+                    SendNUIMessage({
+                        action = "open",
+                        players = GetCurrentPlayers(),
+                        maxPlayers = Config.MaxPlayers,
+                        requiredCops = Config.IllegalActions,
+                        currentCops = Config.CurrentCops,
+                    })
+                    scoreboardOpen = true
+                end)
             end
         end
 
@@ -122,18 +133,6 @@ Citizen.CreateThread(function()
         end
 
         Citizen.Wait(3)
-    end
-end)
-
-Citizen.CreateThread(function()
-    while true do
-        if QBCore ~= nil then
-            QBCore.Functions.TriggerCallback('qb-scoreboard:server:GetActiveCops', function(cops, config)
-                Config.CurrentCops = cops
-                Config.IllegalActions = config
-            end)
-        end
-        Citizen.Wait(10000)
     end
 end)
 
