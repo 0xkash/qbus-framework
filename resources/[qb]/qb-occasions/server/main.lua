@@ -92,11 +92,21 @@ AddEventHandler('qb-occasions:server:buyVehicle', function(vehicleData)
             
                     if recieverSteam ~= nil then
                         recieverSteam.Functions.AddMoney('bank', math.ceil((result[1].price / 100) * 77))
+                        TriggerClientEvent('qb-phone:client:newMailNotify', recieverSteam.PlayerData.source, {
+                            sender = "Mosleys Occasions",
+                            subject = "Uw voertuig is verkocht!",
+                            message = "Je "..QBCore.Shared.Vehicles[vehicleData["model"]].name.." is verkocht voor €"..result[1].price..",-!"
+                        })
                     else
                         local moneyInfo = json.decode(player[1].money)
                         moneyInfo.bank = math.ceil((moneyInfo.bank + (result[1].price / 100) * 77))
                         QBCore.Functions.ExecuteSql(false, "UPDATE `players` SET `money` = '"..json.encode(moneyInfo).."' WHERE `citizenid` = '"..player[1].citizenid.."'")
                     end
+                    TriggerEvent('qb-phone:server:sendNewMailToOffline', player[1].citizenid, {
+                        sender = "Mosleys Occasions",
+                        subject = "U heeft een voertuig verkocht!",
+                        message = "Je "..QBCore.Shared.Vehicles[vehicleData["model"]].name.." is verkocht voor €"..result[1].price..",-!"
+                    })
                     TriggerEvent("qb-log:server:sendLog", Player.PlayerData.citizenid, "vehiclebought", {model=vehicleData["model"], from=result[1].citizenid, moneyType="cash", vehiclePrice=result[1].price, plate=result[1].plate})
                     TriggerEvent("qb-log:server:CreateLog", "vehicleshop", "Occasion gekocht", "green", "**"..GetPlayerName(src) .. "** heeft een occasian gekocht voor "..result[1].price .. " (" .. result[1].plate .. ") van **"..player[1].citizenid.."**")
                     TriggerClientEvent('qb-occasion:client:refreshVehicles', -1)
@@ -112,11 +122,21 @@ AddEventHandler('qb-occasions:server:buyVehicle', function(vehicleData)
             
                     if recieverSteam ~= nil then
                         recieverSteam.Functions.AddMoney('bank', math.ceil((result[1].price / 100) * 77))
+                        TriggerClientEvent('qb-phone:client:newMailNotify', recieverSteam.PlayerData.source, {
+                            sender = "Mosleys Occasions",
+                            subject = "Uw voertuig is verkocht!",
+                            message = "Je "..QBCore.Shared.Vehicles[vehicleData["model"]].name.." is verkocht voor €"..result[1].price..",-!"
+                        })
                     else
                         local moneyInfo = json.decode(player[1].money)
                         moneyInfo.bank = math.ceil((moneyInfo.bank + (result[1].price / 100) * 77))
                         QBCore.Functions.ExecuteSql(false, "UPDATE `players` SET `money` = '"..json.encode(moneyInfo).."' WHERE `citizenid` = '"..player[1].citizenid.."'")
                     end
+                    TriggerEvent('qb-phone:server:sendNewMailToOffline', player[1].citizenid, {
+                        sender = "Mosleys Occasions",
+                        subject = "U heeft een voertuig verkocht!",
+                        message = "Je "..QBCore.Shared.Vehicles[vehicleData["model"]].name.." is verkocht voor €"..result[1].price..",-!"
+                    })
                     TriggerEvent("qb-log:server:sendLog", Player.PlayerData.citizenid, "vehiclebought", {model=vehicleData["model"], from=player[1].citizenid, moneyType="bank", vehiclePrice=result[1].price, plate=result[1].plate})
                     TriggerEvent("qb-log:server:CreateLog", "vehicleshop", "Occasion gekocht", "green", "**"..GetPlayerName(src) .. "** heeft een occasian gekocht voor "..result[1].price .. " (" .. result[1].plate .. ") van **"..player[1].citizenid.."**")
                     TriggerClientEvent('qb-occasion:client:refreshVehicles', -1)

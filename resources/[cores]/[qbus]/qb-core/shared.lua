@@ -5329,6 +5329,11 @@ QBShared.Jobs = {
 		payment = 50,
 		defaultDuty = true,
 	},
+	["cardealer"] = {
+		label = "Voertuig Dealer",
+		payment = 150,
+		defaultDuty = true,
+	},
 }
 
 QBShared.StarterItems = {

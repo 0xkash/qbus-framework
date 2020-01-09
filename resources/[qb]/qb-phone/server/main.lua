@@ -189,6 +189,29 @@ AddEventHandler('qb-phone:server:sendNewMail', function(mailData)
     end
 end)
 
+RegisterServerEvent('qb-phone:server:sendNewMailToOffline')
+AddEventHandler('qb-phone:server:sendNewMailToOffline', function(citizenid, mailData)
+    local Player = QBCore.Functions.GetPlayerByCitizenId(citizenid)
+
+    if Player ~= nil then
+        local src = Player.PlayerData.source
+
+        if mailData.button == nil then
+            QBCore.Functions.ExecuteSql(false, "INSERT INTO `player_mails` (`citizenid`, `sender`, `subject`, `message`, `mailid`, `read`) VALUES ('"..Player.PlayerData.citizenid.."', '"..mailData.sender.."', '"..mailData.subject.."', '"..mailData.message.."', '"..GenerateMailId().."', '0')")
+            TriggerClientEvent('qb-phone:client:newMailNotify', src, mailData)
+        else
+            QBCore.Functions.ExecuteSql(false, "INSERT INTO `player_mails` (`citizenid`, `sender`, `subject`, `message`, `mailid`, `read`, `button`) VALUES ('"..Player.PlayerData.citizenid.."', '"..mailData.sender.."', '"..mailData.subject.."', '"..mailData.message.."', '"..GenerateMailId().."', '0', '"..json.encode(mailData.button).."')")
+            TriggerClientEvent('qb-phone:client:newMailNotify', src, mailData)
+        end
+    else
+        if mailData.button == nil then
+            QBCore.Functions.ExecuteSql(false, "INSERT INTO `player_mails` (`citizenid`, `sender`, `subject`, `message`, `mailid`, `read`) VALUES ('"..Player.PlayerData.citizenid.."', '"..mailData.sender.."', '"..mailData.subject.."', '"..mailData.message.."', '"..GenerateMailId().."', '0')")
+        else
+            QBCore.Functions.ExecuteSql(false, "INSERT INTO `player_mails` (`citizenid`, `sender`, `subject`, `message`, `mailid`, `read`, `button`) VALUES ('"..Player.PlayerData.citizenid.."', '"..mailData.sender.."', '"..mailData.subject.."', '"..mailData.message.."', '"..GenerateMailId().."', '0', '"..json.encode(mailData.button).."')")
+        end
+    end
+end)
+
 RegisterServerEvent('qb-phone:server:sendNewEventMail')
 AddEventHandler('qb-phone:server:sendNewEventMail', function(citizenid, mailData)
     if mailData.button == nil then
