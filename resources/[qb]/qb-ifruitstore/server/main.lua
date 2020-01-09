@@ -35,7 +35,7 @@ RegisterServerEvent('qb-ifruitstore:server:SafeReward')
 AddEventHandler('qb-ifruitstore:server:SafeReward', function()
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    Player.Functions.AddMoney('cash', math.random(1500, 2000))
+    Player.Functions.AddMoney('cash', math.random(1500, 2000), "robbery-ifruit")
     Player.Functions.AddItem("certificate", certificateAmount)
     TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items["certificate"], "add")
     Citizen.Wait(500)

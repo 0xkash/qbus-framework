@@ -1448,7 +1448,7 @@ end
 
 Citizen.CreateThread(function()
 	while true do
-		Citizen.Wait(0)
+		Citizen.Wait(3)
 		if inside then
 			SetLocalPlayerVisibleLocally(1)
 		end

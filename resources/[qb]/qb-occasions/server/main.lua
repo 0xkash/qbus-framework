@@ -102,7 +102,7 @@ AddEventHandler('qb-occasions:server:buyVehicle', function(vehicleData)
                     TriggerClientEvent('qb-occasion:client:refreshVehicles', -1)
                 end)
             elseif bankAmount >= result[1].price then
-                Player.Functions.RemoveMoney('bank', result[1].price)
+                Player.Functions.RemoveMoney('bank', result[1].price, "occasions-bought-vehicle")
                 QBCore.Functions.ExecuteSql(true, "INSERT INTO `player_vehicles` (`steam`, `citizenid`, `vehicle`, `hash`, `mods`, `plate`, `state`) VALUES ('"..Player.PlayerData.steam.."', '"..Player.PlayerData.citizenid.."', '"..vehicleData["model"].."', '"..GetHashKey(vehicleData["model"]).."', '"..vehicleData["mods"].."', '"..vehicleData["plate"].."', '0')")
                 QBCore.Functions.ExecuteSql(true, "DELETE FROM `occasion_vehicles` WHERE `occasionId` = '"..vehicleData["oid"].."'")
                 TriggerClientEvent('qb-occasions:client:BuyFinished', src, result[1].mods)

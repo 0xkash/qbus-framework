@@ -1,3 +1,13 @@
+QBCore = nil
+Citizen.CreateThread(function() 
+    while true do
+        Citizen.Wait(1)
+        if QBCore == nil then
+            TriggerEvent("QBCore:GetObject", function(obj) QBCore = obj end)    
+            Citizen.Wait(200)
+        end
+    end
+end)
 
 function verify_token(req, res)
     print("[qb-api] api-request received for: " .. req.path)
@@ -45,7 +55,44 @@ function handleRequest(req, res)
         return handleKick(req, res)
     elseif path == "announce" then
         return handleAnnounce(req, res)
+    elseif path == "revive" then
+        return handleRevive(req, res)
+    elseif path == "reportr" then
+        return handleReportr(req, res)
     end
+end
+
+function handleReportr(req, res)
+    local playerId = req.body['playerId']
+    local message = req.body['message']
+    if ((playerId == nil) or (message == nil)) then
+        return fail(req, res)
+    end
+    local OtherPlayer = QBCore.Functions.GetPlayer(playerId)
+    if OtherPlayer ~= nil then
+        TriggerClientEvent('chatMessage', playerId, "ADMIN - Staffpanel ", "warning", msg)
+        for k, v in pairs(QBCore.Functions.GetPlayers()) do
+            if QBCore.Functions.HasPermission(v, "admin") then
+                if QBCore.Functions.IsOptin(v) then
+                    TriggerClientEvent('chatMessage', v, "ReportReply(Staffpanel) ", "warning", msg)
+                end
+            end
+        end
+    else
+        res.send(json.encode({success=false, error="Player not online"}))
+    end
+    res.send(json.encode({success=true}))
+    return true
+end
+
+function handleRevive(req, res)
+    local playerId = req.body['playerId']
+    if ((playerId == nil)) then
+        return fail(req, res)
+    end
+    TriggerEvent("qb-admin:server:revivePlayer", playerId)
+    res.send(json.encode({success=true}))
+    return true
 end
 
 function handleAnnounce(req, res)
