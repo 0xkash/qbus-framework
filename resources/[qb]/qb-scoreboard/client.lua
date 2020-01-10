@@ -16,7 +16,7 @@ RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     isLoggedIn = true
 
-    QBCore.Functions.TriggerCallback('qb-scoreboard:server:GetActiveCops', function(cops, config)
+    QBCore.Functions.TriggerCallback('qb-scoreboard:server:GetConfig', function(config)
         Config.IllegalActions = config
     end)
 end)
@@ -122,7 +122,7 @@ Citizen.CreateThread(function()
         end
 
         if scoreboardOpen then
-            for _, player in pairs(GetPlayersFromCoords(GetEntityCoords(GetPlayerPed(-1)), 5.0)) do
+            for _, player in pairs(GetPlayersFromCoords(GetEntityCoords(GetPlayerPed(-1)), 10.0)) do
                 local PlayerId = GetPlayerServerId(player)
                 local PlayerPed = GetPlayerPed(player)
                 local PlayerName = GetPlayerName(player)

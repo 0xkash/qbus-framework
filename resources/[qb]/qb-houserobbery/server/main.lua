@@ -7,6 +7,10 @@ QBCore.Functions.CreateCallback('qb-houserobbery:server:GetHouseConfig', functio
     cb(Config.Houses)
 end)
 
+function RandomTimeout()
+    return(math.random(3600000, 10800000‬‬))
+end
+
 RegisterServerEvent('qb-houserobbery:server:enterHouse')
 AddEventHandler('qb-houserobbery:server:enterHouse', function(house)
     local src = source
@@ -23,7 +27,7 @@ AddEventHandler('qb-houserobbery:server:enterHouse', function(house)
 end)
 
 function ResetHouseStateTimer(house)
-    SetTimeout(45 * 60000, function()
+    SetTimeout(RandomTimeout(), function()
         Config.Houses[house]["opened"] = false
         for k, v in pairs(Config.Houses[house]["furniture"]) do
             v["searched"] = false
