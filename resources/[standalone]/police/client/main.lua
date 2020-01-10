@@ -194,6 +194,11 @@ AddEventHandler('police:client:SendPoliceEmergencyAlert', function(callsign, str
     TriggerServerEvent("police:server:SendPoliceEmergencyAlert", streetLabel, pos, QBCore.Functions.GetPlayerData().metadata["callsign"])
 end)
 
+RegisterNetEvent('police:PlaySound')
+AddEventHandler('police:PlaySound', function()
+    PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
+end)
+
 RegisterNetEvent('police:client:PoliceEmergencyAlert')
 AddEventHandler('police:client:PoliceEmergencyAlert', function(callsign, streetLabel, coords)
     if (PlayerJob.name == 'police' or PlayerJob.name == 'ambulance' or PlayerJob.name == 'doctor') and onDuty then

@@ -758,6 +758,22 @@ QBCore.Commands.Add("cuff", "Boei een speler", {}, false, function(source, args)
     end
 end)
 
+QBCore.Commands.Add("pmelding", "Politie melding maken", {name="bericht", help="Het Politie bericht"}, false, function(source, args)
+    local Player = QBCore.Functions.GetPlayer(source)
+    
+    if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
+        if args[1] ~= nil then
+            local msg = table.concat(args, " ")
+            TriggerClientEvent("chatMessage", -1, "MELDING", "error", msg)
+            TriggerClientEvent('police:PlaySound', -1)
+        else
+            TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Je moet bericht invullen!")
+        end
+    else
+        TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "Dit command is voor hulpdiensten!")
+    end
+end)
+
 QBCore.Commands.Add("escort", "Escort een speler", {}, false, function(source, args)
 	local Player = QBCore.Functions.GetPlayer(source)
     TriggerClientEvent("police:client:EscortPlayer", source)
