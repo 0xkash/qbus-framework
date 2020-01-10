@@ -101,6 +101,16 @@ input[type=number]::-webkit-outer-spin-button {
     top: 32%;
 }
 
+.combine-option-container {
+    display: none;
+    position: absolute;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    width: 9%;
+    top: 48%;
+}
+
 .item-slot {
     position: relative;
     width: 115px;
@@ -158,38 +168,22 @@ input[type=number]::-webkit-outer-spin-button {
     height: 50px;
     background-color: rgba(235, 235, 235, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.01);
+    transition: .1s linear;
 }
 
-.combine-option-container {
-    display: none;
-    position: absolute;
-    margin: 0 auto;
-    left: 0;
-    right: 0;
-    width: 9%;
-    top: 45vh;
+.inv-option-item:hover {
+    background-color: rgba(235, 235, 235, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    transition: .1s linear;
 }
 
-.combine-option-container-header {
-    text-align: center;
-    font-size: 18px;
-    font-family: sans-serif;
-    font-weight: bold;
-    letter-spacing: 0.1vh;
-    color: white;
-    padding-top: 1vh;
-}
 .btn-combine {
-    width: 100%;
+    width: 80%;
     height: 50px;
     background-color: rgba(235, 235, 235, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.01);
-    margin-top: 1.5vh;
-}
-
-.btn-combine:hover {
-    background-color: rgba(235, 235, 235, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 16%;
+    transition: .1s linear;
 }
 
 .btn-combine > p {
@@ -201,13 +195,10 @@ input[type=number]::-webkit-outer-spin-button {
     font-family: 'Roboto Mono', monospace;
 }
 
-.combine-option-text {
-    position: relative;
-    text-align: center;
-    font-size: 14px;
-    letter-spacing: 0.1vh;
-    color: white;
-    top: 20%;
+.btn-combine:hover {
+    background-color: rgba(235, 235, 235, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    transition: .1s linear;
 }
 
 .item-slot-amount {

@@ -10,15 +10,15 @@ AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
             RemoveBlip(PoliceBlip)
         end
         PoliceBlip = AddBlipForCoord(QBBoatshop.PoliceBoat.x, QBBoatshop.PoliceBoat.y, QBBoatshop.PoliceBoat.z)
-        SetBlipSprite(blip, 410)
-        SetBlipDisplay(blip, 4)
-        SetBlipScale(blip, 0.8)
-        SetBlipAsShortRange(blip, true)
-        SetBlipColour(blip, 29)
+        SetBlipSprite(PoliceBlip, 410)
+        SetBlipDisplay(PoliceBlip, 4)
+        SetBlipScale(PoliceBlip, 0.8)
+        SetBlipAsShortRange(PoliceBlip, true)
+        SetBlipColour(PoliceBlip, 29)
 
         BeginTextCommandSetBlipName("STRING")
         AddTextComponentSubstringPlayerName("Politie Boten")
-        EndTextCommandSetBlipName(blip)
+        EndTextCommandSetBlipName(PoliceBlip)
     end
 end)
 

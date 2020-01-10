@@ -314,54 +314,26 @@ var combineslotData = null;
 $(document).on('click', '.CombineItem', function(e){
     e.preventDefault();
     if (combineslotData.toData.combinable.anim != null) {
-        Inventory.Close();
-
         $.post('http://qb-inventory/combineWithAnim', JSON.stringify({
             combineData: combineslotData.toData.combinable,
             usedItem: combineslotData.toData.name,
             requiredItem: combineslotData.fromData.name
         }))
     } else {
-        $(".combine-option-container").hide();
-        blurInventory(false)
-    
         $.post('http://qb-inventory/combineItem', JSON.stringify({
             reward: combineslotData.toData.combinable.reward,
             toItem: combineslotData.toData.name,
             fromItem: combineslotData.fromData.name
         }))
-    
-        var $fromSlot = combineslotData.fromSlot
-        var $toSlot = combineslotData.toSlot
-        var $fromInv = combineslotData.fromInv
-        var $toInv = combineslotData.toInv
-        var $toAmount = combineslotData.toAmount
-    
-        if (combineslotData.fromData.amount - 1 <= 0) {
-            $fromInv.find("[data-slot=" + $fromSlot + "]").removeClass("item-drag");
-            $fromInv.find("[data-slot=" + $fromSlot + "]").addClass("item-nodrag");
-    
-            $fromInv.find("[data-slot=" + $fromSlot + "]").removeData("item");
-            $fromInv.find("[data-slot=" + $fromSlot + "]").html('<div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div>');
-        }
-    
-        if (combineslotData.toData.amount - 1 <= 0) {
-            $toInv.find("[data-slot=" + $toSlot + "]").removeClass("item-drag");
-            $toInv.find("[data-slot=" + $toSlot + "]").addClass("item-nodrag");
-    
-            $toInv.find("[data-slot=" + $toSlot + "]").removeData("item");
-            $toInv.find("[data-slot=" + $toSlot + "]").html('<div class="item-slot-img"></div><div class="item-slot-label"><p>&nbsp;</p></div>');
-        }
     }
+    Inventory.Close();
 });
 
 $(document).on('click', '.SwitchItem', function(e){
     e.preventDefault();
     $(".combine-option-container").hide();
-    blurInventory(false)
 
     optionSwitch(combineslotData.fromSlot, combineslotData.toSlot, combineslotData.fromInv, combineslotData.toInv, combineslotData.toAmount, combineslotData.toData, combineslotData.fromData)
-
 });
 
 function optionSwitch($fromSlot, $toSlot, $fromInv, $toInv, $toAmount, toData, fromData) {
@@ -505,7 +477,6 @@ function swap($fromSlot, $toSlot, $fromInv, $toInv, $toAmount) {
                         $('.combine-option-text').html("<p>Als je dit item combined krijg je een: <b>"+item.label+"</b></p>");
                     })
                     $(".combine-option-container").fadeIn(100);
-                    blurInventory(true);
                     combineslotData = []
                     combineslotData.fromData = fromData
                     combineslotData.toData = toData
@@ -655,20 +626,6 @@ function isItemAllowed(item, allowedItems) {
     return retval
 }
 
-function blurInventory(toggle) {
-    if (toggle) {
-        $(".inv-options").css("filter", "blur(2px)");
-        $(".other-inventory").css("filter", "blur(2px)");
-        $(".player-inventory").css("filter", "blur(2px)");
-        $(".ply-hotbar-inventory").css("filter", "blur(2px)");
-    } else {
-        $(".inv-options").css("filter", "none");
-        $(".other-inventory").css("filter", "none");
-        $(".player-inventory").css("filter", "none");
-        $(".ply-hotbar-inventory").css("filter", "none");
-    }
-}
-
 function InventoryError($elinv, $elslot) {
     $elinv.find("[data-slot=" + $elslot + "]").css("background", "rgba(156, 20, 20, 0.5)").css("transition", "background 500ms");
     setTimeout(function() {
@@ -792,7 +749,6 @@ var requiredItemOpen = false;
         $(".ply-iteminfo-container").css("display", "none");
         $("#qbus-inventory").fadeOut(300);
         $(".combine-option-container").hide();
-        blurInventory(false);
         $(".item-slot").remove();
         $.post("http://qb-inventory/CloseInventory", JSON.stringify({}));
     };
