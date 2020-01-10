@@ -22,8 +22,12 @@ AddEventHandler('qb-houserobbery:server:enterHouse', function(house)
     Config.Houses[house]["opened"] = true
 end)
 
+function RandomTimeout()
+    return(math.random(3600000, 10800000‬‬))
+end
+
 function ResetHouseStateTimer(house)
-    SetTimeout(45 * 60000, function()
+    SetTimeout(RandomTimeout(), function()
         Config.Houses[house]["opened"] = false
         for k, v in pairs(Config.Houses[house]["furniture"]) do
             v["searched"] = false
