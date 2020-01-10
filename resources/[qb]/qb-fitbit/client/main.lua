@@ -53,6 +53,11 @@ RegisterNUICallback('close', function()
     closeWatch()
 end)
 
+RegisterNetEvent('qb-fitbit:use')
+AddEventHandler('qb-fitbit:use', function()
+  openWatch(true)
+end)
+
 RegisterNUICallback('setFoodWarning', function(data)
     local foodValue = tonumber(data.value)
 
@@ -69,24 +74,24 @@ RegisterNUICallback('setThirstWarning', function(data)
     QBCore.Functions.Notify('Fitbit: Dorst waarschuwing ingesteld op '..thirstValue..'%')
 end)
 
-Citizen.CreateThread(function()
-    while true do
+-- Citizen.CreateThread(function()
+--     while true do
 
-        Citizen.Wait(3)
+--         Citizen.Wait(3)
 
-        if isLoggedIn then
-            if IsControlJustReleased(0, Keys["="]) then
-                QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
-                    if result then
-                        openWatch()
-                    else
-                        QBCore.Functions.Notify('Je hebt geen Fitbit', 'error')
-                    end
-                end, "fitbit")
-            end
-        end
-    end
-end)
+--         if isLoggedIn then
+--             if IsControlJustReleased(0, Keys["="]) then
+--                 QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
+--                     if result then
+--                         openWatch()
+--                     else
+--                         QBCore.Functions.Notify('Je hebt geen Fitbit', 'error')
+--                     end
+--                 end, "fitbit")
+--             end
+--         end
+--     end
+-- end)
 
 Citizen.CreateThread(function()
     while true do
