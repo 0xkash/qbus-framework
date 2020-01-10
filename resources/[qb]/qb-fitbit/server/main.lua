@@ -30,3 +30,14 @@ AddEventHandler('qb-fitbit:server:setValue', function(type, value)
 
     ply.Functions.SetMetaData('fitbit', fitbitData)
 end)
+
+QBCore.Functions.CreateCallback('qb-fitbit:server:HasFitbit', function(source, cb)
+    local Ply = QBCore.Functions.GetPlayer(source)
+    local Fitbit = Ply.Functions.GetItemByName("fitbit")
+
+    if Fitbit ~= nil then
+        cb(true)
+    else
+        cb(false)
+    end
+end)

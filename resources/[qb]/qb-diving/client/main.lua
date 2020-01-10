@@ -11,6 +11,7 @@ Keys = {
 
 QBCore = nil
 isLoggedIn = false
+PlayerJob = {}
 
 Citizen.CreateThread(function()
     while true do
@@ -37,20 +38,6 @@ AddEventHandler("QBCore:Client:OnPlayerLoaded", function()
 
     isLoggedIn = true
 end)
-
--- Citizen.CreateThread(function()
---     Wait(1000)
---     QBCore.Functions.TriggerCallback('qb-diving:server:GetBusyDocks', function(Docks)
---         QBBoatshop.Locations["berths"] = Docks
---     end)
-
---     QBCore.Functions.TriggerCallback('qb-diving:server:GetDivingConfig', function(Config, Area)
---         QBDiving.Locations = Config
---         TriggerEvent('qb-diving:client:SetDivingLocation', Area)
---     end)
-
---     isLoggedIn = true
--- end)
 
 -- Code
 
