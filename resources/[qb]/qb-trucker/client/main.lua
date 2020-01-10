@@ -60,7 +60,7 @@ end)
 
 RegisterNetEvent('QBCore:Client:OnJobUpdate')
 AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
-    local OldlayerJob = PlayerJob
+    local OldlayerJob = PlayerJob.name
     PlayerJob = JobInfo
 
     if PlayerJob.name == "trucker" then
@@ -73,7 +73,7 @@ AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
         BeginTextCommandSetBlipName("STRING")
         AddTextComponentSubstringPlayerName(Config.Locations["vehicle"].label)
         EndTextCommandSetBlipName(TruckVehBlip)
-    elseif OldlayerJob.name == "trucker" then
+    elseif OldlayerJob == "trucker" then
         RemoveTruckerBlips()
     end
 end)
