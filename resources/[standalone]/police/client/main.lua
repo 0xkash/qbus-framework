@@ -49,11 +49,6 @@ AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
     TriggerServerEvent("police:server:UpdateBlips")
 end)
 
-RegisterNetEvent('police:client:PlaySound')
-AddEventHandler('police:client:PlaySound', function()
-    PlaySound(-1, "Lose_1st", "GTAO_FM_Events_Soundset", 0, 0, 1)
-end)
-
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     isLoggedIn = true

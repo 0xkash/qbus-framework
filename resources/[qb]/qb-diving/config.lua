@@ -71,7 +71,7 @@ QBBoatshop.Depots = {
 QBBoatshop.Locations = {
     ["berths"] = {
         [1] = {
-            ["boatModel"] = "dinghy3",
+            ["boatModel"] = "dinghy",
             ["coords"] = {
                 ["boat"] = {
                     ["x"] = -727.05,
@@ -105,7 +105,7 @@ QBBoatshop.Locations = {
             ["inUse"] = false
         },
         [3] = {
-            ["boatModel"] = "dinghy3",
+            ["boatModel"] = "dinghy",
             ["coords"] = {
                 ["boat"] = {
                     ["x"] = -737.84, 
@@ -122,7 +122,7 @@ QBBoatshop.Locations = {
             ["inUse"] = false
         },
         [4] = {
-            ["boatModel"] = "dinghy3",
+            ["boatModel"] = "dinghy",
             ["coords"] = {
                 ["boat"] = {
                     ["x"] = -743.53, 
@@ -139,7 +139,7 @@ QBBoatshop.Locations = {
             ["inUse"] = false
         },
         [5] = {
-            ["boatModel"] = "dinghy3",
+            ["boatModel"] = "dinghy",
             ["coords"] = {
                 ["boat"] = {
                     ["x"] = -749.59, 
@@ -156,7 +156,7 @@ QBBoatshop.Locations = {
             ["inUse"] = false
         },
         [6] = {
-            ["boatModel"] = "dinghy3",
+            ["boatModel"] = "dinghy",
             ["coords"] = {
                 ["boat"] = {
                     ["x"] = -755.39, 
@@ -173,7 +173,7 @@ QBBoatshop.Locations = {
             ["inUse"] = false
         },
         -- [7] = {
-        --     ["boatModel"] = "dinghy3",
+        --     ["boatModel"] = "dinghy",
         --     ["coords"] = {
         --         ["boat"] = {
         --             ["x"] = -769.06, 
@@ -190,7 +190,7 @@ QBBoatshop.Locations = {
         --     ["inUse"] = false
         -- },
         -- [8] = {
-        --     ["boatModel"] = "dinghy3",
+        --     ["boatModel"] = "dinghy",
         --     ["coords"] = {
         --         ["boat"] = {
         --             ["x"] = -774.99, 
@@ -207,7 +207,7 @@ QBBoatshop.Locations = {
         --     ["inUse"] = false
         -- },
         -- [9] = {
-        --     ["boatModel"] = "dinghy3",
+        --     ["boatModel"] = "dinghy",
         --     ["coords"] = {
         --         ["boat"] = {
         --             ["x"] = -780.66, 
@@ -224,7 +224,7 @@ QBBoatshop.Locations = {
         --     ["inUse"] = false
         -- },
         -- [10] = {
-        --     ["boatModel"] = "dinghy3",
+        --     ["boatModel"] = "dinghy",
         --     ["coords"] = {
         --         ["boat"] = {
         --             ["x"] = -786.47, 
@@ -241,7 +241,7 @@ QBBoatshop.Locations = {
         --     ["inUse"] = false
         -- },
         -- [11] = {
-        --     ["boatModel"] = "dinghy3",
+        --     ["boatModel"] = "dinghy",
         --     ["coords"] = {
         --         ["boat"] = {
         --             ["x"] = -792.27, 
@@ -258,7 +258,7 @@ QBBoatshop.Locations = {
         --     ["inUse"] = false
         -- },
         -- [12] = {
-        --     ["boatModel"] = "dinghy3",
+        --     ["boatModel"] = "dinghy",
         --     ["coords"] = {
         --         ["boat"] = {
         --             ["x"] = -798.33, 
@@ -278,9 +278,9 @@ QBBoatshop.Locations = {
 }
 
 QBBoatshop.ShopBoats = {
-    ["dinghy33"] = {
-        ["model"] = "dinghy33",
-        ["label"] = "dinghy3",
+    ["dinghy"] = {
+        ["model"] = "dinghy",
+        ["label"] = "Dinghy",
         ["price"] = 40000
     },
     ["speeder"] = {

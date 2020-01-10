@@ -716,20 +716,6 @@ QBCore.Commands.Add("setpolice", "Geef de politie baan aan iemand ", {{name="id"
     end
 end)
 
-QBCore.Commands.Add("pmelding", "Melding doen als Agent", {{name="bericht", help="Het politie bericht"}}, false, function(source, args)
-    local Player = QBCore.Functions.GetPlayer(source)
-    local msg = table.concat(args, " ")
-
-    if (Player.PlayerData.job.name == "police" and Player.PlayerData.job.onduty) then
-        if args[1] ~= nil then
-            TriggerClientEvent("chatMessage", -1, "POLITIE MELDING", "error", msg)
-            TriggerClientEvent('police:client:PlaySound', -1)
-            TriggerClientEvent('QBCore:Notify', source, 'Politie bericht verstuurd!', 'success')
-        else
-            TriggerClientEvent('QBCore:Notify', source, 'Je moet een bericht opgeven!')
-        end
-    end
-end)
 
 function IsHighCommand(citizenid)
     local retval = false

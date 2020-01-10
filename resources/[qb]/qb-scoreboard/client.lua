@@ -16,7 +16,7 @@ RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     isLoggedIn = true
 
-    QBCore.Functions.TriggerCallback('qb-scoreboard:server:GetConfig', function(config)
+    QBCore.Functions.TriggerCallback('qb-scoreboard:server:GetActiveCops', function(cops, config)
         Config.IllegalActions = config
     end)
 end)
@@ -98,12 +98,14 @@ Citizen.CreateThread(function()
         if IsControlJustPressed(0, Config.OpenKey) then
             if not scoreboardOpen then
                 QBCore.Functions.TriggerCallback('qb-scoreboard:server:GetActiveCops', function(cops)
+                    Config.CurrentCops = cops
+
                     SendNUIMessage({
                         action = "open",
                         players = GetCurrentPlayers(),
                         maxPlayers = Config.MaxPlayers,
                         requiredCops = Config.IllegalActions,
-                        currentCops = cops,
+                        currentCops = Config.CurrentCops,
                     })
                     scoreboardOpen = true
                 end)
@@ -120,7 +122,7 @@ Citizen.CreateThread(function()
         end
 
         if scoreboardOpen then
-            for _, player in pairs(GetPlayersFromCoords(GetEntityCoords(GetPlayerPed(-1)), 8.0)) do
+            for _, player in pairs(GetPlayersFromCoords(GetEntityCoords(GetPlayerPed(-1)), 5.0)) do
                 local PlayerId = GetPlayerServerId(player)
                 local PlayerPed = GetPlayerPed(player)
                 local PlayerName = GetPlayerName(player)
