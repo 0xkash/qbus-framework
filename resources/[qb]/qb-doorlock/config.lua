@@ -391,7 +391,7 @@ QB.Doors = {
 		locking = false,
 		locked = true,
 		pickable = false,
-		distance = 10,
+		distance = 13,
 		size = 2
 	},
 	{
@@ -402,7 +402,7 @@ QB.Doors = {
 		locking = false,
 		locked = true,
 		pickable = false,
-		distance = 10,
+		distance = 13,
 		size = 2
 	},
 	{
