@@ -23,6 +23,7 @@ local CurrentPlate = nil
 local CurrentTow = nil
 
 local selectedVeh = nil
+local TruckVehBlip = nil
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
@@ -35,7 +36,7 @@ AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     JobsDone = 0
 
     if PlayerJob.name == "trucker" then
-        local TruckVehBlip = AddBlipForCoord(Config.Locations["vehicle"].coords.x, Config.Locations["vehicle"].coords.y, Config.Locations["vehicle"].coords.z)
+        TruckVehBlip = AddBlipForCoord(Config.Locations["vehicle"].coords.x, Config.Locations["vehicle"].coords.y, Config.Locations["vehicle"].coords.z)
         SetBlipSprite(TruckVehBlip, 326)
         SetBlipDisplay(TruckVehBlip, 4)
         SetBlipScale(TruckVehBlip, 0.6)
@@ -49,6 +50,7 @@ end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerUnload')
 AddEventHandler('QBCore:Client:OnPlayerUnload', function()
+    RemoveTruckerBlips()
     CurrentLocation = nil
     CurrentBlip = nil
     hasBox = false
@@ -58,10 +60,11 @@ end)
 
 RegisterNetEvent('QBCore:Client:OnJobUpdate')
 AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
+    local OldlayerJob = PlayerJob
     PlayerJob = JobInfo
 
     if PlayerJob.name == "trucker" then
-        local TruckVehBlip = AddBlipForCoord(Config.Locations["vehicle"].coords.x, Config.Locations["vehicle"].coords.y, Config.Locations["vehicle"].coords.z)
+        TruckVehBlip = AddBlipForCoord(Config.Locations["vehicle"].coords.x, Config.Locations["vehicle"].coords.y, Config.Locations["vehicle"].coords.z)
         SetBlipSprite(TruckVehBlip, 326)
         SetBlipDisplay(TruckVehBlip, 4)
         SetBlipScale(TruckVehBlip, 0.6)
@@ -70,6 +73,8 @@ AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
         BeginTextCommandSetBlipName("STRING")
         AddTextComponentSubstringPlayerName(Config.Locations["vehicle"].label)
         EndTextCommandSetBlipName(TruckVehBlip)
+    elseif OldlayerJob.name == "trucker" then
+        RemoveTruckerBlips()
     end
 end)
 
@@ -322,6 +327,18 @@ end
 function TakeOutVehicle(vehicleInfo)
     TriggerServerEvent('qb-trucker:server:DoBail', true, vehicleInfo)
     selectedVeh = vehicleInfo
+end
+
+function RemoveTruckerBlips()
+    if TruckVehBlip ~= nil then
+        RemoveBlip(TruckVehBlip)
+        TruckVehBlip = nil
+    end
+
+    if CurrentBlip ~= nil then
+        RemoveBlip(CurrentBlip)
+        CurrentBlip = nil
+    end
 end
 
 RegisterNetEvent('qb-trucker:client:SpawnVehicle')
