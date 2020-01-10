@@ -86,7 +86,7 @@ AddEventHandler("qb-pawnshop:server:sellGold", function()
         for k, v in pairs(Player.PlayerData.items) do 
             if Player.PlayerData.items[k] ~= nil then 
                 if Player.PlayerData.items[k].name == "goldbar" then 
-                    price = price + (math.random(8000, 15000) * Player.PlayerData.items[k].amount)
+                    price = price + (math.random(3000, 7000) * Player.PlayerData.items[k].amount)
                     Player.Functions.RemoveItem(Player.PlayerData.items[k].name, Player.PlayerData.items[k].amount, k)
                 end
             end

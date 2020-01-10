@@ -18,6 +18,10 @@ QBCore.Functions.CreateCallback('qb-scoreboard:server:GetActiveCops', function(s
     cb(retval)
 end)
 
+QBCore.Functions.CreateCallback('qb-scoreboard:server:GetConfig', function(source, cb)
+    cb(Config.IllegalActions)
+end)
+
 RegisterServerEvent('qb-scoreboard:server:SetActivityBusy')
 AddEventHandler('qb-scoreboard:server:SetActivityBusy', function(activity, bool)
     Config.IllegalActions[activity].busy = bool
