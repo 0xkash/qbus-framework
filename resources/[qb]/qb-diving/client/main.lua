@@ -37,6 +37,22 @@ AddEventHandler("QBCore:Client:OnPlayerLoaded", function()
     PlayerJob = QBCore.Functions.GetPlayerData().job
 
     isLoggedIn = true
+
+    if PlayerJob.name == "police" then
+        if PoliceBlip ~= nil then
+            RemoveBlip(PoliceBlip)
+        end
+        PoliceBlip = AddBlipForCoord(QBBoatshop.PoliceBoat.x, QBBoatshop.PoliceBoat.y, QBBoatshop.PoliceBoat.z)
+        SetBlipSprite(PoliceBlip, 410)
+        SetBlipDisplay(PoliceBlip, 4)
+        SetBlipScale(PoliceBlip, 0.8)
+        SetBlipAsShortRange(PoliceBlip, true)
+        SetBlipColour(PoliceBlip, 29)
+
+        BeginTextCommandSetBlipName("STRING")
+        AddTextComponentSubstringPlayerName("Politie Boten")
+        EndTextCommandSetBlipName(PoliceBlip)
+    end
 end)
 
 -- Code
