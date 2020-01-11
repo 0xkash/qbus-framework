@@ -552,7 +552,7 @@ QBShared.Vehicles = {
 		["trunkslots"] = 80,
 		["shop"] = "pdm",
 	},
-	["tampa3"] = {
+	["tampa2"] = {
 		["name"] = "Drift Tampa",
 		["brand"] = "Declasse",
 		["model"] = "tampa3",
@@ -3210,7 +3210,7 @@ QBShared.VehicleModels = {
 		["trunkslots"] = 80,
 		["shop"] = "pdm",
 	},
-	[GetHashKey("tampa3")] = {
+	[GetHashKey("tampa2")] = {
 		["name"] = "Drift Tampa",
 		["brand"] = "Declasse",
 		["model"] = "tampa3",
