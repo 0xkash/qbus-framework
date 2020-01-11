@@ -104,7 +104,7 @@ cfg = {
 				1.0,		--	5: Sports Classics
 				1.0,		--	6: Sports
 				1.0,		--	7: Super
-				0.10,		--	8: Motorcycles
+				0.20,		--	8: Motorcycles
 				0.7,		--	9: Off-road
 				0.25,		--	10: Industrial
 				1.0,		--	11: Utility
