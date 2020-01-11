@@ -23,7 +23,7 @@ AddEventHandler('qb-houserobbery:server:enterHouse', function(house)
 end)
 
 function ResetHouseStateTimer(house)
-    -- Cannot parse math.random into tonumber
+    -- Cannot parse math.random "directly" in the tonumber function
     local num = math.random(3600000, 10800000)
     local time = tonumber(num)
 
