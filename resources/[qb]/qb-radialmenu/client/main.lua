@@ -16,7 +16,7 @@ function setupSubItems()
     QBCore.Functions.GetPlayerData(function(PlayerData)
         if PlayerData.metadata["isdead"] then
             if PlayerData.job.name == "police" or PlayerData.job.name == "ambulance" then
-                Config.MenuItems = {
+                Config.MenuItems[4].items = {
                     [1] = {
                         id    = 'emergencybutton2',
                         title = 'Noodknop',
@@ -28,7 +28,7 @@ function setupSubItems()
                 }
             end
         else
-            if Config.JobInteractions[PlayerData.job.name] ~= nil then
+            if Config.JobInteractions[PlayerData.job.name] ~= nil and next(Config.JobInteractions[PlayerData.job.name]) ~= nil then
                 Config.MenuItems[4].items = Config.JobInteractions[PlayerData.job.name]
             else 
                 Config.MenuItems[4].items = {}

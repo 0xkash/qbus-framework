@@ -11,6 +11,7 @@ Keys = {
 
 QBCore = nil
 isLoggedIn = false
+PlayerJob = {}
 
 Citizen.CreateThread(function()
     while true do
@@ -36,21 +37,23 @@ AddEventHandler("QBCore:Client:OnPlayerLoaded", function()
     PlayerJob = QBCore.Functions.GetPlayerData().job
 
     isLoggedIn = true
+
+    if PlayerJob.name == "police" then
+        if PoliceBlip ~= nil then
+            RemoveBlip(PoliceBlip)
+        end
+        PoliceBlip = AddBlipForCoord(QBBoatshop.PoliceBoat.x, QBBoatshop.PoliceBoat.y, QBBoatshop.PoliceBoat.z)
+        SetBlipSprite(PoliceBlip, 410)
+        SetBlipDisplay(PoliceBlip, 4)
+        SetBlipScale(PoliceBlip, 0.8)
+        SetBlipAsShortRange(PoliceBlip, true)
+        SetBlipColour(PoliceBlip, 29)
+
+        BeginTextCommandSetBlipName("STRING")
+        AddTextComponentSubstringPlayerName("Politie Boten")
+        EndTextCommandSetBlipName(PoliceBlip)
+    end
 end)
-
--- Citizen.CreateThread(function()
---     Wait(1000)
---     QBCore.Functions.TriggerCallback('qb-diving:server:GetBusyDocks', function(Docks)
---         QBBoatshop.Locations["berths"] = Docks
---     end)
-
---     QBCore.Functions.TriggerCallback('qb-diving:server:GetDivingConfig', function(Config, Area)
---         QBDiving.Locations = Config
---         TriggerEvent('qb-diving:client:SetDivingLocation', Area)
---     end)
-
---     isLoggedIn = true
--- end)
 
 -- Code
 

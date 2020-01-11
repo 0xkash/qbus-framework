@@ -1,46 +1,55 @@
 local CurrentDock = nil
 local ClosestDock = nil
-
-PlayerJob = {}
+local PoliceBlip = nil
 
 RegisterNetEvent('QBCore:Client:OnJobUpdate')
 AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
     PlayerJob = JobInfo
     if PlayerJob.name == "police" then
-        local blip = AddBlipForCoord(QBBoatshop.PoliceBoat.x, QBBoatshop.PoliceBoat.y, QBBoatshop.PoliceBoat.z)
-        SetBlipSprite(blip, 410)
-        SetBlipDisplay(blip, 4)
-        SetBlipScale(blip, 0.8)
-        SetBlipAsShortRange(blip, true)
-        SetBlipColour(blip, 29)
+        if PoliceBlip ~= nil then
+            RemoveBlip(PoliceBlip)
+        end
+        PoliceBlip = AddBlipForCoord(QBBoatshop.PoliceBoat.x, QBBoatshop.PoliceBoat.y, QBBoatshop.PoliceBoat.z)
+        SetBlipSprite(PoliceBlip, 410)
+        SetBlipDisplay(PoliceBlip, 4)
+        SetBlipScale(PoliceBlip, 0.8)
+        SetBlipAsShortRange(PoliceBlip, true)
+        SetBlipColour(PoliceBlip, 29)
 
         BeginTextCommandSetBlipName("STRING")
         AddTextComponentSubstringPlayerName("Politie Boten")
-        EndTextCommandSetBlipName(blip)
+        EndTextCommandSetBlipName(PoliceBlip)
     end
 end)
 
 Citizen.CreateThread(function()
     while true do 
-        Citizen.Wait(1)
+        Citizen.Wait(3)
         if isLoggedIn then
             local pos = GetEntityCoords(GetPlayerPed(-1))
-            if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, QBBoatshop.PoliceBoat.x, QBBoatshop.PoliceBoat.y, QBBoatshop.PoliceBoat.z, true) < 7.5) and PlayerJob.name == "police" then
-                DrawMarker(2, QBBoatshop.PoliceBoat.x, QBBoatshop.PoliceBoat.y, QBBoatshop.PoliceBoat.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
-                if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, QBBoatshop.PoliceBoat.x, QBBoatshop.PoliceBoat.y, QBBoatshop.PoliceBoat.z, true) < 1.5) then
-                    QBCore.Functions.DrawText3D(QBBoatshop.PoliceBoat.x, QBBoatshop.PoliceBoat.y, QBBoatshop.PoliceBoat.z, "~g~E~w~ - Boot pakken")
-                    if IsControlJustReleased(0, Keys["E"]) then
-                        local coords = QBBoatshop.PoliceBoatSpawn
-                        QBCore.Functions.SpawnVehicle("pboot", function(veh)
-                            SetVehicleNumberPlateText(veh, "PBOA"..tostring(math.random(1000, 9999)))
-                            SetEntityHeading(veh, coords.h)
-                            exports['LegacyFuel']:SetFuel(veh, 100.0)
-                            TaskWarpPedIntoVehicle(GetPlayerPed(-1), veh, -1)
-                            TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
-                            SetVehicleEngineOn(veh, true, true)
-                        end, coords, true)
+            if PlayerJob.name == "police" then
+                local dist = GetDistanceBetweenCoords(pos, QBBoatshop.PoliceBoat.x, QBBoatshop.PoliceBoat.y, QBBoatshop.PoliceBoat.z, true)
+                if dist < 10 then
+                    DrawMarker(2, QBBoatshop.PoliceBoat.x, QBBoatshop.PoliceBoat.y, QBBoatshop.PoliceBoat.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
+                    if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, QBBoatshop.PoliceBoat.x, QBBoatshop.PoliceBoat.y, QBBoatshop.PoliceBoat.z, true) < 1.5) then
+                        QBCore.Functions.DrawText3D(QBBoatshop.PoliceBoat.x, QBBoatshop.PoliceBoat.y, QBBoatshop.PoliceBoat.z, "~g~E~w~ - Boot pakken")
+                        if IsControlJustReleased(0, Keys["E"]) then
+                            local coords = QBBoatshop.PoliceBoatSpawn
+                            QBCore.Functions.SpawnVehicle("pboot", function(veh)
+                                SetVehicleNumberPlateText(veh, "PBOA"..tostring(math.random(1000, 9999)))
+                                SetEntityHeading(veh, coords.h)
+                                exports['LegacyFuel']:SetFuel(veh, 100.0)
+                                TaskWarpPedIntoVehicle(GetPlayerPed(-1), veh, -1)
+                                TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
+                                SetVehicleEngineOn(veh, true, true)
+                            end, coords, true)
+                        end
                     end
+                else
+                    Citizen.Wait(1000)
                 end
+            else
+                Citizen.Wait(3000)
             end
         end
     end

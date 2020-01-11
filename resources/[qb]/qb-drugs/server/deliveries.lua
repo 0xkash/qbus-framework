@@ -33,7 +33,7 @@ AddEventHandler('qb-drugs:server:succesDelivery', function(deliveryData, inTime)
                 price = 4000
             elseif cops == 2 then
                 price = 5000
-            elseif cops == 3 then
+            elseif cops >= 3 then
                 price = 6000
             end
             print("Drugs PRICE BRO: " .. price)

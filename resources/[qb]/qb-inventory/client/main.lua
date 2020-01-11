@@ -515,13 +515,9 @@ RegisterNUICallback("UseItem", function(data, cb)
 end)
 
 RegisterNUICallback("combineItem", function(data)
+    Citizen.Wait(150)
     TriggerServerEvent('inventory:server:combineItem', data.reward, data.fromItem, data.toItem)
-    Citizen.Wait(100)
-    SendNUIMessage({
-        action = "update",
-        inventory = QBCore.Functions.GetPlayerData().items,
-        maxweight = QBCore.Config.Player.MaxWeight,
-    })
+    TriggerEvent('inventory:client:ItemBox', QBCore.Shared.Items[data.reward], 'add')
 end)
 
 RegisterNUICallback('combineWithAnim', function(data)
