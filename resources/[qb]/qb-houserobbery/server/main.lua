@@ -23,12 +23,17 @@ AddEventHandler('qb-houserobbery:server:enterHouse', function(house)
 end)
 
 function ResetHouseStateTimer(house)
-    SetTimeout(tonumer(math.random(3600000, 10800000‬‬)), function()
+    -- Cannot parse math.random into tonumber
+    local num = math.random(3600000, 10800000)
+    local time = tonumber(num)
+
+    Citizen.SetTimeout(time, function()
         Config.Houses[house]["opened"] = false
         for k, v in pairs(Config.Houses[house]["furniture"]) do
             v["searched"] = false
         end
-        TriggerClientEvent('qb-houserobbery:server:SetHouseState', -1, house)
+        TriggerClientEvent('qb-houserobbery:client:setHouseState', -1, house, false)
+       
     end)
 end
 
