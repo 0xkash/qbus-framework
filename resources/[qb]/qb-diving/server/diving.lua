@@ -45,15 +45,20 @@ AddEventHandler('qb-diving:server:TakeCoral', function(Area, Coral, Bool)
     TriggerClientEvent('qb-diving:server:UpdateCoral', -1, Area, Coral, Bool)
 end)
 
-RegisterServerEvent('qb-diving:server:GearItem')
-AddEventHandler('qb-diving:server:GearItem', function(action)
+RegisterServerEvent('qb-diving:server:RemoveGear')
+AddEventHandler('qb-diving:server:RemoveGear', function()
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+
+    Player.Functions.RemoveItem("diving_gear", 1)
+    TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items["diving_gear"], "remove")
+end)
+
+RegisterServerEvent('qb-diving:server:GiveBackGear')
+AddEventHandler('qb-diving:server:GiveBackGear', function()
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     
-    if action == "add" then
-        Player.Functions.AddItem("diving_gear", 1)
-    elseif action == "remove" then
-        Player.Functions.RemoveItem("diving_gear", 1)
-    end
-    TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items["diving_gear"], action)
+    Player.Functions.AddItem("diving_gear", 1)
+    TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items["diving_gear"], "add")
 end)

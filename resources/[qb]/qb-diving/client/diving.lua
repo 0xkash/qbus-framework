@@ -215,10 +215,9 @@ AddEventHandler('qb-diving:client:UseGear', function(bool)
             SetEnableScuba(GetPlayerPed(-1), true)
             SetPedMaxTimeUnderwater(GetPlayerPed(-1), 2000.00)
             currentGear.enabled = true
-            TriggerServerEvent('qb-diving:server:GearItem', "remove")
+            TriggerServerEvent('qb-diving:server:RemoveGear')
             ClearPedTasks(GetPlayerPed(-1))
             TriggerEvent('chatMessage', "SYSTEM", "error", "/duikpak om je duikpak uit te trekken!")
-            -- QBCore.Functions.Notify('Gelukt! /duikpak om pak uit te trekken')
         end)
     else
         if currentGear.enabled then
@@ -229,8 +228,9 @@ AddEventHandler('qb-diving:client:UseGear', function(bool)
                 SetEnableScuba(GetPlayerPed(-1), false)
                 SetPedMaxTimeUnderwater(GetPlayerPed(-1), 1.00)
                 currentGear.enabled = false
-                TriggerServerEvent('qb-diving:server:GearItem', "add")
+                TriggerServerEvent('qb-diving:server:GiveBackGear')
                 ClearPedTasks(GetPlayerPed(-1))
+                QBCore.Functions.Notify('Je hebt je duikpak uitgetrokken')
             end)
         else
             QBCore.Functions.Notify('Je hebt geen duikgear aan..', 'error')
