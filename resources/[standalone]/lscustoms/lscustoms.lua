@@ -96,36 +96,36 @@ local function SetupModPrices()
 	local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1))
 	local model = GetEntityModel(vehicle)
 	local percentage = 5
-	local vehiclePrice = 35000
+	local vehiclePrice = QBCore.Shared.VehicleModels[GetEntityModel(vehicle)].price
 	if QBCore.Shared.VehicleModels[model] ~= nil then
 		vehiclePrice = QBCore.Shared.VehicleModels[model]["price"]
 	end
 	for k, v in pairs(LSC_Config.prices.mods[11]) do
-		local price = ((vehiclePrice / 100) * percentage) + LSC_Config.prices.mods[11][k].price
+		local price = ((vehiclePrice / 100) * percentage) + LSC_Config.prices.mods[11][k].DefaultPrice
 		LSC_Config.prices.mods[11][k].price = math.ceil(price)
 	end
 
 	for k, v in pairs(LSC_Config.prices.mods[12]) do
-		local price = ((vehiclePrice / 100) * percentage) + LSC_Config.prices.mods[12][k].price
+		local price = ((vehiclePrice / 100) * percentage) + LSC_Config.prices.mods[12][k].DefaultPrice
 		LSC_Config.prices.mods[12][k].price = math.ceil(price)
 	end
 
 	for k, v in pairs(LSC_Config.prices.mods[13]) do
-		local price = ((vehiclePrice / 100) * percentage) + LSC_Config.prices.mods[13][k].price
+		local price = ((vehiclePrice / 100) * percentage) + LSC_Config.prices.mods[13][k].DefaultPrice
 		LSC_Config.prices.mods[13][k].price = math.ceil(price)
 	end
 
 	for k, v in pairs(LSC_Config.prices.mods[16]) do
-		local price = ((vehiclePrice / 100) * percentage) + LSC_Config.prices.mods[16][k].price
+		local price = ((vehiclePrice / 100) * percentage) + LSC_Config.prices.mods[16][k].DefaultPrice
 		LSC_Config.prices.mods[16][k].price = math.ceil(price)
 	end
 
 	for k, v in pairs(LSC_Config.prices.mods[15]) do
-		local price = ((vehiclePrice / 100) * percentage) + LSC_Config.prices.mods[15][k].price
+		local price = ((vehiclePrice / 100) * percentage) + LSC_Config.prices.mods[15][k].DefaultPrice
 		LSC_Config.prices.mods[15][k].price = math.ceil(price)
 	end
 
-	local price = ((vehiclePrice / 100) * percentage) + LSC_Config.prices.mods[18][2].price
+	local price = ((vehiclePrice / 100) * percentage) + LSC_Config.prices.mods[18][2].DefaultPrice
 	LSC_Config.prices.mods[18][2].price = math.ceil(price)
 end
 
@@ -135,12 +135,7 @@ LSCMenu.config.pcontrol = false
 
 --Add mod to menu
 local function AddMod(mod,parent,header,name,info,stock)
-	print(name)
-	print(mod)
 	local veh = myveh.vehicle
-	print(GetNumVehicleMods(veh, mod))
-	print(veh)
-	print('---')
 	SetVehicleModKit(veh,0)	
 	if (GetNumVehicleMods(veh, mod) ~= nil and GetNumVehicleMods(veh,mod) > 0) or mod == 18 or mod == 22 then
 		local m = parent:addSubMenu(header, name, info,true)
@@ -648,7 +643,6 @@ local function DriveOutOfGarage(pos)
 			SetVehicleDoorsLocked(veh,0)
 			SetPlayerInvincible(GetPlayerIndex(),false)
 			NetworkLeaveTransition()
-			print(CurrentFuel)
 			exports['LegacyFuel']:SetFuel(veh, CurrentFuel)
 			
 			NetworkFadeInEntity(veh, 1)	
