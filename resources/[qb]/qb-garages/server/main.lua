@@ -118,4 +118,3 @@ AddEventHandler('qb-garage:server:updateVehicleStatus', function(fuel, engine, b
         ['@citizenid'] = pData.PlayerData.citizenid
     })
 end)
-

@@ -434,8 +434,8 @@ Citizen.CreateThread(function()
                         local plate = GetVehicleNumberPlateText(curVeh)
                         QBCore.Functions.TriggerCallback('qb-garage:server:checkVehicleOwner', function(owned)
                             if owned then
-                                local bodyDamage = round(GetVehicleBodyHealth(curVeh), 1)
-                                local engineDamage = round(GetVehicleEngineHealth(curVeh), 1)
+                                local bodyDamage = math.ceil(GetVehicleBodyHealth(curVeh))
+                                local engineDamage = math.ceil(GetVehicleEngineHealth(curVeh))
                                 local totalFuel = exports['LegacyFuel']:GetFuel(curVeh)
         
                                 TriggerServerEvent('qb-garage:server:updateVehicleStatus', totalFuel, engineDamage, bodyDamage, plate, k)
