@@ -266,7 +266,7 @@ function LockpickDoor(isAdvanced)
                     if math.random(1, 100) <= 90 then
                         QBCore.Functions.Notify("Deur open!")
                         TriggerServerEvent("InteractSound_SV:PlayWithinDistance", 5, "unlock", 0.3)
-                        SetVehicleDoorsLocked(vehicle, 1)
+                        SetVehicleDoorsLocked(vehicle, 0)
                         SetVehicleDoorsLockedForAllPlayers(vehicle, false)
                     else
                         QBCore.Functions.Notify("Mislukt!", "error")

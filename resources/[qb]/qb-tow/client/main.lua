@@ -217,7 +217,7 @@ Citizen.CreateThread(function()
                                 JobsDone = 0
                                 NpcOn = false
                             else
-                                QBCore.Functions.Notify("Je hebt nog geen werk gericht..", "error")
+                                QBCore.Functions.Notify("Je hebt nog geen werk verricht..", "error")
                             end
                         end
                     elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["main"].coords.x, Config.Locations["main"].coords.y, Config.Locations["main"].coords.z, true) < 2.5) then

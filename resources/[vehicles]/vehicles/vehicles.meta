@@ -2082,7 +2082,7 @@
        <type>VEHICLE_TYPE_BIKE</type>
        <plateType>VPT_NONE</plateType>
        <dashboardType>VDT_SPORTBK</dashboardType>
-       <vehicleClass>VC_MOTORCYCLE</vehicleClass>
+       <vehicleClass>VC_EMERGENCY</vehicleClass>
        <wheelType>VWT_BIKE</wheelType>
        <trailers />
        <additionalTrailers />

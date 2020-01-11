@@ -115,7 +115,7 @@ AddEventHandler('qb-occasions:server:buyVehicle', function(vehicleData)
                 Player.Functions.RemoveMoney('bank', result[1].price, "occasions-bought-vehicle")
                 QBCore.Functions.ExecuteSql(true, "INSERT INTO `player_vehicles` (`steam`, `citizenid`, `vehicle`, `hash`, `mods`, `plate`, `state`) VALUES ('"..Player.PlayerData.steam.."', '"..Player.PlayerData.citizenid.."', '"..vehicleData["model"].."', '"..GetHashKey(vehicleData["model"]).."', '"..vehicleData["mods"].."', '"..vehicleData["plate"].."', '0')")
                 QBCore.Functions.ExecuteSql(true, "DELETE FROM `occasion_vehicles` WHERE `occasionId` = '"..vehicleData["oid"].."'")
-                TriggerClientEvent('qb-occasions:client:BuyFinished', src, result[1].mods)
+                TriggerClientEvent('qb-occasions:client:BuyFinished', src, result[1].model, result[1].plate, result[1].mods)
         
                 QBCore.Functions.ExecuteSql(false, "SELECT * FROM `players` WHERE citizenid = '"..ownerCid.."'", function(player)
                     local recieverSteam = QBCore.Functions.GetPlayerByCitizenId(player[1].citizenid)
