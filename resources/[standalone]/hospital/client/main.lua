@@ -73,7 +73,7 @@ BodyParts = {
     ['RARM'] = { label = 'rechter arm', causeLimp = false, isDamaged = false, severity = 0 },
     ['RHAND'] = { label = 'rechter hand', causeLimp = false, isDamaged = false, severity = 0 },
     ['RFINGER'] = { label = 'rechter vingers', causeLimp = false, isDamaged = false, severity = 0 },
-    ['RLEG'] = { label = 'rchter been', causeLimp = true, isDamaged = false, severity = 0 },
+    ['RLEG'] = { label = 'rechter been', causeLimp = true, isDamaged = false, severity = 0 },
     ['RFOOT'] = { label = 'rechter voet', causeLimp = true, isDamaged = false, severity = 0 },
 }
 
