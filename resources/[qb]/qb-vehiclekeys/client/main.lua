@@ -198,22 +198,26 @@ function LockVehicle()
             loadAnimDict("anim@mp_player_intmenu@key_fob@")
             TaskPlayAnim(GetPlayerPed(-1), 'anim@mp_player_intmenu@key_fob@', 'fob_click' ,3.0, 3.0, -1, 49, 0, false, false, false)
 
-            if(vehLockStatus == 1 or vehLockStatus == 0)then
+            if vehLockStatus == 1 then
                 Citizen.Wait(750)
                 ClearPedTasks(GetPlayerPed(-1))
-                vehLockStatus = 2
                 TriggerServerEvent("InteractSound_SV:PlayWithinDistance", 5, "lock", 0.3)
-                SetVehicleDoorsLocked(veh, vehLockStatus)
-                SetVehicleDoorsLockedForAllPlayers(veh, true)
-                QBCore.Functions.Notify("Voertuig staat op slot..")
+                SetVehicleDoorsLocked(veh, 2)
+                if(GetVehicleDoorLockStatus(veh) == 2)then
+                    QBCore.Functions.Notify("Voertuig vergrendeld!")
+                else
+                    QBCore.Functions.Notify("Er gaat iets fout met het vergrendel systeem!")
+                end
             else
                 Citizen.Wait(750)
                 ClearPedTasks(GetPlayerPed(-1))
-                vehLockStatus = 1
                 TriggerServerEvent("InteractSound_SV:PlayWithinDistance", 5, "unlock", 0.3)
-                SetVehicleDoorsLocked(veh, vehLockStatus)
-                SetVehicleDoorsLockedForAllPlayers(veh, false)
-                QBCore.Functions.Notify("Voertuig staat op open..")
+                SetVehicleDoorsLocked(veh, 1)
+                if(GetVehicleDoorLockStatus(veh) == 1)then
+                    QBCore.Functions.Notify("Voertuig ontgrendeld!")
+                else
+                    QBCore.Functions.Notify("Er gaat iets fout met het vergrendel systeem!")
+                end
             end
 
             if not IsPedInAnyVehicle(GetPlayerPed(-1)) then

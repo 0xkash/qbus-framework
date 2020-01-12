@@ -178,8 +178,8 @@ function leaveRobberyHouse(house)
     end)
 end
 
-RegisterNetEvent('qb-houserobbery:server:SetHouseState')
-AddEventHandler('qb-houserobbery:server:SetHouseState', function(house)
+RegisterNetEvent('qb-houserobbery:client:ResetHouseState')
+AddEventHandler('qb-houserobbery:client:ResetHouseState', function(house)
     Config.Houses[house]["opened"] = false
     for k, v in pairs(Config.Houses[house]["furniture"]) do
         Config.Houses[house]["furniture"][k]["searched"] = false
