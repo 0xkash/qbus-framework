@@ -323,11 +323,6 @@ Citizen.CreateThread(function()
                 SetPlayerInvincible(myPlayer, hasGodmode)
             end
             if WarMenu.CheckBox("Delete Lazer", deleteLazer, function(checked) deleteLazer = checked end) then
-                -- if deleteLazer then
-                --     deleteLazer = false
-                -- else
-                --     deleteLazer = true
-                -- end
             end
             
             WarMenu.Display()
@@ -654,19 +649,17 @@ Citizen.CreateThread(function()
             local position = GetEntityCoords(GetPlayerPed(-1))
             local hit, coords, entity = RayCastGamePlayCamera(1000.0)
 
+            DrawLine(position.x, position.y, position.z, coords.x, coords.y, coords.z, color.r, color.g, color.b, color.a)
+            
             if hit and (IsEntityAVehicle(entity) or IsEntityAPed(entity) or IsEntityAnObject(entity)) then
                 local entityCoord = GetEntityCoords(entity)
                 local minimum, maximum = GetModelDimensions(GetEntityModel(entity))
                 
-                DrawLine(position.x, position.y, position.z, coords.x, coords.y, coords.z, color.r, color.g, color.b, color.a)
                 QBAdmin.Functions.DrawText3D(entityCoord.x, entityCoord.y, entityCoord.z, "Obj: " .. entity .. " Model: " .. GetEntityModel(entity).. " \nDruk [~g~E~s~] om dit object te verwijderen!", 2)
                 DrawBox(entityCoord.x + minimum.x, entityCoord.y + minimum.y, entityCoord.z + minimum.z, entityCoord.x + maximum.x, entityCoord.y + maximum.y, entityCoord.z + maximum.z, color.r, color.g, color.b, 100)
-            else
-                DrawLine(position.x, position.y, position.z, coords.x, coords.y, coords.z, color.r, color.g, color.b, color.a)
-            end
-
-            if IsControlJustReleased(0, 38) then
-                if hit and (IsEntityAVehicle(entity) or IsEntityAPed(entity) or IsEntityAnObject(entity)) then
+                
+                if IsControlJustReleased(0, 38) then
+                    SetObjectAsNoLongerNeeded(entity)
                     DeleteEntity(entity)
                 end
             end
