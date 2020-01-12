@@ -96,7 +96,10 @@ local function SetupModPrices()
 	local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1))
 	local model = GetEntityModel(vehicle)
 	local percentage = 5
-	local vehiclePrice = QBCore.Shared.VehicleModels[GetEntityModel(vehicle)].price
+	local vehiclePrice = 50000
+	if QBCore.Shared.VehicleModels[GetEntityModel(vehicle)] ~= nil and next(QBCore.Shared.VehicleModels[GetEntityModel(vehicle)]) ~= nil then
+		vehiclePrice = QBCore.Shared.VehicleModels[GetEntityModel(vehicle)].price
+	end
 	if QBCore.Shared.VehicleModels[model] ~= nil then
 		vehiclePrice = QBCore.Shared.VehicleModels[model]["price"]
 	end

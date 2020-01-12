@@ -33,7 +33,6 @@ function ResetHouseStateTimer(house)
             v["searched"] = false
         end
         TriggerClientEvent('qb-houserobbery:client:setHouseState', -1, house, false)
-       
     end)
 end
 
