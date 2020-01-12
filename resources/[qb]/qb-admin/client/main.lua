@@ -15,7 +15,12 @@ end)
 QBAdmin = {}
 QBAdmin.Functions = {}
 
-QBAdmin.Functions.DrawText3D = function(x, y, z, text)
+QBAdmin.Functions.DrawText3D = function(x, y, z, text, lines)
+    -- Amount of lines default 1
+    if lines == nil then
+        lines = 1
+    end
+
 	SetTextScale(0.35, 0.35)
     SetTextFont(4)
     SetTextProportional(1)
@@ -26,7 +31,7 @@ QBAdmin.Functions.DrawText3D = function(x, y, z, text)
     SetDrawOrigin(x,y,z, 0)
     DrawText(0.0, 0.0)
     local factor = (string.len(text)) / 370
-    DrawRect(0.0, 0.0+0.0125, 0.017+ factor, 0.03, 0, 0, 0, 75)
+    DrawRect(0.0, 0.0+0.0125 * lines, 0.017+ factor, 0.03 * lines, 0, 0, 0, 75)
     ClearDrawOrigin()
 end
 
@@ -160,6 +165,7 @@ isSpectating = false
 showNames = false
 showBlips = false
 isInvisible = false
+deleteLazer = false
 hasGodmode = false
 
 lastSpectateCoord = nil
@@ -315,6 +321,13 @@ Citizen.CreateThread(function()
                 local myPlayer = PlayerId()
                 
                 SetPlayerInvincible(myPlayer, hasGodmode)
+            end
+            if WarMenu.CheckBox("Delete Lazer", deleteLazer, function(checked) deleteLazer = checked end) then
+                -- if deleteLazer then
+                --     deleteLazer = false
+                -- else
+                --     deleteLazer = true
+                -- end
             end
             
             WarMenu.Display()
@@ -631,6 +644,65 @@ Citizen.CreateThread(function()
         Citizen.Wait(30000)
     end
 end)
+
+Citizen.CreateThread(function()	
+	while true do
+		Citizen.Wait(0)
+
+        if deleteLazer then
+            local color = {r = 255, g = 255, b = 255, a = 200}
+            local position = GetEntityCoords(GetPlayerPed(-1))
+            local hit, coords, entity = RayCastGamePlayCamera(1000.0)
+
+            if hit and (IsEntityAVehicle(entity) or IsEntityAPed(entity) or IsEntityAnObject(entity)) then
+                local entityCoord = GetEntityCoords(entity)
+                local minimum, maximum = GetModelDimensions(GetEntityModel(entity))
+                
+                DrawLine(position.x, position.y, position.z, coords.x, coords.y, coords.z, color.r, color.g, color.b, color.a)
+                QBAdmin.Functions.DrawText3D(entityCoord.x, entityCoord.y, entityCoord.z, "Obj: " .. entity .. " Model: " .. GetEntityModel(entity).. " \nDruk [~g~E~s~] om dit object te verwijderen!", 2)
+                DrawBox(entityCoord.x + minimum.x, entityCoord.y + minimum.y, entityCoord.z + minimum.z, entityCoord.x + maximum.x, entityCoord.y + maximum.y, entityCoord.z + maximum.z, color.r, color.g, color.b, 100)
+            else
+                DrawLine(position.x, position.y, position.z, coords.x, coords.y, coords.z, color.r, color.g, color.b, color.a)
+            end
+
+            if IsControlJustReleased(0, 38) then
+                if hit and (IsEntityAVehicle(entity) or IsEntityAPed(entity) or IsEntityAnObject(entity)) then
+                    DeleteEntity(entity)
+                end
+            end
+        end
+	end
+end)
+
+function RotationToDirection(rotation)
+	local adjustedRotation = 
+	{ 
+		x = (math.pi / 180) * rotation.x, 
+		y = (math.pi / 180) * rotation.y, 
+		z = (math.pi / 180) * rotation.z 
+	}
+	local direction = 
+	{
+		x = -math.sin(adjustedRotation.z) * math.abs(math.cos(adjustedRotation.x)), 
+		y = math.cos(adjustedRotation.z) * math.abs(math.cos(adjustedRotation.x)), 
+		z = math.sin(adjustedRotation.x)
+	}
+	return direction
+end
+
+function RayCastGamePlayCamera(distance)
+    local cameraRotation = GetGameplayCamRot()
+	local cameraCoord = GetGameplayCamCoord()
+	local direction = RotationToDirection(cameraRotation)
+	local destination = 
+	{ 
+		x = cameraCoord.x + direction.x * distance, 
+		y = cameraCoord.y + direction.y * distance, 
+		z = cameraCoord.z + direction.z * distance 
+	}
+	local a, b, c, d, e = GetShapeTestResult(StartShapeTestRay(cameraCoord.x, cameraCoord.y, cameraCoord.z, destination.x, destination.y, destination.z, -1, PlayerPedId(), 0))
+	return b, c, e
+end
 
 RegisterNetEvent('qb-admin:client:bringTp')
 AddEventHandler('qb-admin:client:bringTp', function(coords)
