@@ -32,7 +32,8 @@ function ResetHouseStateTimer(house)
         for k, v in pairs(Config.Houses[house]["furniture"]) do
             v["searched"] = false
         end
-        TriggerClientEvent('qb-houserobbery:client:setHouseState', -1, house, false)
+        TriggerClientEvent('qb-houserobbery:client:ResetHouseState', -1, house)
+       
     end)
 end
 
