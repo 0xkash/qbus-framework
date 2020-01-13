@@ -117,10 +117,14 @@ Citizen.CreateThread(function()
 
             for k, v in pairs(Config.Houses[currentHouse]["furniture"]) do
                 if (GetDistanceBetweenCoords(pos, Config.Houses[currentHouse]["coords"]["x"] + Config.Houses[currentHouse]["furniture"][k]["coords"]["x"], Config.Houses[currentHouse]["coords"]["y"] + Config.Houses[currentHouse]["furniture"][k]["coords"]["y"], Config.Houses[currentHouse]["coords"]["z"] + Config.Houses[currentHouse]["furniture"][k]["coords"]["z"] - 35, true) < 1.5) then
-                    if not Config.Houses[currentHouse]["furniture"][k]["searched"] then
-                        DrawText3Ds(Config.Houses[currentHouse]["coords"]["x"] + Config.Houses[currentHouse]["furniture"][k]["coords"]["x"], Config.Houses[currentHouse]["coords"]["y"] + Config.Houses[currentHouse]["furniture"][k]["coords"]["y"], Config.Houses[currentHouse]["coords"]["z"] + Config.Houses[currentHouse]["furniture"][k]["coords"]["z"] - 35, '~g~E~w~ - '..Config.Houses[currentHouse]["furniture"][k]["text"])
-                        if IsControlJustPressed(0, Keys["E"]) then
-                            searchCabin(k)
+                    if not Config.Houses[currentHouse]["furniture"][k]["searched"] and then
+                        if not Config.Houses[currentHouse]["furniture"][k]["isBusy"] then
+                            DrawText3Ds(Config.Houses[currentHouse]["coords"]["x"] + Config.Houses[currentHouse]["furniture"][k]["coords"]["x"], Config.Houses[currentHouse]["coords"]["y"] + Config.Houses[currentHouse]["furniture"][k]["coords"]["y"], Config.Houses[currentHouse]["coords"]["z"] + Config.Houses[currentHouse]["furniture"][k]["coords"]["z"] - 35, '~g~E~w~ - '..Config.Houses[currentHouse]["furniture"][k]["text"])
+                            if IsControlJustPressed(0, Keys["E"]) then
+                                searchCabin(k)
+                            end
+                        else
+                            DrawText3Ds(Config.Houses[currentHouse]["coords"]["x"] + Config.Houses[currentHouse]["furniture"][k]["coords"]["x"], Config.Houses[currentHouse]["coords"]["y"] + Config.Houses[currentHouse]["furniture"][k]["coords"]["y"], Config.Houses[currentHouse]["coords"]["z"] + Config.Houses[currentHouse]["furniture"][k]["coords"]["z"] - 35, 'Er is al iemand met het kastje bezig..')
                         end
                     else
                         DrawText3Ds(Config.Houses[currentHouse]["coords"]["x"] + Config.Houses[currentHouse]["furniture"][k]["coords"]["x"], Config.Houses[currentHouse]["coords"]["y"] + Config.Houses[currentHouse]["furniture"][k]["coords"]["y"], Config.Houses[currentHouse]["coords"]["z"] + Config.Houses[currentHouse]["furniture"][k]["coords"]["z"] - 35, 'Kastje is leeg..')
@@ -342,6 +346,7 @@ function searchCabin(cabin)
     end
     local lockpickTime = math.random(15000, 30000)
     LockpickDoorAnim(lockpickTime)
+    TriggerServertEvent('qb-houserobbery:server:SetBusyState', cabin, currentHouse, true)
     QBCore.Functions.Progressbar("search_cabin", "Kastje aan het doorzoeken..", lockpickTime, false, true, {
         disableMovement = true,
         disableCarMovement = true,
@@ -356,9 +361,11 @@ function searchCabin(cabin)
         ClearPedTasks(GetPlayerPed(-1))
         TriggerServerEvent('qb-houserobbery:server:searchCabin', cabin, currentHouse)
         Config.Houses[currentHouse]["furniture"][cabin]["searched"] = true
+        TriggerServertEvent('qb-houserobbery:server:SetBusyState', cabin, currentHouse, false)
     end, function() -- Cancel
         openingDoor = false
         ClearPedTasks(GetPlayerPed(-1))
+        TriggerServertEvent('qb-houserobbery:server:SetBusyState', cabin, currentHouse, false)
         QBCore.Functions.Notify("Proces geannuleerd..", "error")
     end)
 end
@@ -386,6 +393,10 @@ AddEventHandler('qb-houserobbery:client:setCabinState', function(house, cabin, s
     Config.Houses[house]["furniture"][cabin]["searched"] = state
 end)
 
+RegisterServerEvent('qb-houserobbery:client:SetBusyState')
+AddEventHandler('qb-houserobbery:client:SetBusyState', function(cabin, house, bool)
+    Config.Houses[house]["furniture"][cabin]["isBusy"] = bool
+end)
 
 function IsWearingHandshoes()
     local armIndex = GetPedDrawableVariation(GetPlayerPed(-1), 3)

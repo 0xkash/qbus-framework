@@ -85,3 +85,9 @@ AddEventHandler('qb-houserobbery:server:searchCabin', function(cabin, house)
     Config.Houses[house]["furniture"][cabin]["searched"] = true
     TriggerClientEvent('qb-houserobbery:client:setCabinState', -1, house, cabin, true)
 end)
+
+RegisterServerEvent('qb-houserobbery:server:SetBusyState')
+AddEventHandler('qb-houserobbery:server:SetBusyState', function(cabin, house, bool)
+    Config.Houses[house]["furniture"][cabin]["isBusy"] = bool
+    TriggerClientEvent('qb-houserobbery:client:SetBusyState', -1, cabin, house, bool)
+end)

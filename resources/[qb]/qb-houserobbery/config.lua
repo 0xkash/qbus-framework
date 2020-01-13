@@ -50,6 +50,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kastje doorzoeken"
             },
             [2] = {
@@ -60,6 +61,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kastje doorzoeken"
             },
             [3] = {
@@ -70,6 +72,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Keuken kastjes doorzoeken"
             },
             [4] = {
@@ -80,6 +83,7 @@ Config.Houses = {
                     ["z"] = 2.0,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kist doorzoeken"
             },
             [5] = {
@@ -90,6 +94,7 @@ Config.Houses = {
                     ["z"] = 2.0,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Nachtkastje doorzoeken"
             },
         }
@@ -112,6 +117,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kastje doorzoeken"
             },
             [2] = {
@@ -122,6 +128,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kastje doorzoeken"
             },
             [3] = {
@@ -132,6 +139,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Keuken kastjes doorzoeken"
             },
             [4] = {
@@ -142,6 +150,7 @@ Config.Houses = {
                     ["z"] = 2.0,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kist doorzoeken"
             },
             [5] = {
@@ -152,6 +161,7 @@ Config.Houses = {
                     ["z"] = 2.0,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Nachtkastje doorzoeken"
             },
         }
@@ -174,6 +184,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kastje doorzoeken"
             },
             [2] = {
@@ -184,6 +195,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kastje doorzoeken"
             },
             [3] = {
@@ -194,6 +206,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Keuken kastjes doorzoeken"
             },
             [4] = {
@@ -204,6 +217,7 @@ Config.Houses = {
                     ["z"] = 2.0,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kist doorzoeken"
             },
             [5] = {
@@ -214,6 +228,7 @@ Config.Houses = {
                     ["z"] = 2.0,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Nachtkastje doorzoeken"
             },
         }
@@ -236,6 +251,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kastje doorzoeken"
             },
             [2] = {
@@ -246,6 +262,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kastje doorzoeken"
             },
             [3] = {
@@ -256,6 +273,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Keuken kastjes doorzoeken"
             },
             [4] = {
@@ -266,6 +284,7 @@ Config.Houses = {
                     ["z"] = 2.0,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kist doorzoeken"
             },
             [5] = {
@@ -276,6 +295,7 @@ Config.Houses = {
                     ["z"] = 2.0,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Nachtkastje doorzoeken"
             },
         }
@@ -298,6 +318,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kastje doorzoeken"
             },
             [2] = {
@@ -308,6 +329,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kastje doorzoeken"
             },
             [3] = {
@@ -318,6 +340,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Keuken kastjes doorzoeken"
             },
             [4] = {
@@ -328,6 +351,7 @@ Config.Houses = {
                     ["z"] = 2.0,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kist doorzoeken"
             },
             [5] = {
@@ -338,6 +362,7 @@ Config.Houses = {
                     ["z"] = 2.0,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Nachtkastje doorzoeken"
             },
         }
@@ -360,6 +385,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kastje doorzoeken"
             },
             [2] = {
@@ -370,6 +396,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kastje doorzoeken"
             },
             [3] = {
@@ -380,6 +407,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Keuken kastjes doorzoeken"
             },
             [4] = {
@@ -390,6 +418,7 @@ Config.Houses = {
                     ["z"] = 2.0,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kist doorzoeken"
             },
             [5] = {
@@ -400,6 +429,7 @@ Config.Houses = {
                     ["z"] = 2.0,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Nachtkastje doorzoeken"
             },
         }
@@ -422,6 +452,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kastje doorzoeken"
             },
             [2] = {
@@ -432,6 +463,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kastje doorzoeken"
             },
             [3] = {
@@ -442,6 +474,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Keuken kastjes doorzoeken"
             },
             [4] = {
@@ -452,6 +485,7 @@ Config.Houses = {
                     ["z"] = 2.0,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kist doorzoeken"
             },
             [5] = {
@@ -462,6 +496,7 @@ Config.Houses = {
                     ["z"] = 2.0,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Nachtkastje doorzoeken"
             },
         }
@@ -484,6 +519,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kastje doorzoeken"
             },
             [2] = {
@@ -494,6 +530,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kastje doorzoeken"
             },
             [3] = {
@@ -504,6 +541,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Keuken kastjes doorzoeken"
             },
             [4] = {
@@ -514,6 +552,7 @@ Config.Houses = {
                     ["z"] = 2.0,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kist doorzoeken"
             },
             [5] = {
@@ -524,6 +563,7 @@ Config.Houses = {
                     ["z"] = 2.0,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Nachtkastje doorzoeken"
             },
         }
@@ -546,6 +586,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kastje doorzoeken"
             },
             [2] = {
@@ -556,6 +597,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kastje doorzoeken"
             },
             [3] = {
@@ -566,6 +608,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Keuken kastjes doorzoeken"
             },
             [4] = {
@@ -576,6 +619,7 @@ Config.Houses = {
                     ["z"] = 2.0,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kist doorzoeken"
             },
             [5] = {
@@ -586,6 +630,7 @@ Config.Houses = {
                     ["z"] = 2.0,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Nachtkastje doorzoeken"
             },
         }
@@ -608,6 +653,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kastje doorzoeken"
             },
             [2] = {
@@ -618,6 +664,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kastje doorzoeken"
             },
             [3] = {
@@ -628,6 +675,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Keuken kastjes doorzoeken"
             },
             [4] = {
@@ -638,6 +686,7 @@ Config.Houses = {
                     ["z"] = 2.0,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kist doorzoeken"
             },
             [5] = {
@@ -648,6 +697,7 @@ Config.Houses = {
                     ["z"] = 2.0,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Nachtkastje doorzoeken"
             },
         }
@@ -670,6 +720,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kastje doorzoeken"
             },
             [2] = {
@@ -680,6 +731,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kastje doorzoeken"
             },
             [3] = {
@@ -690,6 +742,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Keuken kastjes doorzoeken"
             },
             [4] = {
@@ -700,6 +753,7 @@ Config.Houses = {
                     ["z"] = 2.0,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kist doorzoeken"
             },
             [5] = {
@@ -710,6 +764,7 @@ Config.Houses = {
                     ["z"] = 2.0,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Nachtkastje doorzoeken"
             },
         }
@@ -732,6 +787,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kastje doorzoeken"
             },
             [2] = {
@@ -742,6 +798,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kastje doorzoeken"
             },
             [3] = {
@@ -752,6 +809,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Keuken kastjes doorzoeken"
             },
             [4] = {
@@ -762,6 +820,7 @@ Config.Houses = {
                     ["z"] = 2.0,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kist doorzoeken"
             },
             [5] = {
@@ -772,6 +831,7 @@ Config.Houses = {
                     ["z"] = 2.0,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Nachtkastje doorzoeken"
             },
         }
@@ -794,6 +854,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kastje doorzoeken"
             },
             [2] = {
@@ -804,6 +865,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kastje doorzoeken"
             },
             [3] = {
@@ -814,6 +876,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Keuken kastjes doorzoeken"
             },
             [4] = {
@@ -824,6 +887,7 @@ Config.Houses = {
                     ["z"] = 2.0,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kist doorzoeken"
             },
             [5] = {
@@ -834,6 +898,7 @@ Config.Houses = {
                     ["z"] = 2.0,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Nachtkastje doorzoeken"
             },
         }
@@ -856,6 +921,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kastje doorzoeken"
             },
             [2] = {
@@ -866,6 +932,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kastje doorzoeken"
             },
             [3] = {
@@ -876,6 +943,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Keuken kastjes doorzoeken"
             },
             [4] = {
@@ -886,6 +954,7 @@ Config.Houses = {
                     ["z"] = 2.0,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kist doorzoeken"
             },
             [5] = {
@@ -896,6 +965,7 @@ Config.Houses = {
                     ["z"] = 2.0,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Nachtkastje doorzoeken"
             },
         }
@@ -918,6 +988,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kastje doorzoeken"
             },
             [2] = {
@@ -928,6 +999,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kastje doorzoeken"
             },
             [3] = {
@@ -938,6 +1010,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Keuken kastjes doorzoeken"
             },
             [4] = {
@@ -948,6 +1021,7 @@ Config.Houses = {
                     ["z"] = 2.0,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kist doorzoeken"
             },
             [5] = {
@@ -958,6 +1032,7 @@ Config.Houses = {
                     ["z"] = 2.0,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Nachtkastje doorzoeken"
             },
         }
@@ -980,6 +1055,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kastje doorzoeken"
             },
             [2] = {
@@ -990,6 +1066,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kastje doorzoeken"
             },
             [3] = {
@@ -1000,6 +1077,7 @@ Config.Houses = {
                     ["z"] = 2.5,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Keuken kastjes doorzoeken"
             },
             [4] = {
@@ -1010,6 +1088,7 @@ Config.Houses = {
                     ["z"] = 2.0,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Kist doorzoeken"
             },
             [5] = {
@@ -1020,6 +1099,7 @@ Config.Houses = {
                     ["z"] = 2.0,
                 },
                 ["searched"] = false,
+                ["isBusy"] = false,
                 ["text"] = "Nachtkastje doorzoeken"
             },
         }
