@@ -353,6 +353,9 @@ AddEventHandler('iens:repaira', function()
 	if isPedDrivingAVehicle() then
 		local ped = GetPlayerPed(-1)
 		vehicle = GetVehiclePedIsIn(ped, false)
+		SetVehicleDirtLevel(vehicle)
+		SetVehicleUndriveable(vehicle, false)
+		WashDecalsFromVehicle(vehicle, 1.0)
 		notification("Voertuig gefixt!")
 		SetVehicleFixed(vehicle)
 		healthBodyLast=1000.0
