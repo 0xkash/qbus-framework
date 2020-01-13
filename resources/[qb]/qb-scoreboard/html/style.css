@@ -8,7 +8,7 @@
 .scoreboard-block {
     display: none;
     position: absolute;
-    height: 30vh;
+    height: 36vh;
     width: 40vh;
     background: white;
     right: 5vh;
@@ -37,7 +37,7 @@
     position: relative;
     height: 30vh;
     width: 36vh;
-    top: 55%;
+    top: 45%;
     transform: translateY(-50%);
     margin: 0 auto;
 }
