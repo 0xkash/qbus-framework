@@ -92,6 +92,41 @@ AddEventHandler('vehiclefailure:client:RepairVehicle', function()
 	end
 end)
 
+function CleanVehicle(vehicle)
+	TaskStartScenarioInPlace(GetPlayerPed(-1), "WORLD_HUMAN_MAID_CLEAN", 0, true)
+	QBCore.Functions.Progressbar("repair_vehicle", "Bezig met poetsen...", math.random(10000, 20000), false, true, {
+		disableMovement = true,
+		disableCarMovement = true,
+		disableMouse = false,
+		disableCombat = true,
+	}, {}, {}, {}, function() -- Done
+		QBCore.Functions.Notify("Voertuig schoon!")
+		SetVehicleDirtLevel(vehicle)
+        SetVehicleUndriveable(vehicle, false)
+		WashDecalsFromVehicle(vehicle, 1.0)
+		TriggerServerEvent('vehiclefailure:server:removewashingkit')
+		TriggerEvent('inventory:client:ItemBox', QBCore.Shared.Items["cleaningkit"], "remove")
+		ClearAllPedProps(GetPlayerPed(-1))
+		ClearPedTasks(GetPlayerPed(-1))
+	end, function() -- Cancel
+		QBCore.Functions.Notify("Mislukt!", "error")
+		ClearAllPedProps(GetPlayerPed(-1))
+		ClearPedTasks(GetPlayerPed(-1))
+	end)
+end
+
+RegisterNetEvent('vehiclefailure:client:CleanVehicle')
+AddEventHandler('vehiclefailure:client:CleanVehicle', function()
+	local vehicle = QBCore.Functions.GetClosestVehicle()
+	if vehicle ~= nil and vehicle ~= 0 then
+		local pos = GetEntityCoords(GetPlayerPed(-1))
+		local vehpos = GetEntityCoords(vehicle)
+		if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, vehpos.x, vehpos.y, vehpos.z, true) < 3.0) and not IsPedInAnyVehicle(GetPlayerPed(-1)) then
+			CleanVehicle(vehicle)	
+		end
+	end
+end)
+
 RegisterNetEvent('vehiclefailure:client:RepairVehicleFull')
 AddEventHandler('vehiclefailure:client:RepairVehicleFull', function()
 	local vehicle = QBCore.Functions.GetClosestVehicle()

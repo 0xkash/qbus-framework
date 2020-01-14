@@ -649,24 +649,122 @@ Citizen.CreateThread(function()
             local position = GetEntityCoords(GetPlayerPed(-1))
             local hit, coords, entity = RayCastGamePlayCamera(1000.0)
 
+            -- Draws line to targeted position
             DrawLine(position.x, position.y, position.z, coords.x, coords.y, coords.z, color.r, color.g, color.b, color.a)
             
+            -- If entity is found then verifie entity
             if hit and (IsEntityAVehicle(entity) or IsEntityAPed(entity) or IsEntityAnObject(entity)) then
                 local entityCoord = GetEntityCoords(entity)
                 local minimum, maximum = GetModelDimensions(GetEntityModel(entity))
                 
+                DrawEntityBoundingBox(entity, color)
                 QBAdmin.Functions.DrawText3D(entityCoord.x, entityCoord.y, entityCoord.z, "Obj: " .. entity .. " Model: " .. GetEntityModel(entity).. " \nDruk [~g~E~s~] om dit object te verwijderen!", 2)
-                DrawBox(entityCoord.x + minimum.x, entityCoord.y + minimum.y, entityCoord.z + minimum.z, entityCoord.x + maximum.x, entityCoord.y + maximum.y, entityCoord.z + maximum.z, color.r, color.g, color.b, 100)
                 
+                -- When E pressed then remove targeted entity
                 if IsControlJustReleased(0, 38) then
-                    SetObjectAsNoLongerNeeded(entity)
+                    -- Set as missionEntity so the object can be remove (Even map objects)
+                    SetEntityAsMissionEntity(entity, true, true)
                     DeleteEntity(entity)
                 end
             end
+        else
+            Citizen.Wait(1000)
         end
 	end
 end)
 
+-- Draws boundingbox around the object with given color parms
+function DrawEntityBoundingBox(entity, color)
+    local model = GetEntityModel(entity)
+    local min, max = GetModelDimensions(model)
+    local rightVector, forwardVector, upVector, position = GetEntityMatrix(entity)
+
+    -- Calculate size
+    local dim = 
+	{ 
+		x = 0.5*(max.x - min.x), 
+		y = 0.5*(max.y - min.y), 
+		z = 0.5*(max.z - min.z)
+	}
+
+    local FUR = 
+    {
+		x = position.x + dim.y*rightVector.x + dim.x*forwardVector.x + dim.z*upVector.x, 
+		y = position.y + dim.y*rightVector.y + dim.x*forwardVector.y + dim.z*upVector.y, 
+		z = 0
+    }
+    FUR.z = GetGroundZFor_3dCoord(FUR.x, FUR.y, 1000.0, 0)
+    FUR.z += 2 * dim.z
+
+    local BLL = 
+    {
+        x = position.x - dim.y*rightVector.x - dim.x*forwardVector.x - dim.z*upVector.x,
+        y = position.y - dim.y*rightVector.y - dim.x*forwardVector.y - dim.z*upVector.y,
+        z = 0
+    }
+    BLL.z = GetGroundZFor_3dCoord(BLL.x, BLL.y, 1000.0, 0)
+
+    -- DEBUG
+    local edge1 = BLL
+    local edge5 = FUR
+
+    local edge2 = 
+    {
+        x = edge1.x + 2 * dim.y*rightVector.x,
+        y = edge1.y + 2 * dim.y*rightVector.y,
+        z = edge1.z + 2 * dim.y*rightVector.z
+    }
+
+    local edge3 = 
+    {
+        x = edge2.x + 2 * dim.z*upVector.x,
+        y = edge2.y + 2 * dim.z*upVector.y,
+        z = edge2.z + 2 * dim.z*upVector.z
+    }
+
+    local edge4 = 
+    {
+        x = edge1.x + 2 * dim.z*upVector.x,
+        y = edge1.y + 2 * dim.z*upVector.y,
+        z = edge1.z + 2 * dim.z*upVector.z
+    }
+
+    local edge6 = 
+    {
+        x = edge5.x - 2 * dim.y*rightVector.x,
+        y = edge5.y - 2 * dim.y*rightVector.y,
+        z = edge5.z - 2 * dim.y*rightVector.z
+    }
+
+    local edge7 = 
+    {
+        x = edge6.x - 2 * dim.z*upVector.x,
+        y = edge6.y - 2 * dim.z*upVector.y,
+        z = edge6.z - 2 * dim.z*upVector.z
+    }
+
+    local edge8 = 
+    {
+        x = edge5.x - 2 * dim.z*upVector.x,
+        y = edge5.y - 2 * dim.z*upVector.y,
+        z = edge5.z - 2 * dim.z*upVector.z
+    }
+
+    DrawLine(edge1.x, edge1.y, edge1.z, edge2.x, edge2.y, edge2.z, color.r, color.g, color.b, color.a)
+    DrawLine(edge1.x, edge1.y, edge1.z, edge4.x, edge4.y, edge4.z, color.r, color.g, color.b, color.a)
+    DrawLine(edge2.x, edge2.y, edge2.z, edge3.x, edge3.y, edge3.z, color.r, color.g, color.b, color.a)
+    DrawLine(edge3.x, edge3.y, edge3.z, edge4.x, edge4.y, edge4.z, color.r, color.g, color.b, color.a)
+    DrawLine(edge5.x, edge5.y, edge5.z, edge6.x, edge6.y, edge6.z, color.r, color.g, color.b, color.a)
+    DrawLine(edge5.x, edge5.y, edge5.z, edge8.x, edge8.y, edge8.z, color.r, color.g, color.b, color.a)
+    DrawLine(edge6.x, edge6.y, edge6.z, edge7.x, edge7.y, edge7.z, color.r, color.g, color.b, color.a)
+    DrawLine(edge7.x, edge7.y, edge7.z, edge8.x, edge8.y, edge8.z, color.r, color.g, color.b, color.a)
+    DrawLine(edge1.x, edge1.y, edge1.z, edge7.x, edge7.y, edge7.z, color.r, color.g, color.b, color.a)
+    DrawLine(edge2.x, edge2.y, edge2.z, edge8.x, edge8.y, edge8.z, color.r, color.g, color.b, color.a)
+    DrawLine(edge3.x, edge3.y, edge3.z, edge5.x, edge5.y, edge5.z, color.r, color.g, color.b, color.a)
+    DrawLine(edge4.x, edge4.y, edge4.z, edge6.x, edge6.y, edge6.z, color.r, color.g, color.b, color.a)
+end
+
+-- Embed direction in rotation vector
 function RotationToDirection(rotation)
 	local adjustedRotation = 
 	{ 
@@ -683,6 +781,7 @@ function RotationToDirection(rotation)
 	return direction
 end
 
+-- Raycast function for "Admin Lazer"
 function RayCastGamePlayCamera(distance)
     local cameraRotation = GetGameplayCamRot()
 	local cameraCoord = GetGameplayCamCoord()
