@@ -662,6 +662,9 @@ Citizen.CreateThread(function()
                 if IsControlJustReleased(0, 38) then
                     -- Set as missionEntity so the object can be remove (Even map objects)
                     SetEntityAsMissionEntity(entity, true, true)
+                    if IsEntityAVehicle(entity) then
+                        GetVehicleDoorLockStatus(entity, 1)
+                    end
                     DeleteEntity(entity)
                 end
             -- Only draw of not center of map
