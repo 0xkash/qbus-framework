@@ -21,6 +21,7 @@ Citizen.CreateThread(function()
         end
     end
 end)
+PlayerJob = {}
 
 --- CODE
 
@@ -79,6 +80,13 @@ AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     QBCore.Functions.GetPlayerData(function(PlayerData)
         PlayerJob = PlayerData.job
     end)
+
+    print(PlayerJob)
+end)
+
+RegisterNetEvent('QBCore:Client:OnJobUpdate')
+AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
+    PlayerJob = JobInfo
 end)
 
 Citizen.CreateThread(function()

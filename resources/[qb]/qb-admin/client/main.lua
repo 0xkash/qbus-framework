@@ -648,9 +648,6 @@ Citizen.CreateThread(function()
             local color = {r = 255, g = 255, b = 255, a = 200}
             local position = GetEntityCoords(GetPlayerPed(-1))
             local hit, coords, entity = RayCastGamePlayCamera(1000.0)
-
-            -- Draws line to targeted position
-            DrawLine(position.x, position.y, position.z, coords.x, coords.y, coords.z, color.r, color.g, color.b, color.a)
             
             -- If entity is found then verifie entity
             if hit and (IsEntityAVehicle(entity) or IsEntityAPed(entity) or IsEntityAnObject(entity)) then
@@ -658,14 +655,20 @@ Citizen.CreateThread(function()
                 local minimum, maximum = GetModelDimensions(GetEntityModel(entity))
                 
                 DrawEntityBoundingBox(entity, color)
+                DrawLine(position.x, position.y, position.z, coords.x, coords.y, coords.z, color.r, color.g, color.b, color.a)
                 QBAdmin.Functions.DrawText3D(entityCoord.x, entityCoord.y, entityCoord.z, "Obj: " .. entity .. " Model: " .. GetEntityModel(entity).. " \nDruk [~g~E~s~] om dit object te verwijderen!", 2)
-                
+
                 -- When E pressed then remove targeted entity
                 if IsControlJustReleased(0, 38) then
                     -- Set as missionEntity so the object can be remove (Even map objects)
                     SetEntityAsMissionEntity(entity, true, true)
                     DeleteEntity(entity)
                 end
+            -- Only draw of not center of map
+            elseif coords.x ~= 0.0 and coords.y ~= 0.0 then
+                -- Draws line to targeted position
+                DrawLine(position.x, position.y, position.z, coords.x, coords.y, coords.z, color.r, color.g, color.b, color.a)
+                DrawMarker(28, coords.x, coords.y, coords.z, 0.0, 0.0, 0.0, 0.0, 180.0, 0.0, 0.1, 0.1, 0.1, color.r, color.g, color.b, color.a, false, true, 2, nil, nil, false)
             end
         else
             Citizen.Wait(1000)
@@ -693,7 +696,9 @@ function DrawEntityBoundingBox(entity, color)
 		y = position.y + dim.y*rightVector.y + dim.x*forwardVector.y + dim.z*upVector.y, 
 		z = 0
     }
-    FUR.z = GetGroundZFor_3dCoord(FUR.x, FUR.y, 1000.0, 0)
+
+    local FUR_bool, FUR_z = GetGroundZFor_3dCoord(FUR.x, FUR.y, 1000.0, 0)
+    FUR.z = FUR_z
     FUR.z = FUR.z + 2 * dim.z
 
     local BLL = 
@@ -702,7 +707,8 @@ function DrawEntityBoundingBox(entity, color)
         y = position.y - dim.y*rightVector.y - dim.x*forwardVector.y - dim.z*upVector.y,
         z = 0
     }
-    BLL.z = GetGroundZFor_3dCoord(BLL.x, BLL.y, 1000.0, 0)
+    local BLL_bool, BLL_z = GetGroundZFor_3dCoord(FUR.x, FUR.y, 1000.0, 0)
+    BLL.z = BLL_z
 
     -- DEBUG
     local edge1 = BLL
