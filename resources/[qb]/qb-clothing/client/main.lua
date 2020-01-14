@@ -1334,7 +1334,9 @@ AddEventHandler('qb-clothing:client:loadOutfit', function(oData)
         end
     end
 
-    TriggerEvent('chatMessage', "SYSTEM", "warning", "Je hebt "..oData.outfitName.." gekozen! Druk op Bevestig om outfit te bevestigen.")
+    if oData.outfitName ~= nil then
+        TriggerEvent('chatMessage', "SYSTEM", "warning", "Je hebt "..oData.outfitName.." gekozen! Druk op Bevestig om outfit te bevestigen.")
+    end
 end)
 
 local faceProps = {
