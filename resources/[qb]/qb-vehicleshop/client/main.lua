@@ -76,12 +76,10 @@ vehicleCategorys = {
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
-    isLoggedIn = true
     QBCore.Functions.GetPlayerData(function(PlayerData)
         PlayerJob = PlayerData.job
     end)
-
-    print(PlayerJob)
+    isLoggedIn = true
 end)
 
 RegisterNetEvent('QBCore:Client:OnJobUpdate')

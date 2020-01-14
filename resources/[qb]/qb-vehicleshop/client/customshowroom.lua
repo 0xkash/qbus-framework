@@ -300,8 +300,6 @@ Citizen.CreateThread(function()
                             end
                         end
                     end
-                else
-                    print('Geen job info.. ')
                 end
             elseif dist > 1.8 then
                 if CustomVehicleShop.opened then
