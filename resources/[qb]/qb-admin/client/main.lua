@@ -662,7 +662,8 @@ Citizen.CreateThread(function()
                 
                 -- When E pressed then remove targeted entity
                 if IsControlJustReleased(0, 38) then
-                    SetObjectAsNoLongerNeeded(entity)
+                    -- Set as missionEntity so the object can be remove (Even map objects)
+                    SetEntityAsMissionEntity(entity, true, true)
                     DeleteEntity(entity)
                 end
             end
