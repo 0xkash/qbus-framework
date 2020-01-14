@@ -143,9 +143,13 @@ function tablelength(T)
 end
 
 function ButtonSelected(button)
+    print(button)
 	local ped = GetPlayerPed(-1)
 	local this = vehshop.currentmenu
     local btn = button.name
+
+    print(this)
+    print(btn)
     
 	if this == "main" then
 		if btn == "Voertuigen" then
@@ -415,6 +419,7 @@ Citizen.CreateThread(function()
                                     end
                                 end
                                 if selected and ( IsControlJustPressed(1,38) or IsControlJustPressed(1, 18) ) then
+                                    print('weeuw')
                                     ButtonSelected(button)
                                 end
                             end
