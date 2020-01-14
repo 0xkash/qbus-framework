@@ -35,6 +35,7 @@ AddEventHandler("consumables:client:UseArmor", function()
 		disableCombat = true,
     }, {}, {}, {}, function() -- Done
         TriggerEvent("inventory:client:ItemBox", QBCore.Shared.Items["armor"], "remove")
+        TriggerServerEvent('hospital:server:SetArmor', 75)
         SetPedArmour(GetPlayerPed(-1), 75)
     end)
 end)
