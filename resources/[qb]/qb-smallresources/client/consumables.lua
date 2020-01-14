@@ -53,9 +53,9 @@ AddEventHandler("consumables:client:UseHeavyArmor", function()
         currentVest = GetPedDrawableVariation(ped, 9)
         currentVestTexture = GetPedTextureVariation(ped, 9)
         if GetPedDrawableVariation(ped, 9) == 7 then
-            SetPedComponentVariation(ped, 9, 18, GetPedTextureVariation(ped, 9), 2)
+            SetPedComponentVariation(ped, 9, 19, GetPedTextureVariation(ped, 9), 2)
         else
-            SetPedComponentVariation(ped, 9, 12, 1, 2) -- blauw
+            SetPedComponentVariation(ped, 9, 19, 1, 2) -- blauw
         end
         TriggerEvent("inventory:client:ItemBox", QBCore.Shared.Items["heavyarmor"], "remove")
         SetPedArmour(ped, 100)
