@@ -332,6 +332,7 @@ $(document).ready(function(){
                 break;
             case "LoadPhoneApplications":
                 QB.Phone.Functions.SetupApplications(event.data);
+                console.log('yeey')
                 break;
             case "LoadPhoneData":
                 QB.Phone.Functions.LoadPhoneData(event.data);

@@ -4,21 +4,22 @@ ui_page "html/index.html"
 
 client_scripts {
     'client/main.lua',
+    'client/quest_1/main.lua',
+    'quest_1-config.lua',
     'config.lua',
-    'client/showroom.lua',
-    'client/customshowroom.lua',
 }
 
 server_scripts {
     'server/main.lua',
-    'config.lua'
+    'server/quest_1/main.lua',
+    'quest_1-config.lua',
+    'config.lua',
 }
 
 files {
     'html/index.html',
-    'html/style.css',
-    'html/reset.css',
     'html/script.js',
+    'html/style.css',
+    'html/img/*.jpg',
     'html/img/*.png',
-    'html/img/site-bg.jpg',
 }
