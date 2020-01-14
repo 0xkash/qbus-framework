@@ -694,7 +694,7 @@ function DrawEntityBoundingBox(entity, color)
 		z = 0
     }
     FUR.z = GetGroundZFor_3dCoord(FUR.x, FUR.y, 1000.0, 0)
-    FUR.z += 2 * dim.z
+    FUR.z = FUR.z + 2 * dim.z
 
     local BLL = 
     {
