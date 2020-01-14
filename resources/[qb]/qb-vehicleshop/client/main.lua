@@ -21,6 +21,7 @@ Citizen.CreateThread(function()
         end
     end
 end)
+PlayerJob = {}
 
 --- CODE
 
@@ -75,10 +76,15 @@ vehicleCategorys = {
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
-    isLoggedIn = true
     QBCore.Functions.GetPlayerData(function(PlayerData)
         PlayerJob = PlayerData.job
     end)
+    isLoggedIn = true
+end)
+
+RegisterNetEvent('QBCore:Client:OnJobUpdate')
+AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
+    PlayerJob = JobInfo
 end)
 
 Citizen.CreateThread(function()

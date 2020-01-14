@@ -1,13 +1,7 @@
 local ClosestCustomVehicle = 1
-local PlayerJob = {}
 local CustomModelLoaded = true
 
 local testritveh = 0
-
-RegisterNetEvent('QBCore:Client:OnJobUpdate')
-AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
-    PlayerJob = JobInfo
-end)
 
 Citizen.CreateThread(function()
     for k, v in pairs(QB.VehicleShops) do
@@ -109,10 +103,6 @@ Citizen.CreateThread(function()
             end
         end
     end
-    QBCore.Functions.GetPlayerData(function(PlayerData)
-        PlayerJob = PlayerData.job
-    end)
-
     for k, v in pairs(CustomVehicleCats) do
         table.insert(CustomVehicleShop.menu["vehicles"].buttons, {
             menu = k,
@@ -201,117 +191,120 @@ function isCustomValidMenu(menu)
 end
 
 Citizen.CreateThread(function()
-    Citizen.Wait(1500)
     while true do
         local ped = GetPlayerPed(-1)
         local pos = GetEntityCoords(ped, false)
         local dist = GetDistanceBetweenCoords(pos, QBCustom.ShowroomPositions[ClosestCustomVehicle].coords.x, QBCustom.ShowroomPositions[ClosestCustomVehicle].coords.y, QBCustom.ShowroomPositions[ClosestCustomVehicle].coords.z, false)
 
-        if dist < 2 then
-            if PlayerJob.name == "cardealer" then
-                DrawText3Ds(QBCustom.ShowroomPositions[ClosestCustomVehicle].coords.x, QBCustom.ShowroomPositions[ClosestCustomVehicle].coords.y, QBCustom.ShowroomPositions[ClosestCustomVehicle].coords.z + 1.9, '~g~G~w~ - Voertuig veranderen')
-                DrawText3Ds(QBCustom.ShowroomPositions[ClosestCustomVehicle].coords.x, QBCustom.ShowroomPositions[ClosestCustomVehicle].coords.y, QBCustom.ShowroomPositions[ClosestCustomVehicle].coords.z + 1.75, '~b~/verkoop [id]~w~ - Voertuig verkopen ~b~/testrit~w~ - Testrit maken')
-                
-                if not CustomVehicleShop.opened then
-                    if IsControlJustPressed(0, Keys["G"]) then
-                        if CustomVehicleShop.opened then
-                            CloseCreator()
-                        else
-                            OpenCreator()
+        if isLoggedIn then
+            if dist < 2 then
+                if PlayerJob ~= nil then
+                    if PlayerJob.name == "cardealer" then
+                        DrawText3Ds(QBCustom.ShowroomPositions[ClosestCustomVehicle].coords.x, QBCustom.ShowroomPositions[ClosestCustomVehicle].coords.y, QBCustom.ShowroomPositions[ClosestCustomVehicle].coords.z + 1.9, '~g~G~w~ - Voertuig veranderen')
+                        DrawText3Ds(QBCustom.ShowroomPositions[ClosestCustomVehicle].coords.x, QBCustom.ShowroomPositions[ClosestCustomVehicle].coords.y, QBCustom.ShowroomPositions[ClosestCustomVehicle].coords.z + 1.75, '~b~/verkoop [id]~w~ - Voertuig verkopen ~b~/testrit~w~ - Testrit maken')
+                        
+                        if not CustomVehicleShop.opened then
+                            if IsControlJustPressed(0, Keys["G"]) then
+                                if CustomVehicleShop.opened then
+                                    CloseCustomCreator()
+                                else
+                                    OpenCustomCreator()
+                                end
+                            end
                         end
-                    end
-                end
 
-                if CustomVehicleShop.opened then
-                    local ped = GetPlayerPed(-1)
-                    local menu = CustomVehicleShop.menu[CustomVehicleShop.currentmenu]
-                    local y = CustomVehicleShop.menu.y + 0.12
-                    buttoncount = tablelength(menu.buttons)
-                    local selected = false
+                        if CustomVehicleShop.opened then
+                            local ped = GetPlayerPed(-1)
+                            local menu = CustomVehicleShop.menu[CustomVehicleShop.currentmenu]
+                            local y = CustomVehicleShop.menu.y + 0.12
+                            buttoncount = tablelength(menu.buttons)
+                            local selected = false
 
-                    for i,button in pairs(menu.buttons) do
-                        if i >= CustomVehicleShop.menu.from and i <= CustomVehicleShop.menu.to then
-                            if i == CustomVehicleShop.selectedbutton then
-                                selected = true
-                            else
-                                selected = false
+                            for i,button in pairs(menu.buttons) do
+                                if i >= CustomVehicleShop.menu.from and i <= CustomVehicleShop.menu.to then
+                                    if i == CustomVehicleShop.selectedbutton then
+                                        selected = true
+                                    else
+                                        selected = false
+                                    end
+                                    drawMenuButton(button,CustomVehicleShop.menu.x,y,selected)
+                                    if button.price ~= nil then
+                                        drawMenuRight("€"..button.price,CustomVehicleShop.menu.x,y,selected)
+                                    end
+                                    y = y + 0.04
+                                    if isCustomValidMenu(CustomVehicleShop.currentmenu) then
+                                        if selected then
+                                            if IsControlJustPressed(1, 18) then
+                                                if CustomModelLoaded then
+                                                    TriggerServerEvent('qb-vehicleshop:server:SetCustomShowroomVeh', button.model, ClosestCustomVehicle)
+                                                end
+                                            end
+                                        end
+                                    end
+                                    if selected and (IsControlJustPressed(1,38) or IsControlJustPressed(1, 18)) then
+                                        CustomButtonSelected(button)
+                                    end
+                                end
                             end
-                            drawMenuButton(button,CustomVehicleShop.menu.x,y,selected)
-                            if button.price ~= nil then
-                                drawMenuRight("€"..button.price,CustomVehicleShop.menu.x,y,selected)
+                        end
+
+                        if CustomVehicleShop.opened then
+                            if IsControlJustPressed(1,202) then
+                                BackCustom()
                             end
-                            y = y + 0.04
-                            if isCustomValidMenu(CustomVehicleShop.currentmenu) then
-                                if selected then
-                                    if IsControlJustPressed(1, 18) then
-                                        if CustomModelLoaded then
-                                            TriggerServerEvent('qb-vehicleshop:server:SetCustomShowroomVeh', button.model, ClosestCustomVehicle)
+                            if IsControlJustReleased(1,202) then
+                                backlock = false
+                            end
+                            if IsControlJustPressed(1,188) then
+                                if CustomModelLoaded then
+                                    if CustomVehicleShop.selectedbutton > 1 then
+                                        CustomVehicleShop.selectedbutton = CustomVehicleShop.selectedbutton -1
+                                        if buttoncount > 10 and CustomVehicleShop.selectedbutton < CustomVehicleShop.menu.from then
+                                            CustomVehicleShop.menu.from = CustomVehicleShop.menu.from -1
+                                            CustomVehicleShop.menu.to = CustomVehicleShop.menu.to - 1
                                         end
                                     end
                                 end
                             end
-                            if selected and (IsControlJustPressed(1,38) or IsControlJustPressed(1, 18)) then
-                                CustomButtonSelected(button)
+                            if IsControlJustPressed(1,187)then
+                                if CustomModelLoaded then
+                                    if CustomVehicleShop.selectedbutton < buttoncount then
+                                        CustomVehicleShop.selectedbutton = CustomVehicleShop.selectedbutton +1
+                                        if buttoncount > 10 and CustomVehicleShop.selectedbutton > CustomVehicleShop.menu.to then
+                                            CustomVehicleShop.menu.to = CustomVehicleShop.menu.to + 1
+                                            CustomVehicleShop.menu.from = CustomVehicleShop.menu.from + 1
+                                        end
+                                    end
+                                end
+                            end
+                        end
+
+                        if GetVehiclePedIsTryingToEnter(GetPlayerPed(-1)) ~= nil and GetVehiclePedIsTryingToEnter(GetPlayerPed(-1)) ~= 0 then
+                            ClearPedTasksImmediately(GetPlayerPed(-1))
+                        end
+
+                        DisableControlAction(0, Keys["7"], true)
+                        DisableControlAction(0, Keys["8"], true)
+                    else
+                        if QBCustom.ShowroomPositions[ClosestCustomVehicle].buying then
+                            DrawText3Ds(QBCustom.ShowroomPositions[ClosestCustomVehicle].coords.x, QBCustom.ShowroomPositions[ClosestCustomVehicle].coords.y, QBCustom.ShowroomPositions[ClosestCustomVehicle].coords.z + 1.6, '~g~7~w~ - Kopen / ~r~8~w~ - Annuleren - ~g~(€'..QBCore.Shared.Vehicles[QBCustom.ShowroomPositions[ClosestCustomVehicle].vehicle].price..',-)')
+                            
+                            if IsDisabledControlJustPressed(0, Keys["7"]) then
+                                TriggerServerEvent('qb-vehicleshop:server:ConfirmVehicle', QBCustom.ShowroomPositions[ClosestCustomVehicle])
+                                QBCustom.ShowroomPositions[ClosestCustomVehicle].buying = false
+                            end
+
+                            if IsDisabledControlJustPressed(0, Keys["8"]) then
+                                QBCore.Functions.Notify('Je hebt de auto NIET gekocht!')
+                                QBCustom.ShowroomPositions[ClosestCustomVehicle].buying = false
                             end
                         end
                     end
                 end
-
+            elseif dist > 1.8 then
                 if CustomVehicleShop.opened then
-                    if IsControlJustPressed(1,202) then
-                        Back()
-                    end
-                    if IsControlJustReleased(1,202) then
-                        backlock = false
-                    end
-                    if IsControlJustPressed(1,188) then
-                        if CustomModelLoaded then
-                            if CustomVehicleShop.selectedbutton > 1 then
-                                CustomVehicleShop.selectedbutton = CustomVehicleShop.selectedbutton -1
-                                if buttoncount > 10 and CustomVehicleShop.selectedbutton < CustomVehicleShop.menu.from then
-                                    CustomVehicleShop.menu.from = CustomVehicleShop.menu.from -1
-                                    CustomVehicleShop.menu.to = CustomVehicleShop.menu.to - 1
-                                end
-                            end
-                        end
-                    end
-                    if IsControlJustPressed(1,187)then
-                        if CustomModelLoaded then
-                            if CustomVehicleShop.selectedbutton < buttoncount then
-                                CustomVehicleShop.selectedbutton = CustomVehicleShop.selectedbutton +1
-                                if buttoncount > 10 and CustomVehicleShop.selectedbutton > CustomVehicleShop.menu.to then
-                                    CustomVehicleShop.menu.to = CustomVehicleShop.menu.to + 1
-                                    CustomVehicleShop.menu.from = CustomVehicleShop.menu.from + 1
-                                end
-                            end
-                        end
-                    end
+                    CloseCustomCreator()
                 end
-
-                if GetVehiclePedIsTryingToEnter(GetPlayerPed(-1)) ~= nil and GetVehiclePedIsTryingToEnter(GetPlayerPed(-1)) ~= 0 then
-                    ClearPedTasksImmediately(GetPlayerPed(-1))
-                end
-
-                DisableControlAction(0, Keys["7"], true)
-                DisableControlAction(0, Keys["8"], true)
-            else
-                if QBCustom.ShowroomPositions[ClosestCustomVehicle].buying then
-                    DrawText3Ds(QBCustom.ShowroomPositions[ClosestCustomVehicle].coords.x, QBCustom.ShowroomPositions[ClosestCustomVehicle].coords.y, QBCustom.ShowroomPositions[ClosestCustomVehicle].coords.z + 1.6, '~g~7~w~ - Kopen / ~r~8~w~ - Annuleren - ~g~(€'..QBCore.Shared.Vehicles[QBCustom.ShowroomPositions[ClosestCustomVehicle].vehicle].price..',-)')
-                    
-                    if IsDisabledControlJustPressed(0, Keys["7"]) then
-                        TriggerServerEvent('qb-vehicleshop:server:ConfirmVehicle', QBCustom.ShowroomPositions[ClosestCustomVehicle])
-                        QBCustom.ShowroomPositions[ClosestCustomVehicle].buying = false
-                    end
-
-                    if IsDisabledControlJustPressed(0, Keys["8"]) then
-                        QBCore.Functions.Notify('Je hebt de auto NIET gekocht!')
-                        QBCustom.ShowroomPositions[ClosestCustomVehicle].buying = false
-                    end
-                end
-            end
-        elseif dist > 1.8 then
-            if CustomVehicleShop.opened then
-                CloseCreator()
             end
         end
 
@@ -516,16 +509,12 @@ function CustomButtonSelected(button)
     
 	if this == "main" then
 		if btn == "Voertuigen" then
-			OpenMenu('vehicles')
-		end
-	elseif this == "vehicles" then
-		if btn == "Geimporteerde Voertuigen" then
-			OpenMenu('coupes')
+			OpenCustomMenu('coupes')
 		end
 	end
 end
 
-function OpenMenu(menu)
+function OpenCustomMenu(menu)
     CustomVehicleShop.lastmenu = CustomVehicleShop.currentmenu
     fakecar = {model = '', car = nil}
 	if menu == "vehicles" then
@@ -537,21 +526,21 @@ function OpenMenu(menu)
 	CustomVehicleShop.currentmenu = menu
 end
 
-function Back()
+function BackCustom()
 	if backlock then
 		return
 	end
 	backlock = true
 	if CustomVehicleShop.currentmenu == "main" then
-		CloseCreator()
+		CloseCustomCreator()
 	elseif isCustomValidMenu(CustomVehicleShop.currentmenu) then
-		OpenMenu(CustomVehicleShop.lastmenu)
+		OpenCustomMenu(CustomVehicleShop.lastmenu)
 	else
-		OpenMenu(CustomVehicleShop.lastmenu)
+		OpenCustomMenu(CustomVehicleShop.lastmenu)
 	end
 end
 
-function CloseCreator(name, veh, price, financed)
+function CloseCustomCreator(name, veh, price, financed)
 	Citizen.CreateThread(function()
 		local ped = GetPlayerPed(-1)
 		CustomVehicleShop.opened = false
@@ -560,7 +549,7 @@ function CloseCreator(name, veh, price, financed)
 	end)
 end
 
-function OpenCreator()
+function OpenCustomCreator()
 	CustomVehicleShop.currentmenu = "main"
 	CustomVehicleShop.opened = true
     CustomVehicleShop.selectedbutton = 0
