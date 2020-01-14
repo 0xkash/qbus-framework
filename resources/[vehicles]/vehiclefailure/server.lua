@@ -13,6 +13,13 @@ QBCore.Functions.CreateUseableItem("repairkit", function(source, item)
     end
 end)
 
+QBCore.Functions.CreateUseableItem("cleaningkit", function(source, item)
+    local Player = QBCore.Functions.GetPlayer(source)
+	if Player.Functions.GetItemBySlot(item.slot) ~= nil then
+        TriggerClientEvent("vehiclefailure:client:CleanVehicle", source)
+    end
+end)
+
 QBCore.Functions.CreateUseableItem("advancedrepairkit", function(source, item)
     local Player = QBCore.Functions.GetPlayer(source)
 	if Player.Functions.GetItemBySlot(item.slot) ~= nil then
@@ -26,3 +33,11 @@ AddEventHandler('qb-vehiclefailure:removeItem', function(item)
     local ply = QBCore.Functions.GetPlayer(src)
     ply.Functions.RemoveItem(item, 1)
 end)
+
+RegisterServerEvent('vehiclefailure:server:removewashingkit')
+AddEventHandler('vehiclefailure:server:removewashingkit', function(item)
+    local src = source
+    local ply = QBCore.Functions.GetPlayer(src)
+    ply.Functions.RemoveItem("cleaningkit", 1)
+end)
+
