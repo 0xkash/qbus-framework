@@ -12,6 +12,8 @@ Keys = {
 
 Config = {}
 
+Config.MinZOffset = 45
+
 Config.Rewards = {
     ["cabin"] = {
         "plastic",

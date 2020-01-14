@@ -96,9 +96,11 @@ Citizen.CreateThread(function()
 end)
 
 Citizen.CreateThread(function() 
-    Citizen.Wait(500)
+    Citizen.Wait(1000)
     isLoggedIn = true
-    QBCore.Functions.TriggerCallback('qb-phone_new:server:GetPhoneData', function(pData) 
+    print('2')
+    QBCore.Functions.TriggerCallback('qb-phone_new:server:GetPhoneData', function(pData)
+        print('1')
         SendNUIMessage({ 
             action = "LoadPhoneApplications", 
             applications = Config.PhoneApplications 
@@ -207,6 +209,7 @@ function OpenPhone()
         AppData = Config.PhoneApplications,
         CallData = PhoneData.CallData,
     })
+    SetNuiFocusKeepInput(true)
     PhoneData.isOpen = true
     PhonePlayIn()
 end
@@ -214,6 +217,7 @@ end
 RegisterNUICallback('Close', function()
     PhonePlayOut()
     SetNuiFocus(false, false)
+    SetNuiFocusKeepInput(false)
     PhoneData.isOpen = false
 end)
 

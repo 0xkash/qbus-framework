@@ -696,6 +696,7 @@ function DrawEntityBoundingBox(entity, color)
 		y = position.y + dim.y*rightVector.y + dim.x*forwardVector.y + dim.z*upVector.y, 
 		z = 0
     }
+
     local FUR_bool, FUR_z = GetGroundZFor_3dCoord(FUR.x, FUR.y, 1000.0, 0)
     FUR.z = FUR_z
     FUR.z = FUR.z + 2 * dim.z
