@@ -67,11 +67,14 @@ function despawnHousePlants()
             for k, v in pairs(housePlants[currentHouse]) do
                 local plantData = {
                     ["plantCoords"] = {["x"] = json.decode(housePlants[currentHouse][k].coords).x, ["y"] = json.decode(housePlants[currentHouse][k].coords).y, ["z"] = json.decode(housePlants[currentHouse][k].coords).z},
-                    ["plantProp"] = GetHashKey(QBWeed.Plants[housePlants[currentHouse][k].sort]["stages"][housePlants[currentHouse][k].stage]),
                 }
 
-                local closestPlant = GetClosestObjectOfType(plantData["plantCoords"]["x"], plantData["plantCoords"]["y"], plantData["plantCoords"]["z"], 1.0, plantData["plantProp"], false, false, false)
-                DeleteObject(closestPlant)
+                for _, stage in pairs(QBWeed.Plants[housePlants[currentHouse][k].sort]["stages"]) do
+                    local closestPlant = GetClosestObjectOfType(plantData["plantCoords"]["x"], plantData["plantCoords"]["y"], plantData["plantCoords"]["z"], 3.5, GetHashKey(stage), false, false, false)
+                    if closestPlant ~= 0 then                    
+                        DeleteObject(closestPlant)
+                    end
+                end
             end
             plantSpawned = false
         end
@@ -192,11 +195,13 @@ RegisterNetEvent('qb-weed:client:refreshHousePlants')
 AddEventHandler('qb-weed:client:refreshHousePlants', function(house)
     if currentHouse ~= nil and currentHouse == house then
         despawnHousePlants()
-        QBCore.Functions.TriggerCallback('qb-weed:server:getBuildingPlants', function(plants)
-            currentHouse = house
-            housePlants[currentHouse] = plants
-            spawnHousePlants()
-        end, house)
+        SetTimeout(500, function()
+            QBCore.Functions.TriggerCallback('qb-weed:server:getBuildingPlants', function(plants)
+                currentHouse = house
+                housePlants[currentHouse] = plants
+                spawnHousePlants()
+            end, house)
+        end)
     end
 end)
 
@@ -204,10 +209,12 @@ RegisterNetEvent('qb-weed:client:refreshPlantStats')
 AddEventHandler('qb-weed:client:refreshPlantStats', function()
     if insideHouse then
         despawnHousePlants()
-        QBCore.Functions.TriggerCallback('qb-weed:server:getBuildingPlants', function(plants)
-            housePlants[currentHouse] = plants
-            spawnHousePlants()
-        end, currentHouse)
+        SetTimeout(500, function()
+            QBCore.Functions.TriggerCallback('qb-weed:server:getBuildingPlants', function(plants)
+                housePlants[currentHouse] = plants
+                spawnHousePlants()
+            end, currentHouse)
+        end)
     end
 end)
 

@@ -37,7 +37,6 @@ vehshop = {
 	}
 }
 
-
 Citizen.CreateThread(function()
     Citizen.Wait(1500)
 
@@ -144,9 +143,13 @@ function tablelength(T)
 end
 
 function ButtonSelected(button)
+    print(button)
 	local ped = GetPlayerPed(-1)
 	local this = vehshop.currentmenu
     local btn = button.name
+
+    print(this)
+    print(btn)
     
 	if this == "main" then
 		if btn == "Voertuigen" then
@@ -416,6 +419,7 @@ Citizen.CreateThread(function()
                                     end
                                 end
                                 if selected and ( IsControlJustPressed(1,38) or IsControlJustPressed(1, 18) ) then
+                                    print('weeuw')
                                     ButtonSelected(button)
                                 end
                             end
@@ -514,15 +518,12 @@ AddEventHandler('qb-vehicleshop:client:setShowroomVehicle', function(showroomVeh
         SetEntityInvincible(veh,true)
         SetEntityHeading(veh, QB.ShowroomVehicles[k].coords.h)
         SetVehicleDoorsLocked(veh, 3)
-
         FreezeEntityPosition(veh, true)
         SetVehicleNumberPlateText(veh, k .. "CARSALE")
         modelLoaded = true
         QB.ShowroomVehicles[k].chosenVehicle = showroomVehicle
     end
 end)
-
-
 
 RegisterNetEvent('qb-vehicleshop:client:buyShowroomVehicle')
 AddEventHandler('qb-vehicleshop:client:buyShowroomVehicle', function(vehicle, plate)
@@ -531,7 +532,9 @@ AddEventHandler('qb-vehicleshop:client:buyShowroomVehicle', function(vehicle, pl
         exports['LegacyFuel']:SetFuel(veh, 100)
         SetVehicleNumberPlateText(veh, plate)
         SetEntityHeading(veh, QB.DefaultBuySpawn.h)
+        SetEntityAsMissionEntity(veh, true, true)
         TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
         TriggerServerEvent("vehicletuning:server:SaveVehicleProps", QBCore.Functions.GetVehicleProperties(veh))
+        SetEntityAsMissionEntity(veh, true, true)
     end, QB.DefaultBuySpawn, false)
 end)

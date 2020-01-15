@@ -99,7 +99,13 @@ AddEventHandler('qb-tow:client:TowVehicle', function()
     local vehicle = GetVehiclePedIsIn(GetPlayerPed(-1), true)
     if isTowVehicle(vehicle) then
         if CurrentTow == nil then 
-            local targetVehicle = QBCore.Functions.GetClosestVehicle()
+            --[[ Replaced "QBCore.Functions.GetClosestVehicle()" with custom implementation "getVehicleInDirection"
+                 QBCore native could not return polcice and other vehicles types (NPC) ]] 
+            local playerped = PlayerPedId()
+            local coordA = GetEntityCoords(playerped, 1)
+            local coordB = GetOffsetFromEntityInWorldCoords(playerped, 0.0, 5.0, 0.0)
+            local targetVehicle = getVehicleInDirection(coordA, coordB)
+
             if NpcOn and CurrentLocation ~= nil then
                 if GetEntityModel(targetVehicle) ~= GetHashKey(CurrentLocation.model) then
                     QBCore.Functions.Notify("Dit is niet het juiste voertuig..", "error")
@@ -263,6 +269,12 @@ function deliverVehicle(vehicle)
     SetBlipColour(CurrentBlip, 3)
     SetBlipRoute(CurrentBlip, true)
     SetBlipRouteColour(CurrentBlip, 3)
+end
+
+function getVehicleInDirection(coordFrom, coordTo)
+	local rayHandle = CastRayPointToPoint(coordFrom.x, coordFrom.y, coordFrom.z, coordTo.x, coordTo.y, coordTo.z, 10, PlayerPedId(), 0)
+	local a, b, c, d, vehicle = GetRaycastResult(rayHandle)
+	return vehicle
 end
 
 function getRandomVehicleLocation()

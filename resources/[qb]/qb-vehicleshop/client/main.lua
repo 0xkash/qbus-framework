@@ -21,6 +21,7 @@ Citizen.CreateThread(function()
         end
     end
 end)
+PlayerJob = {}
 
 --- CODE
 
@@ -75,19 +76,28 @@ vehicleCategorys = {
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+    QBCore.Functions.GetPlayerData(function(PlayerData)
+        PlayerJob = PlayerData.job
+    end)
     isLoggedIn = true
+end)
+
+RegisterNetEvent('QBCore:Client:OnJobUpdate')
+AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
+    PlayerJob = JobInfo
 end)
 
 Citizen.CreateThread(function()
     Citizen.Wait(1000)
     for k, v in pairs(QBCore.Shared.Vehicles) do
-        for cat,_ in pairs(vehicleCategorys) do
-            if QBCore.Shared.Vehicles[k]["category"] == cat then
-                table.insert(vehicleCategorys[cat].vehicles, QBCore.Shared.Vehicles[k])
+        if v["shop"] == "pdm" then
+            for cat,_ in pairs(vehicleCategorys) do
+                if QBCore.Shared.Vehicles[k]["category"] == cat then
+                    table.insert(vehicleCategorys[cat].vehicles, QBCore.Shared.Vehicles[k])
+                end
             end
         end
     end
-    print(json.encode(vehicleCategorys["suvs"].vehicles))
 end)
 
 function openVehicleShop(bool)

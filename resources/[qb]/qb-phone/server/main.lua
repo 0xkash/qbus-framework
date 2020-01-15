@@ -29,7 +29,7 @@ AddEventHandler('qb-phone:server:transferBank', function(amount, iban)
         if result[1] ~= nil then
             local recieverSteam = QBCore.Functions.GetPlayerByCitizenId(result[1].citizenid)
 
-            if recieverSteam then
+            if recieverSteam ~= nil then
                 recieverSteam.Functions.AddMoney('bank', amount, "phone-transfered-from-"..sender.PlayerData.citizenid)
                 sender.Functions.RemoveMoney('bank', amount, "phone-transfered-money-to-"..recieverSteam.PlayerData.citizenid)
                 TriggerClientEvent('qb-phone:client:RecievedBankNotify', recieverSteam.PlayerData.source, amount, sender.PlayerData.charinfo.account)

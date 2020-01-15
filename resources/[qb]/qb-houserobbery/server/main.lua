@@ -23,7 +23,7 @@ AddEventHandler('qb-houserobbery:server:enterHouse', function(house)
 end)
 
 function ResetHouseStateTimer(house)
-    -- Cannot parse math.random into tonumber
+    -- Cannot parse math.random "directly" inside the tonumber function
     local num = math.random(3600000, 10800000)
     local time = tonumber(num)
 
@@ -32,7 +32,7 @@ function ResetHouseStateTimer(house)
         for k, v in pairs(Config.Houses[house]["furniture"]) do
             v["searched"] = false
         end
-        TriggerClientEvent('qb-houserobbery:client:setHouseState', -1, house, false)
+        TriggerClientEvent('qb-houserobbery:client:ResetHouseState', -1, house)
        
     end)
 end
@@ -84,4 +84,10 @@ AddEventHandler('qb-houserobbery:server:searchCabin', function(cabin, house)
 
     Config.Houses[house]["furniture"][cabin]["searched"] = true
     TriggerClientEvent('qb-houserobbery:client:setCabinState', -1, house, cabin, true)
+end)
+
+RegisterServerEvent('qb-houserobbery:server:SetBusyState')
+AddEventHandler('qb-houserobbery:server:SetBusyState', function(cabin, house, bool)
+    Config.Houses[house]["furniture"][cabin]["isBusy"] = bool
+    TriggerClientEvent('qb-houserobbery:client:SetBusyState', -1, cabin, house, bool)
 end)

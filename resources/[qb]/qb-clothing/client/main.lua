@@ -1278,8 +1278,21 @@ AddEventHandler('qb-clothing:client:loadOutfit', function(oData)
 
     -- Accessory
     if data["accessory"] ~= nil then
-        SetPedComponentVariation(ped, 7, data["accessory"].item, 0, 2)
-        SetPedComponentVariation(ped, 7, data["accessory"].item, data["accessory"].texture, 0)
+        if QBCore.Functions.GetPlayerData().metadata["tracker"] then
+            local trackerClothingData = {outfitData = {["accessory"] = { item = 13, texture = 0}}}
+            TriggerEvent('qb-clothing:client:loadOutfit', trackerClothingData)
+        else
+            SetPedComponentVariation(ped, 7, data["accessory"].item, 0, 2)
+            SetPedComponentVariation(ped, 7, data["accessory"].item, data["accessory"].texture, 0)
+        end
+    else
+        if QBCore.Functions.GetPlayerData().metadata["tracker"] then
+            local trackerClothingData = {outfitData = {["accessory"] = { item = 13, texture = 0}}}
+            TriggerEvent('qb-clothing:client:loadOutfit', trackerClothingData)
+        else
+            local trackerClothingData = {outfitData = {["accessory"]   = { item = -1, texture = 0}}}
+            TriggerEvent('qb-clothing:client:loadOutfit', trackerClothingData)
+        end
     end
 
     if data["mask"] ~= nil then
@@ -1321,7 +1334,9 @@ AddEventHandler('qb-clothing:client:loadOutfit', function(oData)
         end
     end
 
-    TriggerEvent('chatMessage', "SYSTEM", "warning", "Je hebt "..oData.outfitName.." gekozen! Druk op Bevestig om outfit te bevestigen.")
+    if oData.outfitName ~= nil then
+        TriggerEvent('chatMessage', "SYSTEM", "warning", "Je hebt "..oData.outfitName.." gekozen! Druk op Bevestig om outfit te bevestigen.")
+    end
 end)
 
 local faceProps = {

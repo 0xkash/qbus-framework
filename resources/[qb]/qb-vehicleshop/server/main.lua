@@ -103,3 +103,61 @@ AddEventHandler('qb-vehicleshop:server:setShowroomVehicle', function(vData, k)
     QB.ShowroomVehicles[k].chosenVehicle = vData
     TriggerClientEvent('qb-vehicleshop:client:setShowroomVehicle', -1, vData, k)
 end)
+
+RegisterServerEvent('qb-vehicleshop:server:SetCustomShowroomVeh')
+AddEventHandler('qb-vehicleshop:server:SetCustomShowroomVeh', function(vData, k)
+    QB.ShowroomVehicles[k].vehicle = vData
+    TriggerClientEvent('qb-vehicleshop:client:SetCustomShowroomVeh', -1, vData, k)
+end)
+
+QBCore.Commands.Add("verkoop", "Verkoop voertuig uit Custom Cardealer", {}, false, function(source, args)
+    local Player = QBCore.Functions.GetPlayer(source)
+    local TargetId = args[1]
+
+    if Player.PlayerData.job.name == "cardealer" then
+        if TargetId ~= nil then
+            TriggerClientEvent('qb-vehicleshop:client:SellCustomVehicle', source, TargetId)
+        else
+            TriggerClientEvent('QBCore:Notify', source, 'Je moet een Speler ID meegeven!', 'error')
+        end
+    else
+        TriggerClientEvent('QBCore:Notify', source, 'Je bent geen Voertuig Dealer', 'error')
+    end
+end)
+
+QBCore.Commands.Add("testrit", "Testrit maken", {}, false, function(source, args)
+    local Player = QBCore.Functions.GetPlayer(source)
+    local TargetId = args[1]
+
+    if Player.PlayerData.job.name == "cardealer" then
+        TriggerClientEvent('qb-vehicleshop:client:DoTestrit', source, GeneratePlate())
+    else
+        TriggerClientEvent('QBCore:Notify', source, 'Je bent geen Voertuig Dealer', 'error')
+    end
+end)
+
+RegisterServerEvent('qb-vehicleshop:server:SellCustomVehicle')
+AddEventHandler('qb-vehicleshop:server:SellCustomVehicle', function(TargetId, ShowroomSlot)
+    TriggerClientEvent('qb-vehicleshop:client:SetVehicleBuying', TargetId, ShowroomSlot)
+end)
+
+RegisterServerEvent('qb-vehicleshop:server:ConfirmVehicle')
+AddEventHandler('qb-vehicleshop:server:ConfirmVehicle', function(ShowroomVehicle)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    local VehPrice = QBCore.Shared.Vehicles[ShowroomVehicle.vehicle].price
+
+    if Player.PlayerData.money.cash >= VehPrice then
+        Player.Functions.RemoveMoney('cash', VehPrice)
+        TriggerClientEvent('qb-vehicleshop:client:ConfirmVehicle', src, ShowroomVehicle, GeneratePlate())
+    elseif Player.PlayerData.money.bank >= VehPrice then
+        Player.Functions.RemoveMoney('bank', VehPrice)
+        TriggerClientEvent('qb-vehicleshop:client:ConfirmVehicle', src, ShowroomVehicle, GeneratePlate())
+    else
+        if Player.PlayerData.money.cash > Player.PlayerData.money.bank then
+            TriggerClientEvent('QBCore:Notify', src, 'Je hebt niet voldoende geld.. Je mist ('..(Player.PlayerData.money.cash - VehPrice)..',-)')
+        else
+            TriggerClientEvent('QBCore:Notify', src, 'Je hebt niet voldoende geld.. Je mist ('..(Player.PlayerData.money.bank - VehPrice)..',-)')
+        end
+    end
+end)

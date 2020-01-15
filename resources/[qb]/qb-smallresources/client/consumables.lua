@@ -35,6 +35,7 @@ AddEventHandler("consumables:client:UseArmor", function()
 		disableCombat = true,
     }, {}, {}, {}, function() -- Done
         TriggerEvent("inventory:client:ItemBox", QBCore.Shared.Items["armor"], "remove")
+        TriggerServerEvent('hospital:server:SetArmor', 75)
         SetPedArmour(GetPlayerPed(-1), 75)
     end)
 end)
@@ -42,26 +43,28 @@ local currentVest = nil
 local currentVestTexture = nil
 RegisterNetEvent("consumables:client:UseHeavyArmor")
 AddEventHandler("consumables:client:UseHeavyArmor", function()
+    local ped = GetPlayerPed(-1)
     QBCore.Functions.Progressbar("use_heavyarmor", "Vest aantrekken..", 5000, false, true, {
         disableMovement = false,
         disableCarMovement = false,
 		disableMouse = false,
 		disableCombat = true,
     }, {}, {}, {}, function() -- Done
-        currentVest = GetPedDrawableVariation(GetPlayerPed(-1), 9)
-        currentVestTexture = GetPedTextureVariation(GetPlayerPed(-1), 9)
-        if GetPedDrawableVariation(GetPlayerPed(-1), 9) == 7 then
-            SetPedComponentVariation(GetPlayerPed(-1), 9, 18, GetPedTextureVariation(GetPlayerPed(-1), 9), 2)
+        currentVest = GetPedDrawableVariation(ped, 9)
+        currentVestTexture = GetPedTextureVariation(ped, 9)
+        if GetPedDrawableVariation(ped, 9) == 7 then
+            SetPedComponentVariation(ped, 9, 19, GetPedTextureVariation(ped, 9), 2)
         else
-            SetPedComponentVariation(GetPlayerPed(-1), 9, 12, 1, 2) -- blauw
+            SetPedComponentVariation(ped, 9, 19, 1, 2) -- blauw
         end
         TriggerEvent("inventory:client:ItemBox", QBCore.Shared.Items["heavyarmor"], "remove")
-        SetPedArmour(GetPlayerPed(-1), 100)
+        SetPedArmour(ped, 100)
     end)
 end)
 
 RegisterNetEvent("consumables:client:ResetArmor")
 AddEventHandler("consumables:client:ResetArmor", function()
+    local ped = GetPlayerPed(-1)
     if currentVest ~= nil and currentVestTexture ~= nil then 
         QBCore.Functions.Progressbar("remove_armor", "Vest uittrekken..", 2500, false, true, {
             disableMovement = false,
@@ -69,13 +72,13 @@ AddEventHandler("consumables:client:ResetArmor", function()
             disableMouse = false,
             disableCombat = true,
         }, {}, {}, {}, function() -- Done
-            SetPedComponentVariation(GetPlayerPed(-1), 9, currentVest, currentVestTexture, 2)
-            SetPedArmour(GetPlayerPed(-1), 0)
+            SetPedComponentVariation(ped, 9, currentVest, currentVestTexture, 2)
+            SetPedArmour(ped, 0)
             TriggerEvent("inventory:client:ItemBox", QBCore.Shared.Items["heavyarmor"], "add")
             TriggerServerEvent("QBCore:Server:AddItem", "heavyarmor", 1)
         end)
     else
-        QBCore.Functions.Notify("Vest niet gezet..", "error")
+        QBCore.Functions.Notify("Je hebt geen vest aan..", "error")
     end
 end)
 

@@ -1,5 +1,7 @@
 QB = {}
 
+QBCustom = {}
+
 QB.VehicleShops = {
     {x = -56.71, y = -1096.65, z = 25.44}
 }
@@ -98,3 +100,48 @@ QB.Classes = {
 }
 
 QB.DefaultBuySpawn = {x = -56.79, y = -1109.85, z = 26.43, h = 71.5}
+
+QBCustom.VehicleBuyLocation = {x = -772.82, y = -235.39, z = 37.07, h = 201.5, r = 1.0}
+QBCustom.ShowroomPositions = {
+    [1] = {
+        coords = {
+            x = -792.46, 
+            y = -233.15, 
+            z = 36.05, 
+            h = 80.0,
+        },
+        vehicle = "schwarzer2",
+        buying = false,
+    }, 
+    [2] = {
+        coords = {
+            x = -789.57, 
+            y = -237.95, 
+            z = 36.05, 
+            h = 83.5, 
+            r = 1.0
+        }, 
+        vehicle = "911r",
+        buying = false,
+    }, 
+    [3] = {
+        coords = {
+            x = -786.98, 
+            y = -242.74, 
+            z = 36.05, 
+            h = 74.5,
+        },
+        vehicle = "bmci",
+        buying = false,
+    }, 
+    [4] = {
+        coords = {
+            x = -783.27, 
+            y = -223.07, 
+            z = 36.36, 
+            h = 138.5,
+        },
+        vehicle = "lwgtr",
+        buying = false,
+    },
+}

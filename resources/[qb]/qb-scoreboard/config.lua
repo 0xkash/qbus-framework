@@ -31,6 +31,10 @@ Config.IllegalActions = {
         minimum = 4,
         busy = false,
     },
+    ["pacific"] = {
+        minimum = 6,
+        busy = false,
+    },
 }
 
 -- Current Cops Online
