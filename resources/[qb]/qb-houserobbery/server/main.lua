@@ -12,28 +12,25 @@ AddEventHandler('qb-houserobbery:server:enterHouse', function(house)
     local src = source
     local itemInfo = QBCore.Shared.Items["lockpick"]
     local Player = QBCore.Functions.GetPlayer(src)
-
+    
     if not Config.Houses[house]["opened"] then
         ResetHouseStateTimer(house)
+        TriggerClientEvent('qb-houserobbery:client:setHouseState', -1, house, true)
     end
-
     TriggerClientEvent('qb-houserobbery:client:enterHouse', src, house)
-    TriggerClientEvent('qb-houserobbery:client:setHouseState', -1, house, true)
     Config.Houses[house]["opened"] = true
 end)
 
 function ResetHouseStateTimer(house)
     -- Cannot parse math.random "directly" inside the tonumber function
-    local num = math.random(3600000, 10800000)
+    local num = math.random(3333333, 11111111)
     local time = tonumber(num)
-
     Citizen.SetTimeout(time, function()
         Config.Houses[house]["opened"] = false
         for k, v in pairs(Config.Houses[house]["furniture"]) do
             v["searched"] = false
         end
         TriggerClientEvent('qb-houserobbery:client:ResetHouseState', -1, house)
-       
     end)
 end
 

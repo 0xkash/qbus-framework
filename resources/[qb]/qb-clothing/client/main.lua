@@ -1230,80 +1230,66 @@ AddEventHandler('qb-clothing:client:loadOutfit', function(oData)
 
     -- Pants
     if data["pants"] ~= nil then
-        SetPedComponentVariation(ped, 4, data["pants"].item, 0, 0)
         SetPedComponentVariation(ped, 4, data["pants"].item, data["pants"].texture, 0)
     end
 
     -- Arms
     if data["arms"] ~= nil then
-        SetPedComponentVariation(ped, 3, data["arms"].item, 0, 2)
         SetPedComponentVariation(ped, 3, data["arms"].item, data["arms"].texture, 0)
     end
 
     -- T-Shirt
     if data["t-shirt"] ~= nil then
-        SetPedComponentVariation(ped, 8, data["t-shirt"].item, 0, 2)
         SetPedComponentVariation(ped, 8, data["t-shirt"].item, data["t-shirt"].texture, 0)
     end
 
     -- Vest
     if data["vest"] ~= nil then
-        SetPedComponentVariation(ped, 9, data["vest"].item, 0, 2)
         SetPedComponentVariation(ped, 9, data["vest"].item, data["vest"].texture, 0)
     end
 
     -- Torso 2
     if data["torso2"] ~= nil then
-        SetPedComponentVariation(ped, 11, data["torso2"].item, 0, 2)
         SetPedComponentVariation(ped, 11, data["torso2"].item, data["torso2"].texture, 0)
     end
 
     -- Shoes
     if data["shoes"] ~= nil then
-        SetPedComponentVariation(ped, 6, data["shoes"].item, 0, 2)
         SetPedComponentVariation(ped, 6, data["shoes"].item, data["shoes"].texture, 0)
     end
 
     -- Bag
     if data["bag"] ~= nil then
-        SetPedComponentVariation(ped, 5, data["bag"].item, 0, 2)
         SetPedComponentVariation(ped, 5, data["bag"].item, data["bag"].texture, 0)
     end
 
     -- Badge
     if data["badge"] ~= nil then
-        SetPedComponentVariation(ped, 10, data["decals"].item, 0, 2)
         SetPedComponentVariation(ped, 10, data["decals"].item, data["decals"].texture, 0)
     end
 
     -- Accessory
     if data["accessory"] ~= nil then
         if QBCore.Functions.GetPlayerData().metadata["tracker"] then
-            local trackerClothingData = {outfitData = {["accessory"] = { item = 13, texture = 0}}}
-            TriggerEvent('qb-clothing:client:loadOutfit', trackerClothingData)
+            SetPedComponentVariation(ped, 5, 13, 0, 0)
         else
-            SetPedComponentVariation(ped, 7, data["accessory"].item, 0, 2)
             SetPedComponentVariation(ped, 7, data["accessory"].item, data["accessory"].texture, 0)
         end
     else
         if QBCore.Functions.GetPlayerData().metadata["tracker"] then
-            local trackerClothingData = {outfitData = {["accessory"] = { item = 13, texture = 0}}}
-            TriggerEvent('qb-clothing:client:loadOutfit', trackerClothingData)
+            SetPedComponentVariation(ped, 5, 13, 0, 0)
         else
-            local trackerClothingData = {outfitData = {["accessory"]   = { item = -1, texture = 0}}}
-            TriggerEvent('qb-clothing:client:loadOutfit', trackerClothingData)
+            SetPedComponentVariation(ped, 5, -1, 0, 2)
         end
     end
 
+    -- Mask
     if data["mask"] ~= nil then
-        -- Mask
-        SetPedComponentVariation(ped, 1, data["mask"].item, 0, 2)
         SetPedComponentVariation(ped, 1, data["mask"].item, data["mask"].texture, 0)
     end
 
     -- Bag
     if data["bag"] ~= nil then
-        SetPedComponentVariation(ped, 5, data["bag"].item, 0, 2)
         SetPedComponentVariation(ped, 5, data["bag"].item, data["bag"].texture, 0)
     end
 

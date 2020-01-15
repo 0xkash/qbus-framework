@@ -21,6 +21,10 @@ local houseObj = {}
 local POIOffsets = nil
 local usingAdvanced = false
 
+local requiredItemsShowed = false
+
+local requiredItems = {}
+
 CurrentCops = 0
 
 function DrawText3Ds(x, y, z, text)
@@ -37,10 +41,6 @@ function DrawText3Ds(x, y, z, text)
     DrawRect(0.0, 0.0+0.0125, 0.017+ factor, 0.03, 0, 0, 0, 75)
     ClearDrawOrigin()
 end
-
-local requiredItemsShowed = false
-
-local requiredItems = {}
 
 Citizen.CreateThread(function()
     Citizen.Wait(500)
@@ -186,7 +186,7 @@ RegisterNetEvent('qb-houserobbery:client:ResetHouseState')
 AddEventHandler('qb-houserobbery:client:ResetHouseState', function(house)
     Config.Houses[house]["opened"] = false
     for k, v in pairs(Config.Houses[house]["furniture"]) do
-        Config.Houses[house]["furniture"][k]["searched"] = false
+        v["searched"] = false
     end
 end)
 
@@ -201,7 +201,6 @@ RegisterNetEvent('police:SetCopCount')
 AddEventHandler('police:SetCopCount', function(amount)
     CurrentCops = amount
 end)
-
 
 RegisterNetEvent('qb-houserobbery:client:enterHouse')
 AddEventHandler('qb-houserobbery:client:enterHouse', function(house)
@@ -331,7 +330,6 @@ function lockpickFinish(success)
         QBCore.Functions.Notify('Het is niet gelukt..', 'error', 2500)
     end
 end
-
 
 RegisterNetEvent('qb-houserobbery:client:setHouseState')
 AddEventHandler('qb-houserobbery:client:setHouseState', function(house, state)
