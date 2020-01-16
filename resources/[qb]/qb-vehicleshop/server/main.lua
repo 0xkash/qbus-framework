@@ -146,13 +146,16 @@ AddEventHandler('qb-vehicleshop:server:ConfirmVehicle', function(ShowroomVehicle
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     local VehPrice = QBCore.Shared.Vehicles[ShowroomVehicle.vehicle].price
+    local plate = GeneratePlate()
 
     if Player.PlayerData.money.cash >= VehPrice then
         Player.Functions.RemoveMoney('cash', VehPrice)
-        TriggerClientEvent('qb-vehicleshop:client:ConfirmVehicle', src, ShowroomVehicle, GeneratePlate())
+        TriggerClientEvent('qb-vehicleshop:client:ConfirmVehicle', src, ShowroomVehicle, plate)
+        QBCore.Functions.ExecuteSql(false, "INSERT INTO `player_vehicles` (`steam`, `citizenid`, `vehicle`, `hash`, `mods`, `plate`, `state`) VALUES ('"..Player.PlayerData.steam.."', '"..Player.PlayerData.citizenid.."', '"..ShowroomVehicle.vehicle.."', '"..GetHashKey(ShowroomVehicle.vehicle).."', '{}', '"..plate.."', 0)")
     elseif Player.PlayerData.money.bank >= VehPrice then
         Player.Functions.RemoveMoney('bank', VehPrice)
-        TriggerClientEvent('qb-vehicleshop:client:ConfirmVehicle', src, ShowroomVehicle, GeneratePlate())
+        TriggerClientEvent('qb-vehicleshop:client:ConfirmVehicle', src, ShowroomVehicle, plate)
+        QBCore.Functions.ExecuteSql(false, "INSERT INTO `player_vehicles` (`steam`, `citizenid`, `vehicle`, `hash`, `mods`, `plate`, `state`) VALUES ('"..Player.PlayerData.steam.."', '"..Player.PlayerData.citizenid.."', '"..ShowroomVehicle.vehicle.."', '"..GetHashKey(ShowroomVehicle.vehicle).."', '{}', '"..plate.."', 0)")
     else
         if Player.PlayerData.money.cash > Player.PlayerData.money.bank then
             TriggerClientEvent('QBCore:Notify', src, 'Je hebt niet voldoende geld.. Je mist ('..(Player.PlayerData.money.cash - VehPrice)..',-)')
