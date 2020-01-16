@@ -663,7 +663,7 @@ Citizen.CreateThread(function()
                     -- Set as missionEntity so the object can be remove (Even map objects)
                     SetEntityAsMissionEntity(entity, true, true)
                     if IsEntityAVehicle(entity) then
-                        GetVehicleDoorLockStatus(entity, 1)
+                        SetVehicleDoorsLocked(entity, 1)
                     end
                     DeleteEntity(entity)
                 end
