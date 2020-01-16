@@ -5,6 +5,9 @@ local DrivingSchools = {
     "PAE31194",
     "UFV96874",
     "TRB56419",
+    "UNA59325",
+    "LWR55470",
+    "APJ79416",
 }
 
 RegisterServerEvent('qb-cityhall:server:requestId')
