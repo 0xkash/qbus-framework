@@ -887,7 +887,7 @@ QB.Doors = {
 		locking = false,
 		locked = true,
 		pickable = false,
-		distance = 14,
+		distance = 20,
 		size = 2
 	},
 	-----
@@ -944,7 +944,7 @@ QB.Doors = {
 		locking = false,
 		locked = true,
 		pickable = false,
-		distance = 9.0,
+		distance = 13.0,
 		doors = {
 			{
 				objName = 'prop_autodoor',
@@ -957,4 +957,18 @@ QB.Doors = {
 			}
 		}
 	},		
+	-----
+	-- Import Garage
+	-----
+	-- {
+	-- 	objName = 'gabz_imp_garage_door',
+	-- 	objCoords  = vector3(945.9343, -985.5709, 41.1689),
+	-- 	textCoords = vector3(945.9343, -985.5709, 41.1689),
+	-- 	authorizedJobs = { 'mechanic' },
+	-- 	locking = false,
+	-- 	locked = true,
+	-- 	pickable = false,
+	-- 	distance = 15.0,
+	-- 	size = 2
+	-- },
 }
