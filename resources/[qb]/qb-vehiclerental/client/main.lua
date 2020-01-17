@@ -112,7 +112,7 @@ end)
 
 Citizen.CreateThread(function()
     for k, v in pairs(Config.RentalPoints) do
-        RentalPoints = AddBlipForCoord(v["coords"]["x"], v["coords"]["y"], v["coords"]["z"])
+        RentalPoints = AddBlipForCoord(v["coords"][1]["x"], v["coords"][1]["y"], v["coords"][1]["z"])
 
         SetBlipSprite (RentalPoints, 379)
         SetBlipDisplay(RentalPoints, 4)
@@ -121,8 +121,22 @@ Citizen.CreateThread(function()
         SetBlipColour(RentalPoints, 3)
 
         BeginTextCommandSetBlipName("STRING")
-        AddTextComponentSubstringPlayerName("Verhuurpunt")
+        AddTextComponentSubstringPlayerName("Verhuur - Ophaalpunt")
         EndTextCommandSetBlipName(RentalPoints)
+    end
+
+    for k, v in pairs(Config.DeliveryPoints) do
+        DeliveryPoints = AddBlipForCoord(v["coords"]["x"], v["coords"]["y"], v["coords"]["z"])
+
+        SetBlipSprite (DeliveryPoints, 379)
+        SetBlipDisplay(DeliveryPoints, 4)
+        SetBlipScale  (DeliveryPoints, 0.65)
+        SetBlipAsShortRange(DeliveryPoints, true)
+        SetBlipColour(DeliveryPoints, 3)
+
+        BeginTextCommandSetBlipName("STRING")
+        AddTextComponentSubstringPlayerName("Verhuur - Inleverpunt")
+        EndTextCommandSetBlipName(DeliveryPoints)
     end
 end)
 
