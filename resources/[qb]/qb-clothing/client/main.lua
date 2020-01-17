@@ -1271,15 +1271,15 @@ AddEventHandler('qb-clothing:client:loadOutfit', function(oData)
     -- Accessory
     if data["accessory"] ~= nil then
         if QBCore.Functions.GetPlayerData().metadata["tracker"] then
-            SetPedComponentVariation(ped, 5, 13, 0, 0)
+            SetPedComponentVariation(ped, 7, 13, 0, 0)
         else
             SetPedComponentVariation(ped, 7, data["accessory"].item, data["accessory"].texture, 0)
         end
     else
         if QBCore.Functions.GetPlayerData().metadata["tracker"] then
-            SetPedComponentVariation(ped, 5, 13, 0, 0)
+            SetPedComponentVariation(ped, 7, 13, 0, 0)
         else
-            SetPedComponentVariation(ped, 5, -1, 0, 2)
+            SetPedComponentVariation(ped, 7, -1, 0, 2)
         end
     end
 
