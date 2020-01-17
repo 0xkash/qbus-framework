@@ -26,6 +26,73 @@ AddEventHandler("consumables:client:UseJoint", function()
     end)
 end)
 
+function loadAnimDict(dict)
+    while (not HasAnimDictLoaded(dict)) do
+        RequestAnimDict(dict)
+        Citizen.Wait(5)
+    end
+end
+
+function EquipParachuteAnim()
+    loadAnimDict("clothingshirt")        
+    TaskPlayAnim(GetPlayerPed(-1), "clothingshirt", "try_shirt_positive_d", 8.0, 1.0, -1, 49, 0, 0, 0, 0)
+end
+
+local ParachuteEquiped = false
+
+RegisterNetEvent("consumables:client:UseParachute")
+AddEventHandler("consumables:client:UseParachute", function()
+    print("Hoi ik ben in het event")
+    EquipParachuteAnim()
+    QBCore.Functions.Progressbar("use_parachute", "Parachute omhangen..", 5000, false, true, {
+        disableMovement = false,
+        disableCarMovement = false,
+		disableMouse = false,
+		disableCombat = true,
+    }, {}, {}, {}, function() -- Done
+        local ped = GetPlayerPed(-1)
+        TriggerEvent("inventory:client:ItemBox", QBCore.Shared.Items["parachute"], "remove")
+        GiveWeaponToPed(ped, GetHashKey("GADGET_PARACHUTE"), 1, false)
+        local ParachuteData = {
+            outfitData = {
+                ["bag"]   = { item = 7, texture = 0},  -- Nek / Das
+            }
+        }
+        TriggerEvent('qb-clothing:client:loadOutfit', ParachuteData)
+        print("omgehangen hoohoehoehe")
+        ParachuteEquiped = true
+        TaskPlayAnim(ped, "clothingshirt", "exit", 8.0, 1.0, -1, 49, 0, 0, 0, 0)
+    end)
+end)
+
+RegisterNetEvent("consumables:client:ResetParachute")
+AddEventHandler("consumables:client:ResetParachute", function()
+    print("Jurre is gay like qweq   weqwe")
+    if ParachuteEquiped then 
+        EquipParachuteAnim()
+        QBCore.Functions.Progressbar("reset_parachute", "Parachute inpakken..", 40000, false, true, {
+            disableMovement = false,
+            disableCarMovement = false,
+            disableMouse = false,
+            disableCombat = true,
+        }, {}, {}, {}, function() -- Done
+            local ped = GetPlayerPed(-1)
+            TriggerEvent("inventory:client:ItemBox", QBCore.Shared.Items["parachute"], "add")
+            local ParachuteRemoveData = { 
+                outfitData = { 
+                    ["bag"] = { item = -1, texture = 0} -- Nek / Das
+                }
+            }
+            TriggerEvent('qb-clothing:client:loadOutfit', ParachuteRemoveData)
+            TaskPlayAnim(ped, "clothingshirt", "exit", 8.0, 1.0, -1, 49, 0, 0, 0, 0)
+            TriggerServerEvent("qb-smallpenis:server:AddParachute")
+            ParachuteEquiped = false
+        end)
+    else
+        QBCore.Functions.Notify("Je hebt geen parachute om!", "error")
+    end
+end)
+
 RegisterNetEvent("consumables:client:UseArmor")
 AddEventHandler("consumables:client:UseArmor", function()
     QBCore.Functions.Progressbar("use_armor", "Vest aantrekken..", 5000, false, true, {

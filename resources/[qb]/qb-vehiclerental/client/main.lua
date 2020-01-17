@@ -56,14 +56,14 @@ Citizen.CreateThread(function()
         
         if isLoggedIn then
             for k, v in pairs(Config.RentalPoints) do
-                local dist = GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.RentalPoints[k]["coords"]["x"], Config.RentalPoints[k]["coords"]["y"], Config.RentalPoints[k]["coords"]["z"])
+                local dist = GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.RentalPoints[k]["coords"][1]["x"], Config.RentalPoints[k]["coords"][1]["y"], Config.RentalPoints[k]["coords"][1]["z"])
 
                 if dist < 30 then
                     inRange = true
-                    DrawMarker(2, Config.RentalPoints[k]["coords"]["x"], Config.RentalPoints[k]["coords"]["y"], Config.RentalPoints[k]["coords"]["z"], 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.3, 0.2, 155, 22, 22, 155, 0, 0, 0, 1, 0, 0, 0)
+                    DrawMarker(2, Config.RentalPoints[k]["coords"][1]["x"], Config.RentalPoints[k]["coords"][1]["y"], Config.RentalPoints[k]["coords"][1]["z"], 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.3, 0.2, 155, 22, 22, 155, 0, 0, 0, 1, 0, 0, 0)
 
                     if dist < 1 then
-                        DrawText3Ds(Config.RentalPoints[k]["coords"]["x"], Config.RentalPoints[k]["coords"]["y"], Config.RentalPoints[k]["coords"]["z"] + 0.35, '~g~E~w~ - Om voertuig te huren')
+                        DrawText3Ds(Config.RentalPoints[k]["coords"][1]["x"], Config.RentalPoints[k]["coords"][1]["y"], Config.RentalPoints[k]["coords"][1]["z"] + 0.35, '~g~E~w~ - Om voertuig te huren')
                         if IsControlJustPressed(0, Keys["E"]) then
                             RentalMenu()
                             Menu.hidden = not Menu.hidden
@@ -78,7 +78,7 @@ Citizen.CreateThread(function()
                 end
             end
         end
-
+      
         if not inRange then
             Citizen.Wait(1500)
         end
@@ -130,26 +130,40 @@ end
 RegisterNetEvent('qb-vehiclerental:server:SpawnRentedVehicle')
 AddEventHandler('qb-vehiclerental:server:SpawnRentedVehicle', function(vehiclePlate, vehicleData)
     local ped = GetPlayerPed(-1)
-    QBCore.Functions.SpawnVehicle(vehicleData["model"], function(veh)
-        local spawnCoords = {
-            x = Config.RentalPoints[CurrentRentalPoint]["coords"]["x"],
-            y = Config.RentalPoints[CurrentRentalPoint]["coords"]["y"],
-            z = Config.RentalPoints[CurrentRentalPoint]["coords"]["z"],
-        }
+    local coords = {
+        x = Config.RentalPoints[CurrentRentalPoint]["coords"][2]["x"],
+        y = Config.RentalPoints[CurrentRentalPoint]["coords"][2]["y"],
+        z = Config.RentalPoints[CurrentRentalPoint]["coords"][2]["z"],
+    }
 
-        SetVehicleNumberPlateText(veh, vehiclePlate)
-        TaskWarpPedIntoVehicle(ped, veh, -1)
-        exports['LegacyFuel']:SetFuel(veh, 100)
-        SetVehicleEngineOn(veh, true, true)
-        RentedVehiclePlate = vehiclePlate
+    local model = GetHashKey(vehicleData["model"])
 
-        TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
-    end, spawnCoords, true)
+    RequestModel(model)
+    while not HasModelLoaded(model) do
+        Citizen.Wait(10)
+    end
+
+    local veh = CreateVehicle(model, coords.x, coords.y, coords.z, coords.a, isnetworked, false)
+    local netid = NetworkGetNetworkIdFromEntity(veh)
+
+    SetVehicleHasBeenOwnedByPlayer(vehicle,  true)
+    SetNetworkIdCanMigrate(netid, true)
+    --SetEntityAsMissionEntity(veh, true, true)
+    SetVehicleNeedsToBeHotwired(veh, false)
+    SetVehRadioStation(veh, "OFF")
+
+    SetVehicleNumberPlateText(veh, vehiclePlate)
+    TaskWarpPedIntoVehicle(ped, veh, -1)
+    exports['LegacyFuel']:SetFuel(veh, 100)
+    SetVehicleEngineOn(veh, true, true)
+    RentedVehiclePlate = vehiclePlate
+    TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
+
+    SetModelAsNoLongerNeeded(model)
     RentalMenu()
 end)
 
 ReturnVehicle = function()
-    ClearMenu()
     if RentedVehiclePlate ~= nil then
         Menu.addButton("Bevestigen", "AcceptReturn", nil)
         Menu.addButton("Terug", "RentalMenu", nil) 
@@ -178,7 +192,6 @@ end
 RentalMenu = function()
     ClearMenu()
     Menu.addButton("Voertuig Huren", "RentVehicleMenu", nil)
-    Menu.addButton("Voertuig Inleveren", "ReturnVehicle", nil) 
     Menu.addButton("Sluit Menu", "CloseMenu", nil) 
 end
 
