@@ -944,7 +944,7 @@ QB.Doors = {
 		locking = false,
 		locked = true,
 		pickable = false,
-		distance = 7.5,
+		distance = 9.0,
 		doors = {
 			{
 				objName = 'prop_autodoor',
