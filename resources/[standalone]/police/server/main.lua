@@ -975,7 +975,7 @@ end)
 
 QBCore.Commands.Add("paylaw", "Betaal een advocaat", {{name="id", help="ID van een speler"}}, true, function(source, args)
 	local Player = QBCore.Functions.GetPlayer(source)
-    if Player.PlayerData.job.name == "lawyer" then
+    if Player.PlayerData.job.name == "police" then
         local playerId = tonumber(args[1])
         local OtherPlayer = QBCore.Functions.GetPlayer(playerId)
         if OtherPlayer ~= nil then
