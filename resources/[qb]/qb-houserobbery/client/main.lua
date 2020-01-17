@@ -27,6 +27,13 @@ local requiredItems = {}
 
 CurrentCops = 0
 
+RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
+AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+    QBCore.Functions.TriggerCallback('qb-houserobbery:server:GetHouseConfig', function(HouseConfig)
+        Config.Houses = HouseConfig
+    end)
+end)
+
 function DrawText3Ds(x, y, z, text)
 	SetTextScale(0.35, 0.35)
     SetTextFont(4)
@@ -117,7 +124,7 @@ Citizen.CreateThread(function()
 
             for k, v in pairs(Config.Houses[currentHouse]["furniture"]) do
                 if (GetDistanceBetweenCoords(pos, Config.Houses[currentHouse]["coords"]["x"] + Config.Houses[currentHouse]["furniture"][k]["coords"]["x"], Config.Houses[currentHouse]["coords"]["y"] + Config.Houses[currentHouse]["furniture"][k]["coords"]["y"], Config.Houses[currentHouse]["coords"]["z"] + Config.Houses[currentHouse]["furniture"][k]["coords"]["z"] - Config.MinZOffset, true) < 1.5) then
-                    if not Config.Houses[currentHouse]["furniture"][k]["searched"] and then
+                    if not Config.Houses[currentHouse]["furniture"][k]["searched"] then
                         if not Config.Houses[currentHouse]["furniture"][k]["isBusy"] then
                             DrawText3Ds(Config.Houses[currentHouse]["coords"]["x"] + Config.Houses[currentHouse]["furniture"][k]["coords"]["x"], Config.Houses[currentHouse]["coords"]["y"] + Config.Houses[currentHouse]["furniture"][k]["coords"]["y"], Config.Houses[currentHouse]["coords"]["z"] + Config.Houses[currentHouse]["furniture"][k]["coords"]["z"] - Config.MinZOffset, '~g~E~w~ - '..Config.Houses[currentHouse]["furniture"][k]["text"])
                             if IsControlJustPressed(0, Keys["E"]) then
@@ -188,13 +195,6 @@ AddEventHandler('qb-houserobbery:client:ResetHouseState', function(house)
     for k, v in pairs(Config.Houses[house]["furniture"]) do
         v["searched"] = false
     end
-end)
-
-RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
-AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
-    QBCore.Functions.TriggerCallback('qb-houserobbery:server:GetHouseConfig', function(HouseConfig)
-        Config.Houses = HouseConfig
-    end)
 end)
 
 RegisterNetEvent('police:SetCopCount')
@@ -391,7 +391,7 @@ AddEventHandler('qb-houserobbery:client:setCabinState', function(house, cabin, s
     Config.Houses[house]["furniture"][cabin]["searched"] = state
 end)
 
-RegisterServerEvent('qb-houserobbery:client:SetBusyState')
+RegisterNetEvent('qb-houserobbery:client:SetBusyState')
 AddEventHandler('qb-houserobbery:client:SetBusyState', function(cabin, house, bool)
     Config.Houses[house]["furniture"][cabin]["isBusy"] = bool
 end)
