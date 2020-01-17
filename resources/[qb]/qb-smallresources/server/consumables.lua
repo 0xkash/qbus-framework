@@ -19,6 +19,27 @@ QBCore.Functions.CreateUseableItem("heavyarmor", function(source, item)
     end
 end)
 
+QBCore.Functions.CreateUseableItem("parachute", function(source, item)
+    local Player = QBCore.Functions.GetPlayer(source)
+	if Player.Functions.RemoveItem(item.name, 1, item.slot) then
+        TriggerClientEvent("consumables:client:UseParachute", source)
+    end
+end)
+
+QBCore.Commands.Add("parachuteuit", "Doe je parachute uit", {}, false, function(source, args)
+    local Player = QBCore.Functions.GetPlayer(source)
+        TriggerClientEvent("consumables:client:ResetParachute", source)
+    print("yolo")
+end)
+
+RegisterServerEvent("qb-smallpenis:server:AddParachute")
+AddEventHandler("qb-smallpenis:server:AddParachute", function()
+    local src = source
+    local Ply = QBCore.Functions.GetPlayer(src)
+
+    Ply.Functions.AddItem("parachute", 1)
+end)
+
 QBCore.Functions.CreateUseableItem("water_bottle", function(source, item)
     local Player = QBCore.Functions.GetPlayer(source)
 	if Player.Functions.RemoveItem(item.name, 1, item.slot) then
