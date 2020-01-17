@@ -77,6 +77,29 @@ Citizen.CreateThread(function()
                     end
                 end
             end
+
+            for k, v in pairs(Config.DeliveryPoints) do
+                local dist = GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.DeliveryPoints[k]["coords"]["x"], Config.DeliveryPoints[k]["coords"]["y"], Config.DeliveryPoints[k]["coords"]["z"])
+
+                if dist < 30 then
+                    inRange = true
+                    DrawMarker(2, Config.DeliveryPoints[k]["coords"]["x"], Config.DeliveryPoints[k]["coords"]["y"], Config.DeliveryPoints[k]["coords"]["z"], 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.6, 0.6, 0.4, 155, 22, 22, 255, 0, 0, 0, 1, 0, 0, 0)
+
+                    if dist < 1 then
+                        DrawText3Ds(Config.DeliveryPoints[k]["coords"]["x"], Config.DeliveryPoints[k]["coords"]["y"], Config.DeliveryPoints[k]["coords"]["z"] + 0.35, '~g~E~w~ - Voertuig inleveren')
+                        if IsControlJustPressed(0, Keys["E"]) then
+                            ReturnVehicle()
+                            Menu.hidden = not Menu.hidden
+                            CurrentRentalPoint = k
+                        end
+                        Menu.renderGUI()
+                    end
+
+                    if dist > 1.5 then
+                        CloseMenu()
+                    end
+                end
+            end
         end
       
         if not inRange then
