@@ -286,6 +286,14 @@ Config.Products = {
             type = "item",
             slot = 2,
         },    
+        [3] = {
+            name = "diving_gear",
+            price = 2500,
+            amount = 10,
+            info = {},
+            type = "item",
+            slot = 3,
+        },
     },   
     ["weapons"] = {
         [1] = {
@@ -801,7 +809,7 @@ Config.Locations = {
         ["products"] = Config.Products["gearshop"],
     },
     ["leisureshop"] = {
-        ["label"] = "Leisure Shop",
+        ["label"] = "Vrijetijdswinkel",
         ["type"] = "leisure",
         ["coords"] = {
             [1] = {
