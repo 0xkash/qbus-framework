@@ -466,7 +466,7 @@ local function DriveInGarage()
 					end
 				end
 				scol:addSubMenu("MATTE", "Matte", nil,true)
-				for n, c in pairs(LSC_Config.prices.chrome2.colors) do
+				for n, c in pairs(LSC_Config.prices.matte2.colors) do
 					local btn = scol.Matte:addPurchase(c.name,LSC_Config.prices.matte2.price)btn.colorindex = c.colorindex
 					if btn.colorindex == myveh.color[2] then
 						btn.purchased = true
@@ -502,7 +502,7 @@ local function DriveInGarage()
 					end
 				end
 				perl:addSubMenu("MATTE", "Matte", nil,true)
-				for n, c in pairs(LSC_Config.prices.chrome2.colors) do
+				for n, c in pairs(LSC_Config.prices.matte2.colors) do
 					local btn = perl.Matte:addPurchase(c.name,LSC_Config.prices.matte2.price)btn.colorindex = c.colorindex
 					if btn.colorindex == myveh.color[3] then
 						btn.purchased = true
