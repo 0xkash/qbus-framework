@@ -344,7 +344,7 @@ function searchCabin(cabin)
     end
     local lockpickTime = math.random(15000, 30000)
     LockpickDoorAnim(lockpickTime)
-    TriggerServertEvent('qb-houserobbery:server:SetBusyState', cabin, currentHouse, true)
+    TriggerServerEvent('qb-houserobbery:server:SetBusyState', cabin, currentHouse, true)
     QBCore.Functions.Progressbar("search_cabin", "Kastje aan het doorzoeken..", lockpickTime, false, true, {
         disableMovement = true,
         disableCarMovement = true,
@@ -359,11 +359,11 @@ function searchCabin(cabin)
         ClearPedTasks(GetPlayerPed(-1))
         TriggerServerEvent('qb-houserobbery:server:searchCabin', cabin, currentHouse)
         Config.Houses[currentHouse]["furniture"][cabin]["searched"] = true
-        TriggerServertEvent('qb-houserobbery:server:SetBusyState', cabin, currentHouse, false)
+        TriggerServerEvent('qb-houserobbery:server:SetBusyState', cabin, currentHouse, false)
     end, function() -- Cancel
         openingDoor = false
         ClearPedTasks(GetPlayerPed(-1))
-        TriggerServertEvent('qb-houserobbery:server:SetBusyState', cabin, currentHouse, false)
+        TriggerServerEvent('qb-houserobbery:server:SetBusyState', cabin, currentHouse, false)
         QBCore.Functions.Notify("Proces geannuleerd..", "error")
     end)
 end
