@@ -83,6 +83,7 @@ end)
 Citizen.CreateThread(function()
     for store,_ in pairs(Config.Locations) do
         StoreBlip = AddBlipForCoord(Config.Locations[store]["coords"][1]["x"], Config.Locations[store]["coords"][1]["y"], Config.Locations[store]["coords"][1]["z"])
+        SetBlipColour(StoreBlip, 0)
 
         if Config.Locations[store]["products"] == Config.Products["normal"] then
             SetBlipSprite(StoreBlip, 52)
@@ -100,8 +101,9 @@ Citizen.CreateThread(function()
             SetBlipSprite(StoreBlip, 110)
             SetBlipScale(StoreBlip, 0.85)
         elseif Config.Locations[store]["products"] == Config.Products["leisureshop"] then
-            SetBlipSprite(StoreBlip, 377)
-            SetBlipScale(StoreBlip, 0.85)           
+            SetBlipSprite(StoreBlip, 52)
+            SetBlipScale(StoreBlip, 0.6)
+            SetBlipColour(StoreBlip, 3)           
         elseif Config.Locations[store]["products"] == Config.Products["coffeeshop"] then
             SetBlipSprite(StoreBlip, 140)
             SetBlipScale(StoreBlip, 0.55)
@@ -109,7 +111,7 @@ Citizen.CreateThread(function()
 
         SetBlipDisplay(StoreBlip, 4)
         SetBlipAsShortRange(StoreBlip, true)
-        SetBlipColour(StoreBlip, 0)
+    
 
         BeginTextCommandSetBlipName("STRING")
         AddTextComponentSubstringPlayerName(Config.Locations[store]["label"])
