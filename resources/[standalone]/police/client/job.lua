@@ -130,6 +130,29 @@ Citizen.CreateThread(function()
                     end
                 end
 
+                if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["vehicle3"].x, Config.Locations["vehicle3"].y, Config.Locations["vehicle3"].z, true) < 7.5) then
+                    if onDuty then
+                        DrawMarker(2, Config.Locations["vehicle3"].x, Config.Locations["vehicle3"].y, Config.Locations["vehicle3"].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
+                        if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["vehicle3"].x, Config.Locations["vehicle3"].y, Config.Locations["vehicle3"].z, true) < 1.5) then
+                            if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
+                                QBCore.Functions.DrawText3D(Config.Locations["vehicle3"].x, Config.Locations["vehicle3"].y, Config.Locations["vehicle3"].z, "~g~E~w~ - Voertuig opbergen")
+                            else
+                                QBCore.Functions.DrawText3D(Config.Locations["vehicle3"].x, Config.Locations["vehicle3"].y, Config.Locations["vehicle3"].z, "~g~E~w~ - Voertuigen")
+                            end
+                            if IsControlJustReleased(0, Keys["E"]) then
+                                if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
+                                    QBCore.Functions.DeleteVehicle(GetVehiclePedIsIn(GetPlayerPed(-1)))
+                                else
+                                    MenuGarage()
+                                    currentGarage = 3
+                                    Menu.hidden = not Menu.hidden
+                                end
+                            end
+                            Menu.renderGUI()
+                        end  
+                    end
+                end
+
                 if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["impound"].x, Config.Locations["impound"].y, Config.Locations["impound"].z, true) < 7.5) then
                     if onDuty then
                         DrawMarker(2, Config.Locations["impound"].x, Config.Locations["impound"].y, Config.Locations["impound"].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
@@ -467,6 +490,8 @@ function TakeOutVehicle(vehicleInfo)
     local coords = Config.Locations["vehicle"]
     if currentGarage == 2 then
         coords = Config.Locations["vehicle2"]
+    if currentGarage == 3 then
+        coords = Config.Locations["vehicle3"]
     end
     QBCore.Functions.SpawnVehicle(vehicleInfo, function(veh)
         SetVehicleNumberPlateText(veh, "PLZI"..tostring(math.random(1000, 9999)))
