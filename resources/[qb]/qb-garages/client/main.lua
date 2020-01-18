@@ -48,17 +48,48 @@ end
 
 RegisterNetEvent('qb-garages:client:takeOutDepot')
 AddEventHandler('qb-garages:client:takeOutDepot', function(vehicle)
-    if OutsideVehicles[vehicle.plate] ~= nil and OutsideVehicles ~= nil then
-        local Engine = GetVehicleEngineHealth(OutsideVehicles[vehicle.plate])
-        if Engine <= 50.0 then
+    if OutsideVehicles ~= nil and next(OutsideVehicles) ~= nil then
+        if OutsideVehicles[vehicle.plate] ~= nil then
+            local Engine = GetVehicleEngineHealth(OutsideVehicles[vehicle.plate])
+            if Engine <= 50.0 then
+                QBCore.Functions.SpawnVehicle(vehicle.vehicle, function(veh)
+                    QBCore.Functions.TriggerCallback('qb-garage:server:GetVehicleProperties', function(properties)
+                        QBCore.Functions.SetVehicleProperties(veh, properties)
+                        enginePercent = round(vehicle.engine / 10, 0)
+                        bodyPercent = round(vehicle.body / 10, 0)
+                        currentFuel = vehicle.fuel
+
+                        DeleteVehicle(OutsideVehicles[vehicle.plate])
+
+                        AddOutsideVehicle(vehicle.plate, veh)
+
+                        SetVehicleNumberPlateText(veh, vehicle.plate)
+                        SetEntityHeading(veh, Depots[currentGarage].takeVehicle.h)
+                        TaskWarpPedIntoVehicle(GetPlayerPed(-1), veh, -1)
+                        exports['LegacyFuel']:SetFuel(veh, vehicle.fuel)
+                        SetEntityAsMissionEntity(veh, true, true)
+                        doCarDamage(veh, vehicle)
+                        TriggerServerEvent('qb-garage:server:updateVehicleState', 0, vehicle.plate, vehicle.garage)
+                        QBCore.Functions.Notify("Voertuig Uit: Motor: " .. enginePercent .. "% Body: " .. bodyPercent.. "% Fuel: "..currentFuel.. "%", "primary", 4500)
+                        TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
+                        closeMenuFull()
+                        SetVehicleEngineOn(veh, true, true)
+                    end, vehicle.plate)
+                    TriggerEvent("vehiclekeys:client:SetOwner", vehicle.plate)
+                end, Depots[currentGarage].spawnPoint, true)
+                SetTimeout(250, function()
+                    TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(GetVehiclePedIsIn(GetPlayerPed(-1), false)))
+                end)
+            else
+                QBCore.Functions.Notify("Je kan dit voertuig niet duplicaten")
+            end
+        else
             QBCore.Functions.SpawnVehicle(vehicle.vehicle, function(veh)
                 QBCore.Functions.TriggerCallback('qb-garage:server:GetVehicleProperties', function(properties)
                     QBCore.Functions.SetVehicleProperties(veh, properties)
                     enginePercent = round(vehicle.engine / 10, 0)
                     bodyPercent = round(vehicle.body / 10, 0)
                     currentFuel = vehicle.fuel
-
-                    DeleteVehicle(OutsideVehicles[vehicle.plate])
 
                     AddOutsideVehicle(vehicle.plate, veh)
 
@@ -79,8 +110,6 @@ AddEventHandler('qb-garages:client:takeOutDepot', function(vehicle)
             SetTimeout(250, function()
                 TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(GetVehiclePedIsIn(GetPlayerPed(-1), false)))
             end)
-        else
-            QBCore.Functions.Notify("Je kan dit voertuig niet duplicaten")
         end
     else
         QBCore.Functions.SpawnVehicle(vehicle.vehicle, function(veh)
@@ -510,7 +539,7 @@ Citizen.CreateThread(function()
                                 TriggerServerEvent('qb-garage:server:updateVehicleState', 1, plate, k)
                                 --TriggerServerEvent('vehiclemod:server:saveStatus', plate)
                                 QBCore.Functions.DeleteVehicle(curVeh)
-                                AddOutsideVehicle(vehicle.plate, nil)
+                                AddOutsideVehicle(plate, nil)
                                 QBCore.Functions.Notify("Voertuig geparkeerd in, "..Garages[k].label, "primary", 4500)
                             else
                                 QBCore.Functions.Notify("Niemand is in bezit van dit voertuig...", "error", 3500)
