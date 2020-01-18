@@ -42,7 +42,6 @@ local ParachuteEquiped = false
 
 RegisterNetEvent("consumables:client:UseParachute")
 AddEventHandler("consumables:client:UseParachute", function()
-    print("Hoi ik ben in het event")
     EquipParachuteAnim()
     QBCore.Functions.Progressbar("use_parachute", "Parachute omhangen..", 5000, false, true, {
         disableMovement = false,
@@ -59,7 +58,6 @@ AddEventHandler("consumables:client:UseParachute", function()
             }
         }
         TriggerEvent('qb-clothing:client:loadOutfit', ParachuteData)
-        print("omgehangen hoohoehoehe")
         ParachuteEquiped = true
         TaskPlayAnim(ped, "clothingshirt", "exit", 8.0, 1.0, -1, 49, 0, 0, 0, 0)
     end)
@@ -67,7 +65,6 @@ end)
 
 RegisterNetEvent("consumables:client:ResetParachute")
 AddEventHandler("consumables:client:ResetParachute", function()
-    print("Jurre is gay like qweq   weqwe")
     if ParachuteEquiped then 
         EquipParachuteAnim()
         QBCore.Functions.Progressbar("reset_parachute", "Parachute inpakken..", 40000, false, true, {
@@ -92,6 +89,18 @@ AddEventHandler("consumables:client:ResetParachute", function()
         QBCore.Functions.Notify("Je hebt geen parachute om!", "error")
     end
 end)
+
+-- RegisterNetEvent("consumables:client:UseRedSmoke")
+-- AddEventHandler("consumables:client:UseRedSmoke", function()
+--     if ParachuteEquiped then
+--         local ped = GetPlayerPed(-1)
+--         SetPlayerParachuteSmokeTrailColor(ped, 255, 0, 0)
+--         SetPlayerCanLeaveParachuteSmokeTrail(ped, true)
+--         TriggerEvent("inventory:client:Itembox", QBCore.Shared.Items["smoketrailred"], "remove")
+--     else
+--         QBCore.Functions.Notify("Je moet een parachute om hebben om rook te activeren!", "error")    
+--     end
+-- end)
 
 RegisterNetEvent("consumables:client:UseArmor")
 AddEventHandler("consumables:client:UseArmor", function()

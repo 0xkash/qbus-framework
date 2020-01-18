@@ -294,6 +294,14 @@ Config.Products = {
             type = "item",
             slot = 3,
         },
+        -- [4] = {
+        --     name = "smoketrailred",
+        --     price = 250,
+        --     amount = 50,
+        --     info = {},
+        --     type = "item",
+        --     slot = 4,
+        -- },
     },   
     ["weapons"] = {
         [1] = {
