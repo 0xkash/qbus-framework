@@ -4,7 +4,6 @@ local noclip_ANIM_A = "amb@world_human_stand_impatient@male@no_sign@base"
 local noclip_ANIM_B = "base"
 
 -- Noclip Variables
-local in_noclip_mode = false
 local travelSpeed = 4
 local curLocation
 local curRotation

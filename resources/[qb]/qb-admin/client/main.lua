@@ -14,6 +14,7 @@ end)
 
 QBAdmin = {}
 QBAdmin.Functions = {}
+in_noclip_mode = false
 
 QBAdmin.Functions.DrawText3D = function(x, y, z, text, lines)
     -- Amount of lines default 1
@@ -174,6 +175,7 @@ myPermissionRank = "user"
 
 function getPlayers()
     players = {}
+
     for _, player in ipairs(GetActivePlayers()) do
         table.insert(players, {
             ['ped'] = GetPlayerPed(player),
@@ -429,7 +431,13 @@ Citizen.CreateThread(function()
             if WarMenu.MenuButton('Goto', currentPlayer) then
                 local target = GetPlayerPed(currentPlayer)
                 local ply = GetPlayerPed(-1)
-                SetEntityCoords(ply, GetEntityCoords(target))
+                if in_noclip_mode then
+                    turnNoClipOff()
+                    SetEntityCoords(ply, GetEntityCoords(target))
+                    turnNoClipOn()
+                else
+                    SetEntityCoords(ply, GetEntityCoords(target))
+                end
             end
             if WarMenu.MenuButton('Bring', currentPlayer) then
                 local target = GetPlayerPed(currentPlayer)
