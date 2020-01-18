@@ -44,7 +44,7 @@ end)
 
 RegisterServerEvent("vehiclemod:server:updatePart")
 AddEventHandler("vehiclemod:server:updatePart", function(plate, part, level)
-    if VehicleStatus[plate] ~= nil then 
+    if VehicleStatus[plate] ~= nil then
         if part == "engine" or part == "body" then
             VehicleStatus[plate][part] = level
             if VehicleStatus[plate][part] < 0 then
@@ -60,6 +60,14 @@ AddEventHandler("vehiclemod:server:updatePart", function(plate, part, level)
                 VehicleStatus[plate][part] = 100
             end
         end
+        TriggerClientEvent("vehiclemod:client:setVehicleStatus", -1, plate, VehicleStatus[plate])
+    end
+end)
+
+RegisterServerEvent('qb-vehicletuning:server:SetPartLevel')
+AddEventHandler('qb-vehicletuning:server:SetPartLevel', function(plate, part, level)
+    if VehicleStatus[plate] ~= nil then
+        VehicleStatus[plate][part] = level
         TriggerClientEvent("vehiclemod:client:setVehicleStatus", -1, plate, VehicleStatus[plate])
     end
 end)
@@ -129,6 +137,20 @@ QBCore.Commands.Add("repareer", "Repareer een voertuig", {{name="part", help="On
     end
 end)
 
-QBCore.Commands.Add("vehstatus", "Krijg vehicle status", {}, false, function(source, args)
-    TriggerClientEvent("vehiclemod:client:getVehicleStatus", source)
+-- QBCore.Commands.Add("vehstatus", "Krijg vehicle status", {}, false, function(source, args)
+--     local Player = QBCore.Functions.GetPlayer(souce)
+
+--     if Player.PlayerData.job.name == "mechanic" then
+--         TriggerClientEvent("vehiclemod:client:getVehicleStatus", source)
+--     end
+-- end)
+
+QBCore.Functions.CreateCallback('qb-vehicletuning:server:GetAttachedVehicle', function(source, cb)
+    cb(Config.AttachedVehicle)
+end)
+
+RegisterServerEvent('qb-vehicletuning:server:SetAttachedVehicle')
+AddEventHandler('qb-vehicletuning:server:SetAttachedVehicle', function(veh)
+    Config.AttachedVehicle = veh
+    TriggerClientEvent('qb-vehicletuning:client:SetAttachedVehicle', -1, veh)
 end)

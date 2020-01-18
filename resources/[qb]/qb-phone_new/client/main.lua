@@ -209,7 +209,7 @@ function OpenPhone()
         AppData = Config.PhoneApplications,
         CallData = PhoneData.CallData,
     })
-    SetNuiFocusKeepInput(true)
+    -- SetNuiFocusKeepInput(true)
     PhoneData.isOpen = true
     PhonePlayIn()
 end
@@ -217,7 +217,7 @@ end
 RegisterNUICallback('Close', function()
     PhonePlayOut()
     SetNuiFocus(false, false)
-    SetNuiFocusKeepInput(false)
+    -- SetNuiFocusKeepInput(false)
     PhoneData.isOpen = false
 end)
 

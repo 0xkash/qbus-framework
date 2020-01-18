@@ -2,7 +2,24 @@ QBCore = nil
 
 TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 
+local OutsideVehicles = {}
+
 -- code
+
+RegisterServerEvent('qb-garages:server:UpdateOutsideVehicles')
+AddEventHandler('qb-garages:server:UpdateOutsideVehicles', function(Vehicles)
+    local src = source
+    local Ply = QBCore.Functions.GetPlayer(src)
+    local CitizenId = Ply.PlayerData.citizenid
+
+    OutsideVehicles[CitizenId] = Vehicles
+end)
+
+QBCore.Functions.CreateCallback("qb-garage:server:GetOutsideVehicles", function(source, cb)
+    local Ply = QBCore.Functions.GetPlayer(source)
+    local CitizenId = Ply.PlayerData.citizenid
+    cb(OutsideVehicles[CitizenId])
+end)
 
 QBCore.Functions.CreateCallback("qb-garage:server:GetUserVehicles", function(source, cb, garage)
     local src = source

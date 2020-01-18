@@ -5,6 +5,7 @@ description 'vehiclemod'
 client_scripts {
 	'config.lua',
 	'client/main.lua',
+	'client/gui.lua',
 }
 
 server_scripts {

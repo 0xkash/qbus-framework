@@ -9,6 +9,220 @@ end)
 
 local ModdedVehicles = {}
 local VehicleStatus = {}
+isLoggedIn = false
+PlayerJob = {}
+
+function DrawText3Ds(x, y, z, text)
+	SetTextScale(0.35, 0.35)
+    SetTextFont(4)
+    SetTextProportional(1)
+    SetTextColour(255, 255, 255, 215)
+    SetTextEntry("STRING")
+    SetTextCentre(true)
+    AddTextComponentString(text)
+    SetDrawOrigin(x,y,z, 0)
+    DrawText(0.0, 0.0)
+    local factor = (string.len(text)) / 370
+    DrawRect(0.0, 0.0+0.0125, 0.017+ factor, 0.03, 0, 0, 0, 75)
+    ClearDrawOrigin()
+end
+
+RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
+AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+    QBCore.Functions.GetPlayerData(function(PlayerData)
+        PlayerJob = PlayerData.job
+    end)
+    isLoggedIn = true
+
+    QBCore.Functions.TriggerCallback('qb-vehicletuning:server:GetAttachedVehicle', function(veh)
+        Config.AttachedVehicle = veh
+    end)
+end)
+
+RegisterNetEvent('QBCore:Client:OnJobUpdate')
+AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
+    PlayerJob = JobInfo
+end)
+
+Citizen.CreateThread(function()
+    Wait(250)
+    QBCore.Functions.GetPlayerData(function(PlayerData)
+        PlayerJob = PlayerData.job
+    end)
+    isLoggedIn = true
+end)
+
+Citizen.CreateThread(function()
+    while true do
+        local inRange = false
+
+        if isLoggedIn then
+            if PlayerJob.name == "mechanic" then
+                local coords = {
+                    [1] = Config.Locations[1],
+                    [2] = Config.Locations[2],
+                    [3] = Config.Locations[3],
+                } 
+                local pos = GetEntityCoords(GetPlayerPed(-1))
+                local dist1 = GetDistanceBetweenCoords(pos, coords[1].x, coords[1].y, coords[1].z)
+                local dist2 = GetDistanceBetweenCoords(pos, coords[2].x, coords[2].y, coords[2].z)
+                if dist1 < 20 then
+                    inRange = true
+
+                    if Config.AttachedVehicle == nil then
+                        DrawMarker(2, coords[1].x, coords[1].y, coords[1].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.3, 0.2, 210, 50, 9, 255, false, false, false, true, false, false, false)
+
+                        if dist1 < 2 then
+                            local veh = GetVehiclePedIsIn(GetPlayerPed(-1))
+                            if IsPedInAnyVehicle(GetPlayerPed(-1)) then
+                                if not IsThisModelABicycle(GetEntityModel(veh)) then
+                                    DrawText3Ds(coords[1].x, coords[1].y, coords[1].z, "[E] Voertuig op de plaat zetten")
+                                    if IsControlJustPressed(0, Config.Keys["E"]) then
+                                        DoScreenFadeOut(150)
+                                        Wait(150)
+                                        Config.AttachedVehicle = veh
+                                        SetEntityCoords(veh, coords[1].x, coords[1].y, coords[1].z)
+                                        SetEntityHeading(veh, coords[1].h)
+                                        FreezeEntityPosition(veh, true)
+                                        SetEntityCoords(GetPlayerPed(-1), coords[2].x, coords[2].y, coords[2].z)
+                                        SetEntityHeading(GetPlayerPed(-1), coords[2].h)
+                                        Wait(500)
+                                        DoScreenFadeIn(250)
+                                        TriggerServerEvent('qb-vehicletuning:server:SetAttachedVehicle', veh)
+                                    end
+                                else
+                                    QBCore.Functions.Notify("Je kan geen fietsen op de plaat zetten!", "error")
+                                end
+                            else
+                                DrawText3Ds(coords[1].x, coords[1].y, coords[1].z, "Je moet in een voertuig zitten!")
+                            end
+                        end
+                    end
+                end
+
+                if dist2 < 20 then
+                    DrawMarker(2, coords[2].x, coords[2].y, coords[2].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.3, 0.2, 210, 50, 9, 255, false, false, false, true, false, false, false)
+
+                    if dist2 < 1.2 then
+                        local text = "Er staat nog geen voertuig op de plaat"
+                        if Config.AttachedVehicle ~= nil then
+                            text = "[E] Menu openen"
+                            if IsControlJustPressed(0, Keys["E"]) then
+                                OpenMenu()
+                                Menu.hidden = not Menu.hidden
+                            end
+                            Menu.renderGUI()
+                        end
+                        DrawText3Ds(coords[2].x, coords[2].y, coords[2].z, text)
+                    elseif dist2 > 1.1 then
+                        if not Menu.hidden then
+                            CloseMenu()
+                        end
+                    end
+                end
+
+                if not inRange then
+                    Citizen.Wait(1500)
+                end
+            else
+                Citizen.Wait(1500)
+            end
+        else
+            Citizen.Wait(1500)
+        end
+
+        Citizen.Wait(3)
+    end
+end)
+
+function OpenMenu()
+    ClearMenu()
+    Menu.addButton("Opties", "VehicleOptions", nil)
+    Menu.addButton("Sluit Menu", "CloseMenu", nil) 
+end
+
+function VehicleOptions()
+    ClearMenu()
+    Menu.addButton("Voertuig Loskoppelen", "UnattachVehicle", nil)
+    Menu.addButton("Check Status", "CheckStatus", nil)
+    Menu.addButton("Onderdelen", "PartsMenu", nil)
+    Menu.addButton("Sluit Menu", "CloseMenu", nil)
+    SetVehicleDoorsShut(Config.AttachedVehicle)
+end
+
+local Doors = {
+    [0] = 0,
+    [1] = 1,
+    [2] = 2,
+    [3] = 3,
+    [4] = 4,
+    [5] = 5,
+    [6] = 6,
+    [7] = 7,
+}
+
+function PartsMenu()
+    ClearMenu()
+    for k, v in pairs(Doors) do
+        SetVehicleDoorOpen(Config.AttachedVehicle, v, false, false)
+    end
+    local plate = GetVehicleNumberPlateText(Config.AttachedVehicle)
+    if VehicleStatus[plate] ~= nil then
+        for k, v in pairs(Config.ValuesLabels) do
+            Menu.addButton(v..": "..math.ceil(VehicleStatus[plate][k]), "PartMenu", k) 
+        end
+    else
+        for k, v in pairs(Config.ValuesLabels) do
+            Menu.addButton(v..": "..Config.MaxStatusValues[k], "VehicleOptions", nil) 
+        end
+    end
+    Menu.addButton("Terug", "VehicleOptions", nil) 
+    Menu.addButton("Sluit Menu", "CloseMenu", nil) 
+end
+
+function CheckStatus()
+    local plate = GetVehicleNumberPlateText(Config.AttachedVehicle)
+    SendStatusMessage(VehicleStatus[plate])
+end
+
+function PartMenu(part)
+    ClearMenu()
+    Menu.addButton("Repareer ("..Config.ValuesLabels[part]..")", "RepairPart", part)
+    Menu.addButton("Terug", "VehicleOptions", nil)
+    Menu.addButton("Sluit Menu", "CloseMenu", nil) 
+end
+
+function RepairPart(part)
+    local plate = GetVehicleNumberPlateText(Config.AttachedVehicle)
+    TriggerServerEvent('qb-vehicletuning:server:SetPartLevel', plate, part, Config.MaxStatusValues[part])
+    QBCore.Functions.Notify(Config.ValuesLabels[part].." is gerepareerd!", "success")
+    PartsMenu()
+end
+
+function UnattachVehicle()
+    local coords = {
+        [1] = Config.Locations[1],
+        [2] = Config.Locations[2],
+        [3] = Config.Locations[3],
+    } 
+
+    DoScreenFadeOut(150)
+    Wait(150)
+    FreezeEntityPosition(Config.AttachedVehicle, false)
+    SetEntityCoords(Config.AttachedVehicle, coords[3].x, coords[3].y, coords[3].z)
+    SetEntityHeading(Config.AttachedVehicle, coords[3].h)
+    TaskWarpPedIntoVehicle(GetPlayerPed(-1), Config.AttachedVehicle, -1)
+    Wait(500)
+    DoScreenFadeIn(250)
+    Config.AttachedVehicle = nil
+    TriggerServerEvent('qb-vehicletuning:server:SetAttachedVehicle', nil)
+end
+
+RegisterNetEvent('qb-vehicletuning:client:SetAttachedVehicle')
+AddEventHandler('qb-vehicletuning:client:SetAttachedVehicle', function(veh)
+    Config.AttachedVehicle = veh
+end)
+
 Citizen.CreateThread(function()
     while true do 
         Citizen.Wait(1)
@@ -196,9 +410,10 @@ AddEventHandler('vehiclemod:client:setPartLevel', function(part, level)
     end
 end)
 local openingDoor = false
+
 RegisterNetEvent('vehiclemod:client:repairPart')
 AddEventHandler('vehiclemod:client:repairPart', function(part, level, needAmount)
-    if CanReapair() then
+    -- if CanReapair() then
         if not IsPedInAnyVehicle(GetPlayerPed(-1), false) then
             local veh = GetVehiclePedIsIn(GetPlayerPed(-1), true)
             if veh ~= nil and veh ~= 0 then
@@ -256,7 +471,7 @@ AddEventHandler('vehiclemod:client:repairPart', function(part, level, needAmount
         else
             QBCore.Functions.Notify("Je zit niet in een voertuig..", "error")
         end
-    end
+    -- end
 end)
 
 function ScrapAnim(time)
@@ -484,4 +699,25 @@ end
 function round(num, numDecimalPlaces)
     return tonumber(string.format("%." .. (numDecimalPlaces or 1) .. "f", num))
 end
-            
+
+-- Menu Functions
+
+
+CloseMenu = function()
+    Menu.hidden = true
+    currentGarage = nil
+    ClearMenu()
+    SetVehicleDoorsShut(Config.AttachedVehicle)
+end
+
+ClearMenu = function()
+	--Menu = {}
+	Menu.GUI = {}
+	Menu.buttonCount = 0
+	Menu.selection = 0
+end
+
+function noSpace(str)
+    local normalisedString = string.gsub(str, "%s+", "")
+    return normalisedString
+end
