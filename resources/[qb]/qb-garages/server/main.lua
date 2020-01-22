@@ -18,7 +18,12 @@ end)
 QBCore.Functions.CreateCallback("qb-garage:server:GetOutsideVehicles", function(source, cb)
     local Ply = QBCore.Functions.GetPlayer(source)
     local CitizenId = Ply.PlayerData.citizenid
-    cb(OutsideVehicles[CitizenId])
+
+    if OutsideVehicles[CitizenId] ~= nil and next(OutsideVehicles[CitizenId]) ~= nil then
+        cb(OutsideVehicles[CitizenId])
+    else
+        cb(nil)
+    end
 end)
 
 QBCore.Functions.CreateCallback("qb-garage:server:GetUserVehicles", function(source, cb, garage)
