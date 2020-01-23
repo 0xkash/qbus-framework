@@ -32,7 +32,7 @@ QBBoatshop.Docks = {
         }
     },
     ["paletto"] = {
-        label = "Paletto Boothuis",
+        label = "Paleto Boothuis",
         coords = {
             take = {
                 x = -277.46, 
