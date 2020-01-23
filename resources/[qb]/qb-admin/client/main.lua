@@ -799,6 +799,7 @@ end
 -- Raycast function for "Admin Lazer"
 function RayCastGamePlayCamera(distance)
     local cameraRotation = GetGameplayCamRot()
+    -- print(cameraRotation)
 	local cameraCoord = GetGameplayCamCoord()
 	local direction = RotationToDirection(cameraRotation)
 	local destination = 

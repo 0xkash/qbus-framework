@@ -34,6 +34,9 @@ Config.Registers = {
     [27] = {x = 1960.13, y = 3740.0, z = 32.34, robbed = false, time = 0, safeKey = 16, camId = 19},
     [28] = {x = 1728.86, y = 6417.26, z = 35.03, robbed = false, time = 0, safeKey = 17, camId = 20},
     [29] = {x = 1727.85, y = 6415.14, z = 35.03, robbed = false, time = 0, safeKey = 17, camId = 20},
+    [30] = {x = -161.07, y = 6321.23, z = 31.5, robbed = false, time = 0, safeKey = 18, camId = 27},
+    [31] = {x = 160.52, y = 6641.74, z = 31.6, robbed = false, time = 0, safeKey = 19, camId = 28},
+    [32] = {x = 162.16, y = 6643.22, z = 31.6, robbed = false, time = 0, safeKey = 19, camId = 29},
 }
 
 Config.Safes = {
@@ -54,6 +57,8 @@ Config.Safes = {
     [15] = {x = 2672.69, y = 3286.63, z = 55.24, type = "keypad", robbed = false, camId = 18},
     [16] = {x = 1959.26, y = 3748.92, z = 32.34, type = "keypad", robbed = false, camId = 19},
     [17] = {x = 1734.78, y = 6420.84, z = 35.03, type = "keypad", robbed = false, camId = 20},
+    [18] = {x = -168.40, y = 6318.80, z = 30.58, type = "padlock", robbed = false, camId = 27},
+    [19] = {x = 168.95, y = 6644.74, z = 31.70, type = "keypad", robbed = false, camId = 30},
 }
 
 Config.resetTime = (60 * 1000) * 30
