@@ -354,31 +354,180 @@ QB.Doors = {
 		pickable = false,
 		distance = 1.0,
 	},
-	--
-	-- Paleto Bay
-	--
-	-- Entrance (double doors)
+	
+	-- Bureau Paleto Bay
 	{
-		textCoords = vector3(-443.5, 6016.3, 32.0),
+		textCoords = vector3(-435.57, 6008.76, 27.98),
 		authorizedJobs = { 'police' },
 		locking = false,
-		locked = false,
+		locked = true,
 		pickable = false,
 		distance = 2.5,
 		doors = {
 			{
-				objName = 'v_ilev_shrf2door',
-				objYaw = -45.0,
-				objCoords  = vector3(-443.1, 6015.6, 31.7),
+				objName = 'v_ilev_ph_gendoor002',
+				objYaw = -135.0,
+				objCoords = vector3(-436.5157, 6007.844, 28.13839),			
+			},
+			{
+				objName = 'v_ilev_ph_gendoor002',
+				objYaw = 45.0,
+				objCoords = vector3(-434.6776, 6009.681, 28.13839)			
+			}
+		}
+	},	
+	-- Achterdeur links
+	{
+		objName = 'v_ilev_rc_door2',
+		objYaw = 135.0,
+		objCoords  = vector3(-450.9664, 6006.086, 31.99004),		
+		textCoords = vector3(-451.38, 6006.55, 31.84),
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		pickable = false,
+		distance = 2.0,
+	},
+	-- Achterdeur rechts
+	{
+		objName = 'v_ilev_rc_door2',
+		objYaw = -45.0,
+		objCoords  = vector3(-447.2363, 6002.317, 31.84003),		
+		textCoords = vector3(-446.77, 6001.84, 31.68),
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		pickable = false,
+		distance = 2.0,
+	},
+	-- Kleedkamer
+	{
+		objName = 'v_ilev_rc_door2',
+		objYaw = -45.0,
+		objCoords  = vector3(-450.7136, 6016.371, 31.86523),				
+		textCoords = vector3(-450.15, 6015.96, 31.71),
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		pickable = false,
+		distance = 2.0,
+	},	
+	-- Kleedkamer 2
+	{
+		objName = 'v_ilev_rc_door2',
+		objYaw = 45.0,
+		objCoords  = vector3(-454.0435, 6010.243, 31.86106),						
+		textCoords = vector3(-453.56, 6010.73, 31.71),
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		pickable = false,
+		distance = 2.0,
+	},	
+	-- Wapenkamer
+	{
+		objName = 'v_ilev_arm_secdoor',
+		objYaw = -135.0,
+		objCoords  = vector3(-439.1576, 5998.157, 31.86815),						
+		textCoords = vector3(-438.64, 5998.51, 31.71), 
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		pickable = false,
+		distance = 2.0,
+	},	
+	-- Verhoorkamer
+	{
+		objName = 'v_ilev_arm_secdoor',
+		objYaw = 45.0,
+		objCoords  = vector3(-436.6276, 6002.548, 28.14062),							
+		textCoords = vector3(-437.09, 6002.100, 27.98),
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		pickable = false,
+		distance = 2.0,
+	},
+	-- Entree cellen 1
+	{
+		objName = 'v_ilev_ph_cellgate1',
+		objYaw = 45.0,
+		objCoords  = vector3(-438.228, 6006.167, 28.13558),							
+		textCoords = vector3(-438.610, 6005.64, 27.98),
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		pickable = false,
+		distance = 2.0,
+	},
+	-- Entree cellen 2
+	{
+		objName = 'v_ilev_ph_cellgate1',
+		objYaw = 45.0,
+		objCoords  = vector3(-442.1082, 6010.052, 28.13558),							
+		textCoords = vector3(-442.55, 6009.61, 27.98),
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		pickable = false,
+		distance = 2.0,
+	},	
+	-- Cel
+	{
+		objName = 'v_ilev_ph_cellgate1',
+		objYaw = 45.0,
+		objCoords  = vector3(-444.3682, 6012.223, 28.13558),								
+		textCoords = vector3(-444.77, 6011.74, 27.98),
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		pickable = false,
+		distance = 2.0,
+	},						
+	-- Gang lockers (dubbele deuren)
+	{
+		textCoords = vector3(-442.09, 6011.93, 31.86523),
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		pickable = false,
+		distance = 2.5,
+		doors = {
+			{
+				objName = 'v_ilev_rc_door2',
+				objYaw = 225.0,
+				objCoords  = vector3(-441.0185, 6012.795, 31.86523),			
 			},
 
 			{
-				objName = 'v_ilev_shrf2door',
-				objYaw = 135.0,
-				objCoords  = vector3(-443.9, 6016.6, 31.7)
+				objName = 'v_ilev_rc_door2',
+				objYaw = 45.0,
+				objCoords  = vector3(-442.8578, 6010.958, 31.86523)			
 			}
 		}
-	},
+	},	
+	-- Gang naar achterkant (dubbele deuren)
+	{
+		textCoords = vector3(-448.67, 6007.52, 31.86523),
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		pickable = false,
+		distance = 2.5,
+		doors = {
+			{
+				objName = 'v_ilev_rc_door2',
+				objYaw = 135.0,
+				objCoords = vector3(-447.7283, 6006.702, 31.86523),				
+			},
+
+			{
+				objName = 'v_ilev_rc_door2',
+				objYaw = -45.0,
+				objCoords = vector3(-449.5656, 6008.538, 31.86523)		
+			}
+		}
+	},				
 	--
 	-- Bolingbroke Penitentiary
 	--
@@ -407,7 +556,7 @@ QB.Doors = {
 	},
 	{
 		objName = 'prop_gate_prison_01',
-		objCoords  = vector3(1799.237, 2616.303, 44.6),
+		objCoords = vector3(1799.237, 2616.303, 44.6),
 		textCoords = vector3(1795.941, 2616.969, 48.0),
 		authorizedJobs = { 'police' },
 		locking = false,
@@ -419,7 +568,7 @@ QB.Doors = {
 	--outside doors
 	{
 		objName = 'prop_fnclink_03gate5',
-		objCoords  = vector3(1796.322, 2596.574, 45.565),
+		objCoords = vector3(1796.322, 2596.574, 45.565),
 		textCoords = vector3(1796.322, 2596.574, 45.965),
 		authorizedJobs = { 'police' },
 		locking = false,
@@ -430,7 +579,7 @@ QB.Doors = {
 	},
 	{
 		objName = 'v_ilev_gtdoor',
-		objCoords  = vector3(1821.677, 2477.265, 45.945),
+		objCoords = vector3(1821.677, 2477.265, 45.945),
 		textCoords = vector3(1821.677, 2477.265, 45.945),
 		authorizedJobs = { 'police' },
 		locking = false,
@@ -441,7 +590,7 @@ QB.Doors = {
 	},
 	{
 		objName = 'v_ilev_gtdoor',
-		objCoords  = vector3(1760.692, 2413.251, 45.945),
+		objCoords = vector3(1760.692, 2413.251, 45.945),
 		textCoords = vector3(1760.692, 2413.251, 45.945),
 		authorizedJobs = { 'police' },
 		locking = false,
@@ -452,7 +601,7 @@ QB.Doors = {
 	},
 	{
 		objName = 'v_ilev_gtdoor',
-		objCoords  = vector3(1543.58, 2470.252, 45.945),
+		objCoords = vector3(1543.58, 2470.252, 45.945),
 		textCoords = vector3(1543.58, 2470.25, 45.945),
 		authorizedJobs = { 'police' },
 		locking = false,
@@ -463,7 +612,7 @@ QB.Doors = {
 	},
 	{
 		objName = 'v_ilev_gtdoor',
-		objCoords  = vector3(1659.733, 2397.475, 45.945),
+		objCoords = vector3(1659.733, 2397.475, 45.945),
 		textCoords = vector3(1659.733, 2397.475, 45.945),
 		authorizedJobs = { 'police' },
 		locking = false,
@@ -474,7 +623,7 @@ QB.Doors = {
 	},
 	{
 		objName = 'v_ilev_gtdoor',
-		objCoords  = vector3(1537.731, 2584.842, 45.945),
+		objCoords = vector3(1537.731, 2584.842, 45.945),
 		textCoords = vector3(1537.731, 2584.842, 45.945),
 		authorizedJobs = { 'police' },
 		locking = false,
@@ -957,6 +1106,73 @@ QB.Doors = {
 			}
 		}
 	},		
+	----------------
+	-- Pickle Rental
+	----------------
+	-- Voordeur 1
+	{
+		objName = 'apa_prop_apa_cutscene_doorb',
+		objCoords  = vector3(-21.71276, -1392.778, 29.63847),		
+		textCoords = vector3(-22.31276, -1392.778, 29.63847),
+		authorizedJobs = { 'cardealer' },
+		objYaw = -180.0,
+		locking = false,
+		locked = true,
+		pickable = false,
+		distance = 2.5,
+		size = 2
+	},	
+	-- Voordeur 2
+	{
+		objName = 'apa_prop_apa_cutscene_doorb',
+		objCoords  = vector3(-32.67987, -1392.064, 29.63847),		
+		textCoords = vector3(-32.10987, -1392.064, 29.63847),
+		authorizedJobs = { 'cardealer' },
+		objYaw = 0.0,
+		locking = false,
+		locked = true,
+		pickable = false,
+		distance = 2.5,
+		size = 2
+	},	
+	-- Deur naar kelder
+	{
+		objName = 'apa_prop_apa_cutscene_doorb',
+		objCoords  = vector3(-24.22668, -1403.067, 29.63847),				
+		textCoords = vector3(-24.22668, -1402.537, 29.63847),
+		authorizedJobs = { 'cardealer' },
+		objYaw = 90.0,
+		locking = false,
+		locked = true,
+		pickable = false,
+		distance = 1.5,
+		size = 2
+	},	
+	-- Achterdeur
+	{
+		objName = 'apa_prop_apa_cutscene_doorb',
+		objCoords  = vector3(-21.27107, -1406.845, 29.63847),			
+		textCoords = vector3(-21.27107, -1406.245, 29.63847),
+		authorizedJobs = { 'cardealer' },
+		objYaw = 90.0,
+		locking = false,
+		locked = true,
+		pickable = false,
+		distance = 2.0,
+		size = 2
+	},		
+	-- Roldeur
+	{
+		objName = 'prop_com_gar_door_01',
+		objCoords  = vector3(-21.04025, -1410.734, 30.51094),			
+		textCoords = vector3(-21.04025, -1410.734, 30.51094),
+		authorizedJobs = { 'cardealer' },
+		locking = false,
+		locked = true,
+		pickable = false,
+		distance = 15.0,
+		size = 2
+	},			
 	-----
 	-- Import Garage
 	-----

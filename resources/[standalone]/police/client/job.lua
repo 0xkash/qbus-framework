@@ -1,3 +1,18 @@
+function DrawText3D(x, y, z, text)
+    SetTextScale(0.35, 0.35)
+    SetTextFont(4)
+    SetTextProportional(1)
+    SetTextColour(255, 255, 255, 215)
+    SetTextEntry("STRING")
+    SetTextCentre(true)
+    AddTextComponentString(text)
+    SetDrawOrigin(x,y,z, 0)
+    DrawText(0.0, 0.0)
+    local factor = (string.len(text)) / 370
+    DrawRect(0.0, 0.0+0.0125, 0.017+ factor, 0.03, 0, 0, 0, 75)
+    ClearDrawOrigin()
+end
+
 local currentGarage = 1
 Citizen.CreateThread(function()
     while true do
@@ -6,232 +21,230 @@ Citizen.CreateThread(function()
             if PlayerJob.name == "police" then
                 local pos = GetEntityCoords(GetPlayerPed(-1))
 
-                if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["duty"].x, Config.Locations["duty"].y, Config.Locations["duty"].z, true) < 5) then
-                    if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["duty"].x, Config.Locations["duty"].y, Config.Locations["duty"].z, true) < 1.5) then
-                        if not onDuty then
-                            QBCore.Functions.DrawText3D(Config.Locations["duty"].x, Config.Locations["duty"].y, Config.Locations["duty"].z, "~g~E~w~ - In dienst gaan")
-                        else
-                            QBCore.Functions.DrawText3D(Config.Locations["duty"].x, Config.Locations["duty"].y, Config.Locations["duty"].z, "~r~E~w~ - Uit dienst gaan")
-                        end
-                        if IsControlJustReleased(0, Keys["E"]) then
-                            onDuty = not onDuty
-                            TriggerServerEvent("police:server:UpdateCurrentCops")
-                            TriggerServerEvent("QBCore:ToggleDuty")
-                            TriggerServerEvent("police:server:UpdateBlips")
-                        end
-                    elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["duty"].x, Config.Locations["duty"].y, Config.Locations["duty"].z, true) < 2.5) then
-                        QBCore.Functions.DrawText3D(Config.Locations["duty"].x, Config.Locations["duty"].y, Config.Locations["duty"].z, "In/Uit dienst")
-                    end
-                end
-
-                if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["evidence"].x, Config.Locations["evidence"].y, Config.Locations["evidence"].z, true) < 2) then
-                    if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["evidence"].x, Config.Locations["evidence"].y, Config.Locations["evidence"].z, true) < 1.0) then
-                        QBCore.Functions.DrawText3D(Config.Locations["evidence"].x, Config.Locations["evidence"].y, Config.Locations["evidence"].z, "~g~E~w~ - Bewijskast")
-                        if IsControlJustReleased(0, Keys["E"]) then
-                            TriggerEvent("inventory:client:SetCurrentStash", "policeevidence")
-                            TriggerServerEvent("inventory:server:OpenInventory", "stash", "policeevidence", {
-                                maxweight = 4000000,
-                                slots = 500,
-                            })
-                        end
-                    elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["evidence"].x, Config.Locations["evidence"].y, Config.Locations["evidence"].z, true) < 1.5) then
-                        QBCore.Functions.DrawText3D(Config.Locations["evidence"].x, Config.Locations["evidence"].y, Config.Locations["evidence"].z, "Bewijskast")
-                    end
-                end
-
-                if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["evidence2"].x, Config.Locations["evidence2"].y, Config.Locations["evidence2"].z, true) < 2) then
-                    if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["evidence2"].x, Config.Locations["evidence2"].y, Config.Locations["evidence2"].z, true) < 1.0) then
-                        QBCore.Functions.DrawText3D(Config.Locations["evidence2"].x, Config.Locations["evidence2"].y, Config.Locations["evidence2"].z, "~g~E~w~ - Bewijskast")
-                        if IsControlJustReleased(0, Keys["E"]) then
-                            TriggerEvent("inventory:client:SetCurrentStash", "policeevidence2")
-                            TriggerServerEvent("inventory:server:OpenInventory", "stash", "policeevidence2", {
-                                maxweight = 4000000,
-                                slots = 500,
-                            })
-                        end
-                    elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["evidence2"].x, Config.Locations["evidence2"].y, Config.Locations["evidence2"].z, true) < 1.5) then
-                        QBCore.Functions.DrawText3D(Config.Locations["evidence2"].x, Config.Locations["evidence2"].y, Config.Locations["evidence2"].z, "Bewijskast")
-                    end
-                end
-
-                if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["evidence3"].x, Config.Locations["evidence3"].y, Config.Locations["evidence3"].z, true) < 2) then
-                    if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["evidence3"].x, Config.Locations["evidence3"].y, Config.Locations["evidence3"].z, true) < 1.0) then
-                        QBCore.Functions.DrawText3D(Config.Locations["evidence3"].x, Config.Locations["evidence3"].y, Config.Locations["evidence3"].z, "~g~E~w~ - Bewijskast")
-                        if IsControlJustReleased(0, Keys["E"]) then
-                            TriggerEvent("inventory:client:SetCurrentStash", "policeevidence3")
-                            TriggerServerEvent("inventory:server:OpenInventory", "stash", "policeevidence3", {
-                                maxweight = 4000000,
-                                slots = 500,
-                            })
-                        end
-                    elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["evidence3"].x, Config.Locations["evidence3"].y, Config.Locations["evidence3"].z, true) < 1.5) then
-                        QBCore.Functions.DrawText3D(Config.Locations["evidence3"].x, Config.Locations["evidence3"].y, Config.Locations["evidence3"].z, "Bewijskast")
-                    end
-                end
-
-                if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["trash"].x, Config.Locations["trash"].y, Config.Locations["trash"].z, true) < 2) then
-                    if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["trash"].x, Config.Locations["trash"].y, Config.Locations["trash"].z, true) < 1.0) then
-                        QBCore.Functions.DrawText3D(Config.Locations["trash"].x, Config.Locations["trash"].y, Config.Locations["trash"].z, "~r~E~w~ - Prullenbak")
-                        if IsControlJustReleased(0, Keys["E"]) then
-                            TriggerEvent("inventory:client:SetCurrentStash", "policetrash")
-                            TriggerServerEvent("inventory:server:OpenInventory", "stash", "policetrash", {
-                                maxweight = 4000000,
-                                slots = 300,
-                            })
-                        end
-                    elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["trash"].x, Config.Locations["trash"].y, Config.Locations["trash"].z, true) < 1.5) then
-                        QBCore.Functions.DrawText3D(Config.Locations["trash"].x, Config.Locations["trash"].y, Config.Locations["trash"].z, "Prullenbak")
-                    end
-                end
-
-                if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["vehicle"].x, Config.Locations["vehicle"].y, Config.Locations["vehicle"].z, true) < 7.5) then
-                    if onDuty then
-                        DrawMarker(2, Config.Locations["vehicle"].x, Config.Locations["vehicle"].y, Config.Locations["vehicle"].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
-                        if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["vehicle"].x, Config.Locations["vehicle"].y, Config.Locations["vehicle"].z, true) < 1.5) then
-                            if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
-                                QBCore.Functions.DrawText3D(Config.Locations["vehicle"].x, Config.Locations["vehicle"].y, Config.Locations["vehicle"].z, "~g~E~w~ - Voertuig opbergen")
+                for k, v in pairs(Config.Locations["duty"]) do
+                    if (GetDistanceBetweenCoords(pos, v.x, v.y, v.z, true) < 5) then
+                        if (GetDistanceBetweenCoords(pos, v.x, v.y, v.z, true) < 1.5) then
+                            if not onDuty then
+                                DrawText3D(v.x,v.y,v.z, "~g~E~w~ - In dienst gaan")
                             else
-                                QBCore.Functions.DrawText3D(Config.Locations["vehicle"].x, Config.Locations["vehicle"].y, Config.Locations["vehicle"].z, "~g~E~w~ - Voertuigen")
+                                DrawText3D(v.x,v.y,v.z, "~r~E~w~ - Uit dienst gaan")
                             end
                             if IsControlJustReleased(0, Keys["E"]) then
+                                onDuty = not onDuty
+                                TriggerServerEvent("police:server:UpdateCurrentCops")
+                                TriggerServerEvent("QBCore:ToggleDuty")
+                                TriggerServerEvent("police:server:UpdateBlips")
+                            end
+                        elseif (GetDistanceBetweenCoords(pos, v.x, v.y, v.z, true) < 2.5) then
+                            DrawText3D(v.x, v.y, v.z, "In/Uit dienst")
+                        end
+                    end
+                end
+
+                for k, v in pairs(Config.Locations["evidence"]) do
+                    if (GetDistanceBetweenCoords(pos, v.x, v.y, v.z, true) < 2) then
+                        if (GetDistanceBetweenCoords(pos, v.x, v.y, v.z, true) < 1.0) then
+                            DrawText3D(v.x, v.y, v.z, "~g~E~w~ - Bewijskast")
+                            if IsControlJustReleased(0, Keys["E"]) then
+                                TriggerEvent("inventory:client:SetCurrentStash", "policeevidence")
+                                TriggerServerEvent("inventory:server:OpenInventory", "stash", "policeevidence", {
+                                    maxweight = 4000000,
+                                    slots = 500,
+                                })
+                            end
+                        elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, v.x, v.y, v.z, true) < 1.5) then
+                            DrawText3D(v.x, v.y, v.z, "Bewijskast")
+                        end
+                    end
+                end
+
+                for k, v in pairs(Config.Locations["evidence2"]) do
+                    if (GetDistanceBetweenCoords(pos, v.x, v.y, v.z, true) < 2) then
+                        if (GetDistanceBetweenCoords(pos, v.x, v.y, v.z, true) < 1.0) then
+                            DrawText3D(v.x, v.y, v.z, "~g~E~w~ - Bewijskast")
+                            if IsControlJustReleased(0, Keys["E"]) then
+                                TriggerEvent("inventory:client:SetCurrentStash", "policeevidence2")
+                                TriggerServerEvent("inventory:server:OpenInventory", "stash", "policeevidence2", {
+                                    maxweight = 4000000,
+                                    slots = 500,
+                                })
+                            end
+                        elseif (GetDistanceBetweenCoords(pos, v.x, v.y, v.z, true) < 1.5) then
+                            DrawText3D(v.x, v.y, v.z, "Bewijskast")
+                        end
+                    end
+                end
+
+                for k, v in pairs(Config.Locations["evidence3"]) do
+                    if (GetDistanceBetweenCoords(pos, v.x, v.y, v.z, true) < 2) then
+                        if (GetDistanceBetweenCoords(pos, v.x, v.y, v.z, true) < 1.0) then
+                            DrawText3D(v.x, v.y, v.z, "~g~E~w~ - Bewijskast")
+                            if IsControlJustReleased(0, Keys["E"]) then
+                                TriggerEvent("inventory:client:SetCurrentStash", "policeevidence3")
+                                TriggerServerEvent("inventory:server:OpenInventory", "stash", "policeevidence3", {
+                                    maxweight = 4000000,
+                                    slots = 500,
+                                })
+                            end
+                        elseif (GetDistanceBetweenCoords(pos, v.x, v.y, v.z, true) < 1.5) then
+                            DrawText3D(v.x, v.y, v.z, "Bewijskast")
+                        end
+                    end
+                end
+
+                for k, v in pairs(Config.Locations["trash"]) do
+                    if (GetDistanceBetweenCoords(pos, v.x, v.y, v.z, true) < 2) then
+                        if (GetDistanceBetweenCoords(pos, v.x, v.y, v.z, true) < 1.0) then
+                            DrawText3D(v.x, v.y, v.z, "~r~E~w~ - Prullenbak")
+                            if IsControlJustReleased(0, Keys["E"]) then
+                                TriggerEvent("inventory:client:SetCurrentStash", "policetrash")
+                                TriggerServerEvent("inventory:server:OpenInventory", "stash", "policetrash", {
+                                    maxweight = 4000000,
+                                    slots = 300,
+                                })
+                            end
+                        elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, v.x, v.y, v.z, true) < 1.5) then
+                            DrawText3D(v.x, v.y, v.z, "Prullenbak")
+                        end
+                    end
+                end
+
+                for k, v in pairs(Config.Locations["vehicle"]) do
+                    if (GetDistanceBetweenCoords(pos, v.x, v.y, v.z, true) < 7.5) then
+                         if onDuty then
+                             DrawMarker(2, v.x, v.y, v.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
+                             if (GetDistanceBetweenCoords(pos, v.x, v.y, v.z, true) < 1.5) then
+                                 if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
+                                     DrawText3D(v.x, v.y, v.z, "~g~E~w~ - Voertuig opbergen")
+                                 else
+                                     DrawText3D(v.x, v.y, v.z, "~g~E~w~ - Voertuigen")
+                                 end
+                                 if IsControlJustReleased(0, Keys["E"]) then
+                                     if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
+                                         QBCore.Functions.DeleteVehicle(GetVehiclePedIsIn(GetPlayerPed(-1)))
+                                     else
+                                         MenuGarage()
+                                         currentGarage = k
+                                         Menu.hidden = not Menu.hidden
+                                     end
+                                 end
+                                 Menu.renderGUI()
+                             end  
+                         end
+                     end
+                end
+
+                for k, v in pairs(Config.Locations["impound"]) do
+                    if (GetDistanceBetweenCoords(pos, v.x, v.y, v.z, true) < 7.5) then
+                        if onDuty then
+                            DrawMarker(2, v.x, v.y, v.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
+                            if (GetDistanceBetweenCoords(pos, v.x, v.y, v.z, true) < 1.5) then
                                 if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
-                                    QBCore.Functions.DeleteVehicle(GetVehiclePedIsIn(GetPlayerPed(-1)))
+                                    DrawText3D(v.x, v.y, v.z, "~g~E~w~ - Voertuig opbergen")
                                 else
-                                    MenuGarage()
-                                    currentGarage = 1
-                                    Menu.hidden = not Menu.hidden
+                                    DrawText3D(v.x, v.y, v.z, "~g~E~w~ - Voertuigen")
                                 end
-                            end
-                            Menu.renderGUI()
-                        end  
+                                if IsControlJustReleased(0, Keys["E"]) then
+                                    if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
+                                        QBCore.Functions.DeleteVehicle(GetVehiclePedIsIn(GetPlayerPed(-1)))
+                                    else
+                                        MenuImpound()
+                                        currentGarage = k
+                                        Menu.hidden = not Menu.hidden
+                                    end
+                                end
+                                Menu.renderGUI()
+                            end  
+                        end
                     end
                 end
 
-                if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["vehicle2"].x, Config.Locations["vehicle2"].y, Config.Locations["vehicle2"].z, true) < 7.5) then
-                    if onDuty then
-                        DrawMarker(2, Config.Locations["vehicle2"].x, Config.Locations["vehicle2"].y, Config.Locations["vehicle2"].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
-                        if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["vehicle2"].x, Config.Locations["vehicle2"].y, Config.Locations["vehicle2"].z, true) < 1.5) then
-                            if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
-                                QBCore.Functions.DrawText3D(Config.Locations["vehicle2"].x, Config.Locations["vehicle2"].y, Config.Locations["vehicle2"].z, "~g~E~w~ - Voertuig opbergen")
-                            else
-                                QBCore.Functions.DrawText3D(Config.Locations["vehicle2"].x, Config.Locations["vehicle2"].y, Config.Locations["vehicle2"].z, "~g~E~w~ - Voertuigen")
-                            end
-                            if IsControlJustReleased(0, Keys["E"]) then
+                for k, v in pairs(Config.Locations["helicopter"]) do
+                    if (GetDistanceBetweenCoords(pos, v.x, v.y, v.z, true) < 7.5) then
+                        if onDuty then
+                            DrawMarker(2, v.x, v.y, v.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
+                            if (GetDistanceBetweenCoords(pos, v.x, v.y, v.z, true) < 1.5) then
                                 if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
-                                    QBCore.Functions.DeleteVehicle(GetVehiclePedIsIn(GetPlayerPed(-1)))
+                                    DrawText3D(v.x, v.y, v.z, "~g~E~w~ - Helikopter opbergen")
                                 else
-                                    MenuGarage()
-                                    currentGarage = 2
-                                    Menu.hidden = not Menu.hidden
+                                    DrawText3D(v.x, v.y, v.z, "~g~E~w~ - Helikopter pakken")
                                 end
-                            end
-                            Menu.renderGUI()
-                        end  
-                    end
-                end
-
-                if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["impound"].x, Config.Locations["impound"].y, Config.Locations["impound"].z, true) < 7.5) then
-                    if onDuty then
-                        DrawMarker(2, Config.Locations["impound"].x, Config.Locations["impound"].y, Config.Locations["impound"].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
-                        if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["impound"].x, Config.Locations["impound"].y, Config.Locations["impound"].z, true) < 1.5) then
-                            if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
-                                QBCore.Functions.DrawText3D(Config.Locations["impound"].x, Config.Locations["impound"].y, Config.Locations["impound"].z, "~g~E~w~ - Voertuig opbergen")
-                            else
-                                QBCore.Functions.DrawText3D(Config.Locations["impound"].x, Config.Locations["impound"].y, Config.Locations["impound"].z, "~g~E~w~ - Voertuigen")
-                            end
-                            if IsControlJustReleased(0, Keys["E"]) then
-                                if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
-                                    QBCore.Functions.DeleteVehicle(GetVehiclePedIsIn(GetPlayerPed(-1)))
-                                else
-                                    MenuImpound()
-                                    Menu.hidden = not Menu.hidden
+                                if IsControlJustReleased(0, Keys["E"]) then
+                                    if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
+                                        QBCore.Functions.DeleteVehicle(GetVehiclePedIsIn(GetPlayerPed(-1)))
+                                    else
+                                        local coords = Config.Locations["helicopter"][k]
+                                        QBCore.Functions.SpawnVehicle(Config.Helicopter, function(veh)
+                                            SetVehicleNumberPlateText(veh, "ZULU"..tostring(math.random(1000, 9999)))
+                                            SetEntityHeading(veh, coords.h)
+                                            exports['LegacyFuel']:SetFuel(veh, 100.0)
+                                            closeMenuFull()
+                                            TaskWarpPedIntoVehicle(GetPlayerPed(-1), veh, -1)
+                                            TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
+                                            SetVehicleEngineOn(veh, true, true)
+                                        end, coords, true)
+                                    end
                                 end
-                            end
-                            Menu.renderGUI()
-                        end  
+                            end  
+                        end
                     end
                 end
 
-                if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["helicopter"].x, Config.Locations["helicopter"].y, Config.Locations["helicopter"].z, true) < 7.5) then
-                    if onDuty then
-                        DrawMarker(2, Config.Locations["helicopter"].x, Config.Locations["helicopter"].y, Config.Locations["helicopter"].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
-                        if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["helicopter"].x, Config.Locations["helicopter"].y, Config.Locations["helicopter"].z, true) < 1.5) then
-                            if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
-                                QBCore.Functions.DrawText3D(Config.Locations["helicopter"].x, Config.Locations["helicopter"].y, Config.Locations["helicopter"].z, "~g~E~w~ - Helikopter opbergen")
-                            else
-                                QBCore.Functions.DrawText3D(Config.Locations["helicopter"].x, Config.Locations["helicopter"].y, Config.Locations["helicopter"].z, "~g~E~w~ - Helikopter pakken")
-                            end
-                            if IsControlJustReleased(0, Keys["E"]) then
-                                if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
-                                    QBCore.Functions.DeleteVehicle(GetVehiclePedIsIn(GetPlayerPed(-1)))
-                                else
-                                    local coords = Config.Locations["helicopter"]
-                                    QBCore.Functions.SpawnVehicle(Config.Helicopter, function(veh)
-                                        SetVehicleNumberPlateText(veh, "ZULU"..tostring(math.random(1000, 9999)))
-                                        SetEntityHeading(veh, coords.h)
-                                        exports['LegacyFuel']:SetFuel(veh, 100.0)
-                                        closeMenuFull()
-                                        TaskWarpPedIntoVehicle(GetPlayerPed(-1), veh, -1)
-                                        TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
-                                        SetVehicleEngineOn(veh, true, true)
-                                    end, coords, true)
+                for k, v in pairs(Config.Locations["armory"]) do
+                    if (GetDistanceBetweenCoords(pos, v.x, v.y, v.z, true) < 4.5) and IsArmoryWhitelist() then
+                        if onDuty then
+                            if (GetDistanceBetweenCoords(pos, v.x, v.y, v.z, true) < 1.5) then
+                                DrawText3D(v.x, v.y, v.z, "~g~E~w~ - Wapenkluis")
+                                if IsControlJustReleased(0, Keys["E"]) then
+                                    SetWeaponSeries()
+                                    TriggerServerEvent("inventory:server:OpenInventory", "shop", "police", Config.Items)
                                 end
-                            end
-                        end  
+                            elseif (GetDistanceBetweenCoords(pos, v.x, v.y, v.z, true) < 2.5) then
+                                DrawText3D(v.x, v.y, v.z, "Wapenkluis")
+                            end  
+                        end
                     end
                 end
 
-                if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["armory"].x, Config.Locations["armory"].y, Config.Locations["armory"].z, true) < 4.5) and IsArmoryWhitelist() then
-                    if onDuty then
-                        if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["armory"].x, Config.Locations["armory"].y, Config.Locations["armory"].z, true) < 1.5) then
-                            QBCore.Functions.DrawText3D(Config.Locations["armory"].x, Config.Locations["armory"].y, Config.Locations["armory"].z, "~g~E~w~ - Wapenkluis")
-                            if IsControlJustReleased(0, Keys["E"]) then
-                                SetWeaponSeries()
-                                TriggerServerEvent("inventory:server:OpenInventory", "shop", "police", Config.Items)
-                            end
-                        elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["armory"].x, Config.Locations["armory"].y, Config.Locations["armory"].z, true) < 2.5) then
-                            QBCore.Functions.DrawText3D(Config.Locations["armory"].x, Config.Locations["armory"].y, Config.Locations["armory"].z, "Wapenkluis")
-                        end  
-                    end
-                end
-
-                if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["stash"].x, Config.Locations["stash"].y, Config.Locations["stash"].z, true) < 4.5) then
-                    if onDuty then
-                        if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["stash"].x, Config.Locations["stash"].y, Config.Locations["stash"].z, true) < 1.5) then
-                            QBCore.Functions.DrawText3D(Config.Locations["stash"].x, Config.Locations["stash"].y, Config.Locations["stash"].z, "~g~E~w~ - Persoonlijke kluis")
-                            if IsControlJustReleased(0, Keys["E"]) then
-                                TriggerEvent("inventory:client:SetCurrentStash", "policestash_"..QBCore.Functions.GetPlayerData().citizenid)
-                                TriggerServerEvent("inventory:server:OpenInventory", "stash", "policestash_"..QBCore.Functions.GetPlayerData().citizenid)
-                            end
-                        elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["stash"].x, Config.Locations["stash"].y, Config.Locations["stash"].z, true) < 2.5) then
-                            QBCore.Functions.DrawText3D(Config.Locations["stash"].x, Config.Locations["stash"].y, Config.Locations["stash"].z, "Persoonlijke kluis")
-                        end  
-                    end
-                end
-
-                if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["fingerprint"].x, Config.Locations["fingerprint"].y, Config.Locations["fingerprint"].z, true) < 4.5) then
-                    if onDuty then
-                        if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["fingerprint"].x, Config.Locations["fingerprint"].y, Config.Locations["fingerprint"].z, true) < 1.5) then
-                            QBCore.Functions.DrawText3D(Config.Locations["fingerprint"].x, Config.Locations["fingerprint"].y, Config.Locations["fingerprint"].z, "~g~E~w~ - Scan vingerafdruk")
-                            if IsControlJustReleased(0, Keys["E"]) then
-                                local player, distance = GetClosestPlayer()
-                                if player ~= -1 and distance < 2.5 then
-                                    local playerId = GetPlayerServerId(player)
-                                    TriggerServerEvent("police:server:showFingerprint", playerId)
-                                else
-                                    QBCore.Functions.Notify("Niemand in de buurt!", "error")
+                for k, v in pairs(Config.Locations["stash"]) do
+                    if (GetDistanceBetweenCoords(pos, v.x, v.y, v.z, true) < 4.5) then
+                        if onDuty then
+                            if (GetDistanceBetweenCoords(pos, v.x, v.y, v.z, true) < 1.5) then
+                                DrawText3D(v.x, v.y, v.z, "~g~E~w~ - Persoonlijke kluis")
+                                if IsControlJustReleased(0, Keys["E"]) then
+                                    TriggerEvent("inventory:client:SetCurrentStash", "policestash_"..QBCore.Functions.GetPlayerData().citizenid)
+                                    TriggerServerEvent("inventory:server:OpenInventory", "stash", "policestash_"..QBCore.Functions.GetPlayerData().citizenid)
                                 end
-                            end
-                        elseif (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, Config.Locations["fingerprint"].x, Config.Locations["fingerprint"].y, Config.Locations["fingerprint"].z, true) < 2.5) then
-                            QBCore.Functions.DrawText3D(Config.Locations["fingerprint"].x, Config.Locations["fingerprint"].y, Config.Locations["fingerprint"].z, "Vinger scan")
-                        end  
+                            elseif (GetDistanceBetweenCoords(pos, v.x, v.y, v.z, true) < 2.5) then
+                                DrawText3D(v.x, v.y, v.z, "Persoonlijke kluis")
+                            end  
+                        end
+                    end
+                end
+
+                for k, v in pairs(Config.Locations["fingerprint"]) do
+                    if (GetDistanceBetweenCoords(pos, v.x, v.y, v.z, true) < 4.5) then
+                        if onDuty then
+                            if (GetDistanceBetweenCoords(pos, v.x, v.y, v.z, true) < 1.5) then
+                                DrawText3D(v.x, v.y, v.z, "~g~E~w~ - Scan vingerafdruk")
+                                if IsControlJustReleased(0, Keys["E"]) then
+                                    local player, distance = GetClosestPlayer()
+                                    if player ~= -1 and distance < 2.5 then
+                                        local playerId = GetPlayerServerId(player)
+                                        TriggerServerEvent("police:server:showFingerprint", playerId)
+                                    else
+                                        QBCore.Functions.Notify("Niemand in de buurt!", "error")
+                                    end
+                                end
+                            elseif (GetDistanceBetweenCoords(pos, v.x, v.y, v.z, true) < 2.5) then
+                                DrawText3D(v.x, v.y, v.z, "Vinger scan")
+                            end  
+                        end
                     end
                 end
             else
-                Citizen.Wait(2500)
+                Citizen.Wait(2000)
             end
-        else
-            Citizen.Wait(2000)
         end
     end
 end)
@@ -371,7 +384,7 @@ function TakeOutImpound(vehicle)
     enginePercent = round(vehicle.engine / 10, 0)
     bodyPercent = round(vehicle.body / 10, 0)
     currentFuel = vehicle.fuel
-    local coords = Config.Locations["impound"]
+    local coords = Config.Locations["impound"][currentGarage]
     QBCore.Functions.SpawnVehicle(vehicle.vehicle, function(veh)
         QBCore.Functions.TriggerCallback('qb-garage:server:GetVehicleProperties', function(properties)
             QBCore.Functions.SetVehicleProperties(veh, properties)
@@ -464,10 +477,8 @@ function VehicleList(isDown)
 end
 
 function TakeOutVehicle(vehicleInfo)
-    local coords = Config.Locations["vehicle"]
-    if currentGarage == 2 then
-        coords = Config.Locations["vehicle2"]
-    end
+    local coords = Config.Locations["vehicle"][currentGarage]
+
     QBCore.Functions.SpawnVehicle(vehicleInfo, function(veh)
         SetVehicleNumberPlateText(veh, "PLZI"..tostring(math.random(1000, 9999)))
         SetEntityHeading(veh, coords.h)

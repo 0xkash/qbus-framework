@@ -31,6 +31,22 @@ QBBoatshop.Docks = {
             }
         }
     },
+    ["paletto"] = {
+        label = "Paleto Boothuis",
+        coords = {
+            take = {
+                x = -277.46, 
+                y = 6637.2, 
+                z = 7.48,
+            },
+            put = {
+                x = -289.2, 
+                y = 6637.96, 
+                z = 1.01,
+                h = 45.5,
+            }
+        }
+    },    
     ["millars"] = {
         label = "Millars Boothuis",
         coords = {

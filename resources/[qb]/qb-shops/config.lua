@@ -303,6 +303,32 @@ Config.Products = {
         --     slot = 4,
         -- },
     },   
+    ["mustapha"] = {
+        [1] = {
+            name = "parachute",
+            price = 2500,
+            amount = 10,
+            info = {},
+            type = "item",
+            slot = 1,
+        },
+        [2] = {
+            name = "binoculars",
+            price = 50,
+            amount = 50,
+            info = {},
+            type = "item",
+            slot = 2,
+        },    
+        [3] = {
+            name = "diving_gear",
+            price = 2500,
+            amount = 10,
+            info = {},
+            type = "item",
+            slot = 3,
+        },
+    },    
     ["weapons"] = {
         [1] = {
             name = "weapon_knife",
@@ -614,6 +640,40 @@ Config.Locations = {
         },
         ["products"] = Config.Products["normal"],
     },
+    ["delvecchioliquor"] = {
+        ["label"] = "Del Vecchio Liquor",
+        ["type"] = "normal",
+        ["coords"] = {
+            [1] = {
+                ["x"] = -159.36,
+                ["y"] = 6321.59,
+                ["z"] = 31.58,
+            },
+            [2] = {
+                ["x"] = -160.66,
+                ["y"] = 6322.85,
+                ["z"] = 31.58,
+            }
+        },
+        ["products"] = Config.Products["normal"],
+    },
+    ["donscountrystore"] = {
+        ["label"] = "Don's Country Store",
+        ["type"] = "normal",
+        ["coords"] = {
+            [1] = {
+                ["x"] = 161.41,
+                ["y"] = 6640.78,
+                ["z"] = 31.69,
+            },
+            [2] = {
+                ["x"] = 163.04,
+                ["y"] = 6642.45,
+                ["z"] = 31.70,
+            }
+        },
+        ["products"] = Config.Products["normal"],
+    },
     ["ltdgasoline4"] = {
         ["label"] = "LTD Gasoline",
         ["type"] = "normal",
@@ -827,5 +887,17 @@ Config.Locations = {
             }
         },
         ["products"] = Config.Products["leisureshop"],
+    },   
+    ["mustapha"] = {
+        ["label"] = "Rental Mustapha",
+        ["type"] = "leisure",
+        ["coords"] = {
+            [1] = {
+                ["x"] = -31.18, 
+                ["y"] = -1397.537, 
+                ["z"] = 29.50
+            }
+        },
+        ["products"] = Config.Products["mustapha"],
     },    
 }
