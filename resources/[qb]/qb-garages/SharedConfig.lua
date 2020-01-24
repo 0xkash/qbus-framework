@@ -72,6 +72,12 @@ Garages = {
         spawnPoint = {x = 70.71, y = 6425.16, z = 30.92, h = 68.5}, 
         putVehicle = {x = 85.3, y = 6427.52, z = 31.33},
     },
+    ["dumbogarage"] = {
+        label = "Dumbo Personeelsgarage",
+        takeVehicle = {x = 157.26, y = -3240.00, z = 7.00},
+        spawnPoint = {x = 165.32, y = -3236.10, z = 5.93, h = 268.5}, 
+        putVehicle = {x = 165.32, y = -3230.00, z = 5.93},
+    },
 }
 
 HouseGarages = {}
