@@ -225,7 +225,6 @@ Citizen.CreateThread(function()
                 for k, v in pairs(Config.Locations["fingerprint"]) do
                     if (GetDistanceBetweenCoords(pos, v.x, v.y, v.z, true) < 4.5) then
                         if onDuty then
-                            print('yeet')
                             if (GetDistanceBetweenCoords(pos, v.x, v.y, v.z, true) < 1.5) then
                                 DrawText3D(v.x, v.y, v.z, "~g~E~w~ - Scan vingerafdruk")
                                 if IsControlJustReleased(0, Keys["E"]) then
