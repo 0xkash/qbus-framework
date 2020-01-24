@@ -177,7 +177,16 @@ Citizen.CreateThread(function()
 end)
 
 Citizen.CreateThread(function()
-    local blip = AddBlipForCoord(Config.Locations["checking"].x, Config.Locations["checking"].y, Config.Locations["checking"].z)
+    local blip = AddBlipForCoord(-254.88, 6324.5, 32.58)
+    SetBlipSprite(blip, 61)
+    SetBlipAsShortRange(blip, true)
+    SetBlipScale(blip, 0.8)
+    SetBlipColour(blip, 25)
+    BeginTextCommandSetBlipName("STRING")
+    AddTextComponentString("Dokterspost Paleto")
+    EndTextCommandSetBlipName(blip)
+
+    local blip = AddBlipForCoord(304.27, -600.33, 43.28)
     SetBlipSprite(blip, 61)
     SetBlipAsShortRange(blip, true)
     SetBlipScale(blip, 0.8)
@@ -185,6 +194,7 @@ Citizen.CreateThread(function()
     BeginTextCommandSetBlipName("STRING")
     AddTextComponentString("Pillbox Ziekenhuis")
     EndTextCommandSetBlipName(blip)
+
     while true do
         Citizen.Wait(1)
         if QBCore ~= nil then
