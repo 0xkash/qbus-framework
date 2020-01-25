@@ -1344,6 +1344,18 @@ QBShared.Vehicles = {
 		["trunkslots"] = 80,
 		["shop"] = "pdm",
 	},
+	["futo"] = {
+		["name"] = "Futo",
+		["brand"] = "Karin",
+		["model"] = "futo",
+		["price"] = 20000,
+		["category"] = "coupes",
+		["hash"] = "2016857647",
+		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/6/67/Futo-GTAV-front.png",
+		["trunkspace"] = 100000,
+		["trunkslots"] = 80,
+		["shop"] = "pdm",
+	},	
 	["ninef"] = {
 		["name"] = "9F",
 		["brand"] = "Obey",
