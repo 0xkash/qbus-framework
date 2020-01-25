@@ -79,7 +79,7 @@ Config.Locations = {
    ["stations"] = {
        [1] = {label = "Politie Hoofdbureau", coords = {x = 428.23, y = -984.28, z = 29.76, h = 3.5}},
        [2] = {label = "Gevangenis", coords = {x = 1845.903, y = 2585.873, z = 45.672, h = 272.249}},
-       [2] = {label = "Gevangenis", coords = {x = -451.55, y = 6014.25, z = 31.716, h = 223.81}},
+       [3] = {label = "Politie Bureau Paleto", coords = {x = -451.55, y = 6014.25, z = 31.716, h = 223.81}},
    },
 }
 
