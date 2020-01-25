@@ -130,7 +130,7 @@ Config.Products = {
         },
         [4] = {
             name = "repairkit",
-            price = 1250,
+            price = 500,
             amount = 50,
             info = {},
             type = "item",
