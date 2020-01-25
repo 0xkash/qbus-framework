@@ -24,6 +24,8 @@ Citizen.CreateThread(function()
             [15] = math.random(1000, 9999),
             [16] = math.random(1000, 9999),
             [17] = math.random(1000, 9999),
+            [18] = {math.random(1, 149), math.random(150.0, 359.0), math.random(1, 149), math.random(150.0, 359.0), math.random(1, 149)},
+            [19] = math.random(1000, 9999),
         }
         Citizen.Wait((1000 * 60) * 40)
     end
