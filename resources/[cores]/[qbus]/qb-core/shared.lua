@@ -2877,6 +2877,18 @@ QBShared.Vehicles = {
 		["trunkslots"] = 60,
 		["shop"] = "custom",
 	},
+	["rijschooldimi"] = {
+		["name"] = "Audi Q5 DimiDriving",
+		["brand"] = "Qbus",
+		["model"] = "rijschooldimi",
+		["price"] = 1,
+		["category"] = "coupes",
+		["hash"] = GetHashKey("rijschooldimi"),
+		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/0/07/FaggioMod-GTAO-front.png",
+		["trunkspace"] = 100000,
+		["trunkslots"] = 60,
+		["shop"] = "custom",
+	},	
 }
 
 QBShared.VehicleModels = {
