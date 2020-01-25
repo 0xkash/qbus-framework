@@ -744,6 +744,18 @@ Config.Locations = {
         },
         ["products"] = Config.Products["hardware"],
     },
+    ["hardware3"] = {
+        ["label"] = "Hardware Store",
+        ["type"] = "hardware",
+        ["coords"] = {
+            [1] = {
+                ["x"] = -421.84,
+                ["y"] = 6136.09,
+                ["z"] = 31.78,
+            },
+        },
+        ["products"] = Config.Products["hardware"],
+    },   
     ["coffeeshop"] = {
         ["label"] = "Superfly",
         ["type"] = "hardware",
