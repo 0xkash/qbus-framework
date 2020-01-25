@@ -92,7 +92,7 @@ Citizen.CreateThread(function()
                                     if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
                                         QBCore.Functions.DeleteVehicle(GetVehiclePedIsIn(GetPlayerPed(-1)))
                                     else
-                                        local coords = Config.Locations["helicopter"]
+                                        local coords = Config.Locations["helicopter"][k]
                                         QBCore.Functions.SpawnVehicle(Config.Helicopter, function(veh)
                                             SetVehicleNumberPlateText(veh, "LIFE"..tostring(math.random(1000, 9999)))
                                             SetEntityHeading(veh, coords.h)
