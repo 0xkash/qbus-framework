@@ -535,7 +535,7 @@ Config.ClothingRooms = {
     [3] = {requiredJob = "ambulance", x = 300.16, y = -598.93, z = 43.28, cameraLocation = {x = 301.09, y = -596.09, z = 43.28, h = 157.5}},
     [4] = {requiredJob = "police", x = -451.46, y = 6014.25, z = 31.72, cameraLocation = {x = -451.46, y = 6014.25, z = 31.72}},
     [5] = {requiredJob = "ambulance", x = -250.5, y = 6323.98, z = 32.32, cameraLocation = {x = -250.5, y = 6323.98, z = 32.32, h = 315.5}},    
-    [6] = {requiredJob = "doctor", x = -250.5, y = 6323.98, z = 32.32, cameraLocation = {x = -250.5, y = 6323.98, z = 32.32, h = 315.5}}, 
+    [5] = {requiredJob = "doctor", x = -250.5, y = 6323.98, z = 32.32, cameraLocation = {x = -250.5, y = 6323.98, z = 32.32, h = 315.5}}, 
 }
 
 Config.Outfits = {
@@ -739,7 +739,7 @@ Config.Outfits = {
                     ["decals"]      = { item = 0, texture = 0},  -- Decals
                     ["accessory"]   = { item = 0, texture = 0},  -- Nek / Das
                     ["bag"]         = { item = 0, texture = 0},  -- Tas
-                    ["hat"]         = { item = 79, texture = -1},  -- Pet
+                    ["hat"]         = { item = 79, texture = 0},  -- Pet
                     ["glass"]       = { item = 0, texture = 0},  -- Bril
                     ["ear"]         = { item = 0, texture = 0},  -- Oor accessoires
                     ["mask"]        = { item = 121, texture = 0},  -- Masker	
@@ -852,7 +852,7 @@ Config.Outfits = {
                     ["decals"]      = { item = 0, texture = 0},  -- Decals
                     ["accessory"]   = { item = 0, texture = 0},  -- Nek / Das
                     ["bag"]         = { item = 0, texture = 0},  -- Tas
-                    ["hat"]         = { item = 79, texture = -1},  -- Pet
+                    ["hat"]         = { item = 79, texture = 0},  -- Pet
                     ["glass"]       = { item = 0, texture = 0},  -- Bril
                     ["ear"]         = { item = 0, texture = 0},  -- Oor accessoires
                     ["mask"]        = { item = 121, texture = 0},  -- Masker	
@@ -870,7 +870,7 @@ Config.Outfits = {
                     ["decals"]      = { item = 0, texture = 0},  -- Decals
                     ["accessory"]   = { item = 0, texture = 0},  -- Nek / Das
                     ["bag"]         = { item = 0, texture = 0},  -- Tas
-                    ["hat"]         = { item = 79, texture = -1},  -- Pet
+                    ["hat"]         = { item = 79, texture = 0},  -- Pet
                     ["glass"]       = { item = 0, texture = 0},  -- Bril
                     ["ear"]         = { item = 0, texture = 0},  -- Oor accessoires
                     ["mask"]        = { item = 121, texture = 0},  -- Masker	
@@ -888,13 +888,32 @@ Config.Outfits = {
                     ["decals"]      = { item = 0, texture = 0},  -- Decals
                     ["accessory"]   = { item = 0, texture = 0},  -- Nek / Das
                     ["bag"]         = { item = 0, texture = 0},  -- Tas
-                    ["hat"]         = { item = 79, texture = -1},  -- Pet
+                    ["hat"]         = { item = 79, texture = 0},  -- Pet
                     ["glass"]       = { item = 0, texture = 0},  -- Bril
                     ["ear"]         = { item = 0, texture = 0},  -- Oor accessoires
                     ["mask"]        = { item = 121, texture = 0},  -- Masker	
 				},
 			},		
 		},		
-        ["female"] = {},
+        ["female"] = {
+            [1] = {
+                outfitLabel = "Vrouwelijke Outfit",
+                outfitData = {
+                    ["pants"]       = { item = 3,texture = 1},  -- Broek
+                    ["arms"]        = { item = 14, texture = 0},  -- Armen
+                    ["t-shirt"]     = { item = 3, texture = 0},  -- T Shirt
+                    ["vest"]        = { item = 0, texture = 0},  -- Body Vest
+                    ["torso2"]      = { item = 14, texture = 1},  -- Jas / Vesten
+                    ["shoes"]       = { item = 25, texture = 0},  -- Schoenen
+                    ["decals"]      = { item = 0, texture = 0},  -- Decals
+                    ["accessory"]   = { item = 0, texture = 0},  -- Nek / Das
+                    ["bag"]         = { item = 0, texture = 0},  -- Tas
+                    ["hat"]         = { item = -1, texture = 0},  -- Pet
+                    ["glass"]       = { item = 0, texture = 0},  -- Bril
+                    ["ear"]         = { item = 0, texture = 0},  -- Oor accessoires
+                    ["mask"]        = { item = 121, texture = 0},  -- Masker
+				},
+            },
+        },
     },
 }
