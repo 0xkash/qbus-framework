@@ -76,6 +76,18 @@ Citizen.CreateThread(function()
     BeginTextCommandSetBlipName("STRING")
     AddTextComponentSubstringPlayerName("Gemeentehuis")
     EndTextCommandSetBlipName(CityhallBlip)
+
+    DrivingSchoolBlip = AddBlipForCoord(Config.DrivingSchool.coords.x, Config.DrivingSchool.coords.y, Config.DrivingSchool.coords.z)
+
+    SetBlipSprite (DrivingSchoolBlip, 225)
+    SetBlipDisplay(DrivingSchoolBlip, 4)
+    SetBlipScale  (DrivingSchoolBlip, 0.65)
+    SetBlipAsShortRange(DrivingSchoolBlip, true)
+    SetBlipColour(DrivingSchoolBlip, 47)
+
+    BeginTextCommandSetBlipName("STRING")
+    AddTextComponentSubstringPlayerName("Rijschool")
+    EndTextCommandSetBlipName(DrivingSchoolBlip)
 end)
 local creatingCompany = false
 local currentName = nil
@@ -87,6 +99,7 @@ Citizen.CreateThread(function()
         inRange = false
 
         local dist = GetDistanceBetweenCoords(pos, Config.Cityhall.coords.x, Config.Cityhall.coords.y, Config.Cityhall.coords.z, true)
+        local dist2 = GetDistanceBetweenCoords(pos, Config.DrivingSchool.coords.x, Config.DrivingSchool.coords.y, Config.DrivingSchool.coords.z, true)
 
         if dist < 20 then
             inRange = true
@@ -98,25 +111,27 @@ Citizen.CreateThread(function()
                 end
             end
             DrawMarker(2, Config.DriverTest.coords.x, Config.DriverTest.coords.y, Config.DriverTest.coords.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.2, 155, 152, 234, 155, false, false, false, true, false, false, false)
-            if GetDistanceBetweenCoords(pos, Config.DriverTest.coords.x, Config.DriverTest.coords.y, Config.DriverTest.coords.z, true) < 1.5 then
-                if creatingCompany then
-                    qbCityhall.DrawText3Ds(Config.DriverTest.coords, '~g~E~w~ - Bedrijf aanmaken (€'..Config.CompanyPrice..') | ~r~G~w~ - Stoppen')
-                    if IsControlJustPressed(0, Keys["E"]) then
-                        TriggerServerEvent("qb-companies:server:createCompany", currentName)
-                        creatingCompany = false
-                    end
-                    if IsControlJustPressed(0, Keys["G"]) then
-                        creatingCompany = false
-                    end
-                else
-                    qbCityhall.DrawText3Ds(Config.DriverTest.coords, '~g~E~w~ - Rijles aanvragen')
-                    if IsControlJustPressed(0, Keys["E"]) then
-                        if QBCore.Functions.GetPlayerData().metadata["licences"]["driver"] then
-                            QBCore.Functions.Notify("Je hebt al je rijbewijs gehaald, vraag het hiernaast aan")
-                        else
-                            TriggerServerEvent("qb-cityhall:server:sendDriverTest")
+                if GetDistanceBetweenCoords(pos, Config.DriverTest.coords.x, Config.DriverTest.coords.y, Config.DriverTest.coords.z, true) < 1.5 then
+                    if creatingCompany then
+                        qbCityhall.DrawText3Ds(Config.DriverTest.coords, '~g~E~w~ - Bedrijf aanmaken (€'..Config.CompanyPrice..') | ~r~G~w~ - Stoppen')
+                        if IsControlJustPressed(0, Keys["E"]) then
+                            TriggerServerEvent("qb-companies:server:createCompany", currentName)
+                            creatingCompany = false
                         end
-                    end
+                        if IsControlJustPressed(0, Keys["G"]) then
+                            creatingCompany = false
+                        end
+                    else
+                        qbCityhall.DrawText3Ds(Config.DriverTest.coords, '~g~E~w~ - Rijles aanvragen')
+                        if IsControlJustPressed(0, Keys["E"]) then
+                            if QBCore.Functions.GetPlayerData().metadata["licences"]["driver"] then
+                                QBCore.Functions.Notify("Je hebt al je rijbewijs gehaald, vraag het hiernaast aan")
+                            else
+                                TriggerServerEvent("qb-cityhall:server:sendDriverTest")
+                            end
+                        end
+
+                
                     --[[if IsControlJustPressed(0, Keys["G"]) then
                         QBCore.Functions.Notify("Voer een bedrijfsnaam in..", false, 10000)
                         DisplayOnscreenKeyboard(1, "Naam", "", "Naam", "", "", "", 128 + 1)
@@ -128,6 +143,21 @@ Citizen.CreateThread(function()
                             creatingCompany = true
                         end
                     end]]--
+                end
+            end
+        end
+
+        if dist2 < 20 then
+            inRange = true
+            DrawMarker(2, Config.DrivingSchool.coords.x, Config.DrivingSchool.coords.y, Config.DrivingSchool.coords.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.2, 155, 152, 234, 155, false, false, false, true, false, false, false)
+            if GetDistanceBetweenCoords(pos, Config.DrivingSchool.coords.x, Config.DrivingSchool.coords.y, Config.DrivingSchool.coords.z, true) < 1.5 then
+                qbCityhall.DrawText3Ds(Config.DrivingSchool.coords, '~g~E~w~ - Rijles aanvragen')
+                if IsControlJustPressed(0, Keys["E"]) then
+                    if QBCore.Functions.GetPlayerData().metadata["licences"]["driver"] then
+                        QBCore.Functions.Notify("Je hebt al je rijbewijs gehaald, haal deze op bij het gemeentehuis!")
+                    else
+                        TriggerServerEvent("qb-cityhall:server:sendDriverTest")
+                    end
                 end
             end
         end
