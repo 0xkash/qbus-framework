@@ -120,6 +120,7 @@ end)
 Citizen.CreateThread(function()
 	SetWeaponDamageModifier(GetHashKey('WEAPON_UNARMED'), 0.25)
 	SetWeaponDamageModifier(GetHashKey('WEAPON_NIGHTSTICK'), 0.3)
+	SetWeaponDamageModifier(GetHashKey('WEAPON_BREAD'), 0.3)
 	SetWeaponDamageModifier(GetHashKey('WEAPON_SNOWBALL'), 0.001)
 end)
 
