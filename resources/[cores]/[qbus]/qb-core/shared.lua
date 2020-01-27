@@ -119,6 +119,8 @@ QBShared.Items = {
 	["weapon_poolcue"] 				 = {["name"] = "weapon_poolcue", 		 	  	["label"] = "Poolcue", 					["weight"] = 1000, 		["type"] = "weapon", 	["ammotype"] = nil,						["image"] = "weapon_poolcue.png", 		["unique"] = true, 		["useable"] = false, 	["combinable"] = nil, ["description"] = "This is a placeholder description"},
 	["weapon_wrench"] 				 = {["name"] = "weapon_wrench", 			 	["label"] = "Moersleutel", 				["weight"] = 1000, 		["type"] = "weapon", 	["ammotype"] = nil,						["image"] = "weapon_wrench.png", 		["unique"] = true, 		["useable"] = false, 	["combinable"] = nil, ["description"] = "This is a placeholder description"},
 	["weapon_autoshotgun"] 		 	 = {["name"] = "weapon_autoshotgun", 	 		["label"] = "Sweeper Shotgun", 			["weight"] = 3000, 		["type"] = "weapon", 	["ammotype"] = "AMMO_SHOTGUN",			["image"] = "sweepershotgun.png", 		["unique"] = true, 		["useable"] = false, 	["combinable"] = nil, ["description"] = "This is a placeholder description"},
+	["weapon_bread"] 				 = {["name"] = "weapon_bread", 		 			["label"] = "Baquette", 				["weight"] = 1000, 		["type"] = "weapon", 	["ammotype"] = nil,						["image"] = "baquette.png", 			["unique"] = true, 		["useable"] = false, 	["combinable"] = nil, ["description"] = "This is a placeholder description"},
+
 
 	-- // ITEMS //
 	["id_card"] 					 = {["name"] = "id_card", 			 	  	  	["label"] = "Identiteitskaart", 		["weight"] = 0, 		["type"] = "item", 		["image"] = "id_card.png", 				["unique"] = true, 		["useable"] = true, 	["shouldClose"] = false,   ["combinable"] = nil,   ["description"] = "Een kaart waar al je gegevens op staat."},
@@ -311,6 +313,7 @@ QBShared.Weapons = {
 	[GetHashKey("weapon_poolcue")] 				 = {["name"] = "weapon_poolcue", 		 	  	["label"] = "Poolcue", 					["weight"] = 1000, 		["type"] = "weapon", 	["ammotype"] = nil,						["image"] = "placeholder.png", 		["unique"] = true, 		["useable"] = false, 	["description"] = "This is a placeholder description"},
 	[GetHashKey("weapon_wrench")] 				 = {["name"] = "weapon_wrench", 			 	["label"] = "Moersleutel", 				["weight"] = 1000, 		["type"] = "weapon", 	["ammotype"] = nil,						["image"] = "placeholder.png", 		["unique"] = true, 		["useable"] = false, 	["description"] = "This is a placeholder description"},
 	[GetHashKey("weapon_autoshotgun")] 		 	 = {["name"] = "weapon_autoshotgun", 	 		["label"] = "Sweeper Shotgun", 			["weight"] = 3000, 		["type"] = "weapon", 	["ammotype"] = "AMMO_SHOTGUN",			["image"] = "sweepershotgun.png", 	["unique"] = true, 		["useable"] = false, 	["description"] = "This is a placeholder description"},
+	[GetHashKey("weapon_bread")] 				 = {["name"] = "weapon_bread", 				 	["label"] = "Baquette", 				["weight"] = 1000, 		["type"] = "weapon", 	["ammotype"] = nil,						["image"] = "baquette.png", 		["unique"] = true, 		["useable"] = false, 	["description"] = "This is a placeholder description"},
 }
 
 -- // VEHICLES
@@ -1344,6 +1347,18 @@ QBShared.Vehicles = {
 		["trunkslots"] = 80,
 		["shop"] = "pdm",
 	},
+	["futo"] = {
+		["name"] = "Futo",
+		["brand"] = "Karin",
+		["model"] = "futo",
+		["price"] = 20000,
+		["category"] = "coupes",
+		["hash"] = "2016857647",
+		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/6/67/Futo-GTAV-front.png",
+		["trunkspace"] = 100000,
+		["trunkslots"] = 80,
+		["shop"] = "pdm",
+	},	
 	["ninef"] = {
 		["name"] = "9F",
 		["brand"] = "Obey",
@@ -2877,6 +2892,42 @@ QBShared.Vehicles = {
 		["trunkslots"] = 60,
 		["shop"] = "custom",
 	},
+	["rijschooldimi"] = {
+		["name"] = "Audi Q5 DimiDriving",
+		["brand"] = "Qbus",
+		["model"] = "rijschooldimi",
+		["price"] = 1,
+		["category"] = "coupes",
+		["hash"] = GetHashKey("rijschooldimi"),
+		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/0/07/FaggioMod-GTAO-front.png",
+		["trunkspace"] = 100000,
+		["trunkslots"] = 60,
+		["shop"] = "custom",
+	},	
+	["rijschoolsacrebleu"] = {
+		["name"] = "Audi Q5 Sacre Bleu",
+		["brand"] = "Qbus",
+		["model"] = "rijschoolsacrebleu",
+		["price"] = 1,
+		["category"] = "coupes",
+		["hash"] = GetHashKey("rijschoolsacrebleu"),
+		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/0/07/FaggioMod-GTAO-front.png",
+		["trunkspace"] = 100000,
+		["trunkslots"] = 60,
+		["shop"] = "custom",
+	},	
+	["rijschoolyeahletsco"] = {
+		["name"] = "Audi Q5 Yeah Let's Co",
+		["brand"] = "Qbus",
+		["model"] = "rijschoolyeahletsco",
+		["price"] = 1,
+		["category"] = "coupes",
+		["hash"] = GetHashKey("rijschoolyeahletsco"),
+		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/0/07/FaggioMod-GTAO-front.png",
+		["trunkspace"] = 100000,
+		["trunkslots"] = 60,
+		["shop"] = "custom",
+	},		
 }
 
 QBShared.VehicleModels = {

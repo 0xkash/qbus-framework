@@ -11,3 +11,9 @@ client_scripts {
 	"config.lua",
 	"client/main.lua",
 }
+
+files {
+    'weaponsnspistol.meta',
+}
+
+data_file 'WEAPONINFO_FILE_PATCH' 'weaponsnspistol.meta'

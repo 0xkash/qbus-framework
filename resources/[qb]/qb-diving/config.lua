@@ -14,6 +14,19 @@ QBBoatshop.PoliceBoatSpawn = {
     h = 111.5,
 }
 
+QBBoatshop.PoliceBoat2 = {
+    x = -279.41, 
+    y = 6635.09, 
+    z = 7.51,
+}
+
+QBBoatshop.PoliceBoatSpawn2 = {
+    x = -293.10, 
+    y = 6642.69, 
+    z = 0.15,
+    h = 65.5,
+}
+
 QBBoatshop.Docks = {
     ["lsymc"] = {
         label = "LSYMC Boothuis",
@@ -31,6 +44,22 @@ QBBoatshop.Docks = {
             }
         }
     },
+    ["paletto"] = {
+        label = "Paleto Boothuis",
+        coords = {
+            take = {
+                x = -277.46, 
+                y = 6637.2, 
+                z = 7.48,
+            },
+            put = {
+                x = -289.2, 
+                y = 6637.96, 
+                z = 1.01,
+                h = 45.5,
+            }
+        }
+    },    
     ["millars"] = {
         label = "Millars Boothuis",
         coords = {

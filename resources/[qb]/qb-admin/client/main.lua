@@ -670,9 +670,7 @@ Citizen.CreateThread(function()
                 if IsControlJustReleased(0, 38) then
                     -- Set as missionEntity so the object can be remove (Even map objects)
                     SetEntityAsMissionEntity(entity, true, true)
-                    if IsEntityAVehicle(entity) then
-                        SetVehicleDoorsLocked(entity, 1)
-                    end
+                    SetEntityAsNoLongerNeeded(entity)
                     DeleteEntity(entity)
                 end
             -- Only draw of not center of map
@@ -801,6 +799,7 @@ end
 -- Raycast function for "Admin Lazer"
 function RayCastGamePlayCamera(distance)
     local cameraRotation = GetGameplayCamRot()
+    -- print(cameraRotation)
 	local cameraCoord = GetGameplayCamCoord()
 	local direction = RotationToDirection(cameraRotation)
 	local destination = 

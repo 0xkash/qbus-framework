@@ -56,6 +56,39 @@ Citizen.CreateThread(function()
 end)
 
 Citizen.CreateThread(function()
+    while true do 
+        Citizen.Wait(3)
+        if isLoggedIn then
+            local pos = GetEntityCoords(GetPlayerPed(-1))
+            if PlayerJob.name == "police" then
+                local dist = GetDistanceBetweenCoords(pos, QBBoatshop.PoliceBoat2.x, QBBoatshop.PoliceBoat2.y, QBBoatshop.PoliceBoat2.z, true)
+                if dist < 10 then
+                    DrawMarker(2, QBBoatshop.PoliceBoat2.x, QBBoatshop.PoliceBoat2.y, QBBoatshop.PoliceBoat2.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 200, 0, 0, 222, false, false, false, true, false, false, false)
+                    if (GetDistanceBetweenCoords(pos.x, pos.y, pos.z, QBBoatshop.PoliceBoat2.x, QBBoatshop.PoliceBoat2.y, QBBoatshop.PoliceBoat2.z, true) < 1.5) then
+                        QBCore.Functions.DrawText3D(QBBoatshop.PoliceBoat2.x, QBBoatshop.PoliceBoat2.y, QBBoatshop.PoliceBoat2.z, "~g~E~w~ - Boot pakken")
+                        if IsControlJustReleased(0, Keys["E"]) then
+                            local coords = QBBoatshop.PoliceBoatSpawn2
+                            QBCore.Functions.SpawnVehicle("pboot", function(veh)
+                                SetVehicleNumberPlateText(veh, "PBOA"..tostring(math.random(1000, 9999)))
+                                SetEntityHeading(veh, coords.h)
+                                exports['LegacyFuel']:SetFuel(veh, 100.0)
+                                TaskWarpPedIntoVehicle(GetPlayerPed(-1), veh, -1)
+                                TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(veh))
+                                SetVehicleEngineOn(veh, true, true)
+                            end, coords, true)
+                        end
+                    end
+                else
+                    Citizen.Wait(1000)
+                end
+            else
+                Citizen.Wait(3000)
+            end
+        end
+    end
+end)
+
+Citizen.CreateThread(function()
     while true do
 
         local inRange = false

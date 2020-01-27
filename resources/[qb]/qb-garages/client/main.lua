@@ -17,16 +17,16 @@ local hasGarageKey = nil
 local currentGarage = nil
 local OutsideVehicles = {}
 
-RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
-AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
-    QBCore.Functions.TriggerCallback('qb-garage:server:GetOutsideVehicles', function(result)
-        if result ~= nil then
-            OutsideVehicles = result
-        else
-            OutsideVehicles = {}
-        end
-    end)
-end)
+-- RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
+-- AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+--     QBCore.Functions.TriggerCallback('qb-garage:server:GetOutsideVehicles', function(result)
+--         if result ~= nil then
+--             OutsideVehicles = result
+--         else
+--             OutsideVehicles = {}
+--         end
+--     end)
+-- end)
 
 RegisterNetEvent('qb-garages:client:setHouseGarage')
 AddEventHandler('qb-garages:client:setHouseGarage', function(house, hasKey)
