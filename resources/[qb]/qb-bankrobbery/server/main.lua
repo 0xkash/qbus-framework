@@ -151,6 +151,10 @@ QBCore.Functions.CreateCallback('qb-bankrobbery:server:isRobberyActive', functio
     cb(robberyBusy)
 end)
 
+QBCore.Functions.CreateCallback('qb-bankrobbery:server:GetConfig', function(source, cb)
+    cb(Config)
+end)
+
 RegisterServerEvent('qb-bankrobbery:server:setTimeout')
 AddEventHandler('qb-bankrobbery:server:setTimeout', function()
     if not timeOut then

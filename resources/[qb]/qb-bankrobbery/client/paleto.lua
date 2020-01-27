@@ -41,7 +41,7 @@ Citizen.CreateThread(function()
                                     if lockerDist < 0.5 then
                                         DrawText3Ds(Config.BigBanks["paleto"]["lockers"][k].x, Config.BigBanks["paleto"]["lockers"][k].y, Config.BigBanks["paleto"]["lockers"][k].z + 0.3, '[E] Kluis openbreken')
                                         if IsControlJustPressed(0, Keys["E"]) then
-                                            if CurrentCops >= 5 then
+                                            if CurrentCops >= Config.MinimumPaletoPolice then
                                                 openLocker("paleto", k)
                                             else
                                                 QBCore.Functions.Notify("Niet genoeg politie.. (5 nodig)", "error")
@@ -92,7 +92,7 @@ AddEventHandler('qb-bankrobbery:UseBankcardA', function()
     if dist < 1.5 then
         QBCore.Functions.TriggerCallback('qb-bankrobbery:server:isRobberyActive', function(isBusy)
             if not isBusy then
-                if CurrentCops >= 5 then
+                if CurrentCops >= Config.MinimumPaletoPolice then
                     if not Config.BigBanks["paleto"]["isOpened"] then 
                         TriggerEvent('inventory:client:requiredItems', requiredItems, false)
                         QBCore.Functions.Progressbar("security_pass", "Pas aan het valideren..", math.random(5000, 10000), false, true, {

@@ -616,14 +616,27 @@ AddEventHandler('inventory:server:SetInventoryData', function(fromInventory, toI
 		local price = tonumber((itemData.price*fromAmount))
 
 		if QBCore.Shared.SplitStr(shopType, "_")[1] == "Dealer" then
-			if Player.Functions.RemoveMoney("cash", price, "dealer-item-bought") then
-				Player.Functions.AddItem(itemData.name, fromAmount, toSlot, itemData.info)
-				TriggerClientEvent('qb-drugs:client:updateDealerItems', src, itemData, fromAmount)
-				TriggerClientEvent('QBCore:Notify', src, itemInfo["label"] .. " ingekocht!", "success")
-				TriggerEvent("qb-log:server:sendLog", Player.PlayerData.citizenid, "itemshop", {type="dealer", name=itemInfo["name"], amount=fromAmount, paymentType="cash", price=price})
-				TriggerEvent("qb-log:server:CreateLog", "dealers", "Dealer item gekocht", "green", "**"..GetPlayerName(src) .. "** heeft een " .. itemInfo["label"] .. " gekocht voor €"..price)
+			if QBCore.Shared.SplitStr(itemData.name, "_")[1] == "weapon" then
+				price = tonumber(itemData.price)
+				if Player.Functions.RemoveMoney("cash", price, "dealer-item-bought") then
+					Player.Functions.AddItem(itemData.name, 1, toSlot, itemData.info)
+					TriggerClientEvent('qb-drugs:client:updateDealerItems', src, itemData, 1)
+					TriggerClientEvent('QBCore:Notify', src, itemInfo["label"] .. " ingekocht!", "success")
+					TriggerEvent("qb-log:server:sendLog", Player.PlayerData.citizenid, "itemshop", {type="dealer", name=itemInfo["name"], amount=1, paymentType="cash", price=price})
+					TriggerEvent("qb-log:server:CreateLog", "dealers", "Dealer item gekocht", "green", "**"..GetPlayerName(src) .. "** heeft een " .. itemInfo["label"] .. " gekocht voor €"..price)
+				else
+					TriggerClientEvent('QBCore:Notify', src, "Je hebt niet genoeg cash..", "error")
+				end
 			else
-				TriggerClientEvent('QBCore:Notify', src, "Je hebt niet genoeg cash..", "error")
+				if Player.Functions.RemoveMoney("cash", price, "dealer-item-bought") then
+					Player.Functions.AddItem(itemData.name, fromAmount, toSlot, itemData.info)
+					TriggerClientEvent('qb-drugs:client:updateDealerItems', src, itemData, fromAmount)
+					TriggerClientEvent('QBCore:Notify', src, itemInfo["label"] .. " ingekocht!", "success")
+					TriggerEvent("qb-log:server:sendLog", Player.PlayerData.citizenid, "itemshop", {type="dealer", name=itemInfo["name"], amount=fromAmount, paymentType="cash", price=price})
+					TriggerEvent("qb-log:server:CreateLog", "dealers", "Dealer item gekocht", "green", "**"..GetPlayerName(src) .. "** heeft een " .. itemInfo["label"] .. " gekocht voor €"..price)
+				else
+					TriggerClientEvent('QBCore:Notify', src, "Je hebt niet genoeg cash..", "error")
+				end
 			end
 		elseif QBCore.Shared.SplitStr(shopType, "_")[1] == "Itemshop" then
 			if Player.Functions.RemoveMoney("cash", price, "itemshop-bought-item") then

@@ -45,6 +45,9 @@ end)
 RegisterNetEvent("QBCore:Client:OnPlayerLoaded")
 AddEventHandler("QBCore:Client:OnPlayerLoaded", function()
     PlayerJob = QBCore.Functions.GetPlayerData().job
+    QBCore.Functions.TriggerCallback('qb-bankrobbery:server:GetConfig', function(config)
+        Config = config
+    end)
     onDuty = true
     ResetBankDoors()
 end)
@@ -302,22 +305,28 @@ end
 
 function ResetBankDoors()
     for k, v in pairs(Config.SmallBanks) do
-        local object = GetClosestObjectOfType(Config.SmallBanks[k]["coords"]["x"], Config.SmallBanks[k]["coords"]["y"], Config.SmallBanks[k]["coords"]["z"], 5.0, Config.SmallBanks[k]["object"], false, false, false)
-        SetEntityHeading(object, Config.SmallBanks[k]["heading"].closed)
+        if not Config.SmallBanks[k]["isOpened"] then
+            local object = GetClosestObjectOfType(Config.SmallBanks[k]["coords"]["x"], Config.SmallBanks[k]["coords"]["y"], Config.SmallBanks[k]["coords"]["z"], 5.0, Config.SmallBanks[k]["object"], false, false, false)
+            SetEntityHeading(object, Config.SmallBanks[k]["heading"].closed)
+        end
     end
-    local paletoObject = GetClosestObjectOfType(Config.BigBanks["paleto"]["coords"]["x"], Config.BigBanks["paleto"]["coords"]["y"], Config.BigBanks["paleto"]["coords"]["z"], 5.0, Config.BigBanks["paleto"]["object"], false, false, false)
-    SetEntityHeading(paletoObject, Config.BigBanks["paleto"]["heading"].closed)
+    if not Config.BigBanks["paleto"]["isOpened"] then
+        local paletoObject = GetClosestObjectOfType(Config.BigBanks["paleto"]["coords"]["x"], Config.BigBanks["paleto"]["coords"]["y"], Config.BigBanks["paleto"]["coords"]["z"], 5.0, Config.BigBanks["paleto"]["object"], false, false, false)
+        SetEntityHeading(paletoObject, Config.BigBanks["paleto"]["heading"].closed)
+    end
 
-    local pacificObject = GetClosestObjectOfType(Config.BigBanks["pacific"]["coords"][2]["x"], Config.BigBanks["pacific"]["coords"][2]["y"], Config.BigBanks["pacific"]["coords"][2]["z"], 20.0, Config.BigBanks["pacific"]["object"], false, false, false)
-    SetEntityHeading(pacificObject, Config.BigBanks["pacific"]["heading"].closed)
+    if not Config.BigBanks["pacific"]["isOpened"] then
+        local pacificObject = GetClosestObjectOfType(Config.BigBanks["pacific"]["coords"][2]["x"], Config.BigBanks["pacific"]["coords"][2]["y"], Config.BigBanks["pacific"]["coords"][2]["z"], 20.0, Config.BigBanks["pacific"]["object"], false, false, false)
+        SetEntityHeading(pacificObject, Config.BigBanks["pacific"]["heading"].closed)
+    end
 
-    TriggerServerEvent('qb-doorlock:server:updateState', 34, true)
-    TriggerServerEvent('qb-doorlock:server:updateState', 35, true)
-    TriggerServerEvent('qb-doorlock:server:updateState', 36, true)
-    TriggerServerEvent('qb-doorlock:server:updateState', 37, true)
+    -- TriggerServerEvent('qb-doorlock:server:updateState', 34, true)
+    -- TriggerServerEvent('qb-doorlock:server:updateState', 35, true)
+    -- TriggerServerEvent('qb-doorlock:server:updateState', 36, true)
+    -- TriggerServerEvent('qb-doorlock:server:updateState', 37, true)
 
-    TriggerServerEvent('qb-doorlock:server:updateState', 41, true)
-    TriggerServerEvent('qb-doorlock:server:updateState', 42, true)
+    -- TriggerServerEvent('qb-doorlock:server:updateState', 41, true)
+    -- TriggerServerEvent('qb-doorlock:server:updateState', 42, true)
 end
 
 function openLocker(bankId, lockerId)

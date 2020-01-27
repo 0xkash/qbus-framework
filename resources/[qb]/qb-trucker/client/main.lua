@@ -110,8 +110,12 @@ Citizen.CreateThread(function()
                         if IsControlJustReleased(0, Keys["E"]) then
                             if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
                                 if GetPedInVehicleSeat(GetVehiclePedIsIn(GetPlayerPed(-1)), -1) == GetPlayerPed(-1) then
-                                    DeleteVehicle(GetVehiclePedIsIn(GetPlayerPed(-1)))
-                                    TriggerServerEvent('qb-trucker:server:DoBail', false)
+                                    if isTruckerVehicle(GetVehiclePedIsIn(GetPlayerPed(-1), false)) then
+                                        DeleteVehicle(GetVehiclePedIsIn(GetPlayerPed(-1)))
+                                        TriggerServerEvent('qb-trucker:server:DoBail', false)
+                                    else
+                                        QBCore.Functions.Notify('Dit is niet het bedrijfsvoertuig!', 'error')
+                                    end
                                 else
                                     QBCore.Functions.Notify('Je moet bestuurder zijn..')
                                 end

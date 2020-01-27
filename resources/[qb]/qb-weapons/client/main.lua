@@ -44,6 +44,7 @@ AddEventHandler('weapon:client:AddAmmo', function(type, amount)
         SetPedAmmo(GetPlayerPed(-1), weapon, total)
     end
     TriggerServerEvent("weapons:server:AddWeaponAmmo", type, amount)
+    TriggerServerEvent("weapons:server:SaveWeaponAmmo")
 end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')

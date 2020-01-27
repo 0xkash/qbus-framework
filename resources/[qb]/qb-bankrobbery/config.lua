@@ -13,6 +13,8 @@ Config = Config or {}
 
 Config.ItemTiers = 1
 
+Config.MinimumPaletoPolice = 5
+
 Config.RewardTypes = {
     [1] = {
         type = "item",
