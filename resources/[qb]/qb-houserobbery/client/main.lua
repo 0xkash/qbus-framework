@@ -70,7 +70,7 @@ Citizen.CreateThread(function()
                         closestHouse = k
                         inRange = true
                         
-                        if CurrentCops >= 3 then
+                        if CurrentCops >= Config.MinimumHouseRobberyPolice then
                             if Config.Houses[k]["opened"] then
                                 DrawText3Ds(Config.Houses[k]["coords"]["x"], Config.Houses[k]["coords"]["y"], Config.Houses[k]["coords"]["z"], '~g~E~w~ - Om naar binnen te gaan')
                                 if IsControlJustPressed(0, Keys["E"]) then
@@ -226,7 +226,7 @@ AddEventHandler('lockpicks:UseLockpick', function(isAdvanced)
     usingAdvanced = isAdvanced
     if usingAdvanced then
         if closestHouse ~= nil then
-            if CurrentCops >= 3 then
+            if CurrentCops >= Config.MinimumHouseRobberyPolice then
                 if not Config.Houses[closestHouse]["opened"] then
                     PoliceCall()
                     TriggerEvent('qb-lockpick:client:openLockpick', lockpickFinish)
@@ -245,7 +245,7 @@ AddEventHandler('lockpicks:UseLockpick', function(isAdvanced)
         QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
             if closestHouse ~= nil then
                 if result then
-                    if CurrentCops >= 3 then
+                    if CurrentCops >= Config.MinimumHouseRobberyPolice then
                         if not Config.Houses[closestHouse]["opened"] then
                             PoliceCall()
                             TriggerEvent('qb-lockpick:client:openLockpick', lockpickFinish)
