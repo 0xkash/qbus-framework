@@ -19,6 +19,7 @@
 
 .databank-container {
 	display:none!important;
+	user-select: none;
 }
 
 /* Police Radar */
