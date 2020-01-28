@@ -77,7 +77,7 @@ Citizen.CreateThread(function()
                         if not Config.Safes[safe].robbed then
                             DrawText3Ds(Config.Safes[safe].x, Config.Safes[safe].y, Config.Safes[safe].z, '~g~E~w~ - Combinatie proberen')
                             if IsControlJustPressed(0, Keys["E"]) then
-                                if CurrentCops >= 3 then
+                                if CurrentCops >= Config.MinimumStoreRobberyPolice then
                                     currentSafe = safe
                                     if math.random(1, 100) <= 65 and not IsWearingHandshoes() then
                                         TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
@@ -156,7 +156,7 @@ AddEventHandler('lockpicks:UseLockpick', function(isAdvanced)
         local pos = GetEntityCoords(ped)
         local dist = GetDistanceBetweenCoords(pos, Config.Registers[k].x, Config.Registers[k].y, Config.Registers[k].z)
         if dist <= 1 and not Config.Registers[k].robbed then
-            if CurrentCops >= 3 then
+            if CurrentCops >= Config.MinimumStoreRobberyPolice then
                 if usingAdvanced then
                     lockpick(true)
                     currentRegister = k
