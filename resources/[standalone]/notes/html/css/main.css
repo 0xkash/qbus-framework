@@ -8,6 +8,7 @@ p {
     display: none;
     width: 100vh;
     height: 100vh;
+    user-select: none;
 }
 
 .notepad-image {
@@ -16,6 +17,7 @@ p {
     right: 1vw;
     width: 423px;
     height: 493px;
+    user-select: none;
 }
 
 .notepad-content {
@@ -23,6 +25,7 @@ p {
     top:54.8vh;
     right: 0.8vw;
     z-index: 99;
+    user-select: none;
 }
 
 .notepad-content textarea {
