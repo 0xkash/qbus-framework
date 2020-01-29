@@ -173,6 +173,8 @@ AddEventHandler('qb-vehiclerental:server:SpawnRentedVehicle', function(vehiclePl
         z = Config.RentalPoints[CurrentRentalPoint]["coords"][2]["z"],
     }
 
+    local isnetworked = isnetworked ~= nil and isnetworked or true
+
     local model = GetHashKey(vehicleData["model"])
 
     RequestModel(model)

@@ -110,17 +110,22 @@ Citizen.CreateThread(function()
                 end
             end
 
+            local currentHospital = 1
+
             for k, v in pairs(Config.Locations["main"]) do
                 if (GetDistanceBetweenCoords(pos,v.x,v.y,v.z, true) < 1.5) then
-                    DrawText3D(Config.Locations["main"].x,v.y,v.z, "~g~E~w~ - Om naar het dak te gaan")
+                    DrawText3D(v.x, v.y, v.z, "~g~E~w~ - Lift naar dak pakken")
                     if IsControlJustReleased(0, Keys["E"]) then
                         DoScreenFadeOut(500)
                         while not IsScreenFadedOut() do
                             Citizen.Wait(10)
                         end
 
-                        SetEntityCoords(PlayerPedId(), v.x, v.y, v.z, 0, 0, 0, false)
-                        SetEntityHeading(PlayerPedId(), v.h)
+                        currentHospital = k
+
+                        local coords = Config.Locations["roof"][currentHospital]
+                        SetEntityCoords(PlayerPedId(), coords.x, coords.y, coords.z, 0, 0, 0, false)
+                        SetEntityHeading(PlayerPedId(), coords.h)
 
                         Citizen.Wait(100)
 
@@ -131,15 +136,18 @@ Citizen.CreateThread(function()
 
             for k, v in pairs(Config.Locations["roof"]) do
                 if (GetDistanceBetweenCoords(pos, v.x, v.y, v.z, true) < 1.5) then
-                    DrawText3D(v.x, v.y, v.z, "~g~E~w~ - Om naar de lobby te gaan")
+                    DrawText3D(v.x, v.y, v.z, "~g~E~w~ - Lift naar beneden pakken")
                     if IsControlJustReleased(0, Keys["E"]) then
                         DoScreenFadeOut(500)
                         while not IsScreenFadedOut() do
                             Citizen.Wait(10)
                         end
 
-                        SetEntityCoords(PlayerPedId(),v.x,v.y,v.z, 0, 0, 0, false)
-                        SetEntityHeading(PlayerPedId(),v.h)
+                        currentHospital = k
+
+                        local coords = Config.Locations["main"][currentHospital]
+                        SetEntityCoords(PlayerPedId(), coords.x, coords.y, coords.z, 0, 0, 0, false)
+                        SetEntityHeading(PlayerPedId(), coords.h)
 
                         Citizen.Wait(100)
 

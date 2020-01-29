@@ -12,10 +12,16 @@ AddEventHandler('qb-vehiclerental:server:SetVehicleRented', function(plate, bool
     local plyCid = ply.PlayerData.citizenid
 
     if bool then
-        if ply.Functions.RemoveMoney('cash', vehicleData.price, "vehicle-rentail-bail") then
+        if ply.PlayerData.money.cash >= vehicleData.price then
+            ply.Functions.RemoveMoney('cash', vehicleData.price, "vehicle-rentail-bail") 
             RentedVehicles[plyCid] = plate
-            TriggerClientEvent('QBCore:Notify', src, 'Je hebt de borg van €'..vehicleData.price..' betaald.', 'success', 3500)
-            TriggerClientEvent('qb-vehiclerental:server:SpawnRentedVehicle', src, plate, vehicleData)
+            TriggerClientEvent('QBCore:Notify', src, 'Je hebt de borg van €'..vehicleData.price..' cash betaald.', 'success', 3500)
+            TriggerClientEvent('qb-vehiclerental:server:SpawnRentedVehicle', src, plate, vehicleData) 
+        elseif ply.PlayerData.money.bank >= vehicleData.price then 
+            ply.Functions.RemoveMoney('bank', vehicleData.price, "vehicle-rentail-bail") 
+            RentedVehicles[plyCid] = plate
+            TriggerClientEvent('QBCore:Notify', src, 'Je hebt de borg van €'..vehicleData.price..' via de bank betaald.', 'success', 3500)
+            TriggerClientEvent('qb-vehiclerental:server:SpawnRentedVehicle', src, plate, vehicleData) 
         else
             TriggerClientEvent('QBCore:Notify', src, 'Je hebt niet genoeg geld.', 'error', 3500)
         end
@@ -26,3 +32,7 @@ AddEventHandler('qb-vehiclerental:server:SetVehicleRented', function(plate, bool
     print(vehicleData.price)
     RentedVehicles[plyCid] = nil
 end)
+
+
+
+

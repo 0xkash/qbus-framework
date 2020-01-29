@@ -3,6 +3,7 @@ Config = {}
 Config.minEarn = 100
 Config.maxEarn = 450
 Config.RegisterEarnings = math.random(Config.minEarn, Config.maxEarn)
+Config.MinimumStoreRobberyPolice = 3
 
 Config.Registers = {
     [1] = {x = -47.24, y = -1757.65, z = 29.53, robbed = false, time = 0, safeKey = 1, camId = 4},

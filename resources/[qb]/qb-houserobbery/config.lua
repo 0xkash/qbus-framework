@@ -14,6 +14,8 @@ Config = {}
 
 Config.MinZOffset = 45
 
+Config.MinimumHouseRobberyPolice = 3
+
 Config.Rewards = {
     ["cabin"] = {
         "plastic",
@@ -34,12 +36,12 @@ Config.Rewards = {
 }
 
 Config.Houses = {
-    ["grovestreet1"] = {
+    ["grovestreet1"] = { -- Moved 28-1-2020
         ["coords"] = {
-            ["x"] = 385.18,
-            ["y"] = -1881.7,
-            ["z"] = 26.03,
-            ["h"] = 224.5,
+            ["x"] = 500.75,
+            ["y"] = -1697.16,
+            ["z"] = 29.78,
+            ["h"] = 326.5,
         },
         ["opened"] = false,
         ["tier"] = 1,
@@ -503,12 +505,12 @@ Config.Houses = {
             },
         }
     },
-    ["house2"] = {
+    ["house2"] = { -- Moved 28-1-20
         ["coords"] = {
-            ["x"] = -968.75, 
-            ["y"] = 436.9, 
-            ["z"] = 80.76, 
-            ["h"] = 72.5
+            ["x"] = 1010.41, 
+            ["y"] = -423.39, 
+            ["z"] = 65.34, 
+            ["h"] = 133.5
         },
         ["opened"] = false,
         ["tier"] = 1,
@@ -570,12 +572,12 @@ Config.Houses = {
             },
         }
     },
-    ["house3"] = {
+    ["house3"] = { -- Moved 28-1-2020
         ["coords"] = {
-            ["x"] = -987.26, 
-            ["y"] = 487.07, 
-            ["z"] = 82.46, 
-            ["h"] = 181.5
+            ["x"] = -678.96, 
+            ["y"] = 512.12, 
+            ["z"] = 113.52, 
+            ["h"] = 18.5
         },
         ["opened"] = false,
         ["tier"] = 1,

@@ -91,9 +91,9 @@ HeliCam.Close = function() {
 }
 
 Databank.Open = function() {
-    $(".databank-container").css("display", "block");
+    $(".databank-container").css("display", "block").css("user-select", "none");
     $(".databank-container iframe").css("display", "block");
-    $(".tablet-frame").css("display", "block");
+    $(".tablet-frame").css("display", "block").css("user-select", "none");
     $(".databank-bg").css("display", "block");
 }
 
