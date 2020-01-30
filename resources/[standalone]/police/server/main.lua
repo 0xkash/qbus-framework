@@ -716,15 +716,6 @@ QBCore.Commands.Add("setpolice", "Geef de politie baan aan iemand ", {{name="id"
     end
 end)
 
-QBCore.Commands.Add("firepolice", "Ontsla een politieagent!", {{name="id", help="Speler ID"}}, true, function(source, args)
-    local Player = QBCore.Functions.GetPlayer(tonumber(args[1]))
-    local Myself = QBCore.Functions.GetPlayer(source)
-    if Player ~= nil then 
-        if (Myself.PlayerData.job.name == "police" and Myself.PlayerData.job.onduty) and IsHighCommand(Myself.PlayerData.citizenid) then
-            Player.Functions.SetJob("unemployed")
-        end
-    end
-end)
 
 function IsHighCommand(citizenid)
     local retval = false
@@ -984,7 +975,7 @@ end)
 
 QBCore.Commands.Add("paylaw", "Betaal een advocaat", {{name="id", help="ID van een speler"}}, true, function(source, args)
 	local Player = QBCore.Functions.GetPlayer(source)
-    if Player.PlayerData.job.name == "police" or Player.PlayerData.job.name == "judge" then
+    if Player.PlayerData.job.name == "police" then
         local playerId = tonumber(args[1])
         local OtherPlayer = QBCore.Functions.GetPlayer(playerId)
         if OtherPlayer ~= nil then
