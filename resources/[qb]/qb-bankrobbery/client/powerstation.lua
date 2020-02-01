@@ -101,7 +101,7 @@ AddEventHandler('thermite:UseThermite', function()
         end
         local dist = GetDistanceBetweenCoords(pos, Config.PowerStations[closestStation].coords.x, Config.PowerStations[closestStation].coords.y, Config.PowerStations[closestStation].coords.z)
         if dist < 1.5 then
-            if CurrentCops >= 2 then
+            if CurrentCops >= Config.MinimumThermitePolice then
                 if not Config.PowerStations[closestStation].hit then
                     loadAnimDict("weapon@w_sp_jerrycan")
                     TaskPlayAnim(GetPlayerPed(-1), "weapon@w_sp_jerrycan", "fire", 3.0, 3.9, 180, 49, 0, 0, 0, 0)
@@ -123,7 +123,7 @@ AddEventHandler('thermite:UseThermite', function()
         if math.random(1, 100) <= 85 and not IsWearingHandshoes() then
             TriggerServerEvent("evidence:server:CreateFingerDrop", pos)
         end
-        if CurrentCops >= 2 then
+        if CurrentCops >= Config.MinimumThermitePolice then
             currentGate = currentThermiteGate
             loadAnimDict("weapon@w_sp_jerrycan")
             TaskPlayAnim(GetPlayerPed(-1), "weapon@w_sp_jerrycan", "fire", 3.0, 3.9, -1, 49, 0, 0, 0, 0)

@@ -102,7 +102,7 @@ Citizen.CreateThread(function()
                                 if lockerDist < 0.5 then
                                     DrawText3Ds(Config.BigBanks["pacific"]["lockers"][k].x, Config.BigBanks["pacific"]["lockers"][k].y, Config.BigBanks["pacific"]["lockers"][k].z + 0.3, '[E] Kluis openbreken')
                                     if IsControlJustPressed(0, Keys["E"]) then
-                                        if CurrentCops >= 6 then
+                                        if CurrentCops >= Config.MinimumPacificPolice then
                                             openLocker("pacific", k)
                                         else
                                             QBCore.Functions.Notify("Niet genoeg politie.. (6 nodig)", "error")
@@ -166,7 +166,7 @@ AddEventHandler('electronickit:UseElectronickit', function()
             if not isBusy then
                 local dist = GetDistanceBetweenCoords(pos, Config.BigBanks["pacific"]["coords"][2]["x"], Config.BigBanks["pacific"]["coords"][2]["y"], Config.BigBanks["pacific"]["coords"][2]["z"])
                 if dist < 1.5 then
-                    if CurrentCops >= 6 then
+                    if CurrentCops >= Config.MinimumPacificPolice then
                         if not Config.BigBanks["pacific"]["isOpened"] then 
                             QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
                                 if result then 
@@ -230,7 +230,7 @@ AddEventHandler('qb-bankrobbery:UseBankcardB', function()
     if dist < 1.5 then
         QBCore.Functions.TriggerCallback('qb-bankrobbery:server:isRobberyActive', function(isBusy)
             if not isBusy then
-                if CurrentCops >= 0 then
+                if CurrentCops >= Config.MinimumPacificPolice then
                     if not Config.BigBanks["pacific"]["isOpened"] then 
                         TriggerEvent('inventory:client:requiredItems', requiredItems2, false)
                         QBCore.Functions.Progressbar("security_pass", "Pas aan het valideren..", math.random(5000, 10000), false, true, {
@@ -244,7 +244,7 @@ AddEventHandler('qb-bankrobbery:UseBankcardB', function()
                             flags = 16,
                         }, {}, {}, function() -- Done
                             StopAnimTask(GetPlayerPed(-1), "anim@gangops@facility@servers@", "hotwire", 1.0)
-                            TriggerServerEvent('qb-doorlock:server:updateState', 56, false)
+                            TriggerServerEvent('qb-doorlock:server:updateState', 67, false)
                             TriggerServerEvent("QBCore:Server:RemoveItem", "security_card_02", 1)
                             if not copsCalled then
                                 local s1, s2 = Citizen.InvokeNative(0x2EB41072B4C1E4C0, pos.x, pos.y, pos.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())

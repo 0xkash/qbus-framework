@@ -120,7 +120,7 @@ Citizen.CreateThread(function()
                                     if lockerDist < 0.5 then
                                         DrawText3Ds(Config.SmallBanks[closestBank]["lockers"][k].x, Config.SmallBanks[closestBank]["lockers"][k].y, Config.SmallBanks[closestBank]["lockers"][k].z + 0.3, '[E] Kluis openbreken')
                                         if IsControlJustPressed(0, Keys["E"]) then
-                                            if CurrentCops >= 4 then
+                                            if CurrentCops >= Config.MinimumFleecaPolice then
                                                 openLocker(closestBank, k)
                                             else
                                                 QBCore.Functions.Notify("Niet genoeg politie.. (4 nodig)", "error")
@@ -169,7 +169,7 @@ AddEventHandler('electronickit:UseElectronickit', function()
                 if closestBank ~= nil then
                     local dist = GetDistanceBetweenCoords(pos, Config.SmallBanks[closestBank]["coords"]["x"], Config.SmallBanks[closestBank]["coords"]["y"], Config.SmallBanks[closestBank]["coords"]["z"])
                     if dist < 1.5 then
-                        if CurrentCops >= 4 then
+                        if CurrentCops >= Config.MinimumFleecaPolice then
                             if not Config.SmallBanks[closestBank]["isOpened"] then 
                                 QBCore.Functions.TriggerCallback('QBCore:HasItem', function(result)
                                     if result then 
