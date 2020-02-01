@@ -2904,6 +2904,18 @@ QBShared.Vehicles = {
 		["trunkslots"] = 60,
 		["shop"] = "custom",
 	},	
+	["rijschooljaapballer"] = {
+		["name"] = "Audi Q5 Jaap Baller",
+		["brand"] = "Qbus",
+		["model"] = "rijschooljaapballer",
+		["price"] = 1,
+		["category"] = "coupes",
+		["hash"] = GetHashKey("rijschooljaapballer"),
+		["image"] = "https://vignette.wikia.nocookie.net/gtawiki/images/0/07/FaggioMod-GTAO-front.png",
+		["trunkspace"] = 100000,
+		["trunkslots"] = 60,
+		["shop"] = "custom",
+	},	
 	["rijschoolsacrebleu"] = {
 		["name"] = "Audi Q5 Sacre Bleu",
 		["brand"] = "Qbus",
