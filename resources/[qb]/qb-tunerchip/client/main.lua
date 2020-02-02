@@ -24,6 +24,7 @@ end)
 -- Code
 
 local inTuner = false
+local RainbowNeon = false
 
 function setVehData(veh,data)
     local multp = 0.12
@@ -126,41 +127,148 @@ RegisterNUICallback('exit', function()
     inTuner = false
 end)
 
+local LastRainbowNeonColor = 0
+
+local RainbowNeonColors = {
+    [1] = {
+        r = 255,
+        g = 0,
+        b = 0
+    },
+    [2] = {
+        r = 255,
+        g = 165,
+        b = 0
+    },
+    [3] = {
+        r = 255,
+        g = 255,
+        b = 0
+    },
+    [4] = {
+        r = 0,
+        g = 0,
+        b = 255
+    },
+    [5] = {
+        r = 75,
+        g = 0,
+        b = 130
+    },
+    [6] = {
+        r = 238,
+        g = 130,
+        b = 238
+    },
+}
+
 RegisterNUICallback('saveNeon', function(data)
     QBCore.Functions.TriggerCallback('qb-tunerchip:server:HasChip', function(HasChip)
         if HasChip then
-            local ped = GetPlayerPed(-1)
-            local veh = GetVehiclePedIsIn(ped)
+            if not data.rainbowEnabled then
+                local ped = GetPlayerPed(-1)
+                local veh = GetVehiclePedIsIn(ped)
 
-            if tonumber(data.neonEnabled) == 1 then
-                SetVehicleNeonLightEnabled(veh, 0, true)
-                SetVehicleNeonLightEnabled(veh, 1, true)
-                SetVehicleNeonLightEnabled(veh, 2, true)
-                SetVehicleNeonLightEnabled(veh, 3, true)
-                if tonumber(data.r) ~= nil and tonumber(data.g) ~= nil and tonumber(data.b) ~= nil then
-                    SetVehicleNeonLightsColour(veh, tonumber(data.r), tonumber(data.g), tonumber(data.b))
+                if tonumber(data.neonEnabled) == 1 then
+                    SetVehicleNeonLightEnabled(veh, 0, true)
+                    SetVehicleNeonLightEnabled(veh, 1, true)
+                    SetVehicleNeonLightEnabled(veh, 2, true)
+                    SetVehicleNeonLightEnabled(veh, 3, true)
+                    if tonumber(data.r) ~= nil and tonumber(data.g) ~= nil and tonumber(data.b) ~= nil then
+                        SetVehicleNeonLightsColour(veh, tonumber(data.r), tonumber(data.g), tonumber(data.b))
+                    else
+                        SetVehicleNeonLightsColour(veh, 255, 255, 255)
+                    end
+                    RainbowNeon = false
                 else
-                    SetVehicleNeonLightsColour(veh, 255, 255, 255)
+                    SetVehicleNeonLightEnabled(veh, 0, false)
+                    SetVehicleNeonLightEnabled(veh, 1, false)
+                    SetVehicleNeonLightEnabled(veh, 2, false)
+                    SetVehicleNeonLightEnabled(veh, 3, false)
+                    RainbowNeon = false
                 end
             else
-                SetVehicleNeonLightEnabled(veh, 0, false)
-                SetVehicleNeonLightEnabled(veh, 1, false)
-                SetVehicleNeonLightEnabled(veh, 2, false)
-                SetVehicleNeonLightEnabled(veh, 3, false)
+                local ped = GetPlayerPed(-1)
+                local veh = GetVehiclePedIsIn(ped)
+
+                if tonumber(data.neonEnabled) == 1 then
+                    if not RainbowNeon then
+                        RainbowNeon = true
+                        SetVehicleNeonLightEnabled(veh, 0, true)
+                        SetVehicleNeonLightEnabled(veh, 1, true)
+                        SetVehicleNeonLightEnabled(veh, 2, true)
+                        SetVehicleNeonLightEnabled(veh, 3, true)
+                        Citizen.CreateThread(function()
+                            while true do
+                                if RainbowNeon then
+                                    if (LastRainbowNeonColor + 1) ~= 7 then
+                                        LastRainbowNeonColor = LastRainbowNeonColor + 1
+                                        SetVehicleNeonLightsColour(veh, RainbowNeonColors[LastRainbowNeonColor].r, RainbowNeonColors[LastRainbowNeonColor].g, RainbowNeonColors[LastRainbowNeonColor].b)
+                                    else
+                                        LastRainbowNeonColor = 1
+                                        SetVehicleNeonLightsColour(veh, RainbowNeonColors[LastRainbowNeonColor].r, RainbowNeonColors[LastRainbowNeonColor].g, RainbowNeonColors[LastRainbowNeonColor].b)
+                                    end
+                                else
+                                    break
+                                end
+
+                                Citizen.Wait(350)
+                            end
+                        end)
+                    end
+                else
+                    RainbowNeon = false
+                    SetVehicleNeonLightEnabled(veh, 0, false)
+                    SetVehicleNeonLightEnabled(veh, 1, false)
+                    SetVehicleNeonLightEnabled(veh, 2, false)
+                    SetVehicleNeonLightEnabled(veh, 3, false)
+                end
             end
         end
     end)
 end)
 
+local RainbowHeadlight = false
+local RainbowHeadlightValue = 0
+
 RegisterNUICallback('saveHeadlights', function(data)
     QBCore.Functions.TriggerCallback('qb-tunerchip:server:HasChip', function(HasChip)
         if HasChip then
-            local ped = GetPlayerPed(-1)
-            local veh = GetVehiclePedIsIn(ped)
-            local value = tonumber(data.value)
+            if data.rainbowEnabled then
+                RainbowHeadlight = true
+                local ped = GetPlayerPed(-1)
+                local veh = GetVehiclePedIsIn(ped)
+                local value = tonumber(data.value)
 
-            ToggleVehicleMod(veh, 22, true)
-            SetVehicleHeadlightsColour(veh, value)
+                Citizen.CreateThread(function()
+                    while true do
+                        if RainbowHeadlight then
+                            if (RainbowHeadlightValue + 1) ~= 12 then
+                                RainbowHeadlightValue = RainbowHeadlightValue + 1
+                                ToggleVehicleMod(veh, 22, true)
+                                SetVehicleHeadlightsColour(veh, RainbowHeadlightValue)
+                            else
+                                RainbowHeadlightValue = 1
+                                ToggleVehicleMod(veh, 22, true)
+                                SetVehicleHeadlightsColour(veh, RainbowHeadlightValue)
+                            end
+                        else
+                            break
+                        end
+                        Citizen.Wait(300)
+                    end
+                end)                
+                ToggleVehicleMod(veh, 22, true)
+                SetVehicleHeadlightsColour(veh, value)
+            else
+                RainbowHeadlight = false
+                local ped = GetPlayerPed(-1)
+                local veh = GetVehiclePedIsIn(ped)
+                local value = tonumber(data.value)
+
+                ToggleVehicleMod(veh, 22, true)
+                SetVehicleHeadlightsColour(veh, value)
+            end
         end
     end)
 end)
