@@ -147,30 +147,26 @@ AddEventHandler('qb-radialmenu:client:setExtra', function(data)
     local replace = string:gsub("extra", "")
     local extra = tonumber(replace)
     local ped = GetPlayerPed(-1)
-    local closestVehicle = nil
+    local veh = GetVehiclePedIsIn(ped)
 
-    if IsPedInAnyVehicle(ped, false) then
-        closestVehicle = GetVehiclePedIsIn(ped)
+    if veh ~= nil then
+        local plate = GetVehicleNumberPlateText(closestVehicle)
 
-        if closestVehicle ~= 0 then
-            if closestVehicle ~= GetVehiclePedIsIn(ped) then
-                local plate = GetVehicleNumberPlateText(closestVehicle)
-            end
-        end
-    
-        if DoesExtraExist(closestVehicle, extra) then 
-            if IsVehicleExtraTurnedOn(closestVehicle, extra) then
-                SetVehicleExtra(closestVehicle, extra, 1)
-                QBCore.Functions.Notify('Extra ' .. extra .. ' uitgeschakeld', 'error', 2500)
+        if GetPedInVehicleSeat(veh, -1) == GetPlayerPed(-1) then
+            if DoesExtraExist(veh, extra) then 
+                if IsVehicleExtraTurnedOn(veh, extra) then
+                    SetVehicleExtra(veh, extra, 1)
+                    QBCore.Functions.Notify('Extra ' .. extra .. ' uitgeschakeld', 'error', 2500)
+                else
+                    SetVehicleExtra(veh, extra, 0)
+                    QBCore.Functions.Notify('Extra ' .. extra .. ' geactiveerd', 'success', 2500)
+                end    
             else
-                SetVehicleExtra(closestVehicle, extra, 0)
-                QBCore.Functions.Notify('Extra ' .. extra .. ' geactiveerd', 'success', 2500)
+                QBCore.Functions.Notify('Extra ' .. extra .. ' is niet aanwezig op dit voertuig', 'error', 2500)
             end
-                
         else
-           QBCore.Functions.Notify('Extra ' .. extra .. ' is niet aanwezig op dit voertuig', 'error', 2500)
+            QBCore.Functions.Notify('Je bent de bestuurder niet!', 'error', 2500)
         end
-    
     else
         QBCore.Functions.Notify('Je zit niet in een voertuig...', 'error', 2500)
     end
