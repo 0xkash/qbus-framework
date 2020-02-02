@@ -141,6 +141,35 @@ AddEventHandler('qb-radialmenu:client:openDoor', function(data)
     end
 end)
 
+RegisterNetEvent('qb-radialmenu:client:setExtra')
+AddEventHandler('qb-radialmenu:client:setExtra', function(data)
+    local string = data.id
+    local replace = string:gsub("extra", "")
+    local extra = tonumber(replace)
+    local ped = GetPlayerPed(-1)
+    local veh = GetVehiclePedIsIn(ped)
+
+    if veh ~= nil then
+        local plate = GetVehicleNumberPlateText(closestVehicle)
+    
+        if GetPedInVehicleSeat(veh, -1) == GetPlayerPed(-1) then
+            if DoesExtraExist(veh, extra) then 
+                if IsVehicleExtraTurnedOn(veh, extra) then
+                    SetVehicleExtra(veh, extra, 1)
+                    QBCore.Functions.Notify('Extra ' .. extra .. ' uitgeschakeld', 'error', 2500)
+                else
+                    SetVehicleExtra(veh, extra, 0)
+                    QBCore.Functions.Notify('Extra ' .. extra .. ' geactiveerd', 'success', 2500)
+                end    
+            else
+                QBCore.Functions.Notify('Extra ' .. extra .. ' is niet aanwezig op dit voertuig', 'error', 2500)
+            end
+        else
+            QBCore.Functions.Notify('Je bent geen bestuurder van een voertuig!', 'error', 2500)
+        end
+    end
+end)
+
 RegisterNetEvent('qb-radialmenu:trunk:client:Door')
 AddEventHandler('qb-radialmenu:trunk:client:Door', function(plate, door, open)
     local veh = GetVehiclePedIsIn(GetPlayerPed(-1))

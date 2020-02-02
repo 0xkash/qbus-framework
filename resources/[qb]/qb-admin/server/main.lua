@@ -208,7 +208,7 @@ AddEventHandler('qb-admin:server:SaveCar', function(mods, vehicle, hash, plate)
             QBCore.Functions.ExecuteSql(false, "INSERT INTO `player_vehicles` (`steam`, `citizenid`, `vehicle`, `hash`, `mods`, `plate`, `state`) VALUES ('"..Player.PlayerData.steam.."', '"..Player.PlayerData.citizenid.."', '"..vehicle.model.."', '"..vehicle.hash.."', '"..json.encode(mods).."', '"..plate.."', 0)")
             TriggerClientEvent('QBCore:Notify', src, 'Het voertuig staat nu op je naam!', 'success', 5000)
         else
-            TriggerClientEvent('QBCore:Notify', src, 'Je hebt dit voertuig al opgeslagen..', 'error', 3000)
+            TriggerClientEvent('QBCore:Notify', src, 'Dit voertuig staat al in je garage..', 'error', 3000)
         end
     end)
 end)

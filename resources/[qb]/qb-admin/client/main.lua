@@ -852,7 +852,11 @@ AddEventHandler('qb-admin:client:SaveCar', function()
         local plate = GetVehicleNumberPlateText(veh)
         local props = QBCore.Functions.GetVehicleProperties(veh)
         local hash = props.model
-        TriggerServerEvent('qb-admin:server:SaveCar', props, QBCore.Shared.VehicleModels[hash], GetHashKey(veh), plate)
+        if QBCore.Shared.VehicleModels[hash] ~= nil and next(QBCore.Shared.VehicleModels[hash]) ~= nil then
+            TriggerServerEvent('qb-admin:server:SaveCar', props, QBCore.Shared.VehicleModels[hash], GetHashKey(veh), plate)
+        else
+            QBCore.Functions.Notify('Je kan dit voertuig niet in je garage zetten..', 'error')
+        end
     else
         QBCore.Functions.Notify('Je zit niet in een voertuig..', 'error')
     end
