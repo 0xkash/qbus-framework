@@ -1,6 +1,8 @@
 QBTuner = {}
 
 var headlightVal = 0;
+var RainbowNeon = false;
+var RainbowHeadlight = false;
 
 $(document).ready(function(){
     $('.container').hide();
@@ -61,36 +63,59 @@ $(document).on('click', "#tuning", function(){
 })
 
 $(document).on('click', "#save-neon", function(){
-    $.post('http://qb-tunerchip/saveNeon', JSON.stringify({
-        neonEnabled: $("#neon-slider").val(),
-        r: $("#color-r").val(),
-        g: $("#color-g").val(),
-        b: $("#color-b").val(),
-    }))
+    if (RainbowNeon) {
+        $.post('http://qb-tunerchip/saveNeon', JSON.stringify({
+            neonEnabled: $("#neon-slider").val(),
+            r: $("#color-r").val(),
+            g: $("#color-g").val(),
+            b: $("#color-b").val(),
+            rainbowEnabled: true,
+        }));
+    } else {
+        $.post('http://qb-tunerchip/saveNeon', JSON.stringify({
+            neonEnabled: $("#neon-slider").val(),
+            r: $("#color-r").val(),
+            g: $("#color-g").val(),
+            b: $("#color-b").val(),
+            rainbowEnabled: false,
+        }));
+    }
 })
 
 $(document).on('click', '#save-headlights', function(){
     $.post('http://qb-tunerchip/saveHeadlights', JSON.stringify({
-        value: headlightVal
+        value: headlightVal,
+        rainbowEnabled: RainbowHeadlight,
     }))
 });
 
 $(document).on('click', ".neon-software-color-pallete-color", function(){
+    var headlightValue = $(this).data('value');
 
-    var r = $(this).data('r')
-    var g = $(this).data('g')
-    var b = $(this).data('b')
+    if (headlightValue === "rainbow") {
+        RainbowHeadlight = true;
+    } else {
+        RainbowHeadlight = false;
+    }
 
-    $("#color-r").val(r)
-    $("#color-g").val(g)
-    $("#color-b").val(b)
-
-    var headlightValue = $(this).data('value')
-
-    if (headlightValue != null) {
-        headlightVal = headlightValue
-        var colorValue = $(this).css("background-color");
-        $(".neon-software-color-pallete-color-current").css("background-color", colorValue);
+    if (!$(this).data('rainbow')) {
+        var r = $(this).data('r')
+        var g = $(this).data('g')
+        var b = $(this).data('b')
+    
+        $("#color-r").val(r)
+        $("#color-g").val(g)
+        $("#color-b").val(b)
+    
+    
+        if (headlightValue != null) {
+            headlightVal = headlightValue
+            var colorValue = $(this).css("background-color");
+            $(".neon-software-color-pallete-color-current").css("background-color", colorValue);
+        }
+        RainbowNeon = false;
+    } else {
+        RainbowNeon = true;
     }
 });
 

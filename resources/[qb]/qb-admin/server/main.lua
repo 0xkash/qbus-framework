@@ -194,6 +194,25 @@ QBCore.Commands.Add("reportr", "Reply op een report", {}, false, function(source
     end
 end, "admin")
 
+QBCore.Commands.Add("admincar", "Plaats voertuig in je garage", {}, false, function(source, args)
+    local ply = QBCore.Functions.GetPlayer(source)
+    TriggerClientEvent('qb-admin:client:SaveCar', source)
+end, "admin")
+
+RegisterServerEvent('qb-admin:server:SaveCar')
+AddEventHandler('qb-admin:server:SaveCar', function(mods, vehicle, hash, plate)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    QBCore.Functions.ExecuteSql(false, "SELECT * FROM `player_vehicles` WHERE `plate` = '"..plate.."'", function(result)
+        if result[1] == nil then
+            QBCore.Functions.ExecuteSql(false, "INSERT INTO `player_vehicles` (`steam`, `citizenid`, `vehicle`, `hash`, `mods`, `plate`, `state`) VALUES ('"..Player.PlayerData.steam.."', '"..Player.PlayerData.citizenid.."', '"..vehicle.model.."', '"..vehicle.hash.."', '"..json.encode(mods).."', '"..plate.."', 0)")
+            TriggerClientEvent('QBCore:Notify', src, 'Het voertuig staat nu op je naam!', 'success', 5000)
+        else
+            TriggerClientEvent('QBCore:Notify', src, 'Dit voertuig staat al in je garage..', 'error', 3000)
+        end
+    end)
+end)
+
 QBCore.Commands.Add("reporttoggle", "Toggle inkomende reports uit of aan", {}, false, function(source, args)
     QBCore.Functions.ToggleOptin(source)
     if QBCore.Functions.IsOptin(source) then

@@ -842,3 +842,22 @@ RegisterNetEvent('qb-admin:client:SendStaffChat')
 AddEventHandler('qb-admin:client:SendStaffChat', function(name, msg)
     TriggerServerEvent('qb-admin:server:StaffChatMessage', name, msg)
 end)
+
+RegisterNetEvent('qb-admin:client:SaveCar')
+AddEventHandler('qb-admin:client:SaveCar', function()
+    local ped = GetPlayerPed(-1)
+    local veh = GetVehiclePedIsIn(ped)
+
+    if veh ~= nil and veh ~= 0 then
+        local plate = GetVehicleNumberPlateText(veh)
+        local props = QBCore.Functions.GetVehicleProperties(veh)
+        local hash = props.model
+        if QBCore.Shared.VehicleModels[hash] ~= nil and next(QBCore.Shared.VehicleModels[hash]) ~= nil then
+            TriggerServerEvent('qb-admin:server:SaveCar', props, QBCore.Shared.VehicleModels[hash], GetHashKey(veh), plate)
+        else
+            QBCore.Functions.Notify('Je kan dit voertuig niet in je garage zetten..', 'error')
+        end
+    else
+        QBCore.Functions.Notify('Je zit niet in een voertuig..', 'error')
+    end
+end)

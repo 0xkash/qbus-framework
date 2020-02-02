@@ -54,9 +54,14 @@
                 <div class="tunerchip-software">
 
                     <div class="neon-software-neon-slider">
-                        <span id="slider-titel">Neon Lights<span id="normalhigh">(Aan | Uit)</span></span>
+                        <span id="slider-titel">Neon Lights<span id="normalhigh">(Uit | Aan)</span></span>
                         <input type="range" min="0" max="1" value="1" class="slider" id="neon-slider">
                     </div>
+
+                    <!-- <div class="neon-software-neon-slider">
+                        <span id="slider-titel">Rainbow Speed<span id="normalhigh">(1 | 10)</span></span>
+                        <input type="range" min="1" max="10" value="1" class="slider" id="neon-slider">
+                    </div> -->
 
                     <div class="neon-software-color-pallete">
                         <p>Neon Kleur (RGB)</p>
@@ -67,10 +72,11 @@
 
                     <div class="neon-software-color-pallete-presets">
                         <p>Kleur Presets</p>
-                        <div class="neon-software-color-pallete-color" style="background-color: rgb(57, 143, 255);" data-r="57" data-g="143" data-b="255"></div>
-                        <div class="neon-software-color-pallete-color" style="background-color: rgb(255, 255, 116);" data-r="255" data-g="255" data-b="116"></div>
-                        <div class="neon-software-color-pallete-color" style="background-color: rgb(226, 72, 72);" data-r="226" data-g="72" data-b="72"></div>
-                        <div class="neon-software-color-pallete-color" style="background-color: rgb(141, 1, 255);" data-r="141" data-g="1" data-b="255"></div>
+                        <div class="neon-software-color-pallete-color" style="background-color: rgb(57, 143, 255);" data-r="57" data-g="143" data-b="255" data-rainbow="false"></div>
+                        <div class="neon-software-color-pallete-color" style="background-color: rgb(255, 255, 116);" data-r="255" data-g="255" data-b="116" data-rainbow="false"></div>
+                        <div class="neon-software-color-pallete-color" style="background-color: rgb(226, 72, 72);" data-r="226" data-g="72" data-b="72" data-rainbow="false"></div>
+                        <div class="neon-software-color-pallete-color" style="background-color: rgb(141, 1, 255);" data-r="141" data-g="1" data-b="255" data-rainbow="false"></div>
+                        <div class="neon-software-color-pallete-color" style="background-color: rgb(141, 1, 255);" data-r="141" data-g="1" data-b="255" data-rainbow="true"></div>
                     </div>
 
                     <div class="tunerchip-software-buttons">
@@ -98,6 +104,7 @@
                         <div class="neon-software-color-pallete-color" style="background-color: rgb(166, 57, 255);"  data-value="9"></div>
                         <div class="neon-software-color-pallete-color" style="background-color: rgb(238, 130, 238);" data-value="10"></div>
                         <div class="neon-software-color-pallete-color" style="background-color: rgb(202, 45, 250);"  data-value="11"></div>
+                        <div class="neon-software-color-pallete-color" style="background-color: rgb(202, 45, 250);"  data-value="rainbow"></div>
                     </div>
 
                     <div class="headlights-software-color-pallete-currentcolor">
