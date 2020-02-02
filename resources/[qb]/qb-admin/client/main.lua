@@ -849,7 +849,10 @@ AddEventHandler('qb-admin:client:SaveCar', function()
     local veh = GetVehiclePedIsIn(ped)
 
     if veh ~= nil and veh ~= 0 then
-        TriggerServerEvent('qb-admin:server:SaveCar', QBCore.Functions.GetVehicleProperties(veh), GetEntityModel(veh), GetHashKey(veh), GetVehicleNumberPlateTextIndex(veh))
+        local plate = GetVehicleNumberPlateText(veh)
+        local props = QBCore.Functions.GetVehicleProperties(veh)
+        local hash = props.model
+        TriggerServerEvent('qb-admin:server:SaveCar', props, QBCore.Shared.VehicleModels[hash], GetHashKey(veh), plate)
     else
         QBCore.Functions.Notify('Je zit niet in een voertuig..', 'error')
     end
