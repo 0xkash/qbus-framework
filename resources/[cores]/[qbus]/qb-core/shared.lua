@@ -5512,6 +5512,15 @@ QBShared.VehicleModels = {
 	},
 }
 
+QBShared.Gangs = {
+	["geen"] = {
+		label = "Geen Gang"
+	},
+	["testgang"] = {
+		label = "Test Gang"
+	}
+}
+
 QBShared.Jobs = {
 	["unemployed"] = {
 		label = "Werkloos",
@@ -5574,7 +5583,7 @@ QBShared.Jobs = {
 		defaultDuty = true,
 	},
 	["mechanic"] = {
-		label = "Voertuig Monteur",
+		label = "Autocare Monteur",
 		payment = 150,
 		defaultDuty = true,
 	},
