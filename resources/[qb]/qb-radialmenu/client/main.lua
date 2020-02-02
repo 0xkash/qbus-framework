@@ -151,7 +151,7 @@ AddEventHandler('qb-radialmenu:client:setExtra', function(data)
 
     if veh ~= nil then
         local plate = GetVehicleNumberPlateText(closestVehicle)
-
+    
         if GetPedInVehicleSeat(veh, -1) == GetPlayerPed(-1) then
             if DoesExtraExist(veh, extra) then 
                 if IsVehicleExtraTurnedOn(veh, extra) then
@@ -165,10 +165,8 @@ AddEventHandler('qb-radialmenu:client:setExtra', function(data)
                 QBCore.Functions.Notify('Extra ' .. extra .. ' is niet aanwezig op dit voertuig', 'error', 2500)
             end
         else
-            QBCore.Functions.Notify('Je bent de bestuurder niet!', 'error', 2500)
+            QBCore.Functions.Notify('Je bent geen bestuurder van een voertuig!', 'error', 2500)
         end
-    else
-        QBCore.Functions.Notify('Je zit niet in een voertuig...', 'error', 2500)
     end
 end)
 
